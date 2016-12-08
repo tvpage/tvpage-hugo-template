@@ -29,7 +29,17 @@
             isHomePage = $('body').hasClass('homepage'),
             isPlaybackPage = $('body').hasClass('playback-page'),
             isSearchPage = $('body').hasClass('search-page'),
-            isChannelPage = $('body').hasClass('channel-page');
+            isChannelPage = $('body').hasClass('channel-page'),
+            formatMediaDuration = function(secs) {
+                if (!_.isUndefined(secs)) {
+                    var date = new Date(0, 0, 0);
+                    date.setSeconds(Number(secs));
+                    var hour = (date.getHours() ? date.getHours() : ''),
+                        minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes(),
+                        seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+                    return (hour + minutes + ':' + seconds);
+                }
+            };
 
         // Login headers setup
         $.ajaxSetup({
@@ -149,16 +159,6 @@
                     return rows;
                 }
             },
-            formatMediaDuration: function(secs) {
-                if (!_.isUndefined(secs)) {
-                    var date = new Date(0, 0, 0);
-                    date.setSeconds(Number(secs));
-                    var hour = (date.getHours() ? date.getHours() : ''),
-                        minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes(),
-                        seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
-                    return (hour + minutes + ':' + seconds);
-                }
-            },
             filterVideos: function() {
                 $('.reset-filter').fadeTo(0, 1);
                 isFiltered = true;
@@ -196,10 +196,10 @@
                                 item.url = url;
                                 $row.append(_.template($('#resultTemplate').html())(item));
                             }
-                            var THAT = this;
-                            $($row[0]).find('.video-duration').text(function(i, scs) {
-                                return THAT.formatMediaDuration(scs); })
                             frag.appendChild($row[0]);
+                            $($row[0]).find('.video-duration').text(function(i, scs) {
+                                return formatMediaDuration(scs); 
+                            });
 
                         }
                         this.filteredCurrentPage > 0 ? $('#playback-row-container').append(frag) : $('#playback-row-container').html(frag);
@@ -254,7 +254,6 @@
                 this.filterVideos();
             },
             initialize: function() {
-
                 $.ajax({
                     url: TVSite.apiUrl + '/api/codebook/display/video',
                     dataType: 'jsonp',
@@ -1622,6 +1621,12 @@
             }
 
         };
+
+        if (isPlaybackPage) {
+            $('.video-duration').text(function(i, scs) {
+                return formatMediaDuration(scs); 
+            });
+        }
 
         /**
          * Playback channels search
