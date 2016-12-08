@@ -3,4 +3,4 @@ if ( typeof TVSite == 'undefined' ) {
 }
 
 
-TVSite.config = {"loginId":"1758166","apiUrl":"\/\/app.tvpage.com", channelId: "80848805"};
+TVSite.config = {"loginId":"1758166","apiUrl":"\/\/app.tvpage.com", channelId: "67264710"};
