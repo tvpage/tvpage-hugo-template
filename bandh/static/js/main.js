@@ -1622,7 +1622,7 @@
 
         };
 
-        if (isPlaybackPage) {
+        if (isPlaybackPage || isHomePage) {
             $('.video-duration').text(function(i, scs) {
                 return formatMediaDuration(scs); 
             });
