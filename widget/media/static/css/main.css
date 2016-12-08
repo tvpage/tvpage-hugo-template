@@ -1,0 +1,485 @@
+#tvp-gallery{
+  width: 100% !important;
+  height: 350px !important;
+}
+.tvp-video-image{
+  position:relative;
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:cover;
+  position:relative;
+  pointer-events:none;
+}
+.tvp-video-image:before{
+  display:block;
+  content:"";
+  width:100%;
+  padding-top:56.25%;
+}
+.tvp-video-image>.ar-content{
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+}
+.tvp-video-image .video-overlay{
+  -moz-transition:all 0.25s ease;
+  -o-transition:all 0.25s ease;
+  -webkit-transition:all 0.25s ease;
+  transition:all 0.25s ease;
+  pointer-events:none;
+  position:absolute;
+  top:0;bottom:0;left:0;right:0;
+  background-color:rgba(0,0,0,0.7);
+  opacity:0;
+  -webkit-transition:opacity 60ms ease-out;
+  transition:opacity 60ms ease-out;
+}
+.tvp-video-image .video-playing{
+  text-align:center;
+  color:#fff;
+  position:absolute;
+  top:0;
+  bottom:0;left:0;
+  right:0;
+  height:25px;
+  margin:auto;
+  font-weight:bold;
+  line-height:25px;
+  opacity:0;
+  font-size:1.2em;
+}
+.tvp-video-image .play-now{
+  text-align:center;
+  color:#fff;
+  position:absolute;
+  bottom:0;
+  right:0;
+  height:25px;
+  margin:auto;
+  font-weight:bold;
+  line-height:25px;
+  opacity:0;
+  font-size:1.2em;
+}
+.tvp-video-play-button{
+  position:absolute;
+  top:50%;
+  left:50%;
+  -webkit-transform:translate(-50%, -50%);
+  -ms-transform:translate(-50%, -50%);
+  transform:translate(-50%, -50%);
+  border-radius:50%;
+  width: 37px;
+  height: 37px;
+  background-color: #587CB9;
+}
+.tvp-video-play-button:after{
+  content:'';
+  position:absolute;
+  top:0;
+  bottom:0;
+  margin:auto;
+  right:0;
+  left:7px;
+  width:0;
+  height:0;
+  border-top:8px solid transparent;
+  border-bottom:8px solid transparent;
+  border-left:12px solid #fff;
+}
+.tvp-video .title{
+  max-height: 38px;
+  overflow: hidden;
+  font-family: Roboto;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  color: #333333;
+}
+.col-3{
+  width: 49%;
+  float: left;
+  padding: 0.5%;
+}
+
+.tvp-progress-bar{
+  background-color:#B82927 !important
+}
+#tvplb.off{
+  visibility:hidden;
+  opacity:0;
+  pointer-events:none;
+}
+#tvplb .lb-overlay{
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+  transition:opacity .35s ease-in-out;
+  background-color:rgba(0,0,0,0.65);
+  position:fixed;
+  z-index:9999;
+  overflow:hidden;
+  -webkit-overflow-scrolling:touch;
+  outline:0;
+  visibility:visible;
+  opacity:1;
+  pointer-events:auto;
+  display:none;
+}
+
+#tvplb .lb-header{
+  padding:0 7px 0px 20px;
+  position:relative;
+  background-color:#FFF;
+  height:40px;
+  border-radius:7px
+ }
+#tvplb .lb-header:after{
+  content:"";
+  display:table;
+  clear:both
+ }
+@media screen and (max-height: 640px) and (orientation: landscape){
+  #tvplb .lb-header{height:26px}
+}
+
+#tvplb .lb-header .related-products{
+  display: none;
+}
+
+#tvplb .lb-header .lb-title{
+  margin:0;
+  max-width:90%;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+  overflow:hidden;
+  position:relative;
+  top:50%;
+  -webkit-transform:translateY(-50%);
+  -ms-transform:translateY(-50%);
+  transform:translateY(-50%);
+  height: 19px;
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 16px;
+  color: #333333;
+  text-align:left;
+}
+
+#tvplb .lb-close{
+  display:block;
+  float:right;
+  width:27px;
+  height:27px;
+  position: absolute;
+  cursor: pointer;
+  padding: 0;
+  top: 0px;
+  right: 0px;
+  z-index: 99999;
+  border:0;
+  background-color:transparent;
+  background-size: contain;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAMAAADW3miqAAAAq1BMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAADKysoAAADY2NgGBgYJCQkAAADf398DAwM/Pz8AAAAAAACDg4McHBzl5eUAAAC+vr4GBgZmZmbs7Oz5+fk+Pj7Jycmenp5oaGj39/eDg4PQ0ND4+Piurq7a2tr8/Pzs7Oz5+fne3t79/f0iIiIsLCw1NTVBQUFOTk5dXV1oaGh6enqNjY2cnJysrKy6urrBwcHOzs7///+E45x2AAAAKnRSTlMAAQMIDRIZHSMnLTpESFNVXWlpbG15eoeJlqGssrO2vsDJ09Te4vj6/f2snMF3AAAByklEQVR4AXXT/VLaQBQFcONuNF0igm0Ea/kA6W4JSMhHwnn/J+tdbneuQ9Lzh4zmN+eeYczdbSLK3XAERPf30f/h9blSmqIUySFHROkH8/q22m5XP388KmJDJHnZASGrJ2FiHp43gGvL4nQqytYSexTFhmosbHXI/+VQWfx++qq8mTu0x/xLji0cKTEqebZo8ps0cN+CiiL1kO7Q5b20WCk+SEXxaA577KPDH/iDXJRMdqjygVTYchUXXcKMRj4oF3AVLRp/oOY/Av5xDYB/r/GmGJnpDkXoB2oy4Xrh7/lJepRZHHNRYvIjnKZ7flLmcJCtYihAzCid7QX5W2EhZS/oek6MqANcQNkOJzF1LeqELSMa/hFW8GP5CkpsaDh/BUtcQlMtH5QOrzq6omRCo875QAq4RJHhUWt0Q6jDL5rkkb9HVU3fNLDGXwtV7w7lrSmxf+Ei/l8Zz5a47WqABS0ixFXaTGZrh+4s5NxhvzCaizyig6TeLdBVn158Vh1g54aOeSRqnPkyiuOfi7EYefHSaTZbbiwodrP+niZ64BWOTTohR8mmk9TEKhhRvixOzCiljEwSUw2bHlNaxxStlZAeI+dDQsiw64u/Vpd3CsAJKq0AAAAASUVORK5CYII=);
+}
+.recommeded-products{
+  display: block;
+  height: 11px;
+  font-family: Roboto;
+  font-size: 10px;
+  font-weight: bold;
+  line-height: 11px;
+  color: #DCDCDC;
+  margin: 12px 0;
+}
+#tvplb .lb-content{
+  transition:opacity .25s ease-in-out;
+  background-color: #FFFFFF;
+  position:fixed;
+  z-index:999999;
+  width:100%;
+  margin:auto;
+  left:0;
+  right:0;
+  top:0;
+  bottom:0;
+  height:375px;
+}
+
+#tvplb .lb-body{
+  margin:0px 20px 0px 20px;
+  position:relative;
+}
+#tvplb .lb-body:after{
+  content:"";
+  display:table;
+  clear:both;
+}
+.tvp-controls-mp4 .tvp-control-overlay{
+  bottom:0px;
+  margin:auto;
+  height:100% !important;
+}
+.tvp-hide-mp4{
+  display:none !important;
+}
+#tvpp .tvpp-wrapper{
+  background-color:black;
+  position:relative;
+  padding-bottom:56.25%;
+}
+#tvpp .video-overlay{
+  width:100%;
+  height:100%;
+  position:absolute;
+  display:none;
+  background-repeat:no-repeat;
+  background-size:cover;
+}
+#tvpp .tvpp-holder{
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+  position:absolute;
+  width:100%;
+  height:100%;
+}
+#tvpp-play{
+  width:65px;
+  height:37px;
+  background-color:#B82927;
+  opacity:0.7;
+  position:absolute;
+  left:0;
+  right:0;
+  top:0;
+  bottom:0;
+  margin:auto;
+  border-radius:1px;
+  z-index:9;
+  cursor:pointer;
+}
+#tvpp-play:after{
+  content:" ";
+  width:0;
+  height:0;
+  border-top:7px solid transparent;
+  border-bottom:7px solid transparent;border-left:14px solid #fff;position:absolute;
+  left:0;
+  right:0;
+  margin:auto;
+  top:0;
+  bottom:0;
+}
+#tvpp-play:hover{
+  opacity:1;
+}
+.products-holder {
+  width: 15.8%;
+  position: relative;
+  float: right;
+  height: 368px;
+}
+.no-products-banner {
+  display: none;
+  width: 728px;
+  height: 90px;
+  margin: 20px;
+}
+.product {
+  background-color: #ffffff;
+}
+#desktop-products{
+  display: none;
+}
+#desktop-products .product-img {
+  position: relative;
+  overflow: hidden;
+  background: no-repeat 50% 50%;
+  background-size: contain;
+  cursor: pointer;
+  height: 76px;
+}
+#mobile-products .product {
+  position: relative;
+  border: 1px solid #ddd;
+  width: 83px;
+}
+#mobile-products .product-img {
+  position: relative;
+  overflow: hidden;
+  background: no-repeat 50% 50%;
+  background-size: contain;
+  height: 83px;
+}
+.pop-up-img {
+  position: relative;
+  overflow: hidden;
+  background: no-repeat 50% 50%;
+  background-size: contain;
+  cursor: pointer;
+  height: 195px;
+}
+.pop-up {
+  display: none;
+  width: 291px;
+  height: 388px;
+  position: absolute;
+  padding: 20px;
+  top: 0px;
+  right: 124px;
+  z-index: 9999;
+  background-color: #FFFFFF;
+  box-shadow: 2px 4px 8px 0 rgba(0,0,0,0.25);
+  border: 1px solid #D0D0D0;
+}
+.pop-up-before {
+  display: none;
+  content: " ";
+  width: 0px;
+  height: 0px;
+  border-style: solid;
+  border-width: 20px 0 20px 20px;
+  border-color: transparent transparent transparent #A8A8A8;
+  position: absolute;
+  top: 25px;
+  right: 105px;
+  margin-top: -5px;
+  z-index: 99999;
+}
+.pop-up-after {
+  display: none;
+  content: " ";
+  width: 0px;
+  height: 0px;
+  border-style: solid;
+  border-width: 20px 0 20px 20px;
+  border-color: transparent transparent transparent #FFFFFF;
+  position: absolute;
+  top: 24px;
+  right: 105px;
+  margin-top: -4px;
+  z-index: 99999;
+}
+.pop-up img {
+  display: block;
+  width: 225px;
+  height: 173px;
+}
+.pop-up .product-title {
+  margin: 20px 0;
+  height: 38px;
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 18px;
+  color: #333333;
+  overflow: hidden;
+}
+.pop-up .price{
+  height: 21px;
+  font-family: Roboto;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 21px;
+  color: #333333;
+  margin: 0 0 36px 0;
+}
+.pop-up .img-link {
+  display: block;
+  color: #000;
+  text-decoration: none;
+}
+.pop-up .call-to-action {
+  display: block;
+  font-family: Roboto;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 45px;
+  color: #FFFFFF;
+  width: 224px;
+  height: 48px;
+  background-color: #587CB9;
+  position: relative;
+}
+.pop-up .call-to-action .material-icon{
+  height: 12px;
+  width: 12px;
+  display: block;
+  top: 16px;
+  position: absolute;
+  right: 35px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAPFBMVEUAAAD////////////////////////////////////////////////////////////////////////////YSWgTAAAAE3RSTlMABA4oLjI2N0BBUVN+f4Cpqsv9Q4lPKAAAAGNJREFUeNpFj0EOgCAMBFdARAUR+/+/mrVmmUszkzRpgVwvgviNgs0cHEYuVDsTQUjrYGiW4Cy3DQ/yvlpjkC/JgxzhiAz0TicM0/8VuUJ53BWwuysQBZ4uTqv+3CTz/SZqxguuiQim/MCIXAAAAABJRU5ErkJggg==);
+}
+.pop-up .call-to-action:hover {
+  text-decoration: none;
+  background-color: #17266A;
+  text-shadow: 0px 1px 2px rgba(0,0,0,0.5);
+}
+
+@media screen and (min-width: 600px){
+  #tvplb .lb-close{
+    width:36px;
+    height:36px;
+  }
+  #tvplb .lb-content{
+    height:500px;
+  }
+}
+@media screen and (min-width: 768px){
+  #tvplb .lb-content{
+    height:600px;
+  }
+}
+@media screen and (min-width: 1025px){
+  .recommeded-products{
+    display: none;
+  }
+  #tvplb .lb-close{
+    top: -17px;
+    right: -16px;
+  }
+  #tvplb .lb-content{
+    -webkit-transform:translateY(-50%);
+    -ms-transform:translateY(-50%);
+    transform:translateY(-50%);width:90%;margin:0 auto;left:0;right:0;top:50%;
+    width: 817px;
+    height: 428px;
+    box-shadow: 2px 4px 8px 0 rgba(0,0,0,0.25);
+    border-radius: 4px;
+  }
+  #tvplb .lb-header .related-products{
+    display:block;
+    float: right;
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 38px;
+    color: #333333;
+    margin-right: 20px;
+  }
+  #mobile-products {
+    display: none;
+  }
+  #desktop-products{
+    display: block;
+  }
+  #tvpp{
+    float:left;
+    width:84%;
+  }
+  .no-products-banner {
+    display: none;
+    width: 728px;
+    height: 90px;
+    margin: 20px;
+  }
+}
