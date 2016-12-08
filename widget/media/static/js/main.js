@@ -192,7 +192,7 @@
                 $('.related-products').show();
                 $('#desktop-products').show();
                 $('#tvpp').css('width', '84%');
-                $('.lb-content').css({'height':'428px','width':'817px'});
+                $('.lb-content').css('height','394px');
                 THAT.resizePlayer();
               }
               // THAT.mobileProductsClickBinded = false;
@@ -207,7 +207,7 @@
               $('.related-products').hide();
               $('#desktop-products').hide();
               $('#tvpp').css('width', '100%');
-              $('.lb-content').css({'height':'579px','width':'768px'});
+              $('.lb-content').css('height','579px');
               THAT.resizePlayer();
               if(THAT.isMobile()){
                 var url = 'url(' + window.location + '/img/noProductAdMobile.png' + ')';
