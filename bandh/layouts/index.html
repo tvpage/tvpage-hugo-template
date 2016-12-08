@@ -1,0 +1,72 @@
+{{ $channel := index $.Site.Data.channels (printf "x%s" (.Param "homeChannelId") ) }}
+{{ $.Scratch.Add "channel" $channel }}
+{{ $.Scratch.Add "channelVideos" (index $.Site.Data.channelVideos (printf "x%s_page_1" $channel.id) "data") }}
+
+<!DOCTYPE html>
+<!--[if IE 9]>         <html class="ie9"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>{{ .Title }}</title>
+    <meta name="description" content="{{ .Param "description" }}">
+    <meta name="keywords" content="{{ .Param "keywords" }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+    <meta name="google-site-verification" content="{{ .Param "googleCode" }}" />
+    <meta content="telephone=no" name="format-detection">
+    <meta property="og:title" content="{{ .Title }}" />
+    <meta property="og:url" content="{{ .Permalink }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:description" content="{{ .Param "description" }}" />
+    <meta property="og:image" content="/img/BHTV_landing.jpg" />
+    <meta property="twitter:card" content="summary" />
+    <meta property="twitter:title" content="{{ .Title }}" />
+    <meta property="twitter:description" content="{{ .Param "description" }}" />
+    <meta property="twitter:url" content="{{ .Permalink }}" />
+    <meta property="twitter:image" content="/img/BHTV_landing.jpg" />
+    <meta http-equiv='x-dns-prefetch-control' content='on'>
+    {{ partial "dns-prefetch.html" . }}
+    <link rel="canonical" href="{{ .Permalink }}" />
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="icon" type="image/x-icon" href="/img/favicon.png">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+</head>
+<body class="homepage">
+    {{ partial "header.html" .}}
+    {{ partial "channels-gallery.html" .}}
+    {{ partial "home-banner.html" .}}
+    {{ partial "brands-slider.html" .}}
+    <div id="latest-videos" data-channel-id="{{$channel.id}}">
+        <div class="row">
+            <h2 class="latest-videos-header">
+                <a class="channel-slider-header-link" href="/Latest-Videos/6321752--">Latest Videos</a>
+                <span class="latest-videos-browse-link">
+                    <a href="/Latest-Videos/6321752--" title="Latest Videos">Browse Latest Videos</a>
+                </span>
+            </h2>
+        </div>
+    </div>
+    <div id="playback">
+        <div class="channel-videos">
+            <div id="playback-row-container" class="loadable-container">
+                {{ partial "channel-videos.html" .}}
+            </div>
+            <div class="row">
+                <div class="load-more-row">
+                    <div id="load-more-videos" class="load-more"><p>LOAD MORE</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        TVSite = window.TVSite || {};
+        TVSite.activeLatestVideosData = JSON.parse({{ $channel | jsonify }});
+        TVSite.activeLatestVideosData.videos = TVSite.activeLatestVideosData.videos || [];
+        TVSite.activeLatestVideosData.videos = {{ $.Scratch.Get "channelVideos" }};
+    </script>
+    {{ partial "footer.html" .}}
+    {{ partial "script.html" .}}
+</body>
+</html>

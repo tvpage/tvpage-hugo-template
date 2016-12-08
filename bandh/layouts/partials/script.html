@@ -1,0 +1,41 @@
+<script type="text/javascript">
+
+    TVSite = window.TVSite || {};
+    TVSite.latestVideos = '1383';
+    TVSite.playbackVideos = '1402';
+    TVSite.videoSearchResults = '1403';
+    TVSite.transcript = '1406';
+    TVSite.searchResultsTmpl = '1487';
+    TVSite.siteChannels = {{ .Param "siteChannels" }};
+    TVSite.apiUrl = "\/\/app.tvpage.com";
+    TVSite.domain = "www.bandh.tv";
+    TVSite.loginId = {{ .Param "loginId" }};
+    TVSite.baseUrl = "";
+
+    (function() {
+        var ga = document.createElement("script");
+        ga.type = "text/javascript";
+        ga.async = true;
+        ga.src = ("https:" == document.location.protocol ? "https" : "http") + "://a.tvpage.com/tvpa.min.js";
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+    })();
+
+    var _tvpa = _tvpa || [];
+    _tvpa.push(["config", {
+        "li": 1758169,
+        "gaDomain": "preview.bandh.tv",
+        "logUrl": "\/\/api.tvpage.com\/v1\/__tvpa.gif"
+    }]);
+    _tvpa.push(["track", "ci", { li: 1758169 }]);
+
+</script>
+<script src="/js/vendor/underscore-min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/iScroll/5.1.1/iscroll-min.js"></script>
+<script src="/js/vendor/slick.min.js"></script>
+<script src="/js/vendor/jquery.ba-throttle-debounce.min.js"></script>
+<script src="/js/vendor/jquery.lazyload.min.js"></script>
+<script src="/js/vendor/jquery.touchSwipe.min.js"></script>
+<script src="/js/tvp-plugins/jquery.tvp-touch.js"></script>
+<script src="/js/main.js"></script>
