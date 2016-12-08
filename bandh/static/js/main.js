@@ -88,7 +88,7 @@
                 }
                 
                 return $.ajax({
-                    url: "//local.tvpage.com/api/channels/" + channelId + "/videos",
+                    url: "//app.tvpage.com/api/channels/" + channelId + "/videos",
                     dataType: 'jsonp',
                     data: {
                         p: 0,
@@ -165,7 +165,7 @@
                 $('.reset-filter').fadeTo(0, 1);
                 isFiltered = true;
                 $.ajax({
-                    url: "http://local.tvpage.com/api/videos/search",
+                    url: "//app.tvpage.com/api/videos/search",
                     dataType: 'jsonp',
                     beforeSend: function(xhr) {
                         xhr.setRequestHeader('X-login-id',TVSite.loginId); 
@@ -355,7 +355,7 @@
         var searchVideos = function(query, page) {
             if ("undefined" !== typeof query && "undefined" !== typeof page) {
                 return $.ajax({
-                    url: "http://local.tvpage.com/api/videos/search",
+                    url: "//app.tvpage.com/api/videos/search",
                     dataType: 'jsonp',
                     beforeSend: function(xhr) {
                         xhr.setRequestHeader('X-login-id',TVSite.loginId); 
@@ -542,7 +542,7 @@
             if ("undefined" === typeof videoId) return console.log("no video id");
             
             $.ajax({
-                url:"//local.tvpage.com/api/videos/" + videoId + "/products",
+                url:"//app.tvpage.com/api/videos/" + videoId + "/products",
                 dataType: 'jsonp',
                 beforeSend: function(xhr) {
                     xhr.setRequestHeader('X-login-id',TVSite.loginId); 
@@ -965,7 +965,7 @@
         var getVideoTranscript = function(videoId, callback) {
             if ('undefined' !== typeof videoId && callback) {
                 $.ajax({
-                    url: "//local.tvpage.com/api/videos/" + videoId + "/transcript",
+                    url: "//app.tvpage.com/api/videos/" + videoId + "/transcript",
                     dataType: 'jsonp',
                     beforeSend: function(xhr) { 
                         xhr.setRequestHeader('X-login-id',TVSite.loginId); 
@@ -1734,7 +1734,7 @@
                 fetchLatestVideos: function(callback) { 
                     if ('function' !== typeof callback) return console.log("not a function");
                     $.ajax({
-                        url: "//local.tvpage.com/api/channels/" + TVSite.activeLatestVideosData.id + "/videos",
+                        url: "//app.tvpage.com/api/channels/" + TVSite.activeLatestVideosData.id + "/videos",
                         dataType: 'jsonp',
                         data: {
                             p: this.channelVideosPage,
@@ -1806,7 +1806,7 @@
                             channelId = channel.id;
                         }
                         $.ajax({
-                            url: "//local.tvpage.com/api/channels/"+channelId+"/videos",
+                            url: "//app.tvpage.com/api/channels/"+channelId+"/videos",
                             dataType: 'jsonp',
                             data: {
                                 p: that.channelVideosPage,
@@ -1923,7 +1923,7 @@
                 search: function(callback) {
                     this.setChannelId();
                     $.ajax({
-                        url: "http://local.tvpage.com/api/videos/search",
+                        url: "//app.tvpage.com/api/videos/search",
                         dataType: 'jsonp',
                         beforeSend: function(xhr) {
                             xhr.setRequestHeader('X-login-id',TVSite.loginId); 
@@ -2211,7 +2211,7 @@ if ($('body').hasClass('search-page')) {
             }, urlParams); 
             var getResults = function() {
                 return $.ajax({
-                    url: "http://local.tvpage.com/api/videos/search",
+                    url: "//app.tvpage.com/api/videos/search",
                     dataType: 'jsonp',
                     beforeSend: function(xhr) {
                         xhr.setRequestHeader('X-login-id',TVSite.loginId); 
