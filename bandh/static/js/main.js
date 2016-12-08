@@ -34,7 +34,7 @@
         // Login headers setup
         $.ajaxSetup({
             headers: {
-                'X-Login-Id': TVSite.loginId
+                'X-login-Id': TVSite.loginId
             }
         });
 
@@ -92,11 +92,9 @@
                     dataType: 'jsonp',
                     data: {
                         p: 0,
-                        n: this.perPage
-                    },
-                    beforeSend: function(xhr) { 
-                        xhr.setRequestHeader('X-login-id',TVSite.loginId); 
-                    } 
+                        n: this.perPage,
+                        "X-login-id": TVSite.loginId
+                    }
                 });
             },
             hoverCheck: function() {
@@ -167,15 +165,13 @@
                 $.ajax({
                     url: "//app.tvpage.com/api/videos/search",
                     dataType: 'jsonp',
-                    beforeSend: function(xhr) {
-                        xhr.setRequestHeader('X-login-id',TVSite.loginId); 
-                    },
                     data: _.extend({}, this.selected || {}, {
                         status: 'approved',
                         p: this.filteredCurrentPage,
                         o: 'date_created',
                         od: 'desc',
-                        n: this.perPage
+                        n: this.perPage,
+                        "X-login-id": TVSite.loginId
                     })
                 }).done(_.bind(function(results) {
                     var channel = getPlaybackChannel();
@@ -263,9 +259,8 @@
                     url: TVSite.apiUrl + '/api/codebook/display/video',
                     dataType: 'jsonp',
                     data: {
-                        'X-login-id': TVSite.loginId, 
-                        channelId: TVSite.channelId,
-                        'byPassCache':1
+                        'X-login-id': TVSite.loginId,
+                        channelId: TVSite.channelId
                     }
                 }).done(_.bind(function(res) {
 
@@ -357,14 +352,12 @@
                 return $.ajax({
                     url: "//app.tvpage.com/api/videos/search",
                     dataType: 'jsonp',
-                    beforeSend: function(xhr) {
-                        xhr.setRequestHeader('X-login-id',TVSite.loginId); 
-                    },
                     data: {
                         p: page,
                         n: 20,
                         s: query,
-                        status: 'approved'
+                        status: 'approved',
+                        "X-login-id": TVSite.loginId
                     }
                 });
             }
@@ -544,9 +537,9 @@
             $.ajax({
                 url:"//app.tvpage.com/api/videos/" + videoId + "/products",
                 dataType: 'jsonp',
-                beforeSend: function(xhr) {
-                    xhr.setRequestHeader('X-login-id',TVSite.loginId); 
-                } 
+                data:{
+                    "X-login-id": TVSite.loginId
+                }
             }).done(function(res){
                 
                 renderProd( res, "#mobile-products-wrapper",  $("#mobileProduct").html( ));
@@ -967,9 +960,9 @@
                 $.ajax({
                     url: "//app.tvpage.com/api/videos/" + videoId + "/transcript",
                     dataType: 'jsonp',
-                    beforeSend: function(xhr) { 
-                        xhr.setRequestHeader('X-login-id',TVSite.loginId); 
-                    } 
+                    data: {
+                        'X-login-id': TVSite.loginId
+                    }
                 }).done(callback);
             }
         };
@@ -1738,11 +1731,9 @@
                         dataType: 'jsonp',
                         data: {
                             p: this.channelVideosPage,
-                            n: this.limitPerPage
-                        },
-                        beforeSend: function(xhr) { 
-                            xhr.setRequestHeader('X-login-id',TVSite.loginId); 
-                        } 
+                            n: this.limitPerPage,
+                            'X-login-id': TVSite.loginId
+                        }
                     }).done(callback);
                 },
 
@@ -1810,11 +1801,9 @@
                             dataType: 'jsonp',
                             data: {
                                 p: that.channelVideosPage,
-                                n: that.limitPerPage
-                            },
-                            beforeSend: function(xhr) { 
-                                xhr.setRequestHeader('X-login-id',TVSite.loginId); 
-                            } 
+                                n: that.limitPerPage,
+                                "X-login-id": TVSite.loginId
+                            }
                         }).done(callback);
                     };
 
@@ -1925,10 +1914,8 @@
                     $.ajax({
                         url: "//app.tvpage.com/api/videos/search",
                         dataType: 'jsonp',
-                        beforeSend: function(xhr) {
-                            xhr.setRequestHeader('X-login-id',TVSite.loginId); 
-                        },
                         data: {
+                            'X-login-id': TVSite.loginId,
                             p: this.searchResultsPage,
                             n:this.limitPerPage,
                             s: this.query,
@@ -2213,8 +2200,8 @@ if ($('body').hasClass('search-page')) {
                 return $.ajax({
                     url: "//app.tvpage.com/api/videos/search",
                     dataType: 'jsonp',
-                    beforeSend: function(xhr) {
-                        xhr.setRequestHeader('X-login-id',TVSite.loginId); 
+                    data: {
+                        'X-login-id': TVSite.loginId
                     },
                     data: fetchParams
                 });
