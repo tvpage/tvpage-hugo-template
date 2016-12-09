@@ -12,10 +12,12 @@
       lightBoxTemplate : '<div id="tvplb"><div class="lb-content"><div class="lb-close"></div><div class="lb-header"><div class="related-products">Related Products</div><h4 class="lb-title"></h4></div><div class="lb-body"></div><div class="no-products-banner"></div></div><div id="lb-overlay" class="lb-overlay"></div></div>',
       playerTemplate : '<div id="tvpp"><div class="tvpp-wrapper"><div id="tvpp-holder" class="tvpp-holder"></div><div class="video-overlay"></div></div></div>',
       productsTemplate : '<div class="recommeded-products">Recommended Products</div><div id="mobile-products"><div><div><div id="scroller-wrapper" class="x-scroll"><div id="scroller" class="scroll-area"><ul id="mobile-products-list" class="products-list"></ul></div></div></div></div></div><div id="desktop-products" class="products"><div class="products-holder"><div id="scroller-wrapper" class="y-scroll"><div id="scroller" class="scroll-area"><ul id="desktop-products-list"></ul></div></div><div id="product-pop-ups"></div></div></div>',
+      initialTemplate: '<div class="rows clearfix"><div class="col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div><div class="col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div></div><div class="rows clearfix"><div class="col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div><div class="col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div></div><div class="rows clearfix"><div class="col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div><div class="col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div></div>',
       initialize: function(){
         $('#lightbox').html(this.lightBoxTemplate);
         $('.lb-body').append(this.playerTemplate);
         $('.lb-body').append(this.productsTemplate);
+        $('#videos').append(this.initialTemplate);
         this.getVideos();
         this.videoClick();
         this.initializePlayer();
@@ -42,7 +44,7 @@
               $('#videos').html('');
               THAT.haveMoreVideos = false;
               THAT.page++;
-              window.TVStore.getVideos();
+              THAT.getVideos();
             }else{
               $('#view-more-button').hide();
             }
@@ -135,9 +137,11 @@
           },
           success: function(res){
             if(res.length < 6 && res.length > 0){
+              $('#videos').html('');
               THAT.renderSearchResults(res);
               TVSite.videos = res;
             }else if(res.length == 6){
+              $('#videos').html('');
               THAT.renderSearchResults(res);
               TVSite.videos = res;
               $('#videos').append('<button id="view-more-button"><span class="view-more">VIEW MORE</span></button>');
@@ -172,6 +176,9 @@
 
         for ( i; i < row.length; i++ ) {
           var video = row[ i ];
+          if((video.hasOwnProperty('short_title')) && (video.title.length > 42) && (video.short_title != null)){
+            video.title = video.short_title;
+          }
           html += this.tmpl( this.videoTemplate, row[ i ] );
         }
         if(row.length == 1){
