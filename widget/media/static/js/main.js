@@ -8,6 +8,8 @@
         currentVideo: null,
         channelsAccordionState: false
       },
+      lastPageReached: false,
+      pointerLocation: 0,
       videoTemplate: '<div data-tvp-video-id="{id}" data-index="{id}" class="tvp-video col-3"><div class="tvp-video-image" style="background-image:url(\'{asset.thumbnailUrl}\')"><div class="video-overlay"></div><div class="tvp-video-play-button"></div></div><div class="title">{title}</div></div>',
       lightBoxTemplate : '<div id="tvplb"><div class="lb-content"><div class="lb-close"></div><div class="lb-header"><div class="related-products">Related Products</div><h4 class="lb-title"></h4></div><div class="lb-body"></div><div class="no-products-banner"></div></div><div id="lb-overlay" class="lb-overlay"></div></div>',
       playerTemplate : '<div id="tvpp"><div id="html5MobilePlayBtn" class="html5-play-button"></div><div class="tvpp-wrapper"><div id="tvpp-holder" class="tvpp-holder"></div><div class="video-overlay"></div></div></div>',
@@ -27,6 +29,8 @@
         this.page = 0;
         this.fetchPage = 0;
         this.haveMoreVideos = false;
+        TVSite.videos = [];
+        TVSite.displayedVideos = [];
         var THAT = this;
         $('#lightbox').hide();
         $(document).on('click', '.lb-close', function(e){
@@ -49,10 +53,11 @@
               THAT.haveMoreVideos = false;
               THAT.page++;
               THAT.getVideos();
-            }else{
-              $('#view-more-button').hide();
             }
           });
+          if(THAT.lastPageReached){
+              THAT.videosInLoop(THAT.pointerLocation);
+            }
         });
 
       },
@@ -135,7 +140,7 @@
         var THAT = this;
         if(window.TVPlayer){
           TVPlayer.on('tvp:media:ready', function(){
-            THAT.getVideos();
+            THAT.initializeVideos();
           });
         }
       },
@@ -152,18 +157,95 @@
             'X-login-id': window.TVSite.config.loginId
           },
           success: function(res){
+
             if(res.length < 6 && res.length > 0){
+              THAT.lastPageReached = true;
               $('#videos').html('');
-              THAT.renderSearchResults(res);
-              TVSite.videos = res;
+              for(var i=0; i<res.length; i++){
+                TVSite.displayedVideos.push(res[i]);
+              }
+              var restVideos = 6 - res.length;
+              for(var i=0; i<restVideos; i++){
+                TVSite.displayedVideos.push(TVSite.videos[i]);
+              }
+              THAT.renderSearchResults(TVSite.displayedVideos);
+              for(var i=0; i<res.length; i++){
+                TVSite.videos.push(res[i]);
+              }
             }else if(res.length == 6){
               $('#videos').html('');
               THAT.renderSearchResults(res);
-              TVSite.videos = res;
+              for(var i=0; i<res.length; i++){
+                TVSite.videos.push(res[i]);
+              }
+            }
+            THAT.pointerLocation = res.length;
+            $('#videos').append('<button id="view-more-button"><span class="view-more">VIEW MORE</span></button>');
+          }
+        });
+      },
+
+      initializeVideos: function(){
+        var THAT = this;
+        THAT.fetchPage = THAT.page;
+        $.ajax({
+          url: '//app.tvpage.com/api/channels/' + window.TVSite.config.channelId + '/videos',
+          dataType: 'jsonp',
+          data : {
+            p: THAT.page,
+            n: 6,
+            'X-login-id': window.TVSite.config.loginId
+          },
+          success: function(res){
+            if(res.length < 6 && res.length > 0){
+              $('#videos').html('');
+              THAT.renderSearchResults(res);
+              for(var i=0; i<res.length; i++){
+                TVSite.videos.push(res[i]);
+              }
+            } else if(res.length == 6){
+              $('#videos').html('');
+              THAT.renderSearchResults(res);
+              for(var i=0; i<res.length; i++){
+                TVSite.videos.push(res[i]);
+              }
               $('#videos').append('<button id="view-more-button"><span class="view-more">VIEW MORE</span></button>');
             }
           }
         });
+      },
+
+      videosInLoop: function(pointer){
+        $('#videos').html('');
+        TVSite.newArray = [];
+        if(pointer == TVSite.videos.length){
+          pointer = 0;
+        }
+        var limit = pointer + 6;
+        if(limit > TVSite.videos.length){
+          var limit1 = limit - TVSite.videos.length;
+          var limit2 = limit - limit1;
+          for(var i=pointer; i<limit2; i++){
+            TVSite.newArray.push(TVSite.videos[i]);
+          }
+          if(limit2 == TVSite.videos.length){
+            pointer = 0;  
+          }
+          for(var i=pointer; i<limit1; i++){
+            TVSite.newArray.push(TVSite.videos[i]);
+          }
+          this.renderSearchResults(TVSite.newArray);
+          
+          this.pointerLocation = limit1;
+        }else{
+          for(var i=pointer; i<limit; i++){
+            TVSite.newArray.push(TVSite.videos[i]);
+          }
+          this.renderSearchResults(TVSite.newArray);
+          this.pointerLocation = limit;
+        }
+
+        $('#videos').append('<button id="view-more-button"><span class="view-more">VIEW MORE</span></button>');
       },
 
       checkMoreVideos: function(response){
