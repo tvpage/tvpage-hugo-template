@@ -10,7 +10,7 @@
       },
       videoTemplate: '<div data-tvp-video-id="{id}" data-index="{id}" class="tvp-video col-3"><div class="tvp-video-image" style="background-image:url(\'{asset.thumbnailUrl}\')"><div class="video-overlay"></div><div class="tvp-video-play-button"></div></div><div class="title">{title}</div></div>',
       lightBoxTemplate : '<div id="tvplb"><div class="lb-content"><div class="lb-close"></div><div class="lb-header"><div class="related-products">Related Products</div><h4 class="lb-title"></h4></div><div class="lb-body"></div><div class="no-products-banner"></div></div><div id="lb-overlay" class="lb-overlay"></div></div>',
-      playerTemplate : '<div id="tvpp"><div class="tvpp-wrapper"><div id="tvpp-holder" class="tvpp-holder"></div><div class="video-overlay"></div></div></div>',
+      playerTemplate : '<div id="tvpp"><div id="html5MobilePlayBtn" class="html5-play-button"></div><div class="tvpp-wrapper"><div id="tvpp-holder" class="tvpp-holder"></div><div class="video-overlay"></div></div></div>',
       productsTemplate : '<div class="recommeded-products">Recommended Products</div><div id="mobile-products"><div><div><div id="scroller-wrapper" class="x-scroll"><div id="scroller" class="scroll-area"><ul id="mobile-products-list" class="products-list"></ul></div></div></div></div></div><div id="desktop-products" class="products"><div class="products-holder"><div id="scroller-wrapper" class="y-scroll"><div id="scroller" class="scroll-area"><ul id="desktop-products-list"></ul></div></div><div id="product-pop-ups"></div></div></div>',
       initialTemplate: '<div class="rows clearfix"><div class="col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div><div class="col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div></div><div class="rows clearfix"><div class="col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div><div class="col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div></div><div class="rows clearfix"><div class="col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div><div class="col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div></div>',
       initialize: function(){
@@ -19,8 +19,8 @@
         $('.lb-body').append(this.productsTemplate);
         $('#videos').append(this.initialTemplate);
         this.getVideos();
-        this.videoClick();
         this.initializePlayer();
+        this.videoClick();
         this.initializeProductScrollerX();
         this.initializeProductScrollerY();
         this.bindWindowEvents();
@@ -32,10 +32,12 @@
         $(document).on('click', '.lb-close', function(e){
           $('.lb-overlay').hide();
           $('#lightbox').hide();
+          THAT.hideHTML5PlayBtn();
         });
         $(document).on('click', '.lb-overlay', function(e){
           $('.lb-overlay').hide();
           $('#lightbox').hide();
+          THAT.hideHTML5PlayBtn();
         });
         $(document).on('click', '#view-more-button', function(e){
 
@@ -88,7 +90,7 @@
       },
 
       isMobile: function(){
-        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        if ($(window).width() < 768) {
           return true;
         } else {
           return false;
@@ -115,11 +117,14 @@
           });
         }
         if (this.isMobile()) {
+          var THAT = this;
           window.matchMedia('(orientation: portrait)').addListener(function(m) {
             $('#mobile-channels #scroller').width(99999);
             var width = $('#mobile-channels-list').width();
             $('#mobile-channels #scroller').css('width', width);
-
+            THAT.refreshMobileProductScroller();
+            THAT.resizePlayer();
+            THAT.handleAdBanner(products);
           });
         }
       },
@@ -244,45 +249,7 @@
           THAT.getProducts(video.id).done(function(products){
             
 
-            if(products.length > 0){
-              if(THAT.noProductVideoClicked){
-                if(THAT.isMobile()){
-                  $('.no-products-banner').hide();
-                  $('.recommeded-products').show();
-                  $('#mobile-products').show();
-                }else{
-                  $('.no-products-banner').hide();
-                  $('.related-products').show();
-                  $('#desktop-products').show();
-                  $('#tvpp').css('width', '84%');
-                  $('.lb-content').css('height','394px');
-                }
-                THAT.resizePlayer();
-              }
-              // THAT.mobileProductsClickBinded = false;
-              // THAT.desktopProductsClickBinded = false;
-              THAT.renderProducts(products);
-              // THAT.bindProductClicks();
-              setTimeout(function(){
-                THAT.cache.productScrollerY.refresh();
-              },0);
-            }else{
-              THAT.noProductVideoClicked = true;
-              if(THAT.isMobile()){
-                $('.recommeded-products').hide();
-                $('#mobile-products').hide();
-                var url = 'url(' + window.location + '/img/noProductAdMobile.png' + ')';
-              }else{
-                $('.related-products').hide();
-                $('#desktop-products').hide();
-                $('#tvpp').css('width', '100%');
-                $('.lb-content').css('height','579px');
-                var url = 'url(' + window.location + '/img/noProductAdDesktop.png' + ')';
-              }
-              THAT.resizePlayer();
-              $('.no-products-banner').show();
-              $('.no-products-banner').css('background-image', url);
-            }
+            THAT.handleAdBanner(products);
 
           });
 
@@ -298,6 +265,50 @@
             'X-login-id': window.TVSite.config.loginId
           }
         });
+      },
+
+      handleAdBanner: function(products){
+        var THAT = this;
+        if(products.length > 0){
+          if(this.noProductVideoClicked){
+            console.log(this.isMobile());
+            if(this.isMobile()){
+              $('.no-products-banner').hide();
+              $('.recommeded-products').show();
+              $('#mobile-products').show();
+            }else{
+              $('.no-products-banner').hide();
+              $('.related-products').show();
+              $('#desktop-products').show();
+              $('#tvpp').css('width', '84%');
+              $('.lb-content').css('height','394px');
+            }
+            this.resizePlayer();
+          }
+          // this.mobileProductsClickBinded = false;
+          // this.desktopProductsClickBinded = false;
+          this.renderProducts(products);
+          // this.bindProductClicks();
+          setTimeout(function(){
+            THAT.cache.productScrollerY.refresh();
+          },0);
+        }else{
+          this.noProductVideoClicked = true;
+          if(this.isMobile()){
+            $('.recommeded-products').hide();
+            $('#mobile-products').hide();
+            var url = 'url(' + window.location + '/img/noProductAdMobile.png' + ')';
+          }else{
+            $('.related-products').hide();
+            $('#desktop-products').hide();
+            $('#tvpp').css('width', '100%');
+            $('.lb-content').css('height','579px');
+            var url = 'url(' + window.location + '/img/noProductAdDesktop.png' + ')';
+          }
+          this.resizePlayer();
+          $('.no-products-banner').show();
+          $('.no-products-banner').css('background-image', url);
+        }
       },
 
       renderProducts: function(products){
@@ -483,10 +494,30 @@
 
       playVideo: function(video) {
         if (this.isMobile()) {
-          // this.showHTML5PlayBtn(video);
+          this.showHTML5PlayBtn(video);
           TVPlayer.cueVideo(video);
         } else {
           TVPlayer.loadVideo(video);
+        }
+      },
+
+      showHTML5PlayBtn: function(video){
+        if (video.type === 'mp4') {
+          var $btn = $('#html5MobilePlayBtn');
+          $btn.show();
+          var THAT = this;
+          $btn.on('click',function(){
+            window.TVPlayer.play();
+            THAT.hideHTML5PlayBtn();
+          });
+        }
+      },
+
+      hideHTML5PlayBtn: function() {
+        var $btn = $('#html5MobilePlayBtn');
+        if ($btn.length) {
+          $btn.hide();
+          $btn.off();
         }
       },
 
