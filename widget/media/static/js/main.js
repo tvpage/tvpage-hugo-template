@@ -18,8 +18,8 @@
         $('.lb-body').append(this.playerTemplate);
         $('.lb-body').append(this.productsTemplate);
         $('#videos').append(this.initialTemplate);
-        this.getVideos();
         this.initializePlayer();
+        this.bindPlayerEvents();
         this.videoClick();
         this.initializeProductScrollerX();
         this.initializeProductScrollerY();
@@ -125,6 +125,15 @@
             THAT.refreshMobileProductScroller();
             THAT.resizePlayer();
             THAT.handleAdBanner(products);
+          });
+        }
+      },
+
+      bindPlayerEvents: function(){
+        var THAT = this;
+        if(window.TVPlayer){
+          TVPlayer.on('tvp:media:ready', function(){
+            THAT.getVideos();
           });
         }
       },
