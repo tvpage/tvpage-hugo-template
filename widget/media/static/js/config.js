@@ -3,6 +3,6 @@ if ( typeof TVSite == 'undefined' ) {
 }
 
 
-TVSite.config = {"loginId":"1758166","apiUrl":"\/\/app.tvpage.com", channelId: "67264710"};
+// TVSite.config = {"loginId":"1758166","apiUrl":"\/\/app.tvpage.com", channelId: "67264710"};
 
-// TVSite.config = {"loginId":"1758881","apiUrl":"\/\/app.tvpage.com", channelId: "81785500"};
+TVSite.config = {"loginId":"1758881","apiUrl":"\/\/app.tvpage.com", channelId: "81979997"};
