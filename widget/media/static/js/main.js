@@ -33,11 +33,13 @@
           $('.lb-overlay').hide();
           $('#lightbox').hide();
           THAT.hideHTML5PlayBtn();
+          window.TVPlayer.stop();
         });
         $(document).on('click', '.lb-overlay', function(e){
           $('.lb-overlay').hide();
           $('#lightbox').hide();
           THAT.hideHTML5PlayBtn();
+          window.TVPlayer.stop();
         });
         $(document).on('click', '#view-more-button', function(e){
 
@@ -392,7 +394,7 @@
         .on('mouseover click', function(e){
           e.preventDefault();
           var id = this.id.split('-')[1];
-          var top = $(this).offset().top - $dproducts.offset().top;
+          // var top = $(this).offset().top - $dproducts.offset().top;
           if ($('#ppu-' + id).css('display') !== 'none') {
             that.clearPopUps();
             return;
@@ -400,12 +402,12 @@
 
           var popupBottomEdge = $(this).offset().top + $('.pop-up').height();
           var playerBottomEdge = $('.lb-content').offset().top + $('.lb-content').height();
-          if (top < 0) {
-            top = 0;
-          }else if(popupBottomEdge > playerBottomEdge){
-             var excess = popupBottomEdge - playerBottomEdge;
-             top = top - excess - 42;
-          }
+          // if (top < 0) {
+          //   top = 0;
+          // }else if(popupBottomEdge > playerBottomEdge){
+          //    var excess = popupBottomEdge - playerBottomEdge;
+          //    top = top - excess - 42;
+          // }
 
           var $wrapper = $('.lb-body');
           var arrowTop = ($(this).offset().top - $wrapper.offset().top) + 19;
@@ -417,10 +419,10 @@
           }
           
           $('.pop-up-before').css({
-            top: arrowTop + 1
+            top: arrowTop + 2
           }).show();
           $('.pop-up-after').css({
-            top: arrowTop
+            top: arrowTop + 1
           }).show();
           
           that.clearPopUps();
