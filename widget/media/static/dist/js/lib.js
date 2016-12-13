@@ -1467,7 +1467,7 @@ define('static/main',['require','jquery-private','iscroll','text!static/dist/css
 
     $(function(){
       var lightBoxTemplate = '<div id="tvplb"><div class="lb-content"><div class="lb-close"></div><div class="lb-header"><div class="related-products">Related Products</div><h4 class="lb-title"></h4></div><div class="lb-body"></div><div class="no-products-banner"></div></div><div id="lb-overlay" class="lb-overlay"></div></div>';
-      $("#tvp-gallery").append( '<div id="videos"></div><div id="lightbox" class="off">'+lightBoxTemplate+'</div><a class="tvplogo" class="tvp-clearfix" href="//www.tvpage.com" target="_blank"></a>' ).addClass("tvp-clearfix");
+      $("#tvp-gallery").append( '<div class="cz-line-heading"><div class="cz-line-heading-inner">Recommended Videos</div></div><div id="videos"></div><div id="lightbox" class="off">'+lightBoxTemplate+'</div><a class="tvplogo" class="tvp-clearfix" href="//www.tvpage.com" target="_blank"></a>' ).addClass("tvp-clearfix");
 
       var playerTemplate = '<div id="tvpp"><div id="html5MobilePlayBtn" class="html5-play-button"></div><div class="tvpp-wrapper"><div id="tvpp-holder" class="tvpp-holder"></div><div class="video-overlay"></div></div></div>';
       var productsTemplate = '<div class="recommeded-products">Recommended Products</div><div id="mobile-products"><div><div><div id="scroller-wrapper" class="x-scroll"><div id="scroller" class="scroll-area"><ul id="mobile-products-list" class="products-list"></ul></div></div></div></div></div><div id="desktop-products" class="products"><div class="products-holder"><div id="scroller-wrapper" class="y-scroll"><div id="scroller" class="scroll-area"><ul id="desktop-products-list"></ul></div></div><div id="product-pop-ups"></div></div></div>';
