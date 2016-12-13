@@ -363,12 +363,8 @@ define(function(require) {
                         $('#tvpp').css('width', '84%');
                         $('.lb-content').css('height','394px');
                     }
-                    //this.resizePlayer();
                 }
-                // this.mobileProductsClickBinded = false;
-                // this.desktopProductsClickBinded = false;
                 this.renderProducts(products);
-                // this.bindProductClicks();
                 setTimeout(function(){
                     THAT.cache.productScrollerY.refresh();
                 },0);
@@ -377,15 +373,14 @@ define(function(require) {
                 if(this.isMobile()){
                     $('.recommeded-products').hide();
                     $('#mobile-products').hide();
-                    var url = 'url(' + window.location + '/img/noProductAdMobile.png' + ')';
+                    var url = 'url(' + '//www-bleeping-computer-com.netlify.com/img/noProductAdMobile.png' + ')';
                 }else{
                     $('.related-products').hide();
                     $('#desktop-products').hide();
                     $('#tvpp').css('width', '100%');
                     $('.lb-content').css('height','579px');
-                    var url = 'url(' + window.location + '/img/noProductAdDesktop.png' + ')';
+                    var url = 'url(' + '//www-bleeping-computer-com.netlify.com/img/noProductAdDesktop.png' + ')';
                 }
-                //this.resizePlayer();
                 $('.no-products-banner').show();
                 $('.no-products-banner').css('background-image', url);
             }
@@ -416,14 +411,12 @@ define(function(require) {
                          </div>\
                        </a>\
                      </li>';
-                    // TVPageAnalytics.registerProductImpression(products[i]);
                 }
             }
             $('#desktop-products-list,#mobile-products-list')
               .empty()
               .append(s);
             this.bindProductEvents();
-            // this.productBannerToggle(products);
         },
 
         renderPopUps: function(products){
@@ -463,7 +456,6 @@ define(function(require) {
               .on('mouseover click', function(e){
                   e.preventDefault();
                   var id = this.id.split('-')[1];
-                  // var top = $(this).offset().top - $dproducts.offset().top;
                   if ($('#ppu-' + id).css('display') !== 'none') {
                       that.clearPopUps();
                       return;
@@ -471,12 +463,6 @@ define(function(require) {
 
                   var popupBottomEdge = $(this).offset().top + $('.pop-up').height();
                   var playerBottomEdge = $('.lb-content').offset().top + $('.lb-content').height();
-                  // if (top < 0) {
-                  //   top = 0;
-                  // }else if(popupBottomEdge > playerBottomEdge){
-                  //    var excess = popupBottomEdge - playerBottomEdge;
-                  //    top = top - excess - 42;
-                  // }
 
                   var $wrapper = $('.lb-body');
                   var arrowTop = ($(this).offset().top - $wrapper.offset().top) + 19;
@@ -553,38 +539,32 @@ define(function(require) {
 
         initializePlayer: function(){
             var that = this;
-            var ready = function(){
-              that.bindWindowEvents();
-              window.TVPlayer = new TVPage.player({
-                divId: 'tvpp-holder',
-                swf: '//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-1.7.3-flash.swf',
-                displayResolution: that.isMobile() ? '360p' : '480p',
-                analytics: { tvpa: true },
-                techOrder: 'html5,flash',
-                apiBaseUrl: '//app.tvpage.com',
-                onError: function(e){ console.log(e); },
-                controls:{
-                  active: true,
-                  seekBar: { progressColor:'#00aef0' },
-                  floater: {
-                    removeControls:['tvplogo', 'hd']
-                  }
+            $.ajax({ dataType: 'script', cache: true, url: '//a.tvpage.com/tvpa.min.js' }).done(function(){
+              $.ajax({ dataType: 'script', cache: true, url: '//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-1.8.4-min.js' }).done(function() {
+                if (window.TVPage) {
+                  that.bindWindowEvents();
+                  window.TVPlayer = new TVPage.player({
+                    divId: 'tvpp-holder',
+                    swf: '//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-1.8.4-flash.swf',
+                    displayResolution: that.isMobile() ? '360p' : '480p',
+                    analytics: { tvpa: true },
+                    techOrder: 'html5,flash',
+                    apiBaseUrl: '//app.tvpage.com',
+                    onError: function(e){ console.log(e); },
+                    controls:{
+                      active: true,
+                      seekBar: { progressColor:'#00aef0' },
+                      floater: {
+                        removeControls:['tvplogo', 'hd']
+                      }
+                    }
+                  });
+                  TVPlayer.on('tvp:media:ready', function(){
+                    that.initializeVideos();
+                  });
                 }
               });
-              TVPlayer.on('tvp:media:ready', function(){
-                that.initializeVideos();
-              });
-            };
-            if (!window.TVPage) {
-              $.ajax({ dataType: 'script', cache: true, url: '//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-1.8.4-min.js' })
-                .done(function() {
-                  if (window.TVPage) {
-                    ready();
-                  }
-                });
-            } else {
-              ready();
-            }
+            });
         },
 
         playVideo: function(video) {
@@ -633,8 +613,7 @@ define(function(require) {
             data.analyticsObj = {
                 vd: video.id,
                 li: CONFIG.loginId,
-                pg: 0,
-                url: encodeURIComponent(window.top.location.href)
+                pg: CONFIG.channelId
             };
             return data;
         }
