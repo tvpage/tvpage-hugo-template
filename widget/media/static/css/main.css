@@ -1,3 +1,8 @@
+#lightbox.off {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
 #tvp-gallery{
   width: 100% !important;
 }

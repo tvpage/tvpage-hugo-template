@@ -5,19 +5,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-<!-- Fonts -->
 <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900' rel='stylesheet' type='text/css'>
-
-<!-- Style sheet -->
 <link href="https://www.bleepstatic.com/css/redesign/font-awesome.css" rel="stylesheet" type="text/css" media="all">
 <link href="https://www.bleepstatic.com/css/redesign/bootstrap.css" rel="stylesheet" type="text/css" media="all">
-
 <link href="https://www.bleepstatic.com/css/redesign/main.css" rel="stylesheet" type="text/css" media="all">
 <link href="https://www.bleepstatic.com/css/redesign/home.css" rel="stylesheet" type="text/css" media="screen">
 <link href="https://www.bleepstatic.com/css/redesign/swiper.min.css" rel="stylesheet" type="text/css" media="screen">
-
-<!-- Meta -->
 <meta name="Owner" content="Lawrence Abrams/BleepingComputer.com" />
 <link rel="shortcut icon" href="https://www.bleepstatic.com/favicon/bleeping.ico" />
 <meta http-equiv="Pragma" content="no-cache" />
@@ -39,23 +32,11 @@
 <meta name="twitter:card" value="summary" />
 <meta name="twitter:site" value="@BleepinComputer" />
 <meta name="twitter:description" content="BleepingComputer.com is a premier destination for computer users of all skill levels to learn how to use and receive support for their computer." />
-
-
 <link href="https://plus.google.com/112790257026281352252" rel="publisher" />
-<LINK REL="alternate" TITLE="Bleeping Computer's News" HREF="https://www.bleepingcomputer.com/feed/" TYPE="application/rss+xml">
-
 <script type="text/javascript" src="https://www.bleepstatic.com/js/redesign/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="https://www.bleepstatic.com/js/redesign/bleep.js?t=1481071769"></script>
-
-<!-- TVPAGE START -->
-<link rel="stylesheet" href="/css/index.css">
-<script type="text/javascript" src="//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-1.8.4-min.js"></script>
-<!-- TVPAGE END -->
-
 </head>
-
 <body>
-
 <header>
   <div class="container">
       <div class="row">
@@ -917,13 +898,17 @@
  
 </div>
 <div class="cz-line-heading"><div class="cz-line-heading-inner">Recommended Videos</div></div>
-<!-- TVPAGE START-->
-<div id="tvp-gallery" class="clearfix">
-  <div id="videos"></div>
-  <div id="lightbox"></div>
-  <a class="tvplogo" class="clearfix" href="//www.tvpage.com" target="_blank"></a>
-</div>
+
+  <!-- TVPAGE START-->
+<div id="tvp-gallery"></div>
 <!-- TVPAGE END -->
+
+  <!--
+  <div id="tvp-gallery" class="clearfix">
+    <div id="videos"></div>
+    <div id="lightbox"></div>
+    <a class="tvplogo" class="clearfix" href="//www.tvpage.com" target="_blank"></a>
+  </div>-->
 
 
   
@@ -1117,48 +1102,22 @@
                 </a><p><a href="https://www.bleepingcomputer.com/download/rkill/"></a><a href="https://www.bleepingcomputer.com/download/rkill/">RKill</a></p>
                 <span>Version: 2.8.4.0</span></div>
               <div class="bc_download_count"><strong>9M+ <i>Downloads</i></strong></div>
-              
             </li>
-
           </ul>
         </div>
-
-  
-        
       </div>
-
-
-
 </div>
 </div>
 </section>
 
-
-
-
-
-
-
-
-
-
-
-<script src="/js/vendor/jquery.min.js"></script>
-<script src="/js/vendor/iscroll-min.js"></script>
-<script src="/js/main.js"></script>
-<script src="/js/config.js"></script>
-
-
-<!--
+<!-- tvpage code -->
 <script type="text/javascript">
-(function(r,d,p){
-  var s = d.createElement('script');
-  s.src = '/tvpwidget/media1';
-  document.body.appendChild(s);
-})(window,document,document.location.protocol);
-</script> -->
-
-
-
+  (function(d) {
+    var s = d.createElement('script');
+    s.src = '//localhost:1313/dist/js/lib.js';
+    d.body.appendChild(s);
+  })(document);
+</script>
+<!-- tvpage code -->
 </body>
 </html>
