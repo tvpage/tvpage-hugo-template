@@ -22,7 +22,7 @@ define(function(require) {
         page: 0,
         fetchPage: 0,
         haveMoreVideos: false,
-        videoTemplate: '<div data-tvp-video-id="{id}" data-index="{id}" class="tvp-video col-3"><div class="tvp-video-image" style="background-image:url(\'{asset.thumbnailUrl}\')"><div class="video-overlay"></div><div class="tvp-video-play-button"></div></div><div class="title">{title}</div></div>',
+        videoTemplate: '<div data-tvp-video-id="{id}" data-index="{id}" class="tvp-video tvp-col-3"><div class="tvp-video-image" style="background-image:url(\'{asset.thumbnailUrl}\')"><div class="video-overlay"></div><div class="tvp-video-play-button"></div></div><div class="title">{title}</div></div>',
         initialize: function(){
 
             this.initializePlayer();
@@ -261,7 +261,7 @@ define(function(require) {
         },
 
         renderVideosRow: function(row) {
-            var html = '<div class="rows clearfix">', i = 0;
+            var html = '<div class="tvp-clearfix">', i = 0;
 
             for ( i; i < row.length; i++ ) {
                 var video = row[ i ];
@@ -271,7 +271,7 @@ define(function(require) {
                 html += this.tmpl( this.videoTemplate, row[ i ] );
             }
             if(row.length == 1){
-                html += '<div class="col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div>'
+                html += '<div class="tvp-col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div>'
             }
             return html + '</div>';
         },
@@ -285,7 +285,7 @@ define(function(require) {
                 if(rows.length != 3){
                     var length = 3 - rows.length;
                     for ( j; j < length; j++ ) {
-                        html += '<div class="rows clearfix"><div class="col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div><div class="col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div></div>'
+                        html += '<div class="tvp-clearfix"><div class="tvp-col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div><div class="tvp-col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div></div>'
                     }
                 }
                 if ( 'function' === typeof target ) return target( html );
@@ -384,6 +384,7 @@ define(function(require) {
                 $('.no-products-banner').show();
                 $('.no-products-banner').css('background-image', url);
             }
+            this.resizePlayer();
         },
 
         renderProducts: function(products){
@@ -539,31 +540,29 @@ define(function(require) {
 
         initializePlayer: function(){
             var that = this;
-            $.ajax({ dataType: 'script', cache: true, url: '//a.tvpage.com/tvpa.min.js' }).done(function(){
-              $.ajax({ dataType: 'script', cache: true, url: '//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-1.8.4-min.js' }).done(function() {
-                if (window.TVPage) {
-                  that.bindWindowEvents();
-                  window.TVPlayer = new TVPage.player({
-                    divId: 'tvpp-holder',
-                    swf: '//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-1.8.4-flash.swf',
-                    displayResolution: that.isMobile() ? '360p' : '480p',
-                    analytics: { tvpa: true },
-                    techOrder: 'html5,flash',
-                    apiBaseUrl: '//app.tvpage.com',
-                    onError: function(e){ console.log(e); },
-                    controls:{
-                      active: true,
-                      seekBar: { progressColor:'#00aef0' },
-                      floater: {
-                        removeControls:['tvplogo', 'hd']
-                      }
+            $.ajax({ dataType: 'script', cache: true, url: '//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-1.8.4-min.js' }).done(function() {
+              if (window.TVPage) {
+                that.bindWindowEvents();
+                window.TVPlayer = new TVPage.player({
+                  divId: 'tvpp-holder',
+                  swf: '//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-1.8.4-flash.swf',
+                  displayResolution: that.isMobile() ? '360p' : '480p',
+                  analytics: { tvpa: true },
+                  techOrder: 'html5,flash',
+                  apiBaseUrl: '//app.tvpage.com',
+                  onError: function(e){ console.log(e); },
+                  controls:{
+                    active: true,
+                    seekBar: { progressColor:'#00aef0' },
+                    floater: {
+                      removeControls:['tvplogo', 'hd']
                     }
-                  });
-                  TVPlayer.on('tvp:media:ready', function(){
-                    that.initializeVideos();
-                  });
-                }
-              });
+                  }
+                });
+                TVPlayer.on('tvp:media:ready', function(){
+                  that.initializeVideos();
+                });
+              }
             });
         },
 
@@ -621,11 +620,11 @@ define(function(require) {
 
     $(function(){
       var lightBoxTemplate = '<div id="tvplb"><div class="lb-content"><div class="lb-close"></div><div class="lb-header"><div class="related-products">Related Products</div><h4 class="lb-title"></h4></div><div class="lb-body"></div><div class="no-products-banner"></div></div><div id="lb-overlay" class="lb-overlay"></div></div>';
-      $("#tvp-gallery").append( '<div id="videos"></div><div id="lightbox" class="off">'+lightBoxTemplate+'</div><a class="tvplogo" class="clearfix" href="//www.tvpage.com" target="_blank"></a>' ).addClass("clearfix");
+      $("#tvp-gallery").append( '<div id="videos"></div><div id="lightbox" class="off">'+lightBoxTemplate+'</div><a class="tvplogo" class="tvp-clearfix" href="//www.tvpage.com" target="_blank"></a>' ).addClass("tvp-clearfix");
 
       var playerTemplate = '<div id="tvpp"><div id="html5MobilePlayBtn" class="html5-play-button"></div><div class="tvpp-wrapper"><div id="tvpp-holder" class="tvpp-holder"></div><div class="video-overlay"></div></div></div>';
       var productsTemplate = '<div class="recommeded-products">Recommended Products</div><div id="mobile-products"><div><div><div id="scroller-wrapper" class="x-scroll"><div id="scroller" class="scroll-area"><ul id="mobile-products-list" class="products-list"></ul></div></div></div></div></div><div id="desktop-products" class="products"><div class="products-holder"><div id="scroller-wrapper" class="y-scroll"><div id="scroller" class="scroll-area"><ul id="desktop-products-list"></ul></div></div><div id="product-pop-ups"></div></div></div>';
-      var initialTemplate = '<div class="rows clearfix"><div class="col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div><div class="col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div></div><div class="rows clearfix"><div class="col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div><div class="col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div></div><div class="rows clearfix"><div class="col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div><div class="col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div></div>';
+      var initialTemplate = '<div class="tvp-clearfix"><div class="tvp-col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div><div class="tvp-col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div></div><div class="tvp-clearfix"><div class="tvp-col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div><div class="tvp-col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div></div><div class="tvp-clearfix"><div class="tvp-col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div><div class="tvp-col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div></div>';
 
       setTimeout(function(){
         $('.lb-body').append(playerTemplate + productsTemplate);

@@ -1,10 +1,21 @@
+#tvp-gallery * {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.tvp-clearfix:before,
+.tvp-clearfix:after {
+  display: table;
+  content: " ";
+  clear: both;
+}
+#tvp-gallery{
+  width: 100% !important;
+}
 #lightbox.off {
   visibility: hidden;
   opacity: 0;
   pointer-events: none;
-}
-#tvp-gallery{
-  width: 100% !important;
 }
 .tvplogo{
   float: right;
@@ -114,21 +125,30 @@
   line-height: 16px;
   color: #333333;
 }
-.rows .col-3:first-child{
-  padding-left: 0;
-  padding-right: 0.75%;
-}
-.rows .col-3:last-child{
-  padding-right: 0; 
-  padding-left: 0.75%;
-}
-.col-3{
+
+/*.rows .col-3:first-child{*/
+  /*padding-left: 0;*/
+  /*padding-right: 0.75%;*/
+/*}*/
+/*.rows .col-3:last-child{*/
+  /*padding-right: 0; */
+  /*padding-left: 0.75%;*/
+/*}*/
+
+.tvp-col-3 {
   width: 49.25%;
   float: left;
   margin-bottom: 5px;
+  padding-left: 0;
+  padding-right: .75%;
 }
-.tvp-video{
+.tvp-video {
   cursor: pointer;
+  padding-left: 0;
+  padding-right: .75%;
+  width: 49.25%;
+  float: left;
+  margin-bottom: 5px;
 }
 .tvp-video:hover .tvp-video-play-button{
   -moz-transform: scale(1.1);
