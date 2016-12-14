@@ -555,6 +555,9 @@
     box-shadow: 2px 4px 8px 0 rgba(0,0,0,0.25);
     border-radius: 4px;
   }
+  #tvplb .lb-content.products-hide{
+    height: 455px!important;
+  }
   #tvplb .lb-header .related-products{
     display:block;
     float: right;
