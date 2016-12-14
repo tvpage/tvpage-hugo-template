@@ -3,9 +3,22 @@ define(function(require) {
     var $ = require("jquery-private");
     require("iscroll");
 
+    // Injecting the widget CSS
     var CSS = require('text!static/dist/css/main.css');
     if (!$('#tvp-css-lib').length) {
       $('<style/>').attr('id', "tvp-css-lib").html(CSS).appendTo('head');
+    }
+
+    var TVSite = {};
+    var CONFIG = {
+      "loginId":"1758881",
+      "apiUrl":"\/\/app.tvpage.com",
+      channelId: "81979997",
+      products: "show"
+    };
+
+    if ("undefined" !== typeof window.TVPage && "undefined" !== typeof TVPage.config) {
+      CONFIG = $.extend({}, CONFIG, TVPage.config['tvp-gallery']);
     }
 
     var sendAnalitics = function (data, type) {
@@ -18,9 +31,6 @@ define(function(require) {
         }
       }
     };
-
-    var TVSite = {};
-    var CONFIG = {"loginId":"1758881","apiUrl":"\/\/app.tvpage.com", channelId: "81979997"};
 
     window.TVStore = {
         cache: {
@@ -38,8 +48,16 @@ define(function(require) {
 
             this.initializePlayer();
             this.videoClick();
-            this.initializeProductScrollerX();
-            this.initializeProductScrollerY();
+
+            if ("hide" !== CONFIG.products) {
+              this.initializeProductScrollerX();
+              this.initializeProductScrollerY();
+            } else {
+              $("#tvpp").addClass('full');
+              $("#mobile-products").addClass('hide');
+              $("#desktop-products").addClass('hide');
+              $(".lb-content").addClass('products-hide');
+            }
 
             TVSite.videos = [];
             TVSite.displayedVideos = [];
@@ -360,9 +378,11 @@ define(function(require) {
                 var videoData = THAT.getVideoData(video);
                 $('.lb-title').html(video.title);
                 THAT.playVideo(videoData);
-                THAT.getProducts(video.id).done(function(products){
+                if ("hide" !== CONFIG.products) {
+                  THAT.getProducts(video.id).done(function(products){
                     THAT.handleAdBanner(products);
-                });
+                  });
+                }
             });
         },
 
