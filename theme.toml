@@ -1,0 +1,51 @@
+name = "tvpage"
+description = "starter theme tvpage"
+min_version = 0.17
+
+[[tvp-templates]]
+name = "London"
+path = "layouts/london"
+thumbnail = "http://www.webdesigndev.com/wp-content/uploads/2012/08/114.jpg"
+preview = "http://preview.tvpage.com"
+
+[[tvp-templates]]
+name = "B&H"
+path = "layouts/band"
+thumbnail = "http://www.webdesigndev.com/wp-content/uploads/2012/08/114.jpg"
+preview = "http://preview.tvpage.com"
+
+[[tvp-widgets]]
+name = "Solo"
+path = "layouts/tvp-widgets/solo"
+thumbnail = "http://store-widget-demo.contentshelf.com/thumbnail?file=F15101600000CB51&width=640&height=360&fixed=1"
+preview = "http://preview.tvpage.com"
+
+[[tvp-widgets]]
+name = "In-Shop"
+path = "layouts/tvp-widgets/in-shop"
+thumbnail = "http://store-widget-demo.contentshelf.com/thumbnail?file=F15101600000CB51&width=640&height=360&fixed=1"
+preview = "http://preview.tvpage.com"
+
+[[tvp-widgets]]
+name = "Storefront"
+path = "layouts/tvp-widgets/storefront"
+thumbnail = "http://store-widget-demo.contentshelf.com/thumbnail?file=F15101600000CB51&width=640&height=360&fixed=1"
+preview = "http://preview.tvpage.com"
+
+[[tvp-widgets]]
+name = "Side Bar"
+path = "layouts/tvp-widgets/side-bar"
+thumbnail = "http://store-widget-demo.contentshelf.com/thumbnail?file=F15101600000CB51&width=640&height=360&fixed=1"
+preview = "http://preview.tvpage.com"
+
+[[tvp-widgets]]
+name = "Quick Buy"
+path = "layouts/tvp-widgets/quick-buy"
+thumbnail = "http://store-widget-demo.contentshelf.com/thumbnail?file=F15101600000CB51&width=640&height=360&fixed=1"
+preview = "http://preview.tvpage.com"
+
+[[tvp-widgets]]
+name = "Flatshop"
+path = "layouts/tvp-widgets/flatshop"
+thumbnail = "http://store-widget-demo.contentshelf.com/thumbnail?file=F15101600000CB51&width=640&height=360&fixed=1"
+preview = "http://preview.tvpage.com"
