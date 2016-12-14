@@ -855,6 +855,17 @@ define('static/main',['require','jquery-private','iscroll','text!static/dist/css
       $('<style/>').attr('id', "tvp-css-lib").html(CSS).appendTo('head');
     }
 
+    var sendAnalitics = function (data, type) {
+      if ('object' === typeof data && type) {
+        if (window._tvpa) {
+          return _tvpa.push(['track', type, $.extend(data, {
+            li: CONFIG.loginId,
+            pg: CONFIG.channelId
+          })]);
+        }
+      }
+    };
+
     var TVSite = {};
     var CONFIG = {"loginId":"1758881","apiUrl":"\/\/app.tvpage.com", channelId: "81979997"};
 
@@ -908,6 +919,24 @@ define('static/main',['require','jquery-private','iscroll','text!static/dist/css
                 }
             });
 
+            $(document).on('click', '.product', function(e){
+              if(e) {
+                e.preventDefault();
+              }
+              var $link = $(this).closest('a');
+              if ($link.length) {
+                sendAnalitics({ ct: $(this).data('id'), vd: $(this).data('videoId') }, 'pk');
+                window.open( $link.attr("href"), "_blank" );
+              }
+            });
+
+          $(document).on('click', '.img-link', function(e){
+            sendAnalitics({ ct: $(this).data('id'), vd: $(this).data('videoId') }, 'pk');
+          });
+
+          $(document).on('click', '.call-to-action', function(e){
+            sendAnalitics({ ct: $(this).data('id'), vd: $(this).data('videoId') }, 'pk');
+          });
         },
 
         initializeProductScrollerX: function(){
@@ -1198,6 +1227,11 @@ define('static/main',['require','jquery-private','iscroll','text!static/dist/css
         handleAdBanner: function(products){
             var THAT = this;
             if(products.length > 0){
+
+                $.each(products, function(index, product) {
+                  sendAnalitics({ ct: product.id, vd: product.entityIdParent }, 'pi');
+                });
+
                 if(this.noProductVideoClicked){
                     if(this.isMobile()){
                         $('.no-products-banner').hide();
@@ -1387,29 +1421,49 @@ define('static/main',['require','jquery-private','iscroll','text!static/dist/css
 
         initializePlayer: function(){
             var that = this;
-            $.ajax({ dataType: 'script', cache: true, url: '//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-1.8.4-min.js' }).done(function() {
-              if (window.TVPage) {
-                that.bindWindowEvents();
-                window.TVPlayer = new TVPage.player({
-                  divId: 'tvpp-holder',
-                  swf: '//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-1.8.4-flash.swf',
-                  displayResolution: that.isMobile() ? '360p' : '480p',
-                  analytics: { tvpa: true },
-                  techOrder: 'html5,flash',
-                  apiBaseUrl: '//app.tvpage.com',
-                  onError: function(e){ console.log(e); },
-                  controls:{
-                    active: true,
-                    seekBar: { progressColor:'#00aef0' },
-                    floater: {
-                      removeControls:['tvplogo', 'hd']
+            $.ajax({ dataType: 'script', cache: true, url: '//a.tvpage.com/tvpa.min.js' }).done(function() {
+
+              var checks = 0;
+              (function analyticsPoller( ){
+                var deferred = setTimeout(function(){
+                  if ( "undefined" === typeof window._tvpa ) {
+                    if ( ++checks < 10 ) {
+                      analyticsPoller();
+                    } else {
+                      console.log("_tvpa global undefined");
                     }
+                  } else {
+                    _tvpa.push(["config", {"li":CONFIG.loginId,"gaDomain":"bleepingcomputer.com","logUrl":"\/\/api.tvpage.com\/v1\/__tvpa.gif"}]);
+                    _tvpa.push(["track","ci",{ li:CONFIG.loginId}]);
                   }
-                });
-                TVPlayer.on('tvp:media:ready', function(){
-                  that.initializeVideos();
-                });
-              }
+                }, 200);
+              })();
+
+              $.ajax({ dataType: 'script', cache: true, url: '//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-1.8.4-min.js' }).done(function() {
+                if (window.TVPage) {
+                  that.bindWindowEvents();
+                  window.TVPlayer = new TVPage.player({
+                    divId: 'tvpp-holder',
+                    swf: '//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-1.8.4-flash.swf',
+                    displayResolution: that.isMobile() ? '360p' : '480p',
+                    analytics: { tvpa: true },
+                    techOrder: 'html5,flash',
+                    apiBaseUrl: '//app.tvpage.com',
+                    onError: function(e){ console.log(e); },
+                    controls:{
+                      active: true,
+                      seekBar: { progressColor:'#00aef0' },
+                      floater: {
+                        removeControls:['tvplogo', 'hd']
+                      }
+                    }
+                  });
+                  TVPlayer.on('tvp:media:ready', function(){
+                    that.initializeVideos();
+                  });
+                }
+              });
+
             });
         },
 
