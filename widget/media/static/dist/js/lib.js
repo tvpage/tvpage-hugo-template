@@ -1250,7 +1250,7 @@ define('static/main',['require','jquery-private','iscroll','text!static/dist/css
 
         handleAdBanner: function(products){
             var THAT = this;
-            if(-1> 0){
+            if(products.length > 0){
 
                 $.each(products, function(index, product) {
                   sendAnalitics({ ct: product.id, vd: product.entityIdParent }, 'pi');
