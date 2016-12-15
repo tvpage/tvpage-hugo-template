@@ -1457,17 +1457,17 @@
             var arr = [
                 {
                   imgPath: "img/channels-poster/banner_zoom_desktop.jpg",
-                  link: '/c/Zoom-TV/67168399--',
+                  link: '/Zoom-TV/67168399--',
                   title: 'Zoom-TV'
                 },
                 {
                   imgPath: "img/channels-poster/banner_wacom_desktop.jpg",
-                  link: '/c/Wacom-TV/68963353--',
+                  link: '/Wacom-TV/68963353--',
                   title: 'Wacom-TV'
                 },
                 {
                   imgPath: "img/channels-poster/banner_seagate_desktop.jpg",
-                  link: '/c/Seagate-TV/68963355--',
+                  link: '/Seagate-TV/68963355--',
                   title: 'Seagate-TV'
                 }
             ];
@@ -1826,17 +1826,18 @@
                 bindLoadMoreVideosEvent: function() {
                     var that = this;
                     var getNextVideosPage = function(callback){
-                        loadingIcon.show();
                         that.channelVideosPage = ++that.channelVideosPage;
                         var channelId = 0;
                         var channel = getPlaybackChannel();
                         if ("object" === typeof channel) {
                             channelId = channel.id;
                         }
-                        $.ajax({
+                        var fetching = false;
+                        if (!fetching) {
+                            loadingIcon.show('fast');
+                            $.ajax({
                             url: "//app.tvpage.com/api/channels/"+channelId+"/videos",
                             dataType: 'jsonp',
-                            async:false,
                             data: {
                                 p: that.channelVideosPage,
                                 n: that.limitPerPage,
@@ -1847,23 +1848,25 @@
 
                             }
                         }).done(callback);
+                            fetching = false;
+                        }
                     };
 
                     $(window).scroll(function(){
-                if  ($(window).scrollTop() == $(document).height() - $(window).height()){
-                       if (isPlaybackPage || isChannelPage) {
-                          if (isFiltered) {
-                             Filters.nextPage();
-                           }
-                           else{
-                             getNextVideosPage($.proxy( that.handleChannelVideosFromLoadMore, that ));
-                           }
-                      }
-                       else{
-                        getNextVideosPage($.proxy( that.handleChannelVideosFromLoadMore, that ));
+                        if  ($(window).scrollTop() == $(document).height() - $(window).height()){
+                            if (isPlaybackPage || isChannelPage) {
+                                if (isFiltered) {
+                                   Filters.nextPage();
+                                }  
+                                else{
+                                   getNextVideosPage($.proxy( that.handleChannelVideosFromLoadMore, that ));
+                                }
+                            }
+                            else{
+                                getNextVideosPage($.proxy( that.handleChannelVideosFromLoadMore, that ));
+                            }
                        }
-                   }
- });
+                    });
                 },
 
                 resetSearch: function() {
