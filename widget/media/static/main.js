@@ -3,9 +3,22 @@ define(function(require) {
     var $ = require("jquery-private");
     require("iscroll");
 
+    // Injecting the widget CSS
     var CSS = require('text!static/dist/css/main.css');
     if (!$('#tvp-css-lib').length) {
       $('<style/>').attr('id', "tvp-css-lib").html(CSS).appendTo('head');
+    }
+
+    var TVSite = {};
+    var CONFIG = {
+      "loginId":"1758881",
+      "apiUrl":"\/\/app.tvpage.com",
+      channelId: "81979997",
+      products: "show"
+    };
+
+    if ("undefined" !== typeof window.TVPage && "undefined" !== typeof TVPage.config) {
+      CONFIG = $.extend({}, CONFIG, TVPage.config['tvp-gallery']);
     }
 
     var sendAnalitics = function (data, type) {
@@ -18,9 +31,6 @@ define(function(require) {
         }
       }
     };
-
-    var TVSite = {};
-    var CONFIG = {"loginId":"1758881","apiUrl":"\/\/app.tvpage.com", channelId: "81979997"};
 
     window.TVStore = {
         cache: {
@@ -38,8 +48,16 @@ define(function(require) {
 
             this.initializePlayer();
             this.videoClick();
-            this.initializeProductScrollerX();
-            this.initializeProductScrollerY();
+
+            if ("hide" !== CONFIG.products) {
+              this.initializeProductScrollerX();
+              this.initializeProductScrollerY();
+            } else {
+              $("#tvpp").addClass('full');
+              $("#mobile-products").addClass('hide');
+              $("#desktop-products").addClass('hide');
+              $(".lb-content").addClass('products-hide');
+            }
 
             TVSite.videos = [];
             TVSite.displayedVideos = [];
@@ -349,20 +367,26 @@ define(function(require) {
         videoClick: function(){
             var THAT = this;
             this.noProductVideoClicked = false;
-            $(document).on('click', '.tvp-video', function(e){
-                e.preventDefault();
-
+            var show = function(){
                 $('.lb-overlay').show();
                 $('#lightbox').removeClass('off');
+            };
+            $(document).on('click', '.tvp-video', function(e){
+                e.preventDefault();
 
                 var vid = $(e.currentTarget).attr('data-index');
                 var video = THAT.searchVideoInObject(vid);
                 var videoData = THAT.getVideoData(video);
                 $('.lb-title').html(video.title);
                 THAT.playVideo(videoData);
-                THAT.getProducts(video.id).done(function(products){
-                    THAT.handleAdBanner(products);
-                });
+                if ("hide" !== CONFIG.products) {
+                  THAT.getProducts(video.id).done(function(products){
+                      show();
+                      THAT.handleAdBanner(products);
+                  });
+                } else {
+                    show();
+                }
             });
         },
 
@@ -387,11 +411,9 @@ define(function(require) {
 
                 if(this.noProductVideoClicked){
                     if(this.isMobile()){
-                        $('.no-products-banner').hide();
                         $('.recommeded-products').show();
                         $('#mobile-products').show();
                     }else{
-                        $('.no-products-banner').hide();
                         $('.related-products').show();
                         $('#desktop-products').show();
                         $('#tvpp').css('width', '84%');
@@ -407,16 +429,16 @@ define(function(require) {
                 if(this.isMobile()){
                     $('.recommeded-products').hide();
                     $('#mobile-products').hide();
-                    var url = 'url(' + '//www-bleeping-computer-com.netlify.com/img/noProductAdMobile.png' + ')';
                 }else{
                     $('.related-products').hide();
                     $('#desktop-products').hide();
-                    $('#tvpp').css('width', '100%');
-                    $('.lb-content').css('height','579px');
-                    var url = 'url(' + '//www-bleeping-computer-com.netlify.com/img/noProductAdDesktop.png' + ')';
+                    $('.lb-content').css("opacity", 0);
+                    $('.lb-content').addClass('products-hide');
+                    $("#tvpp").addClass('full');
+                    setTimeout(function () {
+                        $('.lb-content').css("opacity", 1);
+                    },0);
                 }
-                $('.no-products-banner').show();
-                $('.no-products-banner').css('background-image', url);
             }
             this.resizePlayer();
         },
@@ -673,7 +695,7 @@ define(function(require) {
     };
 
     $(function(){
-      var lightBoxTemplate = '<div id="tvplb"><div class="lb-content"><div class="lb-close"></div><div class="lb-header"><div class="related-products">Related Products</div><h4 class="lb-title"></h4></div><div class="lb-body"></div><div class="no-products-banner"></div></div><div id="lb-overlay" class="lb-overlay"></div></div>';
+      var lightBoxTemplate = '<div id="tvplb"><div class="lb-content"><div class="lb-close"></div><div class="lb-header"><div class="related-products">Related Products</div><h4 class="lb-title"></h4></div><div class="lb-body"></div></div><div id="lb-overlay" class="lb-overlay"></div></div>';
       $("#tvp-gallery").append( '<div class="cz-line-heading"><div class="cz-line-heading-inner">Recommended Videos</div></div><div id="videos"></div><div id="lightbox" class="off">'+lightBoxTemplate+'</div><a class="tvplogo" class="tvp-clearfix" href="//www.tvpage.com" target="_blank"></a>' ).addClass("tvp-clearfix");
 
       var playerTemplate = '<div id="tvpp"><div id="html5MobilePlayBtn" class="html5-play-button"></div><div class="tvpp-wrapper"><div id="tvpp-holder" class="tvpp-holder"></div><div class="video-overlay"></div></div></div>';
