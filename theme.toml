@@ -17,35 +17,55 @@ preview = "http://preview.tvpage.com"
 [[tvp-widgets]]
 name = "Solo"
 path = "layouts/tvp-widgets/solo"
-thumbnail = "http://store-widget-demo.contentshelf.com/thumbnail?file=F15101600000CB51&width=640&height=360&fixed=1"
+thumbnail = "http://do0631budpzeh.cloudfront.net/dev/player/templates/TemplateImg_Solo.jpg"
 preview = "http://preview.tvpage.com"
+settings = ['playback']
+
+[[tvp-widgets]]
+name = "Solo Interactive"
+path = "layouts/tvp-widgets/solo-interactive"
+thumbnail = "http://do0631budpzeh.cloudfront.net/dev/player/templates/TemplateImg_SoloInteractive.jpg"
+preview = "http://preview.tvpage.com"
+settings = ['playback']
 
 [[tvp-widgets]]
 name = "In-Shop"
 path = "layouts/tvp-widgets/in-shop"
-thumbnail = "http://store-widget-demo.contentshelf.com/thumbnail?file=F15101600000CB51&width=640&height=360&fixed=1"
+thumbnail = "http://do0631budpzeh.cloudfront.net/dev/player/templates/TemplateImg_SoloInteractivePopup.jpg"
 preview = "http://preview.tvpage.com"
-
-[[tvp-widgets]]
-name = "Storefront"
-path = "layouts/tvp-widgets/storefront"
-thumbnail = "http://store-widget-demo.contentshelf.com/thumbnail?file=F15101600000CB51&width=640&height=360&fixed=1"
-preview = "http://preview.tvpage.com"
-
-[[tvp-widgets]]
-name = "Side Bar"
-path = "layouts/tvp-widgets/side-bar"
-thumbnail = "http://store-widget-demo.contentshelf.com/thumbnail?file=F15101600000CB51&width=640&height=360&fixed=1"
-preview = "http://preview.tvpage.com"
+settings = ['playback']
 
 [[tvp-widgets]]
 name = "Quick Buy"
 path = "layouts/tvp-widgets/quick-buy"
-thumbnail = "http://store-widget-demo.contentshelf.com/thumbnail?file=F15101600000CB51&width=640&height=360&fixed=1"
+thumbnail = "http://do0631budpzeh.cloudfront.net/dev/player/templates/TemplateImg_QuickBuy.jpg"
 preview = "http://preview.tvpage.com"
+settings = ['playback','products']
 
 [[tvp-widgets]]
 name = "Flatshop"
 path = "layouts/tvp-widgets/flatshop"
-thumbnail = "http://store-widget-demo.contentshelf.com/thumbnail?file=F15101600000CB51&width=640&height=360&fixed=1"
+thumbnail = "http://do0631budpzeh.cloudfront.net/dev/player/templates/TemplateImg_Flatshop.jpg"
 preview = "http://preview.tvpage.com"
+settings = ['playback','products']
+
+[[tvp-widgets]]
+name = "Storefront"
+path = "layouts/tvp-widgets/storefront"
+thumbnail = "http://do0631budpzeh.cloudfront.net/dev/player/templates/TemplateImg_Storefront.jpg"
+preview = "http://preview.tvpage.com"
+settings = ['playback','products']
+
+[[tvp-widgets]]
+name = "Browse & Buy"
+path = "layouts/tvp-widgets/browse-and-buy"
+thumbnail = "http://do0631budpzeh.cloudfront.net/dev/player/templates/TemplateImg_BrowseBuy.jpg"
+preview = "http://preview.tvpage.com"
+settings = ['playback','products']
+
+[[tvp-widgets]]
+name = "Quick Play"
+path = "layouts/tvp-widgets/browse-and-buy"
+thumbnail = "http://do0631budpzeh.cloudfront.net/dev/player/templates/TemplateImg_QuickPlay.jpg"
+preview = "http://preview.tvpage.com"
+settings = ['playback']
