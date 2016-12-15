@@ -1085,7 +1085,6 @@
                 liveResultsPage = 0;
                 searchVideos(val, liveResultsPage).done(function(results) {
                     if (results.length) {
-                        debugger;
                         $nullResults.hide();
                         $spinner.hide();
                         handleVideoResults(results);
