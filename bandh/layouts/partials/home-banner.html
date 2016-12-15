@@ -1,6 +1,34 @@
 <div class="row clearfix">
-    <a class="ad-logo" href="/c/Zoom-TV/67168399--" title="Zoom TV">
-        <div class="ad-logo-img-desktop" style="background-image:url(//do0631budpzeh.cloudfront.net/live/tvsite/1758169/www.bandh.tv/cb94d44a0921cbffe86a1d724c0639f5/img/channels-poster/Pro-Audio-adImage.jpg);"></div>
-        <div class="ad-logo-img-mobile" style="background-image:url(//do0631budpzeh.cloudfront.net/live/tvsite/1758169/www.bandh.tv/cb94d44a0921cbffe86a1d724c0639f5/img/channels-poster/Pro-Audio-adImage-mobile.jpg);"></div>
+    <a id="dynamic-anchor" class="ad-logo">
+        <img id="dynamic-banner" class="ad-logo-img-desktop"/>
+        <!-- <div class="ad-logo-img-mobile" style="background-image:url(//do0631budpzeh.cloudfront.net/live/tvsite/1758169/www.bandh.tv/cb94d44a0921cbffe86a1d724c0639f5/img/channels-poster/Pro-Audio-adImage-mobile.jpg);"></div> -->
     </a>
 </div>
+
+
+<script>
+
+   	var imgArray = [];
+    imgArray[0] = "img/channels-poster/banner_zoom_desktop.jpg";
+    imgArray[1] = "img/channels-poster/banner_wacom_desktop.jpg";
+    imgArray[2] = "img/channels-poster/banner_seagate_desktop.jpg";
+
+     var rand = Math.floor(Math.random()*imgArray.length);
+     var imgPath = document.getElementById("dynamic-banner");
+     var anchorPath = document.getElementById("dynamic-anchor");
+     imgPath.setAttribute('src', imgArray[rand]);
+
+     if (imgArray[rand] == imgArray[0]) {
+     	anchorPath.setAttribute('href', '/c/Zoom-TV/67168399--');
+     	anchorPath.setAttribute('title', 'Zoom-TV');
+     }
+     else if (imgArray[rand] == imgArray[1]) {
+     	anchorPath.setAttribute('href', '/c/Wacom-TV/68963353--');
+     	anchorPath.setAttribute('title', 'Wacom-TV');
+     }
+     else{
+     	anchorPath.setAttribute('href', '/c/Seagate-TV/68963355--');
+     	anchorPath.setAttribute('title', 'Seagate-TV');
+     }
+
+ </script>

@@ -20,6 +20,7 @@
             isMac = navigator.userAgent.indexOf('Mac OS X') != -1,
             isFireFox = navigator.userAgent.indexOf('Firefox') != -1,
             isFiltered = false,
+            loadingIcon = $('.channel-videos').find('.load-more'),
             IE = function(version) {
                 return RegExp('msie' + (!isNaN(version) ? ('\\s' + version) : ''), 'i').test(navigator.userAgent);
             },
@@ -1084,6 +1085,7 @@
                 liveResultsPage = 0;
                 searchVideos(val, liveResultsPage).done(function(results) {
                     if (results.length) {
+                        debugger;
                         $nullResults.hide();
                         $spinner.hide();
                         handleVideoResults(results);
@@ -1795,6 +1797,7 @@
                 bindLoadMoreVideosEvent: function() {
                     var that = this;
                     var getNextVideosPage = function(callback){
+                        loadingIcon.show();
                         that.channelVideosPage = ++that.channelVideosPage;
                         var channelId = 0;
                         var channel = getPlaybackChannel();
@@ -1804,33 +1807,34 @@
                         $.ajax({
                             url: "//app.tvpage.com/api/channels/"+channelId+"/videos",
                             dataType: 'jsonp',
+                            async:false,
                             data: {
                                 p: that.channelVideosPage,
                                 n: that.limitPerPage,
                                 "X-login-id": TVSite.loginId
+                            },
+                            success: function(){
+                                loadingIcon.hide();
+
                             }
                         }).done(callback);
                     };
 
-                    var $loadMore = $('.channel-videos').find('.load-more');
-                    if (!$loadMore.length) return console.log("no load more btn");
-
-                    if (isPlaybackPage || isChannelPage) {
-                        $loadMore.off().fadeIn(10).on('click', function(e) {
-                            if (isFiltered) {
-                                Filters.nextPage();
-                            } else {
-                                getNextVideosPage( $.proxy(that.handleChannelVideosFromLoadMore, that) );
-                            }
-                            $(this).off().closest('.row').remove();
-                        });
-
-                    } else {
-                        $loadMore.fadeIn(10).on('click', function(e) {
-                            getNextVideosPage( $.proxy(that.handleChannelVideosFromLoadMore, that) );
-                            $(this).off().closest('.row').remove();
-                        });
-                    }
+                    $(window).scroll(function(){
+                if  ($(window).scrollTop() == $(document).height() - $(window).height()){
+                       if (isPlaybackPage || isChannelPage) {
+                          if (isFiltered) {
+                             Filters.nextPage();
+                           }
+                           else{
+                             getNextVideosPage($.proxy( that.handleChannelVideosFromLoadMore, that ));
+                           }
+                      }
+                       else{
+                        getNextVideosPage($.proxy( that.handleChannelVideosFromLoadMore, that ));
+                       }
+                   }
+ });
                 },
 
                 resetSearch: function() {
@@ -1947,7 +1951,7 @@
                 },
 
                 renderVideosRow: function(row) {
-                    var html = '<div class="row clearfix">',
+                    var html = playBackRowHtml,
                         i = 0;
                     for (i; i < row.length; i++) {
                         var video = row[i];
