@@ -1450,6 +1450,36 @@
             $('.channel-poster-holder').find('.channel-qty').html(channelQty);
         }
 
+        var randomBanner = function(){
+            var dynamicBanner = $("#dynamic-banner");
+            var dynamicAnchor = $("#dynamic-anchor");
+
+            var arr = [
+                {
+                  imgPath: "img/channels-poster/banner_zoom_desktop.jpg",
+                  link: '/c/Zoom-TV/67168399--',
+                  title: 'Zoom-TV'
+                },
+                {
+                  imgPath: "img/channels-poster/banner_wacom_desktop.jpg",
+                  link: '/c/Wacom-TV/68963353--',
+                  title: 'Wacom-TV'
+                },
+                {
+                  imgPath: "img/channels-poster/banner_seagate_desktop.jpg",
+                  link: '/c/Seagate-TV/68963355--',
+                  title: 'Seagate-TV'
+                }
+            ];
+
+            var banner = arr[ Math.floor(Math.random() * arr.length) ];
+
+            dynamicBanner.attr('src', banner.imgPath);
+            dynamicBanner.attr('title', banner.title);
+            dynamicAnchor.attr('href', banner.link);
+        }
+        randomBanner();
+
         var checkAdBanner = function() {
             if (isChannelPage || isPlaybackPage) {
                 if (TVSite.channelId == TVSite.proAudioChannelId) {
