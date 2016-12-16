@@ -1,0 +1,42 @@
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Carousel Demo</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+</head>
+<body>
+<h1>The looking good bean</h1>
+
+<!--<div id="tvp-gallery"></div>-->
+<!--<script type="text/javascript">-->
+  <!--// we need to move this fetch to our JS lib-->
+  <!--$.ajax({url:"//localhost:1313/tvpwidget/carousel-1/"}).done(function(res){-->
+    <!--$('#tvp-gallery').append(res);-->
+  <!--});-->
+<!--</script>-->
+
+<!--The placeholder-->
+<div id="tvp-gallery"></div>
+<!--The placeholder-->
+
+<!--The code snippet-->
+<script type="text/javascript">
+//  window.TVPage = window.TVPage || {};
+//  window.TVPage.config = TVPage.config || {};
+//  window.TVPage.config['tvp-gallery'] = {
+//    products: 'hide'
+//  };
+  (function(d) {
+    var s = d.createElement('script');
+    s.src = '//localhost:1313/carousel/dist/js-lib.js';
+    d.body.appendChild(s);
+  })(document);
+</script>
+<!--The code snippet-->
+
+</body>
+</html>
