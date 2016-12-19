@@ -4,6 +4,7 @@ define(function(require) {
     var $ = require("jquery-private");
     var IScroll = require('iscroll');
 
+
     require('../jquery.pubsub-loader');
     require('slick');
 
@@ -51,12 +52,12 @@ define(function(require) {
         });
     }
 
-    var hidePopup = function() { 
+    var hidePopup = function() {
         $(this).removeClass("active");
-        $el.find('.product-popup.active').hide(); 
+        $el.find('.product-popup.active').hide();
     };
-    
-  var showPopup = function() { 
+
+    var showPopup = function() {
         $('.product').removeClass('active');
         var $prodThumb = $(this).addClass("active");
         var $popup = $el.find('#product-popup-' + $prodThumb.attr('id').split('-').pop());
@@ -90,6 +91,7 @@ define(function(require) {
 
         $popup.find('.arrow-indicator').css('top', arrowTop);
     };
+
     function startDesktop(html) {
         var scrollId = 'tvpprd-scroller';
         $('.watch-more-tvp-mobile').hide();
@@ -99,21 +101,21 @@ define(function(require) {
             setTimeout(function() { scroller.refresh(); }, 0);
         });
         $el.find('script').off().remove().end().find('div[itemprop="product"]').off().remove();
-        
+
         if (!isTouch) {
-            $el.on('mouseleave', hidePopup);    
+            $el.on('mouseleave', hidePopup);
             $el.on('mouseover', '.product', showPopup);
         } else {
-            $(document).on('click', '.product', function(e){
+            $(document).on('click', '.product', function(e) {
                 e.preventDefault();
                 return false;
             });
             $(document).on('touchend', '.product', showPopup);
             $(document).on('touchend', '.product.active', hidePopup);
-            $(document).on('touchend', function(e){
-                if ( !$(e.target).is("#tvpprd-scroller") && !$("#tvpprd-scroller").has(e.target).length && !$(".product-popup.moved.active").has(e.target).length) {
-                $('.product').removeClass("active");
-                hidePopup();
+            $(document).on('touchend', function(e) {
+                if (!$(e.target).is("#tvpprd-scroller") && !$("#tvpprd-scroller").has(e.target).length && !$(".product-popup.moved.active").has(e.target).length) {
+                    $('.product').removeClass("active");
+                    hidePopup();
                 }
             });
         }
@@ -125,7 +127,7 @@ define(function(require) {
             $.each(products, function(index, product) {
                 sendAnalitics({ ct: product.id, vd: product.entityIdParent }, 'pi')
             });
-         
+
             if (mobile) {
                 startMobile(_.template(htmlMobile)({
                     products: products
@@ -141,7 +143,7 @@ define(function(require) {
         $.publish('products:loaded', [products]);
     }
 
-    $.ajaxSetup({headers:{'X-Login-Id':_tvp.lid}});
+    $.ajaxSetup({ headers: { 'X-Login-Id': _tvp.lid } });
 
     // Syncs with the backend cartridge.
     function loadCartridge(e, video) {
@@ -157,17 +159,17 @@ define(function(require) {
                 }),
                 success: function(response) {
                     var products = [];
-                    if ( response && "undefined" !== typeof response.cartridgeData && "undefined" !== typeof response.cartridgeData.products) {
-                    products = response.cartridgeData.products;
+                    if (response && "undefined" !== typeof response.cartridgeData && "undefined" !== typeof response.cartridgeData.products) {
+                        products = response.cartridgeData.products;
                     }
 
                     var productHtml = "";
-                    if ( response && "undefined" !== typeof response.html) {
-                    productHtml = response.html;
+                    if (response && "undefined" !== typeof response.html) {
+                        productHtml = response.html;
                     }
 
                     setTimeout(function() { productsLoaded(products, productHtml); }, 0);
-                    
+
                 }
             });
         }
@@ -182,27 +184,27 @@ define(function(require) {
                 if (!mobile) $el.html("");
             });
 
-        var track = function(pid, parent){sendAnalitics({ct: pid, vd: parent },'pk')};
+            var track = function(pid, parent) { sendAnalitics({ ct: pid, vd: parent }, 'pk') };
 
-        $(document).on('click', '.product-title', function(){
-            track( $(this).attr("data-pid"), $(this).attr("data-parent") );
-        });
+            $(document).on('click', '.product-title', function() {
+                track($(this).attr("data-pid"), $(this).attr("data-parent"));
+            });
 
-        $(document).on('click', '.tvp-view-now', function(){
-            track( $(this).attr("data-pid"), $(this).attr("data-parent") );
-        });
+            $(document).on('click', '.tvp-view-now', function() {
+                track($(this).attr("data-pid"), $(this).attr("data-parent"));
+            });
 
-        $(document).on('click', '.product', function(){
-            track( $(this).attr("data-pid"), $(this).attr("data-parent") );
-        });
+            $(document).on('click', '.product', function() {
+                track($(this).attr("data-pid"), $(this).attr("data-parent"));
+            });
 
-         $(document).on('click', '.tvp-rating', function(){
-            track( $(this).attr("data-pid"), $(this).attr("data-parent") );
-        });
+            $(document).on('click', '.tvp-rating', function() {
+                track($(this).attr("data-pid"), $(this).attr("data-parent"));
+            });
 
-         $(document).on('click', '.call-to-action', function(){
-            window.open($(this).attr("data-url"),'_blank');
-        });
+            $(document).on('click', '.call-to-action', function() {
+                window.open($(this).attr("data-url"), '_blank');
+            });
 
             if (_.isFunction(callback)) {
                 callback();

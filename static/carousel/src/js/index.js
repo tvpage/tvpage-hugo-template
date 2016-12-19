@@ -2,7 +2,7 @@ define(function(require) {
 
     var $ = require('jquery-private');
     var css = require('text!dist/css-lib.css');
-
+    debugger;
     if (!$('#tvp-css-lib').length) {
         $('<style/>').attr('id', "tvp-css-lib").html(css).appendTo('head');
     }
@@ -37,9 +37,9 @@ define(function(require) {
 
                 });
 
-                setTimeout(function () {
+                setTimeout(function() {
                     $("#tvp-gallery").addClass("enabled");
-                },0);
+                }, 0);
 
             });
 

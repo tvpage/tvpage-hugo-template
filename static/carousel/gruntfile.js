@@ -4,11 +4,11 @@ module.exports = function(grunt) {
         watch: {
             js: {
                 files: ['src/js/**/*.js'],
-                tasks: ['clean:js', 'requirejs', 'copy']
+                tasks: ['clean:js', 'requirejs']
             },
             css: {
                 files: ['src/scss/**/*.scss'],
-                tasks: ['clean:css', 'sass', 'copy:css']
+                tasks: ['clean:css', 'sass']
             }
         },
         requirejs: {
