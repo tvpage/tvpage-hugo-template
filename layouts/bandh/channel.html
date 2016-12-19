@@ -25,24 +25,24 @@
     <meta property="og:url" content="{{ .Permalink }}" />
     <meta property="og:type" content="website" />
     <meta property="og:description" content="{{ .Description }}" />
-    <meta property="og:image" content="/img/BHTV_landing.jpg" />
+    <meta property="og:image" content="/{{ .Type }}/img/BHTV_landing.jpg" />
     <meta property="twitter:card" content="summary" />
     <meta property="twitter:title" content="{{ .Title }}" />
     <meta property="twitter:description" content="{{ .Description }}" />
     <meta property="twitter:url" content="{{ .Permalink }}" />
-    <meta property="twitter:image" content="/img/BHTV_landing.jpg" />
+    <meta property="twitter:image" content="/{{ .Type }}/img/BHTV_landing.jpg" />
 
     {{ partial  (printf "%s/dns-prefetch.html" .Type) .}}
     <link rel="canonical" href="{{ .Permalink }}" />
-    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/{{ .Type }}/css/index.css">
     <link rel="icon" type="image/x-icon" href="/img/favicon.png">
     <link href='//fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
 </head>
 <body class="channel-page">
     {{ partial (printf "%s/header.html" .Type) .}}
     <div class="channel-poster-holder">
-        <div class="channel-poster-desktop" style="background-image:url(/img/channels-poster/{{ $channel.titleTextEncoded }}.jpg);"></div>
-        <div class="channel-poster-mobile" style="background-image:url(/img/channels/{{ $channel.titleTextEncoded }}.jpg);"></div>
+        <div class="channel-poster-desktop" style="background-image:url(/{{ .Type }}/img/channels-poster/{{ $channel.titleTextEncoded }}.jpg);"></div>
+        <div class="channel-poster-mobile" style="background-image:url(/{{ .Type }}/img/channels/{{ $channel.titleTextEncoded }}.jpg);"></div>
         <div class="row clearfix">
             <div class="channel-details-text">
                 <p class="channel-title">{{ $channel.titleTextEncoded }}</p>
@@ -51,7 +51,7 @@
             <a class="presented-holder">
                 <div class="presented-ad">
                     <p class="presented-text">PRESENTED BY</p>
-                    <div class="presented-img" style="background-image:url(/img/{{ $channel.titleTextEncoded }}-adText.png);"></div>
+                    <div class="presented-img" style="background-image:url(/{{ .Type }}/img/{{ $channel.titleTextEncoded }}-adText.png);"></div>
                 </div>
             </a>
         </div>
@@ -135,8 +135,8 @@
     </script>
     <script type="text/template" id="ad-banner-template">
         <div class="row clearfix ad-banner-holder">
-            <a class="ad-banner" style="background-image:url(/img/channels-poster/{title}-adImage.jpg)"></a>
-            <a class="ad-banner-mobile" style="background-image:url(/img/channels-poster/{title}-adImage-mobile.jpg)"></a>
+            <a class="ad-banner" style="background-image:url(/{{ .Type }}/img/channels-poster/{title}-adImage.jpg)"></a>
+            <a class="ad-banner-mobile" style="background-image:url(/{{ .Type }}/img/channels-poster/{title}-adImage-mobile.jpg)"></a>
         </div>
     </script>
     <script type='text/javascript'>

@@ -15,16 +15,16 @@
     <meta property="og:url" content="{{ .Permalink }}" />
     <meta property="og:type" content="website" />
     <meta property="og:description" content="{{ .Description }}" />
-    <meta property="og:image" content="/img/BHTV_landing.jpg" />
+    <meta property="og:image" content="/{{ .Type }}/img/BHTV_landing.jpg" />
     <meta property="twitter:card" content="summary" />
     <meta property="twitter:title" content="{{ .Title }}" />
     <meta property="twitter:description" content="{{ .Description }}" />
     <meta property="twitter:url" content="{{ .Permalink }}" />
-    <meta property="twitter:image" content="/img/BHTV_landing.jpg" />
+    <meta property="twitter:image" content="/{{ .Type }}/img/BHTV_landing.jpg" />
     {{ partial "dns-prefetch.html" . }}
     <link rel="canonical" href="{{ .Permalink }}" />
-    <link rel="stylesheet" href="/css/index.css">
-    <link rel="icon" type="image/x-icon" href="/img/favicon.png">
+    <link rel="stylesheet" href="/{{ .Type }}/css/index.css">
+    <link rel="icon" type="image/x-icon" href="/{{ .Type }}/img/favicon.png">
     <link href='//fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
 </head>
 <body class="search-page">
