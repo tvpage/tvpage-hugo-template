@@ -125,37 +125,36 @@ define(function(require) {
             }
             if (this.isMobile()) {
                 var THAT = this;
-                $player = $('#tvpp-holder');
                 window.matchMedia('(orientation: portrait)').addListener(function(m) {
                     if (m.matches) {
-                    $('#mobile-channels #scroller').width(99999);
-                    var width = $('#mobile-channels-list').width();
-                    $('#mobile-channels #scroller').css('width', width);
-                    $('#tvpp .tvpp-wrapper').css('padding-bottom', '56.25%');
-                    $('#scroller-wrapper.x-scroll').show();
-                    $('.recommeded-products').show();
-                    $('#tvplb .lb-content').css('height', '375px');
-                    $('#tvplb .lb-close').css({
-                            'height': '=32px',
-                            'width': '=32px'
-                        });
-                    THAT.refreshMobileProductScroller();
-                    THAT.resizePlayer();
-                    THAT.handleAdBanner(products);
+                        var width = $('#mobile-channels-list').width();
+                        $('#mobile-channels #scroller').width(99999);
+                        $('#mobile-channels #scroller').css('width', width);
+                        $('#tvpp .tvpp-wrapper').css('padding-bottom', '56.25%');
+                        $('#scroller-wrapper.x-scroll').show();
+                        $('.recommeded-products').show();
+                        $('#tvplb .lb-content').css('height', '375px');
+                        $('#tvplb .lb-close').css({
+                                                    'height': '32px',
+                                                    'width': '32px'
+                                                });
                     }
                     else{
                         $('#tvplb .lb-content').css({
-                            'height':'325px',
-                            'width': '95%'
-                        });
+                                                    'height':'325px',
+                                                    'width': '95%'
+                                                });
                         $('#tvpp .tvpp-wrapper').css('padding-bottom', '-=11.25%');
                         $('#tvplb .lb-close').css({
-                            'height': '=26px',
-                            'width': '=26px'
-                        });
+                                                    'height': '26px',
+                                                    'width': '26px'
+                                                });
                         $('#scroller-wrapper.x-scroll').hide();
                         $('.recommeded-products').hide();
                     }
+                    THAT.refreshMobileProductScroller();
+                    THAT.resizePlayer();
+                    THAT.handleAdBanner(products);
 
                 });
             }
