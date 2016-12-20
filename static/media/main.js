@@ -128,27 +128,33 @@ define(function(require) {
                 $player = $('#tvpp-holder');
                 window.matchMedia('(orientation: portrait)').addListener(function(m) {
                     if (m.matches) {
-                    console.log('portrait');
                     $('#mobile-channels #scroller').width(99999);
                     var width = $('#mobile-channels-list').width();
                     $('#mobile-channels #scroller').css('width', width);
                     $('#tvpp .tvpp-wrapper').css('padding-bottom', '56.25%');
+                    $('#scroller-wrapper.x-scroll').show();
+                    $('.recommeded-products').show();
+                    $('#tvplb .lb-content').css('height', '375px');
+                    $('#tvplb .lb-close').css({
+                            'height': '=32px',
+                            'width': '=32px'
+                        });
                     THAT.refreshMobileProductScroller();
                     THAT.resizePlayer();
                     THAT.handleAdBanner(products);
                     }
                     else{
-                        console.log("landscape!");
                         $('#tvplb .lb-content').css({
-                            'height':'350px',
+                            'height':'325px',
                             'width': '95%'
                         });
                         $('#tvpp .tvpp-wrapper').css('padding-bottom', '-=11.25%');
-                        $('#scroller-wrapper.x-scroll').attr({
-                            'position': 'relative',
-                            'top': '-55px',
-                            'left': '130px'
+                        $('#tvplb .lb-close').css({
+                            'height': '=26px',
+                            'width': '=26px'
                         });
+                        $('#scroller-wrapper.x-scroll').hide();
+                        $('.recommeded-products').hide();
                     }
 
                 });
