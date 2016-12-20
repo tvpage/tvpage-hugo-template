@@ -125,13 +125,32 @@ define(function(require) {
             }
             if (this.isMobile()) {
                 var THAT = this;
+                $player = $('#tvpp-holder');
                 window.matchMedia('(orientation: portrait)').addListener(function(m) {
+                    if (m.matches) {
+                    console.log('portrait');
                     $('#mobile-channels #scroller').width(99999);
                     var width = $('#mobile-channels-list').width();
                     $('#mobile-channels #scroller').css('width', width);
+                    $('#tvpp .tvpp-wrapper').css('padding-bottom', '56.25%');
                     THAT.refreshMobileProductScroller();
                     THAT.resizePlayer();
                     THAT.handleAdBanner(products);
+                    }
+                    else{
+                        console.log("landscape!");
+                        $('#tvplb .lb-content').css({
+                            'height':'350px',
+                            'width': '95%'
+                        });
+                        $('#tvpp .tvpp-wrapper').css('padding-bottom', '-=11.25%');
+                        $('#scroller-wrapper.x-scroll').attr({
+                            'position': 'relative',
+                            'top': '-55px',
+                            'left': '130px'
+                        });
+                    }
+
                 });
             }
         },
