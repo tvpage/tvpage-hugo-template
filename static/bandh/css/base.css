@@ -786,6 +786,7 @@ h2 {
   }
   .ad-logo-img-desktop{
     display: block;
+    width: 100%;
   }
   .ad-logo-img-mobile{
     display: none;
