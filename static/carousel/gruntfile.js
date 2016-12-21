@@ -4,11 +4,11 @@ module.exports = function(grunt) {
         watch: {
             js: {
                 files: ['src/js/**/*.js'],
-                tasks: ['clean:js', 'requirejs']
+                tasks: ['requirejs']
             },
             css: {
                 files: ['src/scss/**/*.scss'],
-                tasks: ['clean:css', 'sass']
+                tasks: ['sass', 'autoprefixer', 'exportcss']
             }
         },
         requirejs: {
@@ -19,54 +19,41 @@ module.exports = function(grunt) {
             }
         },
         sass: {
+            options: {
+                sourceMap: false
+            },
             dist: {
-                options: {
-                    noCache: true,
-                    sourcemap: false,
-                    compas: true,
-                    require: ['breakpoint'],
-                    style: 'expanded'
-                },
                 files: {
                     'dist/css-lib.css': 'src/scss/styles.scss'
                 }
             }
         },
-        clean: {
-            js: 'dist/js-lib.js',
-            css: 'dist/css-lib.css'
-        },
-        // copy: {
-        //     js: {
-        //         cwd: './dist',
-        //         expand: true,
-        //         src: 'js-lib.js',
-        //         dest: 'templates/page'
-        //     },
-        //     css: {
-        //         cwd: './dist',
-        //         expand: true,
-        //         src: 'css-lib.css',
-        //         dest: 'templates/page'
-        //     }
-        // },
         autoprefixer: {
             css: {
                 files: {
                     'dist/css-lib.css': 'dist/css-lib.css'
                 }
             }
+        },
+        exportcss: {
+            target: {}
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-requirejs');
-    grunt.loadNpmTasks('grunt-contrib-sass');
+    grunt.loadNpmTasks('grunt-sass');
     grunt.loadNpmTasks('grunt-autoprefixer');
-    grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('js', ['requirejs', 'watch:js']);
-    grunt.registerTask('css', ['sass', 'autoprefixer', 'watch:css']);
+    var exportPath = '../../layouts/partials/carousel';
+    grunt.registerMultiTask('exportcss', 'Export css to partials folder', function() {
+        var css = grunt.file.read('./dist/css-lib.css');
+        var processed = grunt.file.write(exportPath+'/widget-css.html', '<style>'+css+'</style>');
+        if (processed) {
+            grunt.log.ok('exported!');
+        }
+    });
+    
+    grunt.registerTask('dev', ['watch']);
 
 };

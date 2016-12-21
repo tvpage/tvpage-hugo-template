@@ -1,3 +1,11 @@
-{{ partial "carousel/carousel-css" }}
-{{ partial "carousel/carousel-html" }}
-{{ partial "carousel/carousel-js" }}
+<!-- widget data & config -->
+{{ $config := .Params.config }}
+{{ $.Scratch.Add "config" $config }}
+{{ $channel := index $.Site.Data.channels (printf "x%s" ($config.channelId)) }}
+{{ $.Scratch.Add "channel" $channel }}
+{{ $.Scratch.Add "channelVideos" (index $.Site.Data.channelVideos (printf "x%s_page_1" $channel.id) "data") }}
+
+<!-- widget -->
+{{ partial  (printf "%s/widget-css" .Type) .}}
+{{ partial  (printf "%s/widget-html" .Type) .}}
+{{ partial  (printf "%s/widget-js" .Type) .}}

@@ -1,53 +1,23 @@
 define(function(require) {
 
-    var $ = require('jquery-private');
-    var css = require('text!dist/css-lib.css');
-    debugger;
-    if (!$('#tvp-css-lib').length) {
-        $('<style/>').attr('id', "tvp-css-lib").html(css).appendTo('head');
-    }
+  var $ = require('jquery-private');
 
-    require('./jquery.pubsub-loader');
+  $(function(){
 
-    $(function() {
+    var $carousel = $('#tvp-gallery');
+    $carousel.html(require('text!tmpl/skeleton.html'));
 
-        require('./config');
-        require('./carousel/index');
+    $.ajax({
+      url: '//localhost:1313/carousel-1/'
+    }).done(function(res){
 
-        var lightBox = require('./light-box/index');
-        var player = require('./player/index');
-
-        lightBox.init(function() {
-
-            var options = {
-                place: '#tvplb .lb-body'
-            };
-
-            player.init(options, function() {
-
-                $(document).on('click', '.tvp-video', function(e) {
-
-                    e.preventDefault();
-                    e.stopPropagation();
-                    var index = $(e.currentTarget).attr('data-index');
-                    if (null !== typeof index && 'undefined' !== typeof index) {
-                        $.publish('light-box:show');
-                        $.publish('player:play', index);
-                    }
-
-                });
-
-                setTimeout(function() {
-                    $("#tvp-gallery").addClass("enabled");
-                }, 0);
-
-            });
-
-            var products = require('./products/index');
-            products.init(options);
-
-        });
-
+      $carousel.html(res || '');
+      $carousel.find(TVP.config.sliderSelector);
+      var settings = require('./carousel/settings');
+      // Create the slider.
+      
     });
+
+  });
 
 });

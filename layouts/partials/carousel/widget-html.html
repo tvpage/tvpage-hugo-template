@@ -1,0 +1,15 @@
+{{ if gt (len ($.Scratch.Get "channelVideos")) 0 }}
+	<div id="{{ ($.Scratch.Get "config").sliderId }}">
+    {{ range $index, $video := $.Scratch.Get "channelVideos" }}
+    	<div>
+    		<div data-tvp-video-id="{{.id}}" data-index="3" class="tvp-video col-3">
+	 			<div class="tvp-video-image" style="background-image:url('{{ .asset.thumbnailUrl }}'); ">
+					<div class="video-overlay"></div>
+					<div class="tvp-video-play-button"></div>
+				</div>
+				<p><span class="tittle">{{.title}}</span></p>
+			</div>
+    	</div>
+    {{ end }}
+    </div>
+{{ end }}
