@@ -136,19 +136,17 @@
 /*}*/
 
 .tvp-col-3 {
-  width: 49.25%;
+  width: 50%;
   float: left;
-  margin-bottom: 5px;
-  padding-left: 0;
-  padding-right: .75%;
+  margin: 0 auto;
+  padding: 10px 6px;
 }
 .tvp-video {
   cursor: pointer;
-  padding-left: 0;
-  padding-right: .75%;
-  width: 49.25%;
+  padding:10px 6px;
+  width: 50%;
   float: left;
-  margin-bottom: 5px;
+  margin: 0 auto;
 }
 .tvp-video:hover .tvp-video-play-button{
   -moz-transform: scale(1.1);
@@ -356,6 +354,7 @@
   background-size: contain;
   cursor: pointer;
   height: 68px;
+  left: 13px;
 }
 #mobile-products .product {
   position: relative;
@@ -383,7 +382,8 @@
   height: 354px;
   position: absolute;
   padding: 20px;
-  top: 0px;
+  top: -12px;
+  border-radius: 4px;
   right: 112px;
   z-index: 9999;
   background-color: #FFFFFF;
@@ -397,7 +397,7 @@
   height: 0px;
   border-style: solid;
   border-width: 17px 0 17px 17px;
-  border-color: transparent transparent transparent #A8A8A8;
+  border-color: transparent transparent transparent #D0D0D0;
   position: absolute;
   top: 25px;
   right: 96px;
