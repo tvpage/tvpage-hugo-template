@@ -1,6 +1,6 @@
 .filter-wrapper{
   background-color: #759F13;
-  height: 108px;
+  height: 118px;
   position: relative;
   padding-top: 0px;
 }
@@ -17,13 +17,13 @@
   float: left;
   padding-top: 8px;
 }
-#video-filters .filter{  
+#video-filters .filter{
   width: 100%;
   margin-bottom: 5px;
   position: relative;
 }
 #video-filters .filter:after{
-  position: absolute; 
+  position: absolute;
   right: 15px;
   width: 5px;
   height: 5px;
@@ -51,7 +51,7 @@
   padding: 8px;
   color: #929292;
   background-color: white;
-  text-transform: capitalize;  
+  text-transform: capitalize;
   background-repeat: no-repeat;
   background-position: 7px 4px;
 }
@@ -83,18 +83,18 @@
 #video-filters .reset-filter{
   color: #FFF;
   text-decoration: underline;
-  text-align: right;
+  float : right;
   opacity: 0;
   font-size: 80%;
   height: 28px;
-  float: right;
+  padding-bottom: 10px;
   width: 40px;
   border: 0;
   background-color: transparent;
 }
 
 #video-filters legend {
-  top: -10px;
+  top: -8px;
   position: relative;
   color: #FFF;
   font-weight: bold;
@@ -109,8 +109,8 @@
     padding-top: 0;
   }
   #video-filters legend {
-    top: 20px;
-    left: -60px;
+    top: 30%;
+    left: -3px;
     position: relative;
     color: #FFF;
     font-weight: bold;
@@ -123,15 +123,15 @@
     width: 220px;
     margin-right: 10px;
     float: left;
-    left: 65px;
+    left: 75px;
     top: -3px;
   }
    #video-filters .filter:first-child{
     top: -17px;
   }
   #video-filters .reset-filter{
-    top: 10%;
-    left: 55px;
+    top: 30%;
+    left: 62px;
     -webkit-transform: translateY(-50%);
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
@@ -142,6 +142,7 @@
     text-decoration: underline;
     cursor: pointer;
     font-size: 100%;
+    text-align: right;
     width: 50px;
   }
   .video-filters .filter:after{

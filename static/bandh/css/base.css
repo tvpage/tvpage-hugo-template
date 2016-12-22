@@ -399,7 +399,7 @@ h2 {
 
 .brand-logo-img {
 	background-repeat: no-repeat;
-	background-size: cover;
+	background-size: 100%;
 	background-position: 50% 50%;
 	padding-top: 50.25%;
 	height: 0;
