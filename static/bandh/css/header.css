@@ -586,7 +586,7 @@
 
 .desktop-channels-menu-item::first-letter {
  	text-transform: uppercase;
- 	font-weight: 600;
+ 	
  }
 
 .desktop-channels-menu-item:hover {

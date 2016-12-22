@@ -2,7 +2,7 @@
   background-color: #759F13;
   height: 108px;
   position: relative;
-  padding-top: 5px;
+  padding-top: 0px;
 }
 
 #video-filters{
@@ -103,7 +103,7 @@
 @media (min-width: 768px) {
   .filter-wrapper{
     height: 40px;
-    padding-top: 2px;
+    padding-top: 0px;
   }
   #video-filters{
     padding-top: 0;
@@ -119,7 +119,7 @@
     width: 119px;
   }
   #video-filters .filter{
-    margin: 5px -5px;
+    margin: -7px -7px;
     width: 220px;
     margin-right: 10px;
     float: left;
