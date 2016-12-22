@@ -3,7 +3,6 @@
 {{ $video := index $.Site.Data.videos (printf "x%s" .Params.videoid ) }}
 {{ $channelVideosQty := len ($.Scratch.Get "channelVideos") }}
 
-
 <!DOCTYPE html>
 <!--[if IE 9]>         <html class="ie9"> <![endif]-->
 <!--[if gt IE 9]><!-->
@@ -85,7 +84,7 @@
             <div class="tab-contents">
                 <div id="tab-content-0" class="tab-content details compressed active">
                     <p class="video-date">Published on <span class="video-date-text">{{ $video.date_created }}</span></p>
-                    <p class="video-duration"><strong>Duration:</strong> <span class="duration">{{ $video.duration }}</span></p>
+                    <p class="duration-on-video"><strong>Duration:</strong> <span class="duration">{{ $video.duration }}</span></p>
                     <div class="video-description">{{ .Description | safeHTML }}</div>
                     {{ if $video.transcripts }}
                         <p class="transcript-text"> Transcript: </p>
@@ -101,7 +100,7 @@
     <div id="playback">
     <div class="row clearfix playback-header">
         <div class="channel-title-holder clearfix">
-            <h2 class="inline-block title" data-channel-qty="2876"></h2>
+            <h2 class="inline-block title" data-channel-qty="2878"></h2>
         </div>
         <div class="filters-holder clearfix">
             <div class="channel-search-form inline-block">
@@ -165,6 +164,7 @@
         </div>
     </script>
     <script type='text/javascript'>
+
         TVSite = window.TVSite || {};
         TVSite.activeChannelVideosTotal = {{ $channelVideosQty }};
         TVSite.channelVideosData = {{ $channel | jsonify | safeJS }};

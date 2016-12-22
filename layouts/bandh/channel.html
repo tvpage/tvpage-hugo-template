@@ -1,12 +1,20 @@
 {{ $channel := index $.Site.Data.channels (printf "x%s" .Params.channelid ) }}
 {{ $.Scratch.Add "channel" $channel }}
-
 {{ $fileObj := index $.Site.Data.channelVideos (printf "x%s_page_1" $channel.id) }}
 {{ if (isset $fileObj "data") }}
     {{ $.Scratch.Add "channelVideos" $fileObj.data }}
 {{ else }}
     {{ $.Scratch.Add "channelVideos" "" }}
 {{ end }}
+{{$qty := (len $.Site.Data.channelVideos) }}
+{{$numbers := (seq 0 $qty )}}
+{{range $numbers}}
+	{{ $working := . }}
+	{{$pagina := index $.Site.Data.channelVideos (printf "x%s_page_%d" $channel.id $working  )}}
+	{{ if (isset $pagina "data") }}
+		{{ $.Scratch.Add "channelVideos" $pagina.data }}
+	{{ end }}
+{{end}}
 
 <!DOCTYPE html>
 <!--[if IE 9]>         <html class="ie9"> <![endif]-->
@@ -46,7 +54,7 @@
         <div class="row clearfix">
             <div class="channel-details-text">
                 <p class="channel-title">{{ $channel.titleTextEncoded }}</p>
-                <p class="chan`nel-quantity"><span class="channel-qty">{{ len ($.Scratch.Get "channelVideos") }}</span> Videos</p>
+                <p class="channel-quantity"><span class="channel-qty">{{ len ($.Scratch.Get "channelVideos") }}</span> Videos</p>
             </div>
             <a class="presented-holder">
                 <div class="presented-ad">

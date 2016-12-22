@@ -1,4 +1,5 @@
-;(function($, IScroll, BigScreen, window, document, undefined) {
+;
+(function($, IScroll, BigScreen, window, document, undefined) {
     "use strict";
 
     $(function() {
@@ -59,7 +60,7 @@
             selected: {},
             defaultFilters: null,
             filters: { type_of_video: {}, product_category: {} },
-            
+
             // We parse through the results of the filtering & we take the next valid options from there,
             // based in the video object attributes.
             updateFiltersFromResults: function(results) {
@@ -97,7 +98,7 @@
                 if ("object" === typeof channel) {
                     channelId = channel.id;
                 }
-                
+
                 return $.ajax({
                     url: "//app.tvpage.com/api/channels/" + channelId + "/videos",
                     dataType: 'jsonp',
@@ -109,6 +110,7 @@
                 });
             },
             hoverCheck: function() {
+               
                 $('.video').each(function() {
                     if (!$._data(this, 'events')) $(this).hover(function() { $(this).addClass('hovered') }, function() { $(this).removeClass('hovered') });
                 });
@@ -141,8 +143,8 @@
                     PlaybackChannelsSearch.lastChannelVideosPageCheck(videos);
                     PlaybackChannelsSearch.videoList = PlaybackChannelsSearch.videoList.concat(videos.slice(0));
                     PlaybackChannelsSearch.cacheVideoList = PlaybackChannelsSearch.videoList.slice(0);
-                    PlaybackChannelsSearch.renderVideoRows(PlaybackChannelsSearch.rowerize(videos), function(html) { 
-                        $('.channel-videos .loadable-container').html(html); 
+                    PlaybackChannelsSearch.renderVideoRows(PlaybackChannelsSearch.rowerize(videos), function(html) {
+                        $('.channel-videos .loadable-container').html(html);
                     });
                     PlaybackChannelsSearch.initLoadMoreChannelVideos();
                     PlaybackChannelsSearch.bindVideoThumbEvents('.channel-videos');
@@ -199,7 +201,7 @@
                             }
                             frag.appendChild($row[0]);
                             $($row[0]).find('.video-duration').text(function(i, scs) {
-                                return formatMediaDuration(scs); 
+                                return formatMediaDuration(scs);
                             });
 
                         }
@@ -243,7 +245,8 @@
                     frag.appendChild(getOption({ code: null, label: key.replace(/_/g, ' ') }));
                     var opts = filters[key].options;
                     for (var i = 0; i < opts.length; i++) {
-                        if (opts[i].hasValues) frag.appendChild(getOption(opts[i])); }
+                        if (opts[i].hasValues) frag.appendChild(getOption(opts[i]));
+                    }
                     var $filter = $('[data-code="' + key + '"]');
                     $filter.html(frag);
                     var optionsQty = $filter.find('option');
@@ -278,9 +281,11 @@
 
                     $(document).on('change', '.filter-select', _.bind(function(e) {
                         var getSelected = function(el) {
-                            return $(el).find('option:selected'); };
+                            return $(el).find('option:selected');
+                        };
                         $('.filter-select').each(_.bind(function(i, el) {
-                            if (getSelected(el).attr('id')) this.selected[$(el).data('code')] = $(el).val(); }, this));
+                            if (getSelected(el).attr('id')) this.selected[$(el).data('code')] = $(el).val();
+                        }, this));
                         this.filteredCurrentPage = 0;
                         if (getSelected(e.currentTarget).attr('id')) {
                             this.filterVideos();
@@ -320,7 +325,7 @@
         };
 
         var videoOver = function() {
-            if (!$(this).hasClass('playing')) {
+        	if (!$(this).hasClass('playing')) {
                 $(this)
                     .removeClass('inactive')
                     .addClass('hovered');
@@ -510,19 +515,19 @@
             });
         }
 
-        var renderProd = function(prods,target,templ){
+        var renderProd = function(prods, target, templ) {
             var html = "";
             if (prods && prods.length) {
                 for (var i = 0; i < prods.length; i++) {
                     var data = JSON.parse(prods[i].data || "");
                     prods[i].linkUrl = data.linkUrl;
                     prods[i].imageUrl = data.imageUrl;
-                    html += tmpl( templ, prods[i] );
+                    html += tmpl(templ, prods[i]);
                 }
             } else {
                 //no prods
             }
-            
+
             if (html.length) {
                 $(target).html(html);
                 if (($(target).length > 0) && !$(target).is(':hidden')) {
@@ -533,20 +538,20 @@
 
         var updateProducts = function(videoId) {
             if ("undefined" === typeof videoId) return console.log("no video id");
-            
+
             $.ajax({
-                url:"//app.tvpage.com/api/videos/" + videoId + "/products",
+                url: "//app.tvpage.com/api/videos/" + videoId + "/products",
                 dataType: 'jsonp',
-                data:{
+                data: {
                     "X-login-id": TVSite.loginId
                 }
-            }).done(function(res){
-                
-                renderProd( res, "#mobile-products-wrapper",  $("#mobileProduct").html( ));
-                renderProd( res, "#desktop-products-wrapper",  $("#desktopProduct").html( ));
-                renderProd( res, "#desktop-products-pop-ups",  $("#productPopup").html( ));
-                
-                setTimeout(function(){
+            }).done(function(res) {
+
+                renderProd(res, "#mobile-products-wrapper", $("#mobileProduct").html());
+                renderProd(res, "#desktop-products-wrapper", $("#desktopProduct").html());
+                renderProd(res, "#desktop-products-pop-ups", $("#productPopup").html());
+
+                setTimeout(function() {
                     bindPopUp();
                     recreatIscrolls();
                     bindProductInteraction();
@@ -587,7 +592,7 @@
         var playVideo = function(video) {
 
             if (video) {
-                
+
                 inTimeProducts.destroy();
                 inTimeProducts.initialize({
                     videoId: video.id,
@@ -607,7 +612,7 @@
                 var url = getVideoUrl(video);
                 if (!isHomePage && !isChannelPage) {
                     updateSiteUrlAndTitle(url, video.titleTextEncoded);
-                    setTimeout(function(){
+                    setTimeout(function() {
                         updateSocialShareLink(url, video);
                     });
                 }
@@ -721,6 +726,7 @@
                 }
                 $container.append(html + '</div>');
                 var $videos = $container.find('.video');
+                debugger;
                 if (desktopBreakPoint && !isMobile) {
 
                     $videos.hover(videoOver, videoLeave);
@@ -968,7 +974,9 @@
         };
 
         var updateTranscripts = function(video) {
-            var isObj = function(val){return "object" === typeof val};
+            var isObj = function(val) {
+                return "object" === typeof val
+            };
             if (video && isObj(video) && 'id' in video) {
                 getVideoTranscript(video.id, function(res) {
                     if (res && isObj(res) && "transcripts" in res && res.transcripts && res.transcripts.trim().length) {
@@ -984,6 +992,7 @@
         };
 
         if (isPlaybackPage) {
+
             var handleSelectedVideo = function(e) {
                 e.preventDefault();
                 if (!$(this).hasClass('playing')) {
@@ -1226,6 +1235,14 @@
                     floater: { removeControls: ['tvplogo'] }
                 }
             });
+
+        }
+
+        if(isPlaybackPage){
+
+          $(".video-date-text").text(function(i, text){
+            return formatDate(text);
+          });
         }
 
 
@@ -1376,6 +1393,7 @@
          * Channel title
          */
         if (isPlaybackPage) {
+
             var $title = $('#playback .title'),
                 channel = getPlaybackChannel(),
                 title = '';
@@ -1402,6 +1420,7 @@
         }
 
         $('.duration').text(function(i, text) {
+
             return formatTime(text);
         });
 
@@ -1445,34 +1464,30 @@
         });
 
         if (isChannelPage) {
-            Filters.initialize();
+        	Filters.initialize();
             var channelQty = TVSite.activeChannelVideosTotal;
             $('.channel-poster-holder').find('.channel-qty').html(channelQty);
         }
 
-        var randomBanner = function(){
+        var randomBanner = function() {
             var dynamicBanner = $("#dynamic-banner");
             var dynamicAnchor = $("#dynamic-anchor");
 
-            var arr = [
-                {
-                  imgPath: "/bandh/img/channels-poster/banner_zoom_desktop.jpg",
-                  link: '/Zoom-TV/67168399--',
-                  title: 'Zoom-TV'
-                },
-                {
-                  imgPath: "/bandh/img/channels-poster/banner_wacom_desktop.jpg",
-                  link: '/Wacom-TV/68963353--',
-                  title: 'Wacom-TV'
-                },
-                {
-                  imgPath: "/bandh/img/channels-poster/banner_seagate_desktop.jpg",
-                  link: '/Seagate-TV/68963355--',
-                  title: 'Seagate-TV'
-                }
-            ];
+            var arr = [{
+                imgPath: "/bandh/img/channels-poster/banner_zoom_desktop.jpg",
+                link: '/Zoom-TV/67168399--',
+                title: 'Zoom-TV'
+            }, {
+                imgPath: "/bandh/img/channels-poster/banner_wacom_desktop.jpg",
+                link: '/Wacom-TV/68963353--',
+                title: 'Wacom-TV'
+            }, {
+                imgPath: "/bandh/img/channels-poster/banner_seagate_desktop.jpg",
+                link: '/Seagate-TV/68963355--',
+                title: 'Seagate-TV'
+            }];
 
-            var banner = arr[ Math.floor(Math.random() * arr.length) ];
+            var banner = arr[Math.floor(Math.random() * arr.length)];
 
             dynamicBanner.attr('src', banner.imgPath);
             dynamicBanner.attr('title', banner.title);
@@ -1653,9 +1668,9 @@
 
         };
 
-        if (isPlaybackPage || isHomePage) {
+        if (isPlaybackPage || isHomePage || isChannelPage) {
             $('.video-duration').text(function(i, scs) {
-                return formatMediaDuration(scs); 
+                return formatMediaDuration(scs);
             });
         }
 
@@ -1711,13 +1726,13 @@
                 initialize: function() {
 
                     $('.channel-spinner').height($('.channel-videos').height());
-                    
+
                     if ($(window).width() < 768) {
                         $('.channel-search-no-results').height($('.channel-videos').height());
                     }
-                    
+
                     this.bindEvents();
-                    
+
                     var channel = TVSite.channelVideosData;
                     if ("object" === typeof channel && "undefined" !== typeof channel.videos) {
                         this.videoList = channel.videos;
@@ -1760,7 +1775,7 @@
                     this.bindLoadMoreVideosEvent();
                 },
 
-                fetchLatestVideos: function(callback) { 
+                fetchLatestVideos: function(callback) {
                     if ('function' !== typeof callback) return console.log("not a function");
                     $.ajax({
                         url: "//app.tvpage.com/api/channels/" + TVSite.activeLatestVideosData.id + "/videos",
@@ -1816,8 +1831,8 @@
                     this.lastChannelVideosPageCheck(videos);
                     this.videoList = this.videoList.concat(videos.slice(0)); // copying loaded page and add to video list
                     this.cacheVideoList = this.videoList.slice(0);
-                    this.renderVideoRows(this.rowerize(videos), function(html) { 
-                        $('.channel-videos .loadable-container').append(html || ""); 
+                    this.renderVideoRows(this.rowerize(videos), function(html) {
+                        $('.channel-videos .loadable-container').append(html || "");
                     });
                     this.initLoadMoreChannelVideos();
                     this.bindVideoThumbEvents('.channel-videos');
@@ -1825,7 +1840,7 @@
 
                 bindLoadMoreVideosEvent: function() {
                     var that = this;
-                    var getNextVideosPage = function(callback){
+                    var getNextVideosPage = function(callback) {
                         that.channelVideosPage = ++that.channelVideosPage;
                         var channelId = 0;
                         var channel = getPlaybackChannel();
@@ -1836,37 +1851,38 @@
                         if (!fetching) {
                             loadingIcon.show('fast');
                             $.ajax({
-                            url: "//app.tvpage.com/api/channels/"+channelId+"/videos",
-                            dataType: 'jsonp',
-                            data: {
-                                p: that.channelVideosPage,
-                                n: that.limitPerPage,
-                                "X-login-id": TVSite.loginId
-                            },
-                            success: function(){
-                                loadingIcon.hide();
-
-                            }
-                        }).done(callback);
+                                url: "//app.tvpage.com/api/channels/" + channelId + "/videos",
+                                dataType: 'jsonp',
+                                data: {
+                                    p: that.channelVideosPage,
+                                    n: that.limitPerPage,
+                                    "X-login-id": TVSite.loginId
+                                },
+                                success: function() {
+                                    loadingIcon.hide();
+								}
+                            }).done(callback);
                             fetching = false;
                         }
+                        
                     };
 
-                    $(window).scroll(function(){
-                        if  ($(window).scrollTop() == $(document).height() - $(window).height()){
+                    $(window).scroll(function() {
+                        if ($(window).scrollTop() == $(document).height() - $(window).height()) {
                             if (isPlaybackPage || isChannelPage) {
                                 if (isFiltered) {
-                                   Filters.nextPage();
-                                }  
-                                else{
-                                   getNextVideosPage($.proxy( that.handleChannelVideosFromLoadMore, that ));
+                                    Filters.nextPage();
+                                } else {
+                                    getNextVideosPage($.proxy(that.handleChannelVideosFromLoadMore, that));
+                                    
                                 }
+                            } else {
+                                getNextVideosPage($.proxy(that.handleChannelVideosFromLoadMore, that));
+                                
                             }
-                            else{
-                                getNextVideosPage($.proxy( that.handleChannelVideosFromLoadMore, that ));
-                            }
-                       }
+                        }
                     });
+
                 },
 
                 resetSearch: function() {
@@ -1958,7 +1974,7 @@
                         data: {
                             'X-login-id': TVSite.loginId,
                             p: this.searchResultsPage,
-                            n:this.limitPerPage,
+                            n: this.limitPerPage,
                             s: this.query,
                             status: 'approved',
                             channelsLimit: TVSite.channelVideosData.id
@@ -2068,6 +2084,7 @@
                 },
 
                 handleSelectedVideo: function($video) {
+
                     if (!$(this).hasClass('playing')) {
                         var that = this;
                         this.updateVideoElements();
@@ -2081,7 +2098,7 @@
                             updateProducts(video.id);
                             that.activeVideoId = video.id;
                         });
-                        
+
                         updateSiteUrlAndTitle($video.data('url'), $video.data('title'));
                         $video.removeClass('inactive hovered').addClass('playing');
                         $('html, body').animate({ scrollTop: 0 }, 300);
@@ -2089,8 +2106,10 @@
                 },
 
                 bindVideoThumbEvents: function(delegate) {
+
                     if ('undefined' === typeof delegate) return console.log("no delegate");
-                    var $videos = $(delegate).find('.video'), that = this;
+                    var $videos = $(delegate).find('.video'),
+                        that = this;
                     if (!isMobile && isPlaybackPage) {
                         $videos.off().hover(videoOver, videoLeave);
                         $(delegate).off().on('click', '.video', function(e) {
@@ -2104,6 +2123,13 @@
                                 $.proxy(that.handleSelectedVideo, that, $el)();
                             }
                         });
+                    }else if (!isMobile && isHomePage){
+                    	$videos.off().hover(videoOver, videoLeave);
+                        
+
+                    }else if(!isMobile && isChannelPage){
+                    	$videos.off().hover(videoOver, videoLeave);
+                        
                     }
                 },
 
@@ -2227,7 +2253,7 @@ if ($('body').hasClass('search-page')) {
                 if (params.length) {
                     params = params.substr(1).trim();
                     var kv = params.split("=");
-                    ret[ kv[0] ] = kv[1];
+                    ret[kv[0]] = kv[1];
                 }
                 return ret;
             }());
@@ -2236,7 +2262,7 @@ if ($('body').hasClass('search-page')) {
                 n: RESULTS_LIMIT,
                 status: 'approved',
                 p: 0
-            }, urlParams); 
+            }, urlParams);
             var getResults = function() {
                 return $.ajax({
                     url: "//app.tvpage.com/api/videos/search",
