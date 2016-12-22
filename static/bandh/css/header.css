@@ -568,7 +568,6 @@
 
 .desktop-channels-menu-item {
     display: block;
-    text-transform: lowercase;
     text-decoration: none;
     background-color: #759F13;
     color: #fff;
@@ -583,11 +582,6 @@
 .desktop-channels-menu-item:first-child {
 	border-left: 1px solid white;
 }
-
-.desktop-channels-menu-item::first-letter {
- 	text-transform: uppercase;
- 	
- }
 
 .desktop-channels-menu-item:hover {
     text-decoration: none;
