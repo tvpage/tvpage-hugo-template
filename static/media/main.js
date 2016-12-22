@@ -1,7 +1,7 @@
 define(function(require) {
 
     var $ = require("jquery-private");
-    require("iscroll");
+    var IScroll = require("iscroll");
 
     var CSS = require('text!dist/css/main.css');
     if (!$('#tvp-css-lib').length) {
