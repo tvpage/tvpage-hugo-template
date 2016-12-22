@@ -726,7 +726,6 @@
                 }
                 $container.append(html + '</div>');
                 var $videos = $container.find('.video');
-                debugger;
                 if (desktopBreakPoint && !isMobile) {
 
                     $videos.hover(videoOver, videoLeave);
