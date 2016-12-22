@@ -10,9 +10,9 @@
 {{$numbers := (seq 0 $qty )}}
 {{range $numbers}}
 	{{ $working := . }}
-	{{$pagina := index $.Site.Data.channelVideos (printf "x%s_page_%d" $channel.id $working  )}}
-	{{ if (isset $pagina "data") }}
-		{{ $.Scratch.Add "channelVideos" $pagina.data }}
+	{{$page := index $.Site.Data.channelVideos (printf "x%s_page_%d" $channel.id $working  )}}
+	{{ if (isset $page "data") }}
+		{{ $.Scratch.Add "channelVideos" $page.data }}
 	{{ end }}
 {{end}}
 
