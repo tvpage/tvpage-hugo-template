@@ -12,10 +12,10 @@
 	{{ $working := . }}
 	{{$page := index $.Site.Data.channelVideos (printf "x%s_page_%d" $channel.id $working  )}}
 	{{ if (isset $page "data") }}
-		{{ $.Scratch.Add "channelVideos" $page.data }}
+		{{ $.Scratch.Add "total" (len $page.data ) }}
 	{{ end }}
 {{end}}
-
+{{ $channelVideosQty := $.Scratch.Get "total" }}
 <!DOCTYPE html>
 <!--[if IE 9]>         <html class="ie9"> <![endif]-->
 <!--[if gt IE 9]><!-->
@@ -54,7 +54,7 @@
         <div class="row clearfix">
             <div class="channel-details-text">
                 <p class="channel-title">{{ $channel.titleTextEncoded }}</p>
-                <p class="channel-quantity"><span class="channel-qty">{{ len ($.Scratch.Get "channelVideos") }}</span> Videos</p>
+                <p class="channel-quantity"><span class="channel-qty">{{ $.Scratch.Get "total" }}</span> Videos</p>
             </div>
             <a class="presented-holder">
                 <div class="presented-ad">
@@ -150,7 +150,7 @@
     </script>
     <script type='text/javascript'>
        TVSite = window.TVSite || {};
-       TVSite.activeChannelVideosTotal = {{ len ($.Scratch.Get "channelVideos") }};
+       TVSite.activeChannelVideosTotal = {{ $.Scratch.Get "total" }};
        TVSite.channelVideosData = JSON.parse({{ ($.Scratch.Get "channel") | jsonify }});
        TVSite.channelId =  TVSite.channelVideosData.id;
        TVSite.channelVideosPage = 1;
