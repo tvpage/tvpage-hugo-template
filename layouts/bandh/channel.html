@@ -1,13 +1,21 @@
 {{ $channel := index $.Site.Data.channels (printf "x%s" .Params.channelid ) }}
 {{ $.Scratch.Add "channel" $channel }}
-
 {{ $fileObj := index $.Site.Data.channelVideos (printf "x%s_page_1" $channel.id) }}
 {{ if (isset $fileObj "data") }}
     {{ $.Scratch.Add "channelVideos" $fileObj.data }}
 {{ else }}
     {{ $.Scratch.Add "channelVideos" "" }}
 {{ end }}
-
+{{$qty := (len $.Site.Data.channelVideos) }}
+{{$numbers := (seq 0 $qty )}}
+{{range $numbers}}
+	{{ $working := . }}
+	{{$page := index $.Site.Data.channelVideos (printf "x%s_page_%d" $channel.id $working  )}}
+	{{ if (isset $page "data") }}
+		{{ $.Scratch.Add "total" (len $page.data ) }}
+	{{ end }}
+{{end}}
+{{ $channelVideosQty := $.Scratch.Get "total" }}
 <!DOCTYPE html>
 <!--[if IE 9]>         <html class="ie9"> <![endif]-->
 <!--[if gt IE 9]><!-->
@@ -46,7 +54,7 @@
         <div class="row clearfix">
             <div class="channel-details-text">
                 <p class="channel-title">{{ $channel.titleTextEncoded }}</p>
-                <p class="chan`nel-quantity"><span class="channel-qty">{{ len ($.Scratch.Get "channelVideos") }}</span> Videos</p>
+                <p class="channel-quantity"><span class="channel-qty">{{ $.Scratch.Get "total" }}</span> Videos</p>
             </div>
             <a class="presented-holder">
                 <div class="presented-ad">
@@ -58,7 +66,7 @@
     </div>
     <div class="filter-wrapper">
         <div id="video-filters" class="row">
-            <legend>Sort By:</legend>
+            <legend>Filter By:</legend>
             <div class="filter">
                 <select id="filter-product-category" data-code="product_category" class="filter-select">
                     <option>product category</option>
@@ -142,7 +150,7 @@
     </script>
     <script type='text/javascript'>
        TVSite = window.TVSite || {};
-       TVSite.activeChannelVideosTotal = {{ len ($.Scratch.Get "channelVideos") }};
+       TVSite.activeChannelVideosTotal = {{ $.Scratch.Get "total" }};
        TVSite.channelVideosData = JSON.parse({{ ($.Scratch.Get "channel") | jsonify }});
        TVSite.channelId =  TVSite.channelVideosData.id;
        TVSite.channelVideosPage = 1;

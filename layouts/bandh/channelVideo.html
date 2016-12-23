@@ -1,9 +1,16 @@
 {{ $channel := index $.Site.Data.channels (printf "x%s" .Params.channelid ) }}
 {{ $.Scratch.Add "channelVideos" (index $.Site.Data.channelVideos (printf "x%s_page_1" $channel.id) "data") }}
 {{ $video := index $.Site.Data.videos (printf "x%s" .Params.videoid ) }}
-{{ $channelVideosQty := len ($.Scratch.Get "channelVideos") }}
-
-
+{{$qty := (len $.Site.Data.channelVideos) }}
+{{$numbers := (seq 0 $qty )}}
+{{range $numbers}}
+    {{ $working := . }}
+    {{$page := index $.Site.Data.channelVideos (printf "x%s_page_%d" $channel.id $working  )}}
+    {{ if (isset $page "data") }}
+        {{ $.Scratch.Add "total" (len $page.data ) }}
+    {{ end }}
+{{end}}
+{{ $channelVideosQty := $.Scratch.Get "total" }}
 <!DOCTYPE html>
 <!--[if IE 9]>         <html class="ie9"> <![endif]-->
 <!--[if gt IE 9]><!-->
@@ -44,7 +51,7 @@
             </div>
             <span class="separator on">&#8250;</span>
             <div id="breadcrumb-1" data-channel-id="{{ $channel.id }}" class="inline-block" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
-                <a class="breadcrumb-link on" href="{{(print "/" $channel.title "/" $channel.id "--")}}" itemprop="url">
+                <a class="breadcrumb-link on" href="{{(print "/" $channel.titleTextEncoded "/" $channel.id "--")}}" itemprop="url">
                     <span itemprop="title">{{ $channel.title }}</span>
                 </a>
             </div>
@@ -85,7 +92,7 @@
             <div class="tab-contents">
                 <div id="tab-content-0" class="tab-content details compressed active">
                     <p class="video-date">Published on <span class="video-date-text">{{ $video.date_created }}</span></p>
-                    <p class="video-duration"><strong>Duration:</strong> <span class="duration">{{ $video.duration }}</span></p>
+                    <p class="duration-on-video"><strong>Duration:</strong> <span class="duration">{{ $video.duration }}</span></p>
                     <div class="video-description">{{ .Description | safeHTML }}</div>
                     {{ if $video.transcripts }}
                         <p class="transcript-text"> Transcript: </p>
@@ -101,7 +108,8 @@
     <div id="playback">
     <div class="row clearfix playback-header">
         <div class="channel-title-holder clearfix">
-            <h2 class="inline-block title" data-channel-qty="2876"></h2>
+            <h2 class="inline-block title" data-channel-qty={{ $channelVideosQty }}></h2>
+            
         </div>
         <div class="filters-holder clearfix">
             <div class="channel-search-form inline-block">
