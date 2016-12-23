@@ -110,7 +110,7 @@
                 });
             },
             hoverCheck: function() {
-               
+
                 $('.video').each(function() {
                     if (!$._data(this, 'events')) $(this).hover(function() { $(this).addClass('hovered') }, function() { $(this).removeClass('hovered') });
                 });
@@ -302,7 +302,6 @@
                     $(document).on('click', '.reset-filter', _.bind(function() {
                         this.reset();
                     }, this));
-
                 }, this));
             }
         };
@@ -1863,7 +1862,7 @@
                             }).done(callback);
                             fetching = false;
                         }
-                        
+
                     };
 
                     $(window).scroll(function() {
@@ -1873,11 +1872,11 @@
                                     Filters.nextPage();
                                 } else {
                                     getNextVideosPage($.proxy(that.handleChannelVideosFromLoadMore, that));
-                                    
+
                                 }
                             } else {
                                 getNextVideosPage($.proxy(that.handleChannelVideosFromLoadMore, that));
-                                
+
                             }
                         }
                     });
@@ -2124,11 +2123,11 @@
                         });
                     }else if (!isMobile && isHomePage){
                     	$videos.off().hover(videoOver, videoLeave);
-                        
+
 
                     }else if(!isMobile && isChannelPage){
                     	$videos.off().hover(videoOver, videoLeave);
-                        
+
                     }
                 },
 

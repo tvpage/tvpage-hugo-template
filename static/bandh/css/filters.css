@@ -1,10 +1,9 @@
 .filter-wrapper{
   background-color: #759F13;
-  height: 118px;
+  height: 108px;
   position: relative;
   padding-top: 0px;
 }
-
 #video-filters{
   height: 100%;
   padding-top: 14px;
@@ -91,6 +90,8 @@
   width: 40px;
   border: 0;
   background-color: transparent;
+  position: relative;
+  top: -94px;
 }
 
 #video-filters legend {
