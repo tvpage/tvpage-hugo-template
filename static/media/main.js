@@ -1,7 +1,7 @@
 define(function(require) {
 
     var $ = require("jquery-private");
-    require("iscroll");
+    var IScroll = require("iscroll");
 
     var CSS = require('text!dist/css/main.css');
     if (!$('#tvp-css-lib').length) {
@@ -27,6 +27,7 @@ define(function(require) {
 
             this.initializePlayer();
             this.videoClick();
+            this.showArrows();
             this.initializeProductScrollerX();
             this.initializeProductScrollerY();
 
@@ -70,15 +71,23 @@ define(function(require) {
                 this.cache.productScrollerX = new IScroll(sel, {
                     scrollX: true,
                     scrollY: false,
-                    bounce: false,
-                    useTransition: false,
+                    momentum: false,
+                    snap: true,
+                    keyBindings: true,
                     bindToWrapper: true,
                     click: true
                 });
                 setTimeout(function(){
                     $('#mobile-products #scroller').css('width', $('#mobile-products-list').width());
                     that.cache.productScrollerX.refresh();
+                    $('#btnLeft').on('click', function(){
+                        that.cache.productScrollerX.prev();
+                    });
+                    $('#btnRight').on('click', function(){
+                        that.cache.productScrollerX.next();
+                    });
                 },500);
+
             }
         },
 
@@ -126,13 +135,55 @@ define(function(require) {
             if (this.isMobile()) {
                 var THAT = this;
                 window.matchMedia('(orientation: portrait)').addListener(function(m) {
-                    $('#mobile-channels #scroller').width(99999);
-                    var width = $('#mobile-channels-list').width();
-                    $('#mobile-channels #scroller').css('width', width);
+                    if (m.matches) {
+                        var width = $('#mobile-channels-list').width();
+                        $('#mobile-channels #scroller').width(99999);
+                        $('#mobile-channels #scroller').css('width', width);
+                        $('#tvpp .tvpp-wrapper').css('padding-bottom', '56.25%');
+                        $('#scroller-wrapper.x-scroll').show();
+                        $('.recommeded-products').show();
+                        $('#btnRight').show();
+                        $('#btnLeft').show();
+                        $('#tvplb .lb-content').css({
+                                                    'height': '375px',
+                                                    'width': '100%'
+                                                });
+                        $('#tvplb .lb-close').css({
+                                                    'height': '32px',
+                                                    'width': '32px'
+                                                });
+                    }
+                    else{
+                        $('#tvplb .lb-content').css({
+                                                    'height':'305px',
+                                                    'width': '95%'
+                                                });
+                        $('#tvpp .tvpp-wrapper').css('padding-bottom', '-=11.25%');
+                        $('#tvplb .lb-close').css({
+                                                    'height': '26px',
+                                                    'width': '26px'
+                                                });
+                        $('#scroller-wrapper.x-scroll').hide();
+                        $('.recommeded-products').hide();
+                        $('#btnRight').hide();
+                        $('#btnLeft').hide();
+                    }
                     THAT.refreshMobileProductScroller();
                     THAT.resizePlayer();
                     THAT.handleAdBanner(products);
+
                 });
+            }
+        },
+
+        showArrows: function(){
+            if (this.isMobile()) {
+                $('#btnRight').show();
+                $('#btnLeft').show();
+            }
+            else{
+                $('#btnRight').hide();
+                $('#btnLeft').hide();
             }
         },
 
@@ -387,38 +438,62 @@ define(function(require) {
             this.resizePlayer();
         },
 
-        renderProducts: function(products){
+        renderProducts: function(products) {
             var s = '';
             var bpcheck = window.innerWidth < 767;
             var pref = bpcheck ? 'mobile' : 'desktop';
             var that = this;
-            if(bpcheck){
-                this.refreshMobileProductScroller();
+            if (bpcheck) {
+              this.refreshMobileProductScroller();
             }
-
             this.renderPopUps(products);
-            for (var i = 0, l = products.length; i < l; i++) {
+            if (!((offered == "N") || (disabled == "Y"))) {
+              for (var i = 0, l = products.length; i < l; i++) {
                 var offered = products[i].Web_Offered;
                 var disabled = products[i].Web_Disabled;
-                if (!((offered == "N") || (disabled == "Y"))){
-                    var data = products[i].data;
-                    var array = JSON.parse(data);
-                    s += '<li>\
-                       <a href="'+array.linkUrl+'" target="_blank">\
-                         <div id="p-'+i+'" class="product" data-video-id="'+products[i].entityIdParent+'" data-id="'+products[i].id+'">\
-                           <div class="product-img" style="background-image:url('+array.imageUrl+')">\
-                             <img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="'+products[i].title+'" />\
-                           </div>\
-                         </div>\
-                       </a>\
-                     </li>';
+                var price = 0;
+                var data = products[i].data;
+                var array = JSON.parse(data);
+                var priceHtml = '<div class="price">';
+                if (array.price) {
+                  price = array.price.toString().replace(/[^0-9.]+/g, '');
+                  price = parseFloat(price).toFixed(2);
+                  if (price > 0) {
+                    priceHtml += '$' + price;
+                  }
                 }
+                priceHtml += '</div>';
+                if (this.isMobile()) {
+                  s += '<li>\
+                                   <div id="p-' + i + '" class="product adjustWidth" data-video-id="' + products[i].entityIdParent + '" data-id="' + products[i].id + '">\
+                                     <div class="product-img" style="background-image:url(' + array.imageUrl + ')">\
+                                       <img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="' + products[i].title + '" />\
+                                     </div>\
+                                     <h4 class="product-title">' + products[i].title + '</h4>' + priceHtml + '\
+                                     <a class="call-to-action" href="' + array.linkUrl + '" target="_blank" data-video-id="' + products[i].entityIdParent + '" data-id="' + products[i].id + '">' + 'VIEW DETAILS' + '<span class="material-icon"></span>' + '</a>\
+                                   </div>\
+                               </li>';
+                } else {
+                  s += '<li>\
+                                 <a href="' + array.linkUrl + '" target="_blank">\
+                                   <div id="p-' + i + '" class="product" data-video-id="' + products[i].entityIdParent + '" data-id="' + products[i].id + '">\
+                                     <div class="product-img" style="background-image:url(' + array.imageUrl + ')">\
+                                       <img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="' + products[i].title + '" />\
+                                     </div>\
+                                   </div>\
+                                 </a>\
+                               </li>';
+                }
+              }
             }
             $('#desktop-products-list,#mobile-products-list')
               .empty()
               .append(s);
             this.bindProductEvents();
-        },
+            var productWidth = $('.adjustWidth');
+            var viewport = $(window).width();
+            $(productWidth).css('width', viewport -= 40);
+          },
 
         renderPopUps: function(products){
             var s = '';
@@ -623,7 +698,7 @@ define(function(require) {
       $("#tvp-gallery").append( '<div class="cz-line-heading"><div class="cz-line-heading-inner">Recommended Videos</div></div><div id="videos"></div><div id="lightbox" class="off">'+lightBoxTemplate+'</div><a class="tvplogo" class="tvp-clearfix" href="//www.tvpage.com" target="_blank"></a>' ).addClass("tvp-clearfix");
 
       var playerTemplate = '<div id="tvpp"><div id="html5MobilePlayBtn" class="html5-play-button"></div><div class="tvpp-wrapper"><div id="tvpp-holder" class="tvpp-holder"></div><div class="video-overlay"></div></div></div>';
-      var productsTemplate = '<div class="recommeded-products">Recommended Products</div><div id="mobile-products"><div><div><div id="scroller-wrapper" class="x-scroll"><div id="scroller" class="scroll-area"><ul id="mobile-products-list" class="products-list"></ul></div></div></div></div></div><div id="desktop-products" class="products"><div class="products-holder"><div id="scroller-wrapper" class="y-scroll"><div id="scroller" class="scroll-area"><ul id="desktop-products-list"></ul></div></div><div id="product-pop-ups"></div></div></div>';
+      var productsTemplate = '<div class="recommeded-products">RECOMMENDED PRODUCTS</div><div id="mobile-products"><div id="scroller-wrapper" class="x-scroll"><div id="scroller" class="scroll-area"><ul id="mobile-products-list" class="products-list"></ul></div></div></div><div id="sliderArrows"><div id="btnLeft">&#10092;</div><div id="btnRight">&#10093;</div></div><div id="desktop-products" class="products"><div class="products-holder"><div id="scroller-wrapper" class="y-scroll"><div id="scroller" class="scroll-area"><ul id="desktop-products-list"></ul></div></div><div id="product-pop-ups"></div></div></div>';
       var initialTemplate = '<div class="tvp-clearfix"><div class="tvp-col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div><div class="tvp-col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div></div><div class="tvp-clearfix"><div class="tvp-col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div><div class="tvp-col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div></div><div class="tvp-clearfix"><div class="tvp-col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div><div class="tvp-col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div></div>';
 
       setTimeout(function(){
