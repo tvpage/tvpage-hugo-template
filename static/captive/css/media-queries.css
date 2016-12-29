@@ -1,0 +1,620 @@
+@media (min-width: 600px) {
+	#in-time-products {
+	 	font-size: 12px;
+	}
+	.desktop-channel-title{
+		font-size: 36px;
+	}
+}
+
+
+@media (min-width: 604px) {
+	#video-playing-prefix {
+	  font-size: 135%;
+	}
+
+	#video-playing-title {
+	  font-size: 95%;
+	}
+}
+
+
+/**
+ * Tablet Breakpoint (iPad)
+ */
+@media (min-width: 768px) {
+
+	.mobile-channels-menu{
+		display: none !important;
+	}
+
+	.desktop-channel-title{
+		font-size: 24px;
+	}
+
+	.latest-videos-browse-link  > a{
+		display: block;
+	}
+
+	#show-filters {
+		display: none;
+	}
+
+	.playback-header .title {
+		font-size: 155%;
+		margin-top: 5px;
+	}
+
+	.playback-header .qty {
+		display: inline-block;
+	}
+
+	.filters {
+		display: inline-block;
+	}
+
+	.filters > a {
+		width: auto;
+		padding: 0 5px;
+		font-weight: 400;
+		text-decoration: none;
+		color: black;
+	}
+
+	.filters > a:hover {
+		background-color: #759F13;
+		color: white;
+	}
+
+	.channel-search-form {
+		width: auto;
+		float: right;
+	}
+
+	.channel-search-form > input[type="text"] {
+		width: 160px;
+	}
+
+	.channel-search-form > button {
+		display: inline-block;
+	}
+
+	.in-time-title {
+		max-width: 260px;
+	}
+
+	.in-time-unit {
+		margin-right: 10px;
+	 }
+
+	.in-time-cta:hover {
+		background-color: #134267;
+	}
+
+	#brands {
+		display: block;
+		padding: 30px 0;
+	}
+
+	.row {
+		max-width: 768px;
+		padding-right: 40px;
+		padding-left: 40px;
+	}
+
+	#player-products {
+		margin-bottom: 40px;
+	}
+
+	.TVPagePlayer-holder {
+	float: left;
+  	width: 80%;
+	}
+
+	.player-product-background{
+	  background-color: #EDEDED;
+	  position: relative;
+	  left: auto;
+	  right: auto;
+	  max-width: 692px;
+	  padding: 0;
+	}
+
+	#player-product-holder{
+	  position: relative;
+	  top: 15px;
+	  left: 15px;
+	}
+
+	#video-playing-prefix {
+	  font-size: 135%;
+	  float: left;
+	  padding: 0 3px 0 0;
+	}
+
+	#video-playing-title {
+		font-size: 135%;
+		float: left;
+		text-align: left;
+		max-width: 420px;
+		height: 25px;
+		padding: 0;
+	}
+
+	.playing-video-title{
+		float: left;
+		padding: 10px 0;
+	}
+
+	.related-products{
+		display: block;
+		float: right;
+		padding: 10px 5px;
+		line-height: 19px;
+		font-size: 10px;
+	}
+
+	#video-playing-share {
+	  display: block;
+	}
+
+	.search-results-header {
+	  padding: 15px 0;
+		font-size: 155%;
+		text-align: left;
+	}
+
+	.search-results-header > span {
+		display: inline-block;
+	}
+
+	.video-playing-share {
+		display: block;
+	}
+
+	.latest-videos-header {
+		text-align: left;
+	}
+
+	#latest-video-tvp-slider.tvp-slider {
+		height: 140px;
+	}
+
+	.channel-button {
+		display: none;
+	}
+
+	.channel-slider-holder {
+		padding-top: 30px;
+	}
+
+	.channel-slider-header {
+		display: block;
+	}
+
+	.channel-slider-row {
+		display: block;
+	}
+
+	.arrows-row {
+		display: block;
+	}
+
+	.desktop-products-holder {
+		display: block;
+	}
+
+	#brands-logos {
+		display: block;
+	}
+
+	#desktop-main-header {
+		display: block;
+	}
+
+	#desktop-top-header {
+		display: block;
+	}
+
+	#desktop-bottom-header {
+		display: block;
+	}
+
+	#mobile-header {
+		display: none;
+	}
+
+	.mobile-menu {
+		display: none;
+	}
+
+	.mobile-products-holder {
+		display: none;
+	}
+
+	#playback .video {
+		float: left;
+		width: 32.66%;
+		margin-bottom: 0;
+		margin-right: 1%;
+	}
+
+	#playback .video:last-child {
+		margin-right: 0;
+	}
+
+	#search-results .video {
+		float: left;
+		width: 31.85%;
+	  margin-bottom: 0;
+	  margin-right: 2.22%;
+	}
+
+	#search-results .video:last-child {
+		margin-right: 0;
+	}
+
+	.breadcrumbs {
+	  display: block;
+	}
+
+	.channel-title-holder {
+		float: left;
+		margin-bottom: 0;
+	}
+
+	.filters-holder {
+		float: right;
+	}
+}
+
+/**
+ * Desktop Classic Page Size
+ */
+@media (min-width: 960px) {
+
+	.desktop-channels-menu-item{
+		font-size: 100%;
+	}
+
+	.desktop-channel-title{
+		font-size: 36px;
+	}
+
+	.filters {
+		margin-right: 10px;
+		margin-bottom: 0;
+	}
+
+	.channel-search-form > button:hover {
+		background-color: #59790D;
+	}
+
+	.channel-search-form > input[type="text"] {
+		width: 130px;
+	}
+
+	#in-time-products {
+		font-size: 14px;
+	}
+
+	.channel-slider-row .slick-prev {
+	  left: -33px;
+	}
+
+	#brands .slick-prev {
+  	top: 74px;
+  }
+
+	#video-playing-title {
+		max-width: 600px;
+	}
+
+  #brands .slick-next {
+  	top: 74px;
+  }
+
+	.channel-slider-row .slick-next {
+	  right: -33px;
+	}
+	.row {
+		max-width: 885px;
+		padding-right: 0;
+		padding-left: 0;
+	}
+
+	.tvp-slider {
+		height: 175px;
+	}
+
+	#latest-video-tvp-slider.tvp-slider{
+		height: 170px;
+	}
+
+	.channel-slider-row .tvp-slider {
+		height: 215px;
+	}
+
+	.tvp-slider-arrow {
+		width: 30px;
+  	height: 55px;
+	}
+
+	.tvp-slider-arrow.left {
+		left: -48px;
+	}
+
+	.tvp-slider-arrow.right {
+		right: -48px;
+	}
+
+	#brands-logos .tvp-slider-arrow {
+		top: 18px;
+	}
+
+	.desktop-products-holder {
+		width: 13.5%;
+	}
+
+	.desktop-products-scroller-holder {
+		height: 414px;
+	}
+
+	.TVPagePlayer-holder {
+		width: 83%;
+	}
+
+	.related-products{
+		font-size: 12px;
+		line-height: 22px;
+	}
+
+	.brands-logo {
+		height: 80px;
+	}
+
+	#brands-logos .tvp-slider {
+		height: 105px;
+	}
+
+	.desktop-search-results-holder {
+		top: 44px;
+	}
+
+	.desktop-product {
+		width: 104px;
+  		height: 104px;
+	}
+
+	.desktop-product-img {
+		height: 104px;
+	}
+
+	.search-page .video-play-label {
+	  margin-top: 33%;
+	}
+
+	.search-page .video-img-overlay {
+		  background: url('//do0631budpzeh.cloudfront.net/assets/img/play_button.png') no-repeat 50% 40%;
+	}
+
+}
+
+/**
+ * Desktop
+ */
+@media (min-width: 1170px) {
+
+	.footer-links > a:hover{
+		color: #345;
+		fill: #345;
+		transition: all .3s;
+	}
+
+	.filters {
+		float: none;
+	}
+
+	.filters > a {
+		padding: 0 20px;
+		font-weight: 700;
+	}
+
+	.channel-search-form {
+		float: none;
+	}
+
+	.channel-search-form > input[type="text"] {
+		width: 240px;
+	}
+
+	.in-time-title {
+		max-width: 500px;
+	}
+	
+	.brand-logo-img {
+		background-size: 215px 119px;
+	}
+
+	.row {
+		max-width: 1170px;
+	}
+
+	#video-playing-title {
+		max-width: 825px;
+	}
+
+	#brands .slick-prev {
+		top: 88px;
+		left: 0;
+	}
+
+	#brands .slick-next {
+		top: 88px;
+		right: 0;
+	}
+
+	.tvp-slider {
+		height: 195px;
+	}
+
+	#video-playing-prefix {
+	  font-size: 155%;
+	}
+
+	#video-playing-title {
+		font-size: 155%;
+	}
+
+	.tvp-slider-arrow {
+		width: 25px;
+  	height: 60px;
+	}
+
+	.tvp-slider-arrow.left {
+		left: 0;
+	}
+
+	#brands-logos .tvp-slider-arrow {
+		top: 35px;
+	}
+
+	.tvp-slider-arrow.right {
+		right: 0;
+	}
+
+	.channel-slider-row .tvp-slider {
+		height: 250px;
+	}
+
+	#latest-video-tvp-slider.tvp-slider{
+		height: 200px;
+	}
+
+	.slogan {
+		display: block;
+	}
+
+	.TVPagePlayer-holder {
+		width: 85%;
+	}
+
+	.related-products{
+		font-size: 14px;
+		line-height: 25px;
+		padding: 10px 15px;
+	}
+
+	#desktop-main-header {
+		padding: 17px 0;
+	}
+
+	.desktop-search-input {
+		height: 52px;
+		font-size: 15px;
+	}
+
+	.desktop-search-button {
+		width: 52px;
+		height: 52px;
+		background-position: 12px 13px;
+	}
+
+	.desktop-search-results-item-title {
+		margin-top: 12px;
+	}
+
+	.desktop-search-results-item-text {
+		width: 330px;
+	}
+
+	.logo-desktop-img {
+		width: 145px;
+	}
+
+	.bh-home-logo {
+		margin-top: 6px;
+	}
+
+	.desktop-search-form {
+		width: 513px;
+	}
+
+	.desktop-search-results {
+		width: 513px;
+	}
+
+	.desktop-products-holder {
+		width: 12%;
+	}
+
+	.desktop-products-scroller-holder {
+		height: 560px;
+	}
+
+	.desktop-product {
+		width: 125px;
+  		height: 125px;
+	}
+
+	.desktop-product-img {
+		height: 125px;
+	}
+
+	.product-pop-up {
+		right: 145px;
+	}
+
+	.search-prefix {
+		font-size: 155%;
+	}
+
+	.search-query {
+	  margin-top: 8px;
+	}
+
+	.search-page .video-play-label {
+	  margin-top: 34%;
+	}
+
+	.search-page .video-img-overlay {
+		  background: url('//do0631budpzeh.cloudfront.net/assets/img/play_button.png') no-repeat 50% 45%;
+	}
+
+}
+
+@media (min-width: 1350px) {
+
+	.desktop-channel-title{
+		font-size: 48px;
+	}
+
+	.row {
+		max-width: 1350px;
+	}
+
+	.desktop-products-scroller-holder {
+		height: 645px;
+	}
+
+	.desktop-product {
+		width: 145px;
+		height: 145px;
+	}
+
+	.desktop-product-img {
+		height: 135px;
+	}
+
+	.product-pop-up {
+		right: 167px;
+	}
+
+	#brands .slick-prev {
+		top: 102px;
+	}
+
+	#brands .slick-next {
+		top: 102px;
+	}
+}
