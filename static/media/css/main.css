@@ -358,8 +358,7 @@
 }
 #mobile-products .product {
   position: relative;
-  border: 1px solid #ddd;
-  width: 83px;
+  height: 85px;
 }
 #mobile-products .product-img {
   position: relative;
@@ -367,6 +366,9 @@
   background: no-repeat 50% 50%;
   background-size: contain;
   height: 83px;
+  right: 100px;
+  width: 83px;
+  margin: auto; 
 }
 .pop-up-img {
   position: relative;
@@ -492,7 +494,7 @@
   width: 65px;
   height: 14px;
   font-family: Roboto;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: bold;
   text-align: center;
   line-height: 14px;
@@ -512,6 +514,70 @@
   top:0;
   left:0;
   z-index: 999999;
+}
+
+#mobile-products-list .product-title{
+  position: relative;
+  bottom: 90px; 
+  left: 125px;
+  font-size: 8px;
+  width: 180px;
+  line-height: 100%;
+  margin-bottom: 0;
+}
+
+#mobile-products-list .price{
+  position: relative;
+  color: #333;
+  bottom: 85px;
+  left: 125px;
+}
+
+#mobile-products-list a{
+  position: relative;
+  bottom: 75px;
+  left: 125px;
+  background-color: #587CB9;
+  color: #fff;
+  text-decoration: none;
+  padding: 5px 25px 5px 10px;
+}
+
+#mobile-products-list a .material-icon{
+  height: 12px;
+  width: 12px;
+  display: block;
+  top: 7px;
+  position: absolute;
+  right: 10px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAPFBMVEUAAAD////////////////////////////////////////////////////////////////////////////YSWgTAAAAE3RSTlMABA4oLjI2N0BBUVN+f4Cpqsv9Q4lPKAAAAGNJREFUeNpFj0EOgCAMBFdARAUR+/+/mrVmmUszkzRpgVwvgviNgs0cHEYuVDsTQUjrYGiW4Cy3DQ/yvlpjkC/JgxzhiAz0TicM0/8VuUJ53BWwuysQBZ4uTqv+3CTz/SZqxguuiQim/MCIXAAAAABJRU5ErkJggg==);
+}
+
+
+#sliderArrows{
+  position: relative;
+  bottom: 60px;
+}
+}
+
+#btnLeft, #btnRight{
+  width: 22px;
+  height: 22px;
+  background-color: #587CB9;
+  border-radius: 4px;
+  position: absolute;
+  color: #fff;
+  text-align: center;
+}
+
+#btnRight{
+  margin-left: 93%;
+}
+
+.x-scroll #scroller li {
+   padding: 0;
 }
 
 @media screen and (min-width: 600px){
