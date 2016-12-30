@@ -3,16 +3,9 @@ description = "starter theme tvpage"
 min_version = 0.17
 
 [[tvp-templates]]
-name = "London"
-uniqueName = "london"
-path = "layouts/london"
-thumbnail = "http://www.webdesigndev.com/wp-content/uploads/2012/08/114.jpg"
-preview = "http://preview.tvpage.com"
-
-[[tvp-templates]]
-name = "B&H"
-uniqueName = "bandh"
-path = "layouts/bandh"
+name = "Captivate"
+uniqueName = "captivate"
+path = "layouts/captivate"
 thumbnail = "http://www.webdesigndev.com/wp-content/uploads/2012/08/114.jpg"
 preview = "http://preview.tvpage.com"
 
