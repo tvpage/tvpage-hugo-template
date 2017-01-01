@@ -22,13 +22,11 @@ define(function(require) {
       isTouch = ('ontouchstart' in window || navigator.maxTouchPoints);
 
     function sendAnalitics(data, type) {
-      if ('object' === typeof data && type) {
-        if (window._tvpa) {
-          return _tvpa.push(['track', type, $.extend(data, {
-            li: _tvp.lid,
-            pg: _tvp.channelId
-          })]);
-        }
+      if ('object' === typeof data && type && window._tvpa) {
+        return _tvpa.push(['track', type, $.extend(data, {
+          li: _tvp.lid,
+          pg: _tvp.channelId
+        })]);
       }
     }
 
@@ -68,9 +66,9 @@ define(function(require) {
         $popup.appendTo($el).addClass('moved active').show();
       }
 
-      var top = $prodThumb.offset().top - $('.lb-content').offset().top;
+      var top = $prodThumb.offset().top - $('.tvplightbox-content').offset().top;
       var popupBottomEdge = $popup.offset().top + $popup.height();
-      var modalBottomEdge = $('.lb-content').offset().top + $('.lb-content').height();
+      var modalBottomEdge = $('.tvplightbox-content').offset().top + $('.tvplightbox-content').height();
 
       if (top < 0) {
         top = 0;
@@ -141,69 +139,42 @@ define(function(require) {
       $.publish('products:loaded', [products]);
     }
 
-    $.ajaxSetup({headers:{'X-Login-Id':_tvp.lid}});
-
-    // Syncs with the backend cartridge.
-    function loadCartridge(e, video) {
-      if (video) {
-        $.ajax({
-          url: _tvp.relatedProductsDesktop,
-          type: 'post',
-          dataType: "json",
-          data: JSON.stringify({
-            includeData: true,
-            channelId: _tvp.channelId,
-            videoId: video.id
-          }),
-          success: function(response) {
-            var products = [];
-            if ( response && "undefined" !== typeof response.cartridgeData && "undefined" !== typeof response.cartridgeData.products) {
-              products = response.cartridgeData.products;
-            }
-
-            var productHtml = "";
-            if ( response && "undefined" !== typeof response.html) {
-              productHtml = response.html;
-            }
-
-            setTimeout(function() { productsLoaded(products, productHtml); }, 0);
-
-          }
-        });
-      }
-    }
-
     return {
       init: function(opts, callback) {
         options = opts || {};
-        $el = $('<div>').attr('id', 'tvpprd').append("<span id=\"lb-header-rp\">Related Products</span>").appendTo(opts.place);
-        $.subscribe('player:play-video', loadCartridge);
+        $el = $('<div>').attr('id', 'tvpprd').append("<span id=\"lb-header-rp\">Related Products</span>").appendTo(opts.target);
+
+        $.subscribe('player:play-video', function(e, video) {
+          if ("undefined" === typeof video) {
+            return console.log('need video id');
+          }
+          $.ajax({
+            url: '//app.tvpage.com/api/videos/'+video.id+'/products',
+            dataType: 'jsonp',
+            data:{
+              'X-login-id': __TVPage__.config.loginId
+            },
+            success: function(res) {
+              productsLoaded(res, _.template(require('text!tmpl/products-desktop.html'))({products:res})); 
+            }
+          });
+        });
         $.subscribe('light-box:hiding', function() {
           if (!mobile) $el.html("");
         });
 
-        var track = function(pid, parent){sendAnalitics({ct: pid, vd: parent },'pk')};
-
-        $(document).on('click', '.product-title', function(){
-          track( $(this).attr("data-pid"), $(this).attr("data-parent") );
-        });
-
-        $(document).on('click', '.tvp-view-now', function(){
-          track( $(this).attr("data-pid"), $(this).attr("data-parent") );
-        });
-
-        $(document).on('click', '.product', function(){
-          track( $(this).attr("data-pid"), $(this).attr("data-parent") );
-        });
-
-        $(document).on('click', '.tvp-rating', function(){
-          track( $(this).attr("data-pid"), $(this).attr("data-parent") );
-        });
-
-        $(document).on('click', '.call-to-action', function(){
+        var clickTrack = function(){
+          sendAnalitics({ ct: $(this).attr("data-pid"), vd: $(this).attr("data-parent") })
+        };
+        $(document)
+        .on('click', '.product-title', clickTrack)
+        .on('click', '.tvp-view-now', clickTrack)
+        .on('click', '.product', clickTrack)
+        .on('click', '.tvp-rating', clickTrack)
+        .on('click', '.call-to-action', function(){
           window.open($(this).attr("data-url"),'_blank');
         });
-
+        
         if (_.isFunction(callback)) {
           callback();
         }

@@ -1,55 +1,21 @@
-{% if products|length  %}
+<% if (products.length) { %>
 	<div class="scrollable">
 		<div class="scroll-list">
-			{% for product in products %}
-				{% if product.id  %}
-					<div>
-						<a id="product-{{ product.id }}" href="{{ product.linkUrl }}" class="product" data-pid="{{ product.id }}" data-parent="{{ product.entityIdParent }}" target="_blank">
-							<div class="ar-content" style="background-image:url({{product.imageUrl }});"></div>
-						</a>
-						
-						<div id="product-popup-{{ product.id  }}" data-pid="{{ product.id }}" data-parent="{{ product.entityIdParent }}" class="product-popup" target="_blank">
-							<div class="poster-contain product-img"><div class="ar-content" style="background-image:url({{ product.imageUrl }});"></div></div>
-							<h2 class="product-title" data-pid="{{ product.id }}" data-parent="{{ product.entityIdParent }}"><a href="{{ product.linkUrl }}" target="_blank">{{ product.title }}</a></h2>
-							
-							{% if product.price is defined and product.price|trim is not empty  %}
-							<p class="product-price">$<span class="product-price-holder">{{ product.price }}</span></p>
-							{% endif %}
-    						
-    					{#	{% if product.rating is defined and product.rating|trim is not empty  %}
-							<ul class="tvp-product-rating">
-								{% set hasHalf = false %}
-								{% set checkDecimal = product.rating % 1 %} 
-								{% if checkDecimal !== 0 %} 
-									{% set hasHalf = true %}
-								{% endif %}
-								{{ hasHalf }}
-								{% set hasEmpty = 5 - product.rating %}
-
-							    {% for i in 1..product.rating|round(0, 'floor') %}
-								    <li class="star star-full"></li>
-								{% endfor %}
-							    {% if hasHalf %}
-									<li class="star star-half"></li>
-								{% endif %}
-							    {% if hasEmpty >= 1 %}
-						        {% for i in 0..hasEmpty|round(0, 'floor') %}
-							        <li class="star star-empty"></li>
-							        {% endfor %}
-							    {% endif %}
-								</ul>
-							{% endif %}
-    							{% if product.review_count is defined and product.review_count|trim is not empty  %}
-	        						<li>({{ product.review_count }} reviews)</li>
-								{% endif %} #}
-								
-							
-							<button class="call-to-action">{{ product.actionText }}</button>
-						</div>
+	   <% _.each(products, function(product){ %>
+	    <% if (product.id){ %>
+	   			<div>
+					<a id="product-<%= product.id %>" href="<%= product.linkUrl %>" class="product" data-pid="<%= product.id %>" data-parent="<%= product.entityIdParent %>" target="_blank">
+						<div class="ar-content" style="background-image:url(<%= product.imageUrl %>);"></div>
+					</a>
+					<div id="product-popup-<%= product.id %>" data-pid="<%= product.id %>" data-parent="<%= product.entityIdParent %>" class="product-popup" target="_blank">
+						<div class="poster-contain product-img"><div class="ar-content" style="background-image:url(<%= product.imageUrl %>);"></div></div>
+						<h2 class="product-title" data-pid="<%= product.id %>" data-parent="<%= product.entityIdParent %>"><a href="<%= product.linkUrl %>" target="_blank"><%= product.title %></a></h2>
+						<p class="product-price">$<span class="product-price-holder"><%= product.price %></span></p>
+						<button class="call-to-action">View Details</button>
 					</div>
-				{% endif %} 
-				
-			{% endfor %}
-		</div>
+				</div>
+	    <% } %>
+	   <% }); %>
+   		</div>
 	</div>
-{% endif %}
+<% } %>

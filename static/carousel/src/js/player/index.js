@@ -87,7 +87,7 @@ define(function(require) {
         options = opts || {};
 
         var html = require('text!tmpl/player.html');
-        $el = $(html).appendTo(opts.place);
+        $el = $(html).appendTo(opts.target);
 
         var settings = require('./settings');
         var ready = function(p) {
@@ -128,7 +128,7 @@ define(function(require) {
           resize();
           $el.find('.video-overlay').hide();
           index = parseInt(n);
-          assetsList = _tvp.channel.videos;
+          assetsList = __TVPage__.config.videos;
           multiple = true;
 
           var video = assetsList[index];
