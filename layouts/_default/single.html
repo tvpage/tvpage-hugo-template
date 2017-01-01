@@ -6,6 +6,7 @@
 {{ end }}
 
 {{ define "main" }}
+
 {{ partial (printf "%s/breadcrumbs.html" .Site.Params.style) . }}
-{{ .Render "li" }}
+{{ partial (".html" | printf "%s%s" .Type | printf "%s%s" "/li-" | printf "%s%s" .Site.Params.style) . }}
 {{ end }}
