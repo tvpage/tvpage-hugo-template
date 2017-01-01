@@ -24,7 +24,11 @@
     {{ end }}
 
     {{ partial (printf "%s/header.html" .Site.Params.style) . }}
-
+    
+    <div class="container">
+      {{ partial (printf "%s/breadcrumbs.html" .Site.Params.style) . }}
+    </div>
+    
     <main>
       {{ block "main" . }}{{ end }}
     </main>

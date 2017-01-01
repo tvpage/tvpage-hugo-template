@@ -1,8 +1,4 @@
 {{ define "main" }}
-  
-  <div class="container">
-    {{ partial (printf "%s/breadcrumbs.html" .Site.Params.style) . }}
-  </div>
   <div class="container">
     {{ range $i, $p := (where .Data.Pages "Section" "channel") }}
       <div class="col-md-6">
