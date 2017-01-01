@@ -1,0 +1,17 @@
+body {
+  font-size: 18px;
+}
+
+@media (max-width:  768px)  {
+  body {
+    font-size: 15px;
+  }
+}
+
+.thumb {
+	display: block;
+  background-size: cover;
+  padding-top: 56.23%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
