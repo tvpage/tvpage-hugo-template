@@ -16,6 +16,7 @@ path = "layouts/tvp-widgets/carousel"
 thumbnail = "http://do0631budpzeh.cloudfront.net/dev/widgets/templates/preview_Carousel.png"
 preview = "http://preview.tvpage.com"
 settings = ['playback']
+description = "Our Carousel is a robust and versatile component. Display 3-5 interactive video thumbnails that can launch a modal with associated products. Embed this widget anywhere you choose on your web site."
 
 [[tvp-widgets]]
 name = "Inline"
@@ -24,6 +25,7 @@ path = "layouts/tvp-widgets/inline"
 thumbnail = "http://do0631budpzeh.cloudfront.net/dev/widgets/templates/preview_Inline.png"
 preview = "http://preview.tvpage.com"
 settings = ['playback','products']
+description = "Our Inline is a full site width widget, showing a large video player with product details on the side with related products."
 
 [[tvp-widgets]]
 name = "PDP"
@@ -32,6 +34,7 @@ path = "layouts/tvp-widgets/pdp"
 thumbnail = "http://do0631budpzeh.cloudfront.net/dev/widgets/templates/preview_PDP.png"
 preview = "http://preview.tvpage.com"
 settings = ['playback']
+description = "Our PDP Widget is useful for attaching video to your product detail pages."
 
 [[tvp-widgets]]
 name = "Side Bar"
@@ -40,6 +43,7 @@ path = "layouts/tvp-widgets/side-bar"
 thumbnail = "http://do0631budpzeh.cloudfront.net/dev/widgets/templates/preview_SideBar.png"
 preview = "http://preview.tvpage.com"
 settings = ['playback']
+description = "Our Side Bar is useful for displaying video content in the right or left “rail” on your web site where there is minimal space. Up to six videos will appear on initial load with the ability to load more with user input."
 
 [[tvp-widgets]]
 name = "Solo"
@@ -48,3 +52,4 @@ path = "layouts/tvp-widgets/solo"
 thumbnail = "http://do0631budpzeh.cloudfront.net/dev/widgets/templates/preview_Solo.png"
 preview = "http://preview.tvpage.com"
 settings = ['playback']
+description = "Solo is a minimalist single video player. This widget supports multiple devices including desktop, tablet & smartphone."
