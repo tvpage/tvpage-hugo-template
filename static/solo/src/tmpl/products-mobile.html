@@ -1,0 +1,38 @@
+<% if (products.length) { %>
+   <% _.each(products, function(product){ %>
+    <% if (product.id){ %>
+    <div>
+        <a id="product-<%= product.id %>" href="<%=product.data.linkUrl%>" class="prd-item" target="_blank">
+            <div class="prd-item-graphic">
+                <div style="background-image:url(<%=product.data.imageUrl%>);"></div>
+            </div>
+            <div class="prd-item-text">
+                <h2 class="prd-item-title"><%= product.title %></h2>
+                    <div class="bottom-description">
+                        <% if (data.mpn) { %>
+                        <h3 class="prd-item-model">MODEL#: <%=data.mpn %></h3>
+                        <% } %>
+                        <% if(product.data.rating){ %>
+                            <div class="prd-ratings">
+                                <div class="prd-rating-box">
+                                    <div class="prd-rating" style="width:<%=product.data.rating %>%;"></div>
+                                </div>
+                                <% if(product.data.reviews){ %>
+                                    <div class="prd-reviews"><%=product.data.reviews %> Review(s)</div>
+                                <%}%>
+                            </div>
+                        <%}%>
+                        <% if (product.data.price) { %>
+                        <span class="prd-item-price">$<%= product.data.price %></span>
+                        <% } %>
+                    </div>
+            </div>
+            <div class="action-wrapper">
+                <button class="call-to-action-add">Add to cart </button>
+                <button class="call-to-action-view">View details </button>
+            </div>
+        </a>
+    </div>
+    <% } %>
+   <% }); %>
+<% } %>
