@@ -1,6 +1,5 @@
 {{ $config := .Params.config }}
 {{ $channel := index $.Site.Data.channels (printf "x%s" ($config.channelId)) }}
-{{ $.Scratch.Add "channel" $channel }}
 
 <style>{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css.html" .Type ) .)) | safeCSS }}</style>
 <div id="{{ $config.sliderId }}">

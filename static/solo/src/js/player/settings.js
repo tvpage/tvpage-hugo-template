@@ -1,5 +1,5 @@
 define({
-    divId: 'tvpp-holder',
+    divId: 'tvplayerholder',
     controls: {
         active: true,
         seekBar: { progressColor: '#273691' },

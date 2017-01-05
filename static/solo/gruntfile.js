@@ -45,11 +45,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-autoprefixer');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
-    var exportPath = '../../layouts/partials/carousel';
+    var exportPath = '../../layouts/partials/solo';
     grunt.registerMultiTask('exportcss', 'Export css to partials folder', function() {
-        var css = grunt.file.read('./dist/css-lib.css');
-        var processed = grunt.file.write(exportPath+'/widget-css.html', '<style>'+css+'</style>');
-        if (processed) {
+        var moved = grunt.file.write(exportPath+'/css.html', grunt.file.read('./dist/css-lib.css'));
+        if (moved) {
             grunt.log.ok('exported!');
         }
     });

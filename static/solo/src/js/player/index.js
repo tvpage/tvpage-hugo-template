@@ -2,8 +2,6 @@ define(function(require) {
 
     var $ = require('jquery-private');
 
-    require('../jquery.pubsub-loader');
-
     var iOSsmall = /iPhone|iPod/i.test(navigator.userAgent),
       mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
       $el = null,
@@ -77,7 +75,6 @@ define(function(require) {
         } else {
           player.loadVideo(extractAsset(assetsList[index]));
         }
-        $.publish('player:play-video', assetsList[index]);
       }
     }
 
@@ -113,31 +110,7 @@ define(function(require) {
           ready(new TVPage.player(settings));
         }
 
-        $.subscribe('products:loaded', function(e, products) {
-          products.length ? $el.removeClass('no-products') : $el.addClass('no-products');
-          resize();
-        });
-
-        $.subscribe('light-box:hiding', function() {
-          $el.removeClass('no-products');
-          $el.find('#tvpp-play').remove();
-          player.stop();
-        });
-
-        $.subscribe('player:play', function(e, n, video) {
-          resize();
-          $el.find('.video-overlay').hide();
-          index = parseInt(n);
-          assetsList = __TVPage__.config.videos;
-          multiple = true;
-
-          var video = assetsList[index];
-          if (video) {
-            play(extractAsset(video));
-            $.publish('player:play-video', video);
-          }
-
-        });
+        //assetsList = __TVPage__.config.videos;
 
         $(window).resize(resize);
       }
