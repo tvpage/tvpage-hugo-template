@@ -1,10 +1,9 @@
 {{ $config := .Params.config }}
-{{ $.Scratch.Add "config" $config }}
 {{ $channel := index $.Site.Data.channels (printf "x%s" ($config.channelId)) }}
 {{ $.Scratch.Add "channel" $channel }}
 
-{{ partial  (printf "%s/widget-css" .Type) .}}
-<div id="{{ ($.Scratch.Get "config").sliderId }}">
+<style>{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css.html" .Type ) .)) | safeCSS }}</style>
+<div id="{{ $config.sliderId }}">
 {{ range $index, $video := (index $.Site.Data.channelVideos (printf "x%s_page_1" $channel.id) "data") }}
 	<div>
 		<div data-tvp-video-id="{{.id}}" data-index="3" class="tvp-video col-3">
@@ -17,4 +16,9 @@
 	</div>
 {{ end }}
 </div>
-{{ partial  (printf "%s/widget-js" .Type) .}}
+
+<!-- widget js -->
+<script type="text/javascript">
+console.log( JSON.parse({{ $config | jsonify }}) );
+console.log( JSON.parse({{ $channel | jsonify }}) );
+</script>
