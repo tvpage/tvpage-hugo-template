@@ -1,3 +1,2 @@
-{{ define "meta" }}
-<meta http-equiv="refresh" content="0;url=/home" />
-{{ end }}
+{{ if .IsHome }}{{ $.Scratch.Add "theme" .Site.Params.type }}{{else}}{{ $.Scratch.Add "theme" .Type }}{{ end }}
+{{ partial (printf "%s/index.html" ($.Scratch.Get "theme")) . }}

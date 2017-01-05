@@ -1,6 +1,0 @@
-<article class="channel-li">
-  <a href="{{ .Permalink }}" class="thumb"
-    {{ with .Params.thumbnail }} style="background-image: url({{ $.Site.BaseURL }}{{$.Site.Params.style}}/images/channel/{{ . }});"{{ end }}
-    {{ with .Params.thumbnailurl }} style="background-image: url({{ . }});"{{ end }}>
-  </a>
-</article>

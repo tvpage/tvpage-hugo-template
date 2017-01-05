@@ -1,8 +1,0 @@
-<article class="playback-li">
-  <a href="{{ .Permalink }}" class="thumb"
-    {{with .Params.thumbnailurl}} style="background-image: url({{ . }});"{{else}}style="background-image: url({{ $.Site.BaseURL }}{{ $.Site.Params.style }}/images/defaults/asset.png);"{{end}}>
-  </a>
-  {{with .Title}}
-    <p>{{.}}</p>
-  {{end}}
-</article>

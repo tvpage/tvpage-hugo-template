@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="{{ with .Site.LanguageCode}}{{ . }}{{ else }}en-US{{end}}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+    {{ .Hugo.Generator }}
+    
+    <link rel="canonical" href="{{ .Permalink }}">
+    <link rel="apple-touch-icon" href='{{ $.Site.BaseURL }}{{ ($.Scratch.Get "theme") }}/images/logo.png'>
+    <link rel="stylesheet" href='{{ $.Site.BaseURL }}{{ ($.Scratch.Get "theme") }}/css/styles.css'>
+    <style>{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css.html" ($.Scratch.Get "theme") ) .)) | safeCSS }}</style>
+    
+    {{ with .Site.Params.googlefonts }}<link href="{{ . }}" rel="stylesheet">{{ else }}
+    <link href="//fonts.googleapis.com/css?family=Dosis" rel="stylesheet">
+    {{ end }}
+    <title>{{ .Site.Title }}</title>
+  </head>
+  <body>
+
+    <!-- header -->
+    {{ partial (printf "%s/header.html" ($.Scratch.Get "theme")) . }}
+    
+    <!-- main -->
+    <main id="main-content" class="main-content">
+      <div class="container">
+        <div class="row">
+          {{ partial (printf "%s/breadcrumbs.html" ($.Scratch.Get "theme")) . }}
+        </div>
+        
+        <div class="row">
+          {{ $i := 0 }}
+          {{ range (where .Data.Pages "Section" "channel") }}
+            {{ if not (in .Site.Params.brands .Params.channelid) }}
+              <div class="col-xs-12 col-sm-6 col-sm-6">
+                <article>
+                  <a href="{{ .Permalink }}" class="thumb" style='background-ima–e: url({{ $.Site.BaseURL }}{{ ($.Scratch.Get "theme") }}{{ .Param "thumbdefault" }});'>
+                  </a>
+                </article>
+              </div>
+              {{ if eq (mod (add $i 1) 2) 0 }}<div class="col-sm-12"></div>{{ end }}
+            {{ end }}
+          {{ end }}
+        </div>
+        
+        <div class="row slider">
+          {{ range where .Data.Pages "Section" "c" }}
+            {{ if in .Site.Params.brands .Params.channelid }}
+              <div class="col-xs-12 col-sm-6 col-md-4">
+                <article>
+                  <a href="{{ .Permalink }}" class="thumb" style='background-image: url({{ $.Site.BaseURL }}{{ ($.Scratch.Get "theme") }}{{ .Param "thumbdefault" }});'>
+                  </a>
+                </article>
+              </div>
+            {{ end }}
+          {{ end }}
+        </div>
+        
+        {{ $page := index $.Site.Data.channelVideos (printf "x%s_page_1" .Site.Params.homechannel) }}
+        {{ with $page.data }}
+          {{ $i := 0 }}
+          {{ range $page.data }}
+            <div class="col-sm-6 col-md-4">
+              <article>
+                <a href="{{ .url }}" class="thumb"
+                  {{with .asset.thumbnailUrl}} style="background-image: url({{ . }});"{{else}}
+                  style='background-image: url({{ $.Site.BaseURL }}{{ ($.Scratch.Get "theme") }}{{ .Param "thumbdefault" }});'{{end}}>
+                </a>
+              </article>
+            </div>
+            {{ if eq (mod (add $i 2) 3) 0 }}<div class="col-sm-12"></div>{{ end }}
+          {{ end }}
+        {{ end }}
+
+      </div>
+    </main>
+    
+    <!-- footer -->
+    {{ if isset . "Type" }}
+    {{ partial (printf "%s/footer.html" ($.Scratch.Get "theme")) . }}
+    {{ end }}
+  </body>
+</html>

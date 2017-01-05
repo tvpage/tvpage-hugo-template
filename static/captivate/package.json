@@ -1,0 +1,21 @@
+{
+  "name": "captivate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "bootstrap": "^3.3.7",
+    "grunt": "^1.0.1",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-sass": "^2.0.0",
+    "jquery": "^3.1.1"
+  },
+  "dependencies": {
+    "bootstrap-sass": "^3.3.7"
+  }
+}
