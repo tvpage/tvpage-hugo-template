@@ -1,2 +1,9 @@
-{{ if .IsHome }}{{ $.Scratch.Add "theme" .Site.Params.type }}{{else}}{{ $.Scratch.Add "theme" .Type }}{{ end }}
-{{ partial (printf "%s/index.html" ($.Scratch.Get "theme")) . }}
+{{ range .Data.Pages }}
+	{{ if eq .Layout "home" }}
+	{{ partial (printf "%s/dochead.html" .Type) . }}
+	{{ partial (printf "%s/header.html" .Type) . }}
+	{{ partial (printf "%s/content.html" .Type) . }}
+	{{ partial (printf "%s/scripts.html" .Type) . }}
+	{{ partial (printf "%s/footer.html" .Type) . }}
+	{{ end }}
+{{ end }}

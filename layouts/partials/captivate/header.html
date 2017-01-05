@@ -1,10 +1,9 @@
 <header>
   <a class="logo" href="{{ .Site.BaseURL }}" title="Return to homepage">
-    <img class="img-responsive" src='{{ $.Site.BaseURL }}{{ ($.Scratch.Get "theme") }}/images/logo.png' alt="The good looking bean logo" />
+    <img class="img-responsive" src='{{ $.Site.BaseURL }}{{ .Type }}/images/logo.png' alt="The good looking bean logo" />
   </a>
   <nav>
     <ul class="nav nav-justified">
-      {{ $currentPage := . }}
       {{ range .Site.Menus.top }}
         <li><a href="{{.URL}}">{{ .Name }}</li></a>
       {{ end }}
@@ -12,22 +11,9 @@
   </nav>
   <nav>
     <ul class="nav nav-justified">
-      {{ $currentPage := . }}
       {{ range .Site.Menus.main }}
         <li><a href="{{.URL}}">{{ .Name }}</li></a>
       {{ end }}
     </ul>
   </nav>
 </header>
-
-{{ if eq .Section "channel" }}
-<div class="page-banner" 
-{{ with .Param (printf "banner_%s" .Params.channelid) }} style='background-image: url({{ $.Site.BaseURL }}{{ $.Scratch.Get "theme" }}/images/channel/{{ . }});'
-{{else}} style='background-image: url({{ $.Site.BaseURL }}{{ $.Scratch.Get "theme" }}/images/defaults/asset.png);'{{end}}>
-  <div class="container">
-    <h1>{{ .Title }}</h1>
-    <p>60 videos</p>
-    <h2>{{ .Param "subscribemsg" }}</h2>
-  </div>
-</div>
-{{ end }}

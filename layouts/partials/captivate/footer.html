@@ -1,17 +1,5 @@
 <footer>
   <div class="container">
-    <p>{{ with .Site.Params.copyrighthtml }}{{ . | safeHTML }}{{ else }}<span>&copy; {{ .Site.Title }}</span>{{ end }}</p>
+    <p>{{ with .Site.Copyright }}{{ . | safeHTML }}{{ else }}<span>&copy; {{ .Site.Title }}</span>{{ end }}</p>
   </div>
 </footer>
-
-<script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.js"></script>
-<script type="text/javascript">
-	$('.slider').slick({
-      infinite: true,
-      speed: 300,
-      slidesToShow: 3,
-      slidesToScroll: 1
-    });
-</script>

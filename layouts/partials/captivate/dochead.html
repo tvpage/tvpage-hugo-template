@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {{ partial (printf "%s/meta.html" .Type) . }}
+    {{ with .Site.Params.googlefonts }}
+    <link href="{{ . }}" rel="stylesheet">
+    {{ else }}
+    <link href="//fonts.googleapis.com/css?family=Dosis" rel="stylesheet">
+    {{ end }}
+    <title>{{ block "title" . }}{{ end }}{{ .Site.Title }}</title>
+    {{ block "meta" . }}{{ end }}
+    <link rel="apple-touch-icon" href='{{ $.Site.BaseURL }}{{ .Type }}/images/logo.png'>
+    <link rel="stylesheet" href='{{ $.Site.BaseURL }}{{ .Type }}/css/styles.css'>
+     <style>{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css.html" .Type ) .)) | safeCSS }}</style>
+  </head>
+  <body>
