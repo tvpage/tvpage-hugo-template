@@ -4,7 +4,7 @@ define(function(require) {
   var player = require('./player/index');
   
   $.ajax({
-    url: '//localhost:1313/tvpembed/83094487/'
+    url: '//localhost:35831/tvpembed/83094487/'
   }).done(function(res){
     $('#tvpwidget-2').html(res || '');
     player.init(function(){
