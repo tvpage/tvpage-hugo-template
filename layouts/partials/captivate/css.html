@@ -1,4 +1,5 @@
-{{ with "lightgray" }} body { background: {{ . | safeCSS }}; } {{ end }}
-{{ with .Param "fontfamily" }} body { font-family: {{ . | safeCSS }}; } {{ end }}
-{{ with .Param "maincontentbg" }} .main-content { background: {{ . | safeCSS }}; } {{ end }}
-{{ with .Param "headerbg" }} .header-bg { background-image: url("{{ $.Site.BaseURL }}{{ $.Site.Params.subtheme }}/images/{{ . | safeCSS }}"); } {{ end }}
+{{ $defaults := $.Scratch.Get "defaults" }}
+{{ with $defaults.fontfamily }} body { font-family: {{ . | safeCSS }}; } {{ end }}
+{{ with $defaults.bodybackground }} body { background: {{ . | safeCSS }}; } {{ end }}
+{{ with $defaults.mainbackground }} .main-content { background: {{ . | safeCSS }}; } {{ end }}
+{{ with $defaults.headerbackground }} .header-bg { background-image: url("{{ $.Site.BaseURL }}{{ $.Site.Params.subtheme }}/images/{{ . | safeCSS }}"); } {{ end }}
