@@ -2,40 +2,31 @@ define(function(require) {
 
     var $ = require('jquery-private');
 
-    var iOSsmall = /iPhone|iPod/i.test(navigator.userAgent),
-      mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
-      $el = null,
+    var mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
+      autoplay = true,
+      autoReplay = false,
       options = null,
-      assetsList = null,
       playerReady = null,
-      player = null,
-      index = null,
-      multiple = true,
-      keys = null;
+      player = null;
 
     function resize() {
-      if (player && $el.length) {
-        player.resize($el.width(), $el.height());
+      if (player) {
+        player.resize($('#tvplayerholder').width(), $('#tvplayerholder').height());
       }
     }
 
     function putButtonOverlay() {
-      $('<div/>').attr('id', 'tvpp-play').insertAfter('#tvpp-holder').on('click', function() {
-        $el.find('.video-overlay').hide();
+      $('<div/>').attr('id', 'tvpp-play').insertAfter('#tvplayerholder').on('click', function() {
         $(this).off().remove();
         return player ? player.play() : false;
       });
     }
 
     function play(asset) {
+      if(__TVPage__.config.data && __TVPage__.config.data.hasOwnProperty("autoplay") ){
+        autoplay = __TVPage__.config.data.autoplay;
+      }
       if (asset) {
-        if (asset.type === 'mp4' && iOSsmall) {
-          $el.addClass('tvp-controls-mp4');
-          $el.find('#ControlBarFloater').parent().addClass('tvp-hide-mp4');
-        } else {
-          $el.removeClass('tvp-controls-mp4');
-          $el.find('#ControlBarFloater').parent().removeClass('tvp-hide-mp4');
-        }
         var checks = 0;
         (function readyPoller( ){
           var deferred = setTimeout(function(){
@@ -44,9 +35,9 @@ define(function(require) {
                 readyPoller();
               }
             } else {
-              if (mobile) {
+              if (mobile || !JSON.parse(autoplay)) {
                 player.cueVideo(asset);
-                if (!iOSsmall && asset.type == 'mp4') putButtonOverlay();
+                if (asset.type == 'mp4') putButtonOverlay();
               } else {
                 player.loadVideo(asset);
               }
@@ -67,14 +58,15 @@ define(function(require) {
     }
 
     function handleEnded() {
-      if (multiple) {
-        index = (index == assetsList.length - 1) ? 0 : index + 1;
-        if (mobile) {
-          player.cueVideo(asset);
-          if (!iOSsmall && assetsList[index].type == 'mp4') putButtonOverlay();
-        } else {
-          player.loadVideo(extractAsset(assetsList[index]));
-        }
+      var video = __TVPage__.config.data.video;
+      if(__TVPage__.config.data && __TVPage__.config.data.hasOwnProperty("autoplay") ){
+        autoReplay = __TVPage__.config.data.autoReplay;
+      }
+      if (mobile || !JSON.parse(autoReplay)) {
+        player.cueVideo(video.asset);
+        if (video.asset.type == 'mp4') putButtonOverlay();
+      } else {
+        player.loadVideo(extractAsset(video));
       }
     }
 
@@ -82,10 +74,6 @@ define(function(require) {
       init: function(opts, callback) {
 
         options = opts || {};
-
-        var html = require('text!tmpl/player.html');
-        $el = $(html).appendTo(opts.target);
-
         var settings = require('./settings');
         var ready = function(p) {
           player = TVPage.instances[p.options.globalRunId];
@@ -110,8 +98,10 @@ define(function(require) {
           ready(new TVPage.player(settings));
         }
 
-        //assetsList = __TVPage__.config.videos;
-
+        var video = __TVPage__.config.data.video;
+        if (video) {
+          play(extractAsset(video));
+        }
         $(window).resize(resize);
       }
     };

@@ -1,6 +1,7 @@
 {{ $config := .Params.config }}
-{{ $channelVideos := (index $.Site.Data.channelVideos (printf "x%s_page_1" $config.channelId) "data") }}
-
+{{ $videos := (index $.Site.Data.videos (printf "x%s" $config.videoId)) }}
+{{ $autoplay := $config.autoplay }}
+{{ $autoReplay := $config.autoReplay }}
 <style>{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css.html" .Type ) .)) | safeCSS }}</style>
 <div id="tvplayerholder"></div>
 
@@ -8,9 +9,8 @@
 window.__TVPage__ = window.__TVPage__ || {};
 window.__TVPage__.config = __TVPage__.config || {};
 window.__TVPage__.config.data = {
-	videos: JSON.parse({{ $channelVideos | jsonify }})
+	video: JSON.parse({{ $videos | jsonify }}),
+	autoplay: {{ $autoplay }},
+	autoReplay: {{ $autoReplay }}
 };
-
-// console.log( JSON.parse({{ $config | jsonify }}) );
-// console.log( JSON.parse({{ $channelVideos | jsonify }}) );
 </script>
