@@ -3,7 +3,6 @@ requirejs.config({
     baseUrl: './',
     paths: {
         "jquery-private": './src/js/jquery-loader',
-        tmpl: './src/tmpl',
         dist: './dist'
     },
     name: 'vendor/almond',
