@@ -12,11 +12,50 @@
 <h1>{{.Title}}</h1>
 
 <!--The placeholder-->
-<div id="tvp-gallery"></div>
+<div class="tvpwidget"></div>
+<!--The placeholder-->
+
+<!--The placeholder-->
+<div class="tvpwidget"></div>
+<!--The placeholder-->
+
+<!--The placeholder-->
+<div class="tvpwidget"></div>
 <!--The placeholder-->
 
 <!--The code snippet-->
 <script type="text/javascript">
+  window.__TVPage__ = window.__TVPage__ || {};
+  __TVPage__.config = __TVPage__.config || [];
+  __TVPage__.config.push(
+    {
+      slidesToShow: 3,
+      attributes: {
+        category: [{
+          value: "1838",
+          label: "Tea-Coffe"
+        }]
+      }
+    },
+    {
+      slidesToShow: 4,
+      attributes: {
+        category: [{
+          value: "1383",
+          label: "More-Coffe"
+        }]
+      }
+    },
+    {
+      slidesToShow: 2,
+      attributes: {
+        category: [{
+          value: "1338",
+          label: "Coffe"
+        }]
+      }
+    }
+  );
   (function(d) {
     var s = d.createElement('script');
     s.src = '//localhost:1313/carousel/dist/js-lib.js';
