@@ -8,7 +8,6 @@
 {{ $.Scratch.SetInMap "settings" .code .value }}
 {{ end }}
 
-<style type="text/css"></style>
 <style id="tvpcss-base" type="text/css">{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css-base.html" .Type) .)) | safeCSS }}</style>
 <style id="tvpcss-carousel">{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css-carousel.html" .Type ) .)) | safeCSS }}</style>
 <div class="{{ (printf "tvp%s" .Type) }}">
@@ -29,8 +28,9 @@
 window.__TVPage__ = window.__TVPage__ || {};
 __TVPage__.config = __TVPage__.config || [];
 __TVPage__.config.forEach(function(val,i){
-	if (!val || "undefined" !== typeof val.id || val.id !== {{ ($.Scratch.Get "settings").idselector }}) return;
+	if (!val || "undefined" === typeof val.id || val.id !== {{ ($.Scratch.Get "settings").idselector }}) return;
 	val.data = val.data || {};
 	val.data.videos = {{ (index $.Site.Data.channelVideos (printf "x%s_page_1" ($.Scratch.Get "settings").channelid) "data") }} || [];
+	val.settings = {{ $.Scratch.Get "settings" }} || {};
 });
 </script>

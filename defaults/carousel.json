@@ -17,6 +17,13 @@
         {
             "for": "styles",
             "type": "text",
+            "label": "Carousel Item Horizontal Margin",
+            "code": "carouselItemHorizontalMargin",
+            "value": "0 5px"
+        },
+        {
+            "for": "styles",
+            "type": "text",
             "label": "Color 2",
             "code": "color1",
             "value": "green"

@@ -1,6 +1,6 @@
 .tvpvideo {
 	border: 2px solid green;
-	margin: 0 10px;
+	margin: {{ ($.Scratch.Get "settings").carouselItemHorizontalMargin | safeCSS }};
 }
 .tvpvideo-poster {
 	background-size: cover;

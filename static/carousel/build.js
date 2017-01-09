@@ -14,6 +14,6 @@ requirejs.config({
     optimize: 'uglify2',
     include: ['js/index'],
     insertRequire: ['js/index'],
-    out: './lib-min.js',
+    out: './lib.min.js',
     wrap: true
 })

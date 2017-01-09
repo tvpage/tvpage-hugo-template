@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>Carousel Demo</title>
+  <title>Solo Demo</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
@@ -11,7 +11,7 @@
 <body>
 
 <!-- placeholder -->
-<div id="tvpwidget0"></div>
+<div id="tvpembed0"></div>
 <!-- placeholder -->
 
 <!-- code snippet -->
@@ -20,7 +20,7 @@
   __TVPage__.config = __TVPage__.config || [];
   __TVPage__.config.push(
     {
-      id: "tvpwidget0",
+      id: "tvpembed0",
       attributes: {
         category: [{
           value: "### REPLACE WITH CATEGORY ID ###",
@@ -31,7 +31,7 @@
   );
   (function(d) {
     var s = d.createElement('script');
-    s.src = '//localhost:1313/carousel/lib.min.js';
+    s.src = '//localhost:1313/solo/lib.min.js';
     d.body.appendChild(s);
   })(document);
 </script>

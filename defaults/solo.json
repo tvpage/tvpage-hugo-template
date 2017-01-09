@@ -1,0 +1,18 @@
+{
+    "option": [
+        {
+            "for": "player",
+            "type": "boolean",
+            "label": "Autoplay",
+            "code": "autoplay",
+            "value": true
+        },
+        {
+            "for": "player",
+            "type": "boolean",
+            "label": "Autoend",
+            "code": "autoend",
+            "value": true
+        }
+    ]
+}
