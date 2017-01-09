@@ -9,60 +9,36 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 </head>
 <body>
-<h1>{{.Title}}</h1>
 
-<!--The placeholder-->
-<div class="tvpwidget"></div>
-<!--The placeholder-->
+<!-- placeholder -->
+<div id="tvpwidget0"></div>
+<!-- placeholder -->
 
-<!--The placeholder-->
-<div class="tvpwidget"></div>
-<!--The placeholder-->
+<!-- placeholder -->
+<!-- <div id="tvpwidget-1"></div> -->
+<!-- placeholder -->
 
-<!--The placeholder-->
-<div class="tvpwidget"></div>
-<!--The placeholder-->
-
-<!--The code snippet-->
+<!-- code snippet -->
 <script type="text/javascript">
   window.__TVPage__ = window.__TVPage__ || {};
   __TVPage__.config = __TVPage__.config || [];
   __TVPage__.config.push(
     {
-      slidesToShow: 3,
-      attributes: {
-        category: [{
-          value: "1838",
-          label: "Tea-Coffe"
-        }]
-      }
-    },
-    {
-      slidesToShow: 4,
-      attributes: {
-        category: [{
-          value: "1383",
-          label: "More-Coffe"
-        }]
-      }
-    },
-    {
-      slidesToShow: 2,
-      attributes: {
-        category: [{
-          value: "1338",
-          label: "Coffe"
-        }]
-      }
+      id: "tvpwidget0",
+      slidesToShow: 3
     }
+    // {
+    //   id: "tvpwidget-1",
+    //   slidesToShow: 4
+    // }
   );
   (function(d) {
     var s = d.createElement('script');
-    s.src = '//localhost:1313/carousel/dist/js-lib.js';
+    s.src = '//localhost:1313/carousel/lib-min.js';
     d.body.appendChild(s);
   })(document);
 </script>
-<!--The code snippet-->
+<!-- code snippet -->
 
 </body>
 </html>

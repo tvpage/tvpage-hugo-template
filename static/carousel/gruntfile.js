@@ -3,11 +3,11 @@ module.exports = function(grunt) {
     grunt.initConfig({
         watch: {
             js: {
-                files: ['src/js/**/*.js'],
+                files: ['js/**/*.js'],
                 tasks: ['requirejs']
             },
             css: {
-                files: ['src/scss/**/*.scss'],
+                files: ['sass/**/*.scss'],
                 tasks: ['sass', 'autoprefixer', 'exportcss']
             }
         },
@@ -19,14 +19,26 @@ module.exports = function(grunt) {
             }
         },
         sass: {
+          dev: {
             options: {
-                sourceMap: false
+              sourceMap: true,
+              outputStyle: 'expanded',
+              includePaths: ['node_modules/bootstrap-sass/assets/stylesheets']
             },
-            dist: {
-                files: {
-                    'dist/css-lib.css': 'src/scss/styles.scss'
-                }
+            files: {
+              'css/styles.css': 'sass/styles.scss'
             }
+          },
+          dist: {
+            options: {
+              sourceMap: true,
+              outputStyle: 'compressed',
+              includePaths: ['node_modules/bootstrap-sass/assets/stylesheets']
+            },
+            files: {
+              'css/styles.css': 'sass/styles.scss'
+            }
+          }
         },
         autoprefixer: {
             css: {
@@ -47,7 +59,7 @@ module.exports = function(grunt) {
 
     var exportPath = '../../layouts/partials/carousel';
     grunt.registerMultiTask('exportcss', 'Export css to partials folder', function() {
-        var exported = grunt.file.write(exportPath+'/css.html', grunt.file.read('./dist/css-lib.css'));
+        var exported = grunt.file.write(exportPath+'/css.html', grunt.file.read('./css/styles.css'));
         if (exported) {
             grunt.log.ok('exported!');
         }

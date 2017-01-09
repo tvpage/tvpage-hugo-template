@@ -4,11 +4,9 @@
       {{ partial (printf "%s/breadcrumbs.html" .Type) . }}
     </div>
 
-    <div class="row">
-      <!--The placeholder-->
+    <!-- <div class="row">
       <div id="tvpwidget-2"></div>
-      <!--The placeholder-->
-    </div>
+    </div> -->
 
     <div class="row">
       {{ range where .Site.Pages "Layout" "channel" }}

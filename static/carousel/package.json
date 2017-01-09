@@ -8,5 +8,8 @@
     "grunt-contrib-requirejs": "*",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-sass": "^2.0.0"
+  },
+  "dependencies": {
+    "bootstrap-sass": "^3.3.7"
   }
 }

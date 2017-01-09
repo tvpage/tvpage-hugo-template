@@ -1,4 +1,67 @@
 {
-  "textColor": "#6e6e6e",
-  "arrowStyle": "flat"
+    "option": [
+        {
+            "for": "styles",
+            "type": "text",
+            "label": "Font Family",
+            "code": "fontfamily1",
+            "value": "monospace"
+        },
+        {
+            "for": "styles",
+            "type": "text",
+            "label": "Carousel Item Overlay Color",
+            "code": "carouselItemOverlayColor",
+            "value": "rgba(0,0,0,0.5)"
+        },
+        {
+            "for": "styles",
+            "type": "text",
+            "label": "Color 2",
+            "code": "color1",
+            "value": "green"
+        },
+        {
+            "for": "player",
+            "type": "boolean",
+            "label": "Autoplay",
+            "code": "autoplay",
+            "value": true
+        },
+        {
+            "for": "player",
+            "type": "boolean",
+            "label": "Autoend",
+            "code": "autoend",
+            "value": true
+        },
+        {
+            "for": "carousel",
+            "type": "boolean",
+            "label": "Center Mode",
+            "code": "centerMode",
+            "value": true
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Center Padding",
+            "code": "centerPadding",
+            "value": "40px"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Slides to show",
+            "code": "slidesToShow",
+            "value": "3"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Slides to show",
+            "code": "slidesToShow",
+            "value": "3"
+        }
+    ]
 }

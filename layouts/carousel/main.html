@@ -1,11 +1,36 @@
-{{ $config := .Params.config }}
-<style>{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css.html" .Type ) .)) | safeCSS }}</style>
-<div id="tvplayerholder"></div>
+{{ range $i, $def := (getJSON (printf "themes/tvpage/defaults/%s.json" .Type)).option }}
+{{ $.Scratch.SetInMap "settings" .code .value }}
+{{ end }}
+{{ range $i, $param := .Params }}
+{{ $.Scratch.SetInMap "settings" $i . }}
+{{ end }}
+{{ range $i, $opt := (where (.Param (.Params.idselector)) "for" "styles") }}
+{{ $.Scratch.SetInMap "settings" .code .value }}
+{{ end }}
+
+<style type="text/css"></style>
+<style id="tvpcss-base" type="text/css">{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css-base.html" .Type) .)) | safeCSS }}</style>
+<style id="tvpcss-carousel">{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css-carousel.html" .Type ) .)) | safeCSS }}</style>
+<div class="{{ (printf "tvp%s" .Type) }}">
+{{ range $i, $video := (index $.Site.Data.channelVideos (printf "x%s_page_1" ($.Scratch.Get "settings").channelid) "data") }}
+	<div>
+		<div class="tvpvideo">
+			<div class="tvpvideo-poster embed-responsive embed-responsive-16by9" style="background-image:url('{{ .asset.thumbnailUrl }}'); ">
+				<div class="embed-responsive-item">
+					<div class="tvpvideo-poster-overlay"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+{{ end }}
+</div>
 
 <script type="text/javascript">
 window.__TVPage__ = window.__TVPage__ || {};
-__TVPage__.config = __TVPage__.config || {};
-__TVPage__.config.data = {
-	// videos: JSON.parse({{ (index $.Site.Data.channelVideos (printf "x%s_page_1" $config.channelId) "data") | jsonify }})
-};
+__TVPage__.config = __TVPage__.config || [];
+__TVPage__.config.forEach(function(val,i){
+	if (!val || "undefined" !== typeof val.id || val.id !== {{ ($.Scratch.Get "settings").idselector }}) return;
+	val.data = val.data || {};
+	val.data.videos = {{ (index $.Site.Data.channelVideos (printf "x%s_page_1" ($.Scratch.Get "settings").channelid) "data") }} || [];
+});
 </script>
