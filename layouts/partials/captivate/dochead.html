@@ -1,4 +1,12 @@
-{{ $.Scratch.Add "defaults" ( getJSON "themes/tvpage/defaults/captivate.json" ) }}
+{{ range $i, $def := (getJSON (printf "themes/tvpage/defaults/%s.json" .Type)).option }}
+{{ $.Scratch.SetInMap "settings" .code .value }}
+{{ end }}
+{{ range $i, $param := .Params }}
+{{ $.Scratch.SetInMap "settings" $i . }}
+{{ end }}
+{{ range $i, $opt := (where (.Param "tvppages") "for" "styles") }}
+{{ $.Scratch.SetInMap "settings" .code .value }}
+{{ end }}
 <!DOCTYPE html>
 <html>
   <head>

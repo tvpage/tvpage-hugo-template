@@ -1,12 +1,15 @@
 define(function(require) {
 
-  var redefine = function(obj){
-    return "undefined" !== typeof obj;
-  };
+  // var redefine = function(obj){
+  //   return "undefined" !== typeof obj;
+  // };
 
-  if (!redefine(window.__TVPage__) || !redefine(__TVPage__.config)) {
-    return console.log('need configuration');
-  }
+  // Decide if this is a config dependent widget or not.
+  // if (!redefine(window.__TVPage__) || !redefine(__TVPage__.config)) {
+    
+  // } else {
+
+  // }
 
   var $ = require('jquery-private');
   require('./jquery.pubsub-loader');
@@ -17,6 +20,7 @@ define(function(require) {
     (function(endpoint,el){
       $.ajax({ url: apiBase + endpoint }).done(function(res){
         $(el).html(res);
+
         $(el).find(".tvpcarousel").slick({
           centerMode: true,
           centerPadding: '40px',
@@ -42,6 +46,7 @@ define(function(require) {
             }
           ]
         });
+
       });
     }(id, this));
   });
