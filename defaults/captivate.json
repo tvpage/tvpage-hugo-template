@@ -36,6 +36,24 @@
             "value": "green"
         },
         {
+            "type": "text",
+            "label" : "Channel Gallery Ids",
+            "code" : "channelgalleryids",
+            "value" : "66133905,66133904,66133907,66133906"
+        },
+        {
+            "type": "text",
+            "label" : "Channel Slider Ids",
+            "code" : "channelsliderids",
+            "value" : "83096270,83093931,83093937,83093935"
+        },
+        {
+            "type": "text",
+            "label" : "Home Channel Id",
+            "code" : "homechannelid",
+            "value" : "66133905"
+        },
+        {
             "for": "player",
             "type": "boolean",
             "label": "Autoplay",
