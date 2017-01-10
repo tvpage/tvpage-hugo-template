@@ -59,7 +59,7 @@ module.exports = function(grunt) {
 
     var exportPath = '../../layouts/partials/carousel';
     grunt.registerMultiTask('exportcss', 'Export css to partials folder', function() {
-        var exported = grunt.file.write(exportPath+'/css.html', grunt.file.read('./css/styles.css'));
+        var exported = grunt.file.write(exportPath+'/css-base.html', grunt.file.read('./css/styles.css'));
         if (exported) {
             grunt.log.ok('exported!');
         }
