@@ -12,7 +12,7 @@
               <article>
                 <a href="{{ .url }}" class="thumb"
                   {{with .asset.thumbnailUrl}} style="background-image: url({{ . }});"{{else}}
-                  style='background-image: url(/{{ .Type }}{{ .Param "thumbdefault" }});'{{end}}>
+                  style='background-image: url(/{{ .Type }}/images/defaults/asset.png);'{{end}}>
                 </a>
               </article>
             </div>
