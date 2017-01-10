@@ -43,7 +43,7 @@ module.exports = function(grunt) {
         autoprefixer: {
             css: {
                 files: {
-                    'dist/css-lib.css': 'dist/css-lib.css'
+                    'css/styles.css': 'css/styles.css'
                 }
             }
         },
@@ -57,7 +57,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-autoprefixer');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
-    var exportPath = '../../layouts/partials/carousel';
+    var exportPath = '../../layouts/partials/sidebar';
     grunt.registerMultiTask('exportcss', 'Export css to partials folder', function() {
         var exported = grunt.file.write(exportPath+'/css-base.html', grunt.file.read('./css/styles.css'));
         if (exported) {

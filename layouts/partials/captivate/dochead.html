@@ -4,22 +4,20 @@
 {{ range $i, $param := .Params }}
 {{ $.Scratch.SetInMap "settings" $i . }}
 {{ end }}
+{{ if isset .Site.Params "tvppages" }}
 {{ range $i, $opt := (where (.Param "tvppages") "for" "styles") }}
 {{ $.Scratch.SetInMap "settings" .code .value }}
+{{ end }}
 {{ end }}
 <!DOCTYPE html>
 <html>
   <head>
     {{ partial (printf "%s/meta.html" .Type) . }}
-    {{ with .Site.Params.googlefonts }}
-    <link href="{{ . }}" rel="stylesheet">
-    {{ else }}
-    <link href="//fonts.googleapis.com/css?family=Dosis" rel="stylesheet">
-    {{ end }}
+    <link href='{{ ($.Scratch.Get "settings").googlefont }}' rel="stylesheet">
     <title>{{ block "title" . }}{{ end }}{{ .Site.Title }}</title>
     {{ block "meta" . }}{{ end }}
-    <link rel="apple-touch-icon" href='/{{ .Type }}/images/logo.png'>
-    <link rel="stylesheet" href='/{{ .Type }}/css/styles.css'>
+    <link rel="apple-touch-icon" href="/{{ .Type }}/images/logo.png">
+    <link rel="stylesheet" href="/{{ .Type }}/css/styles.css">
     <style>{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css.html" .Type ) .)) | safeCSS }}</style>
   </head>
   <body>

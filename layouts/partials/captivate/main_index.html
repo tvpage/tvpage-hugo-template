@@ -3,17 +3,13 @@
    <div class="row">
       {{ partial (printf "%s/breadcrumbs.html" .Type) . }}
     </div>
-
-    <!-- <div class="row">
-      <div id="tvpwidget-2"></div>
-    </div> -->
-
+    
     <div class="row">
       {{ range where .Site.Pages "Layout" "channel" }}
-        {{ if in "66133905,66133904,66133907,66133906" .Params.channelid }}
+        {{ if in ($.Scratch.Get "settings").channelgalleryids .Params.channelid }}
         <div class="col-xs-12 col-sm-6 col-md-6">
           <article>
-            <a href="{{ .Permalink }}" class="thumb" style='background-image: url({{ $.Site.BaseURL }}{{ .Type }}/images/defaults/asset.png);'>
+            <a href="{{ .Permalink }}" class="thumb" style='background-image: url(/{{ .Type }}/images/defaults/asset.png);'>
             </a>
           </article>
         </div>
@@ -23,10 +19,10 @@
 
     <div class="row slider">
       {{ range where .Site.Pages "Layout" "channel" }}
-        {{ if in "83096270,83093931,83093937,83093935" .Params.channelid }}
+        {{ if in ($.Scratch.Get "settings").channelsliderids .Params.channelid }}
         <div class="col-xs-12 col-sm-3 col-md-3">
           <article>
-            <a href="{{ .Permalink }}" class="thumb" style='background-image: url({{ $.Site.BaseURL }}{{ .Type }}/images/defaults/asset.png);'>
+            <a href="{{ .Permalink }}" class="thumb" style='background-image: url(/{{ .Type }}/images/defaults/asset.png);'>
             </a>
           </article>
         </div>
@@ -35,7 +31,7 @@
     </div>
 
     <div class="row">
-      {{ $page := index $.Site.Data.channelVideos (printf "x%s_page_1" "66133905") }}
+      {{ $page := index $.Site.Data.channelVideos (printf "x%s_page_1" ($.Scratch.Get "settings").homechannelid) }}
       {{ with $page.data }}
         {{ $i := 0 }}
         {{ range first 6 $page.data }}
@@ -43,7 +39,7 @@
             <article>
               <a href="{{ .url }}" class="thumb"
                 {{with .asset.thumbnailUrl}} style="background-image: url({{ . }});"{{else}}
-                style='background-image: url({{ $.Site.BaseURL }}{{ .Type }}{{ .Param "thumbdefault" }});'{{end}}>
+                style='background-image: url(/{{ .Type }}/images/defaults/asset.png);'{{end}}>
               </a>
             </article>
           </div>

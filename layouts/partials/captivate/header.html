@@ -1,18 +1,26 @@
 <header>
   <a class="logo" href="{{ .Site.BaseURL }}" title="Return to homepage">
-    <img class="img-responsive" src='{{ $.Site.BaseURL }}{{ .Type }}/images/logo.png' alt="The good looking bean logo" />
+    <img class="img-responsive" src='/{{ .Type }}/images/logo.png' alt="{{ .Site.Title }}" />
   </a>
   <nav>
     <ul class="nav nav-justified">
-      {{ range .Site.Menus.top }}
+      {{ with .Site.Menus.top }}
+      {{ range . }}
         <li><a href="{{.URL}}">{{ .Name }}</li></a>
+      {{ end }}
+      {{ else }}
+        No navigation
       {{ end }}
     </ul>
   </nav>
   <nav>
     <ul class="nav nav-justified">
-      {{ range .Site.Menus.main }}
+      {{ with .Site.Menus.main }}
+      {{ range . }}
         <li><a href="{{.URL}}">{{ .Name }}</li></a>
+      {{ end }}
+      {{ else }}
+        No navigation
       {{ end }}
     </ul>
   </nav>

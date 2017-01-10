@@ -1,5 +1,15 @@
-{{ $defaults := $.Scratch.Get "defaults" }}
-{{ with $defaults.fontfamily }} body { font-family: {{ . | safeCSS }}; } {{ end }}
-{{ with $defaults.bodybackground }} body { background: {{ . | safeCSS }}; } {{ end }}
-{{ with $defaults.mainbackground }} .main-content { background: {{ . | safeCSS }}; } {{ end }}
-{{ with $defaults.headerbackground }} .header-bg { background-image: url("{{ $.Site.BaseURL }}{{ $.Site.Params.subtheme }}/images/{{ . | safeCSS }}"); } {{ end }}
+body {
+	font-family: {{ ($.Scratch.Get "settings").fontfamily }};
+}
+
+body {
+	background: {{ ($.Scratch.Get "settings").bodybackground }};
+}
+
+.main-content {
+	background: {{ ($.Scratch.Get "settings").mainbackground }};
+}
+
+header {
+	background: {{ ($.Scratch.Get "settings").headerbackground }};
+}
