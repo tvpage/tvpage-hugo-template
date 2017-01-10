@@ -9,7 +9,7 @@
         {{ if in ($.Scratch.Get "settings").channelgalleryids .Params.channelid }}
         <div class="col-xs-12 col-sm-6 col-md-6">
           <article>
-            <a href="{{ .Permalink }}" class="thumb" style='background-image: url({{ $.Site.BaseURL }}{{ .Type }}/images/defaults/asset.png);'>
+            <a href="{{ .Permalink }}" class="thumb" style='background-image: url(/{{ .Type }}/images/defaults/asset.png);'>
             </a>
           </article>
         </div>
@@ -22,7 +22,7 @@
         {{ if in ($.Scratch.Get "settings").channelsliderids .Params.channelid }}
         <div class="col-xs-12 col-sm-3 col-md-3">
           <article>
-            <a href="{{ .Permalink }}" class="thumb" style='background-image: url({{ $.Site.BaseURL }}{{ .Type }}/images/defaults/asset.png);'>
+            <a href="{{ .Permalink }}" class="thumb" style='background-image: url(/{{ .Type }}/images/defaults/asset.png);'>
             </a>
           </article>
         </div>
@@ -39,7 +39,7 @@
             <article>
               <a href="{{ .url }}" class="thumb"
                 {{with .asset.thumbnailUrl}} style="background-image: url({{ . }});"{{else}}
-                style='background-image: url({{ $.Site.BaseURL }}{{ .Type }}{{ .Param "thumbdefault" }});'{{end}}>
+                style='background-image: url(/{{ .Type }}{{ .Param "thumbdefault" }});'{{end}}>
               </a>
             </article>
           </div>

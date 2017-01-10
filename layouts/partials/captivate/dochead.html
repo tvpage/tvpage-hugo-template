@@ -16,8 +16,8 @@
     <link href='{{ ($.Scratch.Get "settings").googlefont }}' rel="stylesheet">
     <title>{{ block "title" . }}{{ end }}{{ .Site.Title }}</title>
     {{ block "meta" . }}{{ end }}
-    <link rel="apple-touch-icon" href="{{ $.Site.BaseURL }}{{ .Type }}/images/logo.png">
-    <link rel="stylesheet" href="{{ $.Site.BaseURL }}{{ .Type }}/css/styles.css">
+    <link rel="apple-touch-icon" href="/{{ .Type }}/images/logo.png">
+    <link rel="stylesheet" href="/{{ .Type }}/css/styles.css">
     <style>{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css.html" .Type ) .)) | safeCSS }}</style>
   </head>
   <body>
