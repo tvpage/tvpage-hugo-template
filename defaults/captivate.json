@@ -8,6 +8,34 @@
             "value": "//fonts.googleapis.com/css?family=Dosis"
         },
         {
+            "for": "styles",
+            "type": "text",
+            "label": "Font Family",
+            "code": "fontfamily",
+            "value": "Dosis"
+        },
+        {
+            "for": "styles",
+            "type": "text",
+            "label": "Body Background",
+            "code": "bodybackground",
+            "value": "gold"
+        },
+        {
+            "for": "styles",
+            "type": "text",
+            "label": "Main Background",
+            "code": "mainbackground",
+            "value": "red"
+        },
+        {
+            "for": "styles",
+            "type": "text",
+            "label": "Header Background",
+            "code": "headerbackground",
+            "value": "green"
+        },
+        {
             "for": "player",
             "type": "boolean",
             "label": "Autoplay",
