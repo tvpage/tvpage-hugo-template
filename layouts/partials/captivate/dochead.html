@@ -4,8 +4,10 @@
 {{ range $i, $param := .Params }}
 {{ $.Scratch.SetInMap "settings" $i . }}
 {{ end }}
+{{ if isset .Site.Params "tvppages" }}
 {{ range $i, $opt := (where (.Param "tvppages") "for" "styles") }}
 {{ $.Scratch.SetInMap "settings" .code .value }}
+{{ end }}
 {{ end }}
 <!DOCTYPE html>
 <html>
