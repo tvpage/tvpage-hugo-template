@@ -30,7 +30,9 @@ window.__TVPage__ = window.__TVPage__ || {};
 __TVPage__.config = [];
 __TVPage__.config.push({
 	id : {{ .File.BaseFileName }},
-	settings : {{ $.Scratch.Get "settings" }},
+	settings : {
+		carousel : {{ (where (.Param (.File.BaseFileName)) "for" "carousel") }}
+	},
 	channelVideos : {{ $channelVideos }} || []
 });
 </script>
