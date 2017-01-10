@@ -11,11 +11,7 @@
 <html>
   <head>
     {{ partial (printf "%s/meta.html" .Type) . }}
-    {{ with .Site.Params.googlefonts }}
-    <link href="{{ . }}" rel="stylesheet">
-    {{ else }}
-    <link href="//fonts.googleapis.com/css?family=Dosis" rel="stylesheet">
-    {{ end }}
+    <link href='{{ ($.Scratch.Get "settings").googlefont }}' rel="stylesheet">
     <title>{{ block "title" . }}{{ end }}{{ .Site.Title }}</title>
     {{ block "meta" . }}{{ end }}
     <link rel="apple-touch-icon" href='/{{ .Type }}/images/logo.png'>

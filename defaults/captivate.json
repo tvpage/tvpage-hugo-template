@@ -1,6 +1,13 @@
 {
     "option": [
         {
+            "for": "styles",
+            "type": "text",
+            "label": "Google Font",
+            "code": "googlefont",
+            "value": "//fonts.googleapis.com/css?family=Dosis"
+        },
+        {
             "for": "player",
             "type": "boolean",
             "label": "Autoplay",

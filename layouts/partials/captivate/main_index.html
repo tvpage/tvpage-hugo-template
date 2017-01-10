@@ -4,10 +4,6 @@
       {{ partial (printf "%s/breadcrumbs.html" .Type) . }}
     </div>
 
-    <!-- <div class="row">
-      <div id="tvpwidget-2"></div>
-    </div> -->
-
     <div class="row">
       {{ range where .Site.Pages "Layout" "channel" }}
         {{ if in "66133905,66133904,66133907,66133906" .Params.channelid }}
