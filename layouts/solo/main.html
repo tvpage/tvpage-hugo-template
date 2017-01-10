@@ -9,7 +9,7 @@
 {{ end }}
 
 <style>{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css.html" .Type ) .)) | safeCSS }}</style>
-<div id="tvplayerholder"></div>
+<div class="tvplayerholder"></div>
 
 <script type="text/javascript">
 window.__TVPage__ = window.__TVPage__ || {};

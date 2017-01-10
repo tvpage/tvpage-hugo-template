@@ -7,11 +7,11 @@ define(function(require) {
     (function(endpoint,el){
       $.ajax({ url: apiBase + endpoint }).done(function(res){
         $(el).html(res);
-        for (var i = __TVPage__.config.length - 1; i >= 0; i--) {
+        for (var i = 0; i < __TVPage__.config.length; i++) {
           if (id === __TVPage__.config[i].id) {
-            player.init({
-            videos: __TVPage__.config[i]
-            },function(){
+            var newId = id.replace("tvpembed", "tvp");
+            $(el).find('.tvplayerholder').attr('id', newId);
+            player.init(__TVPage__.config[i],function(){
             })
           }
         }

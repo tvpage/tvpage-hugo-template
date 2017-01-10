@@ -7,16 +7,18 @@ define(function(require) {
       autoend = true,
       options = null,
       playerReady = null,
+      firstTime = true,
       player = null;
+      firstLoad = true;
 
     function resize() {
       if (player) {
-        player.resize($('#tvplayerholder').width(), $('#tvplayerholder').height());
+        player.resize($('.tvplayerholder').width(), $('.tvplayerholder').height());
       }
     }
 
     function putButtonOverlay() {
-      $('<div/>').attr('id', 'tvpp-play').insertAfter('#tvplayerholder').on('click', function() {
+      $('<div/>').attr('id', 'tvpp-play').insertAfter('.tvplayerholder').on('click', function() {
         $(this).off().remove();
         return player ? player.play() : false;
       });
@@ -26,7 +28,7 @@ define(function(require) {
       // if(__TVPage__.config[0] && __TVPage__.config[0].settings.hasOwnProperty("autoplay") ){
       //   autoplay = __TVPage__.config[0].settings.autoplay;
       // }
-      console.log(asset);
+
       if (asset) {
         var checks = 0;
         (function readyPoller( ){
@@ -40,6 +42,7 @@ define(function(require) {
                 player.cueVideo(asset);
                 if (asset.type == 'mp4') putButtonOverlay();
               } else {
+                console.log(asset);
                 player.loadVideo(asset);
               }
             }
@@ -59,7 +62,7 @@ define(function(require) {
     }
 
     function handleEnded() {
-      var video = videos.videos.video;
+      var video = opts.video;
       if(__TVPage__.config[0] && __TVPage__.config[0].settings.hasOwnProperty("autoend") ){
         autoend = __TVPage__.config[0].settings.autoend;
       }
@@ -72,10 +75,8 @@ define(function(require) {
     }
 
     return {
-      init: function(videos, opts, callback) {
-
+      init: function(opts, callback) {
         options = opts || {};
-        var settings = require('./settings');
         var ready = function(p) {
           player = TVPage.instances[p.options.globalRunId];
           player.on('tvp:media:videoended', handleEnded);
@@ -87,21 +88,32 @@ define(function(require) {
           });
           resize();
         };
-
-        if (!window.TVPage) {
-          $.ajax({ dataType: 'script', cache: true, url: settings.jsLib })
-            .done(function() {
-              if (window.TVPage) {
-                ready(new TVPage.player(settings));
-              }
-            });
+        
+        var defaults = require('./settings');
+        var settings = $.extend( {}, defaults, {divId:opts.id.replace("tvpembed", "tvp") });
+        
+        if (firstTime) {
+          $.ajax({ dataType: 'script', cache: true, url: settings.jsLib }).done(function() {
+            ready(new TVPage.player(settings));
+          });
+          firstTime = false;
         } else {
-          ready(new TVPage.player(settings));
+          (function poller( ){
+            var deferred = setTimeout(function(){
+              if ( "undefined" !== typeof window.TVPage ) {
+                ready(new TVPage.player(settings)); 
+              } else {
+                poller();
+              }
+            },200);
+          })();
         }
-        var video = videos.videos.video;
+        
+        var video = opts.video;
         if (video) {
           play(extractAsset(video));
         }
+
         $(window).resize(resize);
       }
     };
