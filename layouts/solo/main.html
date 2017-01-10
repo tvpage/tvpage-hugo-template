@@ -1,21 +1,23 @@
-{{ $config := .Params.config }}
-{{ $videos := (index $.Site.Data.videos (printf "x%s" $config.videoId)) }}
+{{ range $i, $def := (getJSON (printf "themes/tvpage/defaults/%s.json" .Type)).option }}
+{{ $.Scratch.SetInMap "settings" .code .value }}
+{{ end }}
+{{ range $i, $param := .Params }}
+{{ $.Scratch.SetInMap "settings" $i . }}
+{{ end }}
+{{ range $i, $opt := (where (.Param (.File.BaseFileName)) "for" "player") }}
+{{ $.Scratch.SetInMap "settings" .code .value }}
+{{ end }}
+
 <style>{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css.html" .Type ) .)) | safeCSS }}</style>
 <div id="tvplayerholder"></div>
 
 <script type="text/javascript">
 window.__TVPage__ = window.__TVPage__ || {};
-window.__TVPage__.config = __TVPage__.config || {};
-window.__TVPage__.config.data = {
-  video: JSON.parse({{ $videos | jsonify }})
-};
-
-{{ if isset .Params.config "autoplay" }}
-window.__TVPage__.config.data.autoplay = {{ .Params.config.autoplay }};
-{{end}}
-
-{{ if isset .Params.config "autoReplay" }}
-window.__TVPage__.config.data.autoReplay = {{ .Params.config.autoReplay }};
-{{end}}
+__TVPage__.config = __TVPage__.config || [];
+__TVPage__.config.push({
+	id : {{ .File.BaseFileName }},
+	settings : {{ $.Scratch.Get "settings" }},
+	video : {{ (index $.Site.Data.videos (printf "x%s" .Params.videoid)) }} || []
+});
 
 </script>

@@ -4,7 +4,7 @@ define(function(require) {
 
     var mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
       autoplay = true,
-      autoReplay = false,
+      autoend = true,
       options = null,
       playerReady = null,
       player = null;
@@ -23,9 +23,10 @@ define(function(require) {
     }
 
     function play(asset) {
-      if(__TVPage__.config.data && __TVPage__.config.data.hasOwnProperty("autoplay") ){
-        autoplay = __TVPage__.config.data.autoplay;
-      }
+      // if(__TVPage__.config[0] && __TVPage__.config[0].settings.hasOwnProperty("autoplay") ){
+      //   autoplay = __TVPage__.config[0].settings.autoplay;
+      // }
+      console.log(asset);
       if (asset) {
         var checks = 0;
         (function readyPoller( ){
@@ -58,11 +59,11 @@ define(function(require) {
     }
 
     function handleEnded() {
-      var video = __TVPage__.config.data.video;
-      if(__TVPage__.config.data && __TVPage__.config.data.hasOwnProperty("autoplay") ){
-        autoReplay = __TVPage__.config.data.autoReplay;
+      var video = videos.videos.video;
+      if(__TVPage__.config[0] && __TVPage__.config[0].settings.hasOwnProperty("autoend") ){
+        autoend = __TVPage__.config[0].settings.autoend;
       }
-      if (mobile || !JSON.parse(autoReplay)) {
+      if (mobile || !JSON.parse(autoend)) {
         player.cueVideo(video.asset);
         if (video.asset.type == 'mp4') putButtonOverlay();
       } else {
@@ -71,7 +72,7 @@ define(function(require) {
     }
 
     return {
-      init: function(opts, callback) {
+      init: function(videos, opts, callback) {
 
         options = opts || {};
         var settings = require('./settings');
@@ -97,8 +98,7 @@ define(function(require) {
         } else {
           ready(new TVPage.player(settings));
         }
-
-        var video = __TVPage__.config.data.video;
+        var video = videos.videos.video;
         if (video) {
           play(extractAsset(video));
         }
