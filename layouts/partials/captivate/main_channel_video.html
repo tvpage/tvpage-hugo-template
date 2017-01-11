@@ -3,6 +3,48 @@
         <div class="row">
           {{ partial (printf "%s/breadcrumbs.html" .Type) . }}
         </div>
+        {{ $videoDetails := index $.Site.Data.videos (printf "x%s" .Params.videoid) }}
+        <div class="row">
+          <div class="col-sm-10 col-md-10">
+            <h1 class="video-title">{{ .Title }}</h1>
+            <div id="player-holder">
+              <div class="thumb" style='background-image: url({{ $videoDetails.asset.thumbnailUrl }});'>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-2 col-md-2">
+            <h1 class="products-title">Related Products</h1>
+            <div class="video-products-container">products</div>
+          </div>
+        </div>
+        <div class="row container">
+          <div class="video-details">
+            <div class="video-details-title">
+              VIDEO DETAILS
+              <div class="pull-right social-share">                
+                SHARE: <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ .Permalink }}" class="
+                share-icon facebook"></a>
+                <a target="_blank" href="https://twitter.com/share?text={{ .Title }}&url={{ .Permalink }}" class="share-icon twitter"></a>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 col-md-12 video-details-row">
+                <strong>Published on: {{ $videoDetails.date_created }}</strong>
+              </div>
+              <div class="col-sm-12 col-md-12 video-details-row">
+                <strong>Duration:</strong> {{ $videoDetails.asset.prettyDuration }}
+              </div>
+              <div class="col-sm-12 col-md-12 video-details-row">
+                {{ replace $videoDetails.description "\n" "<br/>" | safeHTML }}
+              </div>
+            </div>  
+          </div>
+        </div>
+        <div class="row container">
+          <div class="latest-videos">
+            LATEST VIDEOS
+          </div>
+        </div>
         <div class="row">
         {{ $channelid := .Params.channelid }}
         {{ $page := index $.Site.Data.channelVideos (printf "x%s_page_1" $channelid) }}
