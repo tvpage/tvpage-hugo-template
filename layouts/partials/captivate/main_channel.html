@@ -1,5 +1,8 @@
 <main id="main-content" class="main-content">
     <div class="container">
+        <div class="row channel-page-banner">
+          
+        </div>
         <div class="row">
             <div class="btn-group">
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -30,7 +33,7 @@
         {{ $page := index $.Site.Data.channelVideos (printf "x%s_page_1" $channelid) }}
         {{ with $page.data }}
           {{ range $i, $p := $page.data }}
-            <div class="col-sm-4 col-md-4">
+            <div class="col-sm-4 col-md-4 latest-row">
               <article>
                 <a href="{{ .url }}" class="thumb"
                   {{with .asset.thumbnailUrl}} style="background-image: url({{ . }});"{{else}}

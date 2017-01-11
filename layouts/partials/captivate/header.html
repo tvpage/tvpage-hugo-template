@@ -1,19 +1,31 @@
 <header>
-  <a class="logo" href="{{ .Site.BaseURL }}" title="Return to homepage">
+  <div class="container">
+  <div class="brand-header justify">
+    <div class="brand-header-search main-start cross-center">
+      <input type="text" placeholder="SEARCH" name="search">
+    </div>
+    <div class="brand-header-logo main-center cross-center">
+      <a class="logo" href="{{ .Site.BaseURL }}" title="Return to homepage">
     <img class="img-responsive" src='/{{ .Type }}/images/logo.png' alt="{{ .Site.Title }}" />
-  </a>
-  <nav>
-    <ul class="nav nav-justified">
-      {{ with .Site.Menus.top }}
-      {{ range . }}
-        <li><a href="{{.URL}}">{{ .Name }}</li></a>
-      {{ end }}
-      {{ else }}
-        No navigation
-      {{ end }}
-    </ul>
-  </nav>
-  <nav>
+    </a>
+    </div>
+    
+    <div class="brand-header-menu-top main-end cross-center">
+      <ul class="brand-header-menu-top-options">
+        {{ with .Site.Menus.top }}
+        {{ range . }}
+          <li><a href="{{.URL}}">{{ .Name }}</li></a>
+        {{ end }}
+        {{ else }}
+          No navigation
+        {{ end }}
+      </ul>
+    </div>  
+  </div>
+  </div>
+  
+  <nav class="menu-bar">
+  <div class="container">
     <ul class="nav nav-justified">
       {{ with .Site.Menus.main }}
       {{ range . }}
@@ -23,5 +35,7 @@
         No navigation
       {{ end }}
     </ul>
+  </div>
+    
   </nav>
 </header>

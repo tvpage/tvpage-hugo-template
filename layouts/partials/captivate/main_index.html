@@ -7,18 +7,30 @@
     <div class="row">
       {{ range where .Site.Pages "Layout" "channel" }}
         {{ if in ($.Scratch.Get "settings").channelgalleryids .Params.channelid }}
-        <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="col-xs-12 col-sm-6 col-md-6 channel-row">
           <article>
             <a href="{{ .Permalink }}" class="thumb" style='background-image: url(/{{ .Type }}/images/defaults/asset.png);'>
             </a>
           </article>
+          <span class="channel-copy">
+            {{ .Title }}    
+          </span>
         </div>
         {{ end }}
       {{ end }}
     </div>
-
-    <div class="row slider">
-      {{ range where .Site.Pages "Layout" "channel" }}
+    <div class="container row ">
+    <div class="brands-carousel">
+    <span class="">
+      BRANDS
+    </span>  
+    </div>
+    
+      
+    </div>
+    <div class="container row">
+      <div class="slider">
+        {{ range where .Site.Pages "Layout" "channel" }}
         {{ if in ($.Scratch.Get "settings").channelsliderids .Params.channelid }}
         <div class="col-xs-12 col-sm-3 col-md-3">
           <article>
@@ -27,15 +39,21 @@
           </article>
         </div>
         {{ end }}
-      {{ end }}
+      {{ end }}    
+      </div>
     </div>
-
+    <div class="row container">
+    <div class="latest-videos">
+      LATEST VIDEOS
+    </span>
+      
+    </div>
     <div class="row">
       {{ $page := index $.Site.Data.channelVideos (printf "x%s_page_1" ($.Scratch.Get "settings").homechannelid) }}
       {{ with $page.data }}
         {{ $i := 0 }}
         {{ range first 6 $page.data }}
-          <div class="col-sm-6 col-md-4">
+          <div class="col-sm-6 col-md-4 latest-row">
             <article>
               <a href="{{ .url }}" class="thumb"
                 {{with .asset.thumbnailUrl}} style="background-image: url({{ . }});"{{else}}
