@@ -28,20 +28,20 @@
     
       
     </div>
-    <div class="container row">
-      <div class="slider">
+    <!-- <div class="row container"> -->
+      <div class="row container slider">
         {{ range where .Site.Pages "Layout" "channel" }}
-        {{ if in ($.Scratch.Get "settings").channelsliderids .Params.channelid }}
-        <div class="col-xs-12 col-sm-3 col-md-3">
-          <article>
-            <a href="{{ .Permalink }}" class="thumb" style='background-image: url(/{{ .Type }}/images/defaults/asset.png);'>
-            </a>
-          </article>
-        </div>
-        {{ end }}
-      {{ end }}    
+          {{ if in ($.Scratch.Get "settings").channelsliderids .Params.channelid }}
+          <div class="brand-item">
+            <article>
+              <a href="{{ .Permalink }}" class="thumb" style='background-image: url(/{{ .Type }}/images/defaults/asset.png);'>
+              </a>
+            </article>
+          </div>
+          {{ end }}
+        {{ end }}    
       </div>
-    </div>
+    <!-- </div> -->
     <div class="row container">
     <div class="latest-videos">
       LATEST VIDEOS

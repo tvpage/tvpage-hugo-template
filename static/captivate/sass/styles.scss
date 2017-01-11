@@ -104,8 +104,22 @@ nav.menu-bar{
 .channel-row{
 	margin-bottom: 15px;
 }
-.slider{
+.slider{	
 	margin-bottom: 15px;
+	button{
+		@extend .col-xs-1;
+		@extend .col-sm-1;
+		@extend .col-md-1;
+		margin-top: 55px;
+	}
+	.slick-list{
+		@extend .col-xs-10;
+		@extend .col-sm-10;
+		@extend .col-md-10;
+	}
+	.brand-item{
+		margin: 0 5px;
+	}
 }
 .latest-row{
 	margin-bottom: 15px;
