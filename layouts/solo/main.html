@@ -4,14 +4,16 @@
 {{ range $i, $param := .Params }}
 {{ $.Scratch.SetInMap "settings" $i . }}
 {{ end }}
-{{ range $i, $opt := (where (.Param (.File.BaseFileName)) "for" "player") }}
+{{ with .Param (.File.BaseFileName) }}
+{{ range $i, $opt := . }}
 {{ $.Scratch.SetInMap "settings" .code .value }}
+{{ end }}
 {{ end }}
 
 <style type="text/css">{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css.html" .Type ) .)) | safeCSS }}</style>
-<div id="{{ .File.BaseFileName }}">
+<div id="tvpembed-{{ .File.BaseFileName }}">
   <div class="tvpplayer">
-  	<div id="{{ .File.BaseFileName }}-target"></div>
+  	<div id="tvpembed-{{ .File.BaseFileName }}-target"></div>
   </div>
 </div>
 
@@ -29,8 +31,7 @@
   var s, as = d.getElementsByTagName(t)[0];
   if (d.getElementById(id)) return;
   s = d.createElement(t); s.id = id;
-  //s.src = "//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-1.8.3-min.js";
-  s.src = "localhost:1313/solo/player-debug-lib.js";
+  s.src = '//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-{{ ($.Scratch.Get "settings").version }}-min.js';
   as.parentNode.insertBefore(s, as);
 }(document, 'script', 'tvpage-player'));</script>
 
@@ -56,7 +57,7 @@ var checks = 0;
       _tvpa.push(["track","ci",{ li: '{{ .Param "loginid" }}'}]);
 
       new TVPage.player({
-        divId: "{{ .File.BaseFileName }}-target",
+        divId: "tvpembed-{{ .File.BaseFileName }}-target",
         controls: {
           active: true,
           seekBar: { progressColor: '#273691' },
@@ -66,7 +67,7 @@ var checks = 0;
         techOrder: 'html5,flash',
         analytics: { tvpa: false },
         apiBaseUrl: '//app.tvpage.com',
-        swf: "//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-1.8.3-flash.swf",
+        swf: '//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-{{ ($.Scratch.Get "settings").version }}-flash.swf',
         onReady: function(e, pl){
           pl.resize(640, 380);
           pl.loadVideo(process( {{ index $.Site.Data.videos (printf "x%s" .Params.videoid) }}  ));
