@@ -40,6 +40,9 @@
                   style='background-image: url(/{{ .Type }}{{ .Param "thumbdefault" }});'{{end}}>
                 </a>
               </article>
+              <span class="latest-videos-title">
+              {{ .title }}
+            </span>
             </div>
             {{ if eq (mod (add $i 1) 3) 0 }}<div class="col-sm-12"></div>{{ end }}
           {{ end }}
