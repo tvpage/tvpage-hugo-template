@@ -8,7 +8,7 @@ module.exports = function(grunt) {
             },
             css: {
                 files: ['src/scss/**/*.scss'],
-                tasks: ['sass', 'autoprefixer', 'exportcss']
+                tasks: ['sass', 'autoprefixer', 'export']
             }
         },
         requirejs: {
@@ -35,7 +35,7 @@ module.exports = function(grunt) {
                 }
             }
         },
-        exportcss: {
+        export: {
             target: {}
         }
     });
@@ -46,10 +46,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
 
     var exportPath = '../../layouts/partials/solo';
-    grunt.registerMultiTask('exportcss', 'Export css to partials folder', function() {
-        var moved = grunt.file.write(exportPath+'/css.html', grunt.file.read('./dist/css-lib.css'));
-        if (moved) {
-            grunt.log.ok('exported!');
+    grunt.registerMultiTask('export', 'Export css to partials', function() {
+        var css = grunt.file.write(exportPath+'/css.html', grunt.file.read('./dist/css-lib.css'));
+        if (css) {
+            grunt.log.ok('CSS exported');
         }
     });
     
