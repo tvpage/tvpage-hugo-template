@@ -531,15 +531,15 @@ define(function(require) {
           }
           priceHtml += '</div>';
           if (this.isMobile()) {
-              s += '<li>\
-                        <div id="p-' + i + '" class="product" data-video-id="' + products[i].entityIdParent + '" data-id="' + products[i].id + '">\
-                          <div class="product-img" style="background-image:url(' + array.imageUrl + ')">\
-                           <img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="' + products[i].title + '" />\
-                          </div>\
-                          <div><h4 class="product-title">' + products[i].title + '</h4>' + priceHtml + '</div>\
-                          <a class="call-to-action" href="' + array.linkUrl + '" target="_blank" data-video-id="' + products[i].entityIdParent + '" data-id="' + products[i].id + '">' + 'VIEW DETAILS' + '<span class="material-icon"></span>' + '</a>\
-                        </div>\
-                    </li>';
+            s += '<li>\
+                                   <div id="p-' + i + '" class="product" data-video-id="' + products[i].entityIdParent + '" data-id="' + products[i].id + '">\
+                                     <div class="product-img" style="background-image:url(' + array.imageUrl + ')">\
+                                       <img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="' + products[i].title + '" />\
+                                     </div>\
+                                     <div><h4 class="product-title">' + products[i].title + '</h4>' + priceHtml + '</div>\
+                                     <a class="call-to-action" href="' + array.linkUrl + '" target="_blank" data-video-id="' + products[i].entityIdParent + '" data-id="' + products[i].id + '">' + 'VIEW DETAILS' + '<span class="material-icon"></span>' + '</a>\
+                                   </div>\
+                               </li>';
           } else {
             s += '<li>\
                     <a class="call-to-action" href="' + array.linkUrl + '" target="_blank">\
