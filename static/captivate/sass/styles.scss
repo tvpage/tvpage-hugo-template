@@ -88,6 +88,22 @@ header a {
 			padding: 10px;
 			border-radius: 25px; 
 		}
+		&-button {
+		    position: absolute;
+		    top: 0;
+		    right: 0;
+		    width: 45px;
+		    height: 42px;
+		    border: 0;
+		    padding: 0;
+		    background: transparent;
+		    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAIAAAC0Ujn1AAAAGXRFW…iZsc+/6Pfo8Xj8BYTcMgOxTiaTRCKhcRD7/3v6M+gPAQYAon8yVMdn7GUAAAAASUVORK5CYII=);
+		    background-size: 25px 25px;
+		    background-repeat: no-repeat;
+		    background-position: 8px 10px;
+		    cursor: pointer;
+		    opacity: 0.7;
+		}
 		
 	}
 	&-logo{
@@ -104,7 +120,7 @@ header a {
 				& a {
 					color: white;
 					display: inline;
-					&::hover{
+					&:hover{
 						text-decoration : none;
 					}
 				}
@@ -131,9 +147,11 @@ nav.menu-bar{
 		}
 	}
 }
-.breadcrumb li{
+.breadcrumb{
+	& li{
 	font-size: 16px;
 	line-height: 20px;
+	text-transform: uppercase;}
 	& a{
 		color: #1F1D26;	
 		width: 37px;
@@ -141,6 +159,9 @@ nav.menu-bar{
 		font-family: Dosis;
 		line-height: 20px;
 		color: #1F1D26;
+	}
+	& .active{
+		font-weight: bold;
 	}
 	
 }

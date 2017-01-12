@@ -33,16 +33,16 @@
         {{ $page := index $.Site.Data.channelVideos (printf "x%s_page_1" $channelid) }}
         {{ with $page.data }}
           {{ range $i, $p := $page.data }}
-            <div class="col-sm-4 col-md-4 latest-row">
-              <article>
+            <div class="col-sm-4 col-md-4">
+              <article class="video">
                 <a href="{{ .url }}" class="thumb"
                   {{with .asset.thumbnailUrl}} style="background-image: url({{ . }});"{{else}}
                   style='background-image: url(/{{ .Type }}{{ .Param "thumbdefault" }});'{{end}}>
                 </a>
               </article>
-              <span class="latest-videos-title">
+              <p class="latest-videos-title">
               {{ .title }}
-            </span>
+            </p>
             </div>
             {{ if eq (mod (add $i 1) 3) 0 }}<div class="col-sm-12"></div>{{ end }}
           {{ end }}

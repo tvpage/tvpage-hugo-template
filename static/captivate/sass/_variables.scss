@@ -797,11 +797,11 @@ $breadcrumb-padding-horizontal: 15px !default;
 //** Breadcrumb background color
 $breadcrumb-bg:                 #fff !default;
 //** Breadcrumb text color
-$breadcrumb-color:              #ccc !default;
+$breadcrumb-color:              #1F1D26 !default;
 //** Text color of current page in the breadcrumb
-$breadcrumb-active-color:       $gray-light !default;
+$breadcrumb-active-color:       #1F1D26 !default;//**$gray-light !default;
 //** Textual separator for between breadcrumb elements
-$breadcrumb-separator:          "/" !default;
+$breadcrumb-separator:          ">" !default;
 
 
 //== Carousel

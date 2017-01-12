@@ -52,8 +52,8 @@
         {{ $page := index $.Site.Data.channelVideos (printf "x%s_page_1" $channelid) }}
         {{ with $page.data }}
           {{ range $i, $p := $page.data }}
-            <div class="col-sm-4 col-md-4 latest-row">
-              <article>
+            <div class="col-sm-4 col-md-4">
+              <article class="video">
                 <a href="{{ .url }}" class="thumb"
                   {{with .asset.thumbnailUrl}} style="background-image: url({{ . }});"{{else}}
                   style='background-image: url(/{{ .Type }}{{ .Param "thumbdefault" }});'{{end}}>
