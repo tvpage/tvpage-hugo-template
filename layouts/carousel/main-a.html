@@ -12,7 +12,7 @@
 
 <style id="tvpcss" type="text/css">{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/base-css.html" .Type) .)) | safeCSS }}</style>
 <style id="tvpcarousel-css">{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/carousel-css.html" .Type) .)) | safeCSS }}</style>
-<div id="tvpembed-{{ .File.BaseFileName }}">
+<div id="tvpwidget-{{ .File.BaseFileName }}">
 	<div class="tvpframeloader">
 		<div class="tvpframeloader-item">
 		    <div class="tvpframeloader-item-img"></div>
@@ -54,23 +54,18 @@
 window.__TVPage__ = window.__TVPage__ || {};
 __TVPage__.config = [];
 __TVPage__.config.push({
-	id : {{ .File.BaseFileName }},
+	id : "tvpwidget-{{ .File.BaseFileName }}",
 	settings : {{ (where (.Param (.File.BaseFileName)) "for" "carousel") }},
-	attributes: {
-	  search: "## SEARCH QUERY GOES HERE ##",
-	  brand: ["## BRAND(S) GO HERE ##"],  
-	  category: [{
-	    value: "## CATEGORY ID ##",
-	    label: "## CATEGORY NAME ##"
-	  }]
-	}
+  attributes: {
+    search: "",
+    brand: [],
+    category: []
+  }
 });
-</script>
 
-<script>(function(d,t,id) {
-  var s, as = d.getElementsByTagName(t)[0];
-  if (d.getElementById(id)) return;
-  s = d.createElement(t); s.id = id;
+(function(d) {
+  var s = d.createElement('script');
   s.src = '//localhost:1313/carousel/lib.min.js';
-  as.parentNode.insertBefore(s, as);
-}(document, 'script', 'tvppcarousel-lib'));</script>
+  d.body.appendChild(s);
+})(document);
+</script>
