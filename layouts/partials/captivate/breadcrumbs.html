@@ -1,10 +1,12 @@
-<nav>
+<nav class="breadcrumb-navigation">
 	<ul class="breadcrumb">
 		<li><a href="{{ .Site.BaseURL }}"><i class="fa fa-home" aria-hidden="true"></i>Home</a></li>		
-		{{ if isset .Params "videoid" }}
+		{{ if isset .Params "channelid" }}
 			{{ $channel := index $.Site.Data.channels (printf "x%s" .Params.channelid ) }}
 			<li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"><a href='{{ print "/c/" $channel.titleTextEncoded "/" $channel.id "/" }}' itemprop="url"><span itemprop="title">{{ $channel.title }}</span></a></li>
-		{{ end }}	
-		<li class="active">{{ .Title }}</li>
+		{{ end }}
+		{{ if not (eq .Layout "home") }}
+			<li class="active">{{ .Title }}</li>
+		{{ end }}
 	</ul>
 </nav>
