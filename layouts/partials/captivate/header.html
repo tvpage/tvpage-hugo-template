@@ -1,47 +1,48 @@
 <header>
-  <div class="container">
-  <div class="brand-header justify">
-    <div class="brand-header-search main-start cross-center">
-      <div class="brand-header-search-container">
-        <input type="text" placeholder="SEARCH" name="search">
-        <!-- <div class="brand-header-search-button"></div> -->
-        <!-- <button class="brand-header-search-button close"></button> -->
-        <a href="#"class="brand-header-search-button"></a>
-        <!-- <a href="#" class="share-icon twitter"></a> -->
+  <div class="header-bg">
+    <div class="container">
+      <div class="brand-header justify">
+        <div class="brand-header-search main-start cross-center">
+          <div class="brand-header-search-container">
+            <input type="text" placeholder="SEARCH" name="search">
+            <!-- <div class="brand-header-search-button"></div> -->
+            <!-- <button class="brand-header-search-button close"></button> -->
+            <a href="#"class="brand-header-search-button"></a>
+            <!-- <a href="#" class="share-icon twitter"></a> -->
+          </div>
+        </div>
+        <div class="brand-header-logo main-center cross-center">
+          <a class="logo" href="{{ .Site.BaseURL }}" title="Return to homepage">
+        <img class="img-responsive" src='/{{ .Type }}/images/logo.png' alt="{{ .Site.Title }}" />
+        </a>
+        </div>
+        
+        <div class="brand-header-menu-top main-end cross-center">
+          <ul class="brand-header-menu-top-options">
+            {{ with .Site.Menus.top }}
+            {{ range . }}
+              <li><a href="{{.URL}}" {{ if eq .Name "Subscribe" }} data-toggle="modal" data-target="#subcribeModal" {{ end }} >{{ .Name }}</li></a>
+            {{ end }}
+            {{ else }}
+              No navigation
+            {{ end }}
+          </ul>
+        </div>  
       </div>
     </div>
-    <div class="brand-header-logo main-center cross-center">
-      <a class="logo" href="{{ .Site.BaseURL }}" title="Return to homepage">
-    <img class="img-responsive" src='/{{ .Type }}/images/logo.png' alt="{{ .Site.Title }}" />
-    </a>
-    </div>
-    
-    <div class="brand-header-menu-top main-end cross-center">
-      <ul class="brand-header-menu-top-options">
-        {{ with .Site.Menus.top }}
+  </div>
+  {{ partial (printf "%s/subscribe_form.html" .Type) . }}
+  <nav class="menu-bar">
+    <div class="container">
+      <ul class="nav nav-justified">
+        {{ with .Site.Menus.main }}
         {{ range . }}
-          <li><a href="{{.URL}}" {{ if eq .Name "Subscribe" }} data-toggle="modal" data-target="#subcribeModal" {{ end }} >{{ .Name }}</li></a>
+          <li><a href="{{.URL}}">{{ .Name }}</li></a>
         {{ end }}
         {{ else }}
           No navigation
         {{ end }}
       </ul>
-    </div>  
-  </div>
-  </div>
-  {{ partial (printf "%s/subscribe_form.html" .Type) . }}
-  <nav class="menu-bar">
-  <div class="container">
-    <ul class="nav nav-justified">
-      {{ with .Site.Menus.main }}
-      {{ range . }}
-        <li><a href="{{.URL}}">{{ .Name }}</li></a>
-      {{ end }}
-      {{ else }}
-        No navigation
-      {{ end }}
-    </ul>
-  </div>
-    
+    </div>
   </nav>
 </header>

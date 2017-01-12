@@ -10,6 +10,9 @@ body {
 	background: {{ ($.Scratch.Get "settings").mainbackground }};
 }
 
-header {
+.header-bg {
+	background-position: center;
+	background-repeat: no-repeat;
 	background-image: url({{ ($.Scratch.Get "settings").headerbackground }});
+	background-size: cover;
 }
