@@ -67,8 +67,10 @@ define(function(require) {
         $('#lightbox').addClass('off');
         THAT.hideHTML5PlayBtn();
         window.TVPlayer.stop();
-        $('.tvp-pagination').empty();
-        THAT.cache.productScrollerX.goToPage(0, 0, 100);
+        if (THAT.isMobile()) {
+          $('.tvp-pagination').empty();
+          THAT.cache.productScrollerX.goToPage(0, 0, 100);
+        }
       });
 
       $(document).on('click', '.lb-overlay', function(e) {
@@ -76,8 +78,10 @@ define(function(require) {
         $('#lightbox').addClass('off');
         THAT.hideHTML5PlayBtn();
         window.TVPlayer.stop();
-        $('.tvp-pagination').empty();
-        THAT.cache.productScrollerX.goToPage(0, 0, 100);
+        if (THAT.isMobile()) {
+          $('.tvp-pagination').empty();
+          THAT.cache.productScrollerX.goToPage(0, 0, 100);
+        }
       });
 
       $(document).on('click', '#view-more-button', function(e) {
@@ -195,16 +199,19 @@ define(function(require) {
       if (this.isMobile()) {
         var THAT = this;
         window.matchMedia('(orientation: portrait)').addListener(function(m) {
+          var productWidth = $('#mobile-products-list > li');
+          var mobileWidth = $(window).width()-40;
+          var mobileHeight = $(window).height()-16;
           if (m.matches) {
-            var width = $('#mobile-channels-list').width();
+            $(productWidth).css('width',mobileWidth);
             $('#mobile-channels #scroller').width(99999);
-            $('#mobile-channels #scroller').css('width', width);
             $('#tvpp .tvpp-wrapper').css('top', '');
             $('#tvplb .lb-content').css({
               'width': '',
               'height': ''
             });
           } else {
+            $(productWidth).css('width',mobileHeight);
             $('#tvpp .tvpp-wrapper').css('top', '10px');
             $('#tvplb .lb-content').css({
               'height': '100%',
@@ -213,8 +220,6 @@ define(function(require) {
           }
           THAT.refreshMobileProductScroller();
           THAT.resizePlayer();
-          THAT.handleAdBanner(products);
-          THAT.cache.productScrollerX.refresh();
         });
       }
     },
@@ -529,11 +534,11 @@ define(function(require) {
           priceHtml += '</div>';
           if (this.isMobile()) {
             s += '<li>\
-                                   <div id="p-' + i + '" class="product adjustWidth" data-video-id="' + products[i].entityIdParent + '" data-id="' + products[i].id + '">\
+                                   <div id="p-' + i + '" class="product" data-video-id="' + products[i].entityIdParent + '" data-id="' + products[i].id + '">\
                                      <div class="product-img" style="background-image:url(' + array.imageUrl + ')">\
                                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="' + products[i].title + '" />\
                                      </div>\
-                                     <h4 class="product-title">' + products[i].title + '</h4>' + priceHtml + '\
+                                     <div><h4 class="product-title">' + products[i].title + '</h4>' + priceHtml + '</div>\
                                      <a class="call-to-action" href="' + array.linkUrl + '" target="_blank" data-video-id="' + products[i].entityIdParent + '" data-id="' + products[i].id + '">' + 'VIEW DETAILS' + '<span class="material-icon"></span>' + '</a>\
                                    </div>\
                                </li>';
@@ -555,15 +560,15 @@ define(function(require) {
         .append(s);
       this.bindProductEvents();
       if (this.isMobile()) {
-        var productWidth = $('.adjustWidth');
-        var tvpWrapper = $('#tvpp .tvpp-wrapper').width();
+        var productWidth = $('#mobile-products-list > li');
+        var holderWidth = $('#tvpp-holder').width();
         if (window.matchMedia('(orientation: portrait)').matches) {
-          $(productWidth).css('width', tvpWrapper);
-          $('.no-products-banner ').css('width', tvpWrapper);
+          $(productWidth).css('width', holderWidth);
+          $('.no-products-banner ').css('width', holderWidth);
           $('.no-products-banner ').css('height', '85px');
         } else {
-          $(productWidth).css('width', tvpWrapper);
-          $('.no-products-banner ').css('width', tvpWrapper);
+          $(productWidth).css('width', holderWidth);
+          $('.no-products-banner ').css('width', holderWidth);
           $('.no-products-banner ').css('height', '85px');
           $('#tvplb .lb-content').css({
             'height': '100%',
@@ -818,11 +823,11 @@ define(function(require) {
 
   // At DOM Ready!
   $(function() {
-    var lightBoxTemplate = '<div id="tvplb"><div class="lb-content"><div class="lb-close"></div><div class="lb-header"><div class="related-products">Sponsored Products</div><h4 class="lb-title"></h4></div><div class="lb-body"></div><div class="no-products-banner" data-ns="footer" data-pos="btf" data-collapse="true"></div></div><div id="lb-overlay" class="lb-overlay"></div></div>';
+    var lightBoxTemplate = '<div id="tvplb"><div class="lb-content"><div class="lb-close"></div><div class="lb-header"><div class="related-products">SPONSORED PRODUCTS</div><h4 class="lb-title"></h4></div><div class="lb-body"></div><div class="no-products-banner" data-ns="footer" data-pos="btf" data-collapse="true"></div></div><div id="lb-overlay" class="lb-overlay"></div></div>';
     $("#tvp-gallery").append('<div class="cz-line-heading"><div class="cz-line-heading-inner">Recommended Videos</div></div><div id="videos"></div><div id="lightbox" class="off">' + lightBoxTemplate + '</div><a class="tvplogo" class="tvp-clearfix" href="//www.tvpage.com" target="_blank"></a>').addClass("tvp-clearfix");
 
     var playerTemplate = '<div id="tvpp"><div id="html5MobilePlayBtn" class="html5-play-button"></div><div class="tvpp-wrapper"><div id="tvpp-holder" class="tvpp-holder"></div><div class="video-overlay"></div></div></div>';
-    var productsTemplate = '<div id="tvp-recommended-products-wrapper"><div class="recommeded-products">Sponsored Products</div><div class="tvp-pagination"></div></div><div id="mobile-products"><div id="scroller-wrapper" class="x-scroll"><div id="scroller" class="scroll-area"><ul id="mobile-products-list" class="products-list"></ul></div></div></div><div id="desktop-products" class="products"><div class="products-holder"><div id="scroller-wrapper" class="y-scroll"><div id="scroller" class="scroll-area"><ul id="desktop-products-list"></ul></div></div><div id="product-pop-ups"></div></div></div>';
+    var productsTemplate = '<div id="tvp-recommended-products-wrapper"><div class="recommeded-products">SPONSORED PRODUCTS</div><div class="tvp-pagination"></div></div><div id="mobile-products"><div id="scroller-wrapper" class="x-scroll"><div id="scroller" class="scroll-area"><ul id="mobile-products-list" class="products-list"></ul></div></div></div><div id="desktop-products" class="products"><div class="products-holder"><div id="scroller-wrapper" class="y-scroll"><div id="scroller" class="scroll-area"><ul id="desktop-products-list"></ul></div></div><div id="product-pop-ups"></div></div></div>';
     var initialTemplate = '<div class="tvp-clearfix"><div class="tvp-col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div><div class="tvp-col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div></div><div class="tvp-clearfix"><div class="tvp-col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div><div class="tvp-col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div></div><div class="tvp-clearfix"><div class="tvp-col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div><div class="tvp-col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div></div>';
 
     setTimeout(function() {
