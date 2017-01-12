@@ -1,5 +1,17 @@
+{{ $channel := index $.Site.Data.channels (printf "x%s" .Params.channelid ) }}
 <main id="main-content" class="main-content">
     <section class="row channel-page-banner" style="background-image: url('/{{.Type}}/images/channel/{{.Params.channelid}}-banner.jpg');">
+      <div class="main-channel-banner">
+        <div class="main-channel-banner-title">
+          {{ $channel.title }}
+        </div>
+        <div class="main-channel-banner-total-videos">
+          60 videos
+        </div>
+        <div class="main-channel-banner-subscribe">
+          subscribe to channel
+        </div>
+      </div>
           
     </section>
     <div class="container">
@@ -27,6 +39,9 @@
         </div>
         <div class="row">
           {{ partial (printf "%s/breadcrumbs.html" .Type) . }}
+        </div>
+        <div class="row container section">
+            <h2 class="section-header">LATEST VIDEOS</h2>
         </div>
         <div class="row">
         {{ $channelid := .Params.channelid }}
