@@ -97,9 +97,6 @@ define(function(require) {
         }
       });
       $(document).on('click', '.product', function(e) {
-        if (e) {
-          e.preventDefault();
-        }
         var $link = $(this).closest('a');
         if ($link.length) {
           sendAnalitics({
@@ -133,8 +130,9 @@ define(function(require) {
         this.cache.productScrollerX = new IScroll(sel, {
           scrollX: true,
           scrollY: false,
-          momentum: false,
+          momentum:false,
           bindToWrapper: true,
+          click: true,
           snap: true
         });
         setTimeout(function() {
@@ -454,7 +452,7 @@ define(function(require) {
     handlePagination: function(products) {
       if (this.isMobile()) {
         for (var i = 0, l = products.length; i < l; i++) {
-          if (products.length >= 1) {
+          if (products.length > 1) {
             $('.tvp-pagination').append('<span class=' + (i == 0 ? "active" : "") + '></span>');
           }
         }
@@ -533,25 +531,25 @@ define(function(require) {
           }
           priceHtml += '</div>';
           if (this.isMobile()) {
-            s += '<li>\
-                                   <div id="p-' + i + '" class="product" data-video-id="' + products[i].entityIdParent + '" data-id="' + products[i].id + '">\
-                                     <div class="product-img" style="background-image:url(' + array.imageUrl + ')">\
-                                       <img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="' + products[i].title + '" />\
-                                     </div>\
-                                     <div><h4 class="product-title">' + products[i].title + '</h4>' + priceHtml + '</div>\
-                                     <a class="call-to-action" href="' + array.linkUrl + '" target="_blank" data-video-id="' + products[i].entityIdParent + '" data-id="' + products[i].id + '">' + 'VIEW DETAILS' + '<span class="material-icon"></span>' + '</a>\
-                                   </div>\
-                               </li>';
+              s += '<li>\
+                        <div id="p-' + i + '" class="product" data-video-id="' + products[i].entityIdParent + '" data-id="' + products[i].id + '">\
+                          <div class="product-img" style="background-image:url(' + array.imageUrl + ')">\
+                           <img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="' + products[i].title + '" />\
+                          </div>\
+                          <div><h4 class="product-title">' + products[i].title + '</h4>' + priceHtml + '</div>\
+                          <a class="call-to-action" href="' + array.linkUrl + '" target="_blank" data-video-id="' + products[i].entityIdParent + '" data-id="' + products[i].id + '">' + 'VIEW DETAILS' + '<span class="material-icon"></span>' + '</a>\
+                        </div>\
+                    </li>';
           } else {
             s += '<li>\
-                                 <a href="' + array.linkUrl + '" target="_blank">\
-                                   <div id="p-' + i + '" class="product" data-video-id="' + products[i].entityIdParent + '" data-id="' + products[i].id + '">\
-                                     <div class="product-img" style="background-image:url(' + array.imageUrl + ')">\
-                                       <img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="' + products[i].title + '" />\
-                                     </div>\
-                                   </div>\
-                                 </a>\
-                               </li>';
+                    <a class="call-to-action" href="' + array.linkUrl + '" target="_blank">\
+                      <div id="p-' + i + '" class="product" data-video-id="' + products[i].entityIdParent + '" data-id="' + products[i].id + '">\
+                        <div class="product-img" style="background-image:url(' + array.imageUrl + ')">\
+                          <img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="' + products[i].title + '" />\
+                        </div>\
+                      </div>\
+                    </a>\
+                  </li>';
           }
         }
       }
