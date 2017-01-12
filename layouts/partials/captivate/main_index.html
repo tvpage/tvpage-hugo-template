@@ -26,8 +26,7 @@
 			{{ range where .Site.Pages "Layout" "channel" }}
 				{{ if in ($.Scratch.Get "settings").channelsliderids .Params.channelid }}
 				<div class="brand-item">
-						<a href="{{ .Permalink }}" class="thumb" style='background-image: url(/{{ .Type }}/images/defaults/asset.png);'>
-						</a>
+          <img src="/{{ .Type }}/images/{{.Params.channelid}}-logo.png">
 				</div>
 				{{ end }}
 			{{ end }}   
@@ -42,12 +41,12 @@
 				{{ $i := 0 }}
 				{{ range first 6 $page.data }}
 					<div class="col-sm-6 col-md-4">
-            <article class="video">
+            <article class="latest-video">
 							<a href="{{ .url }}" class="thumb"
 								{{with .asset.thumbnailUrl}} style="background-image: url({{ . }});"{{else}}
 								style='background-image: url(/{{ .Type }}{{ .Param "thumbdefault" }});'{{end}}>
 							</a>
-							<p class="latest-videos-title">{{ .title }}</p>
+							<p class="latest-video-title">{{ .title }}</p>
 						</article>
           </div>
 					{{ if eq (mod (add $i 2) 3) 0 }}<div class="col-sm-12"></div>{{ end }}
