@@ -15,7 +15,7 @@
 	    }]
     });
 
-	$(".video").on("click", function(e){
+	$(".latest-video").on("click", function(e){
 		window.location.href = $(e.currentTarget).find("a").prop("href");
 	});
 
