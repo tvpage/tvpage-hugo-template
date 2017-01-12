@@ -81,29 +81,32 @@ header a {
 	display: flex;
 	flex-wrap: wrap;
 	padding: 13px 0 13px 0;
+
 	&-search{
-		
-		& input[type=text]{
+		&-container{
 			width: 250px;
-			line-height: 30px;
-			padding: 10px;
+			height: 56px;
 			border-radius: 25px; 
+			background-color: #fff;
+			border: 1px solid #fff;
+		}
+		& input[type=text]{
+			margin: 15px 0 15px 20px;
+			font-size: 20px;
+			line-height: 26px;
+			letter-spacing: 1px;
+			border: 0;
+			width: 179px;
 		}
 		&-button {
-		    position: absolute;
-		    top: 0;
-		    right: 0;
-		    width: 45px;
-		    height: 42px;
-		    border: 0;
-		    padding: 0;
-		    background: transparent;
-		    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAIAAAC0Ujn1AAAAGXRFW…iZsc+/6Pfo8Xj8BYTcMgOxTiaTRCKhcRD7/3v6M+gPAQYAon8yVMdn7GUAAAAASUVORK5CYII=);
-		    background-size: 25px 25px;
-		    background-repeat: no-repeat;
-		    background-position: 8px 10px;
-		    cursor: pointer;
-		    opacity: 0.7;
+			    background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAxNzkyIDE3OTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEyMTYgODMycTAtMTg1LTEzMS41LTMxNi41dC0zMTYuNS0xMzEuNS0zMTYuNSAxMzEuNS0xMzEuNSAzMTYuNSAxMzEuNSAzMTYuNSAzMTYuNSAxMzEuNSAzMTYuNS0xMzEuNSAxMzEuNS0zMTYuNXptNTEyIDgzMnEwIDUyLTM4IDkwdC05MCAzOHEtNTQgMC05MC0zOGwtMzQzLTM0MnEtMTc5IDEyNC0zOTkgMTI0LTE0MyAwLTI3My41LTU1LjV0LTIyNS0xNTAtMTUwLTIyNS01NS41LTI3My41IDU1LjUtMjczLjUgMTUwLTIyNSAyMjUtMTUwIDI3My41LTU1LjUgMjczLjUgNTUuNSAyMjUgMTUwIDE1MCAyMjUgNTUuNSAyNzMuNXEwIDIyMC0xMjQgMzk5bDM0MyAzNDNxMzcgMzcgMzcgOTB6Ii8+PC9zdmc+);
+			    background-repeat: no-repeat;
+			    width: 25px;
+			    height: 25px;			    
+			    position: relative;
+			    color: #1F1D26;
+			    display: inline-block;
+			    top: 3px;
 		}
 		
 	}
@@ -180,14 +183,7 @@ nav.menu-bar{
 		}
 		@media (min-width: $screen-lg){
 			margin-top: 61px;
-		}
-		// margin-top: 55px;
-		// @media (min-width: $screen-md){			
-		// 	margin-top: 42px;
-		// }
-		// @media (min-width: $screen-sm){			
-		// 	margin-top: 25px;
-		// }
+		}		
 	}
 	.slick-list{
 		@extend .col-xs-12;
