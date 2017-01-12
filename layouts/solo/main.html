@@ -38,9 +38,9 @@
 <script>;(function(){
   var putButtonOverlay = function(inst){
     var ele = document.createElement("div");
-    ele.id = "tvpp-play";
-    var selector = inst.options.DOMContainer.className;
-    document.querySelector("."+selector).parentNode.insertBefore(ele, document.querySelector("."+selector).nextSibling).addEventListener('click', function(){
+    ele.className = "tvpplayer-play";
+    var selector = inst.options.DOMContainer.id;
+    document.getElementById(selector).parentNode.insertBefore(ele, document.getElementById(selector).nextSibling).addEventListener('click', function(){
       this.remove();
       if(inst) inst.play();
     },false);
