@@ -19,4 +19,14 @@
 		window.location.href = $(e.currentTarget).find("a").prop("href");
 	});
 
+	$('#subcribeModal').on('show.bs.modal', function(event) {
+		$('.subscribe-body').show();
+		$('.subscribed-body').hide();
+	});
+
+	$('.subscribe-button').on('click', function(event) {
+		event.preventDefault();
+		$('.subscribe-body').hide();
+		$('.subscribed-body').show();
+	});
 }(jQuery));
