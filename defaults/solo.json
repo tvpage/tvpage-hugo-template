@@ -10,7 +10,7 @@
             "type": "text",
             "label": "Progress Color",
             "code": "progresscolor",
-            "value": "#273691"
+            "value": "#E57211"
         },
         {
             "type": "boolean",

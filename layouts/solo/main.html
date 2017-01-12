@@ -85,6 +85,7 @@
             var resize = function(){instance.resize(instance.options.DOMContainer.clientWidth, instance.options.DOMContainer.clientHeight);};
             resize();
             window.onresize = resize;
+            instance.options.DOMContainer.getElementsByClassName('tvp-progress-bar')[0].style["background-color"] = instance.options.controls.seekBar.progressColor;
             
             if(mobile || !{{ ($.Scratch.Get "settings").autoplay }}){
               instance.cueVideo(asset);
