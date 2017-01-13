@@ -240,24 +240,35 @@ nav.menu-bar{
 }
 .slider{	
 	padding-bottom: 35px;
-	button{
-		@extend .col-sm-1;
-		@extend .col-md-1;
-		margin-top: 25px;
-		@media (min-width: $screen-md){
-			margin-top: 42px;
+	height: 126px;
+	.slick-arrow{
+		height: 100%;
+		button{
+			position: absolute;
+			top: 100%;
+			left: 50%;
+			transform: translate(-50%, -50%);
 		}
-		@media (min-width: $screen-lg){
-			margin-top: 61px;
-		}		
 	}
 	.slick-list{
+		height: 91px;
 		@extend .col-xs-12;
 		@extend .col-sm-10;
 		@extend .col-md-10;
+	}	
+	.slick-track{
+		height: 100%;
 	}
 	.brand-item{
 		margin : 0 0 0 10px;
+		height: 100%;
+		position: relative;
+		img{  
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
 	}
 }
 // .latest-row {
