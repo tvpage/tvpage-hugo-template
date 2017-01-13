@@ -1,4 +1,12 @@
 (function($){
+    var formatDate = function(unixTimestamp) {
+        var months = ['January','February','March','April','May','June','July','August','September','October','November','December'],
+        	d = (new Date(Number(unixTimestamp) * 1000)),
+        	month = months[d.getMonth()],
+			day = '' + d.getDate() + ',',
+			year = d.getFullYear();
+			return [month, day, year].join(' ');
+    };
 
 	$('.slider').slick({
       infinite: true,
@@ -28,5 +36,9 @@
 		event.preventDefault();
 		$('.subscribe-body').hide();
 		$('.subscribed-body').show();
+	});
+
+	$('.video-details .published-date').text(function(i, s){
+		return formatDate(s);
 	});
 }(jQuery));

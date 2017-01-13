@@ -4,7 +4,7 @@
           {{ partial (printf "%s/breadcrumbs.html" .Type) . }}
         </div>
         {{ $videoDetails := index $.Site.Data.videos (printf "x%s" .Params.videoid) }}
-        <div class="row">
+        <div class="row player-product">
           <div class="col-sm-10 col-md-10">
             <h1 class="video-title">{{ .Title }}</h1>
             <div id="player-holder">
@@ -17,27 +17,28 @@
             <div class="video-products-container">products</div>
           </div>
         </div>
-        <div class="row container">
-          <div class="video-details">
-            <div class="video-details-title">
-              VIDEO DETAILS
-              <div class="pull-right social-share">                
-                SHARE: <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ .Permalink }}" class="
-                share-icon facebook"></a>
-                <a target="_blank" href="https://twitter.com/share?text={{ .Title }}&url={{ .Permalink }}" class="share-icon twitter"></a>
-              </div>
+        <div class="row container" style="position: relative">
+          <h2 class="section-header">VIDEO DETAILS
+            <div class="social-share">                
+              SHARE: <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ .Permalink }}" class="
+              share-icon facebook"></a>
+              <a target="_blank" href="https://twitter.com/share?text={{ .Title }}&url={{ .Permalink }}" class="share-icon twitter"></a>
             </div>
-            <div class="row">
-              <div class="col-sm-12 col-md-12 video-details-row">
-                <strong>Published on: {{ $videoDetails.date_created }}</strong>
-              </div>
-              <div class="col-sm-12 col-md-12 video-details-row">
-                <strong>Duration:</strong> {{ $videoDetails.asset.prettyDuration }}
-              </div>
-              <div class="col-sm-12 col-md-12 video-details-row">
-                {{ replace $videoDetails.description "\n" "<br/>" | safeHTML }}
-              </div>
-            </div>  
+          </h2>
+        </div>
+        <div class="row video-details">
+          <div class="col-sm-12 col-md-12 video-details-row">
+            <strong>Published on: <span class="published-date">{{ $videoDetails.date_created }}</span></strong>
+          </div>
+          <div class="col-sm-12 col-md-12 video-details-row duration">
+            <strong>Duration:</strong> {{ $videoDetails.asset.prettyDuration }}
+          </div>
+          <div class="col-sm-12 col-md-12 video-details-row description">
+            {{ replace $videoDetails.description "\n" "<br/>" | safeHTML }}
+          </div>
+          <div class="col-sm-12 col-md-12 video-details-row show-more">
+            <div class="show-more-line"></div>
+              <button type="button" class="btn btn-primary show-more-button">SHOW MORE</button>
           </div>
         </div>
         <div class="row container">
