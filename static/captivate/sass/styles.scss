@@ -180,6 +180,26 @@ nav.menu-bar{
 	background-color : #1F1D26;
 	border-top : 1.7px dashed white;
 	border-bottom: 1.7px dashed white;
+	position: relative;
+	&:before{
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		top : 0;
+		content: " ";
+		height: 2px;
+		width: 100%;
+		background: white;
+	}
+	&:after{
+		position: absolute;
+		bottom: 1px;
+		left: 0;
+		content: " ";
+		height: 2px;
+		width: 100%;
+		background: white;
+	}
 	& .container{
 		background-color : #1F1D26;
 
@@ -191,6 +211,7 @@ nav.menu-bar{
 		line-height: 26px;
 		letter-spacing: 1px;
 		&:hover{
+			line-height: 22px;
 			background-color : #1F1D26 ;
 
 		}
