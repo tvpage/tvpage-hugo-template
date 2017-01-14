@@ -10,7 +10,7 @@
 
 		<!-- <section class="container section"> -->
 			<div class="row">
-				{{ range where .Site.Pages "Layout" "channel" }}
+					{{ range where .Site.Pages "Layout" "channel" }}
 						{{ if in ($.Scratch.Get "settings").channelgalleryids .Params.channelid }}
 						<div class="col-xs-12 col-sm-6 col-md-6 featured-channel">
 							<article>
@@ -26,7 +26,6 @@
 		<!-- <section class="container section"> -->
 		<h2 class="section-header">BRANDS</h2>
 		<div class="row slider">
-
 			{{ range where .Site.Pages "Layout" "channel" }}
 				{{ if in ($.Scratch.Get "settings").channelsliderids .Params.channelid }}
 				<div class="brand-item">

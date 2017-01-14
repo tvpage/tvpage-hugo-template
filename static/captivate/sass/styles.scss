@@ -327,6 +327,7 @@ footer{
 	}
 	.show-more{
 		text-align: center;
+		position: relative;
 		&-line{
 			position: relative;
 			top: 22px;						
@@ -387,21 +388,39 @@ footer{
 		height: 20px;
 	}
 }
+.modal-open .container-fluid, .modal-open{
+	& .menu-bar{
+		-webkit-filter: blur(8px);	
+	}
+	& .header-bg{
+		-webkit-filter: blur(8px);	
+	}
+	& .main-content{
+		-webkit-filter: blur(8px);
+	} 
+    
+}
 .subcribeModal{
 	.modal-dialog{
 		height: 594px;
+		vertical-align: middle;
 		@media (min-width: $screen-lg){
 			width: 730px;
 		}
 	}
 	.close{
-		background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiBoZWlnaHQ9IjI4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCiAgICA8cGF0aCBkPSJNMTkgNi40MUwxNy41OSA1IDEyIDEwLjU5IDYuNDEgNSA1IDYuNDEgMTAuNTkgMTIgNSAxNy41OSA2LjQxIDE5IDEyIDEzLjQxIDE3LjU5IDE5IDE5IDE3LjU5IDEzLjQxIDEyeiIvPg0KICAgIDxwYXRoIGQ9Ik0wIDBoMjR2MjRIMHoiIGZpbGw9Im5vbmUiLz4NCjwvc3ZnPg==);
-		background-repeat: no-repeat;
-		width: 25px;
-		height: 25px;
+		//background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiBoZWlnaHQ9IjI4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCiAgICA8cGF0aCBkPSJNMTkgNi40MUwxNy41OSA1IDEyIDEwLjU5IDYuNDEgNSA1IDYuNDEgMTAuNTkgMTIgNSAxNy41OSA2LjQxIDE5IDEyIDEzLjQxIDE3LjU5IDE5IDE5IDE3LjU5IDEzLjQxIDEyeiIvPg0KICAgIDxwYXRoIGQ9Ik0wIDBoMjR2MjRIMHoiIGZpbGw9Im5vbmUiLz4NCjwvc3ZnPg==);
+		transform:scaleX(1.2);
+		width: 28px;
+		height: 28px;
 		opacity: 0.5;
 		position: relative;
 		z-index: 1;
+		color: #1f1d26;
+		line-height: 28px;
+		&:hover{
+			opacity: 1;
+		}
 	}
 	.modal-header{
 		border-bottom: 1.7px dashed #000;
@@ -443,8 +462,11 @@ footer{
 	}
 	.modal-content{
 		border-radius: 0;
+		border: none;	
 		border-top: 4px solid #00DBC0;	
-		height: 100%;	
+		height: 100%;
+		background-clip: initial;
+		
 	}
 	.modal-body{
 		input{
@@ -480,6 +502,9 @@ footer{
 		height: 43px;
 		background-color: #1F1D26;
 		border: none;
+		&:hover{
+			background-color: #00DBC0;
+		}
 	}
 }
 .main-channel-banner{
