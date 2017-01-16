@@ -7,17 +7,26 @@
 				{{ partial (printf "%s/breadcrumbs.html" .Type) . }}
 			</div>
 		<!-- </section> -->
+		<!-- <section class="container section"> -->
+		<!-- </section> -->
 
 		<!-- <section class="container section"> -->
 			<div class="row">
-					{{ range where .Site.Pages "Layout" "channel" }}
-						{{ if in ($.Scratch.Get "settings").channelgalleryids .Params.channelid }}
-						<div class="col-xs-12 col-sm-6 col-md-6 featured-channel">
-							<article>
-								<a href="{{ .Permalink }}" class="thumb" style='background-image: url(/{{ .Type }}/images/channel/{{.Params.channelid}}.jpg);'></a>
-	              <span class="featured-channel-title">{{ .Title }}</span>
-							</article>
-						</div>
+					{{ $channelsPages := split ($.Scratch.Get "settings").channelgalleryids "," }}
+					{{ $allChannelPages := (where .Site.Pages "Layout" "channel")}}
+					{{ $type := .Type }}
+					{{ range $channelsPages }}
+						{{ $currentChannelId := . }}
+						{{ $currentPage := index $.Site.Data.channels (printf "x%s" . ) }}
+						{{ if $currentPage }}
+							{{ range where $allChannelPages "Title" $currentPage.title }}
+							<div class="col-xs-12 col-sm-6 col-md-6 featured-channel">
+								<article>
+									<a href="{{ .Permalink }}" class="thumb" style='background-image: url(/{{ $type }}/images/channel/{{$currentChannelId}}.jpg);'></a>
+		              <span class="featured-channel-title">{{ $currentPage.title }}</span>
+								</article>
+							</div>
+							{{ end }}
 						{{ end }}
 					{{ end }}
 			</div>

@@ -42,7 +42,7 @@ header a {
 }
 .section {
 	&-header {
-		border-bottom: 1.7px dashed black;
+		border-bottom: 1.7px dashed #1F1D26;
 	    margin: 0 0 18px 0;
 	    padding-bottom: 5px;
 	    position: relative;
@@ -54,7 +54,7 @@ header a {
 			content: " ";
 			height: 2px;
 			width: 100%;
-			background: black;
+			background: #1F1D26;
 	    }
 	}
 }
@@ -235,6 +235,7 @@ nav.menu-bar{
 		&:hover{
 			line-height: 22px;
 			background-color : #1F1D26 ;
+			color:  #b9b9b9 ;
 
 		}
 	}
@@ -325,11 +326,11 @@ footer{
 	letter-spacing: 1px;
 	color: #1F1D26;
 	margin-bottom: 20px;
-	border-bottom : 2px solid black;
+	border-bottom : 2px solid #1F1D26;
 
 	&-header{
 		width: 100%;
-		border-bottom : 1.7px dashed black;
+		border-bottom : 1.7px dashed #1f1d26;
 		margin-bottom: -2px;
 	}
 }
@@ -355,7 +356,7 @@ footer{
 			top: 22px;						
 			height: 1px;
 			width: 100%;
-			background: black;
+			background: #1F1D26;
 		}
 		&-button{
 			position: relative;
@@ -432,7 +433,7 @@ footer{
 	}
 	.close{
 		//background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiBoZWlnaHQ9IjI4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCiAgICA8cGF0aCBkPSJNMTkgNi40MUwxNy41OSA1IDEyIDEwLjU5IDYuNDEgNSA1IDYuNDEgMTAuNTkgMTIgNSAxNy41OSA2LjQxIDE5IDEyIDEzLjQxIDE3LjU5IDE5IDE5IDE3LjU5IDEzLjQxIDEyeiIvPg0KICAgIDxwYXRoIGQ9Ik0wIDBoMjR2MjRIMHoiIGZpbGw9Im5vbmUiLz4NCjwvc3ZnPg==);
-		transform:scaleX(1.2);
+		background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gICAgPHBhdGggZD0iTTE5IDYuNDFMMTcuNTkgNSAxMiAxMC41OSA2LjQxIDUgNSA2LjQxIDEwLjU5IDEyIDUgMTcuNTkgNi40MSAxOSAxMiAxMy40MSAxNy41OSAxOSAxOSAxNy41OSAxMy40MSAxMnoiLz4gICAgPHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==);
 		width: 28px;
 		height: 28px;
 		opacity: 0.5;
@@ -440,12 +441,13 @@ footer{
 		z-index: 1;
 		color: #1f1d26;
 		line-height: 28px;
+		font-size: 28px;
 		&:hover{
 			opacity: 1;
 		}
 	}
 	.modal-header{
-		border-bottom: 1.7px dashed #000;
+		border-bottom: 1px dashed #1F1D26;
 		height: 186px;
 	}
 	.subscribe-header{
