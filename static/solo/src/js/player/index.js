@@ -9,7 +9,8 @@ define(function(require) {
       playerReady = null,
       multiple = false,
       index = null,
-      targetId = __TVPage__.config[0].id + "-target",
+      config = __TVPage__.config[0],
+      targetId = config.id + "-target",
       player = null;
 
     function resize() {
@@ -26,8 +27,8 @@ define(function(require) {
     }
 
     function play(asset) {
-      if(__TVPage__.config[0] && __TVPage__.config[0].settings.hasOwnProperty("autoplay") ){
-        autoplay = __TVPage__.config[0].settings.autoplay;
+      if(config && config.settings.hasOwnProperty("autoplay") ){
+        autoplay = config.settings.autoplay;
       }
       if (asset) {
         var checks = 0;
@@ -63,8 +64,8 @@ define(function(require) {
     function handleEnded() {
       if(multiple){
         index = (index == assetsList.length - 1) ? 0 : index + 1; 
-        if(__TVPage__.config[0] && __TVPage__.config[0].settings.hasOwnProperty("autoend") ){
-          autoend = __TVPage__.config[0].settings.autoend;
+        if(config && config.settings.hasOwnProperty("autoend") ){
+          autoend = config.settings.autoend;
         }
         if (mobile || !JSON.parse(autoend)) {
           player.cueVideo(assetsList[index].asset);
