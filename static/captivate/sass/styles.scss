@@ -597,9 +597,17 @@ footer{
 		& a {
 			color: white;
 			text-decoration: none;
-			& .glyphicon-envelope{
-				padding: 5px;
-			}
+			&:before{							
+				background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAxNzkyIDE3OTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTE3OTIgNzEwdjc5NHEwIDY2LTQ3IDExM3QtMTEzIDQ3aC0xNDcycS02NiAwLTExMy00N3QtNDctMTEzdi03OTRxNDQgNDkgMTAxIDg3IDM2MiAyNDYgNDk3IDM0NSA1NyA0MiA5Mi41IDY1LjV0OTQuNSA0OCAxMTAgMjQuNWgycTUxIDAgMTEwLTI0LjV0OTQuNS00OCA5Mi41LTY1LjVxMTcwLTEyMyA0OTgtMzQ1IDU3LTM5IDEwMC04N3ptMC0yOTRxMCA3OS00OSAxNTF0LTEyMiAxMjNxLTM3NiAyNjEtNDY4IDMyNS0xMCA3LTQyLjUgMzAuNXQtNTQgMzgtNTIgMzIuNS01Ny41IDI3LTUwIDloLTJxLTIzIDAtNTAtOXQtNTcuNS0yNy01Mi0zMi41LTU0LTM4LTQyLjUtMzAuNXEtOTEtNjQtMjYyLTE4Mi41dC0yMDUtMTQyLjVxLTYyLTQyLTExNy0xMTUuNXQtNTUtMTM2LjVxMC03OCA0MS41LTEzMHQxMTguNS01MmgxNDcycTY1IDAgMTEyLjUgNDd0NDcuNSAxMTN6IiBmaWxsPSIjZmZmIi8+PC9zdmc+);
+				background-repeat: no-repeat;
+				height: 24px;
+				width: 24px;
+				content: " ";
+				display: inline-block;
+				top: 4px;
+				position: relative;
+				margin-right: 10px;
+			}			
 		}
 	}
 }
