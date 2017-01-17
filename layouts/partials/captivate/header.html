@@ -1,4 +1,3 @@
-<header>
   <div class="header-bg">
     <div class="container">
       <div class="brand-header justify">
@@ -33,7 +32,11 @@
   </div>
   {{ partial (printf "%s/subscribe_form.html" .Type) . }}
   <nav class="menu-bar">
-    <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed pull-left mobile-nav"></button>
+      <button type="button" class="navbar-toggle collapsed pull-right mobile-search"></button>
+    </div>
+    <div class="collapse navbar-collapse">
       <ul class="nav nav-justified">
         {{ with .Site.Menus.main }}
         {{ range sort . "Weight" "desc" }}
