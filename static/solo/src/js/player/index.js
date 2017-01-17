@@ -3,8 +3,6 @@ define(function(require) {
     var $ = require('jquery-private');
 
     var mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
-      autoplay = true,
-      autoend = true,
       options = null,
       playerReady = null,
       multiple = false,
@@ -12,6 +10,8 @@ define(function(require) {
       config = __TVPage__.config[0],
       targetId = config.id + "-target",
       player = null,
+      autoplay = true,
+      autoend = true,
       progresscolor = '#E57211',
       removecontrols = ["tvplogo","hd"],
       transcript = false;
@@ -29,8 +29,8 @@ define(function(require) {
       });
     }
 
-    function play(asset) {
-      if(config && config.settings && config.settings.hasOwnProperty("autoplay") ){
+    function play(asset,settings) {
+      if(config && "undefined" !== typeof config.settings && config.settings.hasOwnProperty("autoplay") ){
         autoplay = config.settings.autoplay;
       }
       if (asset) {
@@ -42,6 +42,9 @@ define(function(require) {
                 readyPoller();
               }
             } else {
+              if("undefined" !== typeof player && "undefined" !== typeof settings && settings.hasOwnProperty("controls")){
+                $('#'+player.options.DOMContainer.id).find('.tvp-progress-bar').css('background-color', settings.controls.seekBar.progressColor);
+              }
               if (mobile || !JSON.parse(autoplay)) {
                 player.cueVideo(asset);
                 if (asset.type == 'mp4') putButtonOverlay();
@@ -67,7 +70,7 @@ define(function(require) {
     function handleEnded() {
       if(multiple){
         index = (index == assetsList.length - 1) ? 0 : index + 1; 
-        if(config && config.settings && config.settings.hasOwnProperty("autoend") ){
+        if(config && "undefined" !== typeof config.settings && config.settings.hasOwnProperty("autoend") ){
           autoend = config.settings.autoend;
         }
         if (mobile || !JSON.parse(autoend)) {
@@ -90,9 +93,6 @@ define(function(require) {
           player.on('tvp:media:videoended', handleEnded);
           player.on('tvp:media:ready', function(){
             playerReady = true;
-            if(player && settings && settings.hasOwnProperty("controls")){
-              $('#'+player.options.DOMContainer.id).find('.tvp-progress-bar').css('background-color', settings.controls.seekBar.progressColor);
-            }
             if ($.isFunction(callback)) {
               callback();
             }
@@ -142,7 +142,7 @@ define(function(require) {
         window.assetsList = opts;
         var video = assetsList[index];
         if (video) {
-          play(extractAsset(video));
+          play(extractAsset(video),settings);
         }
 
         $(window).resize(resize);
