@@ -11,7 +11,10 @@ define(function(require) {
       index = null,
       config = __TVPage__.config[0],
       targetId = config.id + "-target",
-      player = null;
+      player = null,
+      progresscolor = '#E57211',
+      removecontrols = ["tvplogo","hd"],
+      transcript = false;
 
     function resize() {
       if (player) {
@@ -98,26 +101,16 @@ define(function(require) {
         };
 
         // Check for settings is passed or not
-        if(config && config.settings){
+        if(config && "undefined" !== typeof config.settings){
           if(config.settings.hasOwnProperty('progresscolor')){
-            var progresscolor = config.settings.progresscolor;
-          }else{
-            var progresscolor = '#E57211';
+            progresscolor = config.settings.progresscolor;
           }
           if(config.settings.hasOwnProperty('removecontrols')){
-            var removecontrols = config.settings.removecontrols;
-          }else{
-            var removecontrols = ["tvplogo","hd"];
+            removecontrols = config.settings.removecontrols;
           }
           if(config.settings.hasOwnProperty('transcript')){
-            var transcript = config.settings.transcript;
-          }else{
-            var transcript = false;
+            transcript = config.settings.transcript;
           }
-        }else{
-          var progresscolor = '#E57211',
-           removecontrols = ["tvplogo","hd"],
-           transcript = false;
         }
 
         var settings = {
@@ -136,7 +129,7 @@ define(function(require) {
         };
 
         (function poller( ){
-          var deferred = setTimeout(function(){
+          setTimeout(function(){
             if ( "undefined" !== typeof window.TVPage ) {
               ready(new TVPage.player(settings)); 
             } else {
@@ -146,7 +139,7 @@ define(function(require) {
         })();
 
         multiple = true;
-        assetsList = opts;
+        window.assetsList = opts;
         var video = assetsList[index];
         if (video) {
           play(extractAsset(video));
