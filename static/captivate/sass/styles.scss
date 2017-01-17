@@ -327,15 +327,14 @@ nav.menu-bar{
 }
 footer{
 	display: flex;
-	line-height: 65px;
+	height: 65px;
 	background-color: #1F1D26;
 	& .copyright {
 		font-family: Dosis;
 		font-size: 20px;
 		text-align: center;
 		color: #FFFFFF;
-
-	
+		height: 100%;
 	}
 }
 .btn-more{
