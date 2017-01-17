@@ -1,0 +1,11 @@
+<div class="col-sm-4 col-md-4">
+  <article class="latest-video">
+    <a href="{{ .url }}" class="thumb"
+      {{with .asset.thumbnailUrl}} style="background-image: url({{ . }});"{{else}}
+      style='background-image: url(/{{ .Type }}{{ .Param "thumbdefault" }});'{{end}}>
+    </a>
+    <p class="latest-video-title">
+    {{ .title }}
+  </p>
+  </article>
+</div>

@@ -47,22 +47,14 @@
 		</div>
 		<!-- </section>	 -->
 
-		<!-- <section class="container section"> -->
+		<!-- <section class="container section"> -->			
 			<h2 class="section-header">LATEST VIDEOS</h2>
 			<div class="row">
 				{{ $page := index $.Site.Data.channelVideos (printf "x%s_page_1" ($.Scratch.Get "settings").homechannelid) }}
 				{{ with $page.data }}
 					{{ $i := 0 }}
-					{{ range first 6 $page.data }}
-						<div class="col-sm-6 col-md-4">
-	            <article class="latest-video">
-								<a href="{{ .url }}" class="thumb"
-									{{with .asset.thumbnailUrl}} style="background-image: url({{ . }});"{{else}}
-									style='background-image: url(/{{ .Type }}{{ .Param "thumbdefault" }});'{{end}}>
-								</a>
-								<p class="latest-video-title">{{ .title }}</p>
-							</article>
-	          </div>
+					{{ range first 6 $page.data }}						
+						{{ partial (printf "%s/video_thumbnail.html" $.Type) . }}
 						{{ if eq (mod (add $i 2) 3) 0 }}<div class="col-sm-12"></div>{{ end }}
 					{{ end }}
 				{{ end }}
