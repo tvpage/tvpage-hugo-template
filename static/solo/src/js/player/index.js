@@ -27,7 +27,7 @@ define(function(require) {
     }
 
     function play(asset) {
-      if(config && config.settings.hasOwnProperty("autoplay") ){
+      if(config && config.settings && config.settings.hasOwnProperty("autoplay") ){
         autoplay = config.settings.autoplay;
       }
       if (asset) {
@@ -64,7 +64,7 @@ define(function(require) {
     function handleEnded() {
       if(multiple){
         index = (index == assetsList.length - 1) ? 0 : index + 1; 
-        if(config && config.settings.hasOwnProperty("autoend") ){
+        if(config && config.settings && config.settings.hasOwnProperty("autoend") ){
           autoend = config.settings.autoend;
         }
         if (mobile || !JSON.parse(autoend)) {
@@ -87,15 +87,53 @@ define(function(require) {
           player.on('tvp:media:videoended', handleEnded);
           player.on('tvp:media:ready', function(){
             playerReady = true;
-            $('#'+player.options.DOMContainer.id).find('.tvp-progress-bar').css('background-color', settings.controls.seekBar.progressColor);
+            if(player && settings && settings.hasOwnProperty("controls")){
+              $('#'+player.options.DOMContainer.id).find('.tvp-progress-bar').css('background-color', settings.controls.seekBar.progressColor);
+            }
             if ($.isFunction(callback)) {
               callback();
             }
           });
           resize();
         };
-        var defaults = require('./settings');
-        var settings = $.extend( {}, defaults, {divId:targetId });
+
+        // Check for settings is passed or not
+        if(config && config.settings){
+          if(config.settings.hasOwnProperty('progresscolor')){
+            var progresscolor = config.settings.progresscolor;
+          }else{
+            var progresscolor = '#E57211';
+          }
+          if(config.settings.hasOwnProperty('removecontrols')){
+            var removecontrols = config.settings.removecontrols;
+          }else{
+            var removecontrols = ["tvplogo","hd"];
+          }
+          if(config.settings.hasOwnProperty('transcript')){
+            var transcript = config.settings.transcript;
+          }else{
+            var transcript = false;
+          }
+        }else{
+          var progresscolor = '#E57211',
+           removecontrols = ["tvplogo","hd"],
+           transcript = false;
+        }
+
+        var settings = {
+          divId:targetId,
+          controls: {
+            active: true,
+            seekBar: { progressColor: progresscolor
+            },
+            floater: { removeControls: removecontrols, transcript: transcript  }
+          },
+          poster: true,
+          techOrder: 'html5,flash',
+          analytics: { tvpa: false },
+          apiBaseUrl: '//app.tvpage.com',
+          swf: "//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-1.8.3-flash.swf"
+        };
 
         (function poller( ){
           var deferred = setTimeout(function(){
