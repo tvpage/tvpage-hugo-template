@@ -12,7 +12,7 @@ min_version = 0.17
 	name = "Carousel"
 	uniqueName = "carousel"
 	path = "layouts/tvp-widgets/carousel"
-	[thumbnails]
+	[[tvp-widgets.thumbnails]]
 		desktop = "http://do0631budpzeh.cloudfront.net/dev/widgets/templates_preview/preview_Carousel_dtop.png"
 		mobile = ""
 		table = ""
@@ -24,7 +24,7 @@ min_version = 0.17
 	name = "Inline"
 	uniqueName = "inline"
 	path = "layouts/tvp-widgets/inline"
-	[thumbnails]
+	[[tvp-widgets.thumbnails]]
 		desktop = "http://do0631budpzeh.cloudfront.net/dev/widgets/templates_preview/preview_Inline_dtop.png"
 		mobile = ""
 		table = ""
@@ -36,7 +36,7 @@ min_version = 0.17
 	name = "PDP"
 	uniqueName = "pdp"
 	path = "layouts/tvp-widgets/pdp"
-	[thumbnails]
+	[[tvp-widgets.thumbnails]]
 		desktop = "http://do0631budpzeh.cloudfront.net/dev/widgets/templates_preview/preview_PDP_dtop.png"
 		mobile = ""
 		table = ""
@@ -48,7 +48,7 @@ min_version = 0.17
 	name = "Side Bar"
 	uniqueName = "side-bar"
 	path = "layouts/tvp-widgets/side-bar"
-	[thumbnails]
+	[[tvp-widgets.thumbnails]]
 		desktop = "http://do0631budpzeh.cloudfront.net/dev/widgets/templates_preview/preview_SideBar_dtop.png"
 		mobile = ""
 		table = ""
@@ -60,7 +60,7 @@ min_version = 0.17
 	name = "Solo"
 	uniqueName = "solo"
 	path = "layouts/tvp-widgets/solo"
-	[thumbnails]
+	[[tvp-widgets.thumbnails]]
 		desktop = "http://do0631budpzeh.cloudfront.net/dev/widgets/templates_preview/preview_Solo_dtop.png"
 		mobile = ""
 		table = ""
