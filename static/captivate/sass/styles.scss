@@ -61,14 +61,23 @@ header a {
 
 .featured-channel {
 	margin-bottom: -.5%;
-	&-title {
-		top: -8rem;
-		position: relative;
-		opacity: 0.9;
+	&-container{
 		background-color: #00DBC0;
+		position: relative;
+		top: -8rem;
+		opacity: .9;
+		line-height: 49px;
+		height: 49px;
+		line-height: 49px;
+		display: inline-block;
+
+	}
+	&-title {
+		opacity: 1;
+		background: transparent;
 		font-family: Dosis;
 		font-size: 30px;
-		font-weight: 600;
+		font-weight: 500;
 		color: #FFFFFF;
 		padding: 0 18px;
 		text-transform: uppercase;
@@ -128,6 +137,7 @@ header a {
 		    height: 30px;
 		    position: absolute;
 		    top: 0;
+		    color : #1F1D26;
 		    bottom: 0;
 		    margin: auto 0;
 		    left: 20px;
@@ -167,7 +177,7 @@ header a {
 					display: inline;
 					text-decoration : none;
 					font-size: 20px;
-					font-weight: 600;
+					font-weight: 500;
 					&:hover{
 						text-decoration : none;
 					}
@@ -228,14 +238,14 @@ nav.menu-bar{
 	}
 	& .nav-justified li a {
 		color: white;
-		font-weight: 600;
+		font-weight: 500;
 		font-size: 22px;
 		line-height: 26px;
 		letter-spacing: 1px;
 		&:hover{
 			line-height: 22px;
 			background-color : #1F1D26 ;
-			color:  #b9b9b9 ;
+			opacity: .5;
 
 		}
 	}
@@ -294,17 +304,6 @@ nav.menu-bar{
 		}
 	}
 }
-// .latest-row {
-// 	margin-bottom: 15px;
-// 	z-index: 9999;
-// 	&:hover{
-// 		z-index: 99999;
-// 		background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHdpZHRoPSI3M3B4IiBoZWlnaHQ9IjczcHgiIHZpZXdCb3g9IjAgMCA3MyA3MyIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj4gICAgICAgIDx0aXRsZT5pY29uX2J0blBsYXk8L3RpdGxlPiAgICA8ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz4gICAgPGRlZnM+PC9kZWZzPiAgICA8ZyBpZD0iQ2FwdGl2YXRlLURlc2t0b3AiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPiAgICAgICAgPGcgaWQ9IkhvbWVwYWdlIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMzA0LjAwMDAwMCwgLTEzMTAuMDAwMDAwKSI+ICAgICAgICAgICAgPGcgaWQ9IkxhdGVzdC1WaWRlb3MiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE2NS4wMDAwMDAsIDExODAuMDAwMDAwKSI+ICAgICAgICAgICAgICAgIDxnIGlkPSJpY29uX2J0blBsYXkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEzOS4wMDAwMDAsIDEzMC4wMDAwMDApIj4gICAgICAgICAgICAgICAgICAgIDxjaXJjbGUgaWQ9Ik92YWwiIGZpbGw9IiMwMERCQzAiIGN4PSIzNi41IiBjeT0iMzYuNSIgcj0iMzYuNSI+PC9jaXJjbGU+ICAgICAgICAgICAgICAgICAgICA8cG9seWdvbiBpZD0iVHJpYW5nbGUtMiIgZmlsbD0iI0ZGRkZGRiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNDIuMTE1Mzg1LCAzNi41MDAwMDApIHJvdGF0ZSg5MC4wMDAwMDApIHRyYW5zbGF0ZSgtNDIuMTE1Mzg1LCAtMzYuNTAwMDAwKSAiIHBvaW50cz0iNDIuMTE1Mzg0NiAxNy42NDgzNTE2IDY0LjE3NTgyNDIgNTUuMzUxNjQ4NCAyMC4wNTQ5NDUxIDU1LjM1MTY0ODQiPjwvcG9seWdvbj4gICAgICAgICAgICAgICAgPC9nPiAgICAgICAgICAgIDwvZz4gICAgICAgIDwvZz4gICAgPC9nPjwvc3ZnPg==);
-// 		background-repeat: no-repeat;
-// 		display: block;
-
-// 	}
-// }
 footer{
 	display: flex;
 	line-height: 65px;
@@ -314,6 +313,8 @@ footer{
 		font-size: 20px;
 		text-align: center;
 		color: #FFFFFF;
+
+	
 	}
 }
 .brands-carousel{
@@ -432,7 +433,6 @@ footer{
 		}
 	}
 	.close{
-		//background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiBoZWlnaHQ9IjI4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCiAgICA8cGF0aCBkPSJNMTkgNi40MUwxNy41OSA1IDEyIDEwLjU5IDYuNDEgNSA1IDYuNDEgMTAuNTkgMTIgNSAxNy41OSA2LjQxIDE5IDEyIDEzLjQxIDE3LjU5IDE5IDE5IDE3LjU5IDEzLjQxIDEyeiIvPg0KICAgIDxwYXRoIGQ9Ik0wIDBoMjR2MjRIMHoiIGZpbGw9Im5vbmUiLz4NCjwvc3ZnPg==);
 		background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gICAgPHBhdGggZD0iTTE5IDYuNDFMMTcuNTkgNSAxMiAxMC41OSA2LjQxIDUgNSA2LjQxIDEwLjU5IDEyIDUgMTcuNTkgNi40MSAxOSAxMiAxMy40MSAxNy41OSAxOSAxOSAxNy41OSAxMy40MSAxMnoiLz4gICAgPHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==);
 		width: 28px;
 		height: 28px;
@@ -616,10 +616,12 @@ footer{
 .filter-menu{
 	width: 100%;
 	height: 44px;
+	vertical-align: middle;
 	background-color: #1F1D26;
-	padding: 8px 0 0 0;
 	& .btn {
-		padding-top: 0;
 		margin-right: 25px;
+		color: #1F1D26;
+		height: 24px;
+		padding-top: 0;
 	}
 }
