@@ -87,6 +87,7 @@ define(function(require) {
           player.on('tvp:media:videoended', handleEnded);
           player.on('tvp:media:ready', function(){
             playerReady = true;
+            $('#'+player.options.DOMContainer.id).find('.tvp-progress-bar').css('background-color', settings.controls.seekBar.progressColor);
             if ($.isFunction(callback)) {
               callback();
             }
