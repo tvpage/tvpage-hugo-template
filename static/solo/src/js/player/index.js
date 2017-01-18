@@ -64,6 +64,43 @@ define(function(require) {
       }
     }
 
+    function playbackSettings(){
+      if(config && "undefined" !== typeof config.playback.settings){
+        if(config.playback.settings.hasOwnProperty("autoplay") ){
+          autoplay = config.playback.settings.autoplay;
+        }
+        if(config.playback.settings.hasOwnProperty("autonext") ){
+          autonext = config.playback.settings.autonext;
+        }
+        if(config.playback.settings.hasOwnProperty('progresscolor')){
+          progresscolor = config.playback.settings.progresscolor;
+        }
+        if(config.playback.settings.hasOwnProperty('removecontrols')){
+          removecontrols = config.playback.settings.removecontrols;
+        }
+        if(config.playback.settings.hasOwnProperty('transcript')){
+          transcript = config.playback.settings.transcript;
+        }
+      }
+    }
+
+    function playerSettings(){
+      return {
+        divId:targetId,
+        controls: {
+          active: true,
+          seekBar: { progressColor: progresscolor
+          },
+          floater: { removeControls: removecontrols, transcript: transcript  }
+        },
+        poster: true,
+        techOrder: 'html5,flash',
+        analytics: { tvpa: false },
+        apiBaseUrl: '//app.tvpage.com',
+        swf: "//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-1.8.3-flash.swf"
+      };
+    }
+
     return {
       init: function(opts, callback) {
         var checks = 0;
@@ -89,7 +126,7 @@ define(function(require) {
             window.assetsList = opts;
             var video = assetsList[index];
             if (video) {
-              play(extractAsset(video),settings);
+              play(extractAsset(video),playerSettings());
             }
             if ($.isFunction(callback)) {
               callback();
@@ -98,42 +135,10 @@ define(function(require) {
           resize();
         };
 
-        // Check for settings is passed or not
-        if(config && "undefined" !== typeof config.playback.settings){
-          if(config.playback.settings.hasOwnProperty("autoplay") ){
-            autoplay = config.playback.settings.autoplay;
-          }
-          if(config.playback.settings.hasOwnProperty("autonext") ){
-            autonext = config.playback.settings.autonext;
-          }
-          if(config.playback.settings.hasOwnProperty('progresscolor')){
-            progresscolor = config.playback.settings.progresscolor;
-          }
-          if(config.playback.settings.hasOwnProperty('removecontrols')){
-            removecontrols = config.playback.settings.removecontrols;
-          }
-          if(config.playback.settings.hasOwnProperty('transcript')){
-            transcript = config.playback.settings.transcript;
-          }
-        }
-
-        var settings = {
-          divId:targetId,
-          controls: {
-            active: true,
-            seekBar: { progressColor: progresscolor
-            },
-            floater: { removeControls: removecontrols, transcript: transcript  }
-          },
-          poster: true,
-          techOrder: 'html5,flash',
-          analytics: { tvpa: false },
-          apiBaseUrl: '//app.tvpage.com',
-          swf: "//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-1.8.3-flash.swf"
-        };
+        playbackSettings();
 
         if ( "undefined" !== typeof window.TVPage ) {
-          ready(new TVPage.player(settings)); 
+          ready(new TVPage.player(playerSettings())); 
         }
 
         $(window).resize(resize);
