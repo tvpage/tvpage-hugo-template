@@ -24,9 +24,23 @@
 	        }
 	    }]
     });
-
-	$(".latest-video").on("click", function(e){
-		window.location.href = $(e.currentTarget).find("a").prop("href");
+    
+	$(".latest-video").on({
+		click: function(e){
+			// alert('test');
+		},
+		mouseover: function(e){
+			$hoverDiv = $(this).find('.latest-video-hover');
+			if (!$hoverDiv.hasClass('active')) {
+				$(this).find('.latest-video-hover').addClass('active');
+			}
+		},
+		mouseout: function(e){
+			$hoverDiv = $(this).find('.latest-video-hover');
+			if ($hoverDiv.hasClass('active')) {
+				$(this).find('.latest-video-hover').removeClass('active');
+			}
+		}
 	});
 
 	$('#subcribeModal').on('show.bs.modal', function(event) {

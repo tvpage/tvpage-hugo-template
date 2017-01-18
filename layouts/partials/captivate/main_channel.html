@@ -51,11 +51,11 @@
         {{ with $page.data }}
           {{ range $i, $p := $page.data }}
 
-            {{ if modBool $i 3 }}
+            <!-- {{ if modBool $i 3 }}
                 {{ if not (eq $i ($page.data | len)) }}
                 <div class="row video-row">
               {{ end }}
-            {{ end }}
+            {{ end }} -->
             {{ partial (printf "%s/video_thumbnail.html" $.Type) . }}
 
             {{ if eq (mod (add $i 1) 3) 0 }}<div class="col-sm-12"></div>{{ end }}
