@@ -1,0 +1,27 @@
+<div class="modal fade mobile-menu-modal" id="mobile-menu-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close pull-left" data-dismiss="modal"></button>        
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-justified">
+          {{ with .Site.Menus.main }}
+          {{ range sort . "Weight" "desc" }}
+            <li><a href="{{.URL}}">{{ .Name }}</li></a>
+          {{ end }}
+          {{ else }}
+            No navigation
+          {{ end }}
+          {{ with .Site.Menus.top }}
+          {{ range sort . "Name" "desc" }}
+            <li><a class="{{ .Identifier }}-btn" href="{{.URL}}" {{ if eq .Name "Subscribe" }} data-toggle="modal" data-target="#subcribeModal" {{ end }} >{{ .Name }}</li></a>
+          {{ end }}
+          {{ else }}
+            No navigation
+          {{ end }}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

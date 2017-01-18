@@ -348,11 +348,12 @@ footer{
 	text-align: center;
 	position: relative;
 	&-line{
-		position: absolute;
-		top: 49%;
+		position: relative;
+		top: (43 / 2) * 1px;
 		height: 1px;
 		width: 100%;
 		background: #1F1D26;
+		float: left;		
 	}
 	&-btn-container{
 		display: inline-block;

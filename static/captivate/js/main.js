@@ -43,4 +43,8 @@
 	$('.video-details .published-date').text(function(i, s){
 		return formatDate(s);
 	});
+	$('#mobile-menu').on('click', function(event) {
+		event.preventDefault();
+		$('#mobile-menu-modal').modal();
+	});
 }(jQuery));
