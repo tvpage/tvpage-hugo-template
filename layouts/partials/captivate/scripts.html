@@ -1,3 +1,25 @@
+<script type="text/javascript">
+
+    TVSite = window.TVSite || {};
+    TVSite.loginId = {{ .Site.Params.loginid }};
+    (function() {
+        var ga = document.createElement("script");
+        ga.type = "text/javascript";
+        ga.async = true;
+        ga.src = ("https:" == document.location.protocol ? "https" : "http") + "://a.tvpage.com/tvpa.min.js";
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+    })();
+
+    var _tvpa = _tvpa || [];
+    _tvpa.push(["config", {
+        "li": 1758169,
+        "gaDomain": "preview.bandh.tv",
+        "logUrl": "\/\/api.tvpage.com\/v1\/__tvpa.gif"
+    }]);
+    _tvpa.push(["track", "ci", { li: 1758169 }]);
+
+</script>
 <script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.js"></script>

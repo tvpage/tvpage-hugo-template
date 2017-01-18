@@ -3,11 +3,17 @@
       <div class="brand-header justify">
         <div class="brand-header-search main-start cross-center">
           <div class="brand-header-search-container">
-            <input type="text" placeholder="SEARCH" name="search">
+            <input id="desktop-search-input" type="text" placeholder="SEARCH" name="search">
             <!-- <div class="brand-header-search-button"></div> -->
             <!-- <button class="brand-header-search-button close"></button> -->
             <a href="#" class="brand-header-search-button"></a>
             <!-- <a href="#" class="share-icon twitter"></a> -->
+            <p id="null-results" class="null-results">No results were found, try again!</p>
+            <div id="desktop-search-results-holder" class="desktop-search-results-holder">
+                <div id="desktop-search-results" class="desktop-search-results">
+                    <ul></ul>
+                </div>
+            </div>
           </div>
         </div>
         <div class="brand-header-logo main-center cross-center">
