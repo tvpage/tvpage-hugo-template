@@ -20,9 +20,9 @@
         <input type="text" placeholder="NAME">
         <input type="text" placeholder="EMAIL" class="{{ if eq .Layout "channel" }}channel-check{{end}}">	
         {{ if eq .Layout "channel" }}
-        <div class="chkSubscribeAll">
-          <input type="checkbox" name="" id="">Subscribe me  to all updates.
-        </div>
+          <div class="chkSubscribeAll">
+            <input type="checkbox" name="" id="">Subscribe me  to all updates.
+          </div>
         {{ end }}
         <button type="button" class="pull-left subscribe-button">SUBSCRIBE</button>
       </div>
