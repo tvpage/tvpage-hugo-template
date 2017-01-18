@@ -7,26 +7,28 @@ define(function(require) {
       autoend = true,
       options = null,
       playerReady = null,
+      multiple = false,
+      index = null,
+      targetId = __TVPage__.config[0].id + "-target",
       player = null;
 
     function resize() {
       if (player) {
-        player.resize($('#tvplayerholder').width(), $('#tvplayerholder').height());
+        player.resize($('#'+targetId).width(), $('#'+targetId).height());
       }
     }
 
     function putButtonOverlay() {
-      $('<div/>').attr('id', 'tvpp-play').insertAfter('#tvplayerholder').on('click', function() {
+      $('<div/>').attr('class', 'tvpplayer-play').insertAfter('#'+targetId).on('click', function() {
         $(this).off().remove();
         return player ? player.play() : false;
       });
     }
 
     function play(asset) {
-      // if(__TVPage__.config[0] && __TVPage__.config[0].settings.hasOwnProperty("autoplay") ){
-      //   autoplay = __TVPage__.config[0].settings.autoplay;
-      // }
-      console.log(asset);
+      if(__TVPage__.config[0] && __TVPage__.config[0].settings.hasOwnProperty("autoplay") ){
+        autoplay = __TVPage__.config[0].settings.autoplay;
+      }
       if (asset) {
         var checks = 0;
         (function readyPoller( ){
@@ -59,23 +61,26 @@ define(function(require) {
     }
 
     function handleEnded() {
-      var video = videos.videos.video;
-      if(__TVPage__.config[0] && __TVPage__.config[0].settings.hasOwnProperty("autoend") ){
-        autoend = __TVPage__.config[0].settings.autoend;
-      }
-      if (mobile || !JSON.parse(autoend)) {
-        player.cueVideo(video.asset);
-        if (video.asset.type == 'mp4') putButtonOverlay();
-      } else {
-        player.loadVideo(extractAsset(video));
+      if(multiple){
+        index = (index == assetsList.length - 1) ? 0 : index + 1; 
+        if(__TVPage__.config[0] && __TVPage__.config[0].settings.hasOwnProperty("autoend") ){
+          autoend = __TVPage__.config[0].settings.autoend;
+        }
+        if (mobile || !JSON.parse(autoend)) {
+          player.cueVideo(assetsList[index].asset);
+          if (assetsList[index].asset.type == 'mp4') putButtonOverlay();
+        } else {
+          player.loadVideo(extractAsset(assetsList[index]));
+        }
       }
     }
 
     return {
-      init: function(videos, opts, callback) {
-
+      init: function(opts, callback) {
+        _tvpa.push(["config", { li: '{{ .Param "loginid" }}', gaDomain:"www.tvpage.tv", "logUrl": "\/\/api.tvpage.com\/v1\/__tvpa.gif"}]);
+        _tvpa.push(["track","ci",{ li: '{{ .Param "loginid" }}'}]);
+        index = 0;
         options = opts || {};
-        var settings = require('./settings');
         var ready = function(p) {
           player = TVPage.instances[p.options.globalRunId];
           player.on('tvp:media:videoended', handleEnded);
@@ -87,21 +92,26 @@ define(function(require) {
           });
           resize();
         };
+        var defaults = require('./settings');
+        var settings = $.extend( {}, defaults, {divId:targetId });
 
-        if (!window.TVPage) {
-          $.ajax({ dataType: 'script', cache: true, url: settings.jsLib })
-            .done(function() {
-              if (window.TVPage) {
-                ready(new TVPage.player(settings));
-              }
-            });
-        } else {
-          ready(new TVPage.player(settings));
-        }
-        var video = videos.videos.video;
+        (function poller( ){
+          var deferred = setTimeout(function(){
+            if ( "undefined" !== typeof window.TVPage ) {
+              ready(new TVPage.player(settings)); 
+            } else {
+              poller();
+            }
+          },200);
+        })();
+
+        multiple = true;
+        assetsList = opts;
+        var video = assetsList[index];
         if (video) {
           play(extractAsset(video));
         }
+
         $(window).resize(resize);
       }
     };

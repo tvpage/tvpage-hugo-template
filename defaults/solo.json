@@ -1,14 +1,36 @@
 {
     "option": [
         {
-            "for": "player",
+            "type": "text",
+            "label": "Player Version",
+            "code": "version",
+            "value": "1.8.4"
+        },
+        {
+            "type": "text",
+            "label": "Progress Color",
+            "code": "progresscolor",
+            "value": "#E57211"
+        },
+        {
+            "type": "boolean",
+            "label": "Transcript",
+            "code": "transcript",
+            "value": false
+        },
+        {
+            "type": "text",
+            "label": "removeControls",
+            "code": "removecontrols",
+            "value": ["tvplogo","hd"]
+        },
+        {
             "type": "boolean",
             "label": "Autoplay",
             "code": "autoplay",
             "value": true
         },
         {
-            "for": "player",
             "type": "boolean",
             "label": "Autoend",
             "code": "autoend",
