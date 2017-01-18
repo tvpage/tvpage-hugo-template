@@ -21,13 +21,11 @@ define(function(require) {
   }
 
   var sendAnalitics = function(data, type) {
-    if ('object' === typeof data && type) {
-      if (window._tvpa) {
-        return _tvpa.push(['track', type, $.extend(data, {
-          li: CONFIG.loginId,
-          pg: CONFIG.channelId
-        })]);
-      }
+    if (('object' === typeof data && type) && window._tvpa) {
+      return _tvpa.push(['track', type, $.extend(data, {
+        li: CONFIG.loginId,
+        pg: CONFIG.channelId
+      })]);
     }
   };
 
@@ -72,7 +70,6 @@ define(function(require) {
           THAT.cache.productScrollerX.goToPage(0, 0, 100);
         }
       });
-
       $(document).on('click', '.lb-overlay', function(e) {
         $('.lb-overlay').hide();
         $('#lightbox').addClass('off');
@@ -83,7 +80,6 @@ define(function(require) {
           THAT.cache.productScrollerX.goToPage(0, 0, 100);
         }
       });
-
       $(document).on('click', '#view-more-button', function(e) {
         THAT.checkMoreVideos(true).done(function() {
           if (THAT.haveMoreVideos) {
@@ -106,21 +102,18 @@ define(function(require) {
           window.open($link.attr("href"), "_blank");
         }
       });
-
       $(document).on('click', '.img-link', function(e) {
         sendAnalitics({
           ct: $(this).data('id'),
           vd: $(this).data('videoId')
         }, 'pk');
       });
-
       $(document).on('click', '.call-to-action', function(e) {
         sendAnalitics({
           ct: $(this).data('id'),
           vd: $(this).data('videoId')
         }, 'pk');
       });
-
     },
 
     initializeProductScrollerX: function() {
@@ -137,6 +130,8 @@ define(function(require) {
         });
         setTimeout(function() {
           $('#mobile-products #scroller').css('width', $('#mobile-products-list').width());
+           that.mobileOrientation();
+           that.mobileOrientationListener();
           that.cache.productScrollerX.refresh();
         }, 500);
         this.cache.productScrollerX.on('scrollEnd', function() {
@@ -192,32 +187,6 @@ define(function(require) {
           if (!that.cache.fullscreen) {
             that.resizePlayer();
           }
-        });
-      }
-      if (this.isMobile()) {
-        var THAT = this;
-        window.matchMedia('(orientation: portrait)').addListener(function(m) {
-          var productWidth = $('#mobile-products-list > li');
-          var mobileWidth = $(window).width()-40;
-          var mobileHeight = $(window).height()-16;
-          if (m.matches) {
-            $(productWidth).css('width',mobileWidth);
-            $('#mobile-channels #scroller').width(99999);
-            $('#tvpp .tvpp-wrapper').css('top', '');
-            $('#tvplb .lb-content').css({
-              'width': '',
-              'height': ''
-            });
-          } else {
-            $(productWidth).css('width',mobileHeight);
-            $('#tvpp .tvpp-wrapper').css('top', '10px');
-            $('#tvplb .lb-content').css({
-              'height': '100%',
-              'width': '60%'
-            });
-          }
-          THAT.refreshMobileProductScroller();
-          THAT.resizePlayer();
         });
       }
     },
@@ -347,10 +316,8 @@ define(function(require) {
     },
 
     renderVideosRow: function(row) {
-      var html = '<div class="tvp-clearfix">',
-        i = 0;
-
-      for (i; i < row.length; i++) {
+      var html = '<div class="tvp-clearfix">';
+      for (var i = 0; i < row.length; i++) {
         var video = row[i];
         if ((video.hasOwnProperty('short_title')) && (video.title.length > 42) && (video.short_title != null)) {
           video.title = video.short_title;
@@ -365,15 +332,13 @@ define(function(require) {
 
     renderVideoRows: function(rows, target) {
       if (rows && rows.length && ('undefined' !== typeof target)) {
-        var html = '',
-          i = 0,
-          j = 0;
-        for (i; i < rows.length; i++) {
+        var html = '';
+        for (var i = 0; i < rows.length; i++) {
           html += this.renderVideosRow(rows[i]);
         }
         if (rows.length != 3) {
           var length = 3 - rows.length;
-          for (j; j < length; j++) {
+          for (var j = 0; j < length; j++) {
             html += '<div class="tvp-clearfix"><div class="tvp-col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div><div class="tvp-col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div></div>'
           }
         }
@@ -417,10 +382,8 @@ define(function(require) {
       };
       $(document).on('click', '.tvp-video', function(e) {
         e.preventDefault();
-
         $('.lb-overlay').show();
         $('#lightbox').removeClass('off');
-
         var vid = $(e.currentTarget).attr('data-index');
         var video = THAT.searchVideoInObject(vid);
         var videoData = THAT.getVideoData(video);
@@ -434,8 +397,75 @@ define(function(require) {
           });
         } else {
           show();
-        }
+        } 
       });
+    },
+
+    mobileOrientation: function(){
+      if (this.isMobile()) {
+        $(window).ready(function(){
+          $('#tvpp').each(function(i, item){
+            item = $(item);
+            var itemWidth = item.width();
+            var productWidth = $('#mobile-products-list > li');
+            if (window.matchMedia('(orientation: portrait)').matches) {
+              $(productWidth).css('width', itemWidth);
+              $('.no-products-banner ').css('width', itemWidth);
+              $('.no-products-banner ').css('height', '85px');
+              $('#tvplb .lb-content').css({
+                'height': '',
+                'width': ''
+              });
+            } 
+            else {
+              $(productWidth).css('width', itemWidth);
+              $('.no-products-banner ').css('width', itemWidth);
+              $('.no-products-banner ').css('height', '85px');
+              $('#tvplb .lb-content').css({
+                'height': '100%',
+                'width': '60%'
+              });
+            }
+          });
+        });
+      }
+    },
+
+    mobileOrientationListener: function(){
+      if (this.isMobile()) {
+        var THAT = this;
+        $(window).resize(function(){
+          $('#tvpp').each(function(i, item){
+            item = $(item);
+            var itemWidth = item.width();
+            var productWidth = $('#mobile-products-list > li');
+            if (window.matchMedia('(orientation: portrait)').matches) {
+              $(productWidth).css('width',itemWidth);
+              $('#tvplb .lb-content').css({
+                'width': '',
+                'height': ''
+              });
+              $('.lb-close').css({
+                'height': '',
+                'width': ''
+              });
+            } 
+            else {
+              $(productWidth).css('width',itemWidth);
+              $('#tvplb .lb-content').css({
+                'height': '100%',
+                'width': '60%'
+              });
+              $('.lb-close').css({
+                'height': '26px',
+                'width': '26px'
+              });
+            }
+            THAT.refreshMobileProductScroller();
+            THAT.resizePlayer();
+          });
+        });
+      }
     },
 
     getProducts: function(videoId) {
@@ -456,6 +486,9 @@ define(function(require) {
             $('.tvp-pagination').append('<span class=' + (i == 0 ? "active" : "") + '></span>');
           }
         }
+      }
+      else{
+        $('#tvp-recommended-products-wrapper').hide();
       }
     },
 
@@ -508,7 +541,6 @@ define(function(require) {
     renderProducts: function(products) {
       var s = '';
       var bpcheck = window.innerWidth < 767;
-      var pref = bpcheck ? 'mobile' : 'desktop';
       var that = this;
       if (bpcheck) {
         this.refreshMobileProductScroller();
@@ -556,24 +588,9 @@ define(function(require) {
       $('#desktop-products-list,#mobile-products-list')
         .empty()
         .append(s);
-      this.bindProductEvents();
-      if (this.isMobile()) {
-        var productWidth = $('#mobile-products-list > li');
-        var holderWidth = $('#tvpp-holder').width();
-        if (window.matchMedia('(orientation: portrait)').matches) {
-          $(productWidth).css('width', holderWidth);
-          $('.no-products-banner ').css('width', holderWidth);
-          $('.no-products-banner ').css('height', '85px');
-        } else {
-          $(productWidth).css('width', holderWidth);
-          $('.no-products-banner ').css('width', holderWidth);
-          $('.no-products-banner ').css('height', '85px');
-          $('#tvplb .lb-content').css({
-            'height': '100%',
-            'width': '60%'
-          });
-        }
-      }
+      that.bindProductEvents();
+      that.mobileOrientation();
+      that.mobileOrientationListener();
     },
 
     renderPopUps: function(products) {
@@ -591,15 +608,12 @@ define(function(require) {
           }
         }
         priceHtml += '</div>';
-
         s += '<div id="ppu-' + i + '" class="pop-up">\
                   <a class="img-link" href="' + array.linkUrl + '" target="_blank" data-video-id="' + products[i].entityIdParent + '" data-id="' + products[i].id + '"><img class="img-responsive" src="' + array.imageUrl + '" alt="' + products[i].title + '"><h4 class="product-title">' + products[i].title + '</h4>' + priceHtml + '</a>\
                   ' + '<a class="call-to-action" href="' + array.linkUrl + '" target="_blank" data-video-id="' + products[i].entityIdParent + '" data-id="' + products[i].id + '">' + 'VIEW DETAILS' + '<span class="material-icon"></span>' + '</a>\
                 </div>';
       }
-
       var arrows = '<div class="pop-up-before"></div><div class="pop-up-after"></div>';
-
       $('#product-pop-ups')
         .empty()
         .append(arrows)
@@ -617,12 +631,8 @@ define(function(require) {
             that.clearPopUps();
             return;
           }
-
-          var popupBottomEdge = $(this).offset().top + $('.pop-up').height();
-          var playerBottomEdge = $('.lb-content').offset().top + $('.lb-content').height();
-
           var $wrapper = $('.lb-body');
-          var arrowTop = ($(this).offset().top - $wrapper.offset().top);
+          var arrowTop = ($(this).offset().top - $wrapper.offset().top) +19;
           if (arrowTop < 0) {
             arrowTop = 10;
           }
@@ -650,7 +660,6 @@ define(function(require) {
         e.preventDefault();
         that.clearPopUps();
       });
-
     },
 
     clearPopUps: function() {
@@ -662,9 +671,7 @@ define(function(require) {
     },
 
     showPopUp: function(id, top) {
-      var THAT = this;
       var $p = $('#ppu-' + id);
-
       if ($p.length) {
         $p
           .css({
@@ -673,18 +680,15 @@ define(function(require) {
           .show();
         $('.pop-up-before,.pop-up-after').show();
       }
-
     },
 
     refreshMobileProductScroller: function() {
       var that = this;
-
       $('#mobile-products #scroller').css('width', 9000);
       setTimeout(function() {
         $('#mobile-products #scroller').css('width', $('#mobile-products-list').width());
         that.cache.productScrollerX.refresh();
       }, 100);
-
     },
 
     searchVideoInObject: function(vid) {
@@ -707,13 +711,11 @@ define(function(require) {
       }).done(function() {
         var checks = 0;
         (function analyticsPoller() {
-          var deferred = setTimeout(function() {
+          setTimeout(function() {
             if ("undefined" === typeof window._tvpa) {
               if (++checks < 10) {
                 analyticsPoller();
-              } else {
-                console.log("_tvpa global undefined");
-              }
+              } 
             } else {
               _tvpa.push(["config", {
                 "li": CONFIG.loginId,
@@ -823,7 +825,6 @@ define(function(require) {
   $(function() {
     var lightBoxTemplate = '<div id="tvplb"><div class="lb-content"><div class="lb-close"></div><div class="lb-header"><div class="related-products">SPONSORED PRODUCTS</div><h4 class="lb-title"></h4></div><div class="lb-body"></div><div class="no-products-banner" data-ns="footer" data-pos="btf" data-collapse="true"></div></div><div id="lb-overlay" class="lb-overlay"></div></div>';
     $("#tvp-gallery").append('<div class="cz-line-heading"><div class="cz-line-heading-inner">Recommended Videos</div></div><div id="videos"></div><div id="lightbox" class="off">' + lightBoxTemplate + '</div><a class="tvplogo" class="tvp-clearfix" href="//www.tvpage.com" target="_blank"></a>').addClass("tvp-clearfix");
-
     var playerTemplate = '<div id="tvpp"><div id="html5MobilePlayBtn" class="html5-play-button"></div><div class="tvpp-wrapper"><div id="tvpp-holder" class="tvpp-holder"></div><div class="video-overlay"></div></div></div>';
     var productsTemplate = '<div id="tvp-recommended-products-wrapper"><div class="recommeded-products">SPONSORED PRODUCTS</div><div class="tvp-pagination"></div></div><div id="mobile-products"><div id="scroller-wrapper" class="x-scroll"><div id="scroller" class="scroll-area"><ul id="mobile-products-list" class="products-list"></ul></div></div></div><div id="desktop-products" class="products"><div class="products-holder"><div id="scroller-wrapper" class="y-scroll"><div id="scroller" class="scroll-area"><ul id="desktop-products-list"></ul></div></div><div id="product-pop-ups"></div></div></div>';
     var initialTemplate = '<div class="tvp-clearfix"><div class="tvp-col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div><div class="tvp-col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div></div><div class="tvp-clearfix"><div class="tvp-col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div><div class="tvp-col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div></div><div class="tvp-clearfix"><div class="tvp-col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div><div class="tvp-col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div></div>';
@@ -836,7 +837,5 @@ define(function(require) {
     }, 0);
 
   });
-
   return false;
-
 });
