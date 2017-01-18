@@ -1,0 +1,71 @@
+{{ range $i, $def := (getJSON (printf "themes/tvpage/defaults/%s.json" .Type)).option }}
+{{ $.Scratch.SetInMap "settings" .code .value }}
+{{ end }}
+{{ range $i, $param := .Params }}
+{{ $.Scratch.SetInMap "settings" $i . }}
+{{ end }}
+{{ with .Param (.File.BaseFileName) }}
+{{ range $i, $opt := (where . "for" "styles") }}
+{{ $.Scratch.SetInMap "settings" .code .value }}
+{{ end }}
+{{ end }}
+
+<style id="tvpcss" type="text/css">{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/base-css.html" .Type) .)) | safeCSS }}</style>
+<style id="tvpcarousel-css">{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/carousel-css.html" .Type) .)) | safeCSS }}</style>
+<div id="tvpwidget-{{ .File.BaseFileName }}">
+	<div class="tvpframeloader">
+		<div class="tvpframeloader-item">
+		    <div class="tvpframeloader-item-img"></div>
+		    <div class="tvpframeloader-item-txt"></div>
+		    <div class="tvpframeloader-item-txt-half"></div>
+		</div>
+		<div class="tvpframeloader-item">
+		    <div class="tvpframeloader-item-img"></div>
+		    <div class="tvpframeloader-item-txt"></div>
+		    <div class="tvpframeloader-item-txt-half"></div>
+		</div>
+		<div class="tvpframeloader-item">
+		    <div class="tvpframeloader-item-img"></div>
+		    <div class="tvpframeloader-item-txt"></div>
+		    <div class="tvpframeloader-item-txt-half"></div>
+		</div>
+	</div>
+</div>
+
+<!-- tvpage analytics -->
+<script>(function(d,t,id) {
+  var s, as = d.getElementsByTagName(t)[0];
+  if (d.getElementById(id)) return;
+  s = d.createElement(t); s.id = id;
+  s.src = "//a.tvpage.com/tvpa.min.js";
+  as.parentNode.insertBefore(s, as);
+}(document, 'script', 'tvpanalytics-lib'));</script>
+
+<!-- tvpage library -->
+<script>(function(d,t,id) {
+  var s, as = d.getElementsByTagName(t)[0];
+  if (d.getElementById(id)) return;
+  s = d.createElement(t); s.id = id;
+  s.src = '//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-{{ ($.Scratch.Get "settings").version }}-min.js';
+  as.parentNode.insertBefore(s, as);
+}(document, 'script', 'tvpplayer-lib'));</script>
+
+<script type="text/javascript">
+window.__TVPage__ = window.__TVPage__ || {};
+__TVPage__.config = [];
+__TVPage__.config.push({
+	id : "tvpwidget-{{ .File.BaseFileName }}",
+	settings : {{ (where (.Param (.File.BaseFileName)) "for" "carousel") }},
+  attributes: {
+    search: "",
+    brand: [],
+    category: []
+  }
+});
+
+(function(d) {
+  var s = d.createElement('script');
+  s.src = '//localhost:1313/carousel/lib.min.js';
+  d.body.appendChild(s);
+})(document);
+</script>
