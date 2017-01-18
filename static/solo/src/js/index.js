@@ -4,7 +4,7 @@ define(function(require) {
   var config = __TVPage__.config[0];
   var obj = {};
   obj['X-login-id'] = config.loginid;
-  $.map(config.attributes, function(value, index) {
+  $.map(config.parameters, function(value, index) {
       obj[index] = value;
   });
   $.ajax({
