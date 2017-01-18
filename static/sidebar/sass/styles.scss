@@ -367,7 +367,7 @@
 }
 #mobile-products .product {
   position: relative;
-  height: 85px;
+  height: 84px;
   border: 1px solid #9D9D9D;
 }
 #mobile-products .product-img {
@@ -376,9 +376,9 @@
   background: no-repeat 50% 50%;
   background-size: contain;
   height: 70px;
-  left: 10px;
   width: 70px;
-  margin: 0; 
+  margin: 6px 10px;
+  float: left; 
 }
 .pop-up-img {
   position: relative;
@@ -472,15 +472,14 @@
   color: #587CB9;
   border: 1px solid #9D9D9D;
   position: relative;
-  padding: 1px 16px 0 0;
 }
 .pop-up .call-to-action .material-icon{
   height: 12px;
   width: 12px;
-  display: block;
-  top: 18px;
-  position: absolute;
-  right: 33px;
+  top: 16px;
+  position: relative;
+  float: right;
+  right: 20px;
   background-size: contain;
   background-repeat: no-repeat;
   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAAhFBMVEUAAAD///+AgL9ggL9iicRmiLtggL9ZgL9YgLpagLxfg71egLxcfL5YfbtZfrxbfLxZfbpafblYfbpafrtafbtYfLtafrlYfblZfrpYfblZfLpYfbpZfbpZfbpYfblZfbpZfblZfLpYfbpZfbpYfLlZfLpZfLlYfbpYfblZfbpZfblYfLky6A+sAAAAK3RSTlMAAQQIDQ8QFBoiIyYnMUVMXGZoaWx/gIuMpaatrrKzuMzP2drc4PLz9ff9caPJhwAAAIlJREFUeNqNzccOwkAMRdELDDV0CL0mEIr////YmLHkaBBvZd2zML+WTXQw0isDGkf5DrZ6rYCxJCCXW9BBK4ThPUIJtl4h75cH7dNScgysE8F1A9c5F0sD6zoD6wauHy4zA+vYc+t12MfuoHvV7oEmCeB/WEi1c6tkDnSeUtujDTDYnNzWfdL7ADwKIVFlhAxSAAAAAElFTkSuQmCC);
@@ -531,31 +530,30 @@
 }
 
 #mobile-products-list .product-title{
-  position: absolute;
-  bottom: 45px; 
-  left: 105px;
+  position: relative;
   font-family: Roboto;
   font-size: 12px;
   font-weight: bold;
-  width: 175px;
-  line-height: 100%;
-  margin: 0;
+  line-height: 14px;
+  color: #333333;
+  width: 65%;
+  float: left;
 }
 
 #mobile-products-list .price{
-  position: absolute;
-  color: #333;
-  bottom: 25px;
-  left: 105px;
+  position: relative;
   font-family: Roboto;
   font-size: 12px;
   font-weight: bold;
+  line-height: 14px;
+  color: #333333;
+  float: left;
 }
 
 #mobile-products-list a{
-  position: relative;
-  bottom: 5px;
-  float: right;;
+  position: absolute;
+  bottom: -1px;
+  right: 0;
   width: 114px;
   background-color: #FFFFFF;
   color: #587CB9;
@@ -565,16 +563,16 @@
   font-family: Roboto;
   font-size: 12px;
   font-weight: bold;
-  padding: 0px 25px 0px 5px;
+  padding: 2px;
 }
 
 #mobile-products-list a .material-icon{
+  position: relative;
   height: 12px;
   width: 12px;
   display: block;
-  top: 2px;
-  position: absolute;
-  right: 10px;
+  float: right;
+  margin: 2px 4px;
   background-size: contain;
   background-repeat: no-repeat;
   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAAhFBMVEUAAAD///+AgL9ggL9iicRmiLtggL9ZgL9YgLpagLxfg71egLxcfL5YfbtZfrxbfLxZfbpafblYfbpafrtafbtYfLtafrlYfblZfrpYfblZfLpYfbpZfbpZfbpYfblZfbpZfblZfLpYfbpZfbpYfLlZfLpZfLlYfbpYfblZfbpZfblYfLky6A+sAAAAK3RSTlMAAQQIDQ8QFBoiIyYnMUVMXGZoaWx/gIuMpaatrrKzuMzP2drc4PLz9ff9caPJhwAAAIlJREFUeNqNzccOwkAMRdELDDV0CL0mEIr////YmLHkaBBvZd2zML+WTXQw0isDGkf5DrZ6rYCxJCCXW9BBK4ThPUIJtl4h75cH7dNScgysE8F1A9c5F0sD6zoD6wauHy4zA+vYc+t12MfuoHvV7oEmCeB/WEi1c6tkDnSeUtujDTDYnNzWfdL7ADwKIVFlhAxSAAAAAElFTkSuQmCC);
@@ -613,7 +611,6 @@
   position: relative;
   width: 16px;
   height: 12px;
-  border-radius: 10px;
 }
 .tvp-pagination > span.active:before {
   background-color: #587CB9;
@@ -622,9 +619,6 @@
   content: "";
   position: absolute;
   top: 3px;
-  left: 3px;
-  right: 3px;
-  bottom: 3px;
   background-color: #D8D8D8;
   border-radius: 10px;
   height: 7px;
@@ -689,15 +683,6 @@
     height: 90px;
     margin: 20px;
     bottom: 0px;
-  }
-}
-@media only screen 
-and (min-device-width : 320px) 
-and (max-device-width : 568px) { 
-  #mobile-products-list .product-title{
-    font-size: 10px;
-    width: 130px;
-    top: 5px;
   }
 }
 
