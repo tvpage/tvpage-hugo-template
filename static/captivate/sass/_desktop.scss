@@ -47,7 +47,28 @@
 	    }
 	}
 }
-
+.shop-btn, &.subscribe-btn{
+	&:before{							
+		background-repeat: no-repeat;
+		height: 24px;
+		width: 24px;
+		content: " ";
+		display: inline-block;
+		top: 4px;
+		position: relative;
+		margin-right: 10px;
+	}
+}
+.shop-btn{
+	&:before{
+		background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAxNzkyIDE3OTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTE3NTcgMTQwOGwzNSAzMTNxMyAyOC0xNiA1MC0xOSAyMS00OCAyMWgtMTY2NHEtMjkgMC00OC0yMS0xOS0yMi0xNi01MGwzNS0zMTNoMTcyMnptLTkzLTgzOWw4NiA3NzVoLTE3MDhsODYtNzc1cTMtMjQgMjEtNDAuNXQ0My0xNi41aDI1NnYxMjhxMCA1MyAzNy41IDkwLjV0OTAuNSAzNy41IDkwLjUtMzcuNSAzNy41LTkwLjV2LTEyOGgzODR2MTI4cTAgNTMgMzcuNSA5MC41dDkwLjUgMzcuNSA5MC41LTM3LjUgMzcuNS05MC41di0xMjhoMjU2cTI1IDAgNDMgMTYuNXQyMSA0MC41em0tMzg0LTE4NXYyNTZxMCAyNi0xOSA0NXQtNDUgMTktNDUtMTktMTktNDV2LTI1NnEwLTEwNi03NS0xODF0LTE4MS03NS0xODEgNzUtNzUgMTgxdjI1NnEwIDI2LTE5IDQ1dC00NSAxOS00NS0xOS0xOS00NXYtMjU2cTAtMTU5IDExMi41LTI3MS41dDI3MS41LTExMi41IDI3MS41IDExMi41IDExMi41IDI3MS41eiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==);
+	}
+}
+.subscribe-btn{
+	&:before{
+		background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAxNzkyIDE3OTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTE3OTIgNzEwdjc5NHEwIDY2LTQ3IDExM3QtMTEzIDQ3aC0xNDcycS02NiAwLTExMy00N3QtNDctMTEzdi03OTRxNDQgNDkgMTAxIDg3IDM2MiAyNDYgNDk3IDM0NSA1NyA0MiA5Mi41IDY1LjV0OTQuNSA0OCAxMTAgMjQuNWgycTUxIDAgMTEwLTI0LjV0OTQuNS00OCA5Mi41LTY1LjVxMTcwLTEyMyA0OTgtMzQ1IDU3LTM5IDEwMC04N3ptMC0yOTRxMCA3OS00OSAxNTF0LTEyMiAxMjNxLTM3NiAyNjEtNDY4IDMyNS0xMCA3LTQyLjUgMzAuNXQtNTQgMzgtNTIgMzIuNS01Ny41IDI3LTUwIDloLTJxLTIzIDAtNTAtOXQtNTcuNS0yNy01Mi0zMi41LTU0LTM4LTQyLjUtMzAuNXEtOTEtNjQtMjYyLTE4Mi41dC0yMDUtMTQyLjVxLTYyLTQyLTExNy0xMTUuNXQtNTUtMTM2LjVxMC03OCA0MS41LTEzMHQxMTguNS01MmgxNDcycTY1IDAgMTEyLjUgNDd0NDcuNSAxMTN6IiBmaWxsPSIjZmZmIi8+PC9zdmc+);
+	}
+}
 .featured-channel {
 	margin-bottom: 2%;
 	&-container{
@@ -190,28 +211,6 @@
 					text-transform: uppercase;
 					&:hover{
 						text-decoration : none;
-					}
-					&.shop-btn, &.subscribe-btn{
-						&:before{							
-							background-repeat: no-repeat;
-							height: 24px;
-							width: 24px;
-							content: " ";
-							display: inline-block;
-							top: 4px;
-							position: relative;
-							margin-right: 10px;
-						}
-					}
-					&.shop-btn{
-						&:before{
-							background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAxNzkyIDE3OTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTE3NTcgMTQwOGwzNSAzMTNxMyAyOC0xNiA1MC0xOSAyMS00OCAyMWgtMTY2NHEtMjkgMC00OC0yMS0xOS0yMi0xNi01MGwzNS0zMTNoMTcyMnptLTkzLTgzOWw4NiA3NzVoLTE3MDhsODYtNzc1cTMtMjQgMjEtNDAuNXQ0My0xNi41aDI1NnYxMjhxMCA1MyAzNy41IDkwLjV0OTAuNSAzNy41IDkwLjUtMzcuNSAzNy41LTkwLjV2LTEyOGgzODR2MTI4cTAgNTMgMzcuNSA5MC41dDkwLjUgMzcuNSA5MC41LTM3LjUgMzcuNS05MC41di0xMjhoMjU2cTI1IDAgNDMgMTYuNXQyMSA0MC41em0tMzg0LTE4NXYyNTZxMCAyNi0xOSA0NXQtNDUgMTktNDUtMTktMTktNDV2LTI1NnEwLTEwNi03NS0xODF0LTE4MS03NS0xODEgNzUtNzUgMTgxdjI1NnEwIDI2LTE5IDQ1dC00NSAxOS00NS0xOS0xOS00NXYtMjU2cTAtMTU5IDExMi41LTI3MS41dDI3MS41LTExMi41IDI3MS41IDExMi41IDExMi41IDI3MS41eiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==);
-						}
-					}
-					&.subscribe-btn{
-						&:before{
-							background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAxNzkyIDE3OTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTE3OTIgNzEwdjc5NHEwIDY2LTQ3IDExM3QtMTEzIDQ3aC0xNDcycS02NiAwLTExMy00N3QtNDctMTEzdi03OTRxNDQgNDkgMTAxIDg3IDM2MiAyNDYgNDk3IDM0NSA1NyA0MiA5Mi41IDY1LjV0OTQuNSA0OCAxMTAgMjQuNWgycTUxIDAgMTEwLTI0LjV0OTQuNS00OCA5Mi41LTY1LjVxMTcwLTEyMyA0OTgtMzQ1IDU3LTM5IDEwMC04N3ptMC0yOTRxMCA3OS00OSAxNTF0LTEyMiAxMjNxLTM3NiAyNjEtNDY4IDMyNS0xMCA3LTQyLjUgMzAuNXQtNTQgMzgtNTIgMzIuNS01Ny41IDI3LTUwIDloLTJxLTIzIDAtNTAtOXQtNTcuNS0yNy01Mi0zMi41LTU0LTM4LTQyLjUtMzAuNXEtOTEtNjQtMjYyLTE4Mi41dC0yMDUtMTQyLjVxLTYyLTQyLTExNy0xMTUuNXQtNTUtMTM2LjVxMC03OCA0MS41LTEzMHQxMTguNS01MmgxNDcycTY1IDAgMTEyLjUgNDd0NDcuNSAxMTN6IiBmaWxsPSIjZmZmIi8+PC9zdmc+);
-						}
 					}
 				}
 			}
@@ -697,4 +696,7 @@ footer{
     position: relative;
     display: block;
     padding: 10px 14px;
+}
+.mobile-menu-modal{
+	display: none;
 }
