@@ -22,11 +22,12 @@
 							{{ range where $allChannelPages "Title" $currentPage.title }}
 							<div class="col-xs-12 col-sm-6 col-md-6 featured-channel">
 								<article >
-									<a href="{{ .Permalink }}" class="thumb" style='background-image: url(/{{ $type }}/images/channel/{{$currentChannelId}}.jpg);'></a>
-									<span class="featured-channel-container">
+									<a href="{{ .Permalink }}" class="thumb" style='background-image: url(/{{ $type }}/images/channel/{{$currentChannelId}}.jpg);'>
+										<span class="featured-channel-container">
 										<span class="featured-channel-title">{{ $currentPage.title }}</span>					
 									</span>
-		              			</article>
+									</a>
+								</article>
 							</div>
 							{{ end }}
 						{{ end }}

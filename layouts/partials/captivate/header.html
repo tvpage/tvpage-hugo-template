@@ -6,7 +6,7 @@
             <input type="text" placeholder="SEARCH" name="search">
             <!-- <div class="brand-header-search-button"></div> -->
             <!-- <button class="brand-header-search-button close"></button> -->
-            <a href="#"class="brand-header-search-button"></a>
+            <a href="#" class="brand-header-search-button"></a>
             <!-- <a href="#" class="share-icon twitter"></a> -->
           </div>
         </div>
@@ -36,7 +36,8 @@
       <button type="button" class="navbar-toggle collapsed pull-left mobile-nav"></button>
       <button type="button" class="navbar-toggle collapsed pull-right mobile-search"></button>
     </div>
-    <div class="collapse navbar-collapse">
+    <div class="container">
+      <div class="collapse navbar-collapse">
       <ul class="nav nav-justified">
         {{ with .Site.Menus.main }}
         {{ range sort . "Weight" "desc" }}
@@ -46,6 +47,8 @@
           No navigation
         {{ end }}
       </ul>
+    </div>  
     </div>
+    
   </nav>
 </header>
