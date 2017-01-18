@@ -6,12 +6,12 @@ define(function(require) {
       options = null,
       playerReady = null,
       multiple = false,
-      index = null,
+      index = 0,
       config = __TVPage__.config[0],
       targetId = config.id + "-target",
       player = null,
       autoplay = true,
-      autoend = true,
+      autonext = true,
       progresscolor = '#E57211',
       removecontrols = ["tvplogo","hd"],
       transcript = false;
@@ -30,30 +30,16 @@ define(function(require) {
     }
 
     function play(asset,settings) {
-      if(config && "undefined" !== typeof config.settings && config.settings.hasOwnProperty("autoplay") ){
-        autoplay = config.settings.autoplay;
-      }
       if (asset) {
-        var checks = 0;
-        (function readyPoller( ){
-          var deferred = setTimeout(function(){
-            if (!playerReady) {
-              if ( ++checks < 25 ) {
-                readyPoller();
-              }
-            } else {
-              if("undefined" !== typeof player && "undefined" !== typeof settings && settings.hasOwnProperty("controls")){
-                $('#'+player.options.DOMContainer.id).find('.tvp-progress-bar').css('background-color', settings.controls.seekBar.progressColor);
-              }
-              if (mobile || !JSON.parse(autoplay)) {
-                player.cueVideo(asset);
-                if (asset.type == 'mp4') putButtonOverlay();
-              } else {
-                player.loadVideo(asset);
-              }
-            }
-          }, 200);
-        })();
+        if("undefined" !== typeof player && "undefined" !== typeof settings && settings.hasOwnProperty("controls")){
+          $('#'+player.options.DOMContainer.id).find('.tvp-progress-bar').css('background-color', settings.controls.seekBar.progressColor);
+        }
+        if (mobile || !JSON.parse(autoplay)) {
+          player.cueVideo(asset);
+          if (asset.type == 'mp4') putButtonOverlay();
+        } else {
+          player.loadVideo(asset);
+        }
       }
     }
 
@@ -70,10 +56,7 @@ define(function(require) {
     function handleEnded() {
       if(multiple){
         index = (index == assetsList.length - 1) ? 0 : index + 1; 
-        if(config && "undefined" !== typeof config.settings && config.settings.hasOwnProperty("autoend") ){
-          autoend = config.settings.autoend;
-        }
-        if (mobile || !JSON.parse(autoend)) {
+        if (mobile || !JSON.parse(autonext)) {
           player.cueVideo(assetsList[index].asset);
           if (assetsList[index].asset.type == 'mp4') putButtonOverlay();
         } else {
@@ -84,15 +67,34 @@ define(function(require) {
 
     return {
       init: function(opts, callback) {
-        _tvpa.push(["config", { li: '{{ .Param "loginid" }}', gaDomain:"www.tvpage.tv", "logUrl": "\/\/api.tvpage.com\/v1\/__tvpa.gif"}]);
-        _tvpa.push(["track","ci",{ li: '{{ .Param "loginid" }}'}]);
-        index = 0;
+        var checks = 0;
+        (function libsPoller() {
+          setTimeout(function() {
+            if ("undefined" === typeof window._tvpa || "undefined" === typeof window.TVPage) {
+              if (++checks < 10) {
+                libsPoller();
+              } else { 
+                console.log("reached checks limit"); 
+              }
+            } else {
+              _tvpa.push(["config", { li: '{{ .Param "loginid" }}', gaDomain:"www.tvpage.tv", "logUrl": "\/\/api.tvpage.com\/v1\/__tvpa.gif"}]);
+              _tvpa.push(["track","ci",{ li: '{{ .Param "loginid" }}'}]);
+            }
+          }, 300);
+        })();
+
         options = opts || {};
         var ready = function(p) {
           player = TVPage.instances[p.options.globalRunId];
           player.on('tvp:media:videoended', handleEnded);
           player.on('tvp:media:ready', function(){
             playerReady = true;
+            multiple = true;
+            window.assetsList = opts;
+            var video = assetsList[index];
+            if (video) {
+              play(extractAsset(video),settings);
+            }
             if ($.isFunction(callback)) {
               callback();
             }
@@ -101,15 +103,21 @@ define(function(require) {
         };
 
         // Check for settings is passed or not
-        if(config && "undefined" !== typeof config.settings){
-          if(config.settings.hasOwnProperty('progresscolor')){
-            progresscolor = config.settings.progresscolor;
+        if(config && "undefined" !== typeof config.playback.settings){
+          if(config.playback.settings.hasOwnProperty("autoplay") ){
+            autoplay = config.playback.settings.autoplay;
           }
-          if(config.settings.hasOwnProperty('removecontrols')){
-            removecontrols = config.settings.removecontrols;
+          if(config.playback.settings.hasOwnProperty("autonext") ){
+            autonext = config.playback.settings.autonext;
           }
-          if(config.settings.hasOwnProperty('transcript')){
-            transcript = config.settings.transcript;
+          if(config.playback.settings.hasOwnProperty('progresscolor')){
+            progresscolor = config.playback.settings.progresscolor;
+          }
+          if(config.playback.settings.hasOwnProperty('removecontrols')){
+            removecontrols = config.playback.settings.removecontrols;
+          }
+          if(config.playback.settings.hasOwnProperty('transcript')){
+            transcript = config.playback.settings.transcript;
           }
         }
 
@@ -128,21 +136,8 @@ define(function(require) {
           swf: "//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-1.8.3-flash.swf"
         };
 
-        (function poller( ){
-          setTimeout(function(){
-            if ( "undefined" !== typeof window.TVPage ) {
-              ready(new TVPage.player(settings)); 
-            } else {
-              poller();
-            }
-          },200);
-        })();
-
-        multiple = true;
-        window.assetsList = opts;
-        var video = assetsList[index];
-        if (video) {
-          play(extractAsset(video),settings);
+        if ( "undefined" !== typeof window.TVPage ) {
+          ready(new TVPage.player(settings)); 
         }
 
         $(window).resize(resize);

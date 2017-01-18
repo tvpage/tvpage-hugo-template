@@ -32,8 +32,8 @@
         },
         {
             "type": "boolean",
-            "label": "Autoend",
-            "code": "autoend",
+            "label": "Autonext",
+            "code": "autonext",
             "value": true
         }
     ]

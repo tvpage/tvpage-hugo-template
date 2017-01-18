@@ -96,7 +96,7 @@
           },
           onStateChange: function(e){
             if("undefined" !== typeof e && "tvp:media:videoended" == e){
-              if(mobile || !{{ ($.Scratch.Get "settings").autoend }}){
+              if(mobile || !{{ ($.Scratch.Get "settings").autonext }}){
                 instance.cueVideo(asset);
                 if (asset.type == 'mp4') putButtonOverlay(instance);
               }else{

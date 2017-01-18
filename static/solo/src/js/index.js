@@ -4,11 +4,11 @@ define(function(require) {
   var config = __TVPage__.config[0];
   var obj = {};
   obj['X-login-id'] = config.loginid;
-  $.map(config.parameters, function(value, index) {
+  $.map(config.channel.parameters, function(value, index) {
       obj[index] = value;
   });
   $.ajax({
-    url: location.protocol+"//app.tvpage.com/api/channels/"+config.channelId+"/videos",
+    url: location.protocol+"//app.tvpage.com/api/channels/"+config.channel.id+"/videos",
     dataType: 'jsonp',
     data:obj
   }).done(function(res){

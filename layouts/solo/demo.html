@@ -126,52 +126,51 @@
 <section>
   <h2>Flavor D</h2>
   <style type="text/css">.tvpplayer { padding-bottom: 56.25%; height: 0; width: 100%; position: relative; }.tvpplayer-target { position: absolute; top: 0; bottom: 0; left: 0; right: 0; width: 100%; height: 100%; }.tvpplayer-play { position: absolute; width: 65px; height: 65px; background-color: #db5726; top: 0; bottom: 0; left: 0; right: 0; margin: auto; z-index: 999999; cursor: pointer; } .tvpplayer-play:after { content: " "; display: block; width: 0; height: 0; border-top: 15px solid transparent; border-bottom: 15px solid transparent; border-left: 29px solid white; position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: auto; }</style>
-<div id="tvpembed-83094487">
-  <div class="tvpplayer">
-    <div id="tvpembed-83094487-target" class="tvpplayer-target"></div>
+  <div id="tvpembed-83094487">
+    <div class="tvpplayer">
+      <div id="tvpembed-83094487-target" class="tvpplayer-target"></div>
+    </div>
   </div>
-</div>
-
-
-<script>(function(d,t,id) {
-  var s, as = d.getElementsByTagName(t)[0];
-  if (d.getElementById(id)) return;
-  s = d.createElement(t); s.id = id;
-  s.src = "//a.tvpage.com/tvpa.min.js";
-  as.parentNode.insertBefore(s, as);
-}(document, 'script', 'tvpage-analytics'));</script>
-
-
-<script>(function(d,t,id) {
-  var s, as = d.getElementsByTagName(t)[0];
-  if (d.getElementById(id)) return;
-  s = d.createElement(t); s.id = id;
-  s.src = "http://localhost:1313/solo/player-debug.js";
-  as.parentNode.insertBefore(s, as);
-}(document, 'script', 'tvpage-player'));</script>
-
-<script type="text/javascript">
-  window.__TVPage__ = window.__TVPage__ || {};
-  __TVPage__.config = __TVPage__.config || [];
-  __TVPage__.config.push(
-    {
-      settings: {"autoend":true,"autoplay":true,"progresscolor":"#E57211","removecontrols":["tvplogo","hd"],"transcript":false,"version":"1.8.4","videoid":"83094487"},
-      loginid: "1758799",
-      id: "tvpembed-83094487",
-      channelId : "84956291",
-      parameters: {
-        referenceId: "02,03",
-        category_id_1: "123",
-        category_id_2: "123"
+  <script>(function(d,t,id) {
+    var s, as = d.getElementsByTagName(t)[0];
+    if (d.getElementById(id)) return;
+    s = d.createElement(t); s.id = id;
+    s.src = "//a.tvpage.com/tvpa.min.js";
+    as.parentNode.insertBefore(s, as);
+  }(document, 'script', 'tvpage-analytics'));</script>
+  <script>(function(d,t,id) {
+    var s, as = d.getElementsByTagName(t)[0];
+    if (d.getElementById(id)) return;
+    s = d.createElement(t); s.id = id;
+    s.src = "http://localhost:1313/solo/player-debug.js";
+    as.parentNode.insertBefore(s, as);
+  }(document, 'script', 'tvpage-player'));</script>
+  <script type="text/javascript">
+    window.__TVPage__ = window.__TVPage__ || {};
+    __TVPage__.config = __TVPage__.config || [];
+    __TVPage__.config.push(
+      {
+        id: "tvpembed-83094487",
+        loginid: "1758799",
+        channel:{
+          id: "84956291",
+          parameters: {
+            referenceId: "02,03",
+            category_id_1: "123",
+            category_id_2: "123"
+          }
+        },
+        playback:{
+          settings: {"autonext":true,"autoplay":true,"progresscolor":"#E57211","removecontrols":["tvplogo","hd"],"transcript":false,"version":"1.8.4","videoid":"83094487"}
+        }
       }
-    }
-  );
-  (function(d) {
-    var s = d.createElement('script');
-    s.src = '//localhost:1313/solo/lib.min.js';
-    d.body.appendChild(s);
-  })(document);
-</script>
+    );
+    (function(d) {
+      var s = d.createElement('script');
+      s.src = '//localhost:1313/solo/lib.min.js';
+      d.body.appendChild(s);
+    })(document);
+  </script>
 </section>
 
 </body>
