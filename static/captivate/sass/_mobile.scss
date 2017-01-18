@@ -1,10 +1,14 @@
-@media(max-width: $screen-xs){
+@media(max-width: $screen-xs-max){
 	.header-bg{
 		display: none;
 	}
 	nav.menu-bar{
 		border : none;
-		margin-bottom: 2%;
+		margin-bottom: 3px;
+		background-color: #2C6373;
+		.container{
+			background-color: #2C6373;
+		}
 		&:before{
 			content: none;
 			display: none;
@@ -13,20 +17,46 @@
 			display: none;
 			content: none;
 		}
+		ul.nav{
+			display: none;
+		}
+		.mobile-menu{
+			&-nav-btn, &-search-btn{
+				background-repeat: no-repeat;
+				height: 24px;
+				width: 24px;
+				content: " ";
+				margin: 17px 0;	
+			}
+			&-nav-btn{
+				background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAxNzkyIDE3OTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTE2NjQgMTM0NHYxMjhxMCAyNi0xOSA0NXQtNDUgMTloLTE0MDhxLTI2IDAtNDUtMTl0LTE5LTQ1di0xMjhxMC0yNiAxOS00NXQ0NS0xOWgxNDA4cTI2IDAgNDUgMTl0MTkgNDV6bTAtNTEydjEyOHEwIDI2LTE5IDQ1dC00NSAxOWgtMTQwOHEtMjYgMC00NS0xOXQtMTktNDV2LTEyOHEwLTI2IDE5LTQ1dDQ1LTE5aDE0MDhxMjYgMCA0NSAxOXQxOSA0NXptMC01MTJ2MTI4cTAgMjYtMTkgNDV0LTQ1IDE5aC0xNDA4cS0yNiAwLTQ1LTE5dC0xOS00NXYtMTI4cTAtMjYgMTktNDV0NDUtMTloMTQwOHEyNiAwIDQ1IDE5dDE5IDQ1eiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==);	
+			}
+			&-search-btn{
+				background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAxNzkyIDE3OTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEyMTYgODMycTAtMTg1LTEzMS41LTMxNi41dC0zMTYuNS0xMzEuNS0zMTYuNSAxMzEuNS0xMzEuNSAzMTYuNSAxMzEuNSAzMTYuNSAzMTYuNSAxMzEuNSAzMTYuNS0xMzEuNSAxMzEuNS0zMTYuNXptNTEyIDgzMnEwIDUyLTM4IDkwdC05MCAzOHEtNTQgMC05MC0zOGwtMzQzLTM0MnEtMTc5IDEyNC0zOTkgMTI0LTE0MyAwLTI3My41LTU1LjV0LTIyNS0xNTAtMTUwLTIyNS01NS41LTI3My41IDU1LjUtMjczLjUgMTUwLTIyNSAyMjUtMTUwIDI3My41LTU1LjUgMjczLjUgNTUuNSAyMjUgMTUwIDE1MCAyMjUgNTUuNSAyNzMuNXEwIDIyMC0xMjQgMzk5bDM0MyAzNDNxMzcgMzcgMzcgOTB6IiBmaWxsPSIjZmZmIi8+PC9zdmc+);
+			}
+			&-logo{
+				width: 61px;
+				height: 46px;
+				display: block;
+				margin: 6px auto;
+			}
+		}
 	}
-
 	.breadcrumb-navigation{
 		display: none;
+	}
+	.main-content .container{
+		padding-left: 3px;
+		padding-right: 3px;
 	}
 	.featured-channel {
 		&-container{
 			line-height: 34px;
 			height: 34px;
-
 		}
 		&-title {
 			font-size: 18px;
 			line-height: 18px;
 		}
-}
+	}
 }
