@@ -4,7 +4,6 @@ define(function(require) {
 
     var mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
       options = null,
-      playerReady = null,
       multiple = false,
       index = 0,
       config = __TVPage__.config[0],
@@ -73,8 +72,6 @@ define(function(require) {
             if ("undefined" === typeof window._tvpa || "undefined" === typeof window.TVPage) {
               if (++checks < 10) {
                 libsPoller();
-              } else { 
-                console.log("reached checks limit"); 
               }
             } else {
               _tvpa.push(["config", { li: '{{ .Param "loginid" }}', gaDomain:"www.tvpage.tv", "logUrl": "\/\/api.tvpage.com\/v1\/__tvpa.gif"}]);
@@ -88,7 +85,6 @@ define(function(require) {
           player = TVPage.instances[p.options.globalRunId];
           player.on('tvp:media:videoended', handleEnded);
           player.on('tvp:media:ready', function(){
-            playerReady = true;
             multiple = true;
             window.assetsList = opts;
             var video = assetsList[index];
