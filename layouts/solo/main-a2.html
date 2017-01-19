@@ -67,7 +67,7 @@
       } else {
         _tvpa.push(["config", { li: '{{ .Param "loginid" }}', gaDomain:"www.tvpage.tv", "logUrl": "\/\/api.tvpage.com\/v1\/__tvpa.gif"}]);
         _tvpa.push(["track","ci",{ li: '{{ .Param "loginid" }}'}]);
-        var instance;
+        var instance, assetsList = [];
         new TVPage.player({
           divId: "tvpembed-{{ .File.BaseFileName }}-target",
           controls: {
@@ -87,16 +87,18 @@
             window.onresize = resize;
             instance.options.DOMContainer.getElementsByClassName('tvp-progress-bar')[0].style["background-color"] = instance.options.controls.seekBar.progressColor;
 
-            window.assetsList = [];
-            var video = {{ index $.Site.Data.videos (printf "x%s" .Params.videoid) }} || false;
-            if (!video){
-              {{ $.Scratch.Add "channelVideos" (index $.Site.Data.channelVideos (printf "x%s_page_1" .Params.channelid) "data") }}
-              {{range $.Scratch.Get "channelVideos"}}
-                  assetsList.push( {{ ( index $.Site.Data.videos (printf "x%s" .id ) ) | jsonify | safeJS }} );
-              {{end}}
+            var videoid;
+            {{ with .Params.videoid }} videoid = {{ . }};{{ end }}
+            var channelid;
+            {{ with .Params.channelid }} channelid = {{ . }};{{ end }}
+
+            if (!videoid && channelid) {
+              var channelVideos = {{ index $.Site.Data.channelVideos (printf "x%s_page_1" .Params.channelid) }};
+              assetsList = channelVideos.data;
+            } else{
+              assetsList.push({{ index $.Site.Data.videos (printf "x%s" .Params.videoid) }});
             }
-            assetsList.push(video);
-                   
+
             if(mobile || !{{ ($.Scratch.Get "settings").autoplay }}){
               instance.cueVideo(asset(assetsList[index]));
               if (asset.type == 'mp4') putButtonOverlay(instance);
