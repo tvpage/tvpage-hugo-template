@@ -18,7 +18,8 @@
           </div>
         </div>
         <div class="row container" style="position: relative">
-          <h2 class="section-header">VIDEO DETAILS
+          <h1 class="video-title-mobile">{{ .Title }}</h1>
+          <h2 class="section-header video-details-header">VIDEO DETAILS
             <div class="social-share">                
               SHARE: <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ .Permalink }}" class="
               share-icon facebook"></a>
@@ -44,7 +45,8 @@
           </div>
         </div>
         <div class="row container">
-          <h2 class="section-header">LATEST VIDEOS</h2>
+          <h2 class="section-header channel-videos-latest-videos">LATEST VIDEOS</h2>
+          <h2 class="section-header channel-videos-latest-videos-mobile">MORE VIDEOS</h2>
         </div>
         <div class="row">
         {{ $channelid := .Params.channelid }}

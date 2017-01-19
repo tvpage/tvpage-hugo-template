@@ -1,10 +1,13 @@
 @media(max-width: $screen-xs-max){
-	.header-bg{
+	.header-bg,
+	.channel-latest-videos-header, 	
+	.products-title,
+	.video-title,
+	.channel-videos-latest-videos{
 		display: none;
 	}
 	nav.menu-bar{
 		border : none;
-		margin-bottom: 3px;
 		background-color: #2C6373;
 		.container{
 			background-color: #2C6373;
@@ -47,6 +50,12 @@
 	}
 	.breadcrumb-navigation{
 		display: none;
+	}
+	.btn-more{
+		margin-bottom: 0;
+	}
+	.main-content.mobile{
+		margin-top: 3px;
 	}
 	.featured-channel {	
 		padding: 0 3px 3px;
@@ -200,7 +209,47 @@
 			}
 		}
 	}
-	.channel-latest-videos-header{
-		display: none;
+	.player-product{
+		margin-bottom: 15px;
+		> div{		
+			padding: 0;
+		}
+	}
+	.video-details{
+		margin-bottom: 15px;
+	} 
+	.video-details-header{
+		text-align: left;
+		font-size: 16px;
+		line-height: 20px;
+		.social-share{
+			display: none;
+		}
+	}
+	.video-title-mobile{
+		display: block;
+		font-size: 16px;
+		line-height: 20px;
+		margin-bottom: 15px;
+	}
+	.video-details-row{
+		font-size: 14px;
+		line-height: 17px;
+		&.duration{
+			margin-bottom: 10px;
+		}
+		&.description{
+			min-height: 1px;
+			margin-bottom: 15px;
+		}
+		.btn-more-line{
+			top: 0;
+		}
+		.btn-more-btn-container{
+			display: none;
+		}
+	}
+	.channel-videos-latest-videos-mobile{
+		display: block;
 	}
 }
