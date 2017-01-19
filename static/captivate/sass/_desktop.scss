@@ -295,40 +295,29 @@ nav.menu-bar{
 	
 }
 .slider{	
-	padding-bottom: 35px;
-	height: 126px;
+	padding: 0 64px;
+	margin-bottom: 30px;
 	.slick-arrow{
-		height: 100%;
-		button{
-			position: absolute;
-			top: 100%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			opacity: 0.5;
-			fill : red;
-			&:hover{
-				opacity: 1;
-			}
-		}
-	}
-	.slick-list{
-		height: 91px;
-		@extend .col-xs-12;
-		@extend .col-sm-10;
-		@extend .col-md-10;
+		height: 28px;
+		width: 28px;
+		margin: auto 0;
+		bottom: 0;
+		top: 0;
 	}	
-	.slick-track{
-		height: 100%;
+	.slick-prev{
+		left: 18px;
+	}
+	.slick-next{
+		right: 18px;
+	}
+	.slick-slide{
+		padding: 0 30px;
 	}
 	.brand-item{
-		margin : 0 0 0 10px;
-		height: 100%;
-		position: relative;
-		img{  
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
+		// border: 1px solid yellow;
+		@include aspect-ratio(219, 126);
+		.content{
+			background-size: contain;
 		}
 	}
 }

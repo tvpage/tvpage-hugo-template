@@ -131,8 +131,6 @@
 	    speed: 900,
 	    slidesToShow: 3,
 	    slidesToScroll: 1,
-	    nextArrow: '<div class="col-sm-1 col-md-1"><button type="button" class="slick-next">Next</button></div>',
-	    prevArrow: '<div class="col-sm-1 col-md-1"><button type="button" class="slick-prev">Previous</button></div>',
 	    responsive: [{
 	        breakpoint: 768,
 	        settings: {

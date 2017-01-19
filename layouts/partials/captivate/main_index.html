@@ -36,15 +36,22 @@
 
 		<!-- <section class="container section"> -->
 		<h2 class="section-header">BRANDS</h2>
-		<div class="row slider">
-			{{ range where .Site.Pages "Layout" "channel" }}
-				{{ if in ($.Scratch.Get "settings").channelsliderids .Params.channelid }}
-				<div class="brand-item">
-          			<img src="/{{ .Type }}/images/{{.Params.channelid}}-logo.png">
-				</div>
-				{{ end }}
-			{{ end }}   
+		<div class="row">
+			<div class="col-sm-12">
+			<div class="slider">
+				{{ range where .Site.Pages "Layout" "channel" }}
+					{{ if in ($.Scratch.Get "settings").channelsliderids .Params.channelid }}
+					<div>
+						<div class="brand-item">				
+							<div class="content" style="background-image: url(/{{ .Type }}/images/{{.Params.channelid}}-logo.png)"></div>
+						</div>
+					</div>
+					{{ end }}
+				{{ end }}   
+			</div>	
+			</div>
 		</div>
+		
 		<!-- </section>	 -->
 
 		<!-- <section class="container section"> -->			
