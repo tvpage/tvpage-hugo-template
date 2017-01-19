@@ -48,11 +48,12 @@
 	.breadcrumb-navigation{
 		display: none;
 	}
-	.main-content .container{
-		padding-left: 3px;
-		padding-right: 3px;
-	}
-	.featured-channel {
+	.featured-channel {	
+		padding: 0 3px 3px;
+		margin: 0;	
+		&:last-child{
+			padding-bottom: 15px;
+		}
 		&-container{
 			line-height: 34px;
 			height: 34px;
@@ -107,6 +108,27 @@
 					}
 				}
 			}
+		}
+	}
+	.section{
+		&-header{			
+			border: 0;
+			text-align: center;
+			font-size: 34px;
+			margin-bottom: 15px;
+			line-height: 43px;
+			padding: 0;
+			&:after{
+				display: none;
+			}
+		}
+	}
+	.latest-video{
+		&-title{
+			padding: 0;
+			max-height: 40px;
+			height: auto;
+			margin: 10px 0 15px;
 		}
 	}
 }
