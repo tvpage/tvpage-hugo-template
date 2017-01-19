@@ -10,8 +10,8 @@ define(function(require) {
 
   var TVSite = {};
   var CONFIG = {
-    "loginId": "1758881",
-    "apiUrl": "\/\/app.tvpage.com",
+    loginId: "1758881",
+    apiUrl: "\/\/api.tvpage.com\/v1",
     channelId: "81979997",
     products: "show"
   };
@@ -195,7 +195,7 @@ define(function(require) {
       var THAT = this;
       THAT.fetchPage = THAT.page;
       $.ajax({
-        url: '//app.tvpage.com/api/channels/' + CONFIG.channelId + '/videos',
+        url: ''+CONFIG.apiUrl+'/channels/' + CONFIG.channelId + '/videos',
         dataType: 'jsonp',
         data: {
           p: THAT.page,
@@ -235,7 +235,7 @@ define(function(require) {
       var THAT = this;
       THAT.fetchPage = THAT.page;
       $.ajax({
-        url: '//app.tvpage.com/api/channels/' + CONFIG.channelId + '/videos',
+        url: ''+CONFIG.apiUrl+'/channels/' + CONFIG.channelId + '/videos',
         dataType: 'jsonp',
         data: {
           p: THAT.page,
@@ -297,7 +297,7 @@ define(function(require) {
       var THAT = this;
       this.fetchPage++;
       return $.ajax({
-        url: '//app.tvpage.com/api/channels/' + CONFIG.channelId + '/videos',
+        url: ''+CONFIG.apiUrl+'/channels/' + CONFIG.channelId + '/videos',
         dataType: 'jsonp',
         data: {
           p: THAT.fetchPage,
@@ -455,7 +455,7 @@ define(function(require) {
     getProducts: function(videoId) {
       return $.ajax({
         type: 'GET',
-        url: "//app.tvpage.com/api/videos/" + videoId + '/products',
+        url: "//api.tvpage.com/v1/videos/" + videoId + '/products',
         dataType: 'jsonp',
         data: {
           'X-login-id': CONFIG.loginId
@@ -705,7 +705,7 @@ define(function(require) {
                 tvpa: true
               },
               techOrder: 'html5,flash',
-              apiBaseUrl: '//app.tvpage.com',
+              apiBaseUrl: '//api.tvpage.com/v1/',
               onError: function(e) {
                 console.log(e);
               },
