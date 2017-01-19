@@ -13,11 +13,10 @@
 <style type="text/css">{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css.html" .Type ) .)) | safeCSS }}</style>
 <div id="tvpembed-{{ .File.BaseFileName }}">
   <div class="tvpplayer">
-    <div id="tvpembed-{{ .File.BaseFileName }}-target" class="tvpplayer-target"></div>
+    <div id="tvpplayer-target" class="tvpplayer-target"></div>
   </div>
 </div>
 
-<!-- tvpage analytics -->
 <script>(function(d,t,id) {
   var s, as = d.getElementsByTagName(t)[0];
   if (d.getElementById(id)) return;
@@ -25,8 +24,6 @@
   s.src = "//a.tvpage.com/tvpa.min.js";
   as.parentNode.insertBefore(s, as);
 }(document, 'script', 'tvpage-analytics'));</script>
-
-<!-- tvpage library -->
 <script>(function(d,t,id) {
   var s, as = d.getElementsByTagName(t)[0];
   if (d.getElementById(id)) return;
@@ -35,29 +32,79 @@
   as.parentNode.insertBefore(s, as);
 }(document, 'script', 'tvpage-player'));</script>
 
-<script type="text/javascript">
-  window.__TVPage__ = window.__TVPage__ || {};
-  __TVPage__.config = __TVPage__.config || [];
-  __TVPage__.config.push(
-    {
-      id: "tvpembed-{{ .File.BaseFileName }}",
-      loginid: {{ .Site.Params.loginid }},
-      channel:{
-        id: "84956291",
-        parameters: {
-          referenceId: "02,03",
-          category_id_1: "123",
-          category_id_2: "123"
+<script>;(function(){
+  var mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
+      redefine = function(o, pr){return 'undefined' !== typeof o[pr];},
+      buildAsset = function(v){
+        if (!v || !v.asset) return console.log("no asset");
+        var a = v.asset;
+        a.analyticsObj = {vd:v.id,li:v.loginId,pg:v.parentId?v.parentId:0};
+        if (!a.sources) a.sources = [{ file: a.videoId }];
+        a.type = a.type || 'youtube';
+        return a;
+      };
+  
+  window.addEventListener('message',function(e) {
+    if (!e || !redefine(e,'origin') || 'http://localhost:1313' !== e.origin || !redefine(e,'data')) return;
+    var checks = 0, asset = buildAsset(event.data[0]);
+    (function libsPoller() {
+      var deferred = setTimeout(function() {
+        if ( !redefine(window,'_tvpa') || !redefine(window,'TVPage')) {
+          if (++checks < 10) {
+            libsPoller();
+          } else { 
+            console.log("reached checks limit"); 
+          }
+        } else {
+          _tvpa.push(["config", {li:'{{ .Param "loginid" }}',gaDomain:"www.tvpage.tv", "logUrl": "\/\/api.tvpage.com\/v1\/__tvpa.gif"}]);
+          _tvpa.push(["track","ci",{ li: '{{ .Param "loginid" }}'}]);
+          var inst, playerEl;
+          new TVPage.player({
+            divId: "tvpplayer-target",
+            controls: {
+              active: true,
+              seekBar: { progressColor: {{ ($.Scratch.Get "settings").progresscolor }} },
+              floater: { removeControls: {{ ($.Scratch.Get "settings").removecontrols }}, transcript: {{ ($.Scratch.Get "settings").transcript }} }
+            },
+            poster: true,
+            techOrder: 'html5,flash',
+            analytics: { tvpa: false },
+            apiBaseUrl: '//app.tvpage.com',
+            swf: '//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-{{ ($.Scratch.Get "settings").version }}-flash.swf',
+            onReady: function(e, player){
+              inst = player;
+              if (redefine(inst,'options') && redefine(inst.options,'DOMContainer')) {
+                playerEl = inst.options.DOMContainer;
+              }
+              var resize = function(){inst.resize(playerEl.clientWidth, playerEl.clientHeight);};
+              resize();
+              window.onresize = resize;
+              playerEl.getElementsByClassName('tvp-progress-bar')[0].style["background-color"] = inst.options.controls.seekBar.progressColor;
+              
+              if(mobile || !{{ ($.Scratch.Get "settings").autoplay }}){
+                inst.cueVideo(asset);
+                if (asset.type == 'mp4') addBtn(inst);
+              }else{
+                inst.loadVideo(asset);
+              }
+            },
+            onStateChange: function(e){
+              if(e && 'tvp:media:videoended' === e){
+                if(mobile || !{{ ($.Scratch.Get "settings").autonext }}){
+                  inst.cueVideo(asset);
+                  if (asset.type == 'mp4') addBtn(inst);
+                }else{
+                  inst.loadVideo(asset);
+                }         
+              }
+            }
+          });
         }
-      },
-      playback:{
-        settings: {{ $.Scratch.Get "settings" }}
-      }
-    }
-  );
-  (function(d) {
-    var s = d.createElement('script');
-    s.src = '//localhost:1313/solo/lib.min.js';
-    d.body.appendChild(s);
-  })(document);
-</script>
+      }, 300);
+    })();
+
+  },false);
+
+  
+
+}());</script>
