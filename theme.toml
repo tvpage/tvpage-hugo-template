@@ -11,7 +11,7 @@ min_version = 0.17
 [[tvp-widgets]]
 	name = "Carousel"
 	uniqueName = "carousel"
-	path = "layouts/tvp-widgets/carousel"
+	path = "layouts/carousel"
 	preview = "http://preview.tvpage.com"
 	settings = ['playback']
 	description = "Carousel is our most popular widget and can be used on a variety of pages. The user is presented with a series of thumbnails. The video plays in a modal after a thumbnail is clicked."
@@ -23,7 +23,7 @@ min_version = 0.17
 [[tvp-widgets]]
 	name = "Inline"
 	uniqueName = "inline"
-	path = "layouts/tvp-widgets/inline"
+	path = "layouts/inline"
 	preview = "http://preview.tvpage.com"
 	settings = ['playback','products']
 	description = " Inline provides an engaging experience and are a great choice for presenting many videos or products within a defined space. The user can interact with the videos and the products without ever launching a modal."
@@ -35,7 +35,7 @@ min_version = 0.17
 [[tvp-widgets]]
 	name = "PDP"
 	uniqueName = "pdp"
-	path = "layouts/tvp-widgets/pdp"
+	path = "layouts/pdp"
 	preview = "http://preview.tvpage.com"
 	settings = ['playback']
 	description = "Product Detail Page (PDP) is purpose-built to that dynamically renders a video that matches an indivdual SKU. Use this widget to close the deal especially on higher-priced items."
@@ -46,8 +46,8 @@ min_version = 0.17
 
 [[tvp-widgets]]
 	name = "Side Bar"
-	uniqueName = "side-bar"
-	path = "layouts/tvp-widgets/side-bar"
+	uniqueName = "sidebar"
+	path = "layouts/sidebar"
 	preview = "http://preview.tvpage.com"
 	settings = ['playback']
 	description = "Sidebar is a great compliment to a traditional 2-column or 3-column layout. The user is presented with a series of thumbnails. The video plays in a modal after a thumbnail is clicked."
@@ -59,7 +59,7 @@ min_version = 0.17
 [[tvp-widgets]]
 	name = "Solo"
 	uniqueName = "solo"
-	path = "layouts/tvp-widgets/solo"
+	path = "layouts/solo"
 	preview = "http://preview.tvpage.com"
 	settings = ['playback']
 	description = "Solo is a simple player that works seamlessly across devices. The video plays inline."
