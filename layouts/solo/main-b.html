@@ -13,6 +13,7 @@
 <style type="text/css">{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css.html" .Type ) .)) | safeCSS }}</style>
 <div class="tvpplayer">
   <div id="tvpplayer-target"></div>
+  <div id="tvpplayer-play"></div>
 </div>
 
 <script>;(function(root,d){
@@ -40,7 +41,7 @@ var mobile = /Mobi/.test(navigator.userAgent),
 
 root.addEventListener('message',function(e) {
   if (!e || !redefine(e,'origin') || 'http://localhost:1313' !== e.origin || !redefine(e,'data')) return;
-  var checks = 0, asset = getAsset(event.data[0]);
+  var checks = 0,videos = event.data, index=0;
   (function libsPoller() {
     var deferred = setTimeout(function() {
       if ( !redefine(root,'_tvpa') || !redefine(root,'TVPage')) {
@@ -57,8 +58,17 @@ root.addEventListener('message',function(e) {
         play = function(a,on){
           if (!a) return;
           if ( mobile || (!{{($.Scratch.Get "settings").autoplay}} || (on && !{{($.Scratch.Get "settings").autonext}})) ) {
-            inst.cueVideo(asset);
-            //if (a.type == 'mp4') addBtn(inst);
+            inst.cueVideo(getAsset(videos[index]));
+            var playButton = document.getElementById("tvpplayer-play");
+            if (a.type == 'mp4'){
+              playButton.style["display"] = "block";
+              playButton.addEventListener('click', function(){
+                this.style["display"] = "none";
+                if(inst) inst.play();
+              },false);
+            }else{
+              playButton.style["display"] = "none";
+            }
           } else {
             inst.loadVideo(a);
           }
@@ -83,11 +93,12 @@ root.addEventListener('message',function(e) {
             resize();
             root.onresize = resize;
             el.getElementsByClassName('tvp-progress-bar')[0].style["background-color"] = {{($.Scratch.Get "settings").progresscolor}};
-            play(asset);
+            play(getAsset(videos[index]));
           },
           onStateChange: function(e){
             if (e && 'tvp:media:videoended' !== e) return;
-            play(asset,true);
+            index = (index == videos.length - 1) ? 0 : index + 1;
+            play(getAsset(videos[index]),true);
           }
         });
       }

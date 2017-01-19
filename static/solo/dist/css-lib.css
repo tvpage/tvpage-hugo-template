@@ -4,7 +4,7 @@
   width: 100%;
   position: relative; }
 
-.tvpplayer-target {
+#tvpplayer-target {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -13,7 +13,8 @@
   width: 100%;
   height: 100%; }
 
-.tvpplayer-play {
+#tvpplayer-play {
+  display: none;
   position: absolute;
   width: 65px;
   height: 65px;
@@ -25,7 +26,7 @@
   margin: auto;
   z-index: 999999;
   cursor: pointer; }
-  .tvpplayer-play:after {
+  #tvpplayer-play:after {
     content: " ";
     display: block;
     width: 0;
