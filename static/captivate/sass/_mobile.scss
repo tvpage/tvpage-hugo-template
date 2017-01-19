@@ -140,4 +140,67 @@
 			padding: 0 15px;
 		}
 	}
+	.channel-page-banner{
+		height: 145px;
+		&-desktop{
+			display: none;
+		}
+		&-mobile{
+			display: block;
+		}
+	}
+	.main-channel-banner{
+		&-title{
+			font-size: 30px;
+			line-height: 38px;
+			padding-top: 25px;
+			margin-bottom: 10px;
+		}
+		&-total-videos{
+			font-size: 14px;
+			line-height: 17px;
+			margin-bottom: 15px;
+		}
+		&-subscribe{
+			font-size: 16px;
+			line-height: 20px;
+			.subscribe-btn{
+				&:before{
+					height: 16px;
+					width: 16px;
+					top: 1px;
+				}
+			}
+		}
+	}
+	.filter-menu{
+		height: 78px;
+		margin-bottom: 15px;
+		.container{
+			margin: 0;
+			width: 100%;
+		}
+		.btn-group{
+			height: 24px;
+			display: block;
+			margin-top: 10px;
+			&:last-child{
+				margin-bottom: 10px;
+			}
+		}
+		button{
+			text-align: left;
+			width: 100%;
+			span{
+				right: 0;
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				margin: auto 6px auto 0;
+			}
+		}
+	}
+	.channel-latest-videos-header{
+		display: none;
+	}
 }
