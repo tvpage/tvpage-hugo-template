@@ -1,0 +1,32 @@
+@media(max-width: $screen-xs){
+	.header-bg{
+		display: none;
+	}
+	nav.menu-bar{
+		border : none;
+		margin-bottom: 2%;
+		&:before{
+			content: none;
+			display: none;
+		}
+		&:after{
+			display: none;
+			content: none;
+		}
+	}
+
+	.breadcrumb-navigation{
+		display: none;
+	}
+	.featured-channel {
+		&-container{
+			line-height: 34px;
+			height: 34px;
+
+		}
+		&-title {
+			font-size: 18px;
+			line-height: 18px;
+		}
+}
+}
