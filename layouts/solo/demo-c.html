@@ -1,0 +1,56 @@
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Solo Demo - Main C</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+  <section>
+    <h2>Summary</h2>
+    <p>Widget being used in a Product Category Page. Videos related to products that match the passed category</p>
+    <script>
+      window.__TVPage__ = window.__TVPage__ || {};
+      __TVPage__.config = __TVPage__.config || {};
+      __TVPage__.config['tvpwidget-solo-3'] = {
+        loginid: '1758799',
+        channel: {
+          id: '85051633',
+          parameters: {
+            category_id_1: '123'
+          }
+        }
+      };
+      (function(d, c, f) {
+        window[f] = function(dt) {
+          var i = d.getElementById('tvpwidget-solo-3-iframe'),
+            dmn = 'http://localhost:1313';
+          i.setAttribute('src', dmn + '/tvpwidget/solo-3');
+          var ip = i.parentNode;
+          dt && (dt instanceof Array) && dt.length ? ip.style.display = 'block' : delete ip;
+          i.onload = function() {
+            i.contentWindow.postMessage(dt, dmn);
+          };
+        };
+        var s = d.createElement('script');
+        s.setAttribute('src', function() {
+          var u = '//app.tvpage.com/api/channels/' + c.channel.id + '/videos?X-login-id=' + c.loginid,
+            params = c.channel.parameters;
+          for (var p in params) {
+            u += '&' + p + '=' + params[p];
+          }
+          return u += '&callback=' + f;
+        }());
+        d.body.appendChild(s);
+      }(document, __TVPage__.config['tvpwidget-solo-3'], 'tvp' + Math.floor(Math.random() * 50005)));
+    </script>
+    <div style="display:none;left:0px;width:100%;height:0px;position:relative;padding-bottom:56.2493%;">
+      <iframe id="tvpwidget-solo-3-iframe" frameborder="0" allowfullscreen style="top:0px;left:0px;width:100%;height:100%;position:absolute;"></iframe>
+    </div>
+  </section>
+  <br>
+  <script src="https://gist.github.com/rfornes/9150d50337037d73fcfc8da01bd82f9b.js"></script>
+</body>
+</html>
