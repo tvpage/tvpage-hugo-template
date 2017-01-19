@@ -10,8 +10,8 @@ define(function(require) {
 
   var TVSite = {};
   var CONFIG = {
-    "loginId": "1758881",
-    "apiUrl": "\/\/app.tvpage.com",
+    loginId: "1758881",
+    apiUrl: "\/\/api.tvpage.com\/v1",
     channelId: "81979997",
     products: "show"
   };
@@ -42,7 +42,7 @@ define(function(require) {
     page: 0,
     fetchPage: 0,
     haveMoreVideos: false,
-    videoTemplate: '<div data-tvp-video-id="{id}" data-index="{id}" class="tvp-video tvp-col-3"><div class="tvp-video-image" style="background-image:url(\'{asset.thumbnailUrl}\')"><div class="video-overlay"></div><div class="tvp-video-play-button"></div></div><div class="title">{title}</div></div>',
+    videoTemplate: '<div data-tvp-video-id="{id}" data-index="{id}" class="tvp-video tvp-col-3"><div class="tvp-video-image" style="background-image:url(\'{asset.thumbnailUrl}\')"><div class="tvp-video-overlay"></div><div class="tvp-video-play-button"></div></div><div class="tvp-title">{title}</div></div>',
     initialize: function() {
 
       this.initializePlayer();
@@ -53,34 +53,34 @@ define(function(require) {
         this.initializeProductScrollerY();
       } else {
         $("#tvpp").addClass('full');
-        $("#mobile-products").addClass('hide');
-        $("#desktop-products").addClass('hide');
-        $(".lb-content").addClass('products-hide');
+        $("#tvp-mobile-products").addClass('hide');
+        $("#tvp-desktop-products").addClass('hide');
+        $(".tvp-lb-content").addClass('products-hide');
       }
-
       TVSite.videos = [];
       TVSite.displayedVideos = [];
-
       var THAT = this;
-      $(document).on('click', '.lb-close', function(e) {
-        $('.lb-overlay').hide();
+      $(document).on('click', '.tvp-lb-close', function(e) {
+        $('.tvp-lb-overlay').hide();
         $('#lightbox').addClass('off');
         THAT.hideHTML5PlayBtn();
         window.TVPlayer.stop();
-        $('.tvp-pagination').empty();
-        THAT.cache.productScrollerX.goToPage(0, 0, 100);
+        if (THAT.isMobile()) {
+          $('.tvp-pagination').empty();
+          THAT.cache.productScrollerX.goToPage(0, 0, 100);
+        }
       });
-
-      $(document).on('click', '.lb-overlay', function(e) {
-        $('.lb-overlay').hide();
+      $(document).on('click', '.tvp-lb-overlay', function(e) {
+        $('.tvp-lb-overlay').hide();
         $('#lightbox').addClass('off');
         THAT.hideHTML5PlayBtn();
         window.TVPlayer.stop();
-        $('.tvp-pagination').empty();
-        THAT.cache.productScrollerX.goToPage(0, 0, 100);
+        if (THAT.isMobile()) {
+          $('.tvp-pagination').empty();
+          THAT.cache.productScrollerX.goToPage(0, 0, 100);
+        }
       });
-
-      $(document).on('click', '#view-more-button', function(e) {
+      $(document).on('click', '#tvp-view-more-button', function(e) {
         THAT.checkMoreVideos(true).done(function() {
           if (THAT.haveMoreVideos) {
             THAT.haveMoreVideos = false;
@@ -88,14 +88,11 @@ define(function(require) {
             THAT.getVideos();
           }
         });
-        if (THAT.lastPageReached) {
+        if (THAT.lastPageReached == true) {
           THAT.videosInLoop(THAT.pointerLocation);
         }
       });
-      $(document).on('click', '.product', function(e) {
-        if (e) {
-          e.preventDefault();
-        }
+      $(document).on('click', '.tvp-product', function(e) {
         var $link = $(this).closest('a');
         if ($link.length) {
           sendAnalitics({
@@ -105,36 +102,36 @@ define(function(require) {
           window.open($link.attr("href"), "_blank");
         }
       });
-
-      $(document).on('click', '.img-link', function(e) {
+      $(document).on('click', '.tvp-img-link', function(e) {
         sendAnalitics({
           ct: $(this).data('id'),
           vd: $(this).data('videoId')
         }, 'pk');
       });
-
-      $(document).on('click', '.call-to-action', function(e) {
+      $(document).on('click', '.tvp-call-to-action', function(e) {
         sendAnalitics({
           ct: $(this).data('id'),
           vd: $(this).data('videoId')
         }, 'pk');
       });
-
     },
 
     initializeProductScrollerX: function() {
       var that = this;
-      var sel = '#mobile-products #scroller-wrapper';
+      var sel = '#tvp-mobile-products #scroller-wrapper';
       if ($(sel).length) {
         this.cache.productScrollerX = new IScroll(sel, {
           scrollX: true,
           scrollY: false,
-          momentum: false,
+          momentum:false,
           bindToWrapper: true,
+          click: true,
           snap: true
         });
         setTimeout(function() {
-          $('#mobile-products #scroller').css('width', $('#mobile-products-list').width());
+          $('#tvp-mobile-products #scroller').css('width', $('#tvp-mobile-products-list').width());
+           that.mobileOrientation();
+           that.mobileOrientationListener();
           that.cache.productScrollerX.refresh();
         }, 500);
         this.cache.productScrollerX.on('scrollEnd', function() {
@@ -152,7 +149,7 @@ define(function(require) {
     },
 
     initializeProductScrollerY: function() {
-      var sel = '#desktop-products #scroller-wrapper';
+      var sel = '#tvp-desktop-products #scroller-wrapper';
       if ($(sel).length) {
         this.cache.productScrollerY = new IScroll(sel, {
           mouseWheel: true,
@@ -192,38 +189,13 @@ define(function(require) {
           }
         });
       }
-      if (this.isMobile()) {
-        var THAT = this;
-        window.matchMedia('(orientation: portrait)').addListener(function(m) {
-          if (m.matches) {
-            var width = $('#mobile-channels-list').width();
-            $('#mobile-channels #scroller').width(99999);
-            $('#mobile-channels #scroller').css('width', width);
-            $('#tvpp .tvpp-wrapper').css('top', '');
-            $('#tvplb .lb-content').css({
-              'width': '',
-              'height': ''
-            });
-          } else {
-            $('#tvpp .tvpp-wrapper').css('top', '10px');
-            $('#tvplb .lb-content').css({
-              'height': '100%',
-              'width': '60%'
-            });
-          }
-          THAT.refreshMobileProductScroller();
-          THAT.resizePlayer();
-          THAT.handleAdBanner(products);
-          THAT.cache.productScrollerX.refresh();
-        });
-      }
     },
 
     getVideos: function() {
       var THAT = this;
       THAT.fetchPage = THAT.page;
       $.ajax({
-        url: '//app.tvpage.com/api/channels/' + CONFIG.channelId + '/videos',
+        url: ''+CONFIG.apiUrl+'/channels/' + CONFIG.channelId + '/videos',
         dataType: 'jsonp',
         data: {
           p: THAT.page,
@@ -231,10 +203,10 @@ define(function(require) {
           'X-login-id': CONFIG.loginId
         },
         success: function(res) {
-          $('#videos').html('');
+          $('#tvp-videos').html('');
           if (res.length < 6 && res.length > 0) {
             THAT.lastPageReached = true;
-            $('#videos').html('');
+            $('#tvp-videos').html('');
             for (var i = 0; i < res.length; i++) {
               TVSite.displayedVideos.push(res[i]);
             }
@@ -247,14 +219,14 @@ define(function(require) {
               TVSite.videos.push(res[i]);
             }
           } else if (res.length == 6) {
-            $('#videos').html('');
+            $('#tvp-videos').html('');
             THAT.renderSearchResults(res);
             for (var i = 0; i < res.length; i++) {
               TVSite.videos.push(res[i]);
             }
           }
           THAT.pointerLocation = res.length;
-          $('#videos').append('<button id="view-more-button"><span class="view-more">VIEW MORE</span></button>');
+          $('#tvp-videos').append('<button id="tvp-view-more-button"><span class="tvp-view-more">VIEW MORE</span></button>');
         }
       });
     },
@@ -263,7 +235,7 @@ define(function(require) {
       var THAT = this;
       THAT.fetchPage = THAT.page;
       $.ajax({
-        url: '//app.tvpage.com/api/channels/' + CONFIG.channelId + '/videos',
+        url: ''+CONFIG.apiUrl+'/channels/' + CONFIG.channelId + '/videos',
         dataType: 'jsonp',
         data: {
           p: THAT.page,
@@ -272,25 +244,25 @@ define(function(require) {
         },
         success: function(res) {
           if (res.length < 6 && res.length > 0) {
-            $('#videos').html('');
+            $('#tvp-videos').html('');
             THAT.renderSearchResults(res);
             for (var i = 0; i < res.length; i++) {
               TVSite.videos.push(res[i]);
             }
           } else if (res.length == 6) {
-            $('#videos').html('');
+            $('#tvp-videos').html('');
             THAT.renderSearchResults(res);
             for (var i = 0; i < res.length; i++) {
               TVSite.videos.push(res[i]);
             }
-            $('#videos').append('<button id="view-more-button"><span class="view-more">VIEW MORE</span></button>');
+            $('#tvp-videos').append('<button id="tvp-view-more-button"><span class="tvp-view-more">VIEW MORE</span></button>');
           }
         }
       });
     },
 
     videosInLoop: function(pointer) {
-      $('#videos').html('');
+      $('#tvp-videos').html('');
       TVSite.newArray = [];
       if (pointer == TVSite.videos.length) {
         pointer = 0;
@@ -318,15 +290,14 @@ define(function(require) {
         this.renderSearchResults(TVSite.newArray);
         this.pointerLocation = limit;
       }
-
-      $('#videos').append('<button id="view-more-button"><span class="view-more">VIEW MORE</span></button>');
+      $('#tvp-videos').append('<button id="tvp-view-more-button"><span class="tvp-view-more">VIEW MORE</span></button>');
     },
 
     checkMoreVideos: function(response) {
       var THAT = this;
       this.fetchPage++;
       return $.ajax({
-        url: '//app.tvpage.com/api/channels/' + CONFIG.channelId + '/videos',
+        url: ''+CONFIG.apiUrl+'/channels/' + CONFIG.channelId + '/videos',
         dataType: 'jsonp',
         data: {
           p: THAT.fetchPage,
@@ -344,10 +315,8 @@ define(function(require) {
     },
 
     renderVideosRow: function(row) {
-      var html = '<div class="tvp-clearfix">',
-        i = 0;
-
-      for (i; i < row.length; i++) {
+      var html = '<div class="tvp-clearfix">';
+      for (var i = 0; i < row.length; i++) {
         var video = row[i];
         if ((video.hasOwnProperty('short_title')) && (video.title.length > 42) && (video.short_title != null)) {
           video.title = video.short_title;
@@ -355,23 +324,21 @@ define(function(require) {
         html += this.tmpl(this.videoTemplate, row[i]);
       }
       if (row.length == 1) {
-        html += '<div class="tvp-col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div>'
+        html += '<div class="tvp-col-3"><div id="tvp-no-image" class="tvp-video-image"></div><div class="tvp-no-title-1"></div><div class="tvp-no-title-2"></div></div>';
       }
       return html + '</div>';
     },
 
     renderVideoRows: function(rows, target) {
       if (rows && rows.length && ('undefined' !== typeof target)) {
-        var html = '',
-          i = 0,
-          j = 0;
-        for (i; i < rows.length; i++) {
+        var html = '';
+        for (var i = 0; i < rows.length; i++) {
           html += this.renderVideosRow(rows[i]);
         }
         if (rows.length != 3) {
           var length = 3 - rows.length;
-          for (j; j < length; j++) {
-            html += '<div class="tvp-clearfix"><div class="tvp-col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div><div class="tvp-col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div></div>'
+          for (var j = 0; j < length; j++) {
+            html += '<div class="tvp-clearfix"><div class="tvp-col-3"><div id="tvp-no-image" class="tvp-video-image"></div><div class="tvp-no-title-1"></div><div class="tvp-no-title-2"></div></div><div class="tvp-col-3"><div id="tvp-no-image" class="tvp-video-image"></div><div class="tvp-no-title-1"></div><div class="tvp-no-title-2"></div></div></div>';
           }
         }
         if ('function' === typeof target) return target(html);
@@ -382,7 +349,7 @@ define(function(require) {
     renderSearchResults: function(data) {
       var cloneVideos = data.slice(0);
       var rows = this.rowerize(cloneVideos);
-      this.renderVideoRows(rows, '#videos');
+      this.renderVideoRows(rows, '#tvp-videos');
     },
 
     rowerize: function(data, per) {
@@ -409,19 +376,17 @@ define(function(require) {
       var THAT = this;
       this.noProductVideoClicked = false;
       var show = function() {
-        $('.lb-overlay').show();
+        $('.tvp-lb-overlay').show();
         $('#lightbox').removeClass('off');
       };
       $(document).on('click', '.tvp-video', function(e) {
         e.preventDefault();
-
-        $('.lb-overlay').show();
+        $('.tvp-lb-overlay').show();
         $('#lightbox').removeClass('off');
-
         var vid = $(e.currentTarget).attr('data-index');
         var video = THAT.searchVideoInObject(vid);
         var videoData = THAT.getVideoData(video);
-        $('.lb-title').html(video.title);
+        $('.tvp-lb-title').html(video.title);
         THAT.playVideo(videoData);
         if ("hide" !== CONFIG.products) {
           THAT.getProducts(video.id).done(function(products) {
@@ -431,14 +396,66 @@ define(function(require) {
           });
         } else {
           show();
-        }
+        } 
       });
+    },
+
+    mobileOrientation: function(){
+      if (this.isMobile()) {
+        $(window).ready(function(){
+          $('#tvpp').each(function(i, item){
+            item = $(item);
+            var itemWidth = item.width();
+            var productWidth = $('#tvp-mobile-products-list > li');
+            if (window.matchMedia('(orientation: portrait)').matches) {
+              $(productWidth).css('width', itemWidth);
+              $('.tvp-no-products-banner ').css('width', itemWidth);
+              $('.tvp-no-products-banner ').css('height', '85px');
+              $('#tvplb .tvp-lb-content').css({'height': '','width': ''});
+            }else {
+              $(productWidth).css('width', itemWidth);
+              $('.tvp-no-products-banner ').css('width', itemWidth);
+              $('.tvp-no-products-banner ').css('height', '85px');
+              $('#tvplb .tvp-lb-content').css({'height': '100%','width': '60%'});
+            }
+          });
+        });
+      }
+    },
+
+    mobileOrientationListener: function(){
+      if (this.isMobile()) {
+        var THAT = this;
+        $(window).resize(function(){
+          $('#tvpp').each(function(i, item){
+            item = $(item);
+            var itemWidth = item.width();
+            var productWidth = $('#tvp-mobile-products-list > li');
+            if (window.matchMedia('(orientation: portrait)').matches) {
+              $(productWidth).css('width',itemWidth);
+              $('#tvplb .tvp-lb-content').css({'width': '','height': ''});
+              $('.tvp-lb-close').css({'height': '','width': ''});
+            }else {
+              $(productWidth).css('width',itemWidth);
+              $('#tvplb .tvp-lb-content').css({'height': '100%','width': '60%'});
+              $('.tvp-lb-close').css({'height': '26px','width': '26px'});
+            }
+            THAT.refreshMobileProductScroller();
+            THAT.resizePlayer();
+          });
+          if (THAT.isMobile()) {
+            $('#tvp-recommended-products-wrapper').show('fast');
+          }else{
+            $('#tvp-recommended-products-wrapper').hide();
+          }
+        });
+      }
     },
 
     getProducts: function(videoId) {
       return $.ajax({
         type: 'GET',
-        url: "//app.tvpage.com/api/videos/" + videoId + '/products',
+        url: "//api.tvpage.com/v1/videos/" + videoId + '/products',
         dataType: 'jsonp',
         data: {
           'X-login-id': CONFIG.loginId
@@ -449,10 +466,13 @@ define(function(require) {
     handlePagination: function(products) {
       if (this.isMobile()) {
         for (var i = 0, l = products.length; i < l; i++) {
-          if (products.length >= 1) {
+          if (products.length > 1) {
             $('.tvp-pagination').append('<span class=' + (i == 0 ? "active" : "") + '></span>');
           }
         }
+      }
+      else{
+        $('#tvp-recommended-products-wrapper').hide();
       }
     },
 
@@ -467,15 +487,15 @@ define(function(require) {
         });
         if (this.noProductVideoClicked) {
           if (this.isMobile()) {
-            $('.no-products-banner').hide();
-            $('.recommeded-products').show();
-            $('#mobile-products').show();
+            $('.tvp-no-products-banner').hide();
+            $('.tvp-recommeded-products').show();
+            $('#tvp-mobile-products').show();
           } else {
-            $('.no-products-banner').hide();
-            $('.related-products').show();
-            $('#desktop-products').show();
+            $('.tvp-no-products-banner').hide();
+            $('.tvp-related-products').show();
+            $('#tvp-desktop-products').show();
             $('#tvpp').css('width', '84%');
-            $('.lb-content').css('height', '394px');
+            $('.tvp-lb-content').css('height', '394px');
           }
         }
         this.renderProducts(products);
@@ -485,31 +505,26 @@ define(function(require) {
       } else {
         this.noProductVideoClicked = true;
         if (this.isMobile()) {
-          $('.recommeded-products').hide();
-          $('#mobile-products').hide();
+          $('.tvp-recommeded-products').hide();
+          $('#tvp-mobile-products').hide();
         } else {
-          $('.related-products').hide();
-          $('#desktop-products').hide();
+          $('.tvp-related-products').hide();
+          $('#tvp-desktop-products').hide();
           $('#tvpp').css('width', '100%');
-          $('.lb-content').css('height', '579px');
+          $('.tvp-lb-content').css('height', '579px');
           $("#tvpp").addClass('full');
           setTimeout(function() {
-            $('.lb-content').css("opacity", 1);
+            $('.tvp-lb-content').css("opacity", 1);
           }, 0);
         }
-        $('.no-products-banner').show();
+        $('.tvp-no-products-banner').show();
       }
       this.resizePlayer();
     },
 
     renderProducts: function(products) {
       var s = '';
-      var bpcheck = window.innerWidth < 767;
-      var pref = bpcheck ? 'mobile' : 'desktop';
       var that = this;
-      if (bpcheck) {
-        this.refreshMobileProductScroller();
-      }
       this.renderPopUps(products);
       for (var i = 0, l = products.length; i < l; i++) {
         var offered = products[i].Web_Offered;
@@ -518,7 +533,7 @@ define(function(require) {
           var price = 0;
           var data = products[i].data;
           var array = JSON.parse(data);
-          var priceHtml = '<div class="price">';
+          var priceHtml = '<div class="tvp-price">';
           if (array.price) {
             price = array.price.toString().replace(/[^0-9.]+/g, '');
             price = parseFloat(price).toFixed(2);
@@ -527,50 +542,20 @@ define(function(require) {
             }
           }
           priceHtml += '</div>';
-          if (this.isMobile()) {
-            s += '<li>\
-                                   <div id="p-' + i + '" class="product adjustWidth" data-video-id="' + products[i].entityIdParent + '" data-id="' + products[i].id + '">\
-                                     <div class="product-img" style="background-image:url(' + array.imageUrl + ')">\
-                                       <img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="' + products[i].title + '" />\
-                                     </div>\
-                                     <h4 class="product-title">' + products[i].title + '</h4>' + priceHtml + '\
-                                     <a class="call-to-action" href="' + array.linkUrl + '" target="_blank" data-video-id="' + products[i].entityIdParent + '" data-id="' + products[i].id + '">' + 'VIEW DETAILS' + '<span class="material-icon"></span>' + '</a>\
-                                   </div>\
-                               </li>';
-          } else {
-            s += '<li>\
-                                 <a href="' + array.linkUrl + '" target="_blank">\
-                                   <div id="p-' + i + '" class="product" data-video-id="' + products[i].entityIdParent + '" data-id="' + products[i].id + '">\
-                                     <div class="product-img" style="background-image:url(' + array.imageUrl + ')">\
-                                       <img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="' + products[i].title + '" />\
-                                     </div>\
-                                   </div>\
-                                 </a>\
-                               </li>';
+          if (that.isMobile()) {
+            that.refreshMobileProductScroller();
+            s += '<li><div id="p-' + i + '" class="tvp-product" data-video-id="' + products[i].entityIdParent + '" data-id="' + products[i].id + '"><div class="tvp-product-img" style="background-image:url(' + array.imageUrl + ')"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="' + products[i].title + '" /></div><div><h4 class="tvp-product-title">' + products[i].title + '</h4>' + priceHtml + '</div><a class="tvp-call-to-action" href="' + array.linkUrl + '" target="_blank" data-video-id="' + products[i].entityIdParent + '" data-id="' + products[i].id + '">' + 'VIEW DETAILS' + '<span class="tvp-material-icon"></span>' + '</a></div></li>';
+          }else {
+            s += '<li><a class="tvp-call-to-action" href="' + array.linkUrl + '" target="_blank"><div id="p-' + i + '" class="tvp-product" data-video-id="' + products[i].entityIdParent + '" data-id="' + products[i].id + '"><div class="tvp-product-img" style="background-image:url(' + array.imageUrl + ')"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="' + products[i].title + '" /></div></div></a></li>';
           }
         }
       }
-      $('#desktop-products-list,#mobile-products-list')
+      $('#tvp-desktop-products-list,#tvp-mobile-products-list')
         .empty()
         .append(s);
-      this.bindProductEvents();
-      if (this.isMobile()) {
-        var productWidth = $('.adjustWidth');
-        var tvpWrapper = $('#tvpp .tvpp-wrapper').width();
-        if (window.matchMedia('(orientation: portrait)').matches) {
-          $(productWidth).css('width', tvpWrapper);
-          $('.no-products-banner ').css('width', tvpWrapper);
-          $('.no-products-banner ').css('height', '85px');
-        } else {
-          $(productWidth).css('width', tvpWrapper);
-          $('.no-products-banner ').css('width', tvpWrapper);
-          $('.no-products-banner ').css('height', '85px');
-          $('#tvplb .lb-content').css({
-            'height': '100%',
-            'width': '60%'
-          });
-        }
-      }
+      that.bindProductEvents();
+      that.mobileOrientation();
+      that.mobileOrientationListener();
     },
 
     renderPopUps: function(products) {
@@ -579,7 +564,7 @@ define(function(require) {
         var price = 0;
         var data = products[i].data;
         var array = JSON.parse(data);
-        var priceHtml = '<div class="price">';
+        var priceHtml = '<div class="tvp-price">';
         if (array.price) {
           price = array.price.toString().replace(/[^0-9.]+/g, '');
           price = parseFloat(price).toFixed(2);
@@ -588,16 +573,10 @@ define(function(require) {
           }
         }
         priceHtml += '</div>';
-
-        s += '<div id="ppu-' + i + '" class="pop-up">\
-                  <a class="img-link" href="' + array.linkUrl + '" target="_blank" data-video-id="' + products[i].entityIdParent + '" data-id="' + products[i].id + '"><img class="img-responsive" src="' + array.imageUrl + '" alt="' + products[i].title + '"><h4 class="product-title">' + products[i].title + '</h4>' + priceHtml + '</a>\
-                  ' + '<a class="call-to-action" href="' + array.linkUrl + '" target="_blank" data-video-id="' + products[i].entityIdParent + '" data-id="' + products[i].id + '">' + 'VIEW DETAILS' + '<span class="material-icon"></span>' + '</a>\
-                </div>';
+        s += '<div id="ppu-' + i + '" class="tvp-pop-up"><a class="tvp-img-link" href="' + array.linkUrl + '" target="_blank" data-video-id="' + products[i].entityIdParent + '" data-id="' + products[i].id + '"><img class="img-responsive" src="' + array.imageUrl + '" alt="' + products[i].title + '"><h4 class="tvp-product-title">' + products[i].title + '</h4>' + priceHtml + '</a>' + '<a class="tvp-call-to-action" href="' + array.linkUrl + '" target="_blank" data-video-id="' + products[i].entityIdParent + '" data-id="' + products[i].id + '">' + 'VIEW DETAILS' + '<span class="tvp-material-icon"></span>' + '</a></div>';
       }
-
-      var arrows = '<div class="pop-up-before"></div><div class="pop-up-after"></div>';
-
-      $('#product-pop-ups')
+      var arrows = '<div class="tvp-pop-up-before"></div><div class="tvp-pop-up-after"></div>';
+      $('#tvp-product-pop-ups')
         .empty()
         .append(arrows)
         .append(s);
@@ -605,8 +584,8 @@ define(function(require) {
 
     bindProductEvents: function() {
       var that = this;
-      var $dproducts = $('#desktop-products');
-      $dproducts.find('.product')
+      var $dproducts = $('#tvp-desktop-products');
+      $dproducts.find('.tvp-product')
         .on('mouseover click', function(e) {
           e.preventDefault();
           var id = this.id.split('-')[1];
@@ -614,74 +593,62 @@ define(function(require) {
             that.clearPopUps();
             return;
           }
-
-          var popupBottomEdge = $(this).offset().top + $('.pop-up').height();
-          var playerBottomEdge = $('.lb-content').offset().top + $('.lb-content').height();
-
-          var $wrapper = $('.lb-body');
-          var arrowTop = ($(this).offset().top - $wrapper.offset().top);
+          var $wrapper = $('.tvp-lb-body');
+          var arrowTop = ($(this).offset().top - $wrapper.offset().top) +19;
           if (arrowTop < 0) {
             arrowTop = 10;
           }
           if (arrowTop > $wrapper.height()) {
             arrowTop = $wrapper.height() - 10;
           }
-
-          $('.pop-up-before').css({
+          $('.tvp-pop-up-before').css({
             top: arrowTop + 2
           }).show();
-          $('.pop-up-after').css({
+          $('.tvp-pop-up-after').css({
             top: arrowTop + 1
           }).show();
-
           that.clearPopUps();
           that.showPopUp(id, top);
         });
 
-      $('.pop-up').off().on('mouseleave', function(e) {
+      $('.tvp-pop-up').off().on('mouseleave', function(e) {
         e.preventDefault();
         that.clearPopUps();
       });
 
-      $('.products-holder').on('mouseleave', function(e) {
+      $('.tvp-products-holder').on('mouseleave', function(e) {
         e.preventDefault();
         that.clearPopUps();
       });
-
     },
 
     clearPopUps: function() {
-      var $p = $('.pop-up:visible');
+      var $p = $('.tvp-pop-up:visible');
       if ($p.length) {
         $p.hide();
       }
-      $('.pop-up-before,.pop-up-after').hide();
+      $('.tvp-pop-up-before,.tvp-pop-up-after').hide();
     },
 
     showPopUp: function(id, top) {
-      var THAT = this;
       var $p = $('#ppu-' + id);
-
       if ($p.length) {
         $p
           .css({
             top: top
           })
           .show();
-        $('.pop-up-before,.pop-up-after').show();
+        $('.tvp-pop-up-before,.tvp-pop-up-after').show();
       }
-
     },
 
     refreshMobileProductScroller: function() {
       var that = this;
-
-      $('#mobile-products #scroller').css('width', 9000);
+      $('#tvp-mobile-products #scroller').css('width', 9000);
       setTimeout(function() {
-        $('#mobile-products #scroller').css('width', $('#mobile-products-list').width());
+        $('#tvp-mobile-products #scroller').css('width', $('#tvp-mobile-products-list').width());
         that.cache.productScrollerX.refresh();
       }, 100);
-
     },
 
     searchVideoInObject: function(vid) {
@@ -704,13 +671,11 @@ define(function(require) {
       }).done(function() {
         var checks = 0;
         (function analyticsPoller() {
-          var deferred = setTimeout(function() {
+          setTimeout(function() {
             if ("undefined" === typeof window._tvpa) {
               if (++checks < 10) {
                 analyticsPoller();
-              } else {
-                console.log("_tvpa global undefined");
-              }
+              } 
             } else {
               _tvpa.push(["config", {
                 "li": CONFIG.loginId,
@@ -740,7 +705,7 @@ define(function(require) {
                 tvpa: true
               },
               techOrder: 'html5,flash',
-              apiBaseUrl: '//app.tvpage.com',
+              apiBaseUrl: '//api.tvpage.com/v1/',
               onError: function(e) {
                 console.log(e);
               },
@@ -818,22 +783,16 @@ define(function(require) {
 
   // At DOM Ready!
   $(function() {
-    var lightBoxTemplate = '<div id="tvplb"><div class="lb-content"><div class="lb-close"></div><div class="lb-header"><div class="related-products">Sponsored Products</div><h4 class="lb-title"></h4></div><div class="lb-body"></div><div class="no-products-banner" data-ns="footer" data-pos="btf" data-collapse="true"></div></div><div id="lb-overlay" class="lb-overlay"></div></div>';
-    $("#tvp-gallery").append('<div class="cz-line-heading"><div class="cz-line-heading-inner">Recommended Videos</div></div><div id="videos"></div><div id="lightbox" class="off">' + lightBoxTemplate + '</div><a class="tvplogo" class="tvp-clearfix" href="//www.tvpage.com" target="_blank"></a>').addClass("tvp-clearfix");
-
-    var playerTemplate = '<div id="tvpp"><div id="html5MobilePlayBtn" class="html5-play-button"></div><div class="tvpp-wrapper"><div id="tvpp-holder" class="tvpp-holder"></div><div class="video-overlay"></div></div></div>';
-    var productsTemplate = '<div id="tvp-recommended-products-wrapper"><div class="recommeded-products">Sponsored Products</div><div class="tvp-pagination"></div></div><div id="mobile-products"><div id="scroller-wrapper" class="x-scroll"><div id="scroller" class="scroll-area"><ul id="mobile-products-list" class="products-list"></ul></div></div></div><div id="desktop-products" class="products"><div class="products-holder"><div id="scroller-wrapper" class="y-scroll"><div id="scroller" class="scroll-area"><ul id="desktop-products-list"></ul></div></div><div id="product-pop-ups"></div></div></div>';
-    var initialTemplate = '<div class="tvp-clearfix"><div class="tvp-col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div><div class="tvp-col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div></div><div class="tvp-clearfix"><div class="tvp-col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div><div class="tvp-col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div></div><div class="tvp-clearfix"><div class="tvp-col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div><div class="tvp-col-3"><div id="no-image" class="tvp-video-image"></div><div class=no-title-1></div><div class="no-title-2"></div></div></div>';
-
+    var lightBoxTemplate = '<div id="tvplb"><div class="tvp-lb-content"><div class="tvp-lb-close"></div><div class="tvp-lb-header"><div class="tvp-related-products">SPONSORED PRODUCTS</div><h4 class="tvp-lb-title"></h4></div><div class="tvp-lb-body"></div><div class="tvp-no-products-banner" data-ns="footer" data-pos="btf" data-collapse="true"></div></div><div id="tvp-lb-overlay" class="tvp-lb-overlay"></div></div>';
+    $("#tvp-gallery").append('<div class="cz-line-heading"><div class="cz-line-heading-inner">Recommended Videos</div></div><div id="tvp-videos"></div><div id="lightbox" class="off">' + lightBoxTemplate + '</div><a class="tvplogo" class="tvp-clearfix" href="//www.tvpage.com" target="_blank"></a>').addClass("tvp-clearfix");
+    var playerTemplate = '<div id="tvpp"><div id="html5MobilePlayBtn" class="tvp-html5-play-button"></div><div class="tvpp-wrapper"><div id="tvpp-holder" class="tvpp-holder"></div><div class="tvp-video-overlay"></div></div></div>';
+    var productsTemplate = '<div id="tvp-recommended-products-wrapper"><div class="tvp-recommeded-products">SPONSORED PRODUCTS</div><div class="tvp-pagination"></div></div><div id="tvp-mobile-products"><div id="scroller-wrapper" class="x-scroll"><div id="scroller" class="scroll-area"><ul id="tvp-mobile-products-list" class="products-list"></ul></div></div></div><div id="tvp-desktop-products" class="products"><div class="tvp-products-holder"><div id="scroller-wrapper" class="y-scroll"><div id="scroller" class="scroll-area"><ul id="tvp-desktop-products-list"></ul></div></div><div id="tvp-product-pop-ups"></div></div></div>';
+    var initialTemplate = '<div class="tvp-clearfix"><div class="tvp-col-3"><div id="tvp-no-image" class="tvp-video-image"></div><div class="tvp-no-title-1"></div><div class="tvp-no-title-2"></div></div><div class="tvp-col-3"><div id="tvp-no-image" class="tvp-video-image"></div><div class="tvp-no-title-1"></div><div class="tvp-no-title-2"></div></div></div><div class="tvp-clearfix"><div class="tvp-col-3"><div id="tvp-no-image" class="tvp-video-image"></div><div class="tvp-no-title-1"></div><div class="tvp-no-title-2"></div></div><div class="tvp-col-3"><div id="tvp-no-image" class="tvp-video-image"></div><div class="tvp-no-title-1"></div><div class="tvp-no-title-2"></div></div></div><div class="tvp-clearfix"><div class="tvp-col-3"><div id="tvp-no-image" class="tvp-video-image"></div><div class="tvp-no-title-1"></div><div class="tvp-no-title-2"></div></div><div class="tvp-col-3"><div id="tvp-no-image" class="tvp-video-image"></div><div class="tvp-no-title-1"></div><div class="tvp-no-title-2"></div></div></div>';
     setTimeout(function() {
-      $('.lb-body').append(playerTemplate + productsTemplate);
-      $('#videos').append(initialTemplate);
-
+      $('.tvp-lb-body').append(playerTemplate + productsTemplate);
+      $('#tvp-videos').append(initialTemplate);
       TVStore.initialize();
     }, 0);
-
   });
-
   return false;
-
 });
