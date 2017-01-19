@@ -1,34 +1,14 @@
 @import "variables";
 @import "bootstrap";
+@import "tvp_mixin";
+@import "flex";
+@import "slick";
+@import "desktop";
+@import "mobile";
 
 /////////////////////////////
 //// CAPTIVATE
 /////////////////////////////
-
 header a {
 	text-transform: uppercase;
-}
-
-.thumb {
-	display: block;
-	background-size: cover;
-	padding-top: 56.23%;
-	background-position: center;
-	background-repeat: no-repeat;
-}
-
-.logo {
-	display: block;
-	margin: 0 auto;
-	max-width: 240px;
-	float: none;
-	width: 100%;
-}
-
-.page-banner {
-	height: 210px;
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-position: center;
-    color: white;
 }

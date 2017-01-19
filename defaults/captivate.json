@@ -19,27 +19,27 @@
             "type": "text",
             "label": "Body Background",
             "code": "bodybackground",
-            "value": "gold"
+            "value": "white"
         },
         {
             "for": "styles",
             "type": "text",
             "label": "Main Background",
             "code": "mainbackground",
-            "value": "red"
+            "value": "white"
         },
         {
             "for": "styles",
             "type": "text",
             "label": "Header Background",
             "code": "headerbackground",
-            "value": "green"
+            "value": "/captivate/images/background.png"
         },
         {
             "type": "text",
             "label" : "Channel Gallery Ids",
             "code" : "channelgalleryids",
-            "value" : "66133905,66133904,66133907,66133906"
+            "value" : "66133907,66133906,66133905,66133904"
         },
         {
             "type": "text",
