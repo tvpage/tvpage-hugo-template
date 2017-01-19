@@ -77,18 +77,17 @@
 	&-container{
 		background-color: #00DBC0;
 		position: relative;
-		top: 69%;
+		bottom: -69%;
 		opacity: 0.9;
 		line-height: 49px;
 		height: 49px;
 		display: inline-block;
-
 	}
 	&-title {
 		background: transparent;
 		font-family: Dosis;
 		font-size: 30px;
-		font-weight: 500;
+		font-weight: 600;
 		color: #FFF;
 		padding: 0 18px;
 		text-transform: uppercase;
