@@ -83,7 +83,7 @@
         showEndOfResults : function() {
             if (!$('.tvp-end-of-results').length) {
                 $('<p></p>')
-                    .addClass('end-of-results')
+                    .addClass('tvp-end-of-results')
                     .html('No more results')
                     .appendTo('#tvp-desktop-search-results ul');
                 this.checkResultsScroller();
@@ -208,7 +208,6 @@
     searchDesktopInput.on("keypress", function(e) {
             if (e.keyCode == 13) {
                 e.preventDefault();
-                //  goToResultsPage(val);
             }
     });
 
@@ -246,7 +245,6 @@
         liveResultsPage = liveResultsPage+1;
         if (TVSite.isHomePage) {
             channelDataExtractor.videos(TVSite.channelId, liveResultsPage ,null).done(function(data){
-                debugger;
                 if (data.length)
                     renderUtil.handleLoadMore(data);
             });
