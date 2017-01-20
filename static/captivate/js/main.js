@@ -301,11 +301,36 @@
         $('#mobile-menu-modal').modal();
     });
     $('.mobile.collapse').on({
-        'shown.bs.collapse': function(){
-            $('.caret').addClass('up');
+        'show.bs.collapse': function(){            
+            $('.caret').animate({  borderSpacing: -180 }, {
+                step: function(now,fx) {
+                  $(this).css({
+                    '-webkit-transform': 'rotate('+now+'deg)',
+                    '-moz-transform': 'rotate('+now+'deg)',
+                    'transform': 'rotate('+now+'deg)'
+                  });
+                },
+                duration:'slow',
+                complete: function () {
+                    $(this).addClass('up').removeAttr('style');
+                }
+            },'linear');
+
         },
-        'hidden.bs.collapse': function () {
-            $('.caret').removeClass('up');
+        'hide.bs.collapse': function () {
+            $('.caret').animate({  borderSpacing: 180 }, {
+                step: function(now,fx) {                    
+                  $(this).css({
+                    '-webkit-transform': 'rotate('+now+'deg)',
+                    '-moz-transform': 'rotate('+now+'deg)',
+                    'transform': 'rotate('+now+'deg)'
+                  });
+                },
+                duration:'slow',
+                complete: function(){
+                    $(this).removeClass('up').removeAttr('style');
+                }
+            },'linear');
         }
     })
 }(jQuery, window.IScroll));
