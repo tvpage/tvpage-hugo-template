@@ -1,3 +1,7 @@
+{{ $channel := index $.Site.Data.channels (printf "x%s" ($.Scratch.Get "settings").homechannelid ) }}
+{{ if $channel }}
+  {{ $.Scratch.SetInMap "settings" "channelData" $channel }}
+{{ end }}
 <main id="main-content" class="main-content">
 	<div class="container">
 		
@@ -51,7 +55,7 @@
 
 		<!-- <section class="container section"> -->			
 			<h2 class="section-header">LATEST VIDEOS</h2>
-			<div class="row">
+			<div id="tvp-video-container" class="row">
 				{{ $page := index $.Site.Data.channelVideos (printf "x%s_page_1" ($.Scratch.Get "settings").homechannelid) }}
 				{{ with $page.data }}
 					{{ $i := 0 }}

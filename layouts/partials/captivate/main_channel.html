@@ -1,4 +1,7 @@
 {{ $channel := index $.Site.Data.channels (printf "x%s" .Params.channelid ) }}
+{{ if $channel }}
+  {{ $.Scratch.SetInMap "settings" "channelData" $channel }}
+{{ end }}
 <main id="main-content" class="main-content">
     <section class="channel-page-banner" style="background-image: url('/{{.Type}}/images/channel/{{.Params.channelid}}-banner.jpg');">
       <div class="main-channel-banner">
@@ -45,7 +48,7 @@
         <div class="row container section">
             <h2 class="section-header">LATEST VIDEOS</h2>
         </div>
-        <div class="row video-row">
+        <div id="tvp-video-container" class="row video-row">
         {{ $channelid := .Params.channelid }}
         {{ $page := index $.Site.Data.channelVideos (printf "x%s_page_1" $channelid) }}        
         {{ with $page.data }}

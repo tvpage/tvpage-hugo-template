@@ -5,6 +5,16 @@
     TVSite.loginId = {{ .Site.Params.loginid }};
     TVSite.apiUrl = apiVersion || "\/\/api.tvpage.com/v1/";
     TVSite.baseUrl = "";
+    //checking page type
+    TVSite.isHomePage = ({{ .Params.videoid }} === "" && {{ .Params.channelid }} === "") ? true : false;
+    TVSite.isChannelPage = ({{ .Params.videoid }} === "" && {{ .Params.channelid }} !== "") ? true : false;
+    TVSite.isPlayerPage = (!TVSite.isHomePage && !TVSite.isChannelPage )? true : false;
+    TVSite.channelId = {{ .Params.channelid }};
+    if(TVSite.isHomePage){
+        TVSite.channelId = {{ ($.Scratch.Get "settings").homechannelid }};
+    }
+    TVSite.channelInfo = {{ ($.Scratch.Get "settings").channelData }} || {};
+
     (function() {
         var ga = document.createElement("script");
         ga.type = "text/javascript";
