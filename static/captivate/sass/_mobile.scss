@@ -53,8 +53,13 @@
 		display: none;
 	}
 	.btn-more{
-		margin-bottom: 0;
-	}
+		&.load-more{
+			margin-bottom: 30px;
+		}
+		&.show-more{
+			margin-bottom: 0;
+		}
+	}	
 	.main-content.mobile{
 		margin-top: 3px;
 	}
