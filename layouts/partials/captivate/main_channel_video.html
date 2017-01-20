@@ -18,7 +18,7 @@
           </div>
         </div>
         <div class="row container" style="position: relative">
-          <h1 class="video-title-mobile">{{ .Title }}</h1>
+          <h1 class="video-title-mobile">{{ .Title }} <span class="caret" data-toggle="collapse" data-target=".video-details-row.description .mobile" aria-expanded="false"></span></h1>
           <h2 class="section-header video-details-header">VIDEO DETAILS
             <div class="social-share">                
               SHARE: <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ .Permalink }}" class="
@@ -35,7 +35,8 @@
             <strong>Duration:</strong> {{ $videoDetails.asset.prettyDuration }}
           </div>
           <div class="col-sm-12 col-md-12 video-details-row description">
-            {{ replace $videoDetails.description "\n" "<br/>" | safeHTML }}
+            <div class="desktop">{{ replace $videoDetails.description "\n" "<br/>" | safeHTML }}</div>
+            <div class="collapse mobile">{{ replace $videoDetails.description "\n" "<br/>" | safeHTML }}</div>
           </div>
           <div class="col-sm-12 col-md-12 video-details-row btn-more">
             <div class="btn-more-line"></div>

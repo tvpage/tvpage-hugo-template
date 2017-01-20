@@ -3,7 +3,8 @@
 	.channel-latest-videos-header, 	
 	.products-title,
 	.video-title,
-	.channel-videos-latest-videos{
+	.channel-videos-latest-videos,
+	.video-details-row.description .desktop{
 		display: none;
 	}
 	nav.menu-bar{
@@ -231,6 +232,15 @@
 		font-size: 16px;
 		line-height: 20px;
 		margin-bottom: 15px;
+		padding-right: 15px;
+		position: relative;
+		.caret{
+			position: absolute;
+			margin: auto 0;
+			right: 0;
+			top: 0;
+			bottom: 0;
+		}
 	}
 	.video-details-row{
 		font-size: 14px;
@@ -241,6 +251,9 @@
 		&.description{
 			min-height: 1px;
 			margin-bottom: 15px;
+			.mobile.collapse.in{
+				display: block;
+			}
 		}
 		.btn-more-line{
 			top: 0;

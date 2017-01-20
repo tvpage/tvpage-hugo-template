@@ -408,6 +408,9 @@ footer{
 	}
 	.description{
 		min-height: 154px;
+		.mobile.collapse.in{
+			display: none;
+		}
 	}
 	.show-more{
 		@extend .btn-more;
