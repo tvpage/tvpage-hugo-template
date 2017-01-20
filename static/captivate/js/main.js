@@ -22,7 +22,7 @@
     			dataType : "jsonp",
     			data : {
     				p : (page == null || page == undefined) ? 0 : page,
-    				n : TVSite.isHomePage ? 6 : 20,
+    				n : TVSite.isHomePage ? 6 : 9 ,
     				s : (query == null || query == undefined) ? "" : query,
     				"X-login-id" : TVSite.loginId
     			}

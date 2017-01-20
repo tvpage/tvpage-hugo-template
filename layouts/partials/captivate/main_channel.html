@@ -52,7 +52,7 @@
         {{ $channelid := .Params.channelid }}
         {{ $page := index $.Site.Data.channelVideos (printf "x%s_page_1" $channelid) }}        
         {{ with $page.data }}
-          {{ range $i, $p := $page.data }}
+          {{ range $i, $p := first 9 $page.data }}
 
             <!-- {{ if modBool $i 3 }}
                 {{ if not (eq $i ($page.data | len)) }}
