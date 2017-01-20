@@ -35,6 +35,12 @@
             "label": "Autonext",
             "code": "autonext",
             "value": true
+        },
+        {
+            "type": "boolean",
+            "label": "Analytics",
+            "code": "tvpa",
+            "value": false
         }
     ]
 }
