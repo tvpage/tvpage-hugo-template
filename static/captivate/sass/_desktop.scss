@@ -846,6 +846,16 @@ footer{
 	border: 1px solid #1F1D26;
 	margin-top: 60px;
 }
+.caret{
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-width: 10px 6.5px 0 6.5px;
+	border-color: #1F1D26 transparent transparent transparent;
+	&.up{
+		transform: rotate(180deg);
+	}
+}
 .video-title-mobile, .channel-videos-latest-videos-mobile{
 	display: none;
 }

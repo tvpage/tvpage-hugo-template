@@ -241,4 +241,12 @@
         event.preventDefault();
         $('#mobile-menu-modal').modal();
     });
+    $('.mobile.collapse').on({
+        'shown.bs.collapse': function(){
+            $('.caret').addClass('up');
+        },
+        'hidden.bs.collapse': function () {
+            $('.caret').removeClass('up');
+        }
+    })
 }(jQuery, window.IScroll));
