@@ -51,8 +51,9 @@
                 return ("undefined" !== typeof val && null !== typeof val && val);
             };
             if (result && redefine(result, "entityTitleParent") && redefine(result, "titleTextEncoded") && redefine(result, "entityIdParent") && redefine(result, "id")) {
-                return TVSite.baseUrl + '/' + String(result.entityTitleParent).replace(/\s/g,"-") + "/" + String(result.titleTextEncoded).replace(/\s/g,"-") + "/" + result.entityIdParent + "-" + result.id;
+                return TVSite.baseUrl + '/' + String(result.entityTitleParent).replace(/\s/g,"-").replace(/\./g,"") + "/" + String(result.titleTextEncoded).replace(/\s/g,"-") + "/" + result.entityIdParent + "-" + result.id;
             }
+            return;
         },
     	resetLiveSearch : function() {
             $('#desktop-search-results ul')
@@ -79,6 +80,7 @@
                     scrollbars: true
                 });
             }
+            return;
         },
         handleScrollEnd : function() {
             if (Math.abs(this.maxScrollY) - Math.abs(this.y) < 10) {
@@ -109,6 +111,7 @@
                     return (typeof v !== "undefined" && v !== null) ? v : "";
                 });
             }
+            return;
         },
         stripHtml : function(html) {
             var helper = document.createElement('DIV');
@@ -207,15 +210,15 @@
 			// alert('test');
 		},
 		mouseover: function(e){
-			$hoverDiv = $(this).find('.latest-video-hover');
+			var $hoverDiv = $(this).find('.latest-video-hover');
 			if (!$hoverDiv.hasClass('active')) {
-				$(this).find('.latest-video-hover').addClass('active');
+				$hoverDiv.addClass('active');
 			}
 		},
 		mouseout: function(e){
-			$hoverDiv = $(this).find('.latest-video-hover');
+			var $hoverDiv = $(this).find('.latest-video-hover');
 			if ($hoverDiv.hasClass('active')) {
-				$(this).find('.latest-video-hover').removeClass('active');
+				$hoverDiv.removeClass('active');
 			}
 		}
 	});

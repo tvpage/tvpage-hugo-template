@@ -1,0 +1,54 @@
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Solo Demo - Main B</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+	<section>
+		<h2>Use Case</h2>
+		<p>Widget will play the videos that are related to a product referenceId (SKU). Users will add parameters on embed-code, our logic will call the server for data matching inputs; if there's data, it will load the iframe with it and start the experience. The iframe will point to a source that will render the type of widget is required.</p>
+		<script>
+      window.__TVPage__ = window.__TVPage__ || {};
+      __TVPage__.config = __TVPage__.config || {};
+      __TVPage__.config['tvpwidget-solo-2'] = {
+        loginid: '1758799',
+        channel: {
+          id: '84956291',
+          parameters: {
+            referenceId: '01'
+          }
+        }
+      };
+      (function(d, c, f) {
+        window[f] = function(dt) {
+          var i = d.getElementById('tvpwidget-solo-2-iframe'),
+            dmn = 'http://localhost:1313';
+          i.setAttribute('src', dmn + '/tvpwidget/solo-2');
+          var ip = i.parentNode;
+          dt && (dt instanceof Array) && dt.length ? ip.style.display = 'block' : delete ip;
+          i.onload = function() {
+            i.contentWindow.postMessage(dt, dmn);
+          };
+        };
+        var s = d.createElement('script');
+        s.setAttribute('src', function() {
+          var u = '//app.tvpage.com/api/channels/' + c.channel.id + '/videos?X-login-id=' + c.loginid,
+            params = c.channel.parameters;
+          for (var p in params) {
+            u += '&' + p + '=' + params[p];
+          }
+          return u += '&callback=' + f;
+        }());
+        d.body.appendChild(s);
+      }(document, __TVPage__.config['tvpwidget-solo-2'], 'tvp' + Math.floor(Math.random() * 50005)));
+    </script>
+    <div style="display:none;left:0px;width:100%;height:0px;position:relative;padding-bottom:56.2493%;"><iframe id="tvpwidget-solo-2-iframe" frameborder="0" allowfullscreen style="top:0px;left:0px;width:100%;height:100%;position:absolute;"></iframe></div>
+	</section>
+  <br>
+  <script src="https://gist.github.com/rfornes/58dfb2f1295cdbb176fbb35a010e1749.js"></script>
+</body>
+</html>
