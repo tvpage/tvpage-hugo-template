@@ -7,6 +7,12 @@
 	.video-details-row.description .desktop{
 		display: none;
 	}
+	footer{
+		& .copyright {
+			font-size: 16px;
+			padding: 0;			
+		}
+	}
 	nav.menu-bar{
 		border : none;
 		background-color: #2C6373;
