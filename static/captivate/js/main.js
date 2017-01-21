@@ -4,7 +4,8 @@
         searchDesktopInput = $("#tvp-desktop-search-input"),
         $nullResults = $('#tvp-null-results'),
 		resultsScroller
-        isLoadMore : false;
+        isLoadMore : false
+        isFiltering : false;
     var formatDate = function(unixTimestamp) {
         var months = ['January','February','March','April','May','June','July','August','September','October','November','December'],
         	d = (new Date(Number(unixTimestamp) * 1000)),
@@ -20,12 +21,12 @@
     			url : url,
     			cache : false,
     			dataType : "jsonp",
-    			data : {
+    			data : _.extend({},isFiltering ? Filters.selected : {} ,{
     				p : (page == null || page == undefined) ? 0 : page,
-    				n : TVSite.isHomePage ? 6 : 9 ,
+    				n : TVSite.isHomePage ? 6 : 6 ,
     				s : (query == null || query == undefined) ? "" : query,
     				"X-login-id" : TVSite.loginId
-    			}
+    			})
 
     		});
     	},
@@ -68,7 +69,6 @@
             var redefine = function(val) {
                 return ("undefined" !== typeof val && null !== typeof val && val);
             };
-            debugger;
             if (result && redefine(result, "entityTitleParent") && redefine(result, "titleTextEncoded") && redefine(result, "entityIdParent") && redefine(result, "id")) {
                 return TVSite.baseUrl + '/' +( isLoadMore ? TVSite.channelInfo.titleTextEncoded : String(result.entityTitleParent).replace(/\s/g,"-").replace(/\./g,"") )+ "/" + String(result.titleTextEncoded).replace(/\s/g,"-") + "/" + result.entityIdParent + "-" + result.id;
             }
@@ -163,12 +163,40 @@
                 for (var i = 0; i < results.length; ++i) {
                     var result = results[i];
                     result['url'] = this.getResultUrl(result);
-                    //debugger;
                     html += this.tmpl(this.videoTemplate, result);
                 }
 
                 $('#tvp-video-container').append(html);
                 eventsBinder.onLoadMore();
+        },
+        addFilters : function(filters){
+            var getOption = function(opt, selected) {
+                var $opt = $('<a/>').attr({'value': opt.code, "href" : "#"});
+                var li = $("<li/>");
+                if (opt.id) $opt.attr('id', opt.id);
+                $opt.html(opt.label || '');
+                //if (selected) $opt.attr('selected', 'selected');
+                li.append($opt[0]);
+                return li[0];
+            };
+            for (var key in filters) {
+                var frag = document.createDocumentFragment();
+                frag.appendChild(getOption({ code: null, label: key.replace(/_/g, ' ') }));
+                var opts = filters[key].options;
+                for (var i = 0; i < (opts ? opts.length : 0); i++) {
+                    if (opts[i].hasValues) 
+                        frag.appendChild(getOption(opts[i]));
+                }
+                var $filter = $('#' + key );
+                if(1=== frag.childElementCount){
+                    $filter.addClass('tvp-filter-inactive');
+                }
+                else{
+                    $filter.html(frag);
+                    $filter.prev().prop("disabled",false);
+                }
+            }
+
         }
     };
 
@@ -200,6 +228,14 @@
                         $hoverDiv.removeClass('active');
                     }
                 }
+            });
+        },
+        Filters : function(){
+            $("#product_category li a").on("click", function(event){
+                var _id = event.currentTarget.id;
+                Filters.selected["product_category"] = event.currentTarget.text;
+                liveResultsPage = 0;
+                Filters.filterVideos();
             });
         }
 
@@ -243,25 +279,74 @@
     btnLoadMore.on("click", function(event){
         isLoadMore = true;
         liveResultsPage = liveResultsPage+1;
-        if (TVSite.isHomePage) {
-            channelDataExtractor.videos(TVSite.channelId, liveResultsPage ,null).done(function(data){
-                if (data.length)
-                    renderUtil.handleLoadMore(data);
-            });
-        }
-        else if(TVSite.isChannelPage){
-            channelDataExtractor.videos(TVSite.channelId, liveResultsPage ,null).done(function(data){
-                if (data.length)
-                    renderUtil.handleLoadMore(data);
-            });
-        }
-        else if(TVSite.isPlayerPage){
-            channelDataExtractor.videos(TVSite.channelId, liveResultsPage ,null).done(function(data){
-                if (data.length)
-                    renderUtil.handleLoadMore(data);
-            });
-        }
+        channelDataExtractor.videos(TVSite.channelId, liveResultsPage ,null).done(function(data){
+            if (data.length)
+                renderUtil.handleLoadMore(data);
+        });
+        
     });
+
+
+    // The filters module.
+    var Filters = {
+        selected: {},
+        defaultFilters: null,
+        filters: { type_of_video: {}, product_category: {} },
+        filterVideos: function() {
+            $('.reset-filter').fadeTo(0, 1);
+            isFiltering = true;
+            if (liveResultsPage===0)
+                    $("#tvp-video-container").empty();
+            channelDataExtractor.videos(null, liveResultsPage, null).done(_.bind(function(results) {
+                liveResultsPage =  liveResultsPage+1;
+                if (results.length) {
+                    if(!isMobile || !isIOS){
+                        this.hoverCheck();    
+                    }
+                } 
+
+            }, this));
+        },
+        initialize: function() {
+            $.ajax({
+                url: TVSite.apiUrl + 'codebook/display/video',
+                dataType: 'jsonp',
+                data: {
+                    'X-login-id': TVSite.loginId,
+                    channelId: TVSite.channelId
+                }
+            }).done(_.bind(function(res) {
+                for (var i = 0; i < res.length; i++) {
+                    var attr = res[i],
+                        code = attr.code;
+                    if (code in this.filters) {
+                        var props = ['id', 'label', 'options'];
+                        for (var j = 0; j < props.length; j++) { 
+                            this.filters[code][props[j]] = attr[props[j]]; 
+                        }
+                    }
+                }
+                renderUtil.addFilters(this.filters);
+                eventsBinder.Filters();
+                var isIOS = false;
+                if(isIOS){
+                    $(document).on('touchstart', '.reset-filter', _.bind(function() {
+                        this.reset();
+                    }, this));
+                }
+                else{
+                    $(document).on('click', '.reset-filter', _.bind(function() {
+                        this.reset();
+                    }, this));
+                }
+
+            }, this));
+        }
+    };
+
+
+
+
 
 	$('.slider').slick({
       infinite: true,
@@ -281,6 +366,13 @@
     });
     
 	eventsBinder.onLoadMore();
+    //all calls will be defined here
+
+    if (TVSite.isChannelPage) {
+        Filters.initialize();
+    }
+
+    
 
 	$('#subcribeModal').on('show.bs.modal', function(event) {
 		$('.subscribe-body').show();
