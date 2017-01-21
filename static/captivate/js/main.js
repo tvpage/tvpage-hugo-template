@@ -3,9 +3,9 @@
         btnLoadMore = $(".btn-more-button"),
         searchDesktopInput = $("#tvp-desktop-search-input"),
         $nullResults = $('#tvp-null-results'),
-		resultsScroller
-        isLoadMore : false
-        isFiltering : false;
+		resultsScroller,
+        isLoadMore = false,
+        isFiltering = false;
     var formatDate = function(unixTimestamp) {
         var months = ['January','February','March','April','May','June','July','August','September','October','November','December'],
         	d = (new Date(Number(unixTimestamp) * 1000)),
