@@ -7,14 +7,14 @@ div[id^=tvpwidget-sidebar] * {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
+div[id^=tvpwidget-sidebar] {
+  width: 100% !important;
+}
 .tvp-clearfix:before,
 .tvp-clearfix:after {
   display: table;
   content: " ";
   clear: both;
-}
-#tvp-gallery{
-  width: 100% !important;
 }
 #lightbox.off {
   visibility: hidden;
@@ -456,17 +456,17 @@ div[id^=tvpwidget-sidebar] * {
   height: 48px;
   background-color: #FFFFFF;
   color: #587CB9;
-  border: 1px solid #9D9D9D;
+  border: 1px solid #587CB9;
   position: relative;
   text-decoration: none;
 }
 .tvp-pop-up .tvp-call-to-action .tvp-material-icon{
-  height: 12px;
-  width: 12px;
+  height: 13px;
+  width: 13px;
   top: 16px;
   position: relative;
   float: right;
-  right: 20px;
+  right: 28px;
   background-size: contain;
   background-repeat: no-repeat;
   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAAhFBMVEUAAAD///+AgL9ggL9iicRmiLtggL9ZgL9YgLpagLxfg71egLxcfL5YfbtZfrxbfLxZfbpafblYfbpafrtafbtYfLtafrlYfblZfrpYfblZfLpYfbpZfbpZfbpYfblZfbpZfblZfLpYfbpZfbpYfLlZfLpZfLlYfbpYfblZfbpZfblYfLky6A+sAAAAK3RSTlMAAQQIDQ8QFBoiIyYnMUVMXGZoaWx/gIuMpaatrrKzuMzP2drc4PLz9ff9caPJhwAAAIlJREFUeNqNzccOwkAMRdELDDV0CL0mEIr////YmLHkaBBvZd2zML+WTXQw0isDGkf5DrZ6rYCxJCCXW9BBK4ThPUIJtl4h75cH7dNScgysE8F1A9c5F0sD6zoD6wauHy4zA+vYc+t12MfuoHvV7oEmCeB/WEi1c6tkDnSeUtujDTDYnNzWfdL7ADwKIVFlhAxSAAAAAElFTkSuQmCC);
