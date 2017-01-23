@@ -1,61 +1,45 @@
-{{ range $i, $def := (getJSON (printf "themes/tvpage/defaults/%s.json" .Type)).option }}
-{{ $.Scratch.SetInMap "settings" .code .value }}
-{{ end }}
-{{ range $i, $param := .Params }}
-{{ $.Scratch.SetInMap "settings" $i . }}
-{{ end }}
-{{ with .Param (.File.BaseFileName) }}
-{{ range $i, $opt := . }}
-{{ $.Scratch.SetInMap "settings" .code .value }}
-{{ end }}
-{{ end }}
+{{- range $i, $def := (getJSON (printf "themes/tvpage/defaults/%s.json" .Type)).option -}}
+{{- $.Scratch.SetInMap "settings" .code .value -}}
+{{- end -}}
+{{- range $i, $param := .Params -}}
+{{- $.Scratch.SetInMap "settings" $i . -}}
+{{- end -}}
 
 <style type="text/css">{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css.html" .Type ) .)) | safeCSS }}</style>
-<div id="tvpembed-{{ .File.BaseFileName }}">
-  <div class="tvpplayer">
-    <div id="tvpembed-{{ .File.BaseFileName }}-target" class="tvpplayer-target"></div>
-  </div>
+<div class="tvpplayer">
+  <div id="tvpplayer-target"></div>
+  <div id="tvpplayer-play"></div>
 </div>
-
-<script>(function(d,t,id) {
-  var s, as = d.getElementsByTagName(t)[0];
-  if (d.getElementById(id)) return;
-  s = d.createElement(t); s.id = id;
-  s.src = "//a.tvpage.com/tvpa.min.js";
-  as.parentNode.insertBefore(s, as);
-}(document, 'script', 'tvpage-analytics'));</script>
-<script>(function(d,t,id) {
-  var s, as = d.getElementsByTagName(t)[0];
-  if (d.getElementById(id)) return;
-  s = d.createElement(t); s.id = id;
-  s.src = "http://localhost:1313/solo/player-debug.js";
-  as.parentNode.insertBefore(s, as);
-}(document, 'script', 'tvpage-player'));</script>
-
+<script src="//a.tvpage.com/tvpa.min.js"></script>
+<script src="//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-{{ ($.Scratch.Get "settings").version }}-min.js"></script>
 <script>;(function(){
-  var putButtonOverlay = function(inst){
-    var ele = document.createElement("div");
-    ele.className = "tvpplayer-play";
-    var selector = inst.options.DOMContainer.id;
-    document.getElementById(selector).parentNode.insertBefore(ele, document.getElementById(selector).nextSibling).addEventListener('click', function(){
-      this.remove();
-      if(inst) inst.play();
-    },false);
-  };
-  var asset = function(video){
+  var mobile = /Mobi/.test(navigator.userAgent),
+  redefine = function(o, pr){return 'undefined' !== typeof o[pr];},
+  index = 0,
+  getAsset = function(video){
     if (!video || !video.asset) return console.log("no asset");
     var asset = video.asset;
     asset.analyticsObj = { vd: video.id, li: video.loginId, pg: video.parentId ? video.parentId : 0 };
     if (!asset.sources) asset.sources = [{ file: asset.videoId }];
     asset.type = asset.type || 'youtube';
     return asset;
-  };
-  var mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-  var checks = 0;
-  var index = 0;
+  },
+  handlePlayButton = function(a,inst){
+    var playButton = document.getElementById("tvpplayer-play");
+    if (a.type == 'mp4'){
+      playButton.style["display"] = "block";
+      playButton.addEventListener('click', function(){
+        this.style["display"] = "none";
+        if(inst) inst.play();
+      },false);
+    }else{
+      playButton.style["display"] = "none";
+    }
+  },
+  checks = 0;
   (function libsPoller() {
     var deferred = setTimeout(function() {
-      if ("undefined" === typeof window._tvpa || "undefined" === typeof window.TVPage) {
+      if (!redefine(window,'_tvpa') || !redefine(window,'TVPage')) {
         if (++checks < 10) {
           libsPoller();
         } else { 
@@ -64,9 +48,9 @@
       } else {
         _tvpa.push(["config", { li: '{{ .Param "loginid" }}', gaDomain:"www.tvpage.tv", "logUrl": "\/\/api.tvpage.com\/v1\/__tvpa.gif"}]);
         _tvpa.push(["track","ci",{ li: '{{ .Param "loginid" }}'}]);
-        var instance, assetsList = [];
+        var instance, videos = [];
         new TVPage.player({
-          divId: "tvpembed-{{ .File.BaseFileName }}-target",
+          divId: "tvpplayer-target",
           controls: {
             active: true,
             seekBar: { progressColor: {{ ($.Scratch.Get "settings").progresscolor }} },
@@ -74,7 +58,7 @@
           },
           poster: true,
           techOrder: 'html5,flash',
-          analytics: { tvpa: false },
+          analytics: { tvpa: {{ ($.Scratch.Get "settings").tvpa }} },
           apiBaseUrl: '//app.tvpage.com',
           swf: '//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-{{ ($.Scratch.Get "settings").version }}-flash.swf',
           onReady: function(e, player){
@@ -91,27 +75,27 @@
 
             if (!videoid && channelid) {
               var channelVideos = {{ index $.Site.Data.channelVideos (printf "x%s_page_1" .Params.channelid) }};
-              assetsList = channelVideos.data;
+              videos = channelVideos.data;
             } else{
-              assetsList.push({{ index $.Site.Data.videos (printf "x%s" .Params.videoid) }});
+              videos.push({{ index $.Site.Data.videos (printf "x%s" .Params.videoid) }});
             }
 
             if(mobile || !{{ ($.Scratch.Get "settings").autoplay }}){
-              instance.cueVideo(asset(assetsList[index]));
-              if (asset.type == 'mp4') putButtonOverlay(instance);
+              instance.cueVideo(getAsset(videos[index]));
+              handlePlayButton(getAsset(videos[index]),instance);
             }else{
-              instance.loadVideo(asset(assetsList[index]));
-            }
+              instance.loadVideo(getAsset(videos[index]));
+            } 
           },
           onStateChange: function(e){
             if("undefined" !== typeof e && "tvp:media:videoended" == e){
-              index = (index == assetsList.length - 1) ? 0 : index + 1;
+              index = (index == videos.length - 1) ? 0 : index + 1;
               if(mobile || !{{ ($.Scratch.Get "settings").autonext }}){
-                instance.cueVideo(asset(assetsList[index]));
-                if (asset.type == 'mp4') putButtonOverlay(instance);
+                instance.cueVideo(getAsset(videos[index]));
+                handlePlayButton(getAsset(videos[index]),instance);
               }else{
-                instance.loadVideo(asset(assetsList[index]));
-              }         
+                instance.loadVideo(getAsset(videos[index]));
+              }   
             }
           }
         });

@@ -16,6 +16,7 @@
       __TVPage__.config = __TVPage__.config || {};
       __TVPage__.config['tvpwidget-solo-2'] = {
         loginid: '1758799',
+        domain: "http://localhost:1313",
         channel: {
           id: '84956291',
           parameters: {
@@ -26,7 +27,7 @@
       (function(d, c, f) {
         window[f] = function(dt) {
           var i = d.getElementById('tvpwidget-solo-2-iframe'),
-            dmn = 'http://localhost:1313';
+            dmn = c.domain;
           i.setAttribute('src', dmn + '/tvpwidget/solo-2');
           var ip = i.parentNode;
           dt && (dt instanceof Array) && dt.length ? ip.style.display = 'block' : delete ip;
