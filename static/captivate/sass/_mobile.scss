@@ -237,16 +237,20 @@
 		}
 	}
 	.filter-menu{
-		height: 78px;
+		height: 105px;
 		margin-bottom: 15px;
+		display: block;
 		.container{
 			margin: 0;
 			width: 100%;
+			padding-top: 24px;
 		}
 		.btn-group{
 			height: 24px;
 			display: block;
 			margin-top: 10px;
+			margin-left: 10px;
+			margin-right: 10px;
 			&:last-child{
 				margin-bottom: 10px;
 			}
@@ -256,11 +260,22 @@
 			width: 100%;
 			span{
 				right: 0;
-				position: absolute;
+				position: relative;
 				top: 0;
 				bottom: 0;
-				margin: auto 6px auto 0;
+				margin: 5px 6px auto 0;
 			}
+		}
+		.tvp-filter-reset{
+			  float : right;
+			  font-size: 14px;
+			  height: 28px;
+			  padding-bottom: 10px;
+			  width: 40px;
+			  border: 0;
+			  background-color: transparent;
+			  position: relative;
+			  top: -84px;
 		}
 	}
 	.player-product{
