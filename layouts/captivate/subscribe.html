@@ -4,12 +4,12 @@
 		<div class="subscribe-header">          
 			<!-- <div class="subscribe-header-title" id="myModalLabel"> -->
 			<div class="subscribe-header-title-container">
-				<span>SUBSCRIBE TO</span>
-				{{ if eq .Layout "channel" }}<span class="channel-title">{{ .Title }}</span>{{ end }}
+				<span>SUBSCRIBE TO</span>				
 			</div>
-		</div>
-		<div class="subscribe-header-logo">
-			<img src='/{{ .Type }}/images/logo.png' alt="{{ .Site.Title }}" />
+			<div class="subscribe-header-logo">
+				<img src='/{{ .Type }}/images/logo.png' alt="{{ .Site.Title }}" />
+			</div>
+			<div class="channel-title">{{ .Title }}</div>
 		</div>
 		<div class="subscribe-body">
 			<input type="text" placeholder="NAME">
@@ -30,4 +30,3 @@
 		</div>
 	</div>
 {{ partial (printf "%s/scripts.html" .Type) . }}
-{{ partial (printf "%s/footer.html" .Type) . }}

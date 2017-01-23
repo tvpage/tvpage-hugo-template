@@ -380,6 +380,10 @@
     });
     $('#subscribe-channel').on('click', function(event) {
         event.preventDefault();
+        if(isMobile){            
+            window.location.href = "/subscribe/" + $(this).data('channelid');
+            return false;
+        } 
         $('#subcribeModal')        
         .modal('show')
         .find('.channel-title, .chkSubscribeAll').css('display', 'block');
