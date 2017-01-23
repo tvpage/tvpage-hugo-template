@@ -3,11 +3,26 @@
         btnLoadMore = $(".btn-more-button"),
         searchDesktopInput = $("#tvp-desktop-search-input"),
         $nullResults = $('#tvp-null-results'),
-		resultsScroller,
+    		resultsScroller,
         isLoadMore = false,
         isIOS = (/iPhone|iPad|iPod/i.test(navigator.userAgent)) ? true : false,
         isFiltering = false;
         isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        isFiltering = false,
+        initialPlay = true,
+        isFullScreen = false,
+        activeVideoId = null,
+        videoList = [],
+        isMobile = (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) ? true : false,
+        isMac = navigator.userAgent.indexOf('Mac OS X') != -1,
+        isFireFox = navigator.userAgent.indexOf('Firefox') != -1,
+                      isFiltered = false,
+        IE = function ( version ) {
+        return RegExp('msie' + (!isNaN(version)?('\\s'+version):''), 'i').test(navigator.userAgent);
+        },
+        playerResolution = isMobile ? '360p' : '480p',
+        isFlashRequired = ( (IE(9) || IE(10)) || (isMac && isFireFox)  ),
+        playerTechOrder = isFlashRequired ? 'flash,html5' : 'html5,flash';
     var formatDate = function(unixTimestamp) {
         var months = ['January','February','March','April','May','June','July','August','September','October','November','December'],
         	d = (new Date(Number(unixTimestamp) * 1000)),
@@ -389,7 +404,176 @@
 
             }, this));
         }
+    };
 
+    var updateTitle = function(title){
+      if (title) {
+        $('#video-playing-title').empty()
+        .html(title);
+      }
+    };
+
+    var showPlayButton = function(){
+      $('#html5-play-button').show().on('click', function(){
+        window.TVPlayer.play();
+        $(this).hide();
+      });
+    };
+
+    var buildVideoData = function(video){
+      var data = video.asset || {};
+      data.sources = data.sources || [{file: data.videoId}];
+      data.type = data.type || 'youtube';
+      var channel = TVSite.channelVideosData;
+      var id = "";
+      if ("object" !== typeof channel && "undefined" !== typeof channel.id) {
+        id = channel.id;
+      }
+      data.analyticsObj = {
+        pg: TVSite.channelId || id,
+        vd: video.id,
+        li: TVSite.loginId
+      };
+      return data;
+    };
+
+    var playVideo = function(video){
+      if (video) {
+        var data = buildVideoData(video);
+        if (isMobile) {
+          TVPlayer.cueVideo(data);
+          if ('youtube' != data.type) {
+            showPlayButton();
+          }
+        } else {
+          TVPlayer.loadVideo(data);
+        }
+        var url = getVideoUrl(video);
+        updateSiteUrlAndTitle(url, video.title);
+        updateSocialShareLink(url, video);
+      }
+    };
+
+    var updateSiteUrlAndTitle = function(url, title){
+      var newUrl = window.location.protocol +'//' + window.location.host + url;
+      if (newUrl && window.history && history.pushState) {
+        history.pushState({state: 1}, null, newUrl);
+        if ( 'string' === typeof title ) title = title;
+          document.title = title;
+      }
+    };
+
+    var updateSocialShareLink = function(url, video){
+      $('.facebook').attr('href', function(i, val) {
+        return 'https://www.facebook.com/sharer/sharer.php?u=' + window.location.protocol +'//' + window.location.host + url;
+      });
+
+      $('.twitter').attr('href', function(i, val) {
+        return 'https://twitter.com/share?text=' + video.title + '%20%7C%0A&url=' + window.location.protocol +'//' + window.location.host  + url;
+      });
+    };
+
+    var getVideoUrl = function(video){
+      var url;
+      if('undefined' !== typeof video.url){
+        url = video.url;
+      }else{
+        var channel = TVSite.channelVideosData;
+        var videoUrl = '/' + channel.id + '-' +'-' + video.id;
+        var videoTitle = '';
+        if (video.titleTextEncoded && video.titleTextEncoded.length > 0 ) {
+          videoTitle = '/' + video.titleTextEncoded;
+        }
+        var channelTitle = '';
+        if (channel.titleTextEncoded && channel.titleTextEncoded.length > 0 ) {
+          channelTitle = '/' + channel.titleTextEncoded;
+        }
+        url = channelTitle + videoTitle + videoUrl;
+      }
+      return url;
+    };
+
+    var resizePlayer = function(){
+      var $playerHolder = $('#TVPagePlayer');
+      if (!isFullScreen && $playerHolder.length) {
+        TVPlayer.resize($playerHolder.width(), $playerHolder.height());
+      }
+    };
+
+    var getNextVideo = function(currentIndex, callback){
+      if ( ('undefined' !== typeof currentIndex) && ('function' === typeof callback) ) {
+        if ( currentIndex == videoList.length - 1 ) {
+          callback( videoList[0] );
+        } else {
+          callback( videoList[ currentIndex + 1 ] );
+        }
+      }
+    };
+
+    var  handleNextvideo = function(nextVideo){
+      if ( 'object' === typeof nextVideo ) {
+        updateTitle( nextVideo.title );
+        // updateDescription( nextVideo );
+        // updateTranscripts( nextVideo );
+        // updateProducts( nextVideo.id );
+        // $('#video-' + nextVideo.id).removeClass('inactive hovered').addClass('playing');
+        startPlayback(nextVideo);
+      }
+    };
+
+    var getVideoIndex = function(videoId, callback){
+      if ( ('undefined' !== typeof videoId) && ('function' === typeof callback) ) {
+        var i = 0;
+        for ( i; i < videoList.length; i++ ) {
+          if ( videoId == videoList[i].id ) return callback(i);
+        }
+        callback(null);
+      }
+    };
+
+    var updateVideoElements = function(){
+      // $('.channel-videos').find('.video.playing').removeClass('playing').addClass('inactive');
+    };
+
+    var handleAutoNext = function(){
+      updateVideoElements();
+      getVideoIndex(activeVideoId, function(index){
+        getNextVideo(index, $.proxy(handleNextvideo) );
+      });
+    };
+
+    var startPlayback = function(video){
+      if ( video && ('object' === typeof video) ) {
+        playVideo(video);
+        activeVideoId = video.id;
+        // if(TVSite.productCartridges && TVSite.productCartridges.length){
+        //   TVSite.productCartridges.forEach(function(element, index, array){
+        //       var targetIsHidden = $(element.target).is(':hidden');
+        //       if ( ($(element.target).length > 0) && !targetIsHidden) {
+        //         registerProductPanel($(element.target));
+        //       }
+        //     });
+        // }
+        updateTitle(video.title);
+      }
+    };
+
+    var handlePlayerReady = function(){
+      videoList = TVSite.channelVideosData.videos;
+      resizePlayer();
+      if ( initialPlay && 'channelVideosData' in TVSite ) {
+        var video = TVSite.channelVideosData.video;
+        startPlayback(video);
+        initialPlay = false;
+      }
+    };
+
+    var handlePlayerStateChange = function(e){
+      if ('tvp:media:videoended' == e) {
+        if (TVSite.isPlayerPage) {
+          handleAutoNext();
+        }
+      }
     };
 
     $('.slider').slick({
@@ -412,6 +596,38 @@
 
     if (TVSite.isChannelPage) {
         Filters.initialize();
+    }
+
+    if (TVSite.isPlayerPage) {
+      window.TVPlayer = new TVPage.player({
+        divId: 'TVPagePlayer',
+        swf: '//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-1.5.2-flash.swf',
+        displayResolution: playerResolution,
+        analytics: { tvpa : false },
+        techOrder: playerTechOrder,
+        onReady: handlePlayerReady,
+        onStateChange: handlePlayerStateChange,
+        controls: {
+          active: true,
+          seekBar: { progressColor: '#779050' },
+          floater: { removeControls:['tvplogo'] }
+        }
+      });
+      /**
+       * Fullscreen poll/check
+       */
+      if (BigScreen) {
+        BigScreen.onchange = function () {
+          isFullScreen = !isFullScreen;
+        };
+      }
+
+      /**
+       * Resize player on window resizing
+       */
+      $(window).resize(function(){
+        if (!isFullScreen) { resizePlayer(); }
+      });
     }
 
 
