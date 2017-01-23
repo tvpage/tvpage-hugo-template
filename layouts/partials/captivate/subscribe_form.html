@@ -5,16 +5,16 @@
         <button data-dismiss="modal" class="close">          
         </button>
         <div class="subscribe-header">          
-	        <div class="modal-title" id="myModalLabel">
-            <div class="modal-title-container">
+	        <div class="subscribe-header-title modal-title" id="myModalLabel">
+            <div class="subscribe-header-title-container">
               <span>SUBSCRIBE TO</span>
               {{ if eq .Layout "channel" }}<span class="channel-title">{{ .Title }}</span>{{ end }}
             </div>
           </div>
-          <div class="header-logo">
+          <div class="subscribe-header-logo header-logo">
 	         <img src='/{{ .Type }}/images/logo.png' alt="{{ .Site.Title }}" />
           </div>
-		</div>
+		    </div>
       </div>
       <div class="modal-body subscribe-body">
         <input type="text" placeholder="NAME">

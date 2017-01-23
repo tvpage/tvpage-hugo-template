@@ -3,7 +3,10 @@
   {{ $.Scratch.SetInMap "settings" "channelData" $channel }}
 {{ end }}
 <main id="main-content" class="main-content">
-    <section class="channel-page-banner" style="background-image: url('/{{.Type}}/images/channel/{{.Params.channelid}}-banner.jpg');">
+    <!-- <section class="channel-page-banner" style="background-image: url('/{{.Type}}/images/channel/{{.Params.channelid}}-banner.jpg');"> -->
+    <section class="channel-page-banner">
+      <div class="channel-page-banner-desktop" style="background-image: url('/{{.Type}}/images/channel/{{.Params.channelid}}-banner.jpg');"></div>
+      <div class="channel-page-banner-mobile" style="background-image: url('/{{.Type}}/images/channel/{{.Params.channelid}}.jpg');"></div>
       <div class="main-channel-banner">
         <div class="main-channel-banner-title">
           {{ $channel.title }}
@@ -12,7 +15,7 @@
           60 videos
         </div>
         <div class="main-channel-banner-subscribe">
-          <a href="#" class="subscribe-btn" data-toggle="modal" data-target="#subcribeModal" >subscribe to channel</a>
+          <a id="subscribe-channel" href="#" data-channelid="{{ .Params.channelid }}" class="subscribe-btn">subscribe to channel</a>
         </div>
       </div>
           
@@ -43,7 +46,7 @@
           {{ partial (printf "%s/breadcrumbs.html" .Type) . }}
         </div>
         <div class="row container section">
-            <h2 class="section-header">LATEST VIDEOS</h2>
+            <h2 class="section-header channel-latest-videos-header">LATEST VIDEOS</h2>
         </div>
         <div id="tvp-video-container" class="row video-row">
         {{ $channelid := .Params.channelid }}
@@ -56,6 +59,7 @@
                 <div class="row video-row">
               {{ end }}
             {{ end }} -->
+
             {{ partial (printf "%s/video_thumbnail.html" $.Type) . }}
 
             {{ if eq (mod (add $i 1) 3) 0 }}<div class="col-sm-12"></div>{{ end }}
