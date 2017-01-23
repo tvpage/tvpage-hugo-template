@@ -872,4 +872,16 @@ footer{
 	&-none{
 		display: none;
 	} 
+	&-reset{
+		text-transform: capitalize;
+		margin-left: 30px;
+		color: #fff;
+		opacity: 0.5;
+		font-size: 14px;
+		font-weight: 500;
+		font-family: Dosis;
+		&:hover{
+			opacity: 1;
+		}
+	}
 }
