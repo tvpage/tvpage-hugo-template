@@ -6,6 +6,7 @@
 		resultsScroller,
         isLoadMore = false,
         isFiltering = false;
+        isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     var formatDate = function(unixTimestamp) {
         var months = ['January','February','March','April','May','June','July','August','September','October','November','December'],
         	d = (new Date(Number(unixTimestamp) * 1000)),
@@ -370,7 +371,19 @@
         Filters.initialize();
     }
 
-    
+
+    $('#subscribe-header').on('click', function(event) {
+        event.preventDefault();
+        $('#subcribeModal')        
+        .modal('show')
+        .find('.channel-title, .chkSubscribeAll').css('display', 'none');
+    });
+    $('#subscribe-channel').on('click', function(event) {
+        event.preventDefault();
+        $('#subcribeModal')        
+        .modal('show')
+        .find('.channel-title, .chkSubscribeAll').css('display', 'block');
+    });
 
 	$('#subcribeModal').on('show.bs.modal', function(event) {
 		$('.subscribe-body').show();

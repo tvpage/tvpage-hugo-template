@@ -27,7 +27,7 @@
           <ul class="brand-header-menu-top-options">
             {{ with .Site.Menus.top }}
             {{ range sort . "Name" "desc" }}
-              <li><a class="{{ .Identifier }}-btn" href="{{.URL}}" {{ if eq .Name "Subscribe" }} data-toggle="modal" data-target="#subcribeModal" {{ end }} >{{ .Name }}</li></a>
+              <li><a class="{{ .Identifier }}-btn" href="{{.URL}}" {{ if eq .Name "Subscribe" }} id="subscribe-header" {{ end }} >{{ .Name }}</a></li>
             {{ end }}
             {{ else }}
               No navigation
