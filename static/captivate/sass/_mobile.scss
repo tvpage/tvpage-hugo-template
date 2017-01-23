@@ -86,7 +86,7 @@
 			padding-top: 6px;
 		}
 	}
-	.mobile-menu-modal{
+	.mobile-menu-modal, .mobile-search-modal{
 		.modal-dialog{
 			margin-top: 0;
 			margin-left: 0;
@@ -131,6 +131,48 @@
 					}
 				}
 			}
+		}
+	}
+	.mobile-search-modal{
+		&-header{
+			border-bottom: 1px solid #fff;
+			padding-bottom: 15px;
+			position: relative;
+			input[type="text"]{
+				background-color: transparent;
+				border: 0;
+				margin-left: 10px;
+				font-size: 18px;
+				line-height: 22px;
+				font-weight: 600;
+				color: #fff;
+				width: 75%;
+			}
+		}
+		&-search-btn, &-cancel-btn{
+			background-repeat: no-repeat;
+			height: 24px;
+			width: 24px;
+			content: " ";			
+			background-color: transparent;
+			border: 0;
+		}
+		&-search-btn{
+			background-image: url(data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTc5MiAxNzkyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik0xMjE2IDgzMnEwLTE4NS0xMzEuNS0zMTYuNXQtMzE2LjUtMTMxLjUtMzE2LjUgMTMxLjUtMTMxLjUgMzE2LjUgMTMxLjUgMzE2LjUgMzE2LjUgMTMxLjUgMzE2LjUtMTMxLjUgMTMxLjUtMzE2LjV6bTUxMiA4MzJxMCA1Mi0zOCA5MHQtOTAgMzhxLTU0IDAtOTAtMzhsLTM0My0zNDJxLTE3OSAxMjQtMzk5IDEyNC0xNDMgMC0yNzMuNS01NS41dC0yMjUtMTUwLTE1MC0yMjUtNTUuNS0yNzMuNSA1NS41LTI3My41IDE1MC0yMjUgMjI1LTE1MCAyNzMuNS01NS41IDI3My41IDU1LjUgMjI1IDE1MCAxNTAgMjI1IDU1LjUgMjczLjVxMCAyMjAtMTI0IDM5OWwzNDMgMzQzcTM3IDM3IDM3IDkweiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==);
+		}
+		&-cancel-btn{
+			background-color: rgba(255,255,255,0.5);
+			border-radius: 12px;
+			background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMUYxRDI2IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICA8cGF0aCBkPSJNMTkgNi40MUwxNy41OSA1IDEyIDEwLjU5IDYuNDEgNSA1IDYuNDEgMTAuNTkgMTIgNSAxNy41OSA2LjQxIDE5IDEyIDEzLjQxIDE3LjU5IDE5IDE5IDE3LjU5IDEzLjQxIDEyeiIvPgogICAgPHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPgo8L3N2Zz4=);
+			background-size: 20px;
+			background-position: center;
+		}
+		.tvp-mobile-null-results{
+			color: #fff;
+			font-size: 18px;
+			line-height: 22px;
+			border-bottom: 1px solid rgba(255,255,255, 0.5);
+			padding: 15px 0;
 		}
 	}
 	.section{
@@ -341,6 +383,34 @@
 				&.subscribed-message{
 					margin-top: 15px;
 				}
+			}
+		}
+	}
+	.tvp-mobile-search-results{
+		& ul{
+			list-style: none;
+			padding: 0;
+			li{
+				padding: 5px 0;
+				border-bottom: 1px solid rgba(255,255,255,0.5);
+				color: #fff;
+				font-size: 18px;
+			}
+		}
+		.item{			
+			height: 42px;
+			position: relative;
+			.res-thumbnail{
+				width: 74px;
+				display: inline-block;
+				float: left;
+				@include aspect-ratio(16, 9);
+			}
+			.res-title{
+				display: inline-block;
+				font-size: 18px;
+				line-height: 22px;
+				margin-left: 15px;
 			}
 		}
 	}

@@ -61,10 +61,11 @@
           </a>
         </div>
         <div class="col-xs-2 col-sm-2">
-          <button type="button" class="mobile-menu-search-btn navbar-toggle pull-right"></button>
+          <button id="mobile-search" type="button" class="mobile-menu-search-btn navbar-toggle pull-right"></button>
         </div>
       </div>
     </div>
   </nav>
   {{ partial (printf "%s/mobile_menu.html" .Type) . }}
+  {{ partial (printf "%s/mobile_search.html" .Type) . }}
 </header>

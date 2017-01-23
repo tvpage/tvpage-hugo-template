@@ -444,4 +444,8 @@
         e.preventDefault();
         window.location.href = "/subscribe";
     });
+    $('#mobile-search').on('click', function(event) {
+        event.preventDefault();
+        $('#mobile-search-modal').modal();
+    });
 }(jQuery, window.IScroll));
