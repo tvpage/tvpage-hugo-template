@@ -276,4 +276,61 @@
 	.channel-videos-latest-videos-mobile{
 		display: block;
 	}
+	.mobile-subscribe-form{
+		.subscribe-header{
+			padding-top: 30px;
+			&-title-container{
+				position: relative;
+				top: 0;
+				transform: initial;
+				span{
+					font-size: 38px;
+					line-height: 48px;
+				}
+			}
+			&-logo{
+				margin-top: 15px;
+				text-align: center;
+				img{
+					width: 166px;
+					height: 126px;
+				}
+			}
+		}
+		.subscribe-body, .subscribed-body{
+			padding: 0;
+			input[type="text"]{
+				font-size: 18px;
+				line-height: 22px;
+				height: 38px;
+				margin: 0;
+				&:first-child{
+					margin: 60px 0 30px 0;
+				}
+			}
+			button{
+				width: 100%;
+				font-size: 20px;
+				line-height: 26px;
+				&.subscribe-button{
+					margin: 60px 0 121px 0;					
+				}
+				&.subscribe-close-button{
+					margin: 42px 0 120px 0;					
+				}
+			}
+		}
+		.subscribed-body{
+			p{
+				margin: 0;
+				top: 0;
+				&.subscribed-title{
+					margin-top: 30px;
+				}
+				&.subscribed-message{
+					margin-top: 15px;
+				}
+			}
+		}
+	}
 }

@@ -422,5 +422,9 @@
                 }
             },'linear');
         }
-    })
+    });
+    $('#mobile-subscribe').click(function(e) {
+        e.preventDefault();
+        window.location.href = "/subscribe";
+    });
 }(jQuery, window.IScroll));

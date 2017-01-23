@@ -484,7 +484,7 @@ footer{
 	} 
     
 }
-.subcribeModal{
+.subcribeModal, .mobile-subscribe-form{
 	.modal-dialog{
 		height: 594px;
 		vertical-align: middle;
@@ -514,36 +514,36 @@ footer{
 		text-align: center;
 		height: 100%;
 		position: relative;
+		&-title{
+			width: 50%;
+			height: 100%;
+			text-align: right;
+			display: inline-block;
+			float: left;
+			margin-right: 21px;
+			&-container{
+				position: absolute;
+				top: 50%;
+				transform: translateY(-50%);
+				width: 100%;
+				span{
+					display: block;
+					&.channel-title{
+						color: #2DA392;
+						font-size: 28px;
+						line-height: 26px;
+						text-transform: uppercase;
+					}
+				}	
+			}			
+		}
 	}
-	.modal-title, .subscribed-title{
+	.subscribe-header-title, .subscribed-title{
 		font-size: 38px;
 		font-weight: 300;
 		line-height: 48px;
 		color: #1F1D26;		
 		position: relative;
-	}
-	.modal-title{
-		width: 50%;
-		height: 100%;
-		text-align: right;
-		display: inline-block;
-		float: left;
-		margin-right: 21px;
-		&-container{
-			position: absolute;
-			top: 50%;
-			transform: translateY(-50%);
-			width: 100%;
-			span{
-				display: block;
-				&.channel-title{
-					color: #2DA392;
-					font-size: 28px;
-					line-height: 26px;
-					text-transform: uppercase;
-				}
-			}	
-		}
 	}
 	.header-logo{
 		margin-left: 21px;
@@ -574,7 +574,7 @@ footer{
 		background-clip: initial;
 		
 	}
-	.modal-body{
+	.subscribe-body{
 		input[type="text"]{
 			width: 100%;
 			border: 0;
@@ -609,14 +609,14 @@ footer{
 			}
 		}
 	}
-	.modal-body, .modal-footer{
+	.subscribe-body, .subscribed-body, .modal-footer{
 		padding: 15px 100px;
 	}
 	.modal-footer{
 		border: 0;
 		padding-top: 50px;
 	}
-	.subscribe-button{
+	.subscribe-button, .subscribe-close-button{
 		font-size: 20px;
 		font-weight: 600;
 		text-align: center;
