@@ -23,7 +23,7 @@ define(function(require) {
     CONFIG = $.extend({}, CONFIG, __TVPage__.config[holderId]);
   }
 
-  var cleanVideos = function(){ $('#tvp-videos').off().html('') };
+  var cleanVideos = function(){ $('#tvp-videos').off().html('');};
   var sendAnalitics = function(data, type) {
     if ('object' === typeof data && type) {
       if (window._tvpa) {
@@ -299,7 +299,6 @@ define(function(require) {
           newVideosList.push(videosList[i]);
         }
         this.renderSearchResults(newVideosList);
-
         this.pointerLocation = limit1;
       } else {
         for (var i = pointer; i < limit; i++) {
@@ -377,6 +376,8 @@ define(function(require) {
       };
       $(document).on('click', '.tvp-video', function(e) {
         e.preventDefault();
+        THAT.mobileOrientation();
+        THAT.mobileOrientationListener();
         $('.tvp-lb-overlay').show();
         $('#lightbox').removeClass('off');
         var vid = $(e.currentTarget).attr('data-index');
@@ -398,23 +399,23 @@ define(function(require) {
 
     mobileOrientation: function(){
       if (this.isMobile()) {
-        $(window).ready(function(){
-          $('#tvpp').each(function(i, item){
-            item = $(item);
-            var itemWidth = item.width();
-            var productWidth = $('#tvp-mobile-products-list > li');
-            if (window.matchMedia('(orientation: portrait)').matches) {
-              $(productWidth).css('width', itemWidth);
-              $('.tvp-no-products-banner ').css('width', itemWidth);
-              $('.tvp-no-products-banner ').css('height', '85px');
-              $('#tvplb .tvp-lb-content').css({'height': '','width': ''});
-            }else {
-              $(productWidth).css('width', itemWidth);
-              $('.tvp-no-products-banner ').css('width', itemWidth);
-              $('.tvp-no-products-banner ').css('height', '85px');
-              $('#tvplb .tvp-lb-content').css({'height': '100%','width': '60%'});
-            }
-          });
+        var THAT = this;
+        $('#tvpp').each(function(i, item){
+          item = $(item);
+          var itemWidth = item.width();
+          var productWidth = $('#tvp-mobile-products-list > li');
+          if (window.matchMedia('(orientation: portrait)').matches) {
+            $(productWidth).css('width', itemWidth);
+            $('.tvp-no-products-banner').css({'width': itemWidth,'height': '85px'});
+            $('#tvplb .tvp-lb-content').css({'height': '','width': ''});
+            $('.tvp-lb-close').css({'height': '','width': ''});
+          }else {
+            $(productWidth).css('width', itemWidth);
+            $('.tvp-no-products-banner').css({'width': itemWidth,'height': '85px'});
+            $('#tvplb .tvp-lb-content').css({'height': '100%','width': '60%'});
+            $('.tvp-lb-close').css({'height': '26px','width': '26px'});
+          }
+          THAT.resizePlayer();
         });
       }
     },
@@ -422,17 +423,19 @@ define(function(require) {
     mobileOrientationListener: function(){
       if (this.isMobile()) {
         var THAT = this;
-        $(window).resize(function(){
           $('#tvpp').each(function(i, item){
+            $(window).resize(function(){
             item = $(item);
             var itemWidth = item.width();
             var productWidth = $('#tvp-mobile-products-list > li');
             if (window.matchMedia('(orientation: portrait)').matches) {
               $(productWidth).css('width',itemWidth);
+              $('.tvp-no-products-banner').css('width',itemWidth);
               $('#tvplb .tvp-lb-content').css({'width': '','height': ''});
               $('.tvp-lb-close').css({'height': '','width': ''});
             }else {
               $(productWidth).css('width',itemWidth);
+              $('.tvp-no-products-banner').css('width',itemWidth);
               $('#tvplb .tvp-lb-content').css({'height': '100%','width': '60%'});
               $('.tvp-lb-close').css({'height': '26px','width': '26px'});
             }
@@ -701,9 +704,6 @@ define(function(require) {
               },
               techOrder: 'html5,flash',
               apiBaseUrl: '//api.tvpage.com/v1/',
-              onError: function(e) {
-                console.log(e);
-              },
               controls: {
                 active: true,
                 seekBar: {
