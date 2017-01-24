@@ -16,7 +16,7 @@
       <div class="modal-body">
         <div class="mobile-search-modal-header">
           <button class="mobile-search-modal-search-btn pull-left" type="button"></button>
-          <input type="text" placeholder="SEARCH">
+          <input id="tvp-mobile-search-input" type="text" placeholder="SEARCH">
           <button class="mobile-search-modal-cancel-btn pull-right" type="button"></button>
         </div>
         <p id="tvp-mobile-null-results" class="tvp-mobile-null-results">
@@ -25,36 +25,38 @@
         <div id="tvp-mobile-search-results-holder" class="tvp-mobile-search-results-holder" style="display: block;">
             <div id="tvp-mobile-search-results" class="tvp-mobile-search-results">
                 <ul>
-                  <li>
+<!--                   <li>
                       <div class="item">
-                        <div class="res-thumbnail">
-                          <div class="content" style="background-image: url(/{{.Type}}/images/defaults/asset.png)"></div>
-                        </div>
-                        <div class="res-title">
-                          Result 1
-                        </div>
+                        <a href="#" class="latest-video">
+                          <div class="latest-video-thumbnail">
+                            <div class="content" style="background-image: url(/{{.Type}}/images/defaults/asset.png)"></div>
+                          </div>
+                          <div class="latest-video-title">
+                            Result 1
+                          </div>
+                        </a>
                       </div>
                   </li>
                   <li>
-                      <div class="item">
-                        <div class="res-thumbnail">
+                      <div class="col-sm-4 col-md-4 item">
+                        <div class="latest-video-thumbnail">
                           <div class="content" style="background-image: url(/{{.Type}}/images/defaults/asset.png)"></div>
                         </div>
-                        <div class="res-title">
+                        <div class="latest-video-title">
                           Result 2
                         </div>
                       </div>
                   </li>
                   <li>
-                      <div class="item">
-                        <div class="res-thumbnail">
+                      <div class="col-sm-4 col-md-4 item">
+                        <div class="latest-video-thumbnail">
                           <div class="content" style="background-image: url(/{{.Type}}/images/defaults/asset.png)"></div>
                         </div>
-                        <div class="res-title">
+                        <div class="latest-video-title">
                           Result 3
                         </div>
                       </div>
-                  </li>
+                  </li> -->
                 </ul>
             </div>
         </div>
