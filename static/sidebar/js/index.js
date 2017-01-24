@@ -23,6 +23,16 @@ define(function(require) {
     CONFIG = $.extend({}, CONFIG, __TVPage__.config[holderId]);
   }
 
+  if (!redefine(CONFIG,'channel')) {
+    CONFIG = {
+        apiUrl: '//app.tvpage.com/api',
+        loginId: '1758881',
+        channel: {
+          id: '81979997'
+        }
+    };
+  }
+
   var cleanVideos = function(){ $('#tvp-videos').off().html('');};
   var sendAnalitics = function(data, type) {
     if ('object' === typeof data && type) {
@@ -59,28 +69,7 @@ define(function(require) {
         $("#tvp-desktop-products").addClass('hide');
         $(".tvp-lb-content").addClass('products-hide');
       }
-      
       var THAT = this;
-      $(document).on('click', '.tvp-lb-close', function(e) {
-        $('.tvp-lb-overlay').hide();
-        $('#lightbox').addClass('off');
-        THAT.hideHTML5PlayBtn();
-        window.TVPlayer.stop();
-        if (THAT.isMobile()) {
-          $('.tvp-pagination').empty();
-          THAT.cache.productScrollerX.goToPage(0, 0, 100);
-        }
-      });
-      $(document).on('click', '.tvp-lb-overlay', function(e) {
-        $('.tvp-lb-overlay').hide();
-        $('#lightbox').addClass('off');
-        THAT.hideHTML5PlayBtn();
-        window.TVPlayer.stop();
-        if (THAT.isMobile()) {
-          $('.tvp-pagination').empty();
-          THAT.cache.productScrollerX.goToPage(0, 0, 100);
-        }
-      });
       $(document).on('click', '#tvp-view-more-button', function(e) {
         THAT.fetchPage++;
         if (THAT.haveMoreVideos === true) {
@@ -96,6 +85,7 @@ define(function(require) {
               if (res.length === 0) {
                 THAT.haveMoreVideos = false;
                 THAT.lastPageReached = true;
+                THAT.callLastPage();
               } else {
                   cleanVideos()
                   for (var i = 0; i < res.length; i++) {
@@ -107,9 +97,7 @@ define(function(require) {
               THAT.pointerLocation = res.length;
           });
         }
-        if (THAT.lastPageReached === true){
-          THAT.videosInLoop(THAT.pointerLocation);
-        } 
+        THAT.callLastPage();
       });
       $(document).on('click', '.tvp-product', function(e) {
         var $link = $(this).closest('a');
@@ -121,18 +109,19 @@ define(function(require) {
           window.open($link.attr("href"), "_blank");
         }
       });
-      $(document).on('click', '.tvp-img-link', function(e) {
+      $(document).on('click', '.tvp-img-link, .tvp-call-to-action', function(e) {
         sendAnalitics({
           ct: $(this).data('id'),
           vd: $(this).data('videoId')
         }, 'pk');
       });
-      $(document).on('click', '.tvp-call-to-action', function(e) {
-        sendAnalitics({
-          ct: $(this).data('id'),
-          vd: $(this).data('videoId')
-        }, 'pk');
-      });
+    },
+
+    callLastPage: function(){
+      var THAT = this;
+      if (THAT.lastPageReached === true){
+        THAT.videosInLoop(THAT.pointerLocation);
+      }
     },
 
     initializeProductScrollerX: function() {
@@ -390,10 +379,27 @@ define(function(require) {
             show()
             THAT.handleAdBanner(products);
             THAT.handlePagination(products);
+            THAT.closeModal(products);
           });
         } else {
           show();
         } 
+      });
+    },
+
+    closeModal: function(products){
+      var THAT = this;
+      $(document).on('click', '.tvp-lb-close, .tvp-lb-overlay', function(e) {
+        $('.tvp-lb-overlay').hide();
+        $('#lightbox').addClass('off');
+        THAT.hideHTML5PlayBtn();
+        window.TVPlayer.stop();
+        if (THAT.isMobile()) {
+          if (products.length !== 0) {
+            $('.tvp-pagination').empty();
+            THAT.cache.productScrollerX.goToPage(0, 0, 100);
+          }
+        }
       });
     },
 
@@ -406,12 +412,10 @@ define(function(require) {
           var productWidth = $('#tvp-mobile-products-list > li');
           if (window.matchMedia('(orientation: portrait)').matches) {
             $(productWidth).css('width', itemWidth);
-            $('.tvp-no-products-banner').css({'width': itemWidth,'height': '85px'});
             $('#tvplb .tvp-lb-content').css({'height': '','width': ''});
             $('.tvp-lb-close').css({'height': '','width': ''});
           }else {
             $(productWidth).css('width', itemWidth);
-            $('.tvp-no-products-banner').css({'width': itemWidth,'height': '85px'});
             $('#tvplb .tvp-lb-content').css({'height': '100%','width': '60%'});
             $('.tvp-lb-close').css({'height': '26px','width': '26px'});
           }
@@ -430,12 +434,10 @@ define(function(require) {
             var productWidth = $('#tvp-mobile-products-list > li');
             if (window.matchMedia('(orientation: portrait)').matches) {
               $(productWidth).css('width',itemWidth);
-              $('.tvp-no-products-banner').css('width',itemWidth);
               $('#tvplb .tvp-lb-content').css({'width': '','height': ''});
               $('.tvp-lb-close').css({'height': '','width': ''});
             }else {
               $(productWidth).css('width',itemWidth);
-              $('.tvp-no-products-banner').css('width',itemWidth);
               $('#tvplb .tvp-lb-content').css({'height': '100%','width': '60%'});
               $('.tvp-lb-close').css({'height': '26px','width': '26px'});
             }
@@ -533,6 +535,10 @@ define(function(require) {
           var data = products[i].data;
           var array = JSON.parse(data);
           var priceHtml = '<div class="tvp-price">';
+          if (that.isMobile() && (products[i].title.length > 42)){
+            var shortTitle = jQuery.trim(products[i].title).substring(0, 42).split(" ").slice(0, -1).join(" ")+" ...";
+            products[i].title = shortTitle;
+          }
           if (array.price) {
             price = array.price.toString().replace(/[^0-9.]+/g, '');
             price = parseFloat(price).toFixed(2);
