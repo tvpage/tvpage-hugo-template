@@ -72,6 +72,9 @@
 	.featured-channel {	
 		padding: 0 3px 3px;
 		margin: 0;	
+		&:first-child{
+			padding-top: 3px;
+		}
 		&:last-child{
 			padding-bottom: 15px;
 		}
@@ -134,6 +137,9 @@
 		}
 	}
 	.mobile-search-modal{
+		.modal-content{
+			min-height: 667px;
+		}
 		&-header{
 			border-bottom: 1px solid #fff;
 			padding-bottom: 15px;
@@ -173,6 +179,7 @@
 			line-height: 22px;
 			border-bottom: 1px solid rgba(255,255,255, 0.5);
 			padding: 15px 0;
+			display: none;
 		}
 	}
 	.section{
@@ -258,13 +265,6 @@
 		button{
 			text-align: left;
 			width: 100%;
-			span{
-				right: 0;
-				position: relative;
-				top: 0;
-				bottom: 0;
-				margin: 5px 6px auto 0;
-			}
 		}
 		.tvp-filter-reset{
 			  float : right;
@@ -406,27 +406,31 @@
 			list-style: none;
 			padding: 0;
 			li{
-				padding: 5px 0;
-				border-bottom: 1px solid rgba(255,255,255,0.5);
-				color: #fff;
+				padding-top: 5px;
+				border-bottom: 1px solid rgba(255,255,255,0.5);				
 				font-size: 18px;
 			}
 		}
-		.item{			
-			height: 42px;
-			position: relative;
-			.res-thumbnail{
-				width: 74px;
-				display: inline-block;
-				float: left;
-				@include aspect-ratio(16, 9);
-			}
-			.res-title{
-				display: inline-block;
-				font-size: 18px;
-				line-height: 22px;
-				margin-left: 15px;
-			}
+		.item{
+			padding: 0;
 		}
+		.latest-video{
+			margin: 0;
+			display: inline-block;
+		}
+		.latest-video-thumbnail{
+			width: 74px;
+			display: inline-block;
+			position: absolute;
+		}
+		.latest-video-title{
+			display: inline-block;
+			font-size: 18px;
+			margin: 0 0 0 89px;
+			color: #fff;
+			min-height: 42px;
+			max-height: 42px;
+			line-height: 21px;
+		}		
 	}
 }
