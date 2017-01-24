@@ -1,0 +1,23 @@
+{{- range $i, $def := (getJSON (printf "themes/tvpage/defaults/%s.json" .Type)).option -}}
+{{- $.Scratch.SetInMap "settings" .code .value -}}
+{{- end -}}
+{{- range $i, $param := .Params -}}
+{{- $.Scratch.SetInMap "settings" $i . -}}
+{{- end -}}
+
+<style type="text/css">{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css.html" .Type ) .)) | safeCSS }}</style>
+<div id='{{ ($.Scratch.Get "settings").name }}'></div>
+<script src="//a.tvpage.com/tvpa.min.js"></script>
+<script src="//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-{{ ($.Scratch.Get "settings").version }}-min.js"></script>
+{{ ($.Scratch.Get "settings").loginid }}
+<script>
+  window.__TVPage__ = window.__TVPage__ || {};
+  __TVPage__.config = __TVPage__.config || {};
+  __TVPage__.config[{{ ($.Scratch.Get "settings").name }}] = {
+    loginId: {{ .Param "loginid" }},
+    channel: {
+      id: {{ ($.Scratch.Get "settings").channelid }}
+    }
+  };
+</script>
+<script src="/{{.Type}}/lib.js"></script>
