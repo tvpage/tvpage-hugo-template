@@ -2,6 +2,16 @@
 {{ if $channel }}
   {{ $.Scratch.SetInMap "settings" "channelData" $channel }}
 {{ end }}
+{{$qty := (len $.Site.Data.channelVideos) }}
+{{$numbers := (seq 0 $qty )}}
+{{range $numbers}}
+  {{ $working := . }}
+  {{$page := index $.Site.Data.channelVideos (printf "x%s_page_%d" $channel.id $working  )}}
+  {{ if (isset $page "data") }}
+    {{ $.Scratch.Add "total" (len $page.data ) }}
+  {{ end }}
+{{end}}
+{{ $channelVideosQty := $.Scratch.Get "total" }}
 <main id="main-content" class="main-content">
     <!-- <section class="channel-page-banner" style="background-image: url('/{{.Type}}/images/channel/{{.Params.channelid}}-banner.jpg');"> -->
     <section class="channel-page-banner">
@@ -12,7 +22,7 @@
           {{ $channel.title }}
         </div>
         <div class="main-channel-banner-total-videos">
-          60 videos
+          {{ $channelVideosQty }} videos
         </div>
         <div class="main-channel-banner-subscribe">
           <a id="subscribe-channel" href="#" data-channelid="{{ .Params.channelid }}" class="subscribe-btn">subscribe to channel</a>
@@ -23,17 +33,17 @@
     <section class="filter-menu main-start cross-center">
       <div class="container">
             <div class="btn-group">
-              <button type="button" disabled="disabled" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="selected">Product Category</span> <span class="caret"></span>
               </button>
-              <ul id="product_category" class="dropdown-menu">
+              <ul id="product_category" style="display: none" class="dropdown-menu">
               </ul>
             </div>
             <div class="btn-group">
-              <button type="button" disabled="disabled" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="selected">Type of Video</span> <span class="caret"></span>
               </button>
-              <ul id="type_of_video" class="dropdown-menu">
+              <ul id="type_of_video" style="display: none" class="dropdown-menu">
               </ul>
             </div>
             <span class="tvp-filter-reset">reset</span>

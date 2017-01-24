@@ -6,9 +6,9 @@
             <input id="tvp-desktop-search-input" type="text" placeholder="SEARCH" name="search">
             <!-- <div class="brand-header-search-button"></div> -->
             <!-- <button class="brand-header-search-button close"></button> -->
-            <a href="#" class="brand-header-search-button"></a>
+            <a class="brand-header-search-button"></a>
             <!-- <a href="#" class="share-icon twitter"></a> -->
-            <p id="tvp-null-results" class="tvp-null-results">No results were found, try again!</p>
+            <p id="tvp-null-results" class="tvp-null-results"> No results found for: <span class="tvp-null-results-word"></span></p>
             <p class="tvp-results-filler"></p>
             <div id="tvp-desktop-search-results-holder" class="tvp-desktop-search-results-holder">
                 <div id="tvp-desktop-search-results" class="tvp-desktop-search-results">
@@ -18,7 +18,7 @@
           </div>
         </div>
         <div class="brand-header-logo main-center cross-center">
-          <a class="logo" href="{{ .Site.BaseURL }}" title="Return to homepage">
+          <a class="logo" href="{{ .Site.BaseURL }}" type="submit" title="Return to homepage">
         <img class="img-responsive" src='/{{ .Type }}/images/logo.png' alt="{{ .Site.Title }}" />
         </a>
         </div>
