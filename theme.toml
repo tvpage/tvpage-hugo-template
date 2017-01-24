@@ -6,7 +6,11 @@ min_version = 0.17
 	name = "Captivate"
 	uniqueName = "captivate"
 	path = "layouts/captivate"
-	preview = "http://preview.tvpage.com"
+	preview = "https://goodlookingbean.netlify.com/"
+	[[tvp-templates.thumbnails]]
+		desktop = "https://s3-us-west-2.amazonaws.com/tvpage-a.tvpage.com/dev/site-templates/preview/dtop_preview_captivate.png"
+		mobile = ""
+		tablet = ""
 
 [[tvp-widgets]]
 	name = "Carousel"
