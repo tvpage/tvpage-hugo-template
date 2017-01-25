@@ -60,7 +60,7 @@ root.addEventListener('message',function(e) {
           poster: true,
           techOrder: 'html5,flash',
           analytics: { tvpa: {{ ($.Scratch.Get "settings").tvpa }} },
-          apiBaseUrl: '//app.tvpage.com',
+          apiBaseUrl: '//api.tvpage.com/v1',
           swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-{{ ($.Scratch.Get "settings").version }}-flash.swf',
           onReady: function(e, player){
             instance = player;

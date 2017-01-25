@@ -24,29 +24,29 @@ min_version = 0.17
 		mobile = ""
 		tablet = ""
 
-[[tvp-widgets]]
-	name = "Inline"
-	uniqueName = "inline"
-	path = "layouts/inline"
-	preview = "http://preview.tvpage.com"
-	settings = ['playback','products']
-	description = " Inline provides an engaging experience and are a great choice for presenting many videos or products within a defined space. The user can interact with the videos and the products without ever launching a modal."
-	[[tvp-widgets.thumbnails]]
-		desktop = "http://do0631budpzeh.cloudfront.net/dev/widgets/templates_preview/preview_Inline_dtop.png"
-		mobile = ""
-		tablet = ""
+#[[tvp-widgets]]
+#	name = "Inline"
+#	uniqueName = "inline"
+#	path = "layouts/inline"
+#	preview = "http://preview.tvpage.com"
+#	settings = ['playback','products']
+#	description = " Inline provides an engaging experience and are a great choice for presenting many videos or products within a defined space. The user can interact with the videos and the products without ever launching a modal."
+#	[[tvp-widgets.thumbnails]]
+#		desktop = "http://do0631budpzeh.cloudfront.net/dev/widgets/templates_preview/preview_Inline_dtop.png"
+#		mobile = ""
+#		tablet = ""
 
-[[tvp-widgets]]
-	name = "PDP"
-	uniqueName = "pdp"
-	path = "layouts/pdp"
-	preview = "http://preview.tvpage.com"
-	settings = ['playback']
-	description = "Product Detail Page (PDP) is purpose-built to that dynamically renders a video that matches an indivdual SKU. Use this widget to close the deal especially on higher-priced items."
-	[[tvp-widgets.thumbnails]]
-		desktop = "http://do0631budpzeh.cloudfront.net/dev/widgets/templates_preview/preview_PDP_dtop.png"
-		mobile = ""
-		tablet = ""
+#[[tvp-widgets]]
+#	name = "PDP"
+#	uniqueName = "pdp"
+#	path = "layouts/pdp"
+#	preview = "http://preview.tvpage.com"
+#	settings = ['playback']
+#	description = "Product Detail Page (PDP) is purpose-built to that dynamically renders a video that matches an indivdual SKU. Use this widget to close the deal especially on higher-priced items."
+#	[[tvp-widgets.thumbnails]]
+#		desktop = "http://do0631budpzeh.cloudfront.net/dev/widgets/templates_preview/preview_PDP_dtop.png"
+#		mobile = ""
+#		tablet = ""
 
 [[tvp-widgets]]
 	name = "Side Bar"
