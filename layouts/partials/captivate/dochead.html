@@ -5,7 +5,7 @@
 {{ $.Scratch.SetInMap "settings" $i . }}
 {{ end }}
 {{ if isset .Site.Params "tvppages" }}
-{{ range $i, $opt := (where (.Param "tvppages") "for" "styles") }}
+{{ range (.Param "tvppages") }}
 {{ $.Scratch.SetInMap "settings" .code .value }}
 {{ end }}
 {{ end }}
