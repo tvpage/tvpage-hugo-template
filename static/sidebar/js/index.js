@@ -774,6 +774,9 @@ define(function(require) {
 
   // At DOM Ready!
   $(function() {
+    $('#iframe')     
+          .contents().find('body')
+          .append('<div id="'+holderId+'">');
     var lightBoxTemplate = '<div id="tvplb"><div class="tvp-lb-content"><div class="tvp-lb-close"></div><div class="tvp-lb-header"><div class="tvp-related-products">SPONSORED PRODUCTS</div><h4 class="tvp-lb-title"></h4></div><div class="tvp-lb-body"></div><div class="tvp-no-products-banner" data-ns="footer" data-pos="btf" data-collapse="true"></div></div><div id="tvp-lb-overlay" class="tvp-lb-overlay"></div></div>';
     $("#"+holderId).append('<div class="cz-line-heading"><div class="cz-line-heading-inner">Recommended Videos</div></div><div id="tvp-videos"></div><div id="lightbox" class="off">' + lightBoxTemplate + '</div><a class="tvplogo" class="tvp-clearfix" href="//www.tvpage.com" target="_blank"></a>').addClass("tvp-clearfix");
     var playerTemplate = '<div id="tvpp"><div id="html5MobilePlayBtn" class="tvp-html5-play-button"></div><div class="tvpp-wrapper"><div id="tvpp-holder" class="tvpp-holder"></div><div class="tvp-video-overlay"></div></div></div>';

@@ -13332,18 +13332,8 @@ define('js/index',['require','jquery-private','iscroll','text!css/styles.css'],f
     CONFIG = $.extend({}, CONFIG, __TVPage__.config[holderId]);
   }
 
-  if (!redefine(CONFIG,'channel')) {
-    CONFIG = {
-        apiUrl: '//app.tvpage.com/api',
-        loginId: '1758881',
-        channel: {
-          id: '81979997'
-        }
-    };
-  }
-
   var cleanVideos = function(){ $('#tvp-videos').off().html('');};
-  var sendAnalitics = function(data, type) {
+  var sendAnalytics = function(data, type) {
     if ('object' === typeof data && type) {
       if (window._tvpa) {
         return _tvpa.push(['track', type, $.extend(data, {
@@ -13411,7 +13401,7 @@ define('js/index',['require','jquery-private','iscroll','text!css/styles.css'],f
       $(document).on('click', '.tvp-product', function(e) {
         var $link = $(this).closest('a');
         if ($link.length) {
-          sendAnalitics({
+          sendAnalytics({
             ct: $(this).data('id'),
             vd: $(this).data('videoId')
           }, 'pk');
@@ -13419,7 +13409,7 @@ define('js/index',['require','jquery-private','iscroll','text!css/styles.css'],f
         }
       });
       $(document).on('click', '.tvp-img-link, .tvp-call-to-action', function(e) {
-        sendAnalitics({
+        sendAnalytics({
           ct: $(this).data('id'),
           vd: $(this).data('videoId')
         }, 'pk');
@@ -13790,7 +13780,7 @@ define('js/index',['require','jquery-private','iscroll','text!css/styles.css'],f
       var THAT = this;
       if (products.length > 0) {
         $.each(products, function(index, product) {
-          sendAnalitics({
+          sendAnalytics({
             ct: product.id,
             vd: product.entityIdParent
           }, 'pi');
@@ -14006,13 +13996,13 @@ define('js/index',['require','jquery-private','iscroll','text!css/styles.css'],f
         $.ajax({
           dataType: 'script',
           cache: true,
-          url: '//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-1.8.4-min.js'
+          url: '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.4-min.js'
         }).done(function() {
           if (window.TVPage) {
             that.bindWindowEvents();
             window.TVPlayer = new TVPage.player({
               divId: 'tvpp-holder',// this will need to be dynamic.
-              swf: '//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-1.8.4-flash.swf',
+              swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.4-flash.swf',
               displayResolution: that.isMobile() ? '360p' : '480p',
               analytics: {
                 tvpa: true
@@ -14093,6 +14083,9 @@ define('js/index',['require','jquery-private','iscroll','text!css/styles.css'],f
 
   // At DOM Ready!
   $(function() {
+    $('#iframe')     
+          .contents().find('body')
+          .append('<div id="'+holderId+'">');
     var lightBoxTemplate = '<div id="tvplb"><div class="tvp-lb-content"><div class="tvp-lb-close"></div><div class="tvp-lb-header"><div class="tvp-related-products">SPONSORED PRODUCTS</div><h4 class="tvp-lb-title"></h4></div><div class="tvp-lb-body"></div><div class="tvp-no-products-banner" data-ns="footer" data-pos="btf" data-collapse="true"></div></div><div id="tvp-lb-overlay" class="tvp-lb-overlay"></div></div>';
     $("#"+holderId).append('<div class="cz-line-heading"><div class="cz-line-heading-inner">Recommended Videos</div></div><div id="tvp-videos"></div><div id="lightbox" class="off">' + lightBoxTemplate + '</div><a class="tvplogo" class="tvp-clearfix" href="//www.tvpage.com" target="_blank"></a>').addClass("tvp-clearfix");
     var playerTemplate = '<div id="tvpp"><div id="html5MobilePlayBtn" class="tvp-html5-play-button"></div><div class="tvpp-wrapper"><div id="tvpp-holder" class="tvpp-holder"></div><div class="tvp-video-overlay"></div></div></div>';

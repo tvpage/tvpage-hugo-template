@@ -5,7 +5,7 @@
 {{- $.Scratch.SetInMap "settings" $i . -}}
 {{- end -}}
 
-<style type="text/css">{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css.html" .Type ) .)) | safeCSS }}</style>
+<style id="tvp-css-lib" type="text/css">{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css.html" .Type ) .)) | safeCSS }}</style>
 <div id='{{ ($.Scratch.Get "settings").name }}'></div>
 <script src="//a.tvpage.com/tvpa.min.js"></script>
 <script src="//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-{{ ($.Scratch.Get "settings").version }}-min.js"></script>
