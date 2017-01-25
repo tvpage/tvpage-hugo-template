@@ -131,8 +131,9 @@
                     mouseWheel: true,
                     scrollbars: true
                 });
+            }else{
+                return;
             }
-            return;
         },
         handleScrollEnd : function() {
             if (Math.abs(this.maxScrollY) - Math.abs(this.y) < 10) {
@@ -168,7 +169,8 @@
         stripHtml : function(html) {
             var helper = document.createElement('DIV');
             helper.innerHTML = html;
-            return helper.textContent || helper.innerText || '';
+            var helperText = helper.textContent || helper.innerText || '';
+            return helperText;
         },
         handleVideoResults: function(results) {
             if (results.length) {
