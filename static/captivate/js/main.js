@@ -616,6 +616,7 @@
           tvp_Player.updateVideoElements();
           tvp_Player.getVideoIndex(activeVideoId, function(index){
             tvp_Player.getNextVideo(index, $.proxy(tvp_Player.handleNextvideo) );
+            ProductSlider.initialize({videoId: activeVideoId});
           });
         },
         startPlayback : function(video){
@@ -797,6 +798,28 @@
         };
 
     
+    var ProductSlider = {
+        initialize: function (settings) {
+            var opt = settings || {}
+                that = this;
+            channelDataExtractor.products(opt.videoId)
+                .done(function (results) {
+                    if(results.length){
+                        that.renderProducts(results);
+                    }
+                });
+        },
+        renderProducts: function (results) {
+            var template = '<li><div id="{id}" class="tvp-product-image"><div class="content" style="background-image: url({imageUrl})"></div></div></li>',
+                html = '';
+            _.each(results, function (el, idx) {
+                var result = results[idx];
+                // result['url'] = that.getResultUrl(result);                    
+                html += renderUtil.tmpl(template, result);
+            });
+            $('.tvp-products-wrapper ul').html(html);
+        }
+    }
 
     $('.slider').slick({
         infinite: true,
@@ -850,7 +873,7 @@
         if (!isFullScreen) { tvp_Player.resizePlayer(); }
       });
 
-      
+      ProductSlider.initialize({videoId: TVSite.channelVideosData.video.id});
       
     }
 
