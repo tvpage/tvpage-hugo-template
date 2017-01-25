@@ -845,7 +845,7 @@
     if (TVSite.isPlayerPage) {
       window.TVPlayer = new TVPage.player({
         divId: 'TVPagePlayer',
-        swf: '//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-1.5.2-flash.swf',
+        swf: '//appcdn.tvpage.com//player/assets/tvp/tvp-1.5.2-flash.swf',
         displayResolution: tvp_Player.playerResolution,
         analytics: { tvpa : false },
         techOrder: tvp_Player.playerTechOrder,

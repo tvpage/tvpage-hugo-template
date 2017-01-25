@@ -693,13 +693,13 @@ define(function(require) {
         $.ajax({
           dataType: 'script',
           cache: true,
-          url: '//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-1.8.4-min.js'
+          url: '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.4-min.js'
         }).done(function() {
           if (window.TVPage) {
             that.bindWindowEvents();
             window.TVPlayer = new TVPage.player({
               divId: 'tvpp-holder',// this will need to be dynamic.
-              swf: '//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-1.8.4-flash.swf',
+              swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.4-flash.swf',
               displayResolution: that.isMobile() ? '360p' : '480p',
               analytics: {
                 tvpa: true

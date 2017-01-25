@@ -31,7 +31,7 @@
   var s, as = d.getElementsByTagName(t)[0];
   if (d.getElementById(id)) return;
   s = d.createElement(t); s.id = id;
-  s.src = '//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-{{ ($.Scratch.Get "settings").version }}-min.js';
+  s.src = '//appcdn.tvpage.com/player/assets/tvp/tvp-{{ ($.Scratch.Get "settings").version }}-min.js';
   as.parentNode.insertBefore(s, as);
 }(document, 'script', 'tvpage-player'));</script>
 
