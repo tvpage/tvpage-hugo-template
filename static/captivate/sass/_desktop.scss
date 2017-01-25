@@ -1,5 +1,11 @@
+h1.seo{
+	display: none;
+}
 .channel-items{
 	@include aspect-ratio(16, 9);
+	img{
+		max-height: 100%;
+	}
 }
 .thumb {
 	display: block;
@@ -118,6 +124,9 @@
 	}
 	&-thumbnail{
 		@include aspect-ratio(16,9);
+		img{
+			max-width: 100%;
+		}
 	}
 	&-title{
 		font-family: Dosis;
@@ -353,10 +362,9 @@ nav.menu-bar{
 		padding: 0 30px;
 	}
 	.brand-item{
-		// border: 1px solid yellow;
 		@include aspect-ratio(219, 126);
-		.content{
-			background-size: contain;
+		img{
+			width: 100%;
 		}
 	}
 }

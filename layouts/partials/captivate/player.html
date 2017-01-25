@@ -4,3 +4,21 @@
       <div id="html5-play-button" class="html5-play-button">P</div>
   </div>
 </div>
+{{ $videoDetails := $.Scratch.Get "videoDetails" }}
+{{ $channelData := $.Scratch.Get "channelData" }}
+<div itemprop="video" itemscope itemtype="http://schema.org/VideoObject">
+	<meta itemprop="name" content="{{$videoDetails.title}}">
+    <meta itemprop="uploadDate" content="{{$videoDetails.date_created}}">
+    <meta itemprop="dateModified" content="{{$videoDetails.date_modified}}">
+    <meta itemprop="thumbnailUrl" content='{{ if eq $videoDetails.asset.type "mp4" }}https:{{ end }}{{$videoDetails.asset.thumbnailUrl}}'>
+    <meta itemprop="duration" content="{{$videoDetails.duration}}">
+    <meta itemprop="description" content="{{$videoDetails.description}}">
+    <meta itemprop="embedurl" content="https://app.tvpage.com/swf/guide/{{$videoDetails.titleTextEncoded}}?u={{$videoDetails.loginId}}&amp;p={{$channelData.id}}&amp;v={{$videoDetails.id}}">
+    <div itemprop="thumbnail" itemscope itemtype="http://schema.org/ImageObject">
+        <meta itemprop="url" content='{{ if eq $videoDetails.asset.type "mp4" }}https:{{ end }}{{$videoDetails.asset.thumbnailUrl}}'>
+    </div>
+    <meta itemprop="playerType" content="HTML5 Flash">
+    <meta itemprop="isFamilyFriendly" content="True">
+    <meta itemprop="interactionCount" content="{{ $videoDetails.asset.views }}">
+    <meta itemprop="datePublished" content="{{$videoDetails.date_modified}}">
+</div>

@@ -18,11 +18,17 @@
 						{{ range where $allChannelPages "Title" $currentPage.title }}
 						<div class="col-xs-12 col-sm-6 col-md-6 featured-channel">
 							<article class="channel-items">
-								<a href="{{ .Permalink }}" class="content" style='background-image: url(/{{ $type }}/images/channel/{{$currentChannelId}}.jpg);'>
+								<!-- <a href="{{ .Permalink }}" class="content" style='background-image: url(/{{ $type }}/images/channel/{{$currentChannelId}}.jpg);'>
 									<span class="featured-channel-container">
 										<span class="featured-channel-title">{{ $currentPage.title }}</span>
 									</span>
-								</a>	
+								</a>	 -->
+								<a href="{{ .Permalink }}" class="content" style='background-image: url(/{{ $type }}/images/channel/{{$currentChannelId}}.jpg);'>
+									<img src="/{{ $type }}/images/channel/{{$currentChannelId}}.jpg" alt="">
+									<span class="featured-channel-container">
+										<span class="featured-channel-title">{{ $currentPage.title }}</span>
+									</span>
+								</a>
 							</article>
 						</div>
 						{{ end }}
@@ -37,7 +43,10 @@
 					{{ if in ($.Scratch.Get "settings").channelsliderids .Params.channelid }}
 					<div>
 						<div class="brand-item">				
-							<div class="content" style="background-image: url(/{{ .Type }}/images/{{.Params.channelid}}-logo.png)"></div>
+							<!-- <div class="content" style="background-image: url(/{{ .Type }}/images/{{.Params.channelid}}-logo.png)"></div> -->
+							<div class="content">
+								<img src="/{{ .Type }}/images/{{.Params.channelid}}-logo.png" alt="">
+							</div>
 						</div>
 					</div>
 					{{ end }}
@@ -62,8 +71,5 @@
           		<button type="button" class="btn btn-primary btn-more-button">LOAD MORE</button>
         	</div>
     	</div>
-    		
-		
 	</div>
-
 </main>

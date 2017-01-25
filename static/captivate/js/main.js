@@ -874,7 +874,9 @@
       });
 
       ProductSlider.initialize({videoId: TVSite.channelVideosData.video.id});
-      
+      $('div[itemprop="video"] meta[itemprop="uploadDate"],meta[itemprop="datePublished"]').attr('content', function(i, val){        
+        return formatDate(val);
+      });      
     }
 
 

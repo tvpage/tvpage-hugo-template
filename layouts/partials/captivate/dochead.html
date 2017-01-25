@@ -21,3 +21,4 @@
     <style>{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css.html" .Type ) .)) | safeCSS }}</style>
   </head>
   <body>
+  <h1 class="seo">{{ block "title" . }}{{ end }}{{ .Site.Title }}</h1>

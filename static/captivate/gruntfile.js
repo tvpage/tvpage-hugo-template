@@ -27,6 +27,11 @@ module.exports = function(grunt) {
                 files: 'sass/*.scss',
                 tasks: ['sass', 'postcss:dist']
             }
+            // ,
+            // js:{
+            //   files: 'js/*.js',
+            //   tasks: ['uglify']
+            // }
         },
         postcss:{
             options:{
@@ -38,12 +43,20 @@ module.exports = function(grunt) {
             dist:{
                 src: 'css/styles.css'
             }
+        },
+        uglify: {
+          dist: {
+            files: {
+              'js/main.min.js': ['js/main.js']
+            }
+          }
         }
     });
 
     grunt.loadNpmTasks('grunt-sass');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-postcss');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
 
     grunt.registerTask('default', ['sass:dev', 'watch']);
     grunt.registerTask('build', ['sass:dist', 'postcss:dist']);

@@ -1,8 +1,15 @@
 <div class="col-sm-4 col-md-4">
 	<a href="{{ .url }}" class="latest-video">
 		<div class="latest-video-thumbnail">		
-		    <div class="content" {{with .asset.thumbnailUrl}} style="background-image: url({{ . }});"{{else}} style='background-image: url(/{{ .Type }}{{ .Param "thumbdefault" }});'{{end}}>
+		    <!-- <div class="content" {{with .asset.thumbnailUrl}} style="background-image: url({{ . }});"{{else}} style='background-image: url(/{{ .Type }}{{ .Param "thumbdefault" }});'{{end}}>
 	      		<div class="latest-video-hover">
+					<div class="play-icon"></div>
+				</div>
+	      </div> -->
+	      <div class="content">
+	      	<img {{with .asset.thumbnailUrl}} src="{{ . }}"{{else}} src='/{{ .Type }}{{ .Param "thumbdefault" }}'{{end}}
+	      			alt="">
+	      		<div class="latest-video-hover">	      			
 					<div class="play-icon"></div>
 				</div>
 	      </div>

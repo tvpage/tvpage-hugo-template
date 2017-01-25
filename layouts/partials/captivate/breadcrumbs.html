@@ -1,14 +1,28 @@
 <nav class="breadcrumb-navigation">
 	<ul class="breadcrumb">
-		<li><a href="{{ .Site.BaseURL }}"><i class="fa fa-home" aria-hidden="true"></i>Home</a></li>{{ if not (eq .Layout "home") }}
+		<li itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+			<a itemprop="url" href="{{ .Site.BaseURL }}">
+				<i class="fa fa-home" aria-hidden="true"></i>
+				<span itemprop="title">Home</span>
+			</a>
+		</li>
+		{{ if not (eq .Layout "home") }}
 			{{ if eq .Layout "channel" }}
-				<li class="active">{{ .Title }}</li>
+				<li id="breadcrumb-1" itemscope itemtype="http://data-vocabulary.org/Breadcrumb" class="active">
+					<a itemprop="url" href="{{ .Permalink }}">
+						<span itemprop="title">{{ .Title }}</span>
+					</a>
+				</li>
 			{{ else }}
 				{{ $channel := index $.Site.Data.channels (printf "x%s" .Params.channelid ) }}
-				<li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"><a href='{{ print "/c/" $channel.titleTextEncoded "/" $channel.id "/" }}' itemprop="url"><span itemprop="title">{{ $channel.title }}</span></a></li>
+				<li id="breadcrumb-1" itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href='{{ print "/c/" $channel.titleTextEncoded "/" $channel.id "/" }}' itemprop="url"><span itemprop="title">{{ $channel.title }}</span></a></li>
 			{{ end }}
 			{{ if eq .Layout "channelVideo" }}
-				<li class="active">{{ .Title }}</li>
+				<li id="breadcrumb-2" itemscope itemtype="http://data-vocabulary.org/Breadcrumb"class="active">
+					<a itemprop="url" href="{{ .Permalink }}">
+						<span itemprop="title">{{ .Title }}</span>
+					</a>
+				</li>
 			{{ end }}
 		{{ end }}
 	</ul>
