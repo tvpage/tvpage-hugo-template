@@ -59,5 +59,5 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
 
     grunt.registerTask('default', ['sass:dev', 'watch']);
-    grunt.registerTask('build', ['sass:dist', 'postcss:dist']);
+    grunt.registerTask('build', ['sass:dist', 'postcss:dist', 'uglify:dist']);
 };
