@@ -23,18 +23,8 @@ define(function(require) {
     CONFIG = $.extend({}, CONFIG, __TVPage__.config[holderId]);
   }
 
-  if (!redefine(CONFIG,'channel')) {
-    CONFIG = {
-        apiUrl: '//app.tvpage.com/api',
-        loginId: '1758881',
-        channel: {
-          id: '81979997'
-        }
-    };
-  }
-
   var cleanVideos = function(){ $('#tvp-videos').off().html('');};
-  var sendAnalitics = function(data, type) {
+  var sendAnalytics = function(data, type) {
     if ('object' === typeof data && type) {
       if (window._tvpa) {
         return _tvpa.push(['track', type, $.extend(data, {
@@ -102,7 +92,7 @@ define(function(require) {
       $(document).on('click', '.tvp-product', function(e) {
         var $link = $(this).closest('a');
         if ($link.length) {
-          sendAnalitics({
+          sendAnalytics({
             ct: $(this).data('id'),
             vd: $(this).data('videoId')
           }, 'pk');
@@ -110,7 +100,7 @@ define(function(require) {
         }
       });
       $(document).on('click', '.tvp-img-link, .tvp-call-to-action', function(e) {
-        sendAnalitics({
+        sendAnalytics({
           ct: $(this).data('id'),
           vd: $(this).data('videoId')
         }, 'pk');
@@ -481,7 +471,7 @@ define(function(require) {
       var THAT = this;
       if (products.length > 0) {
         $.each(products, function(index, product) {
-          sendAnalitics({
+          sendAnalytics({
             ct: product.id,
             vd: product.entityIdParent
           }, 'pi');
@@ -697,13 +687,13 @@ define(function(require) {
         $.ajax({
           dataType: 'script',
           cache: true,
-          url: '//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-1.8.4-min.js'
+          url: '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.4-min.js'
         }).done(function() {
           if (window.TVPage) {
             that.bindWindowEvents();
             window.TVPlayer = new TVPage.player({
               divId: 'tvpp-holder',// this will need to be dynamic.
-              swf: '//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-1.8.4-flash.swf',
+              swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.4-flash.swf',
               displayResolution: that.isMobile() ? '360p' : '480p',
               analytics: {
                 tvpa: true
