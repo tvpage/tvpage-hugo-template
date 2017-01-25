@@ -5,7 +5,7 @@
 {{ $.Scratch.SetInMap "settings" $i . }}
 {{ end }}
 {{ if isset .Site.Params "tvppages" }}
-{{ range $i, $opt := (where (.Param "tvppages") "for" "styles") }}
+{{ range (.Param "tvppages") }}
 {{ $.Scratch.SetInMap "settings" .code .value }}
 {{ end }}
 {{ end }}
@@ -21,3 +21,4 @@
     <style>{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css.html" .Type ) .)) | safeCSS }}</style>
   </head>
   <body>
+  <h1 class="seo">{{ block "title" . }}{{ end }}{{ .Site.Title }}</h1>

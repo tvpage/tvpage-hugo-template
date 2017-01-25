@@ -15,5 +15,12 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+    overflow: hidden;
+    > img{ //SEO Fix
+        top: 50%;
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%, -50%);      
+    }
   }
 }
