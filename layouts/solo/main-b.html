@@ -11,7 +11,7 @@
   <div id="tvpplayer-play"></div>
 </div>
 <script src="//a.tvpage.com/tvpa.min.js"></script>
-<script src="//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-{{ ($.Scratch.Get "settings").version }}-min.js"></script>
+<script src="//appcdn.tvpage.com/player/assets/tvp/tvp-{{ ($.Scratch.Get "settings").version }}-min.js"></script>
 <script>;(function(root,d){
 var mobile = /Mobi/.test(navigator.userAgent),
   redefine = function(o, pr){return 'undefined' !== typeof o[pr];},
@@ -61,7 +61,7 @@ root.addEventListener('message',function(e) {
           techOrder: 'html5,flash',
           analytics: { tvpa: {{ ($.Scratch.Get "settings").tvpa }} },
           apiBaseUrl: '//app.tvpage.com',
-          swf: '//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-{{ ($.Scratch.Get "settings").version }}-flash.swf',
+          swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-{{ ($.Scratch.Get "settings").version }}-flash.swf',
           onReady: function(e, player){
             instance = player;
             if (redefine(instance,'options') && redefine(instance.options,'DOMContainer')) {

@@ -11,7 +11,7 @@ var playerSettings = {
   techOrder: 'html5,flash',
   analytics: { tvpa: false },
   apiBaseUrl: '//app.tvpage.com',
-  swf: "//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-1.8.3-flash.swf"
+  swf: "//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.3-flash.swf"
 };
 
 var extractAsset = function(video) {
