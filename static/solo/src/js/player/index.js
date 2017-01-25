@@ -96,7 +96,7 @@ define(function(require) {
         poster: true,
         techOrder: 'html5,flash',
         analytics: { tvpa: false },
-        apiBaseUrl: '//app.tvpage.com',
+        apiBaseUrl: '//api.tvpage.com/v1',
         swf: "//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.3-flash.swf"
       };
     }
