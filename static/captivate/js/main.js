@@ -1,32 +1,29 @@
-(function($, IScroll, _){
-	var liveResultsPage=0,
-        btnLoadMore = $(".btn-more-button"),
-        searchDesktopInput = $("#tvp-desktop-search-input"),
-        $nullResults = $('#tvp-null-results'),
-    		resultsScroller,
-        $searchMobileInput = $("#tvp-mobile-search-input"),
-        $searchMobileCancelBtn = $('.mobile-search-modal-cancel-btn'),
-        $searchMobileResultHolder = $('#tvp-mobile-search-results'),
-        $nullMobileResults = $('#tvp-mobile-null-results'),
-        isLoadMore = false,
-        isIOS = (/iPhone|iPad|iPod/i.test(navigator.userAgent)) ? true : false,
-        isFiltering = false;
-        isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        isFiltering = false,
-        initialPlay = true,
-        isFullScreen = false,
-        activeVideoId = null,
-        videoList = [],
-        isMobile = (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) ? true : false,
-        isMac = navigator.userAgent.indexOf('Mac OS X') != -1,
-        isFireFox = navigator.userAgent.indexOf('Firefox') != -1,
-                      isFiltered = false,
-        IE = function ( version ) {
-        return RegExp('msie' + (!isNaN(version)?('\\s'+version):''), 'i').test(navigator.userAgent);
-        },
-        playerResolution = isMobile ? '360p' : '480p',
-        isFlashRequired = ( (IE(9) || IE(10)) || (isMac && isFireFox)  ),
-        playerTechOrder = isFlashRequired ? 'flash,html5' : 'html5,flash';
+(function($, IScroll, _, BigScreen){
+	var liveResultsPage=0;
+    var btnLoadMore = $(".btn-more-button");
+    var searchDesktopInput = $("#tvp-desktop-search-input");
+    var $nullResults = $('#tvp-null-results');
+    var	resultsScroller;
+    var $searchMobileInput = $("#tvp-mobile-search-input");
+    var $searchMobileCancelBtn = $('.mobile-search-modal-cancel-btn');
+    var $searchMobileResultHolder = $('#tvp-mobile-search-results');
+    var $nullMobileResults = $('#tvp-mobile-null-results');
+    var isLoadMore = false;
+    var isIOS = (/iPhone|iPad|iPod/i.test(navigator.userAgent)) ? true : false;
+    var isFiltering = false;
+    var initialPlay = true;
+    var isFullScreen = false;
+    var activeVideoId = null;
+    var videoList = [];
+    var isMobile = (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) ? true : false;
+    var isMac = navigator.userAgent.indexOf('Mac OS X') != -1;
+    var isFireFox = navigator.userAgent.indexOf('Firefox') != -1;
+    var IE = function ( version ) {
+         return RegExp('msie' + (!isNaN(version)?('\\s'+version):''), 'i').test(navigator.userAgent);
+        };
+    var playerResolution = isMobile ? '360p' : '480p';
+    var isFlashRequired = ( (IE(9) || IE(10)) || (isMac && isFireFox)  );
+    var playerTechOrder = isFlashRequired ? 'flash,html5' : 'html5,flash';
     var formatDate = function(unixTimestamp) {
         var months = ['January','February','March','April','May','June','July','August','September','October','November','December'],
         	d = (new Date(Number(unixTimestamp) * 1000)),
@@ -473,7 +470,6 @@
                 }
                 renderUtil.addFilters(this.filters);
                 eventsBinder.Filters();
-                var isIOS = false;
                 if(isIOS){
                     $(document).on('touchstart', '.tvp-filter-reset', _.bind(function() {
                         this.reset();
@@ -800,8 +796,8 @@
     
     var ProductSlider = {
         initialize: function (settings) {
-            var opt = settings || {}
-                that = this;
+            var opt = settings || {};
+            var that = this;
             channelDataExtractor.products(opt.videoId)
                 .done(function (results) {
                     if(results.length){
@@ -959,4 +955,4 @@
         $('#mobile-search-modal').modal();
     });
 
-}(jQuery, window.IScroll, window._));
+}(jQuery, window.IScroll, window._, window.BigScreen));
