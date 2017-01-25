@@ -23,8 +23,8 @@
 										<span class="featured-channel-title">{{ $currentPage.title }}</span>
 									</span>
 								</a>	 -->
-								<a href="{{ .Permalink }}" class="content" style='background-image: url(/{{ $type }}/images/channel/{{$currentChannelId}}.jpg);'>
-									<img src="/{{ $type }}/images/channel/{{$currentChannelId}}.jpg" alt="">
+								<a href="{{ .Permalink }}" class="content" style='background-image: url({{.Site.BaseURL}}{{ $type }}/images/channel/{{$currentChannelId}}.jpg);'>
+									<img src="{{.Site.BaseURL}}{{ $type }}/images/channel/{{$currentChannelId}}.jpg" alt="">
 									<span class="featured-channel-container">
 										<span class="featured-channel-title">{{ $currentPage.title }}</span>
 									</span>
@@ -45,7 +45,7 @@
 						<div class="brand-item">				
 							<!-- <div class="content" style="background-image: url(/{{ .Type }}/images/{{.Params.channelid}}-logo.png)"></div> -->
 							<div class="content">
-								<img src="/{{ .Type }}/images/{{.Params.channelid}}-logo.png" alt="">
+								<img src="{{.Site.BaseURL}}{{ .Type }}/images/{{.Params.channelid}}-logo.png" alt="">
 							</div>
 						</div>
 					</div>
