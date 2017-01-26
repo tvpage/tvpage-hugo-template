@@ -12,7 +12,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    {{ partial (printf "%s/meta.html" .Type) . }}
+    {{ partial (printf "%s/single-meta.html" .Type) . }}
     <link href='{{ ($.Scratch.Get "settings").googlefont }}' rel="stylesheet">
     <title>{{ block "title" . }}{{ end }}{{ .Site.Title }}</title>
     {{ block "meta" . }}{{ end }}

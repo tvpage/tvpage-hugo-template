@@ -1,14 +1,27 @@
-<meta name="description" content="{{ replaceRE "\n" "" (.Description | default .Summary) }}">
-<meta property="og:title" content="{{ .Title }} - {{ .Site.Title }}">
-<meta property="og:type" content="article">
-<meta property="og:url" content="{{ .Permalink }}">
-<meta property="og:image" content="" }}">
-<meta property="og:site_name" content="{{ .Site.Title }}">
-<meta property="og:description" content="{{ replaceRE "\n" "" (.Description | default .Summary) }}">
-<meta property="og:locale" content="ja_JP">
+{{ if eq .Layout "index" }}
+	{{ $.Scratch.Add "metaImg" ( printf "%s%s/images/logo.png" .Permalink .Type ) }}
+{{ else if eq .Layout "channel" }}
+	{{ $.Scratch.Add "metaImg" ( printf "%s%s/images/channel/%s.jpg" .Site.BaseURL .Type .Params.channelid ) }}
+{{ else if eq .Layout "channelVideo" }}
+	{{ $video := index $.Site.Data.videos (printf "x%s" .Params.videoid ) }}
+	{{ $.Scratch.Add "metaImg" $video.asset.thumbnailUrl }}
+{{ end}}
+<meta charset="utf-8">
+<meta name="pinterest" content="nopin">
+<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+{{ .Hugo.Generator }}
+<link rel="canonical" href="{{ .Permalink }}">
+<meta name="description" content="{{ replaceRE "\n" "" ( .Params.description | default .Summary) }}">
+<meta property="og:url"                content="{{ .Permalink }}" />
+<meta property="og:type"               content="website" />
+<meta property="og:title"              content='{{ block "title" . }}{{ end }}{{ .Site.Title }}' />
+<meta name="twitter:description" content="{{ replaceRE "\n" "" (.Params.description | default .Summary) }}">
+<meta property="og:image"              content="{{ $.Scratch.Get "metaImg" }}" />
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="{{ .Site.Title }}">
 <meta name="twitter:url" content="{{ .Permalink }}">
 <meta name="twitter:title" content="{{ .Title }} - {{ .Site.Title }}">
-<meta name="twitter:description" content="{{ replaceRE "\n" "" (.Description | default .Summary) }}">
-<meta name="twitter:image" content="" }}">
+<meta name="twitter:description" content="{{ replaceRE "\n" "" (.Params.description | default .Summary) }}">
+<meta name="twitter:image" content="{{ $.Scratch.Get "metaImg" }}">
+
+
+
