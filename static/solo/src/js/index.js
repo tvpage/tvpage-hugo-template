@@ -8,7 +8,7 @@ define(function(require) {
       obj[index] = value;
   });
   $.ajax({
-    url: location.protocol+"//app.tvpage.com/api/channels/"+config.channel.id+"/videos",
+    url: location.protocol+"//api.tvpage.com/v1/channels/"+config.channel.id+"/videos",
     dataType: 'jsonp',
     data:obj
   }).done(function(res){

@@ -13,6 +13,6 @@ body {
 .header-bg {
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url(/{{.Type}}/{{ ($.Scratch.Get "settings").headerbackground }});
+	background-image: url({{.Site.BaseURL}}{{.Type}}/{{ ($.Scratch.Get "settings").headerbackground }});
 	background-size: cover;
 }
