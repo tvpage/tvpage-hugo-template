@@ -12,13 +12,18 @@
   {{ end }}
 {{end}}
 {{ $channelVideosQty := $.Scratch.Get "total" }}
+{{ $isPreview := getenv "HUGO_PREVIEW" }}
+{{ $baseUrl := "/"}}
+{{ if $isPreview }}
+  {{ $baseUrl := .Site.BaseURL }}
+{{ end }}
 <main id="main-content" class="main-content">
     <section class="channel-page-banner">      
       <div class="channel-page-banner-desktop">
-        <img src='/{{.Type}}/images/channel/{{.Params.channelid}}-banner.jpg' alt="">
+        <img src='{{$baseUrl}}{{.Type}}/images/channel/{{.Params.channelid}}-banner.jpg' alt="">
       </div>
       <div class="channel-page-banner-mobile">
-        <img src='/{{.Type}}/images/channel/{{.Params.channelid}}.jpg' alt="">
+        <img src='{{$baseUrl}}{{.Type}}/images/channel/{{.Params.channelid}}.jpg' alt="">
       </div>
       <div class="main-channel-banner">
         <div class="main-channel-banner-title">

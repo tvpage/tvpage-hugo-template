@@ -2,6 +2,11 @@
 {{ if $channel }}
   {{ $.Scratch.SetInMap "settings" "channelData" $channel }}
 {{ end }}
+{{ $isPreview := getenv "HUGO_PREVIEW" }}
+{{ $baseUrl := "/"}}
+{{ if $isPreview }}
+  {{ $baseUrl := .Site.BaseURL }}
+{{ end }}
 <main id="main-content" class="main-content">
 	<div class="container">
 		<div class="row">
@@ -23,8 +28,8 @@
 										<span class="featured-channel-title">{{ $currentPage.title }}</span>
 									</span>
 								</a>	 -->
-								<a href="{{ .Permalink }}" class="content" style='background-image: url({{.Site.BaseURL}}{{ $type }}/images/channel/{{$currentChannelId}}.jpg);'>
-									<img src="{{.Site.BaseURL}}{{ $type }}/images/channel/{{$currentChannelId}}.jpg" alt="">
+								<a href="{{ .Permalink }}" class="content" style='background-image: url({{$baseUrl}}{{ $type }}/images/channel/{{$currentChannelId}}.jpg);'>
+									<img src="{{$baseUrl}}{{ $type }}/images/channel/{{$currentChannelId}}.jpg" alt="">
 									<span class="featured-channel-container">
 										<span class="featured-channel-title">{{ $currentPage.title }}</span>
 									</span>
@@ -45,7 +50,7 @@
 						<div class="brand-item">				
 							<!-- <div class="content" style="background-image: url(/{{ .Type }}/images/{{.Params.channelid}}-logo.png)"></div> -->
 							<div class="content">
-								<img src="{{.Site.BaseURL}}{{ .Type }}/images/{{.Params.channelid}}-logo.png" alt="">
+								<img src="{{$baseUrl}}{{ .Type }}/images/{{.Params.channelid}}-logo.png" alt="">
 							</div>
 						</div>
 					</div>

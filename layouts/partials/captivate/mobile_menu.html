@@ -1,3 +1,8 @@
+{{ $isPreview := getenv "HUGO_PREVIEW" }}
+{{ $baseUrl := "/"}}
+{{ if $isPreview }}
+  {{ $baseUrl := .Site.BaseURL }}
+{{ end }}
 <div class="modal fade mobile-menu-modal" id="mobile-menu-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">      
@@ -7,7 +12,7 @@
         </div>
         <div class="col-xs-8">
           <a class="mobile-menu-logo" href="/tv" title="Return to homepage">
-            <img class="img-responsive" src='{{.Site.BaseURL}}{{ .Type }}/images/logo.png' alt="{{ .Site.Title }}" />
+            <img class="img-responsive" src='{{$isPreview}}{{ .Type }}/images/logo.png' alt="{{ .Site.Title }}" />
           </a>
         </div>
         <div class="col-xs-2"></div>
