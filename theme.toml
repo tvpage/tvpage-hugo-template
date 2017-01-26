@@ -9,8 +9,8 @@ min_version = 0.17
 	preview = "https://goodlookingbean.netlify.com/"
 	[[tvp-templates.thumbnails]]
 		desktop = "https://s3-us-west-2.amazonaws.com/tvpage-a.tvpage.com/dev/site-templates/preview/dtop_preview_captivate.png"
-		mobile = ""
-		tablet = ""
+		mobile = "https://s3-us-west-2.amazonaws.com/tvpage-a.tvpage.com/dev/site-templates/preview/mobile_preview_captivate.png"
+		tablet = "https://s3-us-west-2.amazonaws.com/tvpage-a.tvpage.com/dev/site-templates/preview/tablet_preview_captivate.png"
 
 [[tvp-widgets]]
 	name = "Carousel"
@@ -21,8 +21,8 @@ min_version = 0.17
 	description = "Carousel is our most popular widget and can be used on a variety of pages. The user is presented with a series of thumbnails. The video plays in a modal after a thumbnail is clicked."
 	[[tvp-widgets.thumbnails]]
 		desktop = "http://do0631budpzeh.cloudfront.net/dev/widgets/templates_preview/preview_Carousel_dtop.png"
-		mobile = ""
-		tablet = ""
+		mobile = "http://do0631budpzeh.cloudfront.net/dev/widgets/templates_preview/preview_Carousel_mobile.png"
+		tablet = "http://do0631budpzeh.cloudfront.net/dev/widgets/templates_preview/preview_Carousel_tablet.png"
 
 #[[tvp-widgets]]
 #	name = "Inline"
@@ -57,8 +57,8 @@ min_version = 0.17
 	description = "Sidebar is a great compliment to a traditional 2-column or 3-column layout. The user is presented with a series of thumbnails. The video plays in a modal after a thumbnail is clicked."
 	[[tvp-widgets.thumbnails]]
 		desktop = "http://do0631budpzeh.cloudfront.net/dev/widgets/templates_preview/preview_SideBar_dtop.png"
-		mobile = ""
-		tablet = ""
+		mobile = "http://do0631budpzeh.cloudfront.net/dev/widgets/templates_preview/preview_SideBar_mobile.png"
+		tablet = "http://do0631budpzeh.cloudfront.net/dev/widgets/templates_preview/preview_SideBar_tablet.png"
 
 [[tvp-widgets]]
 	name = "Solo"
@@ -69,5 +69,5 @@ min_version = 0.17
 	description = "Solo is a simple player that works seamlessly across devices. The video plays inline."
 	[[tvp-widgets.thumbnails]]
 		desktop = "http://do0631budpzeh.cloudfront.net/dev/widgets/templates_preview/preview_Solo_dtop.png"
-		mobile = ""
-		tablet = ""
+		mobile = "http://do0631budpzeh.cloudfront.net/dev/widgets/templates_preview/preview_Solo_mobile.png"
+		tablet = "http://do0631budpzeh.cloudfront.net/dev/widgets/templates_preview/preview_Solo_tablet.png"

@@ -9,22 +9,24 @@
 </head>
 <body>
 
-<h4>Use case:1</h4>
+<h4>Use Case: 1</h4>
 <p>This flavor will play just one video. Runtime settings not available, settings and selected video are modified from the application.</p>
-<h3>autoplay:false, autonext: false</h3>
-<div style="left:0px;width:100%;height:0px;position:relative;padding-bottom:56.2493%;"><iframe src="http://www.goodlookingbean.com/tvpwidget/solo-1" frameborder="0" allowfullscreen style="top:0px;left:0px;width:100%;height:100%;position:absolute;"></iframe></div>
+<h3>autoplay: false, autonext: false</h3>
+<h3>Iframe: non-Ajax: Immidiate </h3>
+<div style="left:0px;width:100%;height:0px;position:relative;padding-bottom:56.2493%;"><iframe src="https://www.goodlookingbean.com/tvpwidget/solo-1" frameborder="0" allowfullscreen style="top:0px;left:0px;width:100%;height:100%;position:absolute;"></iframe></div>
 
 <hr/>
 
 <h4>Use Case: 2</h4>
+<h3>Iframe: Ajax: Immidiate </h3>
 <p>Widget will play the videos that are related to a product referenceId (SKU). Users will add parameters on embed-code, our logic will call the server for data matching inputs; if there's data, it will load the iframe with it and start the experience. The iframe will point to a source that will render the type of widget is required.</p>
-<h3>autoplay:true, autonext: true</h3>
+<h3>autoplay: true, autonext: true</h3>
 <script>
   window.__TVPage__ = window.__TVPage__ || {};
   __TVPage__.config = __TVPage__.config || {};
   __TVPage__.config['tvpwidget-solo-2'] = {
     loginid: '1758799',
-    domain: "http://www.goodlookingbean.com",
+    domain: "https://www.goodlookingbean.com",
     channel: {
       id: '84956291',
       parameters: {
@@ -60,15 +62,16 @@
 <hr/>
 
 <h4>Use Case: 3</h4>
+<h3>Iframe: Ajax: Immidiate </h3>
 <p>Widget being used in a Product Category Page. Videos related to products that match the passed category</p>
-<h3>autoplay:false, autonext: true</h3>
+<h3>autoplay: false, autonext: true</h3>
 <script>
   window.__TVPage__ = window.__TVPage__ || {};
   __TVPage__.config = __TVPage__.config || {};
   __TVPage__.config['tvpwidget-solo-3'] = {
     loginid: '1758799',
     channel: {
-      domain: "http://www.goodlookingbean.com",
+      domain: "https://www.goodlookingbean.com",
       id: '85051633',
       parameters: {
         category_id_1: '123'
@@ -106,8 +109,9 @@
 
 <h4>Use Case: 4</h4>
 <p>This flavor will play videos from channel. Runtime settings not available, settings and selected video are modified from the application.</p>
-<h3>autoplay:true, autonext: false</h3>
-<div style="left:0px;width:100%;height:0px;position:relative;padding-bottom:56.2493%;"><iframe src="http://www.goodlookingbean.com/tvpwidget/solo-4" frameborder="0" allowfullscreen style="top:0px;left:0px;width:100%;height:100%;position:absolute;"></iframe></div>
+<h3>autoplay: true, autonext: false</h3>
+<h3>Iframe: non-Ajax: Immidiate </h3>
+<div style="left:0px;width:100%;height:0px;position:relative;padding-bottom:56.2493%;"><iframe src="https://www.goodlookingbean.com/tvpwidget/solo-4" frameborder="0" allowfullscreen style="top:0px;left:0px;width:100%;height:100%;position:absolute;"></iframe></div>
 
 
 </body>

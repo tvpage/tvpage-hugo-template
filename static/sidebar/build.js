@@ -10,6 +10,6 @@ requirejs.config({
     optimize: 'none',
     include: ['js/index'],
     insertRequire: ['js/index'],
-    out: './lib.min.js',
+    out: './lib.js',
     wrap: true
 })
