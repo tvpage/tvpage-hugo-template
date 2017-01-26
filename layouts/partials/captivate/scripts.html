@@ -1,7 +1,7 @@
 <script type="text/javascript">
 
     TVSite = window.TVSite || {};
-    var apiVersion = {{ .Site.Params.apiUrl }};
+    var apiVersion = {{ .Site.apiUrl }};
     TVSite.loginId = {{ .Site.Params.loginid }};
     TVSite.apiUrl = apiVersion || "https:\/\/api.tvpage.com/v1/";
     TVSite.baseUrl = "";
