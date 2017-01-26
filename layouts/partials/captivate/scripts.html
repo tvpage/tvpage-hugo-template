@@ -1,10 +1,14 @@
 {{ $isPreview := getenv "HUGO_PREVIEW" }}
 {{ $baseUrl := "/"}}
+{{ $.Scratch.Set "baseUrl" $baseUrl }}
 {{ if $isPreview }}
   {{ $baseUrl := .Site.BaseURL }}
+  {{ $.Scratch.Set "baseUrl" $baseUrl }}
 {{ end }}
-<script type="text/javascript">
+{{ $baseUrl := $.Scratch.Get "baseUrl" }}
 
+<script type="text/javascript">
+    {{ $baseUrl }}
     TVSite = window.TVSite || {};
     var apiVersion = {{ getenv "HUGO_API_URL" }};
     TVSite.loginId = {{ .Site.Params.loginid }};

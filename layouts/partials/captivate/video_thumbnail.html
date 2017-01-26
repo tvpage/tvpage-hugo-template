@@ -1,8 +1,11 @@
 {{ $isPreview := getenv "HUGO_PREVIEW" }}
 {{ $baseUrl := "/"}}
+{{ $.Scratch.Set "baseUrl" $baseUrl }}
 {{ if $isPreview }}
   {{ $baseUrl := .Site.BaseURL }}
+  {{ $.Scratch.Set "baseUrl" $baseUrl }}
 {{ end }}
+{{ $baseUrl := $.Scratch.Get "baseUrl" }}
 <div class="col-sm-4 col-md-4">
 	{{ if $isPreview }}
 	  <a href="{{$baseUrl}}{{ .url }}" class="latest-video">
