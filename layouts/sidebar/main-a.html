@@ -43,6 +43,7 @@
 
 	var lastPageReached = false,
 		currentPage = 0,
+    currentPageVideos = {{ $.Scratch.Get "videos" }},
 		apiBaseUrl = "//api.tvpage.com/v1",
 		isFetching = false,
     rowerize = function(data, per) {
@@ -95,7 +96,8 @@
       //If videos then new page of that was fectehced, rowerize in order to build
       //the expected gallery.
       if (res && res.length) {
-        
+
+        currentPageVideos = res;
         var rows = rowerize(res,2),
             rowsC = rows.length;
 
@@ -134,20 +136,27 @@
   $el.on('click', '.tvp-video', function(e){
   	e.preventDefault();
 
+    //the selected video id.
+    var id = $(this).attr('id').split('-').pop();
+
     //Create them modal.
     //Pass the videos to the modal.
     var $ifr = $('<iframe/>').attr('src','http://localhost:1313/tvpwidget/sidebar-1-modal/');
     $ifr.addClass('tvp-modal');
+
+    $ifr.on('load',function(){
+      console.log('afterloads',currentPageVideos);
+      this.contentWindow.postMessage({
+        channelPage:currentPage,
+        channelVideos:currentPageVideos,
+        videoId:id
+      },'http://localhost:1313');});
     $ifr.attr('style','display:block;width:600px;max-width:100%;height:400px;max-height:100%;position:fixed;z-index:100;left:50%;border:none;top:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);background:#fff;box-shadow:0 0 60px 10px rgba(0,0,0,.9)');
 
-    var $modalOverlay = $('<div/>').addClass('tvp-modal-overlay');
-    $modalOverlay.append($ifr).appendTo(parentGlobal.document.body);
-    $modalOverlay.attr('style','position:fixed;top:0;left:0;width:100%;height:100%;z-index:50;background:rgba(0,0,0,.6)');
+    var $overlay = $('<div/>').addClass('tvp-modal-overlay');
+    $overlay.append($ifr).appendTo(parentGlobal.document.body); 
+    $overlay.attr('style','position:fixed;top:0;left:0;width:100%;height:100%;z-index:50;background:rgba(0,0,0,.6)');
 
-  });
-
-  $overLay.click(function(e){
-    $(doc).find('tvp-modal').remove();
   });
 
 }(document,parent));</script>
