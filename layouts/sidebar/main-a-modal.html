@@ -8,6 +8,7 @@
 <style id="tvp-css-lib" type="text/css">{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css-modal.html" .Type ) .)) | safeCSS }}</style>
 <div id='{{ ($.Scratch.Get "settings").name }}' class="tvp-modal">
   <div class="tvp-player">
+    <div class="tvp-close-btn"></div>
     <div id="tvp-player-el"></div>
     <div id="tvpplayer-play"></div>
   </div>
@@ -31,7 +32,8 @@
 	{{ with .Param "loginid" }}
 		settings.loginid = {{ . }}
 	{{ end }}
-
-  console.log('settings from sidebar modal');
-
+  var $closeBtn = $(doc).find($('.tvp-close-btn'));
+  $closeBtn.click(function(){
+    $(doc).find('tvp-modal').remove();
+  });
 }(document,parent));</script>

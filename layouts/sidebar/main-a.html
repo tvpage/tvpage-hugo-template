@@ -65,7 +65,8 @@
     };
 
   var $el = $('#'+settings.name),
-      $btn = $el.find('#tvp-view-more-button');
+      $btn = $el.find('#tvp-view-more-button'),
+      $overLay = $el.find('.tvp-modal-overlay');
 
   //View more videos functionality. On static data method, we will only get the first page of the channel,
   //On user demand, we shall pull the following pages & loop.
@@ -130,21 +131,23 @@
 
 	//when user clicks the video thumbnails, we shall identify the requested video, baken iframe & append it
 	//To parent document.
-  $el.on('click', '.tvp-video', function(){
+  $el.on('click', '.tvp-video', function(e){
+  	e.preventDefault();
 
     //Create them modal.
     //Pass the videos to the modal.
     var $ifr = $('<iframe/>').attr('src','http://localhost:1313/tvpwidget/sidebar-1-modal/');
     $ifr.addClass('tvp-modal');
-    $ifr.attr('style','display:block;width:600px;max-width:100%;height:400px;max-height:100%;position:fixed;z-index:100;left:50%;top:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);background:#fff;box-shadow:0 0 60px 10px rgba(0,0,0,.9)');
+    $ifr.attr('style','display:block;width:600px;max-width:100%;height:400px;max-height:100%;position:fixed;z-index:100;left:50%;border:none;top:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);background:#fff;box-shadow:0 0 60px 10px rgba(0,0,0,.9)');
 
     var $modalOverlay = $('<div/>').addClass('tvp-modal-overlay');
     $modalOverlay.append($ifr).appendTo(parentGlobal.document.body);
     $modalOverlay.attr('style','position:fixed;top:0;left:0;width:100%;height:100%;z-index:50;background:rgba(0,0,0,.6)');
 
-    console.log($(this).attr('id').split('-').pop());
-
   });
 
+  $overLay.click(function(e){
+    $(doc).find('tvp-modal').remove();
+  });
 
 }(document,parent));</script>
