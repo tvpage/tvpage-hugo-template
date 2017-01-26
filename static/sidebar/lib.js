@@ -13305,7 +13305,7 @@ define('text',['module'], function (module) {
 });
 
 
-define('text!css/styles.css',[],function () { return '#tvp-gallery *{box-sizing:border-box}.tvp-clearfix:before,.tvp-clearfix:after{display:table;content:" ";clear:both}#tvp-gallery{width:100% !important}#lightbox.off{visibility:hidden;opacity:0;pointer-events:none}.tvplogo{float:right;margin:32px 0 36px 0;height:16px;width:122px;background-repeat:no-repeat;background-size:contain;cursor:pointer;background-image:url(data:image/png;base64,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)}.tvplogo:hover{background-image:url(data:image/png;base64,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)}#tvp-no-image{background-color:#EEEEEE}.tvp-no-title-1{background-color:#EEEEEE;height:10px;margin-top:4px}.tvp-no-title-2{background-color:#EEEEEE;height:10px;margin-top:4px;width:50%}.tvp-video-image{position:relative;background-repeat:no-repeat;background-position:center;background-size:cover;position:relative;pointer-events:none}.tvp-video-image:before{display:block;content:"";width:100%;padding-top:56.25%}.tvp-video-image>.ar-content{position:absolute;top:0;left:0;right:0;bottom:0}.tvp-video-image .tvp-video-overlay{-webkit-transition:all 0.25s ease;transition:all 0.25s ease;pointer-events:none;position:absolute;top:0;bottom:0;left:0;right:0;background-color:rgba(0,0,0,0.7);opacity:0;-webkit-transition:opacity 60ms ease-out;transition:opacity 60ms ease-out}.tvp-video-image .video-playing{text-align:center;color:#fff;position:absolute;top:0;bottom:0;left:0;right:0;height:25px;margin:auto;font-weight:bold;line-height:25px;opacity:0;font-size:1.2em}.tvp-video-image .play-now{text-align:center;color:#fff;position:absolute;bottom:0;right:0;height:25px;margin:auto;font-weight:bold;line-height:25px;opacity:0;font-size:1.2em}.tvp-video-play-button{position:absolute;width:37px;height:37px;top:0;left:0;right:0;bottom:0;margin:auto;background-image:url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNyIgaGVpZ2h0PSIzNyIgdmlld0JveD0iMCAwIDM3IDM3Ij4gIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+ICAgIDxjaXJjbGUgY3g9IjE4LjUiIGN5PSIxOC41IiByPSIxOC41IiBmaWxsPSIjNTg3Q0I5Ii8+ICAgIDxwb2x5Z29uIGZpbGw9IiNGRkZGRkYiIHBvaW50cz0iMjEuMDg2IDEwLjc0MiAyOS4wNDMgMjYuNjU2IDEzLjEyOSAyNi42NTYiIHRyYW5zZm9ybT0icm90YXRlKDkwIDIxLjA4NiAxOC42OTkpIi8+ICA8L2c+PC9zdmc+)}.tvp-video .tvp-title{max-height:33px;overflow:hidden;font-family:Roboto;font-size:12px;font-weight:500;line-height:16px;color:#333333}.tvp-col-3{width:50%;float:left;margin:0 auto;padding:10px 6px}.tvp-video{cursor:pointer;padding:10px 6px;width:50%;float:left;margin:0 auto}.tvp-video:hover .tvp-video-play-button{-webkit-transform:scale(1.1);transform:scale(1.1)}.tvp-progress-bar{background-color:#B82927 !important}#tvplb.off{visibility:hidden;opacity:0;pointer-events:none}#tvplb .tvp-lb-overlay{top:0;bottom:0;left:0;right:0;-webkit-transition:opacity .35s ease-in-out;transition:opacity .35s ease-in-out;background-color:rgba(0,0,0,0.65);position:fixed;z-index:9999;overflow:hidden;-webkit-overflow-scrolling:touch;outline:0;visibility:visible;opacity:1;pointer-events:auto;display:none}#tvplb .tvp-lb-header{padding:0 7px 0px 20px;position:relative;background-color:#FFF;height:40px;border-radius:7px}#tvplb .tvp-lb-header:after{content:"";display:table;clear:both}@media screen and (max-height: 640px) and (orientation: landscape){#tvplb .tvp-lb-header{height:26px}}#tvplb .tvp-lb-header .tvp-related-products{display:none}#tvplb .tvp-lb-header .tvp-lb-title{margin:0;max-width:90%;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;position:relative;top:50%;-webkit-transform:translateY(-50%);transform:translateY(-50%);height:19px;font-family:Roboto;font-size:14px;font-weight:500;line-height:16px;color:#333333;text-align:left}#tvplb .tvp-lb-close{display:block;float:right;width:27px;height:27px;position:absolute;cursor:pointer;padding:0;top:0px;right:0px;z-index:99999;border:0;background-color:transparent;background-size:contain;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAMAAADW3miqAAAAq1BMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAADKysoAAADY2NgGBgYJCQkAAADf398DAwM/Pz8AAAAAAACDg4McHBzl5eUAAAC+vr4GBgZmZmbs7Oz5+fk+Pj7Jycmenp5oaGj39/eDg4PQ0ND4+Piurq7a2tr8/Pzs7Oz5+fne3t79/f0iIiIsLCw1NTVBQUFOTk5dXV1oaGh6enqNjY2cnJysrKy6urrBwcHOzs7///+E45x2AAAAKnRSTlMAAQMIDRIZHSMnLTpESFNVXWlpbG15eoeJlqGssrO2vsDJ09Te4vj6/f2snMF3AAAByklEQVR4AXXT/VLaQBQFcONuNF0igm0Ea/kA6W4JSMhHwnn/J+tdbneuQ9Lzh4zmN+eeYczdbSLK3XAERPf30f/h9blSmqIUySFHROkH8/q22m5XP388KmJDJHnZASGrJ2FiHp43gGvL4nQqytYSexTFhmosbHXI/+VQWfx++qq8mTu0x/xLji0cKTEqebZo8ps0cN+CiiL1kO7Q5b20WCk+SEXxaA577KPDH/iDXJRMdqjygVTYchUXXcKMRj4oF3AVLRp/oOY/Av5xDYB/r/GmGJnpDkXoB2oy4Xrh7/lJepRZHHNRYvIjnKZ7flLmcJCtYihAzCid7QX5W2EhZS/oek6MqANcQNkOJzF1LeqELSMa/hFW8GP5CkpsaDh/BUtcQlMtH5QOrzq6omRCo875QAq4RJHhUWt0Q6jDL5rkkb9HVU3fNLDGXwtV7w7lrSmxf+Ei/l8Zz5a47WqABS0ixFXaTGZrh+4s5NxhvzCaizyig6TeLdBVn158Vh1g54aOeSRqnPkyiuOfi7EYefHSaTZbbiwodrP+niZ64BWOTTohR8mmk9TEKhhRvixOzCiljEwSUw2bHlNaxxStlZAeI+dDQsiw64u/Vpd3CsAJKq0AAAAASUVORK5CYII=)}.tvp-recommeded-products{font-family:Roboto;font-size:10px;font-weight:bold;line-height:11px;color:#9D9D9D;float:left}#tvplb .tvp-lb-content{-webkit-transition:opacity .25s ease-in-out;transition:opacity .25s ease-in-out;background-color:#FFFFFF;position:fixed;z-index:999999;width:100%;margin:auto;left:0;right:0;top:0;bottom:0;height:380px}#tvplb .tvp-lb-body{margin:0px 20px 0px 20px;position:relative}#tvplb .tvp-lb-body:after{content:"";display:table;clear:both}.tvp-controls-mp4 .tvp-control-overlay{bottom:0px;margin:auto;height:100% !important}.tvp-hide-mp4{display:none !important}#tvpp .tvpp-wrapper{background-color:black;position:relative;padding-bottom:56.25%}#tvpp .tvp-video-overlay{width:100%;height:100%;position:absolute;display:none;background-repeat:no-repeat;background-size:cover}#tvpp .tvpp-holder{top:0;bottom:0;left:0;right:0;position:absolute;width:100%;height:100%}#tvpp-play{width:65px;height:37px;background-color:#B82927;opacity:0.7;position:absolute;left:0;right:0;top:0;bottom:0;margin:auto;border-radius:1px;z-index:9;cursor:pointer}#tvpp-play:after{content:" ";width:0;height:0;border-top:7px solid transparent;border-bottom:7px solid transparent;border-left:14px solid #fff;position:absolute;left:0;right:0;margin:auto;top:0;bottom:0}#tvpp-play:hover{opacity:1}.tvp-products-holder{width:15.8%;position:relative;float:right;height:331px}.tvp-no-products-banner{display:none;width:280px;height:45px;margin:20px;background-size:contain;background-repeat:no-repeat;bottom:115px;position:relative}.tvp-product{background-color:#ffffff}#tvp-desktop-products{display:none}#tvp-desktop-products .tvp-product-img{position:relative;overflow:hidden;background:no-repeat 50% 50%;background-size:contain;cursor:pointer;height:68px;left:13px}#tvp-mobile-products .tvp-product{position:relative;height:85px;border:1px solid #9D9D9D}#tvp-mobile-products .tvp-product-img{position:relative;overflow:hidden;background:no-repeat 50% 50%;background-size:contain;height:70px;width:70px;margin:6px 10px;float:left}.tvp-pop-up-img{position:relative;overflow:hidden;background:no-repeat 50% 50%;background-size:contain;cursor:pointer;height:195px}.tvp-pop-up{display:none;width:250px;height:354px;position:absolute;padding:20px;bottom:-10px;border-radius:4px;right:112px;z-index:9999;background-color:#FFFFFF;box-shadow:2px 4px 8px 0 rgba(0,0,0,0.25);border:1px solid #D0D0D0}.tvp-pop-up-before{display:none;content:" ";width:0px;height:0px;border-style:solid;border-width:17px 0 17px 17px;border-color:transparent transparent transparent #D0D0D0;position:absolute;top:25px;right:96px;margin-top:-5px;z-index:99999}.tvp-pop-up-after{display:none;content:" ";width:0px;height:0px;border-style:solid;border-width:17px 0 17px 17px;border-color:transparent transparent transparent #FFFFFF;position:absolute;top:24px;right:97px;margin-top:-4px;z-index:99999}.tvp-pop-up img{display:block;width:212px;height:155px}.tvp-pop-up .tvp-product-title{margin:15px 0;height:38px;font-family:Roboto;font-size:14px;font-weight:500;line-height:18px;color:#333333;overflow:hidden}.tvp-pop-up .tvp-price{height:21px;font-family:Roboto;font-size:18px;font-weight:bold;line-height:21px;color:#333333;margin:0 0 25px 0}.tvp-pop-up .tvp-img-link{display:block;color:#000;text-decoration:none}.tvp-pop-up .tvp-call-to-action{display:block;font-family:Roboto;font-size:18px;font-weight:bold;text-align:center;line-height:45px;width:206px;height:48px;background-color:#FFFFFF;color:#587CB9;border:1px solid #9D9D9D;position:relative;text-decoration:none}.tvp-pop-up .tvp-call-to-action .tvp-material-icon{height:12px;width:12px;top:16px;position:relative;float:right;right:20px;background-size:contain;background-repeat:no-repeat;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAAhFBMVEUAAAD///+AgL9ggL9iicRmiLtggL9ZgL9YgLpagLxfg71egLxcfL5YfbtZfrxbfLxZfbpafblYfbpafrtafbtYfLtafrlYfblZfrpYfblZfLpYfbpZfbpZfbpYfblZfbpZfblZfLpYfbpZfbpYfLlZfLpZfLlYfbpYfblZfbpZfblYfLky6A+sAAAAK3RSTlMAAQQIDQ8QFBoiIyYnMUVMXGZoaWx/gIuMpaatrrKzuMzP2drc4PLz9ff9caPJhwAAAIlJREFUeNqNzccOwkAMRdELDDV0CL0mEIr////YmLHkaBBvZd2zML+WTXQw0isDGkf5DrZ6rYCxJCCXW9BBK4ThPUIJtl4h75cH7dNScgysE8F1A9c5F0sD6zoD6wauHy4zA+vYc+t12MfuoHvV7oEmCeB/WEi1c6tkDnSeUtujDTDYnNzWfdL7ADwKIVFlhAxSAAAAAElFTkSuQmCC)}.tvp-pop-up .tvp-call-to-action:hover .tvp-material-icon{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAPFBMVEUAAAD////////////////////////////////////////////////////////////////////////////YSWgTAAAAE3RSTlMABA4oLjI2N0BBUVN+f4Cpqsv9Q4lPKAAAAGNJREFUeNpFj0EOgCAMBFdARAUR+/+/mrVmmUszkzRpgVwvgviNgs0cHEYuVDsTQUjrYGiW4Cy3DQ/yvlpjkC/JgxzhiAz0TicM0/8VuUJ53BWwuysQBZ4uTqv+3CTz/SZqxguuiQim/MCIXAAAAABJRU5ErkJggg==)}.tvp-pop-up .tvp-call-to-action:hover{text-decoration:none;background-color:#587CB9;color:#FFFFFF}#tvp-view-more-button{width:85px;height:26px;background-color:#F5F5F5;border:1px solid #DFDFDF;border-radius:2px;float:left;margin:27px 0 36px 0}#tvp-view-more-button .tvp-view-more{width:65px;height:14px;font-family:Roboto;font-size:10px;font-weight:bold;text-align:center;line-height:14px;color:#666666}#tvpp{position:relative}.tvp-html5-play-button{background:url("//do0631budpzeh.cloudfront.net/assets/img/profilePlayOverlay.png") no-repeat 50% 50%;display:none;position:absolute;width:100%;height:100%;top:0;left:0;z-index:999999}#tvp-mobile-products{height:85px}#tvp-mobile-products-list .tvp-product-title{position:relative;font-family:Roboto;font-size:12px;font-weight:bold;line-height:14px;color:#333333}#tvp-mobile-products-list .tvp-price{position:relative;font-family:Roboto;font-size:12px;font-weight:bold;line-height:14px;color:#333333}#tvp-mobile-products-list a{position:absolute;bottom:-1px;right:0;width:114px;background-color:#FFFFFF;color:#587CB9;border:1px solid #9D9D9D;text-decoration:none;border-right:0;font-family:Roboto;font-size:12px;font-weight:bold;padding:2px}#tvp-mobile-products-list a .tvp-material-icon{position:relative;height:12px;width:12px;display:block;float:right;margin:2px 4px;background-size:contain;background-repeat:no-repeat;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAAhFBMVEUAAAD///+AgL9ggL9iicRmiLtggL9ZgL9YgLpagLxfg71egLxcfL5YfbtZfrxbfLxZfbpafblYfbpafrtafbtYfLtafrlYfblZfrpYfblZfLpYfbpZfbpZfbpYfblZfbpZfblZfLpYfbpZfbpYfLlZfLpZfLlYfbpYfblZfbpZfblYfLky6A+sAAAAK3RSTlMAAQQIDQ8QFBoiIyYnMUVMXGZoaWx/gIuMpaatrrKzuMzP2drc4PLz9ff9caPJhwAAAIlJREFUeNqNzccOwkAMRdELDDV0CL0mEIr////YmLHkaBBvZd2zML+WTXQw0isDGkf5DrZ6rYCxJCCXW9BBK4ThPUIJtl4h75cH7dNScgysE8F1A9c5F0sD6zoD6wauHy4zA+vYc+t12MfuoHvV7oEmCeB/WEi1c6tkDnSeUtujDTDYnNzWfdL7ADwKIVFlhAxSAAAAAElFTkSuQmCC)}.tvp-pagination{text-align:left;bottom:3px;left:10px;position:relative;height:0}#tvp-recommended-products-wrapper{display:inline-block;margin:10px 0 5px;width:100%}.tvp-pagination>span{display:inline-block;position:relative;width:16px;height:12px}.tvp-pagination>span.active:before{background-color:#587CB9}.tvp-pagination>span:before{content:"";position:absolute;top:3px;background-color:#D8D8D8;border-radius:10px;height:7px;width:7px}@media screen and (min-width: 600px){#tvplb .tvp-lb-close{width:32px;height:32px}#tvplb .tvp-lb-content{height:500px}.tvp-no-products-banner{display:none;width:565px;height:88px}}@media screen and (min-width: 768px){.tvp-recommeded-products{display:none}#tvplb .tvp-lb-close{top:-17px;right:-16px}#tvplb .tvp-lb-content{-webkit-transform:translateY(-50%);transform:translateY(-50%);width:90%;margin:0 auto;left:0;right:0;top:50%;width:738px;height:394px;box-shadow:2px 4px 8px 0 rgba(0,0,0,0.25);border-radius:4px}#tvplb .tvp-lb-header .tvp-related-products{display:block;float:right;font-family:Roboto;font-size:14px;font-weight:500;line-height:38px;color:#333333;margin-right:10px}#tvp-mobile-products{display:none}#tvp-desktop-products{display:block}#tvpp{float:left;width:84%}.tvp-no-products-banner{display:none;width:698px;height:90px;margin:20px;bottom:0px}}.scroll-area{-webkit-tap-highlight-color:transparent;-webkit-transform:translateZ(0);transform:translateZ(0);-webkit-touch-callout:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;-o-text-size-adjust:none;text-size-adjust:none}#scroller-wrapper.x-scroll{width:100%;overflow:hidden}.x-scroll #scroller{width:9000px;height:85px}.x-scroll #scroller ul{list-style:none;padding:0;margin:0;overflow:hidden;display:inline-block}.x-scroll #scroller li{display:inline-block;float:left;height:100%;padding:0;border-top:none}.x-scroll #scroller li:last-child{padding-right:0}#scroller-wrapper.y-scroll{position:absolute;z-index:1;width:100%;overflow:hidden;height:331px}.y-scroll #scroller{position:absolute;z-index:1;width:100%}.y-scroll #scroller ul{list-style:none;padding:0;margin:0;width:100%;text-align:left;padding-right:15px}.y-scroll #scroller li{margin-bottom:19px;border:0;padding:0}.y-scroll #scroller li:last-child{margin-bottom:0}';});
+define('text!css/styles.css',[],function () { return 'div[id^=tvpwidget-sidebar] *{box-sizing:border-box}div[id^=tvpwidget-sidebar]{width:100% !important}.tvp-clearfix:before,.tvp-clearfix:after{display:table;content:" ";clear:both}#lightbox.off{visibility:hidden;opacity:0;pointer-events:none}.tvplogo{float:right;margin:32px 0 36px 0;height:16px;width:122px;background-repeat:no-repeat;background-size:contain;cursor:pointer;background-image:url(data:image/png;base64,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)}.tvplogo:hover{background-image:url(data:image/png;base64,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)}#tvp-no-image{background-color:#EEEEEE}.tvp-no-title-1{background-color:#EEEEEE;height:10px;margin-top:4px}.tvp-no-title-2{background-color:#EEEEEE;height:10px;margin-top:4px;width:50%}.tvp-video-image{position:relative;background-repeat:no-repeat;background-position:center;background-size:cover;position:relative;pointer-events:none}.tvp-video-image:before{display:block;content:"";width:100%;padding-top:56.25%}.tvp-video-image>.ar-content{position:absolute;top:0;left:0;right:0;bottom:0}.tvp-video-image .tvp-video-overlay{-webkit-transition:all 0.25s ease;transition:all 0.25s ease;pointer-events:none;position:absolute;top:0;bottom:0;left:0;right:0;background-color:rgba(0,0,0,0.7);opacity:0;-webkit-transition:opacity 60ms ease-out;transition:opacity 60ms ease-out}.tvp-video-image .video-playing{text-align:center;color:#fff;position:absolute;top:0;bottom:0;left:0;right:0;height:25px;margin:auto;font-weight:bold;line-height:25px;opacity:0;font-size:1.2em}.tvp-video-image .play-now{text-align:center;color:#fff;position:absolute;bottom:0;right:0;height:25px;margin:auto;font-weight:bold;line-height:25px;opacity:0;font-size:1.2em}.tvp-video-play-button{position:absolute;width:37px;height:37px;top:0;left:0;right:0;bottom:0;margin:auto;background-image:url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNyIgaGVpZ2h0PSIzNyIgdmlld0JveD0iMCAwIDM3IDM3Ij4gIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+ICAgIDxjaXJjbGUgY3g9IjE4LjUiIGN5PSIxOC41IiByPSIxOC41IiBmaWxsPSIjNTg3Q0I5Ii8+ICAgIDxwb2x5Z29uIGZpbGw9IiNGRkZGRkYiIHBvaW50cz0iMjEuMDg2IDEwLjc0MiAyOS4wNDMgMjYuNjU2IDEzLjEyOSAyNi42NTYiIHRyYW5zZm9ybT0icm90YXRlKDkwIDIxLjA4NiAxOC42OTkpIi8+ICA8L2c+PC9zdmc+)}.tvp-video .tvp-title{max-height:33px;overflow:hidden;font-family:Roboto;font-size:12px;font-weight:500;line-height:16px;color:#333333}.tvp-col-3{width:50%;float:left;margin:0 auto;padding:10px 6px}.tvp-video{cursor:pointer;padding:10px 6px;width:50%;float:left;margin:0 auto}.tvp-video:hover .tvp-video-play-button{-webkit-transform:scale(1.1);transform:scale(1.1)}.tvp-progress-bar{background-color:#B82927 !important}#tvplb.off{visibility:hidden;opacity:0;pointer-events:none}#tvplb .tvp-lb-overlay{top:0;bottom:0;left:0;right:0;-webkit-transition:opacity .35s ease-in-out;transition:opacity .35s ease-in-out;background-color:rgba(0,0,0,0.65);position:fixed;z-index:9999;overflow:hidden;-webkit-overflow-scrolling:touch;outline:0;visibility:visible;opacity:1;pointer-events:auto;display:none}#tvplb .tvp-lb-header{padding:0 7px 0px 20px;position:relative;background-color:#FFF;height:40px;border-radius:7px}#tvplb .tvp-lb-header:after{content:"";display:table;clear:both}@media screen and (max-height: 640px) and (orientation: landscape){#tvplb .tvp-lb-header{height:26px}}#tvplb .tvp-lb-header .tvp-related-products{display:none}#tvplb .tvp-lb-header .tvp-lb-title{margin:0;max-width:90%;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;position:relative;top:50%;-webkit-transform:translateY(-50%);transform:translateY(-50%);height:19px;font-family:Roboto;font-size:14px;font-weight:500;line-height:16px;color:#333333;text-align:left}#tvplb .tvp-lb-close{display:block;float:right;width:27px;height:27px;position:absolute;cursor:pointer;padding:0;top:0px;right:0px;z-index:99999;border:0;background-color:transparent;background-size:contain;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAMAAADW3miqAAAAq1BMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAADKysoAAADY2NgGBgYJCQkAAADf398DAwM/Pz8AAAAAAACDg4McHBzl5eUAAAC+vr4GBgZmZmbs7Oz5+fk+Pj7Jycmenp5oaGj39/eDg4PQ0ND4+Piurq7a2tr8/Pzs7Oz5+fne3t79/f0iIiIsLCw1NTVBQUFOTk5dXV1oaGh6enqNjY2cnJysrKy6urrBwcHOzs7///+E45x2AAAAKnRSTlMAAQMIDRIZHSMnLTpESFNVXWlpbG15eoeJlqGssrO2vsDJ09Te4vj6/f2snMF3AAAByklEQVR4AXXT/VLaQBQFcONuNF0igm0Ea/kA6W4JSMhHwnn/J+tdbneuQ9Lzh4zmN+eeYczdbSLK3XAERPf30f/h9blSmqIUySFHROkH8/q22m5XP388KmJDJHnZASGrJ2FiHp43gGvL4nQqytYSexTFhmosbHXI/+VQWfx++qq8mTu0x/xLji0cKTEqebZo8ps0cN+CiiL1kO7Q5b20WCk+SEXxaA577KPDH/iDXJRMdqjygVTYchUXXcKMRj4oF3AVLRp/oOY/Av5xDYB/r/GmGJnpDkXoB2oy4Xrh7/lJepRZHHNRYvIjnKZ7flLmcJCtYihAzCid7QX5W2EhZS/oek6MqANcQNkOJzF1LeqELSMa/hFW8GP5CkpsaDh/BUtcQlMtH5QOrzq6omRCo875QAq4RJHhUWt0Q6jDL5rkkb9HVU3fNLDGXwtV7w7lrSmxf+Ei/l8Zz5a47WqABS0ixFXaTGZrh+4s5NxhvzCaizyig6TeLdBVn158Vh1g54aOeSRqnPkyiuOfi7EYefHSaTZbbiwodrP+niZ64BWOTTohR8mmk9TEKhhRvixOzCiljEwSUw2bHlNaxxStlZAeI+dDQsiw64u/Vpd3CsAJKq0AAAAASUVORK5CYII=)}.tvp-recommeded-products{font-family:Roboto;font-size:10px;font-weight:bold;line-height:11px;color:#9D9D9D;float:left}#tvplb .tvp-lb-content{-webkit-transition:opacity .25s ease-in-out;transition:opacity .25s ease-in-out;background-color:#FFFFFF;position:fixed;z-index:999999;width:100%;margin:auto;left:0;right:0;top:0;bottom:0;height:380px}#tvplb .tvp-lb-body{margin:0px 20px 0px 20px;position:relative}#tvplb .tvp-lb-body:after{content:"";display:table;clear:both}.tvp-controls-mp4 .tvp-control-overlay{bottom:0px;margin:auto;height:100% !important}.tvp-hide-mp4{display:none !important}#tvpp .tvpp-wrapper{background-color:black;position:relative;padding-bottom:56.25%}#tvpp .tvp-video-overlay{width:100%;height:100%;position:absolute;display:none;background-repeat:no-repeat;background-size:cover}#tvpp .tvpp-holder{top:0;bottom:0;left:0;right:0;position:absolute;width:100%;height:100%}#tvpp-play{width:65px;height:37px;background-color:#B82927;opacity:0.7;position:absolute;left:0;right:0;top:0;bottom:0;margin:auto;border-radius:1px;z-index:9;cursor:pointer}#tvpp-play:after{content:" ";width:0;height:0;border-top:7px solid transparent;border-bottom:7px solid transparent;border-left:14px solid #fff;position:absolute;left:0;right:0;margin:auto;top:0;bottom:0}#tvpp-play:hover{opacity:1}.tvp-products-holder{width:15.8%;position:relative;float:right;height:331px}.tvp-no-products-banner{display:none}.tvp-product{background-color:#ffffff}#tvp-desktop-products{display:none}#tvp-desktop-products .tvp-product-img{position:relative;overflow:hidden;background:no-repeat 50% 50%;background-size:contain;cursor:pointer;height:68px;left:13px}#tvp-mobile-products .tvp-product{position:relative;height:85px;border:1px solid #9D9D9D}#tvp-mobile-products .tvp-product-img{position:relative;overflow:hidden;background:no-repeat 50% 50%;background-size:contain;height:70px;width:70px;margin:6px 10px;float:left}.tvp-pop-up-img{position:relative;overflow:hidden;background:no-repeat 50% 50%;background-size:contain;cursor:pointer;height:195px}.tvp-pop-up{display:none;width:250px;height:354px;position:absolute;padding:20px;bottom:-10px;border-radius:4px;right:112px;z-index:9999;background-color:#FFFFFF;box-shadow:2px 4px 8px 0 rgba(0,0,0,0.25);border:1px solid #D0D0D0}.tvp-pop-up-before{display:none;content:" ";width:0px;height:0px;border-style:solid;border-width:17px 0 17px 17px;border-color:transparent transparent transparent #D0D0D0;position:absolute;top:25px;right:96px;margin-top:-5px;z-index:99999}.tvp-pop-up-after{display:none;content:" ";width:0px;height:0px;border-style:solid;border-width:17px 0 17px 17px;border-color:transparent transparent transparent #FFFFFF;position:absolute;top:24px;right:97px;margin-top:-4px;z-index:99999}.tvp-pop-up img{display:block;width:208px;height:155px}.tvp-pop-up .tvp-product-title{margin:15px 0;height:38px;font-family:Roboto;font-size:14px;font-weight:500;line-height:18px;color:#333333;overflow:hidden}.tvp-pop-up .tvp-price{height:21px;font-family:Roboto;font-size:18px;font-weight:bold;line-height:21px;color:#333333;margin:0 0 25px 0}.tvp-pop-up .tvp-img-link{display:block;color:#000;text-decoration:none}.tvp-pop-up .tvp-call-to-action{display:block;font-family:Roboto;font-size:18px;font-weight:bold;text-align:center;line-height:45px;width:208px;height:48px;background-color:#FFFFFF;color:#587CB9;border:1px solid #587CB9;position:relative;text-decoration:none}.tvp-pop-up .tvp-call-to-action .tvp-material-icon{height:13px;width:13px;top:15px;position:relative;float:right;right:25px;background-size:contain;background-repeat:no-repeat;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAAhFBMVEUAAAD///+AgL9ggL9iicRmiLtggL9ZgL9YgLpagLxfg71egLxcfL5YfbtZfrxbfLxZfbpafblYfbpafrtafbtYfLtafrlYfblZfrpYfblZfLpYfbpZfbpZfbpYfblZfbpZfblZfLpYfbpZfbpYfLlZfLpZfLlYfbpYfblZfbpZfblYfLky6A+sAAAAK3RSTlMAAQQIDQ8QFBoiIyYnMUVMXGZoaWx/gIuMpaatrrKzuMzP2drc4PLz9ff9caPJhwAAAIlJREFUeNqNzccOwkAMRdELDDV0CL0mEIr////YmLHkaBBvZd2zML+WTXQw0isDGkf5DrZ6rYCxJCCXW9BBK4ThPUIJtl4h75cH7dNScgysE8F1A9c5F0sD6zoD6wauHy4zA+vYc+t12MfuoHvV7oEmCeB/WEi1c6tkDnSeUtujDTDYnNzWfdL7ADwKIVFlhAxSAAAAAElFTkSuQmCC)}.tvp-pop-up .tvp-call-to-action:hover .tvp-material-icon{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAPFBMVEUAAAD////////////////////////////////////////////////////////////////////////////YSWgTAAAAE3RSTlMABA4oLjI2N0BBUVN+f4Cpqsv9Q4lPKAAAAGNJREFUeNpFj0EOgCAMBFdARAUR+/+/mrVmmUszkzRpgVwvgviNgs0cHEYuVDsTQUjrYGiW4Cy3DQ/yvlpjkC/JgxzhiAz0TicM0/8VuUJ53BWwuysQBZ4uTqv+3CTz/SZqxguuiQim/MCIXAAAAABJRU5ErkJggg==)}.tvp-pop-up .tvp-call-to-action:hover{text-decoration:none;background-color:#587CB9;color:#FFFFFF}#tvp-view-more-button{width:85px;height:26px;background-color:#F5F5F5;border:1px solid #DFDFDF;border-radius:2px;float:left;margin:27px 0 36px 0}#tvp-view-more-button:active{background-color:#666666;box-shadow:0 1px #666;-webkit-transform:translateY(2px);transform:translateY(2px)}#tvp-view-more-button:focus{outline:none}#tvp-view-more-button:hover{background-color:#E8E8E8}#tvp-view-more-button .tvp-view-more{width:65px;height:14px;font-family:Roboto;font-size:10px;font-weight:bold;text-align:center;line-height:14px;color:#666666}#tvpp{position:relative}.tvp-html5-play-button{background:url("//do0631budpzeh.cloudfront.net/assets/img/profilePlayOverlay.png") no-repeat 50% 50%;display:none;position:absolute;width:100%;height:100%;top:0;left:0;z-index:999999}#tvp-mobile-products{height:85px}#tvp-mobile-products-list .tvp-product-title{position:relative;font-family:Roboto;font-size:12px;font-weight:bold;line-height:14px;color:#333333}#tvp-mobile-products-list .tvp-price{position:relative;font-family:Roboto;font-size:12px;font-weight:bold;line-height:14px;color:#333333}#tvp-mobile-products-list a{position:absolute;bottom:-1px;right:-1px;width:114px;color:#587CB9;border:1px solid #587CB9;text-decoration:none;font-family:Roboto;font-size:12px;font-weight:bold;padding:3px;width:113px}#tvp-mobile-products-list a .tvp-material-icon{position:absolute;height:12px;width:12px;right:5px;top:3.5px;background-size:contain;background-repeat:no-repeat;background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAAhFBMVEUAAAD///+AgL9ggL9iicRmiLtggL9ZgL9YgLpagLxfg71egLxcfL5YfbtZfrxbfLxZfbpafblYfbpafrtafbtYfLtafrlYfblZfrpYfblZfLpYfbpZfbpZfbpYfblZfbpZfblZfLpYfbpZfbpYfLlZfLpZfLlYfbpYfblZfbpZfblYfLky6A+sAAAAK3RSTlMAAQQIDQ8QFBoiIyYnMUVMXGZoaWx/gIuMpaatrrKzuMzP2drc4PLz9ff9caPJhwAAAIlJREFUeNqNzccOwkAMRdELDDV0CL0mEIr////YmLHkaBBvZd2zML+WTXQw0isDGkf5DrZ6rYCxJCCXW9BBK4ThPUIJtl4h75cH7dNScgysE8F1A9c5F0sD6zoD6wauHy4zA+vYc+t12MfuoHvV7oEmCeB/WEi1c6tkDnSeUtujDTDYnNzWfdL7ADwKIVFlhAxSAAAAAElFTkSuQmCC)}.tvp-pagination{text-align:left;bottom:3px;left:10px;position:relative;height:0}#tvp-recommended-products-wrapper{display:inline-block;margin:10px 0 5px;width:100%}.tvp-pagination>span{display:inline-block;position:relative;width:16px;height:12px}.tvp-pagination>span.active:before{background-color:#587CB9}.tvp-pagination>span:before{content:"";position:absolute;top:3px;background-color:#D8D8D8;border-radius:10px;height:7px;width:7px}@media screen and (min-width: 600px){#tvplb .tvp-lb-close{width:32px;height:32px}#tvplb .tvp-lb-content{height:500px}}@media screen and (min-width: 768px){#tvp-recommended-products-wrapper{display:none}#tvplb .tvp-lb-close{top:-17px;right:-16px}#tvplb .tvp-lb-content{-webkit-transform:translateY(-50%);transform:translateY(-50%);width:90%;margin:0 auto;left:0;right:0;top:50%;width:738px;height:394px;box-shadow:2px 4px 8px 0 rgba(0,0,0,0.25);border-radius:4px}#tvplb .tvp-lb-header .tvp-related-products{display:block;float:right;font-family:Roboto;font-size:11px;font-weight:500;line-height:38px;color:#333333;margin-right:-4px}#tvp-mobile-products{display:none}#tvp-desktop-products{display:block}#tvpp{float:left;width:84%}}.scroll-area{-webkit-tap-highlight-color:transparent;-webkit-transform:translateZ(0);transform:translateZ(0);-webkit-touch-callout:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;-o-text-size-adjust:none;text-size-adjust:none}#scroller-wrapper.x-scroll{width:100%;overflow:hidden}.x-scroll #scroller{width:9000px;height:85px}.x-scroll #scroller ul{list-style:none;padding:0;margin:0;overflow:hidden;display:inline-block}.x-scroll #scroller li{display:inline-block;float:left;height:100%;padding:0;border-top:none}.x-scroll #scroller li:last-child{padding-right:0}#scroller-wrapper.y-scroll{position:absolute;z-index:1;width:100%;overflow:hidden;height:331px}.y-scroll #scroller{position:absolute;z-index:1;width:100%}.y-scroll #scroller ul{list-style:none;padding:0;margin:0;width:100%;text-align:left;padding-right:15px}.y-scroll #scroller li{margin-bottom:19px;border:0;padding:0}.y-scroll #scroller li:last-child{margin-bottom:0}';});
 
 define('js/index',['require','jquery-private','iscroll','text!css/styles.css'],function(require) {
 
@@ -13318,18 +13318,22 @@ define('js/index',['require','jquery-private','iscroll','text!css/styles.css'],f
   }
 
   var TVSite = {};
+  var videosList = [];
+  var displayedVideos = [];
+  var holderId = Object.keys(__TVPage__.config).toString();
   var CONFIG = {
-    loginId: "1758881",
     apiUrl: "\/\/api.tvpage.com\/v1",
-    channelId: "81979997",
     products: "show"
   };
 
-  if ("undefined" !== typeof window.TVPage && "undefined" !== typeof TVPage.config) {
-    CONFIG = $.extend({}, CONFIG, TVPage.config['tvp-gallery']);
+  var redefine = function(o,p){return "undefined" !== typeof o[p];};
+  
+  if (redefine(window,'__TVPage__') && redefine(__TVPage__,'config')) {
+    CONFIG = $.extend({}, CONFIG, __TVPage__.config[holderId]);
   }
 
-  var sendAnalitics = function(data, type) {
+  var cleanVideos = function(){ $('#tvp-videos').off().html('');};
+  var sendAnalytics = function(data, type) {
     if ('object' === typeof data && type) {
       if (window._tvpa) {
         return _tvpa.push(['track', type, $.extend(data, {
@@ -13350,13 +13354,11 @@ define('js/index',['require','jquery-private','iscroll','text!css/styles.css'],f
     pointerLocation: 0,
     page: 0,
     fetchPage: 0,
-    haveMoreVideos: false,
-    videoTemplate: '<div data-tvp-video-id="{id}" data-index="{id}" class="tvp-video tvp-col-3"><div class="tvp-video-image" style="background-image:url(\'{asset.thumbnailUrl}\')"><div class="tvp-video-overlay"></div><div class="tvp-video-play-button"></div></div><div class="tvp-title">{title}</div></div>',
+    haveMoreVideos: true,
+    videoTemplate: '<div data-tvp-video-id="{id}" data-index="{id}" class="tvp-video "><div class="tvp-video-image" style="background-image:url(\'{asset.thumbnailUrl}\')"><div class="tvp-video-overlay"></div><div class="tvp-video-play-button"></div></div><div class="tvp-title">{title}</div></div>',
     initialize: function() {
-
       this.initializePlayer();
       this.videoClick();
-
       if ("hide" !== CONFIG.products) {
         this.initializeProductScrollerX();
         this.initializeProductScrollerY();
@@ -13366,63 +13368,59 @@ define('js/index',['require','jquery-private','iscroll','text!css/styles.css'],f
         $("#tvp-desktop-products").addClass('hide');
         $(".tvp-lb-content").addClass('products-hide');
       }
-      TVSite.videos = [];
-      TVSite.displayedVideos = [];
       var THAT = this;
-      $(document).on('click', '.tvp-lb-close', function(e) {
-        $('.tvp-lb-overlay').hide();
-        $('#lightbox').addClass('off');
-        THAT.hideHTML5PlayBtn();
-        window.TVPlayer.stop();
-        if (THAT.isMobile()) {
-          $('.tvp-pagination').empty();
-          THAT.cache.productScrollerX.goToPage(0, 0, 100);
-        }
-      });
-      $(document).on('click', '.tvp-lb-overlay', function(e) {
-        $('.tvp-lb-overlay').hide();
-        $('#lightbox').addClass('off');
-        THAT.hideHTML5PlayBtn();
-        window.TVPlayer.stop();
-        if (THAT.isMobile()) {
-          $('.tvp-pagination').empty();
-          THAT.cache.productScrollerX.goToPage(0, 0, 100);
-        }
-      });
       $(document).on('click', '#tvp-view-more-button', function(e) {
-        THAT.checkMoreVideos(true).done(function() {
-          if (THAT.haveMoreVideos) {
-            THAT.haveMoreVideos = false;
-            THAT.page++;
-            THAT.getVideos();
-          }
-        });
-        if (THAT.lastPageReached == true) {
-          THAT.videosInLoop(THAT.pointerLocation);
+        THAT.fetchPage++;
+        if (THAT.haveMoreVideos === true) {
+          $.ajax({
+            url: ''+CONFIG.apiUrl+'/channels/'+CONFIG.channel.id+'/videos',
+            dataType: 'jsonp',
+            data: {
+              p: THAT.fetchPage,
+              n: 6,
+              'X-login-id': CONFIG.loginId
+            }
+          }).done(function(res) {
+              if (res.length === 0) {
+                THAT.haveMoreVideos = false;
+                THAT.lastPageReached = true;
+                THAT.callLastPage();
+              } else {
+                  cleanVideos()
+                  for (var i = 0; i < res.length; i++) {
+                    videosList.push(res[i]);
+                  }
+                  THAT.renderSearchResults(res);
+                  THAT.haveMoreVideos = true;
+              }
+              THAT.pointerLocation = res.length;
+          });
         }
+        THAT.callLastPage();
       });
       $(document).on('click', '.tvp-product', function(e) {
         var $link = $(this).closest('a');
         if ($link.length) {
-          sendAnalitics({
+          sendAnalytics({
             ct: $(this).data('id'),
             vd: $(this).data('videoId')
           }, 'pk');
           window.open($link.attr("href"), "_blank");
         }
       });
-      $(document).on('click', '.tvp-img-link', function(e) {
-        sendAnalitics({
+      $(document).on('click', '.tvp-img-link, .tvp-call-to-action', function(e) {
+        sendAnalytics({
           ct: $(this).data('id'),
           vd: $(this).data('videoId')
         }, 'pk');
       });
-      $(document).on('click', '.tvp-call-to-action', function(e) {
-        sendAnalitics({
-          ct: $(this).data('id'),
-          vd: $(this).data('videoId')
-        }, 'pk');
-      });
+    },
+
+    callLastPage: function(){
+      var THAT = this;
+      if (THAT.lastPageReached === true){
+        THAT.videosInLoop(THAT.pointerLocation);
+      }
     },
 
     initializeProductScrollerX: function() {
@@ -13512,30 +13510,28 @@ define('js/index',['require','jquery-private','iscroll','text!css/styles.css'],f
           'X-login-id': CONFIG.loginId
         },
         success: function(res) {
-          $('#tvp-videos').html('');
+          cleanVideos()
           if (res.length < 6 && res.length > 0) {
-            THAT.lastPageReached = true;
-            $('#tvp-videos').html('');
+            cleanVideos()
             for (var i = 0; i < res.length; i++) {
-              TVSite.displayedVideos.push(res[i]);
+              displayedVideos.push(res[i]);
             }
             var restVideos = 6 - res.length;
             for (var i = 0; i < restVideos; i++) {
-              TVSite.displayedVideos.push(TVSite.videos[i]);
+              displayedVideos.push(videosList[i]);
             }
-            THAT.renderSearchResults(TVSite.displayedVideos);
+            THAT.renderSearchResults(displayedVideos);
             for (var i = 0; i < res.length; i++) {
-              TVSite.videos.push(res[i]);
+              videosList.push(res[i]);
             }
           } else if (res.length == 6) {
-            $('#tvp-videos').html('');
+            cleanVideos()
             THAT.renderSearchResults(res);
             for (var i = 0; i < res.length; i++) {
-              TVSite.videos.push(res[i]);
+              videosList.push(res[i]);
             }
           }
           THAT.pointerLocation = res.length;
-          $('#tvp-videos').append('<button id="tvp-view-more-button"><span class="tvp-view-more">VIEW MORE</span></button>');
         }
       });
     },
@@ -13544,7 +13540,7 @@ define('js/index',['require','jquery-private','iscroll','text!css/styles.css'],f
       var THAT = this;
       THAT.fetchPage = THAT.page;
       $.ajax({
-        url: ''+CONFIG.apiUrl+'/channels/' + CONFIG.channelId + '/videos',
+        url: ''+CONFIG.apiUrl+'/channels/' + CONFIG.channel.id + '/videos',
         dataType: 'jsonp',
         data: {
           p: THAT.page,
@@ -13553,74 +13549,52 @@ define('js/index',['require','jquery-private','iscroll','text!css/styles.css'],f
         },
         success: function(res) {
           if (res.length < 6 && res.length > 0) {
-            $('#tvp-videos').html('');
+            cleanVideos()
             THAT.renderSearchResults(res);
             for (var i = 0; i < res.length; i++) {
-              TVSite.videos.push(res[i]);
+              videosList.push(res[i]);
             }
           } else if (res.length == 6) {
-            $('#tvp-videos').html('');
+            cleanVideos()
             THAT.renderSearchResults(res);
             for (var i = 0; i < res.length; i++) {
-              TVSite.videos.push(res[i]);
+              videosList.push(res[i]);
             }
-            $('#tvp-videos').append('<button id="tvp-view-more-button"><span class="tvp-view-more">VIEW MORE</span></button>');
+            var $btn = $('<button/>').attr('id','tvp-view-more-button').append($('<span/>').addClass('tvp-view-more').html('VIEW MORE'));
+            $btn.appendTo('#'+holderId);
           }
         }
       });
     },
 
     videosInLoop: function(pointer) {
-      $('#tvp-videos').html('');
-      TVSite.newArray = [];
-      if (pointer == TVSite.videos.length) {
+      cleanVideos()
+      var newVideosList = [];
+      if (pointer == videosList.length) {
         pointer = 0;
       }
       var limit = pointer + 6;
-      if (limit > TVSite.videos.length) {
-        var limit1 = limit - TVSite.videos.length;
+      if (limit > videosList.length) {
+        var limit1 = limit - videosList.length;
         var limit2 = limit - limit1;
         for (var i = pointer; i < limit2; i++) {
-          TVSite.newArray.push(TVSite.videos[i]);
+          newVideosList.push(videosList[i]);
         }
-        if (limit2 == TVSite.videos.length) {
+        if (limit2 == videosList.length) {
           pointer = 0;
         }
         for (var i = pointer; i < limit1; i++) {
-          TVSite.newArray.push(TVSite.videos[i]);
+          newVideosList.push(videosList[i]);
         }
-        this.renderSearchResults(TVSite.newArray);
-
+        this.renderSearchResults(newVideosList);
         this.pointerLocation = limit1;
       } else {
         for (var i = pointer; i < limit; i++) {
-          TVSite.newArray.push(TVSite.videos[i]);
+          newVideosList.push(videosList[i]);
         }
-        this.renderSearchResults(TVSite.newArray);
+        this.renderSearchResults(newVideosList);
         this.pointerLocation = limit;
       }
-      $('#tvp-videos').append('<button id="tvp-view-more-button"><span class="tvp-view-more">VIEW MORE</span></button>');
-    },
-
-    checkMoreVideos: function(response) {
-      var THAT = this;
-      this.fetchPage++;
-      return $.ajax({
-        url: ''+CONFIG.apiUrl+'/channels/' + CONFIG.channelId + '/videos',
-        dataType: 'jsonp',
-        data: {
-          p: THAT.fetchPage,
-          n: 6,
-          'X-login-id': CONFIG.loginId
-        },
-        success: function(res) {
-          if (res.length > 0) {
-            THAT.haveMoreVideos = true;
-          } else {
-            THAT.haveMoreVideos = false;
-          }
-        }
-      });
     },
 
     renderVideosRow: function(row) {
@@ -13690,6 +13664,8 @@ define('js/index',['require','jquery-private','iscroll','text!css/styles.css'],f
       };
       $(document).on('click', '.tvp-video', function(e) {
         e.preventDefault();
+        THAT.mobileOrientation();
+        THAT.mobileOrientationListener();
         $('.tvp-lb-overlay').show();
         $('#lightbox').removeClass('off');
         var vid = $(e.currentTarget).attr('data-index');
@@ -13702,6 +13678,7 @@ define('js/index',['require','jquery-private','iscroll','text!css/styles.css'],f
             show()
             THAT.handleAdBanner(products);
             THAT.handlePagination(products);
+            THAT.closeModal(products);
           });
         } else {
           show();
@@ -13709,25 +13686,39 @@ define('js/index',['require','jquery-private','iscroll','text!css/styles.css'],f
       });
     },
 
+    closeModal: function(products){
+      var THAT = this;
+      $(document).on('click', '.tvp-lb-close, .tvp-lb-overlay', function(e) {
+        $('.tvp-lb-overlay').hide();
+        $('#lightbox').addClass('off');
+        THAT.hideHTML5PlayBtn();
+        window.TVPlayer.stop();
+        if (THAT.isMobile()) {
+          if (products.length !== 0) {
+            $('.tvp-pagination').empty();
+            THAT.cache.productScrollerX.goToPage(0, 0, 100);
+          }
+        }
+      });
+    },
+
     mobileOrientation: function(){
       if (this.isMobile()) {
-        $(window).ready(function(){
-          $('#tvpp').each(function(i, item){
-            item = $(item);
-            var itemWidth = item.width();
-            var productWidth = $('#tvp-mobile-products-list > li');
-            if (window.matchMedia('(orientation: portrait)').matches) {
-              $(productWidth).css('width', itemWidth);
-              $('.tvp-no-products-banner ').css('width', itemWidth);
-              $('.tvp-no-products-banner ').css('height', '85px');
-              $('#tvplb .tvp-lb-content').css({'height': '','width': ''});
-            }else {
-              $(productWidth).css('width', itemWidth);
-              $('.tvp-no-products-banner ').css('width', itemWidth);
-              $('.tvp-no-products-banner ').css('height', '85px');
-              $('#tvplb .tvp-lb-content').css({'height': '100%','width': '60%'});
-            }
-          });
+        var THAT = this;
+        $('#tvpp').each(function(i, item){
+          item = $(item);
+          var itemWidth = item.width();
+          var productWidth = $('#tvp-mobile-products-list > li');
+          if (window.matchMedia('(orientation: portrait)').matches) {
+            $(productWidth).css('width', itemWidth);
+            $('#tvplb .tvp-lb-content').css({'height': '','width': ''});
+            $('.tvp-lb-close').css({'height': '','width': ''});
+          }else {
+            $(productWidth).css('width', itemWidth);
+            $('#tvplb .tvp-lb-content').css({'height': '100%','width': '60%'});
+            $('.tvp-lb-close').css({'height': '26px','width': '26px'});
+          }
+          THAT.resizePlayer();
         });
       }
     },
@@ -13735,8 +13726,8 @@ define('js/index',['require','jquery-private','iscroll','text!css/styles.css'],f
     mobileOrientationListener: function(){
       if (this.isMobile()) {
         var THAT = this;
-        $(window).resize(function(){
           $('#tvpp').each(function(i, item){
+            $(window).resize(function(){
             item = $(item);
             var itemWidth = item.width();
             var productWidth = $('#tvp-mobile-products-list > li');
@@ -13764,7 +13755,7 @@ define('js/index',['require','jquery-private','iscroll','text!css/styles.css'],f
     getProducts: function(videoId) {
       return $.ajax({
         type: 'GET',
-        url: "//api.tvpage.com/v1/videos/" + videoId + '/products',
+        url: ''+CONFIG.apiUrl+'/videos/'+videoId+'/products',
         dataType: 'jsonp',
         data: {
           'X-login-id': CONFIG.loginId
@@ -13789,7 +13780,7 @@ define('js/index',['require','jquery-private','iscroll','text!css/styles.css'],f
       var THAT = this;
       if (products.length > 0) {
         $.each(products, function(index, product) {
-          sendAnalitics({
+          sendAnalytics({
             ct: product.id,
             vd: product.entityIdParent
           }, 'pi');
@@ -13843,6 +13834,10 @@ define('js/index',['require','jquery-private','iscroll','text!css/styles.css'],f
           var data = products[i].data;
           var array = JSON.parse(data);
           var priceHtml = '<div class="tvp-price">';
+          if (that.isMobile() && (products[i].title.length > 42)){
+            var shortTitle = jQuery.trim(products[i].title).substring(0, 42).split(" ").slice(0, -1).join(" ")+" ...";
+            products[i].title = shortTitle;
+          }
           if (array.price) {
             price = array.price.toString().replace(/[^0-9.]+/g, '');
             price = parseFloat(price).toFixed(2);
@@ -13961,7 +13956,7 @@ define('js/index',['require','jquery-private','iscroll','text!css/styles.css'],f
     },
 
     searchVideoInObject: function(vid) {
-      var videos = TVSite.videos;
+      var videos = videosList;
       for (var i = 0, l = videos.length; i < l; i++) {
         if (videos[i].id == vid) {
           return videos[i];
@@ -13971,7 +13966,6 @@ define('js/index',['require','jquery-private','iscroll','text!css/styles.css'],f
 
     initializePlayer: function() {
       var that = this;
-
       //Load tvpage analytics library.
       $.ajax({
         dataType: 'script',
@@ -14015,13 +14009,10 @@ define('js/index',['require','jquery-private','iscroll','text!css/styles.css'],f
               },
               techOrder: 'html5,flash',
               apiBaseUrl: '//api.tvpage.com/v1/',
-              onError: function(e) {
-                console.log(e);
-              },
               controls: {
                 active: true,
                 seekBar: {
-                  progressColor: '#00aef0'
+                  progressColor: '#B82927'
                 },
                 floater: {
                   removeControls: ['tvplogo', 'hd']
@@ -14092,8 +14083,11 @@ define('js/index',['require','jquery-private','iscroll','text!css/styles.css'],f
 
   // At DOM Ready!
   $(function() {
+    $('#iframe')     
+          .contents().find('body')
+          .append('<div id="'+holderId+'">');
     var lightBoxTemplate = '<div id="tvplb"><div class="tvp-lb-content"><div class="tvp-lb-close"></div><div class="tvp-lb-header"><div class="tvp-related-products">SPONSORED PRODUCTS</div><h4 class="tvp-lb-title"></h4></div><div class="tvp-lb-body"></div><div class="tvp-no-products-banner" data-ns="footer" data-pos="btf" data-collapse="true"></div></div><div id="tvp-lb-overlay" class="tvp-lb-overlay"></div></div>';
-    $("#tvp-gallery").append('<div class="cz-line-heading"><div class="cz-line-heading-inner">Recommended Videos</div></div><div id="tvp-videos"></div><div id="lightbox" class="off">' + lightBoxTemplate + '</div><a class="tvplogo" class="tvp-clearfix" href="//www.tvpage.com" target="_blank"></a>').addClass("tvp-clearfix");
+    $("#"+holderId).append('<div class="cz-line-heading"><div class="cz-line-heading-inner">Recommended Videos</div></div><div id="tvp-videos"></div><div id="lightbox" class="off">' + lightBoxTemplate + '</div><a class="tvplogo" class="tvp-clearfix" href="//www.tvpage.com" target="_blank"></a>').addClass("tvp-clearfix");
     var playerTemplate = '<div id="tvpp"><div id="html5MobilePlayBtn" class="tvp-html5-play-button"></div><div class="tvpp-wrapper"><div id="tvpp-holder" class="tvpp-holder"></div><div class="tvp-video-overlay"></div></div></div>';
     var productsTemplate = '<div id="tvp-recommended-products-wrapper"><div class="tvp-recommeded-products">SPONSORED PRODUCTS</div><div class="tvp-pagination"></div></div><div id="tvp-mobile-products"><div id="scroller-wrapper" class="x-scroll"><div id="scroller" class="scroll-area"><ul id="tvp-mobile-products-list" class="products-list"></ul></div></div></div><div id="tvp-desktop-products" class="products"><div class="tvp-products-holder"><div id="scroller-wrapper" class="y-scroll"><div id="scroller" class="scroll-area"><ul id="tvp-desktop-products-list"></ul></div></div><div id="tvp-product-pop-ups"></div></div></div>';
     var initialTemplate = '<div class="tvp-clearfix"><div class="tvp-col-3"><div id="tvp-no-image" class="tvp-video-image"></div><div class="tvp-no-title-1"></div><div class="tvp-no-title-2"></div></div><div class="tvp-col-3"><div id="tvp-no-image" class="tvp-video-image"></div><div class="tvp-no-title-1"></div><div class="tvp-no-title-2"></div></div></div><div class="tvp-clearfix"><div class="tvp-col-3"><div id="tvp-no-image" class="tvp-video-image"></div><div class="tvp-no-title-1"></div><div class="tvp-no-title-2"></div></div><div class="tvp-col-3"><div id="tvp-no-image" class="tvp-video-image"></div><div class="tvp-no-title-1"></div><div class="tvp-no-title-2"></div></div></div><div class="tvp-clearfix"><div class="tvp-col-3"><div id="tvp-no-image" class="tvp-video-image"></div><div class="tvp-no-title-1"></div><div class="tvp-no-title-2"></div></div><div class="tvp-col-3"><div id="tvp-no-image" class="tvp-video-image"></div><div class="tvp-no-title-1"></div><div class="tvp-no-title-2"></div></div></div>';
