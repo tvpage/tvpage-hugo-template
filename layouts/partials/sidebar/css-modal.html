@@ -37,23 +37,6 @@
     box-shadow: 0 0 60px 10px rgba(0, 0, 0, 0.9);
 }
 
-.tvp-close-btn{
-  display:block;
-  float:right;
-  width:32px;
-  height:32px;
-  position: absolute;
-  cursor: pointer;
-  padding: 0;
-  top: 0px;
-  right: 0px;
-  z-index: 99999;
-  border:0;
-  background-color:transparent;
-  background-size: contain;
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAMAAADW3miqAAAAq1BMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAADKysoAAADY2NgGBgYJCQkAAADf398DAwM/Pz8AAAAAAACDg4McHBzl5eUAAAC+vr4GBgZmZmbs7Oz5+fk+Pj7Jycmenp5oaGj39/eDg4PQ0ND4+Piurq7a2tr8/Pzs7Oz5+fne3t79/f0iIiIsLCw1NTVBQUFOTk5dXV1oaGh6enqNjY2cnJysrKy6urrBwcHOzs7///+E45x2AAAAKnRSTlMAAQMIDRIZHSMnLTpESFNVXWlpbG15eoeJlqGssrO2vsDJ09Te4vj6/f2snMF3AAAByklEQVR4AXXT/VLaQBQFcONuNF0igm0Ea/kA6W4JSMhHwnn/J+tdbneuQ9Lzh4zmN+eeYczdbSLK3XAERPf30f/h9blSmqIUySFHROkH8/q22m5XP388KmJDJHnZASGrJ2FiHp43gGvL4nQqytYSexTFhmosbHXI/+VQWfx++qq8mTu0x/xLji0cKTEqebZo8ps0cN+CiiL1kO7Q5b20WCk+SEXxaA577KPDH/iDXJRMdqjygVTYchUXXcKMRj4oF3AVLRp/oOY/Av5xDYB/r/GmGJnpDkXoB2oy4Xrh7/lJepRZHHNRYvIjnKZ7flLmcJCtYihAzCid7QX5W2EhZS/oek6MqANcQNkOJzF1LeqELSMa/hFW8GP5CkpsaDh/BUtcQlMtH5QOrzq6omRCo875QAq4RJHhUWt0Q6jDL5rkkb9HVU3fNLDGXwtV7w7lrSmxf+Ei/l8Zz5a47WqABS0ixFXaTGZrh+4s5NxhvzCaizyig6TeLdBVn158Vh1g54aOeSRqnPkyiuOfi7EYefHSaTZbbiwodrP+niZ64BWOTTohR8mmk9TEKhhRvixOzCiljEwSUw2bHlNaxxStlZAeI+dDQsiw64u/Vpd3CsAJKq0AAAAASUVORK5CYII=);
-}
-
 #tvp-player-el {
   position: absolute;
   width: 80%;
@@ -75,7 +58,7 @@
     font-size: 11px;
     font-weight: 500;
     line-height: 38px;
-    color: #333333;
+    color: #1F1D26;
     margin-right: -4px;
 }
 
@@ -112,6 +95,41 @@
   cursor:pointer;
 }
 
+.tvp-product-title {
+    margin: 15px 0;
+    height: 38px;
+    font-family: Dosis;
+    font-size: 16px;
+    line-height: 20px;
+    color: #1F1D26;
+}
+
+.tvp-price {
+    font-family: Dosis;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 22px;
+    color: #00DBC0;
+    margin: 0 0 20px 0;
+}
+
+.tvp-call-to-action {
+    display: block;
+    font-family: Dosis;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    line-height: 33px;
+    letter-spacing: 1px;
+    color: #FFFFFF;
+    width: 208px;
+    padding: 5px;
+    background-color: #1F1D26;
+    position: absolute;
+    text-decoration: none;
+    bottom: 10px;
+}
+
 .tvp-pop-up {
     display: none;
     width: 250px;
@@ -126,47 +144,13 @@
     box-shadow: 2px 4px 8px 0 rgba(0,0,0,0.25);
     border: 1px solid #D0D0D0;
 }
+
 .tvp-pop-up img {
     display: block;
     width: 208px;
     height: 155px;
 }
 
-.tvp-product-title {
-    margin: 15px 0;
-    height: 38px;
-    font-family: Roboto;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 18px;
-    color: #333333;
-}
-
-.tvp-price {
-    font-family: Roboto;
-    font-size: 18px;
-    font-weight: bold;
-    line-height: 21px;
-    color: #333333;
-    margin: 0 0 20px 0;
-}
-
-.tvp-call-to-action {
-    display: block;
-    font-family: Roboto;
-    font-size: 18px;
-    font-weight: bold;
-    text-align: center;
-    line-height: 45px;
-    width: 208px;
-    height: 48px;
-    background-color: #FFFFFF;
-    color: #587CB9;
-    border: 1px solid #587CB9;
-    position: absolute;
-    bottom:10px;
-    text-decoration: none;
-}
 .tvp-pop-up-before {
   display: none;
   content: " ";

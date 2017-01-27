@@ -12,20 +12,11 @@
     <div class="tvp-related-products">SPONSORED PRODUCTS</div>
     <h4 class="tvp-lb-title"></h4>
   </div>
-  <div class="tvp-close-btn"></div>
   <div id="tvp-player-el"></div>
   <div id="tvpplayer-play"></div>
   <div id="tvp-products"></div>
   <div id="tvp-pop-ups"></div>
 </div>
-<script id="productTemplate" type="text/template">
-  <div id="tvp-video-{id}" class="tvp-video">
-    <div class="tvp-video-image" style="background-image:url({asset.thumbnailUrl})">
-      <div class="tvp-video-button"></div>
-    </div>
-    <div class="tvp-video-title">{title}</div>
-  </div>
-</script>
 <script src="//a.tvpage.com/tvpa.min.js"></script>
 <script src="//appcdn.tvpage.com/player/assets/tvp/tvp-{{ ($.Scratch.Get "settings").version }}-min.js"></script>
 <script src="/{{.Type}}/vendor/jquery.js"></script>
@@ -106,7 +97,7 @@
               var resize = function(){that.instance.resize(that.el.clientWidth, that.el.clientHeight);};
               window.onresize = resize;
               resize();
-              that.play(fAsset);
+              that.play(assety(fAsset));
             },
             onStateChange: function(e){
             },
@@ -135,6 +126,7 @@
         if (!a.sources) a.sources = [{ file: a.videoId }];
         a.type = a.type || 'youtube';
         return a;
+        console.log('assety: ',a);
       },
     getProducts = function(videoId) {
       return $.ajax({
@@ -207,25 +199,21 @@
 
   window.addEventListener('message',function(e){
     if (!e || !redefine(e,'origin') || 'http://localhost:1313' !== e.origin || !redefine(e,'data')) return;
-    console.log(e);
     //We opted for a destructive method when user decides to close modal.
-    var $overlay = $(parentDoc).find('.tvp-modal-overlay');
-    $overlay.click(function(){$(this).off().remove();});
-    $(doc).find($('.tvp-close-btn')).click(function(){$overlay.off().remove();});
+    var $CloseModal = $(parentDoc).find('.tvp-modal-overlay, .tvp-close-btn');
+    $CloseModal.click(function(){$(this).off().remove();});
+    $CloseModal.click(function(){$CloseModal.off().remove();});
 
     //Startup the player...
     //Whe need to have videos data.. we can start this by saying that we will get 
     //the page # from the inline iframe, plus which video id needs to play.
-    var videos = e.data.channelVideos || {},
+    var videos = e.data || {},
         videoid = e.data.videoId,
+        videoTitle = e.data.videoTitle,
         videosC = Object.keys(videos).length;
-    // while (videosC > 0) {
-    //   var i = videosC-1;
-    //   videos[i] = assety(videos[i]);
-    //   videosC--;     
-    // }
+
     getProducts(videoid);
-    console.log(videos);
+    $('.tvp-lb-title').html(videoTitle);
     new Player($('#tvp-player-el')[0],videos,settings);
 
   });
