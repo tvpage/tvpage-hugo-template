@@ -81,13 +81,18 @@ root.addEventListener('message',function(e) {
           },
           onStateChange: function(e){
             if (e && 'tvp:media:videoended' !== e) return;
-            index = (index == videos.length - 1) ? 0 : index + 1;
-            if(mobile || !{{ ($.Scratch.Get "settings").autonext }}){
+            if(!{{ ($.Scratch.Get "settings").autonext }}){
               instance.cueVideo(getAsset(videos[index]));
               handlePlayButton(getAsset(videos[index]),instance);
             }else{
-              instance.loadVideo(getAsset(videos[index]));
-            } 
+              index = (index == videos.length - 1) ? 0 : index + 1;
+              if(mobile){
+                instance.cueVideo(getAsset(videos[index]));
+                handlePlayButton(getAsset(videos[index]),instance);
+              }else{
+                instance.loadVideo(getAsset(videos[index]));
+              }
+            }
           }
         });
       }
