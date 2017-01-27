@@ -152,7 +152,7 @@
         }
         s += '<div id="ppu-'+i+'" class="tvp-pop-up"><img class="img-responsive" src="'+array.imageUrl+'" alt="'+products[i].title+'"><h4 class="tvp-product-title">'+products[i].title+'</h4>'+priceHtml+'</a><a class="tvp-call-to-action" href="'+array.linkUrl+'" target="_blank" data-video-id="'+products[i].entityIdParent+'" data-id="'+products[i].id+'">'+'VIEW DETAILS'+'<span class="tvp-material-icon"></span>'+'</a></div>';
         }
-      var arrows = '<div class="tvp-pop-up-before"></div><div class="tvp-pop-up-after"></div>';
+      var arrows = '<div id="tvp-arrows"><div class="tvp-pop-up-before"></div><div class="tvp-pop-up-after"></div></div>';
       $('#tvp-pop-ups').empty().append(s).append(arrows);
     },
     renderProducts = function(products) {
@@ -167,20 +167,33 @@
       bindProductEvents();
     },
     bindProductEvents = function() {
-      var that = this;
-      var $dproducts = $('#tvp-products');
+      var that = this,
+          $dproducts = $('#tvp-products'),
+          $popUp = $('.tvp-pop-up'),
+          $imgCont = $('.tvp-img-container'),
+          $body = $(doc).find('body');
       $dproducts.find('.tvp-product-img').on('mouseover', function(e) {
           e.preventDefault();
-          var id = this.id.split('-')[2];
+          var id = this.id.split('-')[2],
+              $arrowTop = ($(this).offset().top - $body.offset().top) +19;
           showPopUp(id);
+          if ($arrowTop < 0) {
+            $arrowTop = 10;
+          }
+          if ($arrowTop > $body.height()) {
+            $arrowTop = $body.height() - 10;
+          }
+          $('.tvp-pop-up-before').css({top: $arrowTop + 2}).show();
+          $('.tvp-pop-up-after').css({top: $arrowTop + 1}).show();
       });
-      $('.tvp-pop-up').off().on('mouseleave', function(e) {
+
+      $popUp.off().on('mouseleave', function(e) {
         e.preventDefault();
-        clearPopUps();
+          clearPopUps();
       });
-      $('.tvp-product-img').on('mouseleave', function(e) {
+      $imgCont.on('mouseleave', function(e) {
         e.preventDefault();
-        clearPopUps();
+          clearPopUps();
       });
     },
     clearPopUps = function() {
@@ -188,13 +201,14 @@
       if ($p.length) {
         $p.hide();
       }
-      // $('.tvp-pop-up-before,.tvp-pop-up-after').hide();
+      $('.tvp-pop-up-before,.tvp-pop-up-after').hide();
     },
     showPopUp = function(id, top) {
       var $p = $('#ppu-' + id);
       if ($p.length) {
         $p.show();
       }
+      $('.tvp-pop-up-before,.tvp-pop-up-after').show();
     };
 
   window.addEventListener('message',function(e){
