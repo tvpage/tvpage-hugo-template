@@ -24,6 +24,7 @@
     var playerResolution = isMobile ? '360p' : '480p';
     var isFlashRequired = ( (IE(9) || IE(10)) || (isMac && isFireFox)  );
     var playerTechOrder = isFlashRequired ? 'flash,html5' : 'html5,flash';
+    var playbackList = [];
     var formatDate = function(unixTimestamp) {
         var months = ['January','February','March','April','May','June','July','August','September','October','November','December'],
         	d = (new Date(Number(unixTimestamp) * 1000)),
@@ -103,7 +104,9 @@
                 return ("undefined" !== typeof val && null !== typeof val && val);
             };
             if (result && redefine(result)) {
-                return TVSite.baseUrl + '/' +( (isLoadMore || isFiltering) ? TVSite.channelInfo.titleTextEncoded : String(result.entityTitleParent).replace(/\s/g,"-").replace(/\./g,"") )+ "/" + String(result.titleTextEncoded).replace(/\s/g,"-") + "/" + (result.entityIdParent || TVSite.channelId) + "-" + result.id;
+                var url = TVSite.baseUrl + '/' +( (isLoadMore || isFiltering) ? TVSite.channelInfo.titleTextEncoded : String(result.entityTitleParent).replace(/\s/g,"-").replace(/\./g,"") )+ "/" + String(result.titleTextEncoded).replace(/\s/g,"-") + "/" + (result.entityIdParent || TVSite.channelId) + "-" + result.id;
+                url = url.replace("//", "/");
+                return url;
             }
             return;
         },
@@ -265,18 +268,6 @@
                 $searchMobileResultHolder.find('ul').html(html)
                     .parent().show();
             }
-        },
-        handleProduct : function (results) {
-            if (results.length) {
-                var template = '<li><div id="{id}" class="tvp-product-image"><div class="content" style="background-image: url({imageUrl})"></div></div></li>',
-                    html = '',
-                    that = this;
-                _.each(results, function (el, idx) {
-                    var result = results[idx];                
-                    html += that.tmpl(template, result);
-                });
-                $('.tvp-products-wrapper ul').html(html);
-            }
         }
     };
 
@@ -294,7 +285,9 @@
         onLoadMore : function(){
             $(".latest-video").on({
                 click: function(e){
-                    // alert('test');
+                    if(TVSite.isPlayerPage){
+                        //e.preventDefault();
+                    }
                 },
                 mouseover: function(e){
                     var $hoverDiv = $(this).find('.latest-video-hover');
@@ -384,6 +377,7 @@
             $nullResults.hide();
         }
     });
+
     searchDesktopInput.focus(function(){
     	$(".brand-header-search-container").animate({width:"+=175"},"fast");
     	$(".brand-header-logo").animate({marginLeft:"-=175"},"fast");
@@ -394,6 +388,15 @@
         $nullResults.hide();
     	$(".brand-header-search-container").animate({ width: '-=175' }, "fast");
     	$(".brand-header-logo").animate({marginLeft:"+=175"},"fast");
+    });
+
+    $(document).on("click", function(event){
+        debugger
+        var input = $(event.target);
+        if(!searchDesktopInput.is(":focus") && input !== searchDesktopInput){
+            //$(".brand-header-search-container").animate({ width: '-=175' }, "fast");
+            //$(".brand-header-logo").animate({marginLeft:"+=175"},"fast");
+        }
     });
 
     $searchMobileInput.on('keyup', function(e) {
@@ -535,13 +538,13 @@
         },
         playVideo : function(video){
           if (video) {
-
             inTimeProducts.destroy();
             inTimeProducts.initialize({
                 videoId: video.id,
                 channelId: TVSite.channelId
             });
             var data = tvp_Player.buildVideoData(video);
+            
             if (isMobile) {
               TVPlayer.cueVideo(data);
               if ('youtube' != data.type) {
@@ -585,7 +588,8 @@
             }
             var channelTitle = '';
             if (channel.titleTextEncoded && channel.titleTextEncoded.length > 0 ) {
-              channelTitle = '/' + channel.titleTextEncoded;
+              channelTitle = TVSite.baseUrl+'/' + channel.titleTextEncoded;
+              channelTitle = channelTitle.replace("//", "/");
             }
             url = channelTitle + videoTitle + videoUrl;
           }
@@ -812,85 +816,136 @@
 
     
     var ProductSlider = {
-        products : [],
-        $currentPopUp: null,
-        currentId: 0,
-        initialize: function (settings) {
-            var opt = settings || {};
-            var that = this;
-            channelDataExtractor.products(opt.videoId)
-                .done(function (results) {
-                    if(results.length){
-                        that.products = results;
-                        that.renderProducts(results);
-                        that.initializeHover();                        
-                        that.initializeSlider();
+            products : [],
+            $currentPopUp: null,
+            currentId: 0,
+            el: '[data-toggle="popover"]',
+            initialize: function (settings) {
+                this.destroy();
+                var opt = settings || {};
+                var that = this;
+                channelDataExtractor.products(opt.videoId)
+                    .done(function (results) {
+                        if(results.length){
+                            that.products = results;
+                            that.renderProducts(results);
+                            Analytics.registerProductPanel($('#tvp-products-wrapper .tvp-product-image'));
+                            that.bindEvents();
+                            that.initializeSlider();
+                        }
+                    });
+            },
+            renderProducts: function (results) {                
+                var template = '<li> <a data-id="{id}" href="{linkUrl}" target="_blank" class="analyticsClick"><div id="{id}" data-toggle="popover" class="tvp-product-image" data-videoId="{videoId}"><div class="content"> <img src="{imageUrl}" alt=""></div></div> </a></li>',
+                    html = '';
+                this.products = results;
+
+                _.each(results, function (el, idx) {
+                    var result = results[idx];
+                    
+                    if ((result['OUT_OF_STOCK'] === 'Y') && (_.isEmpty(result['price']))) {
+                        result['price'] = "Out Of Stock";
+                    }
+                    else{                        
+                        if (result['price'].indexOf('$') < 0) {
+                            result['price'] = '$' + result['price'];
+                        }
+                    }                    
+                    result['videoId'] = activeVideoId || TVSite.channelVideosData.video.id;
+                    html += renderUtil.tmpl(template, result); 
+                });
+                $('.tvp-products-wrapper ul').html(html);
+            },
+            bindEvents: function () {
+                var that = this;
+                $(this.el).popover({
+                    placement: 'left',
+                    template: '<div class="popover tvp-prod-hover" role="tooltip"><div class="arrow"></div><div class="popover-content tvp-prod-hover-content"></div></div>',
+                    html: true,
+                    trigger: 'manual',
+                    container: 'div.player-product',
+                    content: function(){
+                        var hoverTmpl = '<div class="tvp-prod-hover-img-container"><div class="content"> <img src="{imageUrl}" alt=""></div></div><div class="tvp-prod-hover-title">{title}</div><div class="tvp-prod-hover-price-rate"> <span class="price">{price}</span></div> <a data-id="{id}" href="{linkUrl}" target="_blank" class="btn btn-primary btn-more-button analyticsClick">VIEW DETAILS</a>',
+                            hoverHtml = ''
+                            prodId = $(this).attr('id');
+
+                        var currentProd = _.filter(that.products, function(item){
+                            return item.id == prodId;
+                        })[0];
+
+                        hoverHtml = renderUtil.tmpl(hoverTmpl, currentProd);
+
+                        return hoverHtml;
+                    }
+                }).on({
+                    'mouseenter' : function () {
+                        if (that.currentId === 0) {
+                            $(this).popover('show');
+                        }
+                        else{
+                            var _id = $(this).attr('id');
+                            if (_id !== that.currentId) {
+                                $('div[id="'+that.currentId+'"][data-toggle="popover"]').popover('hide');
+                                $(this).popover('show');
+                            }
+                        }                        
+                    },
+                    'show.bs.popover': function () {
+                        that.currentId = $(this).attr('id');
+                    },
+                    'hide.bs.popover': function () {
+                        that.currentId = 0;
                     }
                 });
-        },
-        renderProducts: function (results) {
-            var template = '<li><div id="{id}" data-toggle="popover" class="tvp-product-image"><div class="content"> <img src="{imageUrl}" alt=""></div></div></li>',
-                html = '';
-            this.products = results;
 
-            _.each(results, function (el, idx) {
-                var result = results[idx];                 
-                html += renderUtil.tmpl(template, result); 
-            });
-            $('.tvp-products-wrapper ul').html(html);
-        },
-        initializeHover: function () {
+                $('.player-product').on('mouseleave', '.popover', function() {
+                    $('div[id="'+that.currentId+'"]').popover('hide');
+                    that.currentId = 0;
+                }).on('mouseleave', function() {
+                    $('*[data-toggle="popover"]').popover('hide');                
+                }).on('click', '.analyticsClick', function(e) {
+                    // e.preventDefault();
+                    // window.open($(this).attr('href'), "_blank");
+                    e.stopPropagation();
+                    Analytics.registerProductClick($(this).data('id'));
+                });
+            },
+            initializeSlider: function () {
+                var prodSlider = new IScroll('#tvp-products-wrapper', {
+                    interactiveScrollbars: true,
+                    scrollX: false,
+                    mouseWheel: true,
+                    scrollbars: true
+              });
+            },
+            destroy: function () {
+                $(this.el).popover('destroy');
+            }
+    }
+
+    var Analytics = {
+        registerProductPanel: function ($products) {
             var that = this;
-            $('[data-toggle="popover"]').popover({
-                placement: 'left',
-                template: '<div class="popover tvp-prod-hover" role="tooltip"><div class="arrow"></div><div class="popover-content tvp-prod-hover-content"></div></div>',
-                html: true,
-                trigger: 'manual',
-                container: 'body',
-                content: function(){
-                    var hoverTmpl = '<div class="tvp-prod-hover-img-container"><div class="content"> <img src="{imageUrl}" alt=""></div></div><div class="tvp-prod-hover-title">{title}</div><div class="tvp-prod-hover-price-rate"> <span class="price">${price}</span></div> <a href="{linkUrl}" target="_blank" class="btn btn-primary btn-more-button">VIEW DETAILS</a>',
-                        hoverHtml = ''
-                        prodId = $(this).attr('id');
-
-                    var currentProd = _.filter(that.products, function(item){
-                        return item.id == prodId;
-                    })[0];
-
-                    hoverHtml = renderUtil.tmpl(hoverTmpl, currentProd);
-
-                    return hoverHtml;
-                }
-            }).on('mouseenter', function() {
-                var _id = $(this).attr('id');
-
-                if (that.currentId === 0) {
-                    $(this).popover('show');
-                    that.currentId = _id;
-                }
-                else{
-                    if (that.currentId !== _id) {
-                        $('*[data-toggle="popover"]').popover('hide');
-                        $(this).popover('toggle');
-                        that.currentId = _id;
-                    }
-                    else{
-                        $(this).popover('toggle');
-                    }
-                }
-            });
-
-            $('.video-products-container').on('mouseleave', function() {
-                $('[data-toggle="popover"]').popover('hide');
+            _.each($products, function(v, k){                
+                that.sendAnalytics({
+                    vd: $(v).data('videoid'),
+                    ct: $(v).attr('id')
+                }, 'pi');
             });
         },
-        initializeSlider: function () {
-            var prodSlider = new IScroll('#tvp-products-wrapper', {
-                interactiveScrollbars: true,
-                scrollX: false,
-                click: true,
-                mouseWheel: true,
-                scrollbars: true
-          });
+        registerProductClick: function (prodId) {
+            this.sendAnalytics({
+                vd: activeVideoId || TVSite.channelVideosData.video.id,
+                ct: prodId
+            }, 'pk');
+        },
+        sendAnalytics: function(data, type) {
+            if ('object' == typeof data && type) {
+                return _tvpa.push(['track', type, $.extend(data, {
+                    li: TVSite.loginId,
+                    pg: TVSite.channelId
+                })]);
+            }
         }
     }
 
@@ -920,7 +975,7 @@
         divId: 'TVPagePlayer',
         swf: '//appcdn.tvpage.com//player/assets/tvp/tvp-1.5.2-flash.swf',
         displayResolution: tvp_Player.playerResolution,
-        analytics: { tvpa : false },
+        analytics: { tvpa : true },
         techOrder: tvp_Player.playerTechOrder,
         onReady: tvp_Player.handlePlayerReady,
         onStateChange: tvp_Player.handlePlayerStateChange,
