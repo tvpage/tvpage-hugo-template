@@ -33,7 +33,7 @@
             "type": "text",
             "label": "Items Per Page",
             "code": "itemsperpage",
-            "value": "4"
+            "value": "6"
         },
         {
             "type": "text",
