@@ -1,5 +1,6 @@
 {{ $isPreview := getenv "HUGO_PREVIEW" }}
 {{ $subfolder := .Site.Params.subfolder }}
+{{ $.Scratch.Set "subfolder" $subfolder }}
 {{ $baseUrl := $subfolder}}
 {{ $.Scratch.Set "baseUrl" $baseUrl }}
 {{ $.Scratch.Add "baseUrl" "/" }}
@@ -14,7 +15,7 @@
 		{{ .url }}
 	  <a href="{{$baseUrl}}{{ .url }}" class="latest-video">
 	{{ else }}
-	  <a href="{{ .url }}" class="latest-video">
+	  <a href="{{ $.Scratch.Get "subfolder" }}{{ .url }}" class="latest-video">
 	{{ end }}
 	
 		<div class="latest-video-thumbnail">		

@@ -377,6 +377,7 @@
             $nullResults.hide();
         }
     });
+
     searchDesktopInput.focus(function(){
     	$(".brand-header-search-container").animate({width:"+=175"},"fast");
     	$(".brand-header-logo").animate({marginLeft:"-=175"},"fast");
@@ -387,6 +388,15 @@
         $nullResults.hide();
     	$(".brand-header-search-container").animate({ width: '-=175' }, "fast");
     	$(".brand-header-logo").animate({marginLeft:"+=175"},"fast");
+    });
+
+    $(document).on("click", function(event){
+        debugger
+        var input = $(event.target);
+        if(!searchDesktopInput.is(":focus") && input !== searchDesktopInput){
+            //$(".brand-header-search-container").animate({ width: '-=175' }, "fast");
+            //$(".brand-header-logo").animate({marginLeft:"+=175"},"fast");
+        }
     });
 
     $searchMobileInput.on('keyup', function(e) {
