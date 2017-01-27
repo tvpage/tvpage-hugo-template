@@ -10,9 +10,10 @@
 {{ end }}
 {{ end }}
 {{ $isPreview := getenv "HUGO_PREVIEW" }}
-{{ $baseUrl := "/"}}
+{{ $subfolder := .Site.Params.subfolder }}
+{{ $baseUrl := $subfolder}}
 {{ $.Scratch.Set "baseUrl" $baseUrl }}
-{{ if $isPreview }}
+{{ $.Scratch.Add "baseUrl" "/" }}{{ if $isPreview }}
   {{ $baseUrl := .Site.BaseURL }}
   {{ $.Scratch.Set "baseUrl" $baseUrl }}
 {{ end }}

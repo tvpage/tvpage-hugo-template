@@ -3,8 +3,10 @@
   {{ $.Scratch.SetInMap "settings" "channelData" $channel }}
 {{ end }}
 {{ $isPreview := getenv "HUGO_PREVIEW" }}
-{{ $baseUrl := "/"}}
+{{ $subfolder := .Site.Params.subfolder }}
+{{ $baseUrl := $subfolder}}
 {{ $.Scratch.Set "baseUrl" $baseUrl }}
+{{ $.Scratch.Add "baseUrl" "/" }}
 {{ if $isPreview }}
   {{ $baseUrl := .Site.BaseURL }}
   {{ $.Scratch.Set "baseUrl" $baseUrl }}

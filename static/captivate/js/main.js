@@ -345,6 +345,12 @@
             });
 
 
+        },
+        searchButton : function(){
+            $(".brand-header-search-button").on("click", function(e){
+                console.log("focus");
+                $searchMobileInput.focus();
+            });
         }
 
     };
@@ -381,6 +387,7 @@
     searchDesktopInput.focus(function(){
     	$(".brand-header-search-container").animate({width:"+=175"},"fast");
     	$(".brand-header-logo").animate({marginLeft:"-=175"},"fast");
+        eventsBinder.searchButton();
     }).blur(function(){
     	searchDesktopInput.val("");
     	renderUtil.resetLiveSearch();
@@ -410,6 +417,8 @@
             $searchMobileResultHolder.hide();
         }
     });
+    
+    eventsBinder.searchButton();
 
     $searchMobileCancelBtn.on('click', function(e) {
         e.preventDefault();
