@@ -12,11 +12,24 @@
   {{ end }}
 {{end}}
 {{ $channelVideosQty := $.Scratch.Get "total" }}
+{{ $isPreview := getenv "HUGO_PREVIEW" }}
+{{ $subfolder := .Site.Params.subfolder }}
+{{ $baseUrl := $subfolder}}
+{{ $.Scratch.Set "baseUrl" $baseUrl }}
+{{ $.Scratch.Add "baseUrl" "/" }}
+{{ if $isPreview }}
+  {{ $baseUrl := .Site.BaseURL }}
+  {{ $.Scratch.Set "baseUrl" $baseUrl }}
+{{ end }}
+{{ $baseUrl := $.Scratch.Get "baseUrl" }}
 <main id="main-content" class="main-content">
-    <!-- <section class="channel-page-banner" style="background-image: url('/{{.Type}}/images/channel/{{.Params.channelid}}-banner.jpg');"> -->
-    <section class="channel-page-banner">
-      <div class="channel-page-banner-desktop" style="background-image: url('/{{.Type}}/images/channel/{{.Params.channelid}}-banner.jpg');"></div>
-      <div class="channel-page-banner-mobile" style="background-image: url('/{{.Type}}/images/channel/{{.Params.channelid}}.jpg');"></div>
+    <section class="channel-page-banner">      
+      <div class="channel-page-banner-desktop">
+        <img src='{{$baseUrl}}{{.Type}}/images/channel/{{.Params.channelid}}-banner.jpg' alt="">
+      </div>
+      <div class="channel-page-banner-mobile">
+        <img src='{{$baseUrl}}{{.Type}}/images/channel/{{.Params.channelid}}.jpg' alt="">
+      </div>
       <div class="main-channel-banner">
         <div class="main-channel-banner-title">
           {{ $channel.title }}

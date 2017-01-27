@@ -1,3 +1,13 @@
+{{ $isPreview := getenv "HUGO_PREVIEW" }}
+{{ $subfolder := .Site.Params.subfolder }}
+{{ $baseUrl := $subfolder}}
+{{ $.Scratch.Set "baseUrl" $baseUrl }}
+{{ $.Scratch.Add "baseUrl" "/" }}
+{{ if $isPreview }}
+  {{ $baseUrl := .Site.BaseURL }}
+  {{ $.Scratch.Set "baseUrl" $baseUrl }}
+{{ end }}
+{{ $baseUrl := $.Scratch.Get "baseUrl" }}
 <div class="modal fade subcribeModal" id="subcribeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -12,7 +22,7 @@
             </div>
           </div>
           <div class="subscribe-header-logo header-logo">
-	         <img src='/{{ .Type }}/images/logo.png' alt="{{ .Site.Title }}" />
+	         <img src='{{ $baseUrl}}{{ .Type }}/images/logo.png' alt="{{ .Site.Title }}" />
           </div>
 		    </div>
       </div>

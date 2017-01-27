@@ -36,14 +36,28 @@ h1.seo{
 	background-color: grey;
 	position: relative;
 	&-desktop, &-mobile{
-		background-size: cover;
-		background-position: center;	
-		width: 100%;
+		overflow: hidden;
 		height: 100%;
+		width: 100%;
 		position: absolute;
+		img{
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+	}
+	&-desktop{
+		img{
+			height: 100%;
+			width: 100%;			
+		}
 	}
 	&-mobile{
 		display: none;
+		img{
+			width: 100%;
+		}
 	}
 }
 .section {
@@ -955,6 +969,9 @@ footer{
 }
 
 .tvp-products-wrapper{
+	overflow: hidden;
+	height: 540px;
+	position: relative;
 	ul{
 		list-style: none;
 		padding: 0;
@@ -971,7 +988,58 @@ footer{
 	}
 	.tvp-product-image{
 		cursor: pointer;
+		background-color: #fff;
 		@include aspect-ratio(1,1);
+		img{			
+			max-width: 100%;
+		}
+	}
+}
+
+.tvp-prod-hover{	
+	&.popover{
+		border-radius: 0;
+		max-width: 306px;
+		width: 306px;
+	}
+	.popover-content{
+		padding: 20px;
+		height: 100%;
+	}
+	&-img-container{
+		width: 165px;
+		margin: 22px auto 28px auto;
+		@include aspect-ratio(1,1);
+		img{			
+			max-width: 100%;
+		}
+	}
+	&-title{
+		font-size: 16px;
+		line-height: 20px;
+		color: #1F1D26;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
+		margin-bottom: 20px;
+	}
+	&-price-rate{
+		height: 22px;
+		margin-bottom: 15px;
+		.price{
+			font-size: 18px;
+			line-height: 22px;
+			color: #00DBC0;
+			font-weight: bold;
+			display: inline-block;
+		}
+	}
+	a.btn{
+		width: 100%;
+		font-size: 26px;
+		line-height: 33px;
+		font-weight: 600;
+		letter-spacing: 1px;
 	}
 }
 

@@ -272,8 +272,7 @@
                     html = '',
                     that = this;
                 _.each(results, function (el, idx) {
-                    var result = results[idx];
-                    // result['url'] = that.getResultUrl(result);                    
+                    var result = results[idx];                
                     html += that.tmpl(template, result);
                 });
                 $('.tvp-products-wrapper ul').html(html);
@@ -346,6 +345,12 @@
             });
 
 
+        },
+        searchButton : function(){
+            $(".brand-header-search-button").on("click", function(e){
+                console.log("focus");
+                $searchMobileInput.focus();
+            });
         }
 
     };
@@ -358,6 +363,9 @@
 
     searchDesktopInput.on('keyup', function(e) {
         isLoadMore = false;
+        var code = e.keyCode;
+        if(code===37 || code===38 || code===39 || code===40)
+            return;
         e.preventDefault();
         var val = $(e.target).val();
         renderUtil.resetLiveSearch();
@@ -379,6 +387,7 @@
     searchDesktopInput.focus(function(){
     	$(".brand-header-search-container").animate({width:"+=175"},"fast");
     	$(".brand-header-logo").animate({marginLeft:"-=175"},"fast");
+        eventsBinder.searchButton();
     }).blur(function(){
     	searchDesktopInput.val("");
     	renderUtil.resetLiveSearch();
@@ -408,6 +417,8 @@
             $searchMobileResultHolder.hide();
         }
     });
+    
+    eventsBinder.searchButton();
 
     $searchMobileCancelBtn.on('click', function(e) {
         e.preventDefault();
@@ -422,6 +433,9 @@
         channelDataExtractor.videos(TVSite.channelId, liveResultsPage ,null).done(function(data){
             if (data.length)
                 renderUtil.handleLoadMore(data);
+            else
+                btnLoadMore.attr("disabled", true);
+
         });
         
     });
@@ -434,6 +448,7 @@
         filters: { type_of_video: {}, product_category: {} },
         reset : function(){
             $('.tvp-filter-reset').css("display", "none");
+            btnLoadMore.attr("disabled", false);
             isFiltering = false;
             liveResultsPage = 0;
             $('#tvp-video-container').empty();
@@ -797,25 +812,85 @@
 
     
     var ProductSlider = {
+        products : [],
+        $currentPopUp: null,
+        currentId: 0,
         initialize: function (settings) {
             var opt = settings || {};
             var that = this;
             channelDataExtractor.products(opt.videoId)
                 .done(function (results) {
                     if(results.length){
+                        that.products = results;
                         that.renderProducts(results);
+                        that.initializeHover();                        
+                        that.initializeSlider();
                     }
                 });
         },
         renderProducts: function (results) {
-            var template = '<li><div id="{id}" class="tvp-product-image"><div class="content" style="background-image: url({imageUrl})"></div></div></li>',
+            var template = '<li><div id="{id}" data-toggle="popover" class="tvp-product-image"><div class="content"> <img src="{imageUrl}" alt=""></div></div></li>',
                 html = '';
+            this.products = results;
+
             _.each(results, function (el, idx) {
-                var result = results[idx];
-                // result['url'] = that.getResultUrl(result);                    
-                html += renderUtil.tmpl(template, result);
+                var result = results[idx];                 
+                html += renderUtil.tmpl(template, result); 
             });
             $('.tvp-products-wrapper ul').html(html);
+        },
+        initializeHover: function () {
+            var that = this;
+            $('[data-toggle="popover"]').popover({
+                placement: 'left',
+                template: '<div class="popover tvp-prod-hover" role="tooltip"><div class="arrow"></div><div class="popover-content tvp-prod-hover-content"></div></div>',
+                html: true,
+                trigger: 'manual',
+                container: 'body',
+                content: function(){
+                    var hoverTmpl = '<div class="tvp-prod-hover-img-container"><div class="content"> <img src="{imageUrl}" alt=""></div></div><div class="tvp-prod-hover-title">{title}</div><div class="tvp-prod-hover-price-rate"> <span class="price">${price}</span></div> <a href="{linkUrl}" target="_blank" class="btn btn-primary btn-more-button">VIEW DETAILS</a>',
+                        hoverHtml = ''
+                        prodId = $(this).attr('id');
+
+                    var currentProd = _.filter(that.products, function(item){
+                        return item.id == prodId;
+                    })[0];
+
+                    hoverHtml = renderUtil.tmpl(hoverTmpl, currentProd);
+
+                    return hoverHtml;
+                }
+            }).on('mouseenter', function() {
+                var _id = $(this).attr('id');
+
+                if (that.currentId === 0) {
+                    $(this).popover('show');
+                    that.currentId = _id;
+                }
+                else{
+                    if (that.currentId !== _id) {
+                        $('*[data-toggle="popover"]').popover('hide');
+                        $(this).popover('toggle');
+                        that.currentId = _id;
+                    }
+                    else{
+                        $(this).popover('toggle');
+                    }
+                }
+            });
+
+            $('.video-products-container').on('mouseleave', function() {
+                $('[data-toggle="popover"]').popover('hide');
+            });
+        },
+        initializeSlider: function () {
+            var prodSlider = new IScroll('#tvp-products-wrapper', {
+                interactiveScrollbars: true,
+                scrollX: false,
+                click: true,
+                mouseWheel: true,
+                scrollbars: true
+          });
         }
     }
 

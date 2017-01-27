@@ -15,10 +15,12 @@
 				</li>
 			{{ else }}
 				{{ $channel := index $.Site.Data.channels (printf "x%s" .Params.channelid ) }}
-				<li id="breadcrumb-1" itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href='{{ print "/c/" $channel.titleTextEncoded "/" $channel.id "/" }}' itemprop="url"><span itemprop="title">{{ $channel.title }}</span></a></li>
+				{{ if $channel }}
+					<li id="breadcrumb-1" itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href='{{ print "/c/" $channel.titleTextEncoded "/" $channel.id "/" }}' itemprop="url"><span itemprop="title">{{ $channel.title }}</span></a></li>
+				{{ end }}
 			{{ end }}
 			{{ if eq .Layout "channelVideo" }}
-				<li id="breadcrumb-2" itemscope itemtype="http://data-vocabulary.org/Breadcrumb"class="active">
+				<li id="breadcrumb-2" itemscope itemtype="http://data-vocabulary.org/Breadcrumb" class="active">
 					<a itemprop="url" href="{{ .Permalink }}">
 						<span itemprop="title">{{ .Title }}</span>
 					</a>

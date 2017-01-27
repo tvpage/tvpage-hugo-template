@@ -1,5 +1,22 @@
+{{ $isPreview := getenv "HUGO_PREVIEW" }}
+{{ $subfolder := .Site.Params.subfolder }}
+{{ $baseUrl := $subfolder}}
+{{ $.Scratch.Set "baseUrl" $baseUrl }}
+{{ $.Scratch.Add "baseUrl" "/" }}
+{{ if $isPreview }}
+  {{ $baseUrl := .Site.BaseURL }}
+  {{ $.Scratch.Set "baseUrl" $baseUrl }}
+{{ end }}
+{{ $baseUrl := $.Scratch.Get "baseUrl" }}
+{{$baseUrl}}
 <div class="col-sm-4 col-md-4">
-	<a href="{{ .url }}" class="latest-video">
+	{{ if $isPreview }}
+		{{ .url }}
+	  <a href="{{$baseUrl}}{{ .url }}" class="latest-video">
+	{{ else }}
+	  <a href="{{ .url }}" class="latest-video">
+	{{ end }}
+	
 		<div class="latest-video-thumbnail">		
 		    <!-- <div class="content" {{with .asset.thumbnailUrl}} style="background-image: url({{ . }});"{{else}} style='background-image: url(/{{ .Type }}{{ .Param "thumbdefault" }});'{{end}}>
 	      		<div class="latest-video-hover">

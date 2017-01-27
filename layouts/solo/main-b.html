@@ -36,7 +36,8 @@ var mobile = /Mobi/.test(navigator.userAgent),
   };
 
 root.addEventListener('message',function(e) {
-  if (!e || !redefine(e,'origin') || {{$.Param "hostdomain"}} !== e.origin || !redefine(e,'data')) return;
+  var hostdomain = location.protocol + "//" + {{$.Param "hostdomain"}};
+  if (!e || !redefine(e,'origin') || hostdomain !== e.origin || !redefine(e,'data')) return;
   var checks = 0,videos = e.data, index=0;
   (function libsPoller() {
     var deferred = setTimeout(function() {
@@ -80,13 +81,18 @@ root.addEventListener('message',function(e) {
           },
           onStateChange: function(e){
             if (e && 'tvp:media:videoended' !== e) return;
-            index = (index == videos.length - 1) ? 0 : index + 1;
-            if(mobile || !{{ ($.Scratch.Get "settings").autonext }}){
+            if(!{{ ($.Scratch.Get "settings").autonext }}){
               instance.cueVideo(getAsset(videos[index]));
               handlePlayButton(getAsset(videos[index]),instance);
             }else{
-              instance.loadVideo(getAsset(videos[index]));
-            } 
+              index = (index == videos.length - 1) ? 0 : index + 1;
+              if(mobile){
+                instance.cueVideo(getAsset(videos[index]));
+                handlePlayButton(getAsset(videos[index]),instance);
+              }else{
+                instance.loadVideo(getAsset(videos[index]));
+              }
+            }
           }
         });
       }

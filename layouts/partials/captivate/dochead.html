@@ -9,15 +9,24 @@
 {{ $.Scratch.SetInMap "settings" .code .value }}
 {{ end }}
 {{ end }}
+{{ $isPreview := getenv "HUGO_PREVIEW" }}
+{{ $subfolder := .Site.Params.subfolder }}
+{{ $baseUrl := $subfolder}}
+{{ $.Scratch.Set "baseUrl" $baseUrl }}
+{{ $.Scratch.Add "baseUrl" "/" }}{{ if $isPreview }}
+  {{ $baseUrl := .Site.BaseURL }}
+  {{ $.Scratch.Set "baseUrl" $baseUrl }}
+{{ end }}
+{{ $baseUrl := $.Scratch.Get "baseUrl" }}
 <!DOCTYPE html>
 <html>
   <head>
-    {{ partial (printf "%s/meta.html" .Type) . }}
+    {{ partial (printf "%s/single-meta.html" .Type) . }}
     <link href='{{ ($.Scratch.Get "settings").googlefont }}' rel="stylesheet">
     <title>{{ block "title" . }}{{ end }}{{ .Site.Title }}</title>
     {{ block "meta" . }}{{ end }}
-    <link rel="apple-touch-icon" href="{{.Site.BaseURL}}{{ .Type }}/images/logo.png">
-    <link rel="stylesheet" href="{{.Site.BaseURL}}{{ .Type }}/css/styles.css">
+    <link rel="apple-touch-icon" href="{{$baseUrl}}{{ .Type }}/images/logo.png">
+    <link rel="stylesheet" href="{{$baseUrl}}{{ .Type }}/css/styles.css">
     <style>{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css.html" .Type ) .)) | safeCSS }}</style>
   </head>
   <body>
