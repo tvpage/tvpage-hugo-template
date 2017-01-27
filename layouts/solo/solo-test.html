@@ -13,7 +13,7 @@
 <p>This flavor will play just one video. Runtime settings not available, settings and selected video are modified from the application.</p>
 <h3>autoplay: false, autonext: false</h3>
 <h3>Iframe: non-Ajax: Immediate </h3>
-<div style="left:0px;width:100%;height:0px;position:relative;padding-bottom:56.2493%;"><iframe src="/tvpwidget/solo-1" frameborder="0" allowfullscreen style="top:0px;left:0px;width:100%;height:100%;position:absolute;"></iframe></div>
+<div style="left:0px;width:100%;height:0px;position:relative;padding-bottom:56.2493%;"><iframe src="//www.goodlookingbean.com/tvpwidget/solo-1" frameborder="0" allowfullscreen style="top:0px;left:0px;width:100%;height:100%;position:absolute;"></iframe></div>
 
 <hr/>
 
@@ -41,6 +41,11 @@
       i.setAttribute('src', dmn + '/tvpwidget/solo-2');
       var ip = i.parentNode;
       dt && (dt instanceof Array) && dt.length ? ip.style.display = 'block' : delete ip;
+      if(dt.length != 0){
+        for(var i=0; i<dt.length; i++){
+          dt[i].parentId = c.channel.id;
+        }
+      }
       i.onload = function() {
         i.contentWindow.postMessage(dt, dmn);
       };
@@ -85,6 +90,12 @@
       i.setAttribute('src', dmn + '/tvpwidget/solo-3');
       var ip = i.parentNode;
       dt && (dt instanceof Array) && dt.length ? ip.style.display = 'block' : delete ip;
+      if(dt.length != 0){
+        for(var i=0; i<dt.length; i++){
+          dt[i].parentId = c.channel.id;
+        }
+      }
+      console.log(dt);
       i.onload = function() {
         i.contentWindow.postMessage(dt, dmn);
       };
@@ -111,7 +122,7 @@
 <p>This flavor will play videos from channel. Runtime settings not available, settings and selected video are modified from the application.</p>
 <h3>autoplay: true, autonext: false</h3>
 <h3>Iframe: non-Ajax: Immediate </h3>
-<div style="left:0px;width:100%;height:0px;position:relative;padding-bottom:56.2493%;"><iframe src="/tvpwidget/solo-4" frameborder="0" allowfullscreen style="top:0px;left:0px;width:100%;height:100%;position:absolute;"></iframe></div>
+<div style="left:0px;width:100%;height:0px;position:relative;padding-bottom:56.2493%;"><iframe src="//www.goodlookingbean.com/tvpwidget/solo-4" frameborder="0" allowfullscreen style="top:0px;left:0px;width:100%;height:100%;position:absolute;"></iframe></div>
 
 
 </body>
