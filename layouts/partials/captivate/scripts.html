@@ -8,12 +8,11 @@
 {{ $baseUrl := $.Scratch.Get "baseUrl" }}
 
 <script type="text/javascript">
-    {{ $baseUrl }}
     TVSite = window.TVSite || {};
     var apiVersion = {{ getenv "HUGO_API_URL" }};
     TVSite.loginId = {{ .Site.Params.loginid }};
     TVSite.apiUrl = apiVersion || "https:\/\/api.tvpage.com/v1/";
-    TVSite.baseUrl = "";
+    TVSite.baseUrl = {{ $baseUrl }} == "/" ? "" : {{ $baseUrl }};
     //checking page type
     TVSite.isHomePage = ({{ .Params.videoid }} === "" && {{ .Params.channelid }} === "") ? true : false;
     TVSite.isChannelPage = ({{ .Params.videoid }} === "" && {{ .Params.channelid }} !== "") ? true : false;

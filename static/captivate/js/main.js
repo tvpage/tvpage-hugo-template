@@ -357,6 +357,9 @@
 
     searchDesktopInput.on('keyup', function(e) {
         isLoadMore = false;
+        var code = e.keyCode;
+        if(code===37 || code===38 || code===39 || code===40)
+            return;
         e.preventDefault();
         var val = $(e.target).val();
         renderUtil.resetLiveSearch();
@@ -421,6 +424,9 @@
         channelDataExtractor.videos(TVSite.channelId, liveResultsPage ,null).done(function(data){
             if (data.length)
                 renderUtil.handleLoadMore(data);
+            else
+                btnLoadMore.attr("disabled", true);
+
         });
         
     });
@@ -433,6 +439,7 @@
         filters: { type_of_video: {}, product_category: {} },
         reset : function(){
             $('.tvp-filter-reset').css("display", "none");
+            btnLoadMore.attr("disabled", false);
             isFiltering = false;
             liveResultsPage = 0;
             $('#tvp-video-container').empty();

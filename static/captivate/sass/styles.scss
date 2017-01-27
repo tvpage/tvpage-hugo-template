@@ -13,3 +13,6 @@
 header a {
 	text-transform: uppercase;
 }
+input[type=text]::-ms-clear {
+    display: none;
+}

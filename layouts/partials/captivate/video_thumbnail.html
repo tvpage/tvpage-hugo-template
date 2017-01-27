@@ -6,8 +6,10 @@
   {{ $.Scratch.Set "baseUrl" $baseUrl }}
 {{ end }}
 {{ $baseUrl := $.Scratch.Get "baseUrl" }}
+{{$baseUrl}}
 <div class="col-sm-4 col-md-4">
 	{{ if $isPreview }}
+		{{ .url }}
 	  <a href="{{$baseUrl}}{{ .url }}" class="latest-video">
 	{{ else }}
 	  <a href="{{ .url }}" class="latest-video">
