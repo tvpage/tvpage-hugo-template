@@ -24,6 +24,7 @@
     var playerResolution = isMobile ? '360p' : '480p';
     var isFlashRequired = ( (IE(9) || IE(10)) || (isMac && isFireFox)  );
     var playerTechOrder = isFlashRequired ? 'flash,html5' : 'html5,flash';
+    var playbackList = [];
     var formatDate = function(unixTimestamp) {
         var months = ['January','February','March','April','May','June','July','August','September','October','November','December'],
         	d = (new Date(Number(unixTimestamp) * 1000)),
@@ -282,7 +283,9 @@
         onLoadMore : function(){
             $(".latest-video").on({
                 click: function(e){
-                    // alert('test');
+                    if(TVSite.isPlayerPage){
+                        //e.preventDefault();
+                    }
                 },
                 mouseover: function(e){
                     var $hoverDiv = $(this).find('.latest-video-hover');
