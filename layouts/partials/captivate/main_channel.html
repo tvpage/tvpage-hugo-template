@@ -76,14 +76,26 @@
         {{ with $page.data }}
           {{ range $i, $p := first 6 $page.data }}
 
-            <!-- {{ if modBool $i 3 }}
-                {{ if not (eq $i ($page.data | len)) }}
-                <div class="row video-row">
-              {{ end }}
-            {{ end }} -->
-
-            {{ partial (printf "%s/video_thumbnail.html" $.Type) . }}
-
+            <div class="col-sm-4 col-md-4">
+          {{ if $isPreview }}
+            <a href="{{$baseUrl}}{{ .url }}" class="latest-video">
+          {{ else }}
+            <a href='{{ $subfolder }}{{ .url }}' class="latest-video">
+          {{ end }}
+            <div class="latest-video-thumbnail">    
+              <div class="content">
+                  <img {{with .asset.thumbnailUrl}} src="{{ . }}"{{else}} src='/{{ .Type }}{{ .Param "thumbdefault" }}'{{end}}
+                      alt="">
+                    <div class="latest-video-hover">              
+                  <div class="play-icon"></div>
+                </div>
+                </div>
+            </div>
+            <p class="latest-video-title">
+              {{- .title -}}
+            </p>
+            </a>
+          </div>
             {{ if eq (mod (add $i 1) 3) 0 }}<div class="col-sm-12"></div>{{ end }}
           {{ end }}
         {{ end }}

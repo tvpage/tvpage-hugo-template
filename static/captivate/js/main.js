@@ -391,7 +391,6 @@
     });
 
     $(document).on("click", function(event){
-        debugger
         var input = $(event.target);
         if(!searchDesktopInput.is(":focus") && input !== searchDesktopInput){
             //$(".brand-header-search-container").animate({ width: '-=175' }, "fast");

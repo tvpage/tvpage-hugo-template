@@ -69,8 +69,27 @@
 			{{ $page := index $.Site.Data.channelVideos (printf "x%s_page_1" ($.Scratch.Get "settings").homechannelid) }}
 			{{ with $page.data }}
 				{{ $i := 0 }}
-				{{ range first 6 $page.data }}						
-					{{ partial (printf "%s/video_thumbnail.html" $.Type) . }}
+				{{ range first 6 $page.data }}
+					<div class="col-sm-4 col-md-4">
+					{{ if $isPreview }}
+					  <a href="{{$baseUrl}}{{ .url }}" class="latest-video">
+					{{ else }}
+					  <a href='{{ $subfolder }}{{ .url }}' class="latest-video">
+					{{ end }}
+						<div class="latest-video-thumbnail">		
+						  <div class="content">
+					      	<img {{with .asset.thumbnailUrl}} src="{{ . }}"{{else}} src='/{{ .Type }}{{ .Param "thumbdefault" }}'{{end}}
+					      			alt="">
+					      		<div class="latest-video-hover">	      			
+									<div class="play-icon"></div>
+								</div>
+					      </div>
+						</div>
+						<p class="latest-video-title">
+							{{- .title -}}
+						</p>
+						</a>
+					</div>
 					{{ if eq (mod (add $i 2) 3) 0 }}<div class="col-sm-12"></div>{{ end }}
 				{{ end }}
 			{{ end }}
