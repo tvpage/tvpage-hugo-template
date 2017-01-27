@@ -475,6 +475,12 @@ footer{
 }
 .player-product{
 	margin-bottom: 60px;
+	position: relative;
+	&-products{
+		position: absolute;
+		right: 0;
+		height: 100%
+	}
 }
 .video-products-container{
 	background-color: rgba(31, 29, 38, 0.1);
@@ -970,7 +976,6 @@ footer{
 
 .tvp-products-wrapper{
 	overflow: hidden;
-	height: 540px;
 	position: relative;
 	ul{
 		list-style: none;
@@ -1043,6 +1048,6 @@ footer{
 	}
 }
 
-.video-title-mobile, .channel-videos-latest-videos-mobile{
+.video-title-mobile, .channel-videos-latest-videos-mobile, #in-time-products{
 	display: none;
 }

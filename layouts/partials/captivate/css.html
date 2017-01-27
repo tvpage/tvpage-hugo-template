@@ -1,3 +1,13 @@
+{{ $isPreview := getenv "HUGO_PREVIEW" }}
+{{ $subfolder := .Site.Params.subfolder }}
+{{ $baseUrl := $subfolder}}
+{{ $.Scratch.Set "baseUrl" $baseUrl }}
+{{ $.Scratch.Add "baseUrl" "/" }}
+{{ if $isPreview }}
+  {{ $baseUrl := .Site.BaseURL }}
+  {{ $.Scratch.Set "baseUrl" $baseUrl }}
+{{ end }}
+{{ $baseUrl := $.Scratch.Get "baseUrl" }}
 body {
 	font-family: {{ ($.Scratch.Get "settings").fontfamily }};
 }
@@ -13,6 +23,6 @@ body {
 .header-bg {
 	background-position: center;
 	background-repeat: no-repeat;
-	background-image: url({{.Site.BaseURL}}{{.Type}}/{{ ($.Scratch.Get "settings").headerbackground }});
+	background-image: url({{$baseUrl}}{{.Type}}/{{ ($.Scratch.Get "settings").headerbackground }});
 	background-size: cover;
 }
