@@ -41,11 +41,6 @@
       i.setAttribute('src', dmn + '/tvpwidget/solo-2');
       var ip = i.parentNode;
       dt && (dt instanceof Array) && dt.length ? ip.style.display = 'block' : delete ip;
-      if(dt.length != 0){
-        for(var i=0; i<dt.length; i++){
-          dt[i].parentId = c.channel.id;
-        }
-      }
       i.onload = function() {
         i.contentWindow.postMessage(dt, dmn);
       };
@@ -90,12 +85,6 @@
       i.setAttribute('src', dmn + '/tvpwidget/solo-3');
       var ip = i.parentNode;
       dt && (dt instanceof Array) && dt.length ? ip.style.display = 'block' : delete ip;
-      if(dt.length != 0){
-        for(var i=0; i<dt.length; i++){
-          dt[i].parentId = c.channel.id;
-        }
-      }
-      console.log(dt);
       i.onload = function() {
         i.contentWindow.postMessage(dt, dmn);
       };
