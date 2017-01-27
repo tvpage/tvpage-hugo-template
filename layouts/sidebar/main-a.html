@@ -6,7 +6,7 @@
 {{- end -}}
 
 <style id="tvp-css-lib" type="text/css">{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css.html" .Type ) .)) | safeCSS }}</style>
-<div id='{{ ($.Scratch.Get "settings").name }}' class="tvp-clearfix">
+<div id='{{ ($.Scratch.Get "settings").name }}' class="tvp-clearfix" style="height:100%">
 	<div class="cz-line-heading"><div class="cz-line-heading-inner">Recommended Videos</div></div>
 	<div class="tvp-container">
 	{{ range $i, $p := first ($.Scratch.Get "settings").itemsperpage (index $.Site.Data.channelVideos (printf "x%s_page_1" ($.Scratch.Get "settings").channelid) "data") }}
@@ -43,9 +43,14 @@
 
 	var lastPageReached = false,
 		currentPage = 0,
-    currentPageVideos = {{ $.Scratch.Get "videos" }},
+        currentPageVideos = {{ $.Scratch.Get "videos" }},
 		apiBaseUrl = "//api.tvpage.com/v1",
-		isFetching = false,
+		isFetching = false;
+
+	 var currentPageVideosArray = $.map(currentPageVideos, function(value, index) {
+       return [value];
+     }),
+
     rowerize = function(data, per) {
       if (data && $.isArray(data)) {
         var raw = data.slice(0),
@@ -83,12 +88,12 @@
     }
 
 	  $.ajax({
-	    url: apiBaseUrl+'/channels/'+settings.channelid+'/videos',
+	    url: apiBaseUrl+'/channels/81979997/videos',
 	    dataType: 'jsonp',
 	    data: {
 	      p: currentPage,
 	      n: settings.itemsperpage,
-	      'X-login-id': settings.loginid
+	      'X-login-id': 1758881
 	    }
 	  }).done(function(res) {
       isFetching = false;
@@ -122,8 +127,7 @@
         $el.find('.tvp-container').eq(0).html(pageFrag);
       } 
 
-      //Fro the moemnt we will disable the button If no videos.
-      //Todo check whats the best solutoon here.
+      //Todo check whats the best solution here.
       else {
         lastPageReached = true;
       }
@@ -138,25 +142,42 @@
 
     //the selected video id.
     var id = $(this).attr('id').split('-').pop();
+    for (var i = 0; i < currentPageVideosArray.length; i++) {
+    	if (currentPage == 0) {
+	    	if (currentPageVideosArray[i].id == id) {
+	    		currentVideo = currentPageVideosArray[i].asset;
+	        }
+	    }else{
+	    	if (currentPageVideos[i].id == id) {
+	    		currentVideo2 = currentPageVideos[i].asset;
+	        }
+	    }
+    }
 
     //Create them modal.
     //Pass the videos to the modal.
     var $ifr = $('<iframe/>').attr('src','http://localhost:1313/tvpwidget/sidebar-1-modal/');
     $ifr.addClass('tvp-modal');
-
-    $ifr.on('load',function(){
-      console.log('afterloads',currentPageVideos);
-      this.contentWindow.postMessage({
-        channelPage:currentPage,
-        channelVideos:currentPageVideos,
-        videoId:id
+    if (currentPage == 0) {
+       $ifr.on('load',function(){
+            this.contentWindow.postMessage({
+	            channelPage:currentPage,
+		        channelVideos:currentVideo,
+		        videoId:id
+	      },'http://localhost:1313');});
+    }else{
+	  $ifr.on('load',function(){
+        this.contentWindow.postMessage({
+            channelPage:currentPage,
+	        channelVideos: currentVideo2,
+	        videoId:id
       },'http://localhost:1313');});
-    $ifr.attr('style','display:block;width:600px;max-width:100%;height:400px;max-height:100%;position:fixed;z-index:100;left:50%;border:none;top:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);background:#fff;box-shadow:0 0 60px 10px rgba(0,0,0,.9)');
-
+    }
+    $ifr.attr('style','border-radius:4px;display:block;width:738px;max-width:100%;height:394px;max-height:100%;position:fixed;z-index:100;left:50%;border:none;top:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);background:#fff;box-shadow:0 0 60px 10px rgba(0,0,0,.9)');
     var $overlay = $('<div/>').addClass('tvp-modal-overlay');
     $overlay.append($ifr).appendTo(parentGlobal.document.body); 
     $overlay.attr('style','position:fixed;top:0;left:0;width:100%;height:100%;z-index:50;background:rgba(0,0,0,.6)');
-
+    $ifr.contents().find('.tvp-lb-title').html('helo');
   });
 
 }(document,parent));</script>
