@@ -104,7 +104,9 @@
                 return ("undefined" !== typeof val && null !== typeof val && val);
             };
             if (result && redefine(result)) {
-                return TVSite.baseUrl + '/' +( (isLoadMore || isFiltering) ? TVSite.channelInfo.titleTextEncoded : String(result.entityTitleParent).replace(/\s/g,"-").replace(/\./g,"") )+ "/" + String(result.titleTextEncoded).replace(/\s/g,"-") + "/" + (result.entityIdParent || TVSite.channelId) + "-" + result.id;
+                var url = TVSite.baseUrl + '/' +( (isLoadMore || isFiltering) ? TVSite.channelInfo.titleTextEncoded : String(result.entityTitleParent).replace(/\s/g,"-").replace(/\./g,"") )+ "/" + String(result.titleTextEncoded).replace(/\s/g,"-") + "/" + (result.entityIdParent || TVSite.channelId) + "-" + result.id;
+                url = url.replace("//", "/");
+                return url;
             }
             return;
         },
@@ -576,7 +578,8 @@
             }
             var channelTitle = '';
             if (channel.titleTextEncoded && channel.titleTextEncoded.length > 0 ) {
-              channelTitle = '/' + channel.titleTextEncoded;
+              channelTitle = TVSite.baseUrl+'/' + channel.titleTextEncoded;
+              channelTitle = channelTitle.replace("//", "/");
             }
             url = channelTitle + videoTitle + videoUrl;
           }
