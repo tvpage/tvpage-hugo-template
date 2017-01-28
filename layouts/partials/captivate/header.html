@@ -54,7 +54,7 @@
       <ul class="nav nav-justified justify">
         {{ with .Site.Menus.main }}
         {{ range sort . "Weight" "desc" }}
-          <li><a href="{{.URL}}">{{ .Name }}</li></a>
+          <li><a href="{{ $subfolder}}{{.URL}}">{{ .Name }}</li></a>
         {{ end }}
         {{ else }}
           No navigation
