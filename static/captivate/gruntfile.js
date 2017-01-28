@@ -33,6 +33,17 @@ module.exports = function(grunt) {
             //   tasks: ['uglify']
             // }
         },
+        imagemin : {
+          dynamic : {
+            files : [{
+              optimizationLevel: 6,
+              expand : true,
+              cwd : 'images/',
+              src : ['**/*.{png,jpg,gif}'],
+              dest : 'images/'
+            }]
+          }
+        },
         postcss:{
             options:{
                 map : true,
@@ -57,7 +68,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-postcss');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-imagemin');
 
     grunt.registerTask('default', ['sass:dev', 'watch']);
     grunt.registerTask('build', ['sass:dist', 'postcss:dist', 'uglify:dist']);
+    grunt.registerTask('images', ['imagemin']);
 };
