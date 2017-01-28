@@ -1,23 +1,30 @@
 {{ $isPreview := getenv "HUGO_PREVIEW" }}
-{{ $subfolder := .Site.Params.subfolder }}
+
+{{ $subfolder := .subfolder }}
+
 {{ $.Scratch.Set "subfolder" $subfolder }}
+
 {{ $baseUrl := $subfolder}}
+
 {{ $.Scratch.Set "baseUrl" $baseUrl }}
+
 {{ $.Scratch.Add "baseUrl" "/" }}
+
 {{ if $isPreview }}
-  {{ $baseUrl := .Site.BaseURL }}
+  {{ $baseUrl := .base }}
   {{ $.Scratch.Set "baseUrl" $baseUrl }}
 {{ end }}
+
 {{ $baseUrl := $.Scratch.Get "baseUrl" }}
-{{$baseUrl}}
+
+<!-- baseURL ( "/tv/" "/preview.site.com/" ) -->
+
 <div class="col-sm-4 col-md-4">
 	{{ if $isPreview }}
-		{{ .url }}
 	  <a href="{{$baseUrl}}{{ .url }}" class="latest-video">
 	{{ else }}
-	  <a href="{{ $.Scratch.Get "subfolder" }}{{ .url }}" class="latest-video">
+	  <a href='{{ $subfolder }}{{ .url }}' class="latest-video">
 	{{ end }}
-	
 		<div class="latest-video-thumbnail">		
 		    <!-- <div class="content" {{with .asset.thumbnailUrl}} style="background-image: url({{ . }});"{{else}} style='background-image: url(/{{ .Type }}{{ .Param "thumbdefault" }});'{{end}}>
 	      		<div class="latest-video-hover">
@@ -33,7 +40,7 @@
 	      </div>
 		</div>
 		<p class="latest-video-title">
-			{{ .title }}
+			{{- .title -}}
 		</p>
 	</a>
 </div>
