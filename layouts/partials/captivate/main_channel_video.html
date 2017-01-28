@@ -1,4 +1,4 @@
-{{ $channel := index $.Site.Data.channels (printf "x%s" ($.Scratch.Get "settings").homechannelid ) }}
+{{ $channel := index $.Site.Data.channels (printf "x%s" .Params.channelid ) }}
 {{ $.Scratch.Add "channelData" $channel }}
 {{ if $channel }}
   {{ $.Scratch.SetInMap "settings" "channelData" $channel }}
