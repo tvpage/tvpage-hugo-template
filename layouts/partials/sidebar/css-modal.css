@@ -2,9 +2,10 @@
   padding-bottom: 56.25%;
   height: 0;
   width: 100%;
-  position: relative; }
+  position: relative;
+}
 
-#tvpplayer-target {
+#tvp-player-target {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -27,6 +28,7 @@
   z-index: 999999;
   cursor: pointer; }
   #tvpplayer-play:after {
+
     content: " ";
     display: block;
     width: 0;
