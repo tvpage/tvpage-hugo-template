@@ -1,0 +1,48 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.tvp-player {
+  height: 0;
+  width: 100%;
+  position: relative;
+  padding-bottom: 56.25%;
+}
+
+#tvp-player-el {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-color: black;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.tvp-play {
+  background-color: #fff;
+  box-sizing: border-box;
+  width: 45px;
+  height: 45px;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+  display: none;
+  opacity: 0.95;
+  cursor: pointer;
+  border-radius: 1px;
+  border: 2px solid #e57211;
+}
+
+.tvp-play > polygon {
+  pointer-events: none;
+}

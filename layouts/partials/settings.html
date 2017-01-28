@@ -1,0 +1,6 @@
+{{ range $i, $def := (getJSON (printf "themes/tvpage/defaults/%s.json" .Type)).option }}
+{{ $.Scratch.SetInMap "settings" .code .value }}
+{{ end }}
+{{ range $i, $param := .Params }}
+{{ $.Scratch.SetInMap "settings" $i . }}
+{{ end }}

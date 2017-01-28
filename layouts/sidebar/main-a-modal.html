@@ -78,7 +78,7 @@
           //the playlist to startup.
           //We always cue on mobile, never autoplay
           //We cue on desktop autoplay false.
-          var fAsset = assets;
+          var fAsset = assets[0];
           if ( (/Mobi/.test(navigator.userAgent) || !false) ) {
             willCue = true;
             if ('mp4' === fAsset.type) that.showPlayBtn(fAsset.thumbnailUrl);
@@ -97,7 +97,7 @@
               var resize = function(){that.instance.resize(that.el.clientWidth, that.el.clientHeight);};
               window.onresize = resize;
               resize();
-              that.play(assety(fAsset));
+              that.play(fAsset);
             },
             onStateChange: function(e){
             },
@@ -221,14 +221,26 @@
     //Startup the player...
     //Whe need to have videos data.. we can start this by saying that we will get 
     //the page # from the inline iframe, plus which video id needs to play.
-    var videos = e.data || {},
-        videoid = e.data.videoId,
-        videoTitle = e.data.videoTitle,
-        videosC = Object.keys(videos).length;
+    if ("undefined" !== typeof e.data.video) {
+        var videos = e.data.videos || [],
+            assets = [];
+            videosCounter = videos.length;
 
-    getProducts(videoid);
-    $('.tvp-lb-title').html(videoTitle);
-    new Player($('#tvp-player-el')[0],videos,settings);
+      while(videosCounter > 0) {
+        assets.push(assety(videos[videosCounter-1]));
+        videosCounter--;        
+      }
+
+      var video = e.data.video;
+      
+      getProducts(video.id);
+      
+      $('.tvp-lb-title').html(video.title);
+      
+      settings.startId = video.id;
+      new Player($('#tvp-player-el')[0],assets,settings);
+
+    }
 
   });
 

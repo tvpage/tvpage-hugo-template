@@ -50,9 +50,7 @@
         currentPageVideos = {{ $.Scratch.Get "videos" }},
 		apiBaseUrl = "//api.tvpage.com/v1",
 		isFetching = false,
-		currentPageVideosArray = $.map(currentPageVideos, function(value, index) {
-       return [value];
-     }),
+		currentPageVideos = $.map({{ $.Scratch.Get "videos" }}, function(val) {return [val];}),
 
   rowerize = function(data, per) {
     if (data && $.isArray(data)) {
@@ -146,19 +144,10 @@ $el.on('click', '.tvp-video', function(e) {
   e.preventDefault();
 
   //the selected video id.
-  var id = $(this).attr('id').split('-').pop();
-  for (var i = 0; i < currentPageVideosArray.length; i++) {
-    if (currentPage == 0) {
-      if (currentPageVideosArray[i].id == id) {
-        currentVideo = currentPageVideosArray[i].asset;
-        currentVideoTitle = currentPageVideosArray[i].title;
-      }
-    } else {
-      if (currentPageVideos[i].id == id) {
-        currentVideo = currentPageVideos[i].asset;
-        currentVideoTitle = currentPageVideos[i].title;
-      }
-    }
+  var id = $(this).attr('id').split('-').pop(),
+  		video = {};
+  for (var i = 0; i < currentPageVideos.length; i++) {
+    if (currentPageVideos[i].id == id) video = currentPageVideos[i];
   }
 
   //Create them modal.
@@ -168,9 +157,8 @@ $el.on('click', '.tvp-video', function(e) {
   $ifr.on('load', function() {
     this.contentWindow.postMessage({
       channelPage: currentPage,
-      channelVideos: currentVideo,
-      videoId: id,
-      videoTitle: currentVideoTitle
+      videos: currentPageVideos,
+      video: video
     }, 'http://localhost:1313');
   });
   $ifr.attr('style', 'border-radius:4px;display:block;width:738px;max-width:100%;height:394px;max-height:100%;position:fixed;z-index:100;left:50%;border:none;top:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);background:#fff;box-shadow:0 0 60px 10px rgba(0,0,0,.9)');
