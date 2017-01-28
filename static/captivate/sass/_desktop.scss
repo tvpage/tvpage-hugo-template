@@ -377,6 +377,7 @@ nav.menu-bar{
 		padding: 0 30px;
 	}
 	.brand-item{
+		display: block;
 		@include aspect-ratio(219, 126);
 		img{
 			width: 100%;
