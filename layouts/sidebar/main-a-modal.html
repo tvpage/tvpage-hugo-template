@@ -101,6 +101,9 @@
               window.onresize = resize;
               resize();
               that.play(fAsset);
+              if (settings.autoplay) {
+                that.instance.play();
+              }
             },
             onStateChange: function(e){
             },
@@ -130,6 +133,16 @@
         a.type = a.type || 'youtube';
         return a;
         console.log('assety: ',a);
+      },
+      sendAnalytics = function(data, type) {
+        if ('object' === typeof data && type) {
+          if (window._tvpa) {
+            return _tvpa.push(['track', type, $.extend(data, {
+              li: settings.loginid,
+              pg: settings.channelid
+            })]);
+          }
+        }
       },
     getProducts = function(videoId) {
       return $.ajax({
@@ -199,10 +212,6 @@
         e.preventDefault();
           clearPopUps();
       });
-      $popUp.on('mouseover', function(e) {
-        e.preventDefault();
-          showPopUp();
-      });
       $img.on('mouseleave', function(e) {
         e.preventDefault();
             clearPopUps();
@@ -231,6 +240,13 @@
 
     $(document).ready(function() {
       initializeProductScrollerY();
+      $(document).on('click', '.tvp-call-to-action', function(e) {
+        console.log('click');
+        sendAnalytics({
+          ct: $(this).data('id'),
+          vd: $(this).data('videoId')
+        }, 'pk');
+      });
     });
 
   window.addEventListener('message',function(e){

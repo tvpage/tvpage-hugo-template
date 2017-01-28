@@ -29,6 +29,12 @@
             "value": true
         },
         {
+            "type": "text",
+            "label": "removeControls",
+            "code": "removecontrols",
+            "value": ["tvplogo, hd"]
+        },
+        {
             "for": "general",
             "type": "text",
             "label": "Items Per Page",
