@@ -1,3 +1,13 @@
+{{ $isPreview := getenv "HUGO_PREVIEW" }}
+{{ $subfolder := .Site.Params.subfolder }}
+{{ $baseUrl := $subfolder}}
+{{ $.Scratch.Set "baseUrl" $baseUrl }}
+{{ $.Scratch.Add "baseUrl" "/" }}
+{{ if $isPreview }}
+  {{ $baseUrl := .Site.BaseURL }}
+  {{ $.Scratch.Set "baseUrl" $baseUrl }}
+{{ end }}
+{{ $baseUrl := $.Scratch.Get "baseUrl" }}
 <nav class="breadcrumb-navigation">
 	<ul class="breadcrumb">
 		<li itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
@@ -8,23 +18,26 @@
 		</li>
 		{{ if not (eq .Layout "home") }}
 			{{ if eq .Layout "channel" }}
-				<li id="breadcrumb-1" itemscope itemtype="http://data-vocabulary.org/Breadcrumb" class="active">
-					<a itemprop="url" href="{{ .Permalink }}">
-						<span itemprop="title">{{ .Title }}</span>
-					</a>
-				</li>
+				{{ $channel := index $.Site.Data.channels (printf "x%s" .Params.channelid ) }}
+				{{ if $channel }}
+					<li id="breadcrumb-1" itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href='{{$baseUrl}}c/{{$channel.titleTextEncoded}}/{{$channel.id}}/' itemprop="url"><span itemprop="title">{{ $channel.title }}</span></a></li>
+				{{ end }}
 			{{ else }}
 				{{ $channel := index $.Site.Data.channels (printf "x%s" .Params.channelid ) }}
 				{{ if $channel }}
-					<li id="breadcrumb-1" itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href='{{ print "/c/" $channel.titleTextEncoded "/" $channel.id "/" }}' itemprop="url"><span itemprop="title">{{ $channel.title }}</span></a></li>
+					<li id="breadcrumb-1" itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href='{{$baseUrl}}c/{{$channel.titleTextEncoded}}/{{$channel.id}}/' itemprop="url"><span itemprop="title">{{ $channel.title }}</span></a></li>
 				{{ end }}
 			{{ end }}
 			{{ if eq .Layout "channelVideo" }}
-				<li id="breadcrumb-2" itemscope itemtype="http://data-vocabulary.org/Breadcrumb" class="active">
-					<a itemprop="url" href="{{ .Permalink }}">
-						<span itemprop="title">{{ .Title }}</span>
-					</a>
-				</li>
+				{{ $channel := index $.Site.Data.channels (printf "x%s" .Params.channelid ) }}
+				{{ $video := index $.Site.Data.videos (printf "x%s" .Params.videoid ) }}
+				{{ if $channel }}
+					<li id="breadcrumb-2" itemscope itemtype="http://data-vocabulary.org/Breadcrumb" class="active">
+						<a itemprop="url" href='{{$baseUrl}}{{$channel.titleTextEncoded}}/{{$video.titleTextEncoded}}/{{$channel.id}}-{{.Params.videoid}}/'>
+							<span itemprop="title">{{ .Title }}</span>
+						</a>
+					</li>
+				{{ end }}
 			{{ end }}
 		{{ end }}
 	</ul>

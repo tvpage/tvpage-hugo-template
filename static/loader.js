@@ -3,7 +3,10 @@
 //to load the iframe scripts asynchronouse, this hides the browser spinner.
 ;(function(root,doc){
 
-  var DEBUG = 0;
+  //PROFILE & DEBUG:
+  root.startTime = performance.now();
+  root.interactionReadyTime = 0;
+  root.DEBUG = 1;
 
   var spots = doc.querySelectorAll('.tvp-sidebar, .tvp-solo'),
       spotsCount = spots.length,
@@ -38,7 +41,11 @@ function Widget(spot) {
     
     if (embedMethod === 'iframe') {
       var lazy = true, iframe = getIfr();
+
       holder.appendChild(iframe);
+      
+      //DEBUG iframe append time
+      root.iframeAppendTime = performance.now();
 
       //Reference for the performance boost technique
       //http://www.aaronpeters.nl/blog/iframe-loading-techniques-performance?%3E
@@ -47,7 +54,7 @@ function Widget(spot) {
         'var d = document, head = d.getElementsByTagName(\'head\')[0],'+
         'injScr = function(sr){ var s=d.createElement(\'script\');s.src=sr;head.appendChild(s);};';
 
-        var libs = {tvpsolo: '\''+domain+'\/playerpack'+(DEBUG ? '' : '.min')+'.js\'',tvppack: '\''+domain+'\/' + type + '\/lib'+(DEBUG ? '' : '.min')+'.js\''},
+        var libs = {tvpsolo: '\''+domain+'\/playerpack'+(root.DEBUG ? '' : '.min')+'.js\'',tvppack: '\''+domain+'\/' + type + '\/lib'+(root.DEBUG ? '' : '.min')+'.js\''},
             libsCounter = Object.keys(libs).length;
         while (libsCounter > 0) {
           var key = Object.keys(libs)[libsCounter-1];
@@ -78,7 +85,7 @@ function Widget(spot) {
       if (! __TVPage__.inlineCount) return;
 
       //Adding the libs to be used in the iframe.
-      var libs = {tvpsolo: domain + '/playerpack'+(DEBUG ? '' : '.min')+'.js',tvppack: domain + '/'+type +'/lib'+(DEBUG ? '' : '.min')+'.js'},
+      var libs = {tvpsolo: domain + '/playerpack'+(root.DEBUG ? '' : '.min')+'.js',tvppack: domain + '/'+type +'/lib'+(root.DEBUG ? '' : '.min')+'.js'},
           libsFrag = doc.createDocumentFragment(),
           libsCounter = Object.keys(libs).length;
 
@@ -94,6 +101,9 @@ function Widget(spot) {
         libsCounter--;
       }
       ( doc.getElementsByTagName('head')[0]||doc.getElementsByTagName('body')[0] ).appendChild(libsFrag);
+
+      //DEBUG iframe append time
+      root.inlineAppendTime = performance.now();
     }
   }
 
@@ -107,13 +117,14 @@ var style = doc.createElement('style');
 style.innerHTML = '.' + pre + '-holder{height:0;position:relative;padding-top:56.26%;background-color:black;}\
 .' + pre + '{top:0;left:0;width:100%;height:100%;position:absolute;}';
 doc.getElementsByTagName('head')[0].appendChild(style);
+console.timeStamp("CSS for host page appended");
 
 //We process each of the widget spots from the page...
 var start = function(){
   while (spotsCount > 0) {
     var spot = spots[spotsCount - 1]
     
-    Widget(spots[spotsCount - 1])
+    Widget(spots[spotsCount - 1]);
 
     spot.remove();
     spotsCount--;
@@ -121,5 +132,13 @@ var start = function(){
 };
 
 start();
+
+if (root.iframeAppendTime) {
+  console.debug("Iframe append time: " + (iframeAppendTime - startTime) + " ms");
+}
+
+if (root.inlineAppendTime) {
+  console.debug("Inline append time: " + (inlineAppendTime - startTime) + " ms");
+}
 
 }(window,document));
