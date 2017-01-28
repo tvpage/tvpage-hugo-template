@@ -5,7 +5,7 @@
             "type": "text",
             "label": "Google Font",
             "code": "googlefont",
-            "value": "//fonts.googleapis.com/css?family=Dosis"
+            "value": "//fonts.googleapis.com/css?family=Dosis:400,700"
         },
         {
             "for": "styles",
