@@ -18,30 +18,19 @@
 			{{ partial (printf "%s/breadcrumbs.html" .Type) . }}
 		</div>
 		<div class="row">
-				{{ $channelsPages := split ($.Scratch.Get "settings").channelgalleryids "," }}
-				{{ $allChannelPages := (where .Site.Pages "Layout" "channel")}}
-				{{ $type := .Type }}
-				{{ range $channelsPages }}
-					{{ $currentChannelId := . }}
-					{{ $currentPage := index $.Site.Data.channels (printf "x%s" . ) }}
-					{{ if $currentPage }}
-						{{ range where $allChannelPages "Title" $currentPage.title }}
+				{{ range where .Site.Pages "Layout" "channel" }}
+					{{ if in ($.Scratch.Get "settings").channelgalleryids .Params.channelid }}
+					{{ $currentPage := index $.Site.Data.channels (printf "x%s" .Params.channelid ) }}
 						<div class="col-xs-12 col-sm-6 col-md-6 featured-channel">
 							<article class="channel-items">
-								<!-- <a href="{{ .Permalink }}" class="content" style='background-image: url(/{{ $type }}/images/channel/{{$currentChannelId}}.jpg);'>
+								<a href="{{$baseUrl}}c/{{$currentPage.titleTextEncoded}}/{{.Params.channelid}}/" class="content" style='background-image: url({{$baseUrl}}{{ $.Type }}/images/channel/{{.Params.channelid}}.jpg);'>
+									<img src="{{$baseUrl}}{{ $.Type }}/images/channel/{{.Params.channelid}}.jpg" alt="">
 									<span class="featured-channel-container">
-										<span class="featured-channel-title">{{ $currentPage.title }}</span>
-									</span>
-								</a>	 -->
-								<a href="{{ .Permalink }}" class="content" style='background-image: url({{$baseUrl}}{{ $type }}/images/channel/{{$currentChannelId}}.jpg);'>
-									<img src="{{$baseUrl}}{{ $type }}/images/channel/{{$currentChannelId}}.jpg" alt="">
-									<span class="featured-channel-container">
-										<span class="featured-channel-title">{{ $currentPage.title }}</span>
+										<span class="featured-channel-title">{{ .Title }}</span>
 									</span>
 								</a>
 							</article>
 						</div>
-						{{ end }}
 					{{ end }}
 				{{ end }}
 		</div>
