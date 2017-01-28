@@ -50,10 +50,10 @@
         </div>
         <div class="row video-details">
           <div class="col-sm-12 col-md-12 video-details-row">
-            <strong>Published on: <span class="published-date">{{ $videoDetails.date_created }}</span></strong>
+            <p class="video-details-meta">Published on: <span class="published-date">{{ $videoDetails.date_created }}</span></p>
           </div>
           <div class="col-sm-12 col-md-12 video-details-row duration">
-            <strong>Duration:</strong> {{ $videoDetails.asset.prettyDuration }}
+            <p class="video-details-meta">Duration: <span>{{ $videoDetails.asset.prettyDuration }}</span></p>
           </div>
           <div class="col-sm-12 col-md-12 video-details-row description">
             <div class="desktop">{{ replace $videoDetails.description "\n" "<br/>" | safeHTML }}</div>
