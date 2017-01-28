@@ -118,12 +118,28 @@ div[id^=tvpwidget-sidebar] {
   right: 0;
   bottom: 0;
   margin: auto;
-  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNyIgaGVpZ2h0PSIzNyIgdmlld0JveD0iMCAwIDM3IDM3Ij4gIDxnIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+ICAgIDxjaXJjbGUgY3g9IjE4LjUiIGN5PSIxOC41IiByPSIxOC41IiBmaWxsPSIjNTg3Q0I5Ii8+ICAgIDxwb2x5Z29uIGZpbGw9IiNGRkZGRkYiIHBvaW50cz0iMjEuMDg2IDEwLjc0MiAyOS4wNDMgMjYuNjU2IDEzLjEyOSAyNi42NTYiIHRyYW5zZm9ybT0icm90YXRlKDkwIDIxLjA4NiAxOC42OTkpIi8+ICA8L2c+PC9zdmc+);
+  background-color: #00DBC0;
+  border-radius: 80px;
 }
+.tvp-play-arrow {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 10.5px 0 10.5px 16px;
+    border-color: transparent transparent transparent #ffffff;
+    margin-left: 13px;
+    margin-top: 8px;
+}
+.tvp-video:hover .tvp-video-play-button{
+  -moz-transform: scale(1.1);
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+}
+
 .tvp-video .tvp-title{
   max-height: 33px;
   overflow: hidden;
-  font-family: Roboto;
+  font-family: Dosis;
   font-size: 12px;
   font-weight: 500;
   line-height: 16px;
@@ -142,11 +158,6 @@ div[id^=tvpwidget-sidebar] {
   width: 50%;
   float: left;
   margin: 0 auto;
-}
-.tvp-video:hover .tvp-video-play-button{
-  -moz-transform: scale(1.1);
-  -webkit-transform: scale(1.1);
-  transform: scale(1.1);
 }
 .tvp-progress-bar{
   background-color:#B82927 !important
@@ -205,11 +216,11 @@ div[id^=tvpwidget-sidebar] {
   -ms-transform:translateY(-50%);
   transform:translateY(-50%);
   height: 19px;
-  font-family: Roboto;
+  font-family: Dosis;
   font-size: 14px;
   font-weight: 500;
   line-height: 16px;
-  color: #333333;
+  color: #1F1D26;
   text-align:left;
 }
 
@@ -230,7 +241,7 @@ div[id^=tvpwidget-sidebar] {
   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAMAAADW3miqAAAAq1BMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAADKysoAAADY2NgGBgYJCQkAAADf398DAwM/Pz8AAAAAAACDg4McHBzl5eUAAAC+vr4GBgZmZmbs7Oz5+fk+Pj7Jycmenp5oaGj39/eDg4PQ0ND4+Piurq7a2tr8/Pzs7Oz5+fne3t79/f0iIiIsLCw1NTVBQUFOTk5dXV1oaGh6enqNjY2cnJysrKy6urrBwcHOzs7///+E45x2AAAAKnRSTlMAAQMIDRIZHSMnLTpESFNVXWlpbG15eoeJlqGssrO2vsDJ09Te4vj6/f2snMF3AAAByklEQVR4AXXT/VLaQBQFcONuNF0igm0Ea/kA6W4JSMhHwnn/J+tdbneuQ9Lzh4zmN+eeYczdbSLK3XAERPf30f/h9blSmqIUySFHROkH8/q22m5XP388KmJDJHnZASGrJ2FiHp43gGvL4nQqytYSexTFhmosbHXI/+VQWfx++qq8mTu0x/xLji0cKTEqebZo8ps0cN+CiiL1kO7Q5b20WCk+SEXxaA577KPDH/iDXJRMdqjygVTYchUXXcKMRj4oF3AVLRp/oOY/Av5xDYB/r/GmGJnpDkXoB2oy4Xrh7/lJepRZHHNRYvIjnKZ7flLmcJCtYihAzCid7QX5W2EhZS/oek6MqANcQNkOJzF1LeqELSMa/hFW8GP5CkpsaDh/BUtcQlMtH5QOrzq6omRCo875QAq4RJHhUWt0Q6jDL5rkkb9HVU3fNLDGXwtV7w7lrSmxf+Ei/l8Zz5a47WqABS0ixFXaTGZrh+4s5NxhvzCaizyig6TeLdBVn158Vh1g54aOeSRqnPkyiuOfi7EYefHSaTZbbiwodrP+niZ64BWOTTohR8mmk9TEKhhRvixOzCiljEwSUw2bHlNaxxStlZAeI+dDQsiw64u/Vpd3CsAJKq0AAAAASUVORK5CYII=);
 }
 .tvp-recommeded-products{
-  font-family: Roboto;
+  font-family: Dosis;
   font-size: 10px;
   font-weight: bold;
   line-height: 11px;
@@ -417,20 +428,20 @@ div[id^=tvpwidget-sidebar] {
 .tvp-pop-up .tvp-product-title {
   margin: 15px 0;
   height: 38px;
-  font-family: Roboto;
+  font-family: Dosis;
   font-size: 14px;
   font-weight: 500;
   line-height: 18px;
-  color: #333333;
+  color: #1F1D26;
   overflow: hidden;
 }
 .tvp-pop-up .tvp-price{
   height: 21px;
-  font-family: Roboto;
+  font-family: Dosis;
   font-size: 18px;
   font-weight: bold;
   line-height: 21px;
-  color: #333333;
+  color: #00DBC0;
   margin: 0 0 25px 0;
 }
 .tvp-pop-up .tvp-img-link {
@@ -440,37 +451,17 @@ div[id^=tvpwidget-sidebar] {
 }
 .tvp-pop-up .tvp-call-to-action {
   display: block;
-  font-family: Roboto;
+  font-family: Dosis;
   font-size: 18px;
   font-weight: bold;
   text-align: center;
   line-height: 45px;
   width: 208px;
   height: 48px;
-  background-color: #FFFFFF;
-  color: #587CB9;
-  border: 1px solid #587CB9;
-  position: relative;
-  text-decoration: none;
-}
-.tvp-pop-up .tvp-call-to-action .tvp-material-icon{
-  height: 13px;
-  width: 13px;
-  top: 15px;
-  position: relative;
-  float: right;
-  right: 25px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAAhFBMVEUAAAD///+AgL9ggL9iicRmiLtggL9ZgL9YgLpagLxfg71egLxcfL5YfbtZfrxbfLxZfbpafblYfbpafrtafbtYfLtafrlYfblZfrpYfblZfLpYfbpZfbpZfbpYfblZfbpZfblZfLpYfbpZfbpYfLlZfLpZfLlYfbpYfblZfbpZfblYfLky6A+sAAAAK3RSTlMAAQQIDQ8QFBoiIyYnMUVMXGZoaWx/gIuMpaatrrKzuMzP2drc4PLz9ff9caPJhwAAAIlJREFUeNqNzccOwkAMRdELDDV0CL0mEIr////YmLHkaBBvZd2zML+WTXQw0isDGkf5DrZ6rYCxJCCXW9BBK4ThPUIJtl4h75cH7dNScgysE8F1A9c5F0sD6zoD6wauHy4zA+vYc+t12MfuoHvV7oEmCeB/WEi1c6tkDnSeUtujDTDYnNzWfdL7ADwKIVFlhAxSAAAAAElFTkSuQmCC);
-}
-.tvp-pop-up .tvp-call-to-action:hover .tvp-material-icon{
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAPFBMVEUAAAD////////////////////////////////////////////////////////////////////////////YSWgTAAAAE3RSTlMABA4oLjI2N0BBUVN+f4Cpqsv9Q4lPKAAAAGNJREFUeNpFj0EOgCAMBFdARAUR+/+/mrVmmUszkzRpgVwvgviNgs0cHEYuVDsTQUjrYGiW4Cy3DQ/yvlpjkC/JgxzhiAz0TicM0/8VuUJ53BWwuysQBZ4uTqv+3CTz/SZqxguuiQim/MCIXAAAAABJRU5ErkJggg==);
-  }
-.tvp-pop-up .tvp-call-to-action:hover {
-  text-decoration: none;
-  background-color: #587CB9;
+  background-color: #1F1D26;
   color: #FFFFFF;
+  position: relative;
+  text-decoration: none;
 }
 
 #tvp-view-more-button{
@@ -500,7 +491,7 @@ div[id^=tvpwidget-sidebar] {
 #tvp-view-more-button .tvp-view-more{
   width: 65px;
   height: 14px;
-  font-family: Roboto;
+  font-family: Dosis;
   font-size: 10px;
   font-weight: bold;
   text-align: center;
@@ -529,7 +520,7 @@ div[id^=tvpwidget-sidebar] {
 
 #tvp-mobile-products-list .tvp-product-title{
   position: relative;
-  font-family: Roboto;
+  font-family: Dosis;
   font-size: 12px;
   font-weight: bold;
   line-height: 14px;
@@ -538,7 +529,7 @@ div[id^=tvpwidget-sidebar] {
 
 #tvp-mobile-products-list .tvp-price{
   position: relative;
-  font-family: Roboto;
+  font-family: Dosis;
   font-size: 12px;
   font-weight: bold;
   line-height: 14px;
@@ -550,25 +541,14 @@ div[id^=tvpwidget-sidebar] {
   bottom: -1px;
   right: -1px;
   width: 114px;
-  color: #587CB9;
-  border: 1px solid #587CB9;
+  color: #FFFFFF;
+  background-color: #1F1D26;
+  text-align: center;
   text-decoration: none;
-  font-family: Roboto;
+  font-family: Dosis;
   font-size: 12px;
   font-weight: bold;
   padding: 3px;
-  width: 113px;
-}
-
-#tvp-mobile-products-list a .tvp-material-icon{
-  position: absolute;
-  height: 12px;
-  width: 12px;
-  right: 5px;
-  top: 3.5px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAAhFBMVEUAAAD///+AgL9ggL9iicRmiLtggL9ZgL9YgLpagLxfg71egLxcfL5YfbtZfrxbfLxZfbpafblYfbpafrtafbtYfLtafrlYfblZfrpYfblZfLpYfbpZfbpZfbpYfblZfbpZfblZfLpYfbpZfbpYfLlZfLpZfLlYfbpYfblZfbpZfblYfLky6A+sAAAAK3RSTlMAAQQIDQ8QFBoiIyYnMUVMXGZoaWx/gIuMpaatrrKzuMzP2drc4PLz9ff9caPJhwAAAIlJREFUeNqNzccOwkAMRdELDDV0CL0mEIr////YmLHkaBBvZd2zML+WTXQw0isDGkf5DrZ6rYCxJCCXW9BBK4ThPUIJtl4h75cH7dNScgysE8F1A9c5F0sD6zoD6wauHy4zA+vYc+t12MfuoHvV7oEmCeB/WEi1c6tkDnSeUtujDTDYnNzWfdL7ADwKIVFlhAxSAAAAAElFTkSuQmCC);
 }
 
 .tvp-pagination {
@@ -633,7 +613,7 @@ div[id^=tvpwidget-sidebar] {
   #tvplb .tvp-lb-header .tvp-related-products{
     display:block;
     float: right;
-    font-family: Roboto;
+    font-family: Dosis;
     font-size: 11px;
     font-weight: 500;
     line-height: 38px;
