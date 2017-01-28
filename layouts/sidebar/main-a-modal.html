@@ -8,13 +8,16 @@
 <style id="tvp-css-lib" type="text/css">{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css-modal.html" .Type ) .)) | safeCSS }}</style>
 <div id='{{ ($.Scratch.Get "settings").name }}'>
   <div class="tvp-player"> </div>
+  <div class="tvp-close-btn"></div>
   <div class="tvp-lb-header">
     <div class="tvp-related-products">SPONSORED PRODUCTS</div>
     <h4 class="tvp-lb-title"></h4>
   </div>
   <div id="tvp-player-el"></div>
   <div id="tvpplayer-play"></div>
-  <div id="tvp-products"></div>
+  <div id="tvp-products">
+    <ul class="tvp-img-container"></ul>
+  </div>
   <div id="tvp-pop-ups"></div>
 </div>
 <script src="//a.tvpage.com/tvpa.min.js"></script>
@@ -160,9 +163,14 @@
       for (var i = 0; i < products.length;i++) {
         var data = products[i].data,
             array = JSON.parse(data);
-        s += '<div class="tvp-img-container"><img id="tvp-popup-'+i+'" class="tvp-product-img" src="'+array.imageUrl+'"/>';
+        s += '<li><img id="tvp-popup-'+i+'" class="tvp-product-img" src="'+array.imageUrl+'"/></li>';
       }
-      $('#tvp-products').empty().append(s);
+      if (products.length !== 0) {
+        $('.tvp-related-products').show();
+      }else{
+        $('#tvp-player-el').css('width', '98%')
+      }
+      $('.tvp-img-container').empty().append(s);
       renderPopUps(products);
       bindProductEvents();
     },
@@ -170,9 +178,9 @@
       var that = this,
           $dproducts = $('#tvp-products'),
           $popUp = $('.tvp-pop-up'),
-          $imgCont = $('.tvp-img-container'),
+          $img = $('.tvp-product-img'),
           $body = $(doc).find('body');
-      $dproducts.find('.tvp-product-img').on('mouseover', function(e) {
+      $dproducts.find($img).on('mouseover', function(e) {
           e.preventDefault();
           var id = this.id.split('-')[2],
               $arrowTop = ($(this).offset().top - $body.offset().top) +19;
@@ -191,9 +199,13 @@
         e.preventDefault();
           clearPopUps();
       });
-      $imgCont.on('mouseleave', function(e) {
+      $popUp.on('mouseover', function(e) {
         e.preventDefault();
-          clearPopUps();
+          showPopUp();
+      });
+      $img.on('mouseleave', function(e) {
+        e.preventDefault();
+            clearPopUps();
       });
     },
     clearPopUps = function() {
@@ -209,14 +221,25 @@
         $p.show();
       }
       $('.tvp-pop-up-before,.tvp-pop-up-after').show();
+    },
+
+    initializeProductScrollerY = function() {
+      var sel = '#tvp-products'
+          $ulPrd = $(sel).find('.tvp-img-container'),
+          myScroll = new IScroll(sel);
     };
+
+    $(document).ready(function() {
+      initializeProductScrollerY();
+    });
 
   window.addEventListener('message',function(e){
     if (!e || !redefine(e,'origin') || 'http://localhost:1313' !== e.origin || !redefine(e,'data')) return;
     //We opted for a destructive method when user decides to close modal.
-    var $CloseModal = $(parentDoc).find('.tvp-modal-overlay, .tvp-close-btn');
-    $CloseModal.click(function(){$(this).off().remove();});
-    $CloseModal.click(function(){$CloseModal.off().remove();});
+    var $ModalOverlay = $(parentDoc).find('.tvp-modal-overlay')
+        $CloseBtn = $(doc).find('.tvp-close-btn');
+    $ModalOverlay.click(function(){$(this).off().remove();});
+    $CloseBtn.click(function(){$ModalOverlay.off().remove();});
 
     //Startup the player...
     //Whe need to have videos data.. we can start this by saying that we will get 
