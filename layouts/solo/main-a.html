@@ -5,10 +5,10 @@
 {{- $.Scratch.SetInMap "settings" $i . -}}
 {{- end -}}
 
-<style type="text/css">{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css.html" .Type ) .)) | safeCSS }}</style>
-<div class="tvpplayer">
-  <div id="tvpplayer-target"></div>
-  <div id="tvpplayer-play"></div>
+<style type="text/css">{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css-base.css" .Type ) .)) | safeCSS }}</style>
+<div class="tvp-player">
+  <div id="tvp-player-el"></div>
+  <div id="tvp-player-play"></div>
 </div>
 <script src="//a.tvpage.com/tvpa.min.js"></script>
 <script src="//appcdn.tvpage.com/player/assets/tvp/tvp-{{ ($.Scratch.Get "settings").version }}-min.js"></script>
@@ -25,7 +25,7 @@
     return asset;
   },
   handlePlayButton = function(a,inst){
-    var playButton = document.getElementById("tvpplayer-play");
+    var playButton = document.getElementById("tvp-player-play");
     if (a.type == 'mp4'){
       playButton.style["display"] = "block";
       playButton.addEventListener('click', function(){
@@ -37,7 +37,7 @@
     }
   },
   checks = 0;
-  (function libsPoller() {
+  (function libsPoller() { 
     var deferred = setTimeout(function() {
       if (!redefine(window,'_tvpa') || !redefine(window,'TVPage')) {
         if (++checks < 10) {
@@ -50,7 +50,7 @@
         _tvpa.push(["track","ci",{ li: '{{ .Param "loginid" }}'}]);
         var instance, videos = [];
         new TVPage.player({
-          divId: "tvpplayer-target",
+          divId: "tvp-player-el",
           controls: {
             active: true,
             seekBar: { progressColor: {{ ($.Scratch.Get "settings").progresscolor }} },
@@ -79,6 +79,10 @@
             } else{
               videos.push({{ index $.Site.Data.videos (printf "x%s" .Params.videoid) }});
             }
+
+            //DEBUG: Interaction ready time
+            parent.interactionReadyTime = performance.now();
+            console.debug("Interaction ready time: " + (parent.interactionReadyTime - parent.startTime) + " ms");
 
             if(mobile || !{{ ($.Scratch.Get "settings").autoplay }}){
               instance.cueVideo(getAsset(videos[index]));

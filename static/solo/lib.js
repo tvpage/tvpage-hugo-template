@@ -58,9 +58,6 @@
       frag.appendChild(d);
 
       var pBtn = this.el.parentNode.getElementsByClassName('tvp-play')[0];
-      
-      console.log('button')
-
       pBtn.style.display = 'block';
       pBtn.onclick = function(){
         if (!that.instance) return;
@@ -119,6 +116,11 @@
               window.addEventListener('resize', resize);
             
               that.current = 0;
+              
+              //DEBUG: Interaction ready time
+              parentGlob.interactionReadyTime = performance.now();
+              console.debug("Interaction ready time: " + (parentGlob.interactionReadyTime - parentGlob.startTime) + " ms");
+
               that.play(assets[that.current]);
             },
             onStateChange: function(e){
@@ -127,7 +129,7 @@
                 if (!assets[that.current]) {
                   that.current = 0;
                 }
-                console.log("JAJAJA"), assets[that.current];
+                
                 that.play(assets[that.current]);  
               }
             },
