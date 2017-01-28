@@ -41,12 +41,11 @@
 				{{ range where .Site.Pages "Layout" "channel" }}
 					{{ if in ($.Scratch.Get "settings").channelsliderids .Params.channelid }}
 					<div>
-						<div class="brand-item">				
-							<!-- <div class="content" style="background-image: url(/{{ .Type }}/images/{{.Params.channelid}}-logo.png)"></div> -->
+						<a href="{{ $baseUrl }}{{ slicestr .URL 1}}" class="brand-item">
 							<div class="content">
 								<img src="{{$baseUrl}}{{ .Type }}/images/{{.Params.channelid}}-logo.png" alt="">
 							</div>
-						</div>
+						</a>
 					</div>
 					{{ end }}
 				{{ end }}   
