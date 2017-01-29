@@ -47,9 +47,11 @@
 
 	var lastPageReached = false,
 		currentPage = 0,
+        currentPageVideos = {{ $.Scratch.Get "videos" }},
 		apiBaseUrl = "//api.tvpage.com/v1",
 		isFetching = false,
 		currentPageVideos = $.map({{ $.Scratch.Get "videos" }}, function(val) {return [val];}),
+
   rowerize = function(data, per) {
     if (data && $.isArray(data)) {
       var raw = data.slice(0),
@@ -144,7 +146,6 @@ $el.on('click', '.tvp-video', function(e) {
   //the selected video id.
   var id = $(this).attr('id').split('-').pop(),
   		video = {};
-  
   for (var i = 0; i < currentPageVideos.length; i++) {
     if (currentPageVideos[i].id == id) video = currentPageVideos[i];
   }
@@ -161,9 +162,7 @@ $el.on('click', '.tvp-video', function(e) {
     }, 'http://localhost:1313');
   });
   $ifr.attr('style', 'border-radius:4px;display:block;width:738px;max-width:100%;height:394px;max-height:100%;position:fixed;z-index:100;left:50%;border:none;top:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);background:#fff;box-shadow:0 0 60px 10px rgba(0,0,0,.9)');
-  var $overlay = $('<div/>').addClass('tvp-modal-overlay')
-      $closeBtn = $('<div/>').addClass('tvp-close-btn');
-  $closeBtn.append($ifr).appendTo(parentGlobal.document.body);
+  var $overlay = $('<div/>').addClass('tvp-modal-overlay');
   $overlay.append($ifr).appendTo(parentGlobal.document.body);
   $overlay.attr('style', 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:50;background:rgba(0,0,0,.6)');
   $ifr.contents().find('.tvp-lb-title').html('helo');
