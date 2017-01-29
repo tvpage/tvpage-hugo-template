@@ -12,14 +12,27 @@
       },
       appendToHead = function(el){
         (doc.getElementsByTagName('head')[0]||doc.getElementsByTagName('body')[0]).appendChild(el);
+      },
+      debounce = function(func,wait,immediate) {
+        var timeout;  
+        return function() {
+          var context = this, args = arguments;
+          var later = function() {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+          };
+          var callNow = immediate && !timeout;
+          clearTimeout(timeout);
+          timeout = setTimeout(later, wait);
+          if (callNow) func.apply(context, args);
+        };
       };
 
   function Widget(spot) {
     var widget = function(){};
 
-    var libsExt = root.DEBUG ? '.js' : '.min.js';
-
-    var dataMethod = 'static',
+    var libsExt = root.DEBUG ? '.js' : '.min.js',
+        dataMethod = 'static',
         id = spot.getAttribute('data-id');
 
     if (isset(root,'__TVPage__') && isset(__TVPage__,'config') && isset(__TVPage__.config,id) &&
@@ -43,7 +56,18 @@
         iframe.setAttribute('allowfullscreen', '');
         iframe.classList.add('tvp-iframe');
         iframe.setAttribute('frameborder', '0');
+        iframe.setAttribute('scrolling', 'no');
         holder.appendChild(iframe);
+        
+        iframe.onload = function(){
+          if (root.DEBUG) console.debug("Iframe loaded at: " + (performance.now() - root.DEBUG_start) + " ms");
+
+          var content = this.contentWindow.document.body.firstChild,
+              resize = function() { holder.style.height = content.offsetHeight + 'px';};
+
+          resize();
+          root.addEventListener('resize', debounce(resize,50));
+        };
 
         //Reference for the performance boost technique
         //http://www.aaronpeters.nl/blog/iframe-loading-techniques-performance?%3E
@@ -68,10 +92,6 @@
           html += 'var css=d.createElement(\'link\');css.rel=\'stylesheet\';css.type=\'text/css\';';
           html += 'css.href='+('\''+domain+'\/' + type)+'\/styles.css\';head.appendChild(css);'
           html += '">';
-
-          iframe.onload = function(){
-            if (root.DEBUG) console.debug("Iframe loaded at: " + (performance.now() - root.DEBUG_start) + " ms");
-          };
           
           var iframeDoc = iframe.contentWindow.document;
           iframeDoc.open().write(html);
@@ -79,9 +99,8 @@
 
         } else {
           function setSrc() {
-            var s = spot.href,
-                ifr = holder.firstChild;
-            (-1 == navigator.userAgent.indexOf("MSIE")) ? ifr.src = s : ifr.location = s;
+            var src = spot.href;
+            (-1 == navigator.userAgent.indexOf("MSIE")) ? iframe.src = src : iframe.location = src;
           }
           setTimeout(setSrc,0);
         }
@@ -133,7 +152,7 @@ var style = doc.createElement('style'),
     pre = 'tvp-iframe',
     holderClass = '.' + pre + '-holder';
 
-style.innerHTML = holderClass + '{height:0;position:relative;padding-top:56.26%;background-color:black;}'+
+style.innerHTML = holderClass + '{height:0;position:relative;transition:height ease-out 0.0001s;}'+
 holderClass + '.inline{padding-top:0;}'+
 '.' + pre + '{top:0;left:0;width:100%;height:100%;position:absolute;}';
 appendToHead(style);
