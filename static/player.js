@@ -1,5 +1,5 @@
 //The solo js library.
-;(function(root,doc, parentGlob, parentDoc) {
+;(function(root,doc) {
 
   //The player singleton. We basically create an instance from the tvpage
   //player and expose most utilities, helping to encapsualte what is
@@ -125,10 +125,10 @@
             
               that.current = 0;
               
-              if (root.DEBUG || parentGlob.DEBUG) {
-                var start = root.DEBUG_start || parentGlob.DEBUG_start;
-                if (start) console.debug("Interaction ready time: " + (performance.now() - start) + " ms");
-              }
+              // if (root.DEBUG || parentGlob.DEBUG) {
+              //   var start = root.DEBUG_start || parentGlob.DEBUG_start;
+              //   if (start) console.debug("Interaction ready time: " + (performance.now() - start) + " ms");
+              // }
 
               that.play(that.assets[that.current]);
             },
@@ -157,4 +157,4 @@
 
   root.Player = Player;
 
-}(window, document, parent, parent.document));
+}(window, document));
