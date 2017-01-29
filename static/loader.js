@@ -57,17 +57,23 @@
         iframe.classList.add('tvp-iframe');
         iframe.setAttribute('frameborder', '0');
         iframe.setAttribute('scrolling', 'no');
+        holder.classList.add(type);
         holder.appendChild(iframe);
         
         iframe.onload = function(){
           if (root.DEBUG) console.debug("Iframe loaded at: " + (performance.now() - root.DEBUG_start) + " ms");
+          
+          if ('solo' === type) {
+            if (root.DEBUG) console.debug("Dynamic resize not required for solo");
+            return;
+          }
 
           var content = this.contentWindow.document.body.firstChild,
               resize = function() { holder.style.height = content.offsetHeight + 'px';};
-
           resize();
           root.addEventListener('resize', debounce(resize,50));
         };
+        
 
         //Reference for the performance boost technique
         //http://www.aaronpeters.nl/blog/iframe-loading-techniques-performance?%3E
@@ -153,6 +159,7 @@ var style = doc.createElement('style'),
     holderClass = '.' + pre + '-holder';
 
 style.innerHTML = holderClass + '{height:0;position:relative;transition:height ease-out 0.0001s;}'+
+holderClass + '.solo{padding-top:56.25%;}'+
 holderClass + '.inline{padding-top:0;}'+
 '.' + pre + '{top:0;left:0;width:100%;height:100%;position:absolute;}';
 appendToHead(style);
