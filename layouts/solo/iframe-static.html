@@ -1,101 +1,29 @@
 {{- partial "settings.html" . -}}
-<style type="text/css">{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css-base.css" .Type ) .)) | safeCSS }}</style>
+<script>window.DEBUG = {{getenv "HUGO_DEBUG"}} || 0;</script>
+<style>{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css-base.css" .Type ) .)) | safeCSS }}</style>
 <div class="tvp-player">
 <div id="tvp-player-el"></div>
-<div id="tvpplayer-play"></div>
+<svg class="tvp-play" viewBox="0 0 200 200" alt="Play video"><polygon points="70, 55 70, 145 145, 100" fill="#e57211"></polygon></svg>
 </div>
+<script src="{{.Site.BaseURL}}playerpack.js"></script>
+<script src="{{.Site.BaseURL}}player.js"></script>
+<script>;(function(doc){
 
-<script src="//a.tvpage.com/tvpa.min.js"></script>
-<script src="//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-{{ ($.Scratch.Get "settings").version }}-min.js"></script>
-<script>;(function(){
-  var mobile = /Mobi/.test(navigator.userAgent),
-  redefine = function(o, pr){return 'undefined' !== typeof o[pr];},
-  index = 0,
-  getAsset = function(video){
-    if (!video || !video.asset) return console.log("no asset");
-    var asset = video.asset;
-    asset.analyticsObj = { vd: video.id, li: video.loginId, pg: video.parentId ? video.parentId : 0 };
-    if (!asset.sources) asset.sources = [{ file: asset.videoId }];
-    asset.type = asset.type || 'youtube';
-    return asset;
-  },
-  handlePlayButton = function(a,inst){
-    var playButton = document.getElementById("tvpplayer-play");
-    if (a.type == 'mp4'){
-      playButton.style["display"] = "block";
-      playButton.addEventListener('click', function(){
-        this.style["display"] = "none";
-        if(inst) inst.play();
-      },false);
-    }else{
-      playButton.style["display"] = "none";
-    }
-  },
-  checks = 0;
-  (function libsPoller() {
-    var deferred = setTimeout(function() {
-      if (!redefine(window,'_tvpa') || !redefine(window,'TVPage')) {
-        if (++checks < 10) {
-          libsPoller();
-        } else { 
-          console.log("reached checks limit"); 
-        }
-      } else {
-        _tvpa.push(["config", { li: '{{ .Param "loginid" }}', gaDomain:"www.tvpage.tv", "logUrl": "\/\/api.tvpage.com\/v1\/__tvpa.gif"}]);
-        _tvpa.push(["track","ci",{ li: '{{ .Param "loginid" }}'}]);
-        var instance, videos = [];
-        new TVPage.player({
-          divId: "tvp-player-el",
-          controls: {
-            active: true,
-            seekBar: { progressColor: {{ ($.Scratch.Get "settings").progresscolor }} },
-            floater: { removeControls: {{ ($.Scratch.Get "settings").removecontrols }}, transcript: {{ ($.Scratch.Get "settings").transcript }} }
-          },
-          poster: true,
-          techOrder: 'html5,flash',
-          analytics: { tvpa: {{ ($.Scratch.Get "settings").tvpa }} },
-          apiBaseUrl: '//app.tvpage.com',
-          swf: '//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-{{ ($.Scratch.Get "settings").version }}-flash.swf',
-          onReady: function(e, player){
-            instance = player;
-            var resize = function(){instance.resize(instance.options.DOMContainer.clientWidth, instance.options.DOMContainer.clientHeight);};
-            resize();
-            window.onresize = resize;
-            instance.options.DOMContainer.getElementsByClassName('tvp-progress-bar')[0].style["background-color"] = instance.options.controls.seekBar.progressColor;
+	var settings = {{ $.Scratch.Get "settings" }},
+		videoid = {{ with .Params.videoid }}{{ . }}{{ else }}''{{ end }},
+		channelid = {{ with .Params.channelId }}{{ . }}{{ else }}''{{ end }};
 
-            var videoid;
-            {{ with .Params.videoid }} videoid = {{ . }};{{ end }}
-            var channelid;
-            {{ with .Params.channelid }} channelid = {{ . }};{{ end }}
+	var videos = [];
+	if (videoid) {
+	  videos.push({{ index $.Site.Data.videos (printf "x%s" .Params.videoid) }} || {});
+	} else if (channelid) {
+	  var channel = 'undefined' !== typeof {{index $.Site.Data.channelVideos (printf "x%s_page_1" .Params.channelid)}};
+	  if ('undefined' !== typeof channel.data) videos = channel.data;
+	}
+	if (!videos.length) console.log('need videos');
 
-            if (!videoid && channelid) {
-              var channelVideos = {{ index $.Site.Data.channelVideos (printf "x%s_page_1" .Params.channelid) }};
-              videos = channelVideos.data;
-            } else{
-              videos.push({{ index $.Site.Data.videos (printf "x%s" .Params.videoid) }});
-            }
+	settings.data = videos;
+	
+	new Player('tvp-player-el', settings);
 
-            if(mobile || !{{ ($.Scratch.Get "settings").autoplay }}){
-              instance.cueVideo(getAsset(videos[index]));
-              handlePlayButton(getAsset(videos[index]),instance);
-            }else{
-              instance.loadVideo(getAsset(videos[index]));
-            } 
-          },
-          onStateChange: function(e){
-            if("undefined" !== typeof e && "tvp:media:videoended" == e){
-              index = (index == videos.length - 1) ? 0 : index + 1;
-              if(mobile || !{{ ($.Scratch.Get "settings").autonext }}){
-                instance.cueVideo(getAsset(videos[index]));
-                handlePlayButton(getAsset(videos[index]),instance);
-              }else{
-                instance.loadVideo(getAsset(videos[index]));
-              }   
-            }
-          }
-        });
-      }
-    }, 300);
-  })();
-
-}());</script>
+}(document));</script>

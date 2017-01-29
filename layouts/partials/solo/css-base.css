@@ -10,6 +10,13 @@ body {
   padding-bottom: 56.25%;
 }
 
+.tvp-player.inline {
+  position: absolute;
+  top:0;
+  left:0;
+  padding: 0;
+}
+
 #tvp-player-el {
   background-repeat: no-repeat;
   background-position: center;
