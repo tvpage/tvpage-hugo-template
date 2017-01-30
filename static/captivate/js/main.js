@@ -16,6 +16,7 @@
     var isFullScreen = false;
     var activeVideoId = null;
     var videoList = [];
+    var isSubscribePage = window.location.pathname==="/subscribe/" ? true : false;
     var isMobile = (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) ? true : false;
     var isMac = navigator.userAgent.indexOf('Mac OS X') != -1;
     var isFireFox = navigator.userAgent.indexOf('Firefox') != -1;
@@ -68,8 +69,9 @@
             return this.commonRequest(url, null, null);
 
     	},
-    	channelInfo : function(){
-
+    	channelInfo : function(channelId){
+            var url = TVSite.apiUrl+"channels/"+channelId;
+            return channelDataExtractor.commonRequest(url,null,null)
     	},
     	video : function(){
 
@@ -247,6 +249,7 @@
                     result['url'] = that.getResultUrl(result);                    
                     html += that.tmpl(template, result);
                 });
+                //$("#tvp-mobile-search-results lu").append(html).show();
             }
         },
         renderProd : function(prods, target, templ) {
@@ -995,7 +998,7 @@
 	        breakpoint: 768,
 	        settings: {
 	            arrows: false,
-	            slidesToShow: 4,
+	            slidesToShow: 3,
 	            slidesToScroll: 3
 	        }
 	    }]
@@ -1120,7 +1123,7 @@
     $('#subscribe-channel').on('click', function(event) {
         event.preventDefault();
         if(isMobile){            
-            window.location.href = "/subscribe/" + $(this).data('channelid');
+            window.location.href = "/subscribe/"+(TVSite.isChannelPage ? ("?channelId="+TVSite.channelId) : "");// + $(this).data('channelid');
             return false;
         } 
         $('#subcribeModal')        
@@ -1185,4 +1188,24 @@
         event.preventDefault();
         $('#mobile-search-modal').modal();
     });
+
+    if(isSubscribePage){
+        var path  = window.location.href;
+        var params = path.split("?")
+        if (params.length === 2){
+            var channelValue = params[1].split("=");
+            if(channelValue.length==2){
+                channelDataExtractor.channelInfo(channelValue[1]).done(function(data){
+                    var checkbox = '<div class="chkSubscribeAll">'
+                        +'<input type="checkbox" name="" id="">Subscribe me  to all updates.'
+                    +'</div>';
+                    $(".channel-title").empty().text(data.title);
+                    $("#mail").addClass("channel-check");
+                    $(checkbox).insertAfter($("#mail"));
+                    
+                });
+            }
+        }
+    }
+
 }(jQuery, window.IScroll, window._, window.BigScreen));
