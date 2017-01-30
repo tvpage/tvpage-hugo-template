@@ -1,31 +1,27 @@
-{{- range $i, $def := (getJSON (printf "themes/tvpage/defaults/%s.json" .Type)).option -}}
-{{- $.Scratch.SetInMap "settings" .code .value -}}
-{{- end -}}
-{{- range $i, $param := .Params -}}
-{{- $.Scratch.SetInMap "settings" $i . -}}
-{{- end -}}
-
-<style id="tvp-css-lib" type="text/css">{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css.html" .Type ) .)) | safeCSS }}</style>
-<div id='{{ ($.Scratch.Get "settings").name }}' class="tvp-clearfix" style="height:100%">
-	<div class="cz-line-heading"><div class="cz-line-heading-inner">Recommended Videos</div></div>
-	<div class="tvp-container">
-	{{ range $i, $p := first ($.Scratch.Get "settings").itemsperpage (index $.Site.Data.channelVideos (printf "x%s_page_1" ($.Scratch.Get "settings").channelid) "data") }}
-	{{ $.Scratch.SetInMap "videos" .id (index $.Site.Data.videos (printf "x%s" .id )) }}
-	<div id="tvp-video-{{ .id }}" class="tvp-video">
-		<div class="tvp-video-image" style="background-image:url('{{ .asset.thumbnailUrl }}')">
-			<div class="tvp-play-button-outer">
-		  		<div class="tvp-play-button"></div>
-			</div>
-		</div>
-		<div class="tvp-video-title">
-			{{ .title }}
-		</div>
-	</div>
-	{{ if eq (mod (add $i 1) 2) 0 }}<div class="tvp-clearfix"></div>{{ end }}
-	{{ end }}
-	</div>
-	<a class="tvp-logo" href="//www.tvpage.com" target="_blank"></a>
-	<button id="tvp-view-more-button"><span class="tvp-view-more">VIEW MORE</span></button>
+{{- partial "settings.html" . -}}
+<style>{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css-base.css" .Type ) .)) | safeCSS }}</style>
+<div id='{{ ($.Scratch.Get "settings").name }}' class="iframe-content">
+  <header class="tvp-sidebar-header">
+    <h2>Recommended Videos</h2>  
+  </header>
+  <div class="tvp-clearfix">
+  {{ range $i, $p := first ($.Scratch.Get "settings").itemsperpage (index $.Site.Data.channelVideos (printf "x%s_page_1" ($.Scratch.Get "settings").channelid) "data") }}
+  {{ $.Scratch.SetInMap "videos" .id (index $.Site.Data.videos (printf "x%s" .id )) }}
+  <div id="tvp-video-{{ .id }}" class="tvp-video">
+    <div class="tvp-video-image" style="background-image:url('{{ .asset.thumbnailUrl }}')">
+      <svg class="tvp-play" viewBox="0 0 200 200" alt="Play video"><polygon points="70, 55 70, 145 145, 100" fill="#e57211"></polygon></svg>
+    </div>
+    <p class="tvp-video-title">{{ .title }}</p>
+  </div>
+  {{ if eq (mod (add $i 1) 2) 0 }}<div class="tvp-clearfix"></div>{{ end }}
+  {{ end }}
+  </div>
+  <footer class="tvp-clearfix">
+    <a class="tvp-logo" href="//www.tvpage.com" target="_blank">
+      <img src="data:image/png;base64,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">
+    </a>
+    <button id="tvp-view-more-button">VIEW MORE</button>
+  </footer>
 </div>
 
 <script id="videoTemplate" type="text/template">
@@ -33,23 +29,26 @@
     <div class="tvp-video-image" style="background-image:url({asset.thumbnailUrl})">
       <div class="tvp-play-button-outer">
         <div class="tvp-play-button"></div>
-	  </div>
+    </div>
     </div>
     <div class="tvp-video-title">{title}</div>
   </div>
 </script>
 <script src="/{{.Type}}/vendor/jquery.js"></script>
-<script type="text/javascript">(function(doc,parentGlobal){
-	var settings = {{ $.Scratch.Get "settings" }};
-	{{ with .Param "loginid" }}
-		settings.loginid = {{ . }}
-	{{ end }}
+<script>;(function(doc,parentGlobal){
 
-	var lastPageReached = false,
-		currentPage = 0,
-		apiBaseUrl = "//api.tvpage.com/v1",
-		isFetching = false,
-		currentPageVideos = $.map({{ $.Scratch.Get "videos" }}, function(val) {return [val];}),
+  var settings = {{ $.Scratch.Get "settings" }};
+  {{ with .Param "loginid" }}
+    settings.loginid = {{ . }}
+  {{ end }}
+
+  var lastPageReached = false,
+    currentPage = 0,
+        currentPageVideos = {{ $.Scratch.Get "videos" }},
+    apiBaseUrl = "//api.tvpage.com/v1",
+    isFetching = false,
+    currentPageVideos = $.map({{ $.Scratch.Get "videos" }}, function(val) {return [val];}),
+
   rowerize = function(data, per) {
     if (data && $.isArray(data)) {
       var raw = data.slice(0),
@@ -143,7 +142,7 @@ $el.on('click', '.tvp-video', function(e) {
 
   //the selected video id.
   var id = $(this).attr('id').split('-').pop(),
-  		video = {};
+      video = {};
   
   for (var i = 0; i < currentPageVideos.length; i++) {
     if (currentPageVideos[i].id == id) video = currentPageVideos[i];
@@ -161,13 +160,10 @@ $el.on('click', '.tvp-video', function(e) {
     }, 'http://localhost:1313');
   });
   $ifr.attr('style', 'border-radius:4px;display:block;width:738px;max-width:100%;height:394px;max-height:100%;position:fixed;z-index:100;left:50%;border:none;top:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);background:#fff;box-shadow:0 0 60px 10px rgba(0,0,0,.9)');
-  var $overlay = $('<div/>').addClass('tvp-modal-overlay')
-      $closeBtn = $('<div/>').addClass('tvp-close-btn');
-  $closeBtn.append($ifr).appendTo(parentGlobal.document.body);
+  var $overlay = $('<div/>').addClass('tvp-modal-overlay');
   $overlay.append($ifr).appendTo(parentGlobal.document.body);
   $overlay.attr('style', 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:50;background:rgba(0,0,0,.6)');
   $ifr.contents().find('.tvp-lb-title').html('helo');
 });
 
-}(document, parent));
-</script>
+}(document,parent));</script>
