@@ -81,10 +81,10 @@
     };
     this.play = function(asset){
       if (!asset) return console.log('need asset');
-      //if ((/Mobi/.test(navigator.userAgent)) ) {
+      if ((/Mobi/.test(navigator.userAgent)) ) {
         this.willCue = true;
         if ('mp4' === asset.type) this.showPlayBtn(asset.thumbnailUrl);
-      //}
+      }
       if (this.willCue) {
         this.instance.cueVideo(asset)
       } else {
