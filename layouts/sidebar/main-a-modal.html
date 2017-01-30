@@ -16,7 +16,9 @@
   <div id="tvp-player-el"></div>
   <div id="tvpplayer-play"></div>
   <div id="tvp-products">
-    <ul class="tvp-img-container"></ul>
+    <div class="tvp-scroller">
+      <ul class="tvp-img-container"></ul>
+    </div>
   </div>
   <div id="tvp-pop-ups"></div>
 </div>
@@ -132,7 +134,6 @@
         if (!a.sources) a.sources = [{ file: a.videoId }];
         a.type = a.type || 'youtube';
         return a;
-        console.log('assety: ',a);
       },
       sendAnalytics = function(data, type) {
         if ('object' === typeof data && type) {
@@ -162,6 +163,10 @@
         var data = products[i].data,
             array = JSON.parse(data),
             priceHtml = '';
+        if (products[i].title.length > 42){
+            var shortTitle = jQuery.trim(products[i].title).substring(0, 42).split(" ").slice(0, -1).join(" ")+" ...";
+            products[i].title = shortTitle;
+        }    
         if (products[i].price) {
           price = products[i].price.toString().replace(/[^0-9.]+/g, '');
           priceHtml +='<div class="tvp-price">$'+price+'</div>'
@@ -179,42 +184,57 @@
         s += '<li><img id="tvp-popup-'+i+'" class="tvp-product-img" src="'+array.imageUrl+'"/></li>';
       }
       if (products.length !== 0) {
+        $('#tvp-products').show();
         $('.tvp-related-products').show();
       }else{
-        $('#tvp-player-el').css('width', '98%')
+        $('#tvp-player-el').css('width', '98%');
       }
       $('.tvp-img-container').empty().append(s);
       renderPopUps(products);
       bindProductEvents();
+      initializeProductScrollerY();
     },
     bindProductEvents = function() {
       var that = this,
+          mouseOver = false,
+          imgMouseOver = false,
           $dproducts = $('#tvp-products'),
           $popUp = $('.tvp-pop-up'),
           $img = $('.tvp-product-img'),
           $body = $(doc).find('body');
       $dproducts.find($img).on('mouseover', function(e) {
           e.preventDefault();
+          imgMouseOver = true
           var id = this.id.split('-')[2],
               $arrowTop = ($(this).offset().top - $body.offset().top) +19;
-          showPopUp(id);
-          if ($arrowTop < 0) {
-            $arrowTop = 10;
-          }
-          if ($arrowTop > $body.height()) {
-            $arrowTop = $body.height() - 10;
-          }
-          $('.tvp-pop-up-before').css({top: $arrowTop + 2}).show();
-          $('.tvp-pop-up-after').css({top: $arrowTop + 1}).show();
+          if ($arrowTop < 0) {$arrowTop = 10;}
+          if ($arrowTop > $body.height()) {$arrowTop = $body.height() - 10;}
+          setTimeout(function() {
+            if (imgMouseOver == true) {
+              $('.tvp-pop-up-before').css({top: $arrowTop + 2}).show();
+              $('.tvp-pop-up-after').css({top: $arrowTop + 1}).show();
+              showPopUp(id);
+            }else{clearPopUps();}
+          });
       });
-
       $popUp.off().on('mouseleave', function(e) {
         e.preventDefault();
-          clearPopUps();
+        mouseOver = false;
+        clearPopUps();
+      });
+      $popUp.on('mouseover', function(e) {
+        e.preventDefault();
+          mouseOver = true;
+          showPopUp();
       });
       $img.on('mouseleave', function(e) {
         e.preventDefault();
+        imgMouseOver = false
+        setTimeout(function() {
+          if (mouseOver == false) {
             clearPopUps();
+          }
+        },30);
       });
     },
     clearPopUps = function() {
@@ -233,15 +253,24 @@
     },
 
     initializeProductScrollerY = function() {
-      var sel = '#tvp-products'
-          $ulPrd = $(sel).find('.tvp-img-container'),
-          myScroll = new IScroll(sel);
+      var sel = '#tvp-products',
+          $ulImg = $(sel).find('.tvp-img-container');
+      if ($($ulImg).children().length >= 1) {
+          var myScroll = new IScroll(sel,{
+            mouseWheel: true,
+            scrollbars: true,
+            scrollY: true,
+            interactiveScrollbars: true,
+            useTransition: false,
+            bindToWrapper: true,
+            click: true
+          });
+      }
+      console.dir(myScroll.options);
     };
 
     $(document).ready(function() {
-      initializeProductScrollerY();
       $(document).on('click', '.tvp-call-to-action', function(e) {
-        console.log('click');
         sendAnalytics({
           ct: $(this).data('id'),
           vd: $(this).data('videoId')
@@ -252,7 +281,7 @@
   window.addEventListener('message',function(e){
     if (!e || !redefine(e,'origin') || 'http://localhost:1313' !== e.origin || !redefine(e,'data')) return;
     //We opted for a destructive method when user decides to close modal.
-    var $ModalOverlay = $(parentDoc).find('.tvp-modal-overlay')
+    var $ModalOverlay = $(parentDoc).find('.tvp-modal-overlay'),
         $CloseBtn = $(doc).find('.tvp-close-btn');
     $ModalOverlay.click(function(){$(this).off().remove();});
     $CloseBtn.click(function(){$ModalOverlay.off().remove();});
@@ -260,25 +289,14 @@
     //Startup the player...
     //Whe need to have videos data.. we can start this by saying that we will get 
     //the page # from the inline iframe, plus which video id needs to play.
-    if ("undefined" !== typeof e.data.video) {
-        var videos = e.data.videos || [],
-            assets = [];
-            videosCounter = videos.length;
-
-      while(videosCounter > 0) {
-        assets.push(assety(videos[videosCounter-1]));
-        videosCounter--;        
-      }
-
-      var video = e.data.video;
-      
-      getProducts(video.id);
-      
-      $('.tvp-lb-title').html(video.title);
-      
-      settings.startId = video.id;
+    if ("undefined" !== typeof e.data.videos) {
+      var videos = e.data.videos || [],
+          assets = [];
+      assets.push(assety(videos));
+      getProducts(videos.id);
+      $('.tvp-lb-title').html(videos.title);
+      settings.startId = videos.id;
       new Player($('#tvp-player-el')[0],assets,settings);
-
     }
 
   });
