@@ -319,6 +319,9 @@
 		&.description{
 			min-height: 1px;
 			margin-bottom: 15px;
+			&.show-more-active::after{
+				display: none;
+			}
 			.mobile.collapse.in{
 				display: block;
 			}

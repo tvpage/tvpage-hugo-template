@@ -19,6 +19,7 @@
     TVSite.isHomePage = ({{ .Params.videoid }} === "" && {{ .Params.channelid }} === "") ? true : false;
     TVSite.isChannelPage = ({{ .Params.videoid }} === "" && {{ .Params.channelid }} !== "") ? true : false;
     TVSite.isPlayerPage = (!TVSite.isHomePage && !TVSite.isChannelPage )? true : false;
+    TVSite.isSearchPage = {{ .Layout }} === "search" ? true : false;
     TVSite.channelId = {{ .Params.channelid }};
     if(TVSite.isHomePage){
         TVSite.channelId = {{ ($.Scratch.Get "settings").homechannelid }};
