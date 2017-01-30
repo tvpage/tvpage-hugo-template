@@ -124,13 +124,11 @@
               root.addEventListener('resize', resize);
             
               that.current = 0;
-              
-              // if (root.DEBUG || parentGlob.DEBUG) {
-              //   var start = root.DEBUG_start || parentGlob.DEBUG_start;
-              //   if (start) console.debug("Interaction ready time: " + (performance.now() - start) + " ms");
-              // }
-
               that.play(that.assets[that.current]);
+
+              if (root.DEBUG) {
+                console.debug("Interaction ready: " + (performance.now() - root.DEBUG_start) + "ms");
+              }
             },
             onStateChange: function(e){
               if ('tvp:media:videoended' === e){
