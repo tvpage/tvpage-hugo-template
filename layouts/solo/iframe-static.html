@@ -5,8 +5,8 @@
 <div id="tvp-player-el"></div>
 <svg class="tvp-play" viewBox="0 0 200 200" alt="Play video"><polygon points="70, 55 70, 145 145, 100" fill="#e57211"></polygon></svg>
 </div>
-<script src='//{{ .Param "extDomain" }}playerpack.js'></script>
-<script src='//{{ .Param "extDomain" }}player.js'></script>
+<script src='//{{ .Param "extDomain" }}/playerpack.js'></script>
+<script src='//{{ .Param "extDomain" }}/player.js'></script>
 <script>;(function(doc){
 
 	var settings = {{ $.Scratch.Get "settings" }},
