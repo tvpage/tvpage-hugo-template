@@ -34,7 +34,6 @@
 
     this.el = 'string' === typeof el ? doc.getElementById(el) : el;
     this.instance = null;
-    this.willCue = null;
 
     var that = this;
     this.assets = (function(data){
@@ -45,7 +44,13 @@
         var video = data[counter-1];
         if (isEmpty(video)) return console.log('empty data');
         var asset = video.asset;
-        asset.analyticsObj = { vd: video.id, li: video.loginId, pg: video.parentId ? video.parentId : 0 };
+        var channelId;
+        if(video.parentId){
+          channelId = video.parentId
+        }else{
+          channelId = 'undefined' !== typeof options.channel ? options.channel.id : 0;
+        }
+        asset.analyticsObj = { vd: video.id, li: video.loginId, pg: channelId };
         if (!asset.sources) asset.sources = [{ file: asset.videoId }];
         asset.type = asset.type || 'youtube';
         assets.push(asset);
@@ -79,19 +84,7 @@
       frag.appendChild(btn);
       this.el.appendChild(frag);
     };
-    this.play = function(asset){
-      if (!asset) return console.log('need asset');
-      if ((/Mobi/.test(navigator.userAgent)) ) {
-        this.willCue = true;
-        if ('mp4' === asset.type) this.showPlayBtn(asset.thumbnailUrl);
-      }
-      if (this.willCue) {
-        this.instance.cueVideo(asset)
-      } else {
-       this.instance.loadVideo(asset);
-     }
-    };
-    
+
     var checks = 0, 
         check = function(o, pr){return 'undefined' !== typeof o[pr];};
     (function libsReady() {
@@ -111,8 +104,8 @@
             poster: true,
             techOrder: 'html5,flash',
             analytics: { tvpa: options.tvpa || false },
-            apiBaseUrl: '//app.tvpage.com',
-            swf: '//d2kmhr1caomykv.cloudfront.net/player/assets/tvp/tvp-'+options.version+'-flash.swf',
+            apiBaseUrl: '//api.tvpage.com/v1',
+            swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+options.version+'-flash.swf',
             onReady: function(e, pl){
               that.instance = pl;
               that.el.querySelector('.tvp-progress-bar').style.backgroundColor = options.progresscolor;
@@ -124,20 +117,31 @@
               root.addEventListener('resize', resize);
             
               that.current = 0;
-              that.play(that.assets[that.current]);
-
+              var currentasset = that.assets[that.current];
+              if ((/Mobi/.test(navigator.userAgent)) || 'undefined' === typeof options.autoplay || !options.autoplay) {
+                that.instance.cueVideo(currentasset);
+                if ('mp4' === currentasset.type) that.showPlayBtn(currentasset.thumbnailUrl);
+              }else{
+                that.instance.loadVideo(currentasset);
+              }
               if (root.DEBUG) {
                 console.debug("Interaction ready: " + (performance.now() - root.DEBUG_start) + "ms");
               }
             },
             onStateChange: function(e){
-              if ('tvp:media:videoended' === e){
-                that.current++;
-                if (!that.assets[that.current]) {
-                  that.current = 0;
+              if ('undefined' !== typeof e && 'tvp:media:videoended' === e){
+                var autonext = null;
+                if('undefined' === typeof options.autonext || options.autonext){
+                  autonext = true;
+                  that.current = (that.current == that.assets.length - 1) ? 0 : that.current + 1;
                 }
-                
-                that.play(that.assets[that.current]);
+                var asset = that.assets[that.current];
+                if((/Mobi/.test(navigator.userAgent)) || !autonext){
+                  that.instance.cueVideo(asset);
+                  if ('mp4' === asset.type) that.showPlayBtn(asset.thumbnailUrl);
+                }else{
+                  that.instance.loadVideo(asset);
+                }
               }
             },
             divId: that.el.id,
