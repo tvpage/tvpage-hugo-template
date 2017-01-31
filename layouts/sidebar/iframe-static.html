@@ -33,7 +33,7 @@
   </div>
 </script>
 <script src="/{{.Type}}/vendor/jquery.js"></script>
-<script src='//{{ .Param "extDomain" }}/grid.js'></script>
+<script src="{{.Site.BaseURL}}grid.js"></script>
 <script>;(function(doc){
 
   var settings = {{ $.Scratch.Get "settings" }},
