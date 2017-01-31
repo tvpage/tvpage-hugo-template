@@ -4,7 +4,7 @@
 ;(function(root,doc){
 
   if (root.DEBUG) {
-    console.debug("startTime=" + performance.now());
+    console.debug("startTime = " + performance.now());
   }
 
   var isset = function(o,p){
