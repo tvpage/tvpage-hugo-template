@@ -68,7 +68,7 @@
           {{ range $i, $p := first 6 $page.data }}
             <div class="col-sm-4 col-md-4">
             
-              <a href="{{ .url }}" class="latest-video">
+              <a href="{{$baseUrl}}{{slicestr .url 1}}" class="latest-video">
             
              <div class="latest-video-thumbnail">    
                 <div class="content">

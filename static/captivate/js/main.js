@@ -587,7 +587,6 @@
           }
         },
         updateSiteUrlAndTitle : function(url, title){
-            debugger;
           var newUrl = window.location.protocol +'//' + window.location.host + url;
           if (newUrl && window.history && history.pushState) {
             history.pushState({state: 1}, null, newUrl);
