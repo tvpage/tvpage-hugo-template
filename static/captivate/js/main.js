@@ -1161,20 +1161,20 @@
     }
 
     if (TVSite.isPlayerPage) {
-        // window.TVPlayer = new TVPage.player({
-        //     divId: 'TVPagePlayer',
-        //     swf: '//appcdn.tvpage.com//player/assets/tvp/tvp-1.5.2-flash.swf',
-        //     displayResolution: tvp_Player.playerResolution,
-        //     analytics: { tvpa : true },
-        //     techOrder: tvp_Player.playerTechOrder,
-        //     onReady: tvp_Player.handlePlayerReady,
-        //     onStateChange: tvp_Player.handlePlayerStateChange,
-        //     controls: {
-        //         active: true,
-        //         seekBar: { progressColor: '#779050' },
-        //         floater: { removeControls:['tvplogo'] }
-        //     }
-        // });
+        window.TVPlayer = new TVPage.player({
+            divId: 'TVPagePlayer',
+            swf: '//appcdn.tvpage.com//player/assets/tvp/tvp-1.5.2-flash.swf',
+            displayResolution: tvp_Player.playerResolution,
+            analytics: { tvpa : true },
+            techOrder: tvp_Player.playerTechOrder,
+            onReady: tvp_Player.handlePlayerReady,
+            onStateChange: tvp_Player.handlePlayerStateChange,
+            controls: {
+                active: true,
+                seekBar: { progressColor: '#779050' },
+                floater: { removeControls:['tvplogo'] }
+            }
+        });
         /**
         * Fullscreen poll/check
         */
@@ -1188,7 +1188,7 @@
         * Resize player on window resizing
         */
         $(window).resize(function(){
-            // if (!isFullScreen) { tvp_Player.resizePlayer(); }
+            if (!isFullScreen) { tvp_Player.resizePlayer(); }
             ProductSlider.resizeCheck();
         });
 
