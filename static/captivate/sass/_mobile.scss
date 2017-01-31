@@ -1,4 +1,4 @@
-@media(max-width: $screen-xs-max){
+@media(max-width: $screen-xs){
 	.header-bg,
 	.channel-latest-videos-header, 	
 	.products-title,
@@ -139,21 +139,6 @@
 	.mobile-search-modal{
 		.modal-content{
 			min-height: 667px;
-		}
-		&-header{
-			border-bottom: 1px solid #fff;
-			padding-bottom: 15px;
-			position: relative;
-			input[type="text"]{
-				background-color: transparent;
-				border: 0;
-				margin-left: 10px;
-				font-size: 18px;
-				line-height: 22px;
-				font-weight: 700;
-				color: #fff;
-				width: 75%;
-			}
 		}
 		&-search-btn, &-cancel-btn{
 			background-repeat: no-repeat;

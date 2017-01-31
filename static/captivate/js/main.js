@@ -5,6 +5,7 @@
     var searchDesktopButton = $("#brand-header-search-button");
     var $nullResults = $('#tvp-null-results');
     var	resultsScroller;
+    var resultsScrollerMobile;
     var $searchMobileInput = $("#tvp-mobile-search-input");
     var $searchMobileCancelBtn = $('.mobile-search-modal-cancel-btn');
     var $searchMobileResultHolder = $('#tvp-mobile-search-results');
@@ -91,7 +92,8 @@
         videoTemplate : '<div class="col-sm-4 col-md-4">'
             +'<a href="{url}" class="latest-video">'
                 +'<div class="latest-video-thumbnail">'        
-                    +'<div class="content" style="background-image: url({asset.thumbnailUrl});">'
+                    +'<div class="content" >'
+                        +'<img src="{asset.thumbnailUrl}" alt="">'
                         +'<div class="latest-video-hover">'
                             +'<div class="play-icon"></div>'
                         +'</div>'
@@ -107,7 +109,7 @@
                 return ("undefined" !== typeof val && null !== typeof val && val);
             };
             if (result && redefine(result)) {
-                var url = TVSite.baseUrl + '/' +( (isLoadMore || isFiltering) ? TVSite.channelInfo.titleTextEncoded : String(result.entityTitleParent).replace(/\s/g,"-").replace(/\./g,"") )+ "/" + String(result.titleTextEncoded).replace(/\s/g,"-") + "/" + (result.entityIdParent || TVSite.channelId) + "-" + result.id;
+                var url = TVSite.baseUrl + '/' +( (isLoadMore || (isFiltering || !isFiltering)) ? TVSite.channelInfo.titleTextEncoded : String(result.entityTitleParent).replace(/\s/g,"-").replace(/\./g,"") )+ "/" + String(result.titleTextEncoded).replace(/\s/g,"-") + "/" + (result.entityIdParent || TVSite.channelId) + "-" + result.id;
                 url = url.replace("//", "/");
                 return url;
             }
@@ -151,6 +153,16 @@
                     });
             }
         },
+        handleScrollEndMobile : function() {
+            if (Math.abs(this.maxScrollY) - Math.abs(this.y) < 10) {
+                var val = $searchMobileInput.val();
+                channelDataExtractor.videos(null, liveResultsPage + 1,val)
+                    .done(function(results) {
+                        renderUtil.handleMobileSearchResults(results);
+                        liveResultsPage = liveResultsPage + 1;
+                    });
+            }
+        },
         checkResultsScroller : function() {
             if (!this.resultsScroller) {
                 this.resultsScroller = this.createDesktopScroller('#tvp-desktop-search-results-holder');
@@ -158,6 +170,16 @@
             } else {
                 setTimeout(function() {
                     renderUtil.resultsScroller.refresh();
+                }, 0);
+            }
+        },
+        checkResultsScrollerMobile : function(){
+            if (!this.resultsScrollerMObile) {
+                this.resultsScrollerMObile = this.createDesktopScroller('#tvp-mobile-search-results-holder');
+                this.resultsScrollerMObile.on('scrollEnd', this.handleScrollEndMobile);
+            } else {
+                setTimeout(function() {
+                    renderUtil.resultsScrollerMObile.refresh();
                 }, 0);
             }
         },
@@ -209,7 +231,8 @@
                 }
 
                 $('#tvp-video-container').append(html);
-                eventsBinder.onLoadMore();
+                if(isMobile === false || isIOS === false)
+                    eventsBinder.onLoadMore();
         },
         addFilters : function(filters){
             var getOption = function(opt, selected) {
@@ -241,7 +264,7 @@
         },
         handleMobileSearchResults : function (results) {
             if(results.length){
-                var template = '<li><div class="item"> <a href="{url}" class="latest-video"><div class="latest-video-thumbnail"><div class="content" style="background-image: url({asset.thumbnailUrl})"></div></div><div class="latest-video-title"> {title}</div> </a></div></li>',
+                var template = '<li><div class="item"> <a href="{url}" class="latest-video"><div class="latest-video-thumbnail"><div class="content" style="background-image: url({asset.thumbnailUrl})"></div></div><div class="latest-video-title-mobile"> {title}</div> </a></div></li>',
                     html = '',
                     that = this;
                 _.each(results, function(el, idx){
@@ -249,7 +272,9 @@
                     result['url'] = that.getResultUrl(result);                    
                     html += that.tmpl(template, result);
                 });
-                //$("#tvp-mobile-search-results lu").append(html).show();
+                $("#tvp-result-list").append(html);
+                $('#tvp-mobile-search-results').show();
+                renderUtil.checkResultsScrollerMobile();
             }
         },
         renderProd : function(prods, target, templ) {
@@ -270,8 +295,8 @@
                 if (($(target).length > 0) && !$(target).is(':hidden')) {
                     //registerProductPanel($(target));
                 }
-                $searchMobileResultHolder.find('ul').html(html)
-                    .parent().show();
+                //$searchMobileResultHolder.find('ul').html(html)
+                //    .parent().show();
             }
         }
     };
@@ -406,6 +431,7 @@
     $searchMobileInput.on('keyup', function(e) {
         e.preventDefault();
         var val = $(e.target).val();
+        $nullMobileResults.find('b').html(val);
         if (val) {
             search.mobile(val).done(function (results) {                
                 if(results.length){
@@ -414,7 +440,6 @@
                 }
                 else{
                     $searchMobileResultHolder.hide();
-                    $nullMobileResults.find('b').html(val);
                     $nullMobileResults.show();
                 }
             });
@@ -422,6 +447,7 @@
         else{
             $nullMobileResults.hide();
             $searchMobileResultHolder.hide();
+            $("#tvp-result-list").empty();
         }
     });
     
@@ -429,6 +455,7 @@
         e.preventDefault();
         $searchMobileInput.val('');
         $nullMobileResults.hide();
+        $("#tvp-result-list").empty();
         $searchMobileResultHolder.hide();
     });
 
@@ -1004,7 +1031,8 @@
 	    }]
     });
     
-	eventsBinder.onLoadMore();
+    if(isMobile === false || isIOS === false)
+	   eventsBinder.onLoadMore();
     //all calls will be defined here
     if (TVSite.isChannelPage) {
         Filters.initialize();
