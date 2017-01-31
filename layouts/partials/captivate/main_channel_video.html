@@ -21,15 +21,15 @@
         {{ $videoDetails := index $.Site.Data.videos (printf "x%s" .Params.videoid) }}
         {{ $.Scratch.Add "videoDetails" $videoDetails }}
         <div class="row">
-          <div class="col-sm-10 col-md-10">
+          <div class="col-md-10">
             <h1 id="video-playing-title" class="video-title">{{ .Title }}</h1>              
           </div>
-          <div class="col-sm-2 col-md-2">
+          <div class="col-md-2">
             <h1 class="products-title">Related Products</h1>            
           </div>
         </div>
         <div class="row player-product">
-          <div class="col-sm-10 col-md-10">            
+          <div class="col-sm-10 col-md-10">
             {{ partial (printf "%s/player.html" .Type) .}}
           </div>
           <div class="col-sm-2 col-md-2 player-product-products">
