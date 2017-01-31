@@ -4,7 +4,7 @@
   //The player singleton. We basically create an instance from the tvpage
   //player and expose most utilities, helping to encapsualte what is
   //required for a few players to co-exist.
-  function Player(el, options) {
+  function Player(el, options, startWith) {
     var isset = function(o,p){
       var val = o;
       if (p) val = o[p];
@@ -43,13 +43,16 @@
       while (counter > 0) {
         var video = data[counter-1];
         if (isEmpty(video)) return console.log('empty data');
-        var asset = video.asset;
-        var channelId;
+        
+        var asset = video.asset,
+            channelId;
+
         if(video.parentId){
           channelId = video.parentId
         }else{
           channelId = 'undefined' !== typeof options.channel ? options.channel.id : 0;
         }
+        asset.uniqueId = video.id;
         asset.analyticsObj = { vd: video.id, li: video.loginId, pg: channelId };
         if (!asset.sources) asset.sources = [{ file: asset.videoId }];
         asset.type = asset.type || 'youtube';
@@ -84,12 +87,32 @@
       frag.appendChild(btn);
       this.el.appendChild(frag);
     };
+    this.play = function(asset,ongoing){
+      if (!asset) return console.log('need asset');
+      
+      var willCue = false,
+          isMobile = /Mobi/.test(navigator.userAgent);
+      
+      if ( ongoing && (isMobile || (isset(options.autoend) && !options.autoend)) ) {
+        willCue = true;
+      } else if (isMobile || (isset(options.autoend) && !options.autoend)) {
+        willCue = true;
+      }
+      
+      if (willCue) {
+        this.instance.cueVideo(asset)
+        if ('mp4' === asset.type) {
+          this.showPlayBtn(asset.thumbnailUrl);
+        }
+      } else {
+       this.instance.loadVideo(asset);
+      }
+    };
 
-    var checks = 0, 
-        check = function(o, pr){return 'undefined' !== typeof o[pr];};
+    var checks = 0;
     (function libsReady() {
       setTimeout(function() {
-        if ( !check(root,'TVPage') || !check(root,'_tvpa') ) {
+        if ( !isset(root,'TVPage') || !isset(root,'_tvpa') ) {
           (++checks < 20) ? libsReady() : console.log('limit reached');
         } else {
 
@@ -116,32 +139,29 @@
               resize();
               root.addEventListener('resize', resize);
             
-              that.current = 0;
-              var currentasset = that.assets[that.current];
-              if ((/Mobi/.test(navigator.userAgent)) || 'undefined' === typeof options.autoplay || !options.autoplay) {
-                that.instance.cueVideo(currentasset);
-                if ('mp4' === currentasset.type) that.showPlayBtn(currentasset.thumbnailUrl);
-              }else{
-                that.instance.loadVideo(currentasset);
+              var currentIndex = 0;
+              if (startWith && startWith.length) {
+                for (var i = 0; i < that.assets.length; i++) {
+                  if (that.assets[i].uniqueId === startWith) currentIndex = i;
+                }
               }
+
+              that.current = currentIndex;
+              that.play(that.assets[that.current]);
+              
               if (root.DEBUG) {
                 console.debug("Interaction ready: " + (performance.now() - root.DEBUG_start) + "ms");
               }
             },
             onStateChange: function(e){
-              if ('undefined' !== typeof e && 'tvp:media:videoended' === e){
-                var autonext = null;
-                if('undefined' === typeof options.autonext || options.autonext){
-                  autonext = true;
-                  that.current = (that.current == that.assets.length - 1) ? 0 : that.current + 1;
+              if ('tvp:media:videoended' === e){
+                that.current++;
+                
+                if (!that.assets[that.current]) {
+                  that.current = 0;
                 }
-                var asset = that.assets[that.current];
-                if((/Mobi/.test(navigator.userAgent)) || !autonext){
-                  that.instance.cueVideo(asset);
-                  if ('mp4' === asset.type) that.showPlayBtn(asset.thumbnailUrl);
-                }else{
-                  that.instance.loadVideo(asset);
-                }
+                
+                that.play(that.assets[that.current]);
               }
             },
             divId: that.el.id,
