@@ -110,7 +110,7 @@
             };
             if (result && redefine(result)) {
                 var url = TVSite.baseUrl + '/' +( (isLoadMore || (isFiltering || !isFiltering)) ? TVSite.channelInfo.titleTextEncoded : String(result.entityTitleParent).replace(/\s/g,"-").replace(/\./g,"") )+ "/" + String(result.titleTextEncoded).replace(/\s/g,"-") + "/" + (result.entityIdParent || TVSite.channelId) + "-" + result.id;
-                url = url.replace("//", "/");
+                //url = url.replace("//", "/");
                 return url;
             }
             return;
@@ -587,6 +587,7 @@
           }
         },
         updateSiteUrlAndTitle : function(url, title){
+            debugger;
           var newUrl = window.location.protocol +'//' + window.location.host + url;
           if (newUrl && window.history && history.pushState) {
             history.pushState({state: 1}, null, newUrl);
@@ -617,7 +618,7 @@
             var channelTitle = '';
             if (channel.titleTextEncoded && channel.titleTextEncoded.length > 0 ) {
               channelTitle = TVSite.baseUrl+'/' + channel.titleTextEncoded;
-              channelTitle = channelTitle.replace("//", "/");
+              //channelTitle = channelTitle.replace("//", "/");
             }
             url = channelTitle + videoTitle + videoUrl;
           }
