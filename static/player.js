@@ -160,12 +160,13 @@
             },
             onStateChange: function(e){
               if ('tvp:media:videoended' === e){
-                that.current++;
-                
-                if (!that.assets[that.current]) {
-                  that.current = 0;
+                if(isset(options.autonext) && options.autonext){
+                  that.current++;
+                  if (!that.assets[that.current]) {
+                    that.current = 0;
+                  }
                 }
-                
+
                 that.play(that.assets[that.current], true);
               }
             },
