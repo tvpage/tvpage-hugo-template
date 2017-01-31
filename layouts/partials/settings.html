@@ -4,3 +4,6 @@
 {{ range $i, $param := .Params }}
 {{ $.Scratch.SetInMap "settings" $i . }}
 {{ end }}
+{{ range $i, $param := .Site.Params }}
+{{ $.Scratch.SetInMap "settings" $i . }}
+{{ end }}

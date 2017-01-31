@@ -1,34 +1,75 @@
 {
     "option": [
         {
-            "for": "styles",
             "type": "text",
-            "label": "Google Font",
-            "code": "googlefont",
-            "value": "//fonts.googleapis.com/css?family=Dosis"
+            "label": "Player Version",
+            "code": "version",
+            "value": "1.8.4"
         },
         {
-            "for": "styles",
-            "type": "text",
-            "label": "Font Family",
-            "code": "fontfamily",
-            "value": "Dosis"
-        },
-        {
-            "for": "player",
             "type": "boolean",
-            "label": "Autonext",
-            "code": "autonext",
+            "label": "Transcript",
+            "code": "transcript",
+            "value": false
+        },
+        {
+            "type": "boolean",
+            "label": "Autoplay",
+            "code": "autoplay",
             "value": true
+        },
+        {
+            "type": "boolean",
+            "label": "Analytics",
+            "code": "analytics",
+            "value": false
+        },
+        {
+            "type": "text",
+            "label": "Progress Color",
+            "code": "progresscolor",
+            "value": "#E57211"
         },
         {
             "type": "text",
             "label": "removeControls",
             "code": "removecontrols",
-            "value": ["tvplogo, hd"]
+            "value": [
+                "tvplogo",
+                "hd"
+            ]
         },
         {
-            "for": "general",
+            "type": "text",
+            "label": "Play Button Background",
+            "code": "playbuttonbackground",
+            "value": "white"
+        },
+        {
+            "type": "text",
+            "label": "Play Button Shape",
+            "code": "playbuttonshape",
+            "value": "square"
+        },
+        {
+            "type": "text",
+            "label": "Play Button Border Thickness",
+            "code": "playbuttonborderthickness",
+            "value": "2px"
+        },
+        {
+            "type": "text",
+            "label": "Play Button Background",
+            "code": "playbuttonbackground",
+            "value": "white"
+        },
+        {
+            "type": "text",
+            "label": "Play Button Icon Color",
+            "code": "playbuttoniconcolor",
+            "value": "#e57211"
+        },
+        {
             "type": "text",
             "label": "Items Per Page",
             "code": "itemsperpage",
@@ -36,9 +77,27 @@
         },
         {
             "type": "text",
-            "label": "Player Version",
-            "code": "version",
-            "value": "1.8.4"
+            "label": "Items Per Row",
+            "code": "itemsperrow",
+            "value": "2"
+        },
+        {
+            "type": "text",
+            "label": "Load Button Text",
+            "code": "loadbuttontext",
+            "value": "View More"
+        },
+        {
+            "type": "text",
+            "label": "Load Button Text Color",
+            "code": "loadbuttontextcolor",
+            "value": "white"
+        },
+        {
+            "type": "text",
+            "label": "Load Button Background Color",
+            "code": "loadbuttonbackgroundcolor",
+            "value": "#1F1D26"
         }
     ]
 }
