@@ -1,13 +1,4 @@
-{{ $isPreview := getenv "HUGO_PREVIEW" }}
-{{ $subfolder := .Site.Params.subfolder }}
-{{ $baseUrl := $subfolder}}
-{{ $.Scratch.Set "baseUrl" $baseUrl }}
-{{ $.Scratch.Add "baseUrl" "/" }}
-{{ if $isPreview }}
-  {{ $baseUrl := .Site.BaseURL }}
-  {{ $.Scratch.Set "baseUrl" $baseUrl }}
-{{ end }}
-{{ $baseUrl := $.Scratch.Get "baseUrl" }}
+{{ $baseUrl := .Site.BaseURL }}
 <div class="modal fade mobile-menu-modal" id="mobile-menu-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">      

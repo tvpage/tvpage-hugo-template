@@ -3,16 +3,7 @@
 {{ if $channel }}
   {{ $.Scratch.SetInMap "settings" "channelData" $channel }}
 {{ end }}
-{{ $isPreview := getenv "HUGO_PREVIEW" }}
-{{ $subfolder := .Site.Params.subfolder }}
-{{ $baseUrl := $subfolder}}
-{{ $.Scratch.Set "baseUrl" $baseUrl }}
-{{ $.Scratch.Add "baseUrl" "/" }}
-{{ if $isPreview }}
-  {{ $baseUrl := .Site.BaseURL }}
-  {{ $.Scratch.Set "baseUrl" $baseUrl }}
-{{ end }}
-{{ $baseUrl := $.Scratch.Get "baseUrl" }}
+{{ $baseUrl := .Site.BaseURL }}
 <main id="main-content" class="main-content">
     <div class="container">
         <div class="row">
@@ -21,15 +12,15 @@
         {{ $videoDetails := index $.Site.Data.videos (printf "x%s" .Params.videoid) }}
         {{ $.Scratch.Add "videoDetails" $videoDetails }}
         <div class="row">
-          <div class="col-sm-10 col-md-10">
+          <div class="col-md-10">
             <h1 id="video-playing-title" class="video-title">{{ .Title }}</h1>              
           </div>
-          <div class="col-sm-2 col-md-2">
+          <div class="col-md-2">
             <h1 class="products-title">Related Products</h1>            
           </div>
         </div>
         <div class="row player-product">
-          <div class="col-sm-10 col-md-10">            
+          <div class="col-sm-10 col-md-10">
             {{ partial (printf "%s/player.html" .Type) .}}
           </div>
           <div class="col-sm-2 col-md-2 player-product-products">
@@ -76,12 +67,10 @@
         {{ with $page.data }}
           {{ range $i, $p := first 6 $page.data }}
             <div class="col-sm-4 col-md-4">
-            {{ if $isPreview }}
-              <a href="{{$baseUrl}}{{ .url }}" class="latest-video">
-            {{ else }}
-              <a href='{{ $subfolder }}{{ .url }}' class="latest-video">
-            {{ end }}
-              <div class="latest-video-thumbnail">    
+            
+              <a href="{{ .url }}" class="latest-video">
+            
+             <div class="latest-video-thumbnail">    
                 <div class="content">
                     <img {{with .asset.thumbnailUrl}} src="{{ . }}"{{else}} src='/{{ .Type }}{{ .Param "thumbdefault" }}'{{end}}
                         alt="">
