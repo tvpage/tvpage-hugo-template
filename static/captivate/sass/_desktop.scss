@@ -237,6 +237,7 @@ h1.seo{
 			    background-color: #fff;
 			    border-top-right-radius: 25px;
 			    border-bottom-right-radius: 25px; 
+			    cursor: pointer;
 		}
 		
 	}
@@ -338,7 +339,8 @@ nav.menu-bar{
 	}
 }
 .breadcrumb-navigation {
-  margin-top: 8px;
+  margin-top: 7px;
+  margin-bottom: 2px;
 }
 .breadcrumb{
 	& li{
@@ -387,6 +389,7 @@ nav.menu-bar{
 	}
 	.brand-item{
 		display: block;
+		outline: none;
 		@include aspect-ratio(219, 126);
 		img{
 			width: 100%;
@@ -471,18 +474,31 @@ footer{
 		font-size: 18px;
 		line-height: 22px;
 		color: #1F1D26;
-		margin-bottom: 10px;
 	}
 	.duration{
 		margin-bottom: 30px;
 	}
 	.description{
-		min-height: 154px;
+		max-height: 154px;
+		overflow: hidden;	
 		.mobile.collapse.in{
 			display: none;
 		}
+		&.show-more-active::after{
+			display: block;
+			content: " ";
+			position: absolute;
+			height: 100%;
+			width: 100%;
+			top: 0;
+			background: linear-gradient(180deg, transparent, #FFFFFF 100%);
+		}
+		&.expand-description{
+			max-height: none;
+		}
 	}
 	.show-more{
+		display: none;
 		@extend .btn-more;
 	}
 }
@@ -546,13 +562,16 @@ footer{
 }
 .modal-open .container-fluid, .modal-open{
 	& .menu-bar{
-		-webkit-filter: blur(8px);	
+		-webkit-filter: blur(8px);
+		-ms-filter: blur(5px);
 	}
 	& .header-bg{
-		-webkit-filter: blur(8px);	
+		-webkit-filter: blur(8px);
+		-ms-filter: blur(5px);
 	}
 	& .main-content{
 		-webkit-filter: blur(8px);
+		-ms-filter: blur(5px);
 	} 
     
 }
@@ -1063,6 +1082,29 @@ footer{
 		line-height: 33px;
 		font-weight: 700;
 		letter-spacing: 1px;
+	}
+}
+
+#search-content{
+	margin-bottom: 60px;
+}
+.search-header{
+	&-count, &-query{
+		display: inline-block;
+		padding: 0;
+		margin-top: 60px;
+		margin-bottom: 60px;
+		font-weight: 600;
+		font-size: 32px;
+		line-height: 41px;
+		letter-spacing: 1px
+	}
+	&-count{
+		color: #1F1D26;
+	}
+	&-query{
+		color: #2DA392;
+		margin-left: 20px;
 	}
 }
 

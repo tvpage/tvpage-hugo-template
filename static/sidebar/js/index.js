@@ -46,7 +46,7 @@ define(function(require) {
     page: 0,
     fetchPage: 0,
     haveMoreVideos: true,
-    videoTemplate: '<div data-tvp-video-id="{id}" data-index="{id}" class="tvp-video "><div class="tvp-video-image" style="background-image:url(\'{asset.thumbnailUrl}\')"><div class="tvp-video-overlay"></div><div class="tvp-video-play-button"></div></div><div class="tvp-title">{title}</div></div>',
+    videoTemplate: '<div data-tvp-video-id="{id}" data-index="{id}" class="tvp-video "><div class="tvp-video-image" style="background-image:url(\'{asset.thumbnailUrl}\')"><div class="tvp-video-overlay"></div><div class="tvp-video-play-button"><div class="tvp-play-arrow"></div></div></div><div class="tvp-title">{title}</div></div>',
     initialize: function() {
       this.initializePlayer();
       this.videoClick();
@@ -539,7 +539,7 @@ define(function(require) {
           priceHtml += '</div>';
           if (that.isMobile()) {
             that.refreshMobileProductScroller();
-            s += '<li><div id="p-' + i + '" class="tvp-product" data-video-id="' + products[i].entityIdParent + '" data-id="' + products[i].id + '"><div class="tvp-product-img" style="background-image:url(' + array.imageUrl + ')"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="' + products[i].title + '" /></div><div><h4 class="tvp-product-title">' + products[i].title + '</h4>' + priceHtml + '</div><a class="tvp-call-to-action" href="' + array.linkUrl + '" target="_blank" data-video-id="' + products[i].entityIdParent + '" data-id="' + products[i].id + '">' + 'VIEW DETAILS' + '<span class="tvp-material-icon"></span>' + '</a></div></li>';
+            s += '<li><div id="p-' + i + '" class="tvp-product" data-video-id="' + products[i].entityIdParent + '" data-id="' + products[i].id + '"><div class="tvp-product-img" style="background-image:url(' + array.imageUrl + ')"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="' + products[i].title + '" /></div><div><h4 class="tvp-product-title">' + products[i].title + '</h4>' + priceHtml + '</div><a class="tvp-call-to-action" href="' + array.linkUrl + '" target="_blank" data-video-id="' + products[i].entityIdParent + '" data-id="' + products[i].id + '">' + 'VIEW DETAILS' + '</a></div></li>';
           }else {
             s += '<li><a class="tvp-call-to-action" href="' + array.linkUrl + '" target="_blank"><div id="p-' + i + '" class="tvp-product" data-video-id="' + products[i].entityIdParent + '" data-id="' + products[i].id + '"><div class="tvp-product-img" style="background-image:url(' + array.imageUrl + ')"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="' + products[i].title + '" /></div></div></a></li>';
           }
@@ -568,7 +568,7 @@ define(function(require) {
           }
         }
         priceHtml += '</div>';
-        s += '<div id="ppu-' + i + '" class="tvp-pop-up"><a class="tvp-img-link" href="' + array.linkUrl + '" target="_blank" data-video-id="' + products[i].entityIdParent + '" data-id="' + products[i].id + '"><img class="img-responsive" src="' + array.imageUrl + '" alt="' + products[i].title + '"><h4 class="tvp-product-title">' + products[i].title + '</h4>' + priceHtml + '</a>' + '<a class="tvp-call-to-action" href="' + array.linkUrl + '" target="_blank" data-video-id="' + products[i].entityIdParent + '" data-id="' + products[i].id + '">' + 'VIEW DETAILS' + '<span class="tvp-material-icon"></span>' + '</a></div>';
+        s += '<div id="ppu-' + i + '" class="tvp-pop-up"><a class="tvp-img-link" href="' + array.linkUrl + '" target="_blank" data-video-id="' + products[i].entityIdParent + '" data-id="' + products[i].id + '"><img class="img-responsive" src="' + array.imageUrl + '" alt="' + products[i].title + '"><h4 class="tvp-product-title">' + products[i].title + '</h4>' + priceHtml + '</a>' + '<a class="tvp-call-to-action" href="' + array.linkUrl + '" target="_blank" data-video-id="' + products[i].entityIdParent + '" data-id="' + products[i].id + '">' + 'VIEW DETAILS' + '</a></div>';
       }
       var arrows = '<div class="tvp-pop-up-before"></div><div class="tvp-pop-up-after"></div>';
       $('#tvp-product-pop-ups')

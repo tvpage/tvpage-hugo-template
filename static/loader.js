@@ -3,142 +3,188 @@
 //to load the iframe scripts asynchronouse, this hides the browser spinner.
 ;(function(root,doc){
 
-  //PROFILE & DEBUG:
-  root.startTime = performance.now();
-  root.interactionReadyTime = 0;
-  root.DEBUG = 1;
+  if (root.DEBUG) {
+    root.DEBUG_start = performance.now();
+    console.debug("Start time: " + root.DEBUG_start + "ms");
+  }
 
-  var spots = doc.querySelectorAll('.tvp-sidebar, .tvp-solo'),
-      spotsCount = spots.length,
-      pre = 'tvp-iframe',
-      redefine = function(o,p){return 'undefined' !== typeof o[p]},
-      getIfr = function(){
-        var i = doc.createElement('iframe');
-        i.setAttribute('allowfullscreen', '');
-        i.classList.add(pre);
-        i.setAttribute('frameborder', '0');
-        return i;
+  var isset = function(o,p){
+        return 'undefined' !== typeof o[p]
+      },
+      appendToHead = function(el){
+        (doc.getElementsByTagName('head')[0]||doc.getElementsByTagName('body')[0]).appendChild(el);
+      },
+      debounce = function(func,wait,immediate) {
+        var timeout;  
+        return function() {
+          var context = this, args = arguments;
+          var later = function() {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+          };
+          var callNow = immediate && !timeout;
+          clearTimeout(timeout);
+          timeout = setTimeout(later, wait);
+          if (callNow) func.apply(context, args);
+        };
       };
 
-function Widget(spot) {
-  var widget = function(){};
+  function Widget(spot) {
+    var widget = function(){};
 
-  //Define the data method.
-  var dataMethod = 'static';
-  var id = spot.getAttribute('data-id');
-  if (redefine(root,'__TVPage__') && redefine(__TVPage__,'config') && redefine(__TVPage__.config,id) &&
-    redefine(__TVPage__.config[id],'channel') && redefine(__TVPage__.config[id].channel,'id')) {
-    dataMethod = 'dynamic';
-  }
-  
-  var domain = spot.getAttribute('data-domain'),
-      type = id.split('-').shift();
+    var libsExt = root.DEBUG ? '.js' : '.min.js',
+        dataMethod = 'static',
+        id = spot.getAttribute('data-id');
 
-  widget.run = function() {
-    spot.insertAdjacentHTML('beforebegin', '<div id="' + id + '-holder" class="' + pre + '-holder"></div>');
-    var holder = doc.getElementById(id + '-holder'),
-        embedMethod = spot.getAttribute('data-embedmethod') || 'iframe';
+    if (isset(root,'__TVPage__') && isset(__TVPage__,'config') && isset(__TVPage__.config,id) &&
+      isset(__TVPage__.config[id],'channel') && isset(__TVPage__.config[id].channel,'id')) {
+      dataMethod = 'dynamic';
+    }
     
-    if (embedMethod === 'iframe') {
-      var lazy = true, iframe = getIfr();
+    var domain = spot.getAttribute('data-domain'),
+        type = id.split('-').shift(),
+        cssLib = domain+'/'+type+'/styles.css';
 
-      holder.appendChild(iframe);
+    widget.run = function() {
+      spot.insertAdjacentHTML('beforebegin', '<div id="' + id + '-holder" class="' + pre + '-holder"></div>');
       
-      //DEBUG iframe append time
-      root.iframeAppendTime = performance.now();
+      var holder = doc.getElementById(id + '-holder'),
+          embedMethod = spot.getAttribute('data-embedmethod') || 'iframe';
+      
+      if (embedMethod === 'iframe') {
+        var lazy = true;
+        var iframe = doc.createElement('iframe');
+        iframe.setAttribute('allowfullscreen', '');
+        iframe.classList.add('tvp-iframe');
+        iframe.setAttribute('frameborder', '0');
+        iframe.setAttribute('scrolling', 'no');
+        holder.classList.add(type);
+        holder.appendChild(iframe);
+        
+        iframe.onload = function(){
+          var ifrGlobal = this.contentWindow;
+          
+          ifrGlobal.DEBUG = root.DEBUG;
+          ifrGlobal.DEBUG_start = root.DEBUG_start;
 
-      //Reference for the performance boost technique
-      //http://www.aaronpeters.nl/blog/iframe-loading-techniques-performance?%3E
-      if (lazy && 'dynamic' === dataMethod) {
-        var html = '<body class="' + dataMethod + ' is-iframe" data-domain="'+domain+'" data-id="' + id + '" data-src="' + (spot.href || '') + '" onload="'+
-        'var d = document, head = d.getElementsByTagName(\'head\')[0],'+
-        'injScr = function(sr){ var s=d.createElement(\'script\');s.src=sr;head.appendChild(s);};';
+          if ('sidebar' === type) {
+            var content = this.contentWindow.document.body.firstChild,
+              resize = function() { holder.style.height = content.offsetHeight + 'px';};
+              
+            resize();
+            root.addEventListener('resize', debounce(resize,50));
+          }
+        };
+        
+        //Because iframes aare loaded first before the host page loading, we load them empties, making this load time
+        //reduced as its minimum, we start then creating the content of the iframe dynamically.
+        //Reference: http://www.aaronpeters.nl/blog/iframe-loading-techniques-performance?%3E
+        if (lazy && 'dynamic' === dataMethod) {
+          var html = '<body class="' + dataMethod + ' is-iframe" data-domain="'+domain+'" data-id="' + id + '" onload="'+
+          'var d = document, head = d.getElementsByTagName(\'head\')[0],'+
+          'injScr = function(sr){ var s=d.createElement(\'script\');s.src=sr;head.appendChild(s);};';
 
-        var libs = {tvpsolo: '\''+domain+'\/playerpack'+(root.DEBUG ? '' : '.min')+'.js\'',tvppack: '\''+domain+'\/' + type + '\/lib'+(root.DEBUG ? '' : '.min')+'.js\''},
+          var libs = {
+                tvpa: '\'\/\/a.tvpage.com\/tvpa.min.js\'',
+                tvpp: '\'\/\/appcdn.tvpage.com\/player\/assets\/tvp/tvp-1.8.4-min.js\'',
+                tvpsolo: '\''+domain+'\/' + type + '\/lib'+libsExt+'\'',
+                player: '\''+domain+'\/player'+libsExt+'\''
+              },
+              libsCounter = Object.keys(libs).length;
+
+          while (libsCounter > 0) {
+            var key = Object.keys(libs)[libsCounter-1];
+            html += 'injScr(' + libs[key] + ');';
+            libsCounter--;
+          }
+
+          html += 'var css=d.createElement(\'link\');css.rel=\'stylesheet\';css.type=\'text/css\';';
+          html += 'css.href='+('\''+domain+'\/' + type)+'\/styles.css\';head.appendChild(css);';
+
+          if (root.DEBUG) {
+            html += 'window.DEBUG=1;window.DEBUG_start='+root.DEBUG_start+';';
+          }
+
+          html += '">';
+          
+          var iframeDoc = iframe.contentWindow.document;
+          iframeDoc.open().write(html);
+          iframeDoc.close();
+
+        } else {
+          function setSrc() {
+            var src = spot.href;
+            (-1 == navigator.userAgent.indexOf("MSIE")) ? iframe.src = src : iframe.location = src;
+          }
+          setTimeout(setSrc,5);
+        }
+      } else {
+
+        holder.classList.add('inline');
+
+        __TVPage__.inline = __TVPage__.inline || [];
+        __TVPage__.inline.push(id);
+        if (!__TVPage__.inline.length) return;
+
+        //Appending libs to be used for inline.
+        var libsFrag = doc.createDocumentFragment(),
+            libs = {
+              tvpa: '//a.tvpage.com/tvpa.min.js',
+              tvpp: '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.4-min.js',
+              tvpsolo: domain + '/'+ type + '/lib' + libsExt,
+              player: domain + '/player' + libsExt
+            },
             libsCounter = Object.keys(libs).length;
+
         while (libsCounter > 0) {
           var key = Object.keys(libs)[libsCounter-1];
-          html += 'injScr(' + libs[key] + ');';
+          if (doc.getElementById(key)) break;
+          var scr = doc.createElement('script');
+          scr.id = key;
+          scr.async = true;
+          scr.src = libs[key].replace(/'/g,'');
+          libsFrag.appendChild(scr);
           libsCounter--;
         }
 
-        html += 'var css=d.createElement(\'link\');css.rel=\'stylesheet\';css.type=\'text/css\';';
-        html += 'css.href='+('\''+domain+'\/' + type)+'\/styles.css\';head.appendChild(css);'
-        html += '">';
-
-        var iframeDoc = iframe.contentWindow.document;
-        iframeDoc.open().write(html);
-        iframeDoc.close();
-
-      } else {
-        function setSrc() {
-          var s = spot.href,
-              ifr = holder.firstChild;
-          (-1 == navigator.userAgent.indexOf("MSIE")) ? ifr.src = s : ifr.location = s;
-        }
-        setTimeout(setSrc,0);
+        var link = doc.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = cssLib;
+        libsFrag.appendChild(link);
+        appendToHead(libsFrag);
       }
-    } else {
-      __TVPage__.inline = __TVPage__.inline || [];
-      __TVPage__.inline.push(id);
-      __TVPage__.inlineCount = __TVPage__.inline.length || 0;
-      if (! __TVPage__.inlineCount) return;
-
-      //Adding the libs to be used in the iframe.
-      var libs = {tvpsolo: domain + '/playerpack'+(root.DEBUG ? '' : '.min')+'.js',tvppack: domain + '/'+type +'/lib'+(root.DEBUG ? '' : '.min')+'.js'},
-          libsFrag = doc.createDocumentFragment(),
-          libsCounter = Object.keys(libs).length;
-
-      while (libsCounter > 0) {
-        var key = Object.keys(libs)[libsCounter-1];
-        if (doc.getElementById(key)) break;
-        var scr = doc.createElement('script');
-        scr.id = 'tvpa';
-        scr.type = 'text/javascript';
-        scr.async = true;
-        scr.src = libs[key].replace(/'/g,'');
-        libsFrag.appendChild(scr);
-        libsCounter--;
-      }
-      ( doc.getElementsByTagName('head')[0]||doc.getElementsByTagName('body')[0] ).appendChild(libsFrag);
-
-      //DEBUG iframe append time
-      root.inlineAppendTime = performance.now();
     }
+
+    widget.run();
+
+    return widget;
   }
 
-  widget.run();
+//Adding the css for host page
+var style = doc.createElement('style'),
+    pre = 'tvp-iframe',
+    holderClass = '.' + pre + '-holder';
 
-  return widget;
-}
+style.innerHTML = holderClass + '{height:0;position:relative;transition:height ease-out 0.0001s;}'+
+holderClass + '.solo{padding-top:56.25%;}'+
+holderClass + '.inline{padding-top:0;}'+
+'.' + pre + '{top:0;left:0;width:100%;height:100%;position:absolute;}';
+appendToHead(style);
 
-//Sdd the css for host page
-var style = doc.createElement('style');
-style.innerHTML = '.' + pre + '-holder{height:0;position:relative;padding-top:56.26%;background-color:black;}\
-.' + pre + '{top:0;left:0;width:100%;height:100%;position:absolute;}';
-doc.getElementsByTagName('head')[0].appendChild(style);
-console.timeStamp("CSS for host page appended");
+//ENTRY POINT
+//Load each widget spots from the page.
+var spots = doc.querySelectorAll('.tvp-sidebar, .tvp-solo'),
+    spotsCount = spots.length;
 
-//We process each of the widget spots from the page...
-var start = function(){
+function load(){
   while (spotsCount > 0) {
     var spot = spots[spotsCount - 1]
-    
     Widget(spots[spotsCount - 1]);
-
     spot.remove();
     spotsCount--;
   }
 };
 
-start();
-
-if (root.iframeAppendTime) {
-  console.debug("Iframe append time: " + (iframeAppendTime - startTime) + " ms");
-}
-
-if (root.inlineAppendTime) {
-  console.debug("Inline append time: " + (inlineAppendTime - startTime) + " ms");
-}
+root.addEventListener('load', load);
 
 }(window,document));
