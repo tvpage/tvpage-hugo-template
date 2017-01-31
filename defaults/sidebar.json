@@ -17,13 +17,6 @@
         {
             "for": "player",
             "type": "boolean",
-            "label": "Autoplay",
-            "code": "autoplay",
-            "value": true
-        },
-        {
-            "for": "player",
-            "type": "boolean",
             "label": "Autonext",
             "code": "autonext",
             "value": true
