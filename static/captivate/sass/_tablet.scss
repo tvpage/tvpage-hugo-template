@@ -1,4 +1,4 @@
-@media(max-width: $screen-sm-max){
+@media(max-width: $screen-md-max){
 	.header-bg,
 	.channel-latest-videos-header, 	
 	.products-title,
@@ -9,12 +9,6 @@
 	}
 	.navbar-toggle {
     	display: block;
-	}
-	footer{
-		& .copyright {
-			//font-size: 16px;
-			//padding: 0;			
-		}
 	}
 	nav.menu-bar{
 		border : none;
@@ -151,6 +145,7 @@
 				font-weight: 700;
 				color: #fff;
 				width: 75%;
+				outline: none;
 			}
 		}
 		&-search-btn, &-cancel-btn{
@@ -197,8 +192,9 @@
 		&-title{
 			padding: 0;
 			max-height: 40px;
-			height: auto;
-			margin: 10px 0 15px;
+			margin: 10px 0 10px;
+			left: 50%;
+			top: 50%;
 		}
 	}
 	.slider{		
@@ -403,6 +399,22 @@
 		}
 	}
 	.tvp-mobile-search-results{
+		&-holder{
+			
+			position: absolute;
+			z-index: 999999;
+			top: 65px;
+			bottom: 48px;
+			//left: 0;
+			width: 87%;
+			height: 290px;
+			background: transparent;
+			overflow: hidden;
+			border: 1px solid #C8C8C8;
+			border-bottom-left-radius: 8px;
+			border-bottom-right-radius: 8px;
+			border : 0;
+		},
 		& ul{
 			list-style: none;
 			padding: 0;
@@ -432,6 +444,20 @@
 			min-height: 42px;
 			max-height: 42px;
 			line-height: 21px;
+		}
+
+		.latest-video-title-mobile{
+			display: inline-block;
+			margin: 0 0 0 89px;
+			color: #fff;
+			min-height: 42px;
+			max-height: 42px;
+			line-height: 21px;
+			height: 22px;
+			font-family: Dosis;
+			font-size: 18px;
+			line-height: 22px;
+			color: #FFFFFF;
 		}		
 	}
 }

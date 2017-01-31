@@ -12,16 +12,7 @@
   {{ end }}
 {{end}}
 {{ $channelVideosQty := $.Scratch.Get "total" }}
-{{ $isPreview := getenv "HUGO_PREVIEW" }}
-{{ $subfolder := .Site.Params.subfolder }}
-{{ $baseUrl := $subfolder}}
-{{ $.Scratch.Set "baseUrl" $baseUrl }}
-{{ $.Scratch.Add "baseUrl" "/" }}
-{{ if $isPreview }}
-  {{ $baseUrl := .Site.BaseURL }}
-  {{ $.Scratch.Set "baseUrl" $baseUrl }}
-{{ end }}
-{{ $baseUrl := $.Scratch.Get "baseUrl" }}
+{{ $baseUrl := .Site.BaseURL }}
 <main id="main-content" class="main-content">
     <section class="channel-page-banner">      
       <div class="channel-page-banner-desktop">
@@ -77,11 +68,7 @@
           {{ range $i, $p := first 6 $page.data }}
 
             <div class="col-sm-4 col-md-4">
-          {{ if $isPreview }}
-            <a href="{{$baseUrl}}{{ .url }}" class="latest-video">
-          {{ else }}
-            <a href='{{ $subfolder }}{{ .url }}' class="latest-video">
-          {{ end }}
+            <a href="{{ .url }}" class="latest-video">
             <div class="latest-video-thumbnail">    
               <div class="content">
                   <img {{with .asset.thumbnailUrl}} src="{{ . }}"{{else}} src='/{{ .Type }}{{ .Param "thumbdefault" }}'{{end}}
