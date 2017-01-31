@@ -155,7 +155,7 @@
               that.play(that.assets[that.current]);
               
               if (root.DEBUG) {
-                console.debug("Interaction ready: " + (performance.now() - root.DEBUG_start) + "ms");
+                console.debug("Interaction ready at: " + performance.now() + "ms");
               }
             },
             onStateChange: function(e){
