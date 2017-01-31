@@ -153,7 +153,7 @@
 
               that.current = currentIndex;
               that.play(that.assets[that.current]);
-              
+
               if (root.DEBUG) {
                 console.debug("Interaction ready at: " + performance.now() + "ms");
               }
