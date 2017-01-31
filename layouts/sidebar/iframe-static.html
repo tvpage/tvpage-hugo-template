@@ -4,7 +4,7 @@
   <header class="tvp-sidebar-header">
     <h2>Recommended Videos</h2>  
   </header>
-  <div class="tvp-clearfix">
+  <div id="tvp-video-container">
   {{ range $i, $p := first ($.Scratch.Get "settings").itemsperpage (index $.Site.Data.channelVideos (printf "x%s_page_1" ($.Scratch.Get "settings").channelid) "data") }}
   {{ $.Scratch.SetInMap "videos" .id (index $.Site.Data.videos (printf "x%s" .id )) }}
   <div id="tvp-video-{{ .id }}" class="tvp-video">
@@ -27,11 +27,9 @@
 <script id="videoTemplate" type="text/template">
   <div id="tvp-video-{id}" class="tvp-video">
     <div class="tvp-video-image" style="background-image:url({asset.thumbnailUrl})">
-      <div class="tvp-play-button-outer">
-        <div class="tvp-play-button"></div>
+      <svg class="tvp-play" viewBox="0 0 200 200" alt="Play video"><polygon points="70, 55 70, 145 145, 100" fill="#e57211"></polygon></svg>
     </div>
-    </div>
-    <div class="tvp-video-title">{title}</div>
+    <p class="tvp-video-title">{title}</p>
   </div>
 </script>
 <script src="/{{.Type}}/vendor/jquery.js"></script>
@@ -124,7 +122,7 @@ $btn.click(function(e) {
         rowsC--;
       }
 
-      $el.find('.tvp-container').eq(0).html(pageFrag);
+      $el.find('#tvp-video-container').eq(0).html(pageFrag);
     }
 
     //Todo check whats the best solution here.
