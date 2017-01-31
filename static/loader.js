@@ -52,21 +52,16 @@
           embedMethod = spot.getAttribute('data-embedmethod') || 'iframe';
       
       if (embedMethod === 'iframe') {
-        var lazy = true;
         var iframe = doc.createElement('iframe');
         iframe.setAttribute('allowfullscreen', '');
         iframe.classList.add('tvp-iframe');
         iframe.setAttribute('frameborder', '0');
         iframe.setAttribute('scrolling', 'no');
+        
         holder.classList.add(type);
         holder.appendChild(iframe);
         
         iframe.onload = function(){
-          var ifrGlobal = this.contentWindow;
-          
-          ifrGlobal.DEBUG = root.DEBUG;
-          ifrGlobal.DEBUG_start = root.DEBUG_start;
-
           if ('sidebar' === type) {
             var content = this.contentWindow.document.body.firstChild,
               resize = function() { holder.style.height = content.offsetHeight + 'px';};
@@ -79,7 +74,7 @@
         //Because iframes aare loaded first before the host page loading, we load them empties, making this load time
         //reduced as its minimum, we start then creating the content of the iframe dynamically.
         //Reference: http://www.aaronpeters.nl/blog/iframe-loading-techniques-performance?%3E
-        if (lazy && 'dynamic' === dataMethod) {
+        if ('dynamic' === dataMethod) {
           var html = '<body class="' + dataMethod + ' is-iframe" data-domain="'+domain+'" data-id="' + id + '" onload="'+
           'var d = document, head = d.getElementsByTagName(\'head\')[0],'+
           'injScr = function(sr){ var s=d.createElement(\'script\');s.src=sr;head.appendChild(s);};';
