@@ -4,8 +4,7 @@
 ;(function(root,doc){
 
   if (root.DEBUG) {
-    root.DEBUG_start = performance.now();
-    console.debug("Start time: " + root.DEBUG_start + "ms");
+    console.debug("startTime = " + performance.now());
   }
 
   var isset = function(o,p){
@@ -62,6 +61,10 @@
         holder.appendChild(iframe);
         
         iframe.onload = function(){
+          if (root.DEBUG) {
+            this.contentWindow['DEBUG'] = 1;
+          }
+
           if ('sidebar' === type) {
             var content = this.contentWindow.document.body.firstChild,
               resize = function() { holder.style.height = content.offsetHeight + 'px';};
@@ -97,7 +100,7 @@
           html += 'css.href='+('\''+domain+'\/' + type)+'\/styles.css\';head.appendChild(css);';
 
           if (root.DEBUG) {
-            html += 'window.DEBUG=1;window.DEBUG_start='+root.DEBUG_start+';';
+            html += 'window.DEBUG=1;';
           }
 
           html += '">';

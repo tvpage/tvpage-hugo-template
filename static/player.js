@@ -88,15 +88,20 @@
       this.el.appendChild(frag);
     };
     this.play = function(asset,ongoing){
+
       if (!asset) return console.log('need asset');
       
       var willCue = false,
           isMobile = /Mobi/.test(navigator.userAgent);
       
-      if ( ongoing && (isMobile || (isset(options.autoend) && !options.autoend)) ) {
-        willCue = true;
-      } else if (isMobile || (isset(options.autoend) && !options.autoend)) {
-        willCue = true;
+      if (ongoing) {
+        if (isMobile || (isset(options.autonext) && !options.autonext)) {
+          willCue = true;
+        }
+      } else {
+        if (isMobile || (isset(options.autoplay) && !options.autoplay)) {
+          willCue = true;
+        }
       }
       
       if (willCue) {
@@ -148,20 +153,21 @@
 
               that.current = currentIndex;
               that.play(that.assets[that.current]);
-              
+
               if (root.DEBUG) {
-                console.debug("Interaction ready: " + (performance.now() - root.DEBUG_start) + "ms");
+                console.debug("endTime = " + performance.now());
               }
             },
             onStateChange: function(e){
               if ('tvp:media:videoended' === e){
-                that.current++;
-                
-                if (!that.assets[that.current]) {
-                  that.current = 0;
+                if(isset(options.autonext) && options.autonext){
+                  that.current++;
+                  if (!that.assets[that.current]) {
+                    that.current = 0;
+                  }
                 }
-                
-                that.play(that.assets[that.current]);
+
+                that.play(that.assets[that.current], true);
               }
             },
             divId: that.el.id,
