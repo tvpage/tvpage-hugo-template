@@ -42,8 +42,7 @@
 <script>(function(doc,parentDoc){
  
  var settings = {{ $.Scratch.Get "settings" }};
- console.log(settings);
-
+ 
  var tmpl = function(template, data) {
     if (data.title.length > 42){
       var shortTitle = jQuery.trim(data.title).substring(0, 42).split(" ").slice(0, -1).join(" ")+" ...";
@@ -135,7 +134,7 @@
       }
       $('.tvp-pop-up-before,.tvp-pop-up-after').show();
     };
-    
+
   window.addEventListener('message',function(e){
     if (!e || !isset(e,'origin') || 'http://localhost:1313' !== e.origin || !isset(e,'data') || !isset(e.data,'videos')) return;
 
