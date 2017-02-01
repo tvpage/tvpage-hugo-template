@@ -1259,7 +1259,7 @@
                     for (var i = 0; i < kv.length; i++) { params.push(kv[i]); }
                     for (var i = 0; i < params.length; i++) {
                         var param = params[i].split('=');
-                        o[param[0]] = param[1];
+                        o[param[0]] = decodeURIComponent(param[1]);
                     }
                    
                 }
