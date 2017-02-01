@@ -154,6 +154,7 @@
               }, 180);
               resize();
               root.addEventListener('resize', resize);
+              root.addEventListener('orientationchange', resize);
             
               var currentIndex = 0;
               if (startWith && startWith.length) {
