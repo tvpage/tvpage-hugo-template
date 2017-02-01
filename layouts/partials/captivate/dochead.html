@@ -1,25 +1,25 @@
-{{ range $i, $def := (getJSON (printf "themes/tvpage/defaults/%s.json" .Type)).option }}
-{{ $.Scratch.SetInMap "settings" .code .value }}
+{{- range $i, $def := (getJSON (printf "themes/tvpage/defaults/%s.json" .Type)).option -}}
+  {{- $.Scratch.SetInMap "settings" .code .value -}}
 {{ end }}
-{{ range $i, $param := .Params }}
-{{ $.Scratch.SetInMap "settings" $i . }}
+{{- range $i, $param := .Params -}}
+  {{- $.Scratch.SetInMap "settings" $i . -}}
 {{ end }}
-{{ if isset .Site.Params "tvppages" }}
-{{ range (.Param "tvppages") }}
-{{ $.Scratch.SetInMap "settings" .code .value }}
+{{- if isset .Site.Params "tvppages" -}}
+  {{- range (.Param "tvppages") -}}
+    {{- $.Scratch.SetInMap "settings" .code .value -}}
+  {{ end }}
 {{ end }}
-{{ end }}
-{{ $baseUrl := .Site.BaseURL }}
+{{- $baseUrl := .Site.BaseURL -}}
 <!DOCTYPE html>
 <html>
   <head>
-    {{ partial (printf "%s/single-meta.html" .Type) . }}
+    {{- partial (printf "%s/single-meta.html" .Type) . -}}
     <link href='{{ ($.Scratch.Get "settings").googlefont }}' rel="stylesheet">
-    <title>{{ block "title" . }}{{ end }}{{ .Site.Title }}</title>
-    {{ block "meta" . }}{{ end }}
+    <title>{{- block "title" . -}}{{ end }}{{ .Site.Title }}</title>
+    {{- block "meta" . -}}{{ end }}
     <link rel="apple-touch-icon" href="{{$baseUrl}}{{ .Type }}/images/logo.png">
     <link rel="stylesheet" href="{{$baseUrl}}{{ .Type }}/css/styles.css">
     <style>{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css.html" .Type ) .)) | safeCSS }}</style>
   </head>
   <body>
-  <h1 class="seo">{{ block "title" . }}{{ end }}{{ .Site.Title }}</h1>
+  <h1 class="seo">{{- block "title" . -}}{{ end }}{{- .Site.Title -}}</h1>

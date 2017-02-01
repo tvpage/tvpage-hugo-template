@@ -1,4 +1,4 @@
-{{ range .Data.Pages }}
+{{- range .Data.Pages -}}
 	{{ if eq .Layout "home" }}
 	{{ partial (printf "%s/dochead.html" .Type) . }}
 	{{ partial (printf "%s/header.html" .Type) . }}
@@ -6,4 +6,4 @@
 	{{ partial (printf "%s/scripts.html" .Type) . }}
 	{{ partial (printf "%s/footer.html" .Type) . }}
 	{{ end }}
-{{ end }}
+{{- end -}}
