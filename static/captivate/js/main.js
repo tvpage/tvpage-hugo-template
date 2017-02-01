@@ -130,8 +130,9 @@
             }
         },
         createDesktopScroller : function(id) {
+            var scroller=null;
             if (id && $(id).children().length) {
-                return new IScroll(id, {
+                scroller = new IScroll(id, {
                     interactiveScrollbars: true,
                     scrollX: false,
                     click: true,
@@ -139,6 +140,7 @@
                     scrollbars: true
                 });
             }
+            return scroller;
         },
         handleScrollEnd : function() {
             if (Math.abs(this.maxScrollY) - Math.abs(this.y) < 10) {
@@ -776,14 +778,15 @@
                     if (price.indexOf('.') !== -1) {
                         var decimals = price.split('.').pop();
                         if (decimals.length > 2 && decimals.indexOf('00') !== -1) {
-                            return price.slice(0, -2);
+                            price = price.slice(0, -2);
                         } else if (decimals.length === 1) {
-                            return price + '0';
+                            price = price + '0';
                         }
                     } else {
-                        return price + '.00';
+                        price = price + '.00';
                     }
                 }
+                return price;
             },
 
             renderProducts: function() {
@@ -1039,7 +1042,7 @@
         },
         sendAnalytics: function(data, type) {
             if ('object' == typeof data && type) {
-                return _tvpa.push(['track', type, $.extend(data, {
+                _tvpa.push(['track', type, $.extend(data, {
                     li: TVSite.loginId,
                     pg: TVSite.channelId
                 })]);
@@ -1071,9 +1074,7 @@
             var $detailsRow = $(this.container).find('.video-details-row.description');
             var descHeight = $detailsRow.find('.desktop').height();
             var containerHeight = $detailsRow.height();
-            
-            var x = $detailsRow.css('max-height');
-            
+            //var x = $detailsRow.css('max-height');
             if(containerHeight < descHeight){
                 $detailsRow.addClass('show-more-active');
                 $(this.container).find('.show-more').show();
@@ -1251,15 +1252,17 @@
     if (TVSite.isSearchPage) {        
         var $searchHeader = $('.search-header');
         var getUrlParams = function(){
+                var o = {};
                 if (window.location && 'search' in location) {
-                    var o = {}, kv = location.search.substr(1).split('&'), params = [];
+                    var kv = location.search.substr(1).split('&'), params = [];
                     for (var i = 0; i < kv.length; i++) { params.push(kv[i]); }
                     for (var i = 0; i < params.length; i++) {
                         var param = params[i].split('=');
                         o[param[0]] = param[1];
                     }
-                    return o;
+                   
                 }
+                return o;
             };
         var renderResult = function (res) {
                 if (res.length) {
