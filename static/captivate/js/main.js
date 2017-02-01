@@ -5,7 +5,6 @@
     var searchDesktopButton = $("#brand-header-search-button");
     var $nullResults = $('#tvp-null-results');
     var	resultsScroller;
-    var resultsScrollerMobile;
     var $searchMobileInput = $("#tvp-mobile-search-input");
     var $searchMobileCancelBtn = $('.mobile-search-modal-cancel-btn');
     var $searchMobileResultHolder = $('#tvp-mobile-search-results');
@@ -27,7 +26,6 @@
     var playerResolution = isMobile ? '360p' : '480p';
     var isFlashRequired = ( (IE(9) || IE(10)) || (isMac && isFireFox)  );
     var playerTechOrder = isFlashRequired ? 'flash,html5' : 'html5,flash';
-    var playbackList = [];
     var formatDate = function(unixTimestamp) {
         var months = ['January','February','March','April','May','June','July','August','September','October','November','December'],
         	d = (new Date(Number(unixTimestamp) * 1000)),
@@ -108,12 +106,12 @@
             var redefine = function(val) {
                 return ("undefined" !== typeof val && null !== typeof val && val);
             };
+            var url = "";
             if (result && redefine(result)) {
-                var url = TVSite.baseUrl + '/' +( (isLoadMore || (isFiltering || !isFiltering)) ? TVSite.channelInfo.titleTextEncoded : String(result.entityTitleParent).replace(/\s/g,"-").replace(/\./g,"") )+ "/" + String(result.titleTextEncoded).replace(/\s/g,"-") + "/" + (result.entityIdParent || TVSite.channelId) + "-" + result.id;
+                url = TVSite.baseUrl + '/' +( (isLoadMore || (isFiltering || !isFiltering)) ? TVSite.channelInfo.titleTextEncoded : String(result.entityTitleParent).replace(/\s/g,"-").replace(/\./g,"") )+ "/" + String(result.titleTextEncoded).replace(/\s/g,"-") + "/" + (result.entityIdParent || TVSite.channelId) + "-" + result.id;
                 //url = url.replace("//", "/");
-                return url;
             }
-            return;
+            return url;
         },
     	resetLiveSearch : function() {
             $('#tvp-desktop-search-results ul')
@@ -139,8 +137,6 @@
                     mouseWheel: true,
                     scrollbars: true
                 });
-            }else{
-                return;
             }
         },
         handleScrollEnd : function() {
