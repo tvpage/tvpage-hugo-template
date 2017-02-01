@@ -86,7 +86,8 @@
                 tvpa: '\'\/\/a.tvpage.com\/tvpa.min.js\'',
                 tvpp: '\'\/\/appcdn.tvpage.com\/player\/assets\/tvp/tvp-1.8.4-min.js\'',
                 tvpsolo: '\''+domain+'\/' + type + '\/lib'+libsExt+'\'',
-                player: '\''+domain+'\/player'+libsExt+'\''
+                // player: '\''+domain+'\/player'+libsExt+'\''
+                player: '\'\/\/dev1.tvpage.com\/tvsite\/dev\/tvsite\/1758169\/www.bandh.tv\/cb94d44a0921cbffe86a1d724c0639f5\/js/player.js\''
               },
               libsCounter = Object.keys(libs).length;
 

@@ -1,5 +1,5 @@
-{{ partial (printf "%s/dochead.html" .Type) . }}
-{{ partial (printf "%s/header.html" .Type) . }}
+{{- partial (printf "%s/dochead.html" .Type) . -}}
+{{- partial (printf "%s/header.html" .Type) . -}}
 	<div class="container mobile-subscribe-form">
 		<div class="subscribe-header">          
 			<!-- <div class="subscribe-header-title" id="myModalLabel"> -->
@@ -29,4 +29,4 @@
 			</div>
 		</div>
 	</div>
-{{ partial (printf "%s/scripts.html" .Type) . }}
+{{- partial (printf "%s/scripts.html" .Type) . -}}

@@ -415,4 +415,17 @@
 			line-height: 21px;
 		}		
 	}
+	.latest-video-container{
+			height: auto;
+	}
+}
+@media (max-width: $screen-md-min) and (orientation:landscape){
+	.latest-video-container{
+			height: auto;
+	}
+}
+@media (max-width: 750px) and (orientation:portrait){
+	.latest-video-container{
+			height: auto;
+	}
 }
