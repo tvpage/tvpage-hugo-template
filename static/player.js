@@ -127,11 +127,19 @@
           }]);
           _tvpa.push(['track', 'ci', {li:options.loginid}]);
 
+          isset(options.autonext) ? isset(options.autonext) : options.autoplay=false;
+          isset(options.autonext) ? isset(options.autonext) : options.autonext=true;
+          isset(options.version) ? isset(options.version) : options.version='1.8.4';
+          isset(options.progresscolor) ? isset(options.progresscolor) : options.progresscolor='#E57211';
+          isset(options.transcript) ? isset(options.transcript) : options.transcript=false;
+          isset(options.removecontrols) ? isset(options.removecontrols) : options.removecontrols=["hd"];
+          isset(options.tvpa) ? isset(options.tvpa) : options.tvpa=false;
+
           //We create insntances on the tvpage player.
           new TVPage.player({
             poster: true,
             techOrder: 'html5,flash',
-            analytics: { tvpa: options.tvpa || false },
+            analytics: { tvpa: options.tvpa },
             apiBaseUrl: '//api.tvpage.com/v1',
             swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+options.version+'-flash.swf',
             onReady: function(e, pl){
