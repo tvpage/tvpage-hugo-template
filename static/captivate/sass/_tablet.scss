@@ -303,6 +303,7 @@
 			right: 0;
 			top: 0;
 			bottom: 0;
+			padding: 1px;
 		}
 	}
 	.video-details-row{
@@ -418,6 +419,7 @@
 		& ul{
 			list-style: none;
 			padding: 0;
+			overflow: hidden;
 			li{
 				padding-top: 5px;
 				border-bottom: 1px solid rgba(255,255,255,0.5);				
@@ -426,6 +428,7 @@
 		}
 		.item{
 			padding: 0;
+			overflow: hidden;
 		}
 		.latest-video{
 			margin: 0;
@@ -458,6 +461,7 @@
 			font-size: 18px;
 			line-height: 22px;
 			color: #FFFFFF;
+			overflow: hidden;
 		}		
 	}
 	.tvp-products-wrapper{
