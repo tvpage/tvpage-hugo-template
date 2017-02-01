@@ -9,15 +9,7 @@
 {{ $.Scratch.SetInMap "settings" .code .value }}
 {{ end }}
 {{ end }}
-{{ $isPreview := getenv "HUGO_PREVIEW" }}
-{{ $subfolder := .Site.Params.subfolder }}
-{{ $baseUrl := $subfolder}}
-{{ $.Scratch.Set "baseUrl" $baseUrl }}
-{{ $.Scratch.Add "baseUrl" "/" }}{{ if $isPreview }}
-  {{ $baseUrl := .Site.BaseURL }}
-  {{ $.Scratch.Set "baseUrl" $baseUrl }}
-{{ end }}
-{{ $baseUrl := $.Scratch.Get "baseUrl" }}
+{{ $baseUrl := .Site.BaseURL }}
 <!DOCTYPE html>
 <html>
   <head>

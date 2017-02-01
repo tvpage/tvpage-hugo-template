@@ -1,12 +1,4 @@
-{{ $isPreview := getenv "HUGO_PREVIEW" }}
-{{ $baseUrl := .Site.Params.subfolder }}
-{{ $.Scratch.Set "baseUrl" $baseUrl }}
-{{ $.Scratch.Add "baseUrl" "/" }}
-{{ if $isPreview }}
-  {{ $baseUrl := .Site.BaseURL }}
-  {{ $.Scratch.Set "baseUrl" $baseUrl }}
-{{ end }}
-{{ $baseUrl := $.Scratch.Get "baseUrl" }}
+{{ $baseUrl := .Site.BaseURL }}
   <div class="header-bg">
     <div class="container">
       <div class="brand-header justify">

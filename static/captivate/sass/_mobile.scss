@@ -1,4 +1,4 @@
-@media(max-width: $screen-xs-max){
+@media(max-width: $screen-xs){
 	.header-bg,
 	.channel-latest-videos-header, 	
 	.products-title,
@@ -140,21 +140,6 @@
 		.modal-content{
 			min-height: 667px;
 		}
-		&-header{
-			border-bottom: 1px solid #fff;
-			padding-bottom: 15px;
-			position: relative;
-			input[type="text"]{
-				background-color: transparent;
-				border: 0;
-				margin-left: 10px;
-				font-size: 18px;
-				line-height: 22px;
-				font-weight: 700;
-				color: #fff;
-				width: 75%;
-			}
-		}
 		&-search-btn, &-cancel-btn{
 			background-repeat: no-repeat;
 			height: 24px;
@@ -282,6 +267,9 @@
 		margin-bottom: 15px;
 		> div{		
 			padding: 0;
+		}
+		&-products{
+			position: relative;
 		}
 	}
 	.video-details{
@@ -436,4 +424,23 @@
 			line-height: 21px;
 		}		
 	}
+	.tvp-products-wrapper{
+		height: 105px;
+		ul{			
+			height: 100%;
+			li{				
+				display: inline-block;
+				float: left;
+				padding: 10px 15px 10px 0;
+				&:first-child{
+					padding-left: 15px;
+				}
+			}
+		}
+		.tvp-product-image{
+			width: 88px;
+			height: 85px;
+		}
+	}
+
 }

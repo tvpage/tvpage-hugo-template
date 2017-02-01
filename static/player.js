@@ -1,36 +1,44 @@
 //The solo js library.
 ;(function(root,doc) {
 
+  var isset = function(o,p){
+        var val = o;
+        if (p) val = o[p];
+        return 'undefined' !== typeof val;
+      },
+      isEmpty = function(obj) {
+        for(var key in obj) { if (obj.hasOwnProperty(key)) return false;}
+        return true;
+      },
+      debounce = function(func,wait,immediate) {
+        var timeout;  
+        return function() {
+          var context = this, args = arguments;
+          var later = function() {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+          };
+          var callNow = immediate && !timeout;
+          clearTimeout(timeout);
+          timeout = setTimeout(later, wait);
+          if (callNow) func.apply(context, args);
+        };
+      };
+
   //The player singleton. We basically create an instance from the tvpage
   //player and expose most utilities, helping to encapsualte what is
   //required for a few players to co-exist.
-  function Player(el, options) {
-    var isset = function(o,p){
-      var val = o;
-      if (p) val = o[p];
-      return 'undefined' !== typeof val;
-    },
-    isEmpty = function(obj) {
-      for(var key in obj) { if (obj.hasOwnProperty(key)) return false;}
-      return true;
-    },
-    debounce = function(func,wait,immediate) {
-      var timeout;  
-      return function() {
-        var context = this, args = arguments;
-        var later = function() {
-          timeout = null;
-          if (!immediate) func.apply(context, args);
-        };
-        var callNow = immediate && !timeout;
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-        if (callNow) func.apply(context, args);
-      };
-    };
-
+  function Player(el, options, startWith) {
     if (!el) return console.log('need element');
     if (!isset(options) || !isset(options.data) || options.data.length <= 0) return console.log('need aseets');
+
+    this.autoplay = isset(options.autoplay) ? options.autoplay : false;
+    this.autonext = isset(options.autonext) ? options.autonext : true;
+    this.version = isset(options.version) ? options.version : '1.8.4';
+    this.progresscolor = isset(options.progresscolor) ? options.progresscolor : '#E57211';
+    this.transcript = isset(options.transcript) ? options.transcript : false;
+    this.removecontrols = isset(options.removecontrols) ? options.removecontrols : ["hd"];
+    this.tvpa = isset(options.tvpa) ? options.tvpa : false;
 
     this.el = 'string' === typeof el ? doc.getElementById(el) : el;
     this.instance = null;
@@ -43,13 +51,16 @@
       while (counter > 0) {
         var video = data[counter-1];
         if (isEmpty(video)) return console.log('empty data');
-        var asset = video.asset;
-        var channelId;
+        
+        var asset = video.asset,
+            channelId;
+
         if(video.parentId){
           channelId = video.parentId
         }else{
           channelId = 'undefined' !== typeof options.channel ? options.channel.id : 0;
         }
+        asset.uniqueId = video.id;
         asset.analyticsObj = { vd: video.id, li: video.loginId, pg: channelId };
         if (!asset.sources) asset.sources = [{ file: asset.videoId }];
         asset.type = asset.type || 'youtube';
@@ -84,12 +95,37 @@
       frag.appendChild(btn);
       this.el.appendChild(frag);
     };
+    this.play = function(asset,ongoing){
 
-    var checks = 0, 
-        check = function(o, pr){return 'undefined' !== typeof o[pr];};
+      if (!asset) return console.log('need asset');
+      
+      var willCue = false,
+          isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      
+      if (ongoing) {
+        if (isMobile || (isset(this.autonext) && !this.autonext)) {
+          willCue = true;
+        }
+      } else {
+        if (isMobile || (isset(this.autoplay) && !this.autoplay)) {
+          willCue = true;
+        }
+      }
+      
+      if (willCue) {
+        this.instance.cueVideo(asset)
+        if ('mp4' === asset.type) {
+          this.showPlayBtn(asset.thumbnailUrl);
+        }
+      } else {
+       this.instance.loadVideo(asset);
+      }
+    };
+
+    var checks = 0;
     (function libsReady() {
       setTimeout(function() {
-        if ( !check(root,'TVPage') || !check(root,'_tvpa') ) {
+        if ( !isset(root,'TVPage') || !isset(root,'_tvpa') ) {
           (++checks < 20) ? libsReady() : console.log('limit reached');
         } else {
 
@@ -103,12 +139,12 @@
           new TVPage.player({
             poster: true,
             techOrder: 'html5,flash',
-            analytics: { tvpa: options.tvpa || false },
+            analytics: { tvpa: that.tvpa },
             apiBaseUrl: '//api.tvpage.com/v1',
-            swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+options.version+'-flash.swf',
+            swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+that.version+'-flash.swf',
             onReady: function(e, pl){
               that.instance = pl;
-              that.el.querySelector('.tvp-progress-bar').style.backgroundColor = options.progresscolor;
+              that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progresscolor;
               
               var resize = debounce(function() {
                 that.instance.resize(that.el.clientWidth, that.el.clientHeight);
@@ -116,38 +152,36 @@
               resize();
               root.addEventListener('resize', resize);
             
-              that.current = 0;
-              var currentasset = that.assets[that.current];
-              if ((/Mobi/.test(navigator.userAgent)) || 'undefined' === typeof options.autoplay || !options.autoplay) {
-                that.instance.cueVideo(currentasset);
-                if ('mp4' === currentasset.type) that.showPlayBtn(currentasset.thumbnailUrl);
-              }else{
-                that.instance.loadVideo(currentasset);
+              var currentIndex = 0;
+              if (startWith && startWith.length) {
+                for (var i = 0; i < that.assets.length; i++) {
+                  if (that.assets[i].uniqueId === startWith) currentIndex = i;
+                }
               }
+
+              that.current = currentIndex;
+              that.play(that.assets[that.current]);
+
               if (root.DEBUG) {
-                console.debug("Interaction ready: " + (performance.now() - root.DEBUG_start) + "ms");
+                console.debug("endTime = " + performance.now());
               }
             },
             onStateChange: function(e){
-              if ('undefined' !== typeof e && 'tvp:media:videoended' === e){
-                var autonext = null;
-                if('undefined' === typeof options.autonext || options.autonext){
-                  autonext = true;
-                  that.current = (that.current == that.assets.length - 1) ? 0 : that.current + 1;
+              if ('tvp:media:videoended' === e){
+                if(isset(that.autonext) && that.autonext){
+                  that.current++;
+                  if (!that.assets[that.current]) {
+                    that.current = 0;
+                  }
                 }
-                var asset = that.assets[that.current];
-                if((/Mobi/.test(navigator.userAgent)) || !autonext){
-                  that.instance.cueVideo(asset);
-                  if ('mp4' === asset.type) that.showPlayBtn(asset.thumbnailUrl);
-                }else{
-                  that.instance.loadVideo(asset);
-                }
+
+                that.play(that.assets[that.current], true);
               }
             },
             divId: that.el.id,
             controls: {
               active: true,
-              floater: { removeControls: options.removecontrols,transcript: options.transcript}
+              floater: { removeControls: that.removecontrols,transcript: that.transcript}
             }
           });
 
