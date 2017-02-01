@@ -48,12 +48,9 @@ body {
   background-size: cover;
   background-color: black;
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 80%;
-  height: 85%;
+  width: 92%;
+  height: 100%;
+  margin: 0 4%;
 }
 
 .tvp-play {
@@ -81,6 +78,12 @@ body {
 
 .tvp-products {
   padding: 0 10px;
+  height: 30%;
+}
+
+#tvp-product-container {
+  margin-top: 10%;
+  padding: 0 40px;
 }
 
 .tvp-products-title {
@@ -88,27 +91,56 @@ body {
   padding-left: 10px;
 }
 
+.tvp-modal-header {
+    padding: 20px 45px;
+    position: relative;
+    background-color: #FFF;
+    height: 40px;
+    border-radius: 7px;
+}
+.tvp-modal-title {
+    margin: 0;
+    max-width: 90%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    height: 19px;
+    font-family: Dosis;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 16px;
+    color: #333333;
+    text-align: left;
+    padding: 2px;
+}
+
+
 .tvp-product {
   display: block;
   overflow: hidden;
-  width: 245px;
+  width: 100%;
   margin: 0 auto;
+  height: 100%;
 }
 
 .tvp-product-image {
   display: block;
-  width: 80px;
-  height: 80px;
+  width: 30%;
+  height: 90%;
   float: left;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+  margin: 0 5%;
 }
 
 .tvp-product-data {
   float: left;
   width: 60%;
-  margin-left: 5%;
 }
 
 .tvp-product-data > p {

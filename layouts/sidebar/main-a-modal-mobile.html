@@ -1,13 +1,18 @@
 {{- partial "settings.html" . -}}
-<style>{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css-modal.css" .Type ) .)) | safeCSS }}</style>
+<style>{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css-modal-mobile.css" .Type ) .)) | safeCSS }}</style>
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css">
 <div id='{{ ($.Scratch.Get "settings").name }}' class="iframe-content">
   <div class="tvp-player">
+    <div class="tvp-modal-header">
+    <h4 class="tvp-modal-title"></h4>
+  </div>
     <div id="tvp-player-el"></div>
     <svg class="tvp-play" viewBox="0 0 200 200" alt="Play video"><polygon points="70, 55 70, 145 145, 100" fill="#e57211"></polygon></svg>
   </div>
-  <p class="tvp-products-title">Recommended Products</p>
-  <div class="tvp-products"></div>
+  <div id="tvp-product-container">
+    <p class="tvp-products-title">Recommended Products</p>
+    <div class="tvp-products"></div>
+  </div>
 </div>
 <script id="productTemplate" type="text/template">
   <a class="tvp-product" href="{linkUrl}" target="_parent">
@@ -31,6 +36,10 @@
  var settings = {{ $.Scratch.Get "settings" }};
 
  var tmpl = function(template, data) {
+    if (data.title.length > 42){
+      var shortTitle = jQuery.trim(data.title).substring(0, 42).split(" ").slice(0, -1).join(" ")+" ...";
+      data.title = shortTitle;
+    }
     if (template && 'object' == typeof data) {
       return template.replace(/\{([\w\.]*)\}/g, function(str, key) {
         var keys = key.split("."),
@@ -65,26 +74,23 @@
   window.addEventListener('message',function(e){
     if (!e || !isset(e,'origin') || 'http://localhost:1313' !== e.origin || !isset(e,'data') || !isset(e.data,'videos')) return;
 
-    var $el = $('#' + settings.name);
-    
-
-    console.log($el.height())
-    console.log( $(parentDoc).find('.tvp-modal').eq(0).height($el.height()) );
-
-
-    // var content = this.contentWindow.document.body.firstChild,
-    //     resize = function() { 
-    //       console.log()
-    //       //holder.style.height = content.offsetHeight + 'px';
-    //     };
-      
-    // resize();
-    // window.addEventListener('resize', debounce(resize,50));
-
-    var data = e.data,
+    var $el = $('#' + settings.name),
+        data = e.data,
         selected = data.selected;
     
     settings.data = data.videos;
+
+    for (var i = 0; i < settings.data.length; i++) {
+      if(settings.data[i].id == selected){
+        if (settings.data[i].title.length > 42){
+            var shortTitle = jQuery.trim(settings.data[i].title).substring(0, 42).split(" ").slice(0, -1).join(" ")+" ...";
+            settings.data[i].title = shortTitle;
+            $el.find('.tvp-modal-title').html(settings.data[i].title);
+        }else{
+          $el.find('.tvp-modal-title').html(settings.data[i].title);
+        }
+      }
+    }
 
     new Player('tvp-player-el',settings,selected);
 

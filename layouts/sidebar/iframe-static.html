@@ -37,7 +37,10 @@
 <script>;(function(doc){
 
   var settings = {{ $.Scratch.Get "settings" }},
-      channelVideos = {{ $.Scratch.Get "videos" }};
+      channelVideos = {{ $.Scratch.Get "videos" }}
+      isMobile = false,
+      modal = doc.createElement('div');
+  if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) isMobile = true;
 
   new Grid(settings.name, settings);
 
@@ -48,11 +51,18 @@
     if (target.classList.contains('tvp-video')) {
       
       var iframe = doc.createElement('iframe');
-      iframe.src = '//localhost:1313/tvpwidget/' + settings.name + '-modal';
+      if (isMobile) {
+        iframe.src = '//localhost:1313/tvpwidget/' + settings.name + '-modal-mobile';
+        iframe.style = 'border-radius:4px;display:block;width:100%;max-width:100%;height:55%;max-height:100%;position:fixed;z-index:100;left:50%;border:none;top:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);background:#fff;box-shadow:0 0 60px 10px rgba(0,0,0,.9)';
+        modal.style = 'width:100%;position:fixed;z-index:100;left:0;border:none;top:50%;background:#fff;';
+      }else{
+        iframe.src = '//localhost:1313/tvpwidget/' + settings.name + '-modal';
+        iframe.style = 'border-radius:4px;display:block;width:738px;max-width:100%;height:394px;max-height:100%;position:fixed;z-index:100;left:50%;border:none;top:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);background:#fff;box-shadow:0 0 60px 10px rgba(0,0,0,.9)';
+        modal.style = 'width:100%;position:fixed;z-index:100;left:50%;border:none;top:50%;background:#fff;';
+      }
       iframe.setAttribute('allowfullscreen', '');
       iframe.setAttribute('frameborder', '0');
       iframe.setAttribute('scrolling', 'no');
-      iframe.style = 'border-radius:4px;display:block;width:738px;max-width:100%;height:394px;max-height:100%;position:fixed;z-index:100;left:50%;border:none;top:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);background:#fff;box-shadow:0 0 60px 10px rgba(0,0,0,.9)';
       iframe.onload = function(){
         var videos = [];
         for (var key in channelVideos) {
@@ -70,9 +80,7 @@
       overlay.classList.add('tvp-modal-overlay');
       overlay.style = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:50;background:rgba(0,0,0,.6)';
 
-      var modal = doc.createElement('div');
       modal.classList.add('tvp-modal');
-      modal.style = 'width:100%;position:fixed;z-index:100;left:50%;border:none;top:50%;background:#fff;';
       modal.appendChild(iframe);
 
       overlay.appendChild(modal);
