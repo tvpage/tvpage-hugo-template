@@ -1,4 +1,8 @@
 @media(max-width: $screen-md-max){
+	.nav-justified>li, .nav-tabs.nav-justified>li {
+     display: block;
+     width: 100%; 
+	}
 	.header-bg,
 	.channel-latest-videos-header, 	
 	.products-title,
@@ -9,6 +13,9 @@
 	}
 	.navbar-toggle {
     	display: block;
+	}
+	.latest-video-container{
+			height: 225px;
 	}
 	nav.menu-bar{
 		border : none;
@@ -481,5 +488,10 @@
 			width: 88px;
 			height: 85px;
 		}
+	}
+}
+@media (max-width: $screen-md-max) and (orientation:portrait){
+	.latest-video-container{
+			height: 197px;
 	}
 }

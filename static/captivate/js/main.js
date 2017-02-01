@@ -1,5 +1,6 @@
 (function($, IScroll, _, BigScreen){
 	var liveResultsPage=0;
+    var loadMorePage = 0;
     var btnLoadMore = $(".load-more .btn-more-button");
     var searchDesktopInput = $("#tvp-desktop-search-input");
     var searchDesktopButton = $("#brand-header-search-button");
@@ -48,7 +49,7 @@
     				"X-login-id" : TVSite.loginId,
                     status: 'approved',
                     o: 'date_created',
-                    od: 'desc',
+                    od: 'asc',
     			})
 
     		});
@@ -87,7 +88,7 @@
 
     var renderUtil = {
     	liveResultHtml : '<li><a href="{url}" class="tvp-desktop-search-results-item clearfix"><div class="tvp-desktop-search-results-item-img-holder"><div class="tvp-desktop-search-results-item-img" style="background-image:url({asset.thumbnailUrl});+    	background-position: 50% 50%;"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" /></div></div><div class="tvp-desktop-search-results-item-text"><p class="tvp-desktop-search-results-item-title">{title}</p><p class="tvp-desktop-search-results-item-description">{description}</p></div></a></li>',
-        videoTemplate : '<div class="col-sm-4 col-md-4">'
+        videoTemplate : '<div class="col-sm-4 col-md-4 latest-video-container">'
             +'<a href="{url}" class="latest-video" data-id="{id}">'
                 +'<div class="latest-video-thumbnail">'        
                     +'<div class="content" >'
@@ -468,8 +469,8 @@
 
     btnLoadMore.on("click", function(event){
         isLoadMore = true;
-        liveResultsPage = liveResultsPage+1;
-        channelDataExtractor.videos(TVSite.channelId, liveResultsPage ,null).done(function(data){
+        loadMorePage = loadMorePage+1;
+        channelDataExtractor.videos(TVSite.channelId, loadMorePage ,null).done(function(data){
             if (data.length)
                 renderUtil.handleLoadMore(data);
             else
@@ -488,9 +489,9 @@
             $('.tvp-filter-reset').css("display", "none");
             btnLoadMore.attr("disabled", false);
             isFiltering = false;
-            liveResultsPage = 0;
+            loadMorePage = 0;
             $('#tvp-video-container').empty();
-            channelDataExtractor.videos(TVSite.channelId, liveResultsPage ,null).done(function(data){
+            channelDataExtractor.videos(TVSite.channelId, loadMorePage ,null).done(function(data){
             if (data.length)
                 renderUtil.handleLoadMore(data);
             });
@@ -498,10 +499,10 @@
         filterVideos: function() {
             $('.tvp-filter-reset').css("display", "inline-block");
             isFiltering = true;
-            if (liveResultsPage===0)
+            if (loadMorePage===0)
                     $("#tvp-video-container").empty();
-            channelDataExtractor.videos(null, liveResultsPage, null).done(_.bind(function(results) {
-                liveResultsPage =  liveResultsPage+1;
+            channelDataExtractor.videos(null, loadMorePage, null).done(_.bind(function(results) {
+                loadMorePage =  loadMorePage+1;
                 if (results.length) {
                     renderUtil.handleLoadMore(results);
                     // if(!isMobile || !isIOS){
