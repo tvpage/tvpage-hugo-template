@@ -2,35 +2,52 @@
 <style>{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css-modal.css" .Type ) .)) | safeCSS }}</style>
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css">
 <div id='{{ ($.Scratch.Get "settings").name }}' class="iframe-content">
+  <div class="tvp-close-btn"></div>
   <div class="tvp-player">
-    <div id="tvp-player-el"></div>
-    <svg class="tvp-play" viewBox="0 0 200 200" alt="Play video"><polygon points="70, 55 70, 145 145, 100" fill="#e57211"></polygon></svg>
+  <div class="tvp-modal-header">
+    <p class="tvp-related-products">SPONSORED PRODUCTS</p>
+    <h4 class="tvp-modal-title"></h4>
   </div>
-  <p class="tvp-products-title">Recommended Products</p>
-  <div class="tvp-products"></div>
+    <div id="tvp-player-el"></div>
+  </div>
+  <div class="tvp-products">
+    <ul class="tvp-prod-container"></ul>
+  </div>
+  <div id="tvp-pop-ups-container"></div>
 </div>
-<script id="productTemplate" type="text/template">
+<script id="popUpTemplate" type="text/template">
+  <div id="tvp-arrows">
+    <div class="tvp-pop-up-before"></div>
+    <div class="tvp-pop-up-after"></div>
+  </div>
   <a class="tvp-product" href="{linkUrl}" target="_parent">
-    <div class="tvp-product-image" style="background-image:url('{imageUrl}');"></div>
+    <img class="tvp-popup-image" src="{imageUrl}">
     <div class="tvp-product-data">
-      <p>{title}</p>
-      <h2>{price}</h2>
-      <button>View Details</button>
+      <p class="tvp-product-title">{title}</p>
+      <h2 class="tvp-price">${price}</h2>
+      <button class="tvp-call-to-action">View Details</button>
     </div>
   </a>
+</script>
+<script id="productsTemplate" type="text/template">
+    <a class="tvp-product" href="{linkUrl}" target="_parent">
+      <img class="tvp-product-img" src="{imageUrl}"></div>
+    </a>
 </script>
 <script src="//a.tvpage.com/tvpa.min.js"></script>
 <script src="//appcdn.tvpage.com/player/assets/tvp/tvp-{{ ($.Scratch.Get "settings").version }}-min.js"></script>
 <script src="{{.Site.BaseURL}}player.js"></script>
 <script src="{{.Site.BaseURL}}{{.Type}}/vendor/jquery.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.js"></script>
-<!-- <script src="{{.Site.BaseURL}}{{.Type}}/vendor/iscroll.js"></script> -->
 
 <script>(function(doc,parentDoc){
  
  var settings = {{ $.Scratch.Get "settings" }};
-
+ 
  var tmpl = function(template, data) {
+    if (data.title.length > 42){
+      var shortTitle = jQuery.trim(data.title).substring(0, 42).split(" ").slice(0, -1).join(" ")+" ...";
+      data.title = shortTitle;
+    }
     if (template && 'object' == typeof data) {
       return template.replace(/\{([\w\.]*)\}/g, function(str, key) {
         var keys = key.split("."),
@@ -39,9 +56,8 @@
         return (typeof v !== "undefined" && v !== null) ? v : "";
       });
     }
-  };
-
-  var debounce = function(func,wait,immediate) {
+  },
+  debounce = function(func,wait,immediate) {
     var timeout;  
     return function() {
       var context = this, args = arguments;
@@ -54,44 +70,93 @@
       timeout = setTimeout(later, wait);
       if (callNow) func.apply(context, args);
     };
-  };
-
-  var isset = function(o,p){
+  },
+  isset = function(o,p){
     var val = o;
     if (p) val = o[p];
     return 'undefined' !== typeof val;
-  };
-  
+  },
+  bindProductEvents = function() {
+      var that = this,
+          mouseOver = false,
+          imgMouseOver = false,
+          $dproducts = $('.tvp-products'),
+          $popUp = $('.tvp-pop-ups'),
+          $img = $('.tvp-product-img'),
+          $body = $(doc).find('body');
+
+      $dproducts.find($img).on('mouseover', function(e) {
+          e.preventDefault();
+          imgMouseOver = true
+          var id = $(this).closest('li').attr('id').split('-')[2],
+              $arrowTop = ($(this).offset().top - $body.offset().top)-15;
+          if ($arrowTop < 0) {$arrowTop = 10;}
+          if ($arrowTop > $body.height()) {$arrowTop = $body.height() - 10;}
+          setTimeout(function() {
+            if (imgMouseOver == true) {
+              $('.tvp-pop-up-before').css({top: $arrowTop + 2}).show();
+              $('.tvp-pop-up-after').css({top: $arrowTop + 1}).show();
+              showPopUp(id);
+            }else{clearPopUps();}
+          });
+      });
+      $popUp.off().on('mouseleave', function(e) {
+        e.preventDefault();
+        mouseOver = false;
+        clearPopUps();
+      });
+      $popUp.on('mouseover', function(e) {
+        e.preventDefault();
+          mouseOver = true;
+          showPopUp();
+      });
+      $img.on('mouseleave', function(e) {
+        e.preventDefault();
+        imgMouseOver = false
+        setTimeout(function() {
+          if (mouseOver == false) {
+            clearPopUps();
+          }
+        },30);
+      });
+    },
+    clearPopUps = function() {
+      var $p = $('.tvp-pop-ups');
+      if ($p.length) {
+        $p.hide();
+      }
+      $('.tvp-pop-up-before,.tvp-pop-up-after').hide();
+    },
+    showPopUp = function(id) {
+      var $p = $('#tvp-pop-' + id);
+      if ($p.length) {
+        $p.show();
+      }
+      $('.tvp-pop-up-before,.tvp-pop-up-after').show();
+    };
+
   window.addEventListener('message',function(e){
     if (!e || !isset(e,'origin') || 'http://localhost:1313' !== e.origin || !isset(e,'data') || !isset(e.data,'videos')) return;
 
-    var $el = $('#' + settings.name);
-    
-
-    console.log($el.height())
-    console.log( $(parentDoc).find('.tvp-modal').eq(0).height($el.height()) );
-
-
-    // var content = this.contentWindow.document.body.firstChild,
-    //     resize = function() { 
-    //       console.log()
-    //       //holder.style.height = content.offsetHeight + 'px';
-    //     };
-      
-    // resize();
-    // window.addEventListener('resize', debounce(resize,50));
-
-    var data = e.data,
+    var $el = $('#' + settings.name),
+        data = e.data,
         selected = data.selected;
-    
     settings.data = data.videos;
-
+    for (var i = 0; i < settings.data.length; i++) {
+      if(settings.data[i].id == selected){
+        if (settings.data[i].title.length > 42){
+            var shortTitle = jQuery.trim(settings.data[i].title).substring(0, 42).split(" ").slice(0, -1).join(" ")+" ...";
+            settings.data[i].title = shortTitle;
+            $el.find('.tvp-modal-title').html(settings.data[i].title);
+        }else{
+          $el.find('.tvp-modal-title').html(settings.data[i].title);
+        }
+      }
+    }
     new Player('tvp-player-el',settings,selected);
-
     var $overlay = $(parentDoc).find('.tvp-modal-overlay');
     $overlay.click(function(){$(this).off().remove();});
     $(doc).find('.tvp-close-btn').click(function(){$overlay.off().remove();});
-
     $.ajax({
       type: 'GET',
       url: '//api.tvpage.com/v1/videos/' + selected + '/products',
@@ -101,27 +166,21 @@
       }
     }).done(function(products){
       if (!products && !products.length) return console.log('no products');
-
       var prodCount = products.length,
-          prodTmpl = $('#productTemplate').html(),
-          prodsHtml = '';
-
+          prodTmpl = $('#productsTemplate').html(),
+          popTmpl = $('#popUpTemplate').html(),
+          prodsHtml = '',
+          popUpHtml = '';
       while (prodCount > 0) {
-        prodsHtml += '<div>' + tmpl(prodTmpl, products[prodCount-1]) + '</div>';
+        popUpHtml += '<div id="tvp-pop-'+prodCount+'" class="tvp-pop-ups">' + tmpl(popTmpl, products[prodCount-1]) + '</div>';
+        prodsHtml += '<li id="tvp-prod-'+prodCount+'">' + tmpl(prodTmpl, products[prodCount-1]) + '</li>';
         prodCount--;
       }
-
-      var $products = $('#' + settings.name).find('.tvp-products');
+      var $products = $('.tvp-products').find('ul'),
+          $popUps = $el.find('#tvp-pop-ups-container');
       $products.html(prodsHtml);
-      setTimeout(function(){
-        $products.slick({
-          slidesToSlide: 1,
-          slidesToShow: 1
-        });
-      },0);
-
+      $popUps.html(popUpHtml);
+      bindProductEvents();
     });
-
   });
-
 }(document,parent.document));</script>
