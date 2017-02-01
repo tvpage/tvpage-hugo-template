@@ -100,7 +100,7 @@
       if (!asset) return console.log('need asset');
       
       var willCue = false,
-          isMobile = /Mobi/.test(navigator.userAgent);
+          isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
       
       if (ongoing) {
         if (isMobile || (isset(this.autonext) && !this.autonext)) {
