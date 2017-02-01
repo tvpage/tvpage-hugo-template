@@ -149,11 +149,11 @@
               var resize = debounce(function() {
                 console.log('resize');
                 console.log(that.el.clientWidth, that.el.clientHeight);
-                that.instance.resize(that.el.clientWidth, that.el.clientHeight);
+                console.log(that.el.parentNode.clientWidth, that.el.parentNode.clientHeight);
+                that.instance.resize(that.el.parentNode.clientWidth, that.el.parentNode.clientHeight);
               }, 180);
               resize();
               root.addEventListener('resize', resize);
-              root.addEventListener('orientationchange', resize);
             
               var currentIndex = 0;
               if (startWith && startWith.length) {
