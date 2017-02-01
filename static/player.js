@@ -1,36 +1,44 @@
 //The solo js library.
 ;(function(root,doc) {
 
+  var isset = function(o,p){
+        var val = o;
+        if (p) val = o[p];
+        return 'undefined' !== typeof val;
+      },
+      isEmpty = function(obj) {
+        for(var key in obj) { if (obj.hasOwnProperty(key)) return false;}
+        return true;
+      },
+      debounce = function(func,wait,immediate) {
+        var timeout;  
+        return function() {
+          var context = this, args = arguments;
+          var later = function() {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+          };
+          var callNow = immediate && !timeout;
+          clearTimeout(timeout);
+          timeout = setTimeout(later, wait);
+          if (callNow) func.apply(context, args);
+        };
+      };
+
   //The player singleton. We basically create an instance from the tvpage
   //player and expose most utilities, helping to encapsualte what is
   //required for a few players to co-exist.
   function Player(el, options, startWith) {
-    var isset = function(o,p){
-      var val = o;
-      if (p) val = o[p];
-      return 'undefined' !== typeof val;
-    },
-    isEmpty = function(obj) {
-      for(var key in obj) { if (obj.hasOwnProperty(key)) return false;}
-      return true;
-    },
-    debounce = function(func,wait,immediate) {
-      var timeout;  
-      return function() {
-        var context = this, args = arguments;
-        var later = function() {
-          timeout = null;
-          if (!immediate) func.apply(context, args);
-        };
-        var callNow = immediate && !timeout;
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-        if (callNow) func.apply(context, args);
-      };
-    };
-
     if (!el) return console.log('need element');
     if (!isset(options) || !isset(options.data) || options.data.length <= 0) return console.log('need aseets');
+
+    this.autoplay = isset(options.autoplay) ? options.autoplay : false;
+    this.autonext = isset(options.autonext) ? options.autonext : true;
+    this.version = isset(options.version) ? options.version : '1.8.4';
+    this.progresscolor = isset(options.progresscolor) ? options.progresscolor : '#E57211';
+    this.transcript = isset(options.transcript) ? options.transcript : false;
+    this.removecontrols = isset(options.removecontrols) ? options.removecontrols : ["hd"];
+    this.tvpa = isset(options.tvpa) ? options.tvpa : false;
 
     this.el = 'string' === typeof el ? doc.getElementById(el) : el;
     this.instance = null;
@@ -92,14 +100,14 @@
       if (!asset) return console.log('need asset');
       
       var willCue = false,
-          isMobile = /Mobi/.test(navigator.userAgent);
+          isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
       
       if (ongoing) {
-        if (isMobile || (isset(options.autonext) && !options.autonext)) {
+        if (isMobile || (isset(this.autonext) && !this.autonext)) {
           willCue = true;
         }
       } else {
-        if (isMobile || (isset(options.autoplay) && !options.autoplay)) {
+        if (isMobile || (isset(this.autoplay) && !this.autoplay)) {
           willCue = true;
         }
       }
@@ -131,12 +139,12 @@
           new TVPage.player({
             poster: true,
             techOrder: 'html5,flash',
-            analytics: { tvpa: options.tvpa || false },
+            analytics: { tvpa: that.tvpa },
             apiBaseUrl: '//api.tvpage.com/v1',
-            swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+options.version+'-flash.swf',
+            swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+that.version+'-flash.swf',
             onReady: function(e, pl){
               that.instance = pl;
-              that.el.querySelector('.tvp-progress-bar').style.backgroundColor = options.progresscolor;
+              that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progresscolor;
               
               var resize = debounce(function() {
                 that.instance.resize(that.el.clientWidth, that.el.clientHeight);
@@ -160,7 +168,7 @@
             },
             onStateChange: function(e){
               if ('tvp:media:videoended' === e){
-                if(isset(options.autonext) && options.autonext){
+                if(isset(that.autonext) && that.autonext){
                   that.current++;
                   if (!that.assets[that.current]) {
                     that.current = 0;
@@ -173,7 +181,7 @@
             divId: that.el.id,
             controls: {
               active: true,
-              floater: { removeControls: options.removecontrols,transcript: options.transcript}
+              floater: { removeControls: that.removecontrols,transcript: that.transcript}
             }
           });
 
