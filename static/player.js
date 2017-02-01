@@ -147,6 +147,8 @@
               that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progresscolor;
               
               var resize = debounce(function() {
+                console.log('resize');
+                console.log(that.el.clientWidth, that.el.clientHeight);
                 that.instance.resize(that.el.clientWidth, that.el.clientHeight);
               }, 180);
               resize();
