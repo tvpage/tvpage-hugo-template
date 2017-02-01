@@ -1,6 +1,7 @@
 html {
   margin: 0;
   height: 100%;
+  font-family: Dosis;
 }
 
 body  {
@@ -119,7 +120,7 @@ footer {
   cursor: pointer;
   display: block;
   width: 100%;
-  max-width: 100px;
+  max-width: 130px;
   position: absolute;
   margin: 0 auto;
   right: 0;
@@ -133,7 +134,7 @@ footer {
   width: 100%;
 }
 
-#tvp-view-more-button {
+.tvp-load-more {
   padding: 0 2px;
   height: 33px;
   line-height: 33px;
@@ -149,16 +150,16 @@ footer {
   width: 90px;
 }
 
-#tvp-view-more-button:active {
+.tvp-load-more:active {
   background-color: #666666;
   box-shadow: 1px 1px #666;
   transform: translateY(2px);
 }
 
-#tvp-view-more-button:focus {
+.tvp-load-more:focus {
   outline:none;
 }
 
-#tvp-view-more-button:hover{
+.tvp-load-more:hover{
   background-color: #00DBC0;
 }

@@ -1,212 +1,96 @@
-{{- range $i, $def := (getJSON (printf "themes/tvpage/defaults/%s.json" .Type)).option -}}
-{{- $.Scratch.SetInMap "settings" .code .value -}}
-{{- end -}}
-{{- range $i, $param := .Params -}}
-{{- $.Scratch.SetInMap "settings" $i . -}}
-{{- end -}}
-
-<style id="tvp-css-lib" type="text/css">{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css-modal.html" .Type ) .)) | safeCSS }}</style>
-<div id='{{ ($.Scratch.Get "settings").name }}'>
-  <div class="tvp-player"> </div>
+{{- partial "settings.html" . -}}
+<style>{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css-modal.css" .Type ) .)) | safeCSS }}</style>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css">
+<div id='{{ ($.Scratch.Get "settings").name }}' class="iframe-content">
   <div class="tvp-close-btn"></div>
-  <div class="tvp-lb-header">
-    <div class="tvp-related-products">SPONSORED PRODUCTS</div>
-    <h4 class="tvp-lb-title"></h4>
+  <div class="tvp-player">
+  <div class="tvp-modal-header">
+    <p class="tvp-related-products">SPONSORED PRODUCTS</p>
+    <h4 class="tvp-modal-title"></h4>
   </div>
-  <div id="tvp-player-el"></div>
-  <div id="tvpplayer-play"></div>
-  <div id="tvp-products">
-    <div class="tvp-scroller">
-      <ul class="tvp-img-container"></ul>
-    </div>
+    <div id="tvp-player-el"></div>
   </div>
-  <div id="tvp-pop-ups"></div>
+  <div class="tvp-products">
+    <ul class="tvp-prod-container"></ul>
+  </div>
+  <div id="tvp-pop-ups-container"></div>
 </div>
+<script id="popUpTemplate" type="text/template">
+  <div id="tvp-arrows">
+    <div class="tvp-pop-up-before"></div>
+    <div class="tvp-pop-up-after"></div>
+  </div>
+  <a class="tvp-product" href="{linkUrl}" target="_parent">
+    <img class="tvp-popup-image" src="{imageUrl}">
+    <div class="tvp-product-data">
+      <p class="tvp-product-title">{title}</p>
+      <h2 class="tvp-price">${price}</h2>
+      <button class="tvp-call-to-action">View Details</button>
+    </div>
+  </a>
+</script>
+<script id="productsTemplate" type="text/template">
+    <a class="tvp-product" href="{linkUrl}" target="_parent">
+      <img class="tvp-product-img" src="{imageUrl}"></div>
+    </a>
+</script>
 <script src="//a.tvpage.com/tvpa.min.js"></script>
 <script src="//appcdn.tvpage.com/player/assets/tvp/tvp-{{ ($.Scratch.Get "settings").version }}-min.js"></script>
-<script src="/{{.Type}}/vendor/jquery.js"></script>
-<script src="/{{.Type}}/vendor/iscroll.js"></script>
-<script type="text/javascript">(function(doc,parentGlobal,parentDoc){
-  //The player constructor
-  //================================
-  //The player singleton. We basically create an instance from the tvpage
-  //player and expose most utilities, helping to encapsualte what is
-  //required for a few players to co-exist.
-  var apiBaseUrl = "//api.tvpage.com/v1";
-  function Player(el, assets, settings) {
-    if (!el) return console.log('you need an existent DOM element');
-    this.el = el;
-    this.instance = null;
-    this.willCue = null;
-    this.play = function(a){
-      willCue ? this.instance.cueVideo(a) : this.instance.loadVideo(a);
-    };
+<script src="{{.Site.BaseURL}}player.js"></script>
+<script src="{{.Site.BaseURL}}{{.Type}}/vendor/jquery.js"></script>
 
-    //Context reference.
-    var that = this;
-    this.showPlayBtn = function(imgUrl){
-      var frag = document.createDocumentFragment(),
-      d = doc.createElement('div');
-      
-      d.classList.add('tvp-mp4-poster');
-      d.style.backgroundImage = 'url("'+imgUrl+'")';
-      frag.appendChild(d);
+<script>(function(doc,parentDoc){
+ 
+ var settings = {{ $.Scratch.Get "settings" }};
+ console.log(settings);
 
-      var pBtn = this.el.parentNode.getElementsByClassName('tvp-play')[0];
-      pBtn.style.display = 'block';
-      pBtn.onclick = function(){
-        if (!that.instance) return console.log('no instance ready');
-        d.style.display = 'none';
-        pBtn.style.display = 'none';
-        that.instance.play();
-      };
-      frag.appendChild(pBtn);
-      this.el.appendChild(frag);
-    };
-    
-    var checks = 0,
-    loaded = false;
-    (function libsReady() {
-      var deferred = setTimeout(function() {
-        if ( !redefine(window,'TVPage') || !redefine(window,'_tvpa') ) {
-          (++checks < 20) ? libsReady() : console.log('limit reached');
-        } else {
-          loaded = true;
-
-          _tvpa.push(["config", {li: settings.loginid,
-            gaDomain: "www.tvpage.tv",
-            logUrl: apiBaseUrl+'/__tvpa.gif'
-          }]);
-          _tvpa.push(["track", "ci", {li:settings.loginid}]);
-
-          //Unles we change this we always take the first videos from
-          //the playlist to startup.
-          //We always cue on mobile, never autoplay
-          //We cue on desktop autoplay false.
-          var fAsset = assets[0];
-          if ( (/Mobi/.test(navigator.userAgent) || !false) ) {
-            willCue = true;
-            if ('mp4' === fAsset.type) that.showPlayBtn(fAsset.thumbnailUrl);
-          }
-
-          //We create insntances on the tvpage player.
-          new TVPage.player({
-            poster: true,
-            techOrder: 'html5,flash',
-            analytics: { tvpa: settings.tvpa || false },
-            apiBaseUrl: apiBaseUrl,
-            swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+settings.version+'-flash.swf',
-            onReady: function(e, pl){
-              that.instance = pl;
-              that.el.querySelector('.tvp-progress-bar').style.backgroundColor = settings.progresscolor;
-              var resize = function(){that.instance.resize(that.el.clientWidth, that.el.clientHeight);};
-              window.onresize = resize;
-              resize();
-              that.play(fAsset);
-              if (settings.autoplay) {
-                that.instance.play();
-              }
-            },
-            onStateChange: function(e){
-            },
-            divId: that.el.id,
-            controls: {
-              active: true,
-              floater: { removeControls: settings.removecontrols,transcript: settings.transcript}
-            }
-          });
-        }
-      },300);
-    })();
-    
-  }
-
-  var settings = {{ $.Scratch.Get "settings" }};
-  {{ with .Param "loginid" }}
-    settings.loginid = {{ . }}
-  {{ end }}
-
-  var redefine = function(o,p){return 'undefined' !== typeof o[p]},
-      assety = function(vid){
-        if (!vid || !vid.asset) return;
-        var a = vid.asset;
-        a.analyticsObj = { vd: vid.id, li: vid.loginId, pg: vid.parentId ? vid.parentId : 0 };
-        if (!a.sources) a.sources = [{ file: a.videoId }];
-        a.type = a.type || 'youtube';
-        return a;
-      },
-      sendAnalytics = function(data, type) {
-        if ('object' === typeof data && type) {
-          if (window._tvpa) {
-            return _tvpa.push(['track', type, $.extend(data, {
-              li: settings.loginid,
-              pg: settings.channelid
-            })]);
-          }
-        }
-      },
-    getProducts = function(videoId) {
-      return $.ajax({
-        type: 'GET',
-        url: apiBaseUrl+'/videos/'+videoId+'/products',
-        dataType: 'jsonp',
-        data: {
-          'X-login-id': settings.loginid
-        }
-      }).done(function(res){
-        renderProducts(res);
+ var tmpl = function(template, data) {
+    if (data.title.length > 42){
+      var shortTitle = jQuery.trim(data.title).substring(0, 42).split(" ").slice(0, -1).join(" ")+" ...";
+      data.title = shortTitle;
+    }
+    if (template && 'object' == typeof data) {
+      return template.replace(/\{([\w\.]*)\}/g, function(str, key) {
+        var keys = key.split("."),
+          v = data[keys.shift()];
+        for (var i = 0, l = keys.length; i < l; i++) v = v[keys[i]];
+        return (typeof v !== "undefined" && v !== null) ? v : "";
       });
-    },
-    renderPopUps = function(products) {
-      var s = '';
-      for (var i = 0; i < products.length; i++) {
-        var data = products[i].data,
-            array = JSON.parse(data),
-            priceHtml = '';
-        if (products[i].title.length > 42){
-            var shortTitle = jQuery.trim(products[i].title).substring(0, 42).split(" ").slice(0, -1).join(" ")+" ...";
-            products[i].title = shortTitle;
-        }    
-        if (products[i].price) {
-          price = products[i].price.toString().replace(/[^0-9.]+/g, '');
-          priceHtml +='<div class="tvp-price">$'+price+'</div>'
-        }
-        s += '<div id="ppu-'+i+'" class="tvp-pop-up"><img class="img-responsive" src="'+array.imageUrl+'" alt="'+products[i].title+'"><h4 class="tvp-product-title">'+products[i].title+'</h4>'+priceHtml+'</a><a class="tvp-call-to-action" href="'+array.linkUrl+'" target="_blank" data-video-id="'+products[i].entityIdParent+'" data-id="'+products[i].id+'">'+'VIEW DETAILS'+'<span class="tvp-material-icon"></span>'+'</a></div>';
-        }
-      var arrows = '<div id="tvp-arrows"><div class="tvp-pop-up-before"></div><div class="tvp-pop-up-after"></div></div>';
-      $('#tvp-pop-ups').empty().append(s).append(arrows);
-    },
-    renderProducts = function(products) {
-      var s = '';
-      for (var i = 0; i < products.length;i++) {
-        var data = products[i].data,
-            array = JSON.parse(data);
-        s += '<li><img id="tvp-popup-'+i+'" class="tvp-product-img" src="'+array.imageUrl+'"/></li>';
-      }
-      if (products.length !== 0) {
-        $('#tvp-products').show();
-        $('.tvp-related-products').show();
-      }else{
-        $('#tvp-player-el').css('width', '98%');
-      }
-      $('.tvp-img-container').empty().append(s);
-      renderPopUps(products);
-      bindProductEvents();
-      initializeProductScrollerY();
-    },
-    bindProductEvents = function() {
+    }
+  },
+  debounce = function(func,wait,immediate) {
+    var timeout;  
+    return function() {
+      var context = this, args = arguments;
+      var later = function() {
+        timeout = null;
+        if (!immediate) func.apply(context, args);
+      };
+      var callNow = immediate && !timeout;
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+      if (callNow) func.apply(context, args);
+    };
+  },
+  isset = function(o,p){
+    var val = o;
+    if (p) val = o[p];
+    return 'undefined' !== typeof val;
+  },
+  bindProductEvents = function() {
       var that = this,
           mouseOver = false,
           imgMouseOver = false,
-          $dproducts = $('#tvp-products'),
-          $popUp = $('.tvp-pop-up'),
+          $dproducts = $('.tvp-products'),
+          $popUp = $('.tvp-pop-ups'),
           $img = $('.tvp-product-img'),
           $body = $(doc).find('body');
+
       $dproducts.find($img).on('mouseover', function(e) {
           e.preventDefault();
           imgMouseOver = true
-          var id = this.id.split('-')[2],
-              $arrowTop = ($(this).offset().top - $body.offset().top) +19;
+          var id = $(this).closest('li').attr('id').split('-')[2],
+              $arrowTop = ($(this).offset().top - $body.offset().top)-15;
           if ($arrowTop < 0) {$arrowTop = 10;}
           if ($arrowTop > $body.height()) {$arrowTop = $body.height() - 10;}
           setTimeout(function() {
@@ -238,67 +122,66 @@
       });
     },
     clearPopUps = function() {
-      var $p = $('.tvp-pop-up');
+      var $p = $('.tvp-pop-ups');
       if ($p.length) {
         $p.hide();
       }
       $('.tvp-pop-up-before,.tvp-pop-up-after').hide();
     },
-    showPopUp = function(id, top) {
-      var $p = $('#ppu-' + id);
+    showPopUp = function(id) {
+      var $p = $('#tvp-pop-' + id);
       if ($p.length) {
         $p.show();
       }
       $('.tvp-pop-up-before,.tvp-pop-up-after').show();
-    },
-
-    initializeProductScrollerY = function() {
-      var sel = '#tvp-products',
-          $ulImg = $(sel).find('.tvp-img-container');
-      if ($($ulImg).children().length >= 1) {
-          var myScroll = new IScroll(sel,{
-            mouseWheel: true,
-            scrollbars: true,
-            scrollY: true,
-            interactiveScrollbars: true,
-            useTransition: false,
-            bindToWrapper: true,
-            click: true
-          });
-      }
-      console.dir(myScroll.options);
     };
-
-    $(document).ready(function() {
-      $(document).on('click', '.tvp-call-to-action', function(e) {
-        sendAnalytics({
-          ct: $(this).data('id'),
-          vd: $(this).data('videoId')
-        }, 'pk');
-      });
-    });
-
+    
   window.addEventListener('message',function(e){
-    if (!e || !redefine(e,'origin') || 'http://localhost:1313' !== e.origin || !redefine(e,'data')) return;
-    //We opted for a destructive method when user decides to close modal.
-    var $ModalOverlay = $(parentDoc).find('.tvp-modal-overlay'),
-        $CloseBtn = $(doc).find('.tvp-close-btn');
-    $ModalOverlay.click(function(){$(this).off().remove();});
-    $CloseBtn.click(function(){$ModalOverlay.off().remove();});
+    if (!e || !isset(e,'origin') || 'http://localhost:1313' !== e.origin || !isset(e,'data') || !isset(e.data,'videos')) return;
 
-    //Startup the player...
-    //Whe need to have videos data.. we can start this by saying that we will get 
-    //the page # from the inline iframe, plus which video id needs to play.
-    if ("undefined" !== typeof e.data.videos) {
-      var videos = e.data.videos || [],
-          assets = [];
-      assets.push(assety(videos));
-      getProducts(videos.id);
-      $('.tvp-lb-title').html(videos.title);
-      settings.startId = videos.id;
-      new Player($('#tvp-player-el')[0],assets,settings);
+    var $el = $('#' + settings.name),
+        data = e.data,
+        selected = data.selected;
+    settings.data = data.videos;
+    for (var i = 0; i < settings.data.length; i++) {
+      if(settings.data[i].id == selected){
+        if (settings.data[i].title.length > 42){
+            var shortTitle = jQuery.trim(settings.data[i].title).substring(0, 42).split(" ").slice(0, -1).join(" ")+" ...";
+            settings.data[i].title = shortTitle;
+            $el.find('.tvp-modal-title').html(settings.data[i].title);
+        }else{
+          $el.find('.tvp-modal-title').html(settings.data[i].title);
+        }
+      }
     }
-
+    new Player('tvp-player-el',settings,selected);
+    var $overlay = $(parentDoc).find('.tvp-modal-overlay');
+    $overlay.click(function(){$(this).off().remove();});
+    $(doc).find('.tvp-close-btn').click(function(){$overlay.off().remove();});
+    $.ajax({
+      type: 'GET',
+      url: '//api.tvpage.com/v1/videos/' + selected + '/products',
+      dataType: 'jsonp',
+      data: {
+        'X-login-id': settings.loginid
+      }
+    }).done(function(products){
+      if (!products && !products.length) return console.log('no products');
+      var prodCount = products.length,
+          prodTmpl = $('#productsTemplate').html(),
+          popTmpl = $('#popUpTemplate').html(),
+          prodsHtml = '',
+          popUpHtml = '';
+      while (prodCount > 0) {
+        popUpHtml += '<div id="tvp-pop-'+prodCount+'" class="tvp-pop-ups">' + tmpl(popTmpl, products[prodCount-1]) + '</div>';
+        prodsHtml += '<li id="tvp-prod-'+prodCount+'">' + tmpl(prodTmpl, products[prodCount-1]) + '</li>';
+        prodCount--;
+      }
+      var $products = $('.tvp-products').find('ul'),
+          $popUps = $el.find('#tvp-pop-ups-container');
+      $products.html(prodsHtml);
+      $popUps.html(popUpHtml);
+      bindProductEvents();
+    });
   });
-
-}(document,parent,parent.document));</script>
+}(document,parent.document));</script>

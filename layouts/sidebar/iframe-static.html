@@ -1,10 +1,10 @@
 {{- partial "settings.html" . -}}
-<style>{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css-base.css" .Type ) .)) | safeCSS }}</style>
+<style>{{- replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css-base.css" .Type ) .)) | safeCSS -}}</style>
 <div id='{{ ($.Scratch.Get "settings").name }}' class="iframe-content">
   <header class="tvp-sidebar-header">
     <h2>Recommended Videos</h2>  
   </header>
-  <div id="tvp-video-container">
+  <div class="tvp-clearfix tvp-container">
   {{ range $i, $p := first ($.Scratch.Get "settings").itemsperpage (index $.Site.Data.channelVideos (printf "x%s_page_1" ($.Scratch.Get "settings").channelid) "data") }}
   {{ $.Scratch.SetInMap "videos" .id (index $.Site.Data.videos (printf "x%s" .id )) }}
   <div id="tvp-video-{{ .id }}" class="tvp-video">
@@ -13,14 +13,14 @@
     </div>
     <p class="tvp-video-title">{{ .title }}</p>
   </div>
-  {{ if eq (mod (add $i 1) 2) 0 }}<div class="tvp-clearfix"></div>{{ end }}
+  {{ if eq (mod (add $i 1) 2 ) 0 }}<div class="tvp-clearfix"></div>{{ end }}
   {{ end }}
   </div>
   <footer class="tvp-clearfix">
     <a class="tvp-logo" href="//www.tvpage.com" target="_blank">
       <img src="data:image/png;base64,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">
     </a>
-    <button id="tvp-view-more-button">VIEW MORE</button>
+    <button class="tvp-load-more">{{ ($.Scratch.Get "settings").loadbuttontext }}</button>
   </footer>
 </div>
 
@@ -33,133 +33,52 @@
   </div>
 </script>
 <script src="/{{.Type}}/vendor/jquery.js"></script>
-<script>;(function(doc,parentGlobal){
+<script src='//{{ .Param "extDomain" }}/grid.js'></script>
+<script>;(function(doc){
 
-  var settings = {{ $.Scratch.Get "settings" }};
-  {{ with .Param "loginid" }}
-    settings.loginid = {{ . }}
-  {{ end }}
+  var settings = {{ $.Scratch.Get "settings" }},
+      channelVideos = {{ $.Scratch.Get "videos" }};
 
-  var lastPageReached = false,
-    currentPage = 0,
-        currentPageVideos = {{ $.Scratch.Get "videos" }},
-    apiBaseUrl = "//api.tvpage.com/v1",
-    isFetching = false,
-    currentPageVideos = $.map({{ $.Scratch.Get "videos" }}, function(val) {return [val];}),
+  new Grid(settings.name, settings);
 
-  rowerize = function(data, per) {
-    if (data && $.isArray(data)) {
-      var raw = data.slice(0),
-        rows = [];
-      while (raw.length) rows.push(raw.splice(0, per || 2));
-      return rows;
-    }
-  },
-  tmpl = function(template, data) {
-    if (template && 'object' == typeof data) {
-      return template.replace(/\{([\w\.]*)\}/g, function(str, key) {
-        var keys = key.split("."),
-          v = data[keys.shift()];
-        for (var i = 0, l = keys.length; i < l; i++) v = v[keys[i]];
-        return (typeof v !== "undefined" && v !== null) ? v : "";
-      });
-    }
-  };
+  var el = doc.getElementById(settings.name);
+  el.addEventListener('click', function(e){
 
-var $el = $('#' + settings.name),
-  $btn = $el.find('#tvp-view-more-button'),
-  $overLay = $el.find('.tvp-modal-overlay');
-
-//View more videos functionality. On static data method, we will only get the first page of the channel,
-//On user demand, we shall pull the following pages & loop.
-$btn.click(function(e) {
-  if (isFetching) return console.log('we are fetching');
-  isFetching = true;
-
-  if (lastPageReached) {
-    currentPage = 0;
-    lastPageReached = false;
-  } else {
-    currentPage++;
-  }
-
-  $.ajax({
-    url: apiBaseUrl + '/channels/' + settings.channelid + '/videos',
-    dataType: 'jsonp',
-    data: {
-      p: currentPage,
-      n: settings.itemsperpage,
-      'X-login-id': settings.loginid
-    }
-  }).done(function(res) {
-    isFetching = false;
-
-    //If videos then new page of that was fectehced, rowerize in order to build
-    //the expected gallery.
-    if (res && res.length) {
-
-      currentPageVideos = res;
-      var rows = rowerize(res, 2),
-        rowsC = rows.length;
-
-      //For each row
-      var pageFrag = doc.createDocumentFragment();
-      while (rowsC > 0) {
-        var row = rows[rowsC - 1],
-          rowEl = doc.createElement('div');
-
-        //Render the whole row.
-        $(rowEl).addClass('tvp-clearfix');
-        for (var i = 0; i < row.length; i++) {
-          rowEl.innerHTML += tmpl($('#videoTemplate').html(), row[i]);
-        }
-        pageFrag.appendChild(rowEl);
-
-        if (res.length < settings.itemsperpage) {
-          lastPageReached = true;
+    var target = e.target;
+    if (target.classList.contains('tvp-video')) {
+      
+      var iframe = doc.createElement('iframe');
+      iframe.src = '//localhost:1313/tvpwidget/' + settings.name + '-modal';
+      iframe.setAttribute('allowfullscreen', '');
+      iframe.setAttribute('frameborder', '0');
+      iframe.setAttribute('scrolling', 'no');
+      iframe.style = 'border-radius:4px;display:block;width:738px;max-width:100%;height:394px;max-height:100%;position:fixed;z-index:100;left:50%;border:none;top:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);background:#fff;box-shadow:0 0 60px 10px rgba(0,0,0,.9)';
+      iframe.onload = function(){
+        var videos = [];
+        for (var key in channelVideos) {
+          videos.push(channelVideos[key]);
         }
 
-        rowsC--;
-      }
+        this.contentWindow.postMessage({
+          page: 0,
+          selected: e.target.id.split('-').pop(),
+          videos: videos
+        },'http://localhost:1313');
+      };
+      
+      var overlay = doc.createElement('div');
+      overlay.classList.add('tvp-modal-overlay');
+      overlay.style = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:50;background:rgba(0,0,0,.6)';
 
-      $el.find('#tvp-video-container').eq(0).html(pageFrag);
+      var modal = doc.createElement('div');
+      modal.classList.add('tvp-modal');
+      modal.style = 'width:100%;position:fixed;z-index:100;left:50%;border:none;top:50%;background:#fff;';
+      modal.appendChild(iframe);
+
+      overlay.appendChild(modal);
+      parent.document.body.appendChild(overlay);
     }
-
-    //Todo check whats the best solution here.
-    else {
-      lastPageReached = true;
-    }
-
+    
   });
-});
 
-//when user clicks the video thumbnails, we shall identify the requested video, baken iframe & append it
-//To parent document.
-$el.on('click', '.tvp-video', function(e) {
-  e.preventDefault();
-
-  //the selected video id.
-  var id = $(this).attr('id').split('-').pop(),
-      video = {};
-  for (var i = 0; i < currentPageVideos.length; i++) {
-    if (currentPageVideos[i].id == id) video = currentPageVideos[i];
-  }
-
-  //Create them modal.
-  //Pass the videos to the modal.
-  var $ifr = $('<iframe/>').attr('src', 'http://localhost:1313/tvpwidget/sidebar-1-modal/');
-  $ifr.addClass('tvp-modal');
-  $ifr.on('load', function() {
-    this.contentWindow.postMessage({
-      channelPage: currentPage,
-      videos: video
-    }, 'http://localhost:1313');
-  });
-  $ifr.attr('style', 'border-radius:4px;display:block;width:738px;max-width:100%;height:394px;max-height:100%;position:fixed;z-index:100;left:50%;border:none;top:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);background:#fff;box-shadow:0 0 60px 10px rgba(0,0,0,.9)');
-  var $overlay = $('<div/>').addClass('tvp-modal-overlay');
-  $overlay.append($ifr).appendTo(parentGlobal.document.body);
-  $overlay.attr('style', 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:50;background:rgba(0,0,0,.6)');
-  $ifr.contents().find('.tvp-lb-title').html('helo');
-});
-
-}(document,parent));</script>
+}(document));</script>
