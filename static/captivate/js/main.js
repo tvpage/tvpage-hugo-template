@@ -1,11 +1,11 @@
 (function($, IScroll, _, BigScreen){
 	var liveResultsPage=0;
+    var loadMorePage = 0;
     var btnLoadMore = $(".load-more .btn-more-button");
     var searchDesktopInput = $("#tvp-desktop-search-input");
     var searchDesktopButton = $("#brand-header-search-button");
     var $nullResults = $('#tvp-null-results');
     var	resultsScroller;
-    var resultsScrollerMobile;
     var $searchMobileInput = $("#tvp-mobile-search-input");
     var $searchMobileCancelBtn = $('.mobile-search-modal-cancel-btn');
     var $searchMobileResultHolder = $('#tvp-mobile-search-results');
@@ -27,7 +27,6 @@
     var playerResolution = isMobile ? '360p' : '480p';
     var isFlashRequired = ( (IE(9) || IE(10)) || (isMac && isFireFox)  );
     var playerTechOrder = isFlashRequired ? 'flash,html5' : 'html5,flash';
-    var playbackList = [];
     var formatDate = function(unixTimestamp) {
         var months = ['January','February','March','April','May','June','July','August','September','October','November','December'],
         	d = (new Date(Number(unixTimestamp) * 1000)),
@@ -50,7 +49,7 @@
     				"X-login-id" : TVSite.loginId,
                     status: 'approved',
                     o: 'date_created',
-                    od: 'desc',
+                    od: 'asc',
     			})
 
     		});
@@ -89,13 +88,14 @@
 
     var renderUtil = {
     	liveResultHtml : '<li><a href="{url}" class="tvp-desktop-search-results-item clearfix"><div class="tvp-desktop-search-results-item-img-holder"><div class="tvp-desktop-search-results-item-img" style="background-image:url({asset.thumbnailUrl});+    	background-position: 50% 50%;"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" /></div></div><div class="tvp-desktop-search-results-item-text"><p class="tvp-desktop-search-results-item-title">{title}</p><p class="tvp-desktop-search-results-item-description">{description}</p></div></a></li>',
-        videoTemplate : '<div class="col-sm-4 col-md-4">'
-            +'<a href="{url}" class="latest-video">'
+        videoTemplate : '<div class="col-sm-4 col-md-4 latest-video-container">'
+            +'<a href="{url}" class="latest-video" data-id="{id}">'
                 +'<div class="latest-video-thumbnail">'        
                     +'<div class="content" >'
                         +'<img src="{asset.thumbnailUrl}" alt="">'
                         +'<div class="latest-video-hover">'
                             +'<div class="play-icon"></div>'
+                            +'<p class="now-playing">NOW PLAYING</p>'
                         +'</div>'
                   +'</div>'
                 +'</div>'
@@ -108,12 +108,12 @@
             var redefine = function(val) {
                 return ("undefined" !== typeof val && null !== typeof val && val);
             };
+            var url = "";
             if (result && redefine(result)) {
-                var url = TVSite.baseUrl + '/' +( (isLoadMore || (isFiltering || !isFiltering)) ? TVSite.channelInfo.titleTextEncoded : String(result.entityTitleParent).replace(/\s/g,"-").replace(/\./g,"") )+ "/" + String(result.titleTextEncoded).replace(/\s/g,"-") + "/" + (result.entityIdParent || TVSite.channelId) + "-" + result.id;
+                url = TVSite.baseUrl + '/' +( (isLoadMore || (isFiltering || !isFiltering)) ? TVSite.channelInfo.titleTextEncoded : String(result.entityTitleParent).replace(/\s/g,"-").replace(/\./g,"") )+ "/" + String(result.titleTextEncoded).replace(/\s/g,"-") + "/" + (result.entityIdParent || TVSite.channelId) + "-" + result.id;
                 //url = url.replace("//", "/");
-                return url;
             }
-            return;
+            return url;
         },
     	resetLiveSearch : function() {
             $('#tvp-desktop-search-results ul')
@@ -131,17 +131,17 @@
             }
         },
         createDesktopScroller : function(id) {
+            var scroller=null;
             if (id && $(id).children().length) {
-                return new IScroll(id, {
+                scroller = new IScroll(id, {
                     interactiveScrollbars: true,
                     scrollX: false,
                     click: true,
                     mouseWheel: true,
                     scrollbars: true
                 });
-            }else{
-                return;
             }
+            return scroller;
         },
         handleScrollEnd : function() {
             if (Math.abs(this.maxScrollY) - Math.abs(this.y) < 10) {
@@ -313,13 +313,14 @@
 
     var eventsBinder = {
         onLoadMore : function(){
-            $(".latest-video").on({
+            $("#tvp-video-container").on({
                 click: function(e){
                     if(TVSite.isPlayerPage){
                         //e.preventDefault();
                     }
                 },
                 mouseover: function(e){
+                    if($(this).data('id') == activeVideoId) return;
                     var $hoverDiv = $(this).find('.latest-video-hover');
                     if (!$hoverDiv.hasClass('active')) {
                         $hoverDiv.addClass('active');
@@ -331,7 +332,7 @@
                         $hoverDiv.removeClass('active');
                     }
                 }
-            });
+            }, '.latest-video');
         },
         Filters : function(){
             $("#product_category li a").on("click", function(event){
@@ -368,8 +369,15 @@
             });
 
 
+        },
+        VideoThumbnail: function (container) {
+            $(container).on('click', '.latest-video', function(event) {
+                event.preventDefault();
+                //  Act on the event 
+                activeVideoId = $(this).data('id');
+                tvp_Player.loadSelectedVideo(activeVideoId);
+            });
         }
-
     };
 
     searchDesktopInput.on("keypress", function(e) {
@@ -461,8 +469,8 @@
 
     btnLoadMore.on("click", function(event){
         isLoadMore = true;
-        liveResultsPage = liveResultsPage+1;
-        channelDataExtractor.videos(TVSite.channelId, liveResultsPage ,null).done(function(data){
+        loadMorePage = loadMorePage+1;
+        channelDataExtractor.videos(TVSite.channelId, loadMorePage ,null).done(function(data){
             if (data.length)
                 renderUtil.handleLoadMore(data);
             else
@@ -481,9 +489,9 @@
             $('.tvp-filter-reset').css("display", "none");
             btnLoadMore.attr("disabled", false);
             isFiltering = false;
-            liveResultsPage = 0;
+            loadMorePage = 0;
             $('#tvp-video-container').empty();
-            channelDataExtractor.videos(TVSite.channelId, liveResultsPage ,null).done(function(data){
+            channelDataExtractor.videos(TVSite.channelId, loadMorePage ,null).done(function(data){
             if (data.length)
                 renderUtil.handleLoadMore(data);
             });
@@ -491,10 +499,10 @@
         filterVideos: function() {
             $('.tvp-filter-reset').css("display", "inline-block");
             isFiltering = true;
-            if (liveResultsPage===0)
+            if (loadMorePage===0)
                     $("#tvp-video-container").empty();
-            channelDataExtractor.videos(null, liveResultsPage, null).done(_.bind(function(results) {
-                liveResultsPage =  liveResultsPage+1;
+            channelDataExtractor.videos(null, loadMorePage, null).done(_.bind(function(results) {
+                loadMorePage =  loadMorePage+1;
                 if (results.length) {
                     renderUtil.handleLoadMore(results);
                     // if(!isMobile || !isIOS){
@@ -540,6 +548,8 @@
           if (title) {
             $('#video-playing-title').empty()
             .html(title);
+            $('.video-title-mobile .title').empty()
+            .html(title);
           }
         },
         showPlayButton : function(){
@@ -584,10 +594,10 @@
             var url = tvp_Player.getVideoUrl(video);
             tvp_Player.updateSiteUrlAndTitle(url, video.title);
             tvp_Player.updateSocialShareLink(url, video);
+            tvp_Player.showNowPlayingOverlay(video.id);
           }
         },
         updateSiteUrlAndTitle : function(url, title){
-            debugger;
           var newUrl = window.location.protocol +'//' + window.location.host + url;
           if (newUrl && window.history && history.pushState) {
             history.pushState({state: 1}, null, newUrl);
@@ -642,9 +652,8 @@
         handleNextvideo : function(nextVideo){
           if ( 'object' === typeof nextVideo ) {
             tvp_Player.updateTitle( nextVideo.title );
-            // updateDescription( nextVideo );
+            videoDetails.updateDetails(nextVideo);
             // updateTranscripts( nextVideo );
-            // updateProducts( nextVideo.id );
             // $('#video-' + nextVideo.id).removeClass('inactive hovered').addClass('playing');
             tvp_Player.startPlayback(nextVideo);
           }
@@ -706,6 +715,21 @@
         },
         updateVideoElements : function(){
           // $('.channel-videos').find('.video.playing').removeClass('playing').addClass('inactive');
+        },
+        loadSelectedVideo: function (videoId) {
+            tvp_Player.getVideoIndex(activeVideoId, function(index){
+                tvp_Player.handleNextvideo(videoList[index]);
+                ProductSlider.initialize({videoId: activeVideoId});
+                videoDetails.updateDetails(videoList[index]);
+            });
+        },
+        showNowPlayingOverlay: function (videoId) {
+            var $list = $('.latest-video'),
+                selected = _.find($list, function (el) {
+                                return $(el).data('id') == videoId;
+                            });
+            $list.find('.latest-video-hover').removeClass('now-playing');
+            $(selected).find('.latest-video-hover').addClass('now-playing');
         }
     };
 
@@ -755,14 +779,15 @@
                     if (price.indexOf('.') !== -1) {
                         var decimals = price.split('.').pop();
                         if (decimals.length > 2 && decimals.indexOf('00') !== -1) {
-                            return price.slice(0, -2);
+                            price = price.slice(0, -2);
                         } else if (decimals.length === 1) {
-                            return price + '0';
+                            price = price + '0';
                         }
                     } else {
-                        return price + '.00';
+                        price = price + '.00';
                     }
                 }
+                return price;
             },
 
             renderProducts: function() {
@@ -845,6 +870,7 @@
 
     
     var ProductSlider = {
+            breakpoint: 1200,
             products : [],
             $currentPopUp: null,
             currentId: 0,
@@ -910,9 +936,9 @@
                     trigger: 'manual',
                     container: 'div.player-product',
                     content: function(){
-                        var hoverTmpl = '<div class="tvp-prod-hover-img-container"><div class="content"> <img src="{imageUrl}" alt=""></div></div><div class="tvp-prod-hover-title">{title}</div><div class="tvp-prod-hover-price-rate"> <span class="price">{price}</span></div> <a data-id="{id}" href="{linkUrl}" target="_blank" class="btn btn-primary btn-more-button analyticsClick">VIEW DETAILS</a>',
-                            hoverHtml = ''
-                            prodId = $(this).attr('id');
+                        var hoverTmpl = '<div class="tvp-prod-hover-img-container"><div class="content"> <img src="{imageUrl}" alt=""></div></div><div class="tvp-prod-hover-title">{title}</div><div class="tvp-prod-hover-price-rate"> <span class="price">{price}</span></div> <a data-id="{id}" href="{linkUrl}" target="_blank" class="btn btn-primary btn-more-button analyticsClick">VIEW DETAILS</a>';
+                        var hoverHtml = '';
+                        var prodId = $(this).attr('id');
 
                         var currentProd = _.filter(that.products, function(item){
                             return item.id == prodId;
@@ -958,7 +984,7 @@
             initializeSlider: function () {
                 var config = {};
                 
-                if ($(window).width() < 768) {                    
+                if ($(window).width() < this.breakpoint) {
                     this.resizeWrapper(true);
                     this.isHorizontalScroll = true;
                 }
@@ -966,7 +992,7 @@
                     this.isHorizontalScroll = false;
                 }
 
-                prodSlider = new IScroll('#tvp-products-wrapper', $(window).width() < 768 ? this.config.scrollx : this.config.scrolly);
+                this.prodSlider = new IScroll('#tvp-products-wrapper', $(window).width() < this.breakpoint ? this.config.scrollx : this.config.scrolly);
             },
             resizeWrapper: function (isX) {
                 if (isX) {
@@ -979,24 +1005,22 @@
                 else{
                     $('#tvp-products-wrapper ul').width('100%');
                 }
-                
-                
             },
             destroy: function () {
                 $(this.el).popover('destroy');
             },
             resizeCheck: function () {            
-                if (($(window).width() < 768) && (!this.isHorizontalScroll)) {
+                if (($(window).width() < this.breakpoint) && (!this.isHorizontalScroll)) {
                     this.isHorizontalScroll = true;
-                    prodSlider.destroy();
+                    this.prodSlider.destroy();
                     this.resizeWrapper(true);
-                    prodSlider = new IScroll('#tvp-products-wrapper', this.config.scrollx);
+                    this.prodSlider = new IScroll('#tvp-products-wrapper', this.config.scrollx);
                 }
-                else if(($(window).width() >= 768)){
+                else if(($(window).width() >= this.breakpoint)){
                     this.isHorizontalScroll = false;
-                    prodSlider.destroy();
+                    this.prodSlider.destroy();
                     this.resizeWrapper(false);
-                    prodSlider = new IScroll('#tvp-products-wrapper', this.config.scrolly);
+                    this.prodSlider = new IScroll('#tvp-products-wrapper', this.config.scrolly);
                 }
             }
     }
@@ -1019,7 +1043,7 @@
         },
         sendAnalytics: function(data, type) {
             if ('object' == typeof data && type) {
-                return _tvpa.push(['track', type, $.extend(data, {
+                _tvpa.push(['track', type, $.extend(data, {
                     li: TVSite.loginId,
                     pg: TVSite.channelId
                 })]);
@@ -1029,27 +1053,41 @@
 
     var videoDetails = {
         container : '.video-details',
+        updateDetails: function (videoObj) {
+            $(this.container).find('.published-date').text(videoObj.date_created)
+                .closest(this.container)
+                .find('.video-details-row.description .desktop, .mobile')
+                .html(function (i, s) {
+                    return videoObj.description.replace(/(?:\r\n|\r|\n)/g, '<br />');                    
+                })
+                .closest(this.container)
+                .find('.video-details-row.duration span').html(videoObj.asset.prettyDuration);
+            
+            this.updatePublishedDate();
+            this.checkDetails();
+        },
         updatePublishedDate : function(){
             $(this.container).find('.published-date').text(function(i, s){
                 return formatDate(s);
             });
         },
         checkDetails: function () {
-            var $detailsRow = $(this.container).find('.video-details-row.description'),
-                descHeight = $detailsRow.find('.desktop').height()
-                containerHeight = $detailsRow.height();
-            
-            var x = $detailsRow.css('max-height');
-            
+            var $detailsRow = $(this.container).find('.video-details-row.description');
+            var descHeight = $detailsRow.find('.desktop').height();
+            var containerHeight = $detailsRow.height();
+            //var x = $detailsRow.css('max-height');
             if(containerHeight < descHeight){
                 $detailsRow.addClass('show-more-active');
                 $(this.container).find('.show-more').show();
+            }
+            else{
+                $(this.container).find('.show-more').hide();
             }
         },
         initializeShowMoreButton: function () {
             var $btnShowMore = $(this.container).find('.btn-more-btn-container button'),
                 $descContainer = $(this.container).find('.description');
-                
+            
             $btnShowMore.on('click', function(event) {
                 event.preventDefault();
                 if (!$descContainer.hasClass('expand-description')) {
@@ -1205,25 +1243,29 @@
             embedUrl: "https://app.tvpage.com/swf/guide/"+ TVSite.channelVideosData.video.titleTextEncoded +"?u="+TVSite.loginId+"&amp;p="+TVSite.channelInfo.id+"&amp;v=" + TVSite.channelVideosData.video.id
         });
 
+        eventsBinder.VideoThumbnail('#tvp-video-container');
+
         videoDetails.updatePublishedDate();
         videoDetails.checkDetails();
         videoDetails.initializeShowMoreButton();
     }
 
     if (TVSite.isSearchPage) {        
-        var $searchHeader = $('.search-header')
-            getUrlParams = function(){
+        var $searchHeader = $('.search-header');
+        var getUrlParams = function(){
+                var o = {};
                 if (window.location && 'search' in location) {
-                    var o = {}, kv = location.search.substr(1).split('&'), params = [];
+                    var kv = location.search.substr(1).split('&'), params = [];
                     for (var i = 0; i < kv.length; i++) { params.push(kv[i]); }
                     for (var i = 0; i < params.length; i++) {
                         var param = params[i].split('=');
                         o[param[0]] = param[1];
                     }
-                    return o;
+                   
                 }
-            },
-            renderResult = function (res) {
+                return o;
+            };
+        var renderResult = function (res) {
                 if (res.length) {
                     if (res.length < 6) {
                         $searchLoadBtn.attr("disabled", true);
@@ -1237,12 +1279,12 @@
                 else{
                     $searchLoadBtn.attr("disabled", true);
                 }                
-            },
-            params = getUrlParams(),
-            $searchLoadBtn = $('.search-more .btn-more-button');
+            };
+        var params = getUrlParams();
+        var $searchLoadBtn = $('.search-more .btn-more-button');
         
         $searchLoadBtn.attr("disabled", true);
-        $searchHeader.find('.search-header-query').html(params.s);
+        $searchHeader.find('.search-header-query').text(params.s);
 
 
         $.ajax({
@@ -1374,4 +1416,5 @@
         }
     }
 
+    $('form').get(0).reset();
 }(jQuery, window.IScroll, window._, window.BigScreen));

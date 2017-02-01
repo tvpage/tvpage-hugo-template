@@ -129,7 +129,9 @@ h1.seo{
 		display: inline-block;
 	}
 }
-
+.latest-video-container{
+	height: 265px;
+}
 .latest-video{
 	cursor: pointer;
 	margin-bottom: 28px;
@@ -173,9 +175,30 @@ h1.seo{
 			top: 50%;
 			left: 50%;
 			transform: translate(-50%, -50%);
+			display: none;
+		}
+		.now-playing{
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			margin: 0;
+			display: none;
+			color: #fff;
+			font-weight: 600;
+			letter-spacing: 1px;
+			font-size: 32px;
+			white-space: nowrap;
 		}
 		&.active{
 			display: block;
+			.play-icon{ display: block}
+			.now-playing{display: none};
+		}
+		&.now-playing{
+			display: block;
+			.play-icon{ display: none}
+			.now-playing{display: block};
 		}
 	}
 }
@@ -205,7 +228,7 @@ h1.seo{
 		    border-bottom-left-radius: 25px;
 		    border: 0;
 		    padding-left: 15px;
-		    width: 80%;//179px;
+		    width: 80%;
 		    height: 56px;
 		    position: absolute;
 		    top: 0;
@@ -373,8 +396,6 @@ nav.menu-bar{
 	padding: 0 64px;
 	margin-bottom: 30px;
 	.slick-arrow{
-		height: 28px;
-		width: 28px;
 		margin: auto 0;
 		bottom: 0;
 		top: 0;
@@ -763,7 +784,6 @@ footer{
 		color: #1F1D26;
 		height: 24px;
 		padding: 0 6px;
-		text-transform: capitalize;
 		text-align: justify;
 		font-size: 14px;
 	}
@@ -1111,4 +1131,44 @@ footer{
 
 .video-title-mobile, .channel-videos-latest-videos-mobile, #in-time-products{
 	display: none;
+}
+.tvp-404{
+	padding-top: 80px;
+	&-img{
+		padding-bottom: 30px;
+	}
+	&-sorry{
+		height: 48px;
+		font-family: Dosis;
+		font-size: 38px;
+		font-weight: 200;
+		text-align: center;
+		line-height: 48px;
+		letter-spacing: 1px;
+		color: #1F1D26;
+		margin-top: 25px;
+	}
+	&-message{
+		font-family: Dosis;
+		font-size: 28px;
+		font-weight: 200;
+		text-align: center;
+		line-height: 36px;
+		letter-spacing: 1px;
+		color: #1F1D26;
+	}
+	&-line{
+		position: relative;
+		content: " ";
+		width : 350px;
+		border-bottom: 1px dashed #1F1D26;
+		&:after{
+			content: " ";
+			position: absolute;
+			bottom: 1px;
+			height: 0px;
+			width: 100%;
+			border-bottom : 1px solid #1f1d26;
+		}
+	}
 }

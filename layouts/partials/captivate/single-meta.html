@@ -1,15 +1,15 @@
 {{ if eq .Layout "index" }}
-	{{ $.Scratch.Add "metaImg" ( printf "%s%s/images/logo.png" .Permalink .Type ) }}
+	{{- $.Scratch.Add "metaImg" ( printf "%s%s/images/logo.png" .Permalink .Type ) -}}
 {{ else if eq .Layout "channel" }}
-	{{ $.Scratch.Add "metaImg" ( printf "%s%s/images/channel/%s.jpg" .Site.BaseURL .Type .Params.channelid ) }}
+	{{- $.Scratch.Add "metaImg" ( printf "%s%s/images/channel/%s.jpg" .Site.BaseURL .Type .Params.channelid ) -}}
 {{ else if eq .Layout "channelVideo" }}
-	{{ $video := index $.Site.Data.videos (printf "x%s" .Params.videoid ) }}
-	{{ $.Scratch.Add "metaImg" $video.asset.thumbnailUrl }}
+	{{- $video := index $.Site.Data.videos (printf "x%s" .Params.videoid ) -}}
+	{{- $.Scratch.Add "metaImg" $video.asset.thumbnailUrl -}}
 {{ end}}
 <meta charset="utf-8">
 <meta name="pinterest" content="nopin">
 <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-{{ .Hugo.Generator }}
+{{- .Hugo.Generator -}}
 <link rel="canonical" href="{{ .Permalink }}">
 <meta name="description" content="{{ replaceRE "\n" "" ( .Params.description | default .Summary) }}">
 <meta property="og:url"                content="{{ .Permalink }}" />
@@ -22,6 +22,3 @@
 <meta name="twitter:title" content="{{ .Title }} - {{ .Site.Title }}">
 <meta name="twitter:description" content="{{ replaceRE "\n" "" (.Params.description | default .Summary) }}">
 <meta name="twitter:image" content="{{ $.Scratch.Get "metaImg" }}">
-
-
-

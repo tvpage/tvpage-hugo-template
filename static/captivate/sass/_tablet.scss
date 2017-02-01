@@ -1,4 +1,8 @@
 @media(max-width: $screen-md-max){
+	.nav-justified>li, .nav-tabs.nav-justified>li {
+     display: block;
+     width: 100%; 
+	}
 	.header-bg,
 	.channel-latest-videos-header, 	
 	.products-title,
@@ -9,6 +13,9 @@
 	}
 	.navbar-toggle {
     	display: block;
+	}
+	.latest-video-container{
+			height: 225px;
 	}
 	nav.menu-bar{
 		border : none;
@@ -67,8 +74,6 @@
 		margin-top: 3px;
 	}
 	.featured-channel {	
-		//padding: 0 3px 3px;
-		//margin: 0;	
 		padding-top: 10px;
 		&-container{
 			line-height: 34px;
@@ -144,7 +149,7 @@
 				line-height: 22px;
 				font-weight: 700;
 				color: #fff;
-				width: 75%;
+				width: 73%;
 				outline: none;
 			}
 		}
@@ -277,6 +282,9 @@
 		> div{		
 			padding: 0;
 		}
+		&-products{
+			position: relative;
+		}
 	}
 	.video-details{
 		margin-bottom: 15px;
@@ -302,6 +310,7 @@
 			right: 0;
 			top: 0;
 			bottom: 0;
+			padding: 1px;
 		}
 	}
 	.video-details-row{
@@ -405,7 +414,6 @@
 			z-index: 999999;
 			top: 65px;
 			bottom: 48px;
-			//left: 0;
 			width: 87%;
 			height: 290px;
 			background: transparent;
@@ -418,6 +426,7 @@
 		& ul{
 			list-style: none;
 			padding: 0;
+			overflow: hidden;
 			li{
 				padding-top: 5px;
 				border-bottom: 1px solid rgba(255,255,255,0.5);				
@@ -426,6 +435,7 @@
 		}
 		.item{
 			padding: 0;
+			overflow: hidden;
 		}
 		.latest-video{
 			margin: 0;
@@ -458,6 +468,30 @@
 			font-size: 18px;
 			line-height: 22px;
 			color: #FFFFFF;
+			overflow: hidden;
 		}		
+	}
+	.tvp-products-wrapper{
+		height: 105px;
+		ul{			
+			height: 100%;
+			li{				
+				display: inline-block;
+				float: left;
+				padding: 10px 15px 10px 0;
+				&:first-child{
+					padding-left: 15px;
+				}
+			}
+		}
+		.tvp-product-image{
+			width: 88px;
+			height: 85px;
+		}
+	}
+}
+@media (max-width: $screen-md-max) and (orientation:portrait){
+	.latest-video-container{
+			height: 197px;
 	}
 }

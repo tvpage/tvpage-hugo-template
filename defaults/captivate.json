@@ -33,7 +33,7 @@
             "type": "text",
             "label": "Header Background",
             "code": "headerbackground",
-            "value": "images/background.png"
+            "value": "#2C6373"
         },
         {
             "type": "text",
