@@ -909,9 +909,9 @@
                     trigger: 'manual',
                     container: 'div.player-product',
                     content: function(){
-                        var hoverTmpl = '<div class="tvp-prod-hover-img-container"><div class="content"> <img src="{imageUrl}" alt=""></div></div><div class="tvp-prod-hover-title">{title}</div><div class="tvp-prod-hover-price-rate"> <span class="price">{price}</span></div> <a data-id="{id}" href="{linkUrl}" target="_blank" class="btn btn-primary btn-more-button analyticsClick">VIEW DETAILS</a>',
-                            hoverHtml = ''
-                            prodId = $(this).attr('id');
+                        var hoverTmpl = '<div class="tvp-prod-hover-img-container"><div class="content"> <img src="{imageUrl}" alt=""></div></div><div class="tvp-prod-hover-title">{title}</div><div class="tvp-prod-hover-price-rate"> <span class="price">{price}</span></div> <a data-id="{id}" href="{linkUrl}" target="_blank" class="btn btn-primary btn-more-button analyticsClick">VIEW DETAILS</a>';
+                        var hoverHtml = '';
+                        var prodId = $(this).attr('id');
 
                         var currentProd = _.filter(that.products, function(item){
                             return item.id == prodId;
@@ -965,7 +965,7 @@
                     this.isHorizontalScroll = false;
                 }
 
-                prodSlider = new IScroll('#tvp-products-wrapper', $(window).width() < 768 ? this.config.scrollx : this.config.scrolly);
+                this.prodSlider = new IScroll('#tvp-products-wrapper', $(window).width() < 768 ? this.config.scrollx : this.config.scrolly);
             },
             resizeWrapper: function (isX) {
                 if (isX) {
@@ -987,15 +987,15 @@
             resizeCheck: function () {            
                 if (($(window).width() < 768) && (!this.isHorizontalScroll)) {
                     this.isHorizontalScroll = true;
-                    prodSlider.destroy();
+                    this.prodSlider.destroy();
                     this.resizeWrapper(true);
-                    prodSlider = new IScroll('#tvp-products-wrapper', this.config.scrollx);
+                    this.prodSlider = new IScroll('#tvp-products-wrapper', this.config.scrollx);
                 }
                 else if(($(window).width() >= 768)){
                     this.isHorizontalScroll = false;
-                    prodSlider.destroy();
+                    this.prodSlider.destroy();
                     this.resizeWrapper(false);
-                    prodSlider = new IScroll('#tvp-products-wrapper', this.config.scrolly);
+                    this.prodSlider = new IScroll('#tvp-products-wrapper', this.config.scrolly);
                 }
             }
     }
@@ -1034,9 +1034,9 @@
             });
         },
         checkDetails: function () {
-            var $detailsRow = $(this.container).find('.video-details-row.description'),
-                descHeight = $detailsRow.find('.desktop').height()
-                containerHeight = $detailsRow.height();
+            var $detailsRow = $(this.container).find('.video-details-row.description');
+            var descHeight = $detailsRow.find('.desktop').height();
+            var containerHeight = $detailsRow.height();
             
             var x = $detailsRow.css('max-height');
             
@@ -1210,8 +1210,8 @@
     }
 
     if (TVSite.isSearchPage) {        
-        var $searchHeader = $('.search-header')
-            getUrlParams = function(){
+        var $searchHeader = $('.search-header');
+        var getUrlParams = function(){
                 if (window.location && 'search' in location) {
                     var o = {}, kv = location.search.substr(1).split('&'), params = [];
                     for (var i = 0; i < kv.length; i++) { params.push(kv[i]); }
@@ -1221,8 +1221,8 @@
                     }
                     return o;
                 }
-            },
-            renderResult = function (res) {
+            };
+        var renderResult = function (res) {
                 if (res.length) {
                     if (res.length < 6) {
                         $searchLoadBtn.attr("disabled", true);
@@ -1236,12 +1236,12 @@
                 else{
                     $searchLoadBtn.attr("disabled", true);
                 }                
-            },
-            params = getUrlParams(),
-            $searchLoadBtn = $('.search-more .btn-more-button');
+            };
+        var params = getUrlParams();
+        var $searchLoadBtn = $('.search-more .btn-more-button');
         
         $searchLoadBtn.attr("disabled", true);
-        $searchHeader.find('.search-header-query').html(params.s);
+        $searchHeader.find('.search-header-query').text(params.s);
 
 
         $.ajax({
@@ -1265,6 +1265,7 @@
         });
 
         $searchLoadBtn.click(function(event) {
+            console.log("entro todo");
             liveResultsPage += 1;
             channelDataExtractor.videos(null, liveResultsPage, params.s).done(function(res){
                 renderResult(res);
