@@ -1265,7 +1265,6 @@
         });
 
         $searchLoadBtn.click(function(event) {
-            console.log("entro todo");
             liveResultsPage += 1;
             channelDataExtractor.videos(null, liveResultsPage, params.s).done(function(res){
                 renderResult(res);
