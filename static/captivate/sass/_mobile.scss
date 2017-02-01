@@ -263,15 +263,6 @@
 			  top: -84px;
 		}
 	}
-	.player-product{
-		margin-bottom: 15px;
-		> div{		
-			padding: 0;
-		}
-		&-products{
-			position: relative;
-		}
-	}
 	.video-details{
 		margin-bottom: 15px;
 	} 
@@ -424,23 +415,4 @@
 			line-height: 21px;
 		}		
 	}
-	.tvp-products-wrapper{
-		height: 105px;
-		ul{			
-			height: 100%;
-			li{				
-				display: inline-block;
-				float: left;
-				padding: 10px 15px 10px 0;
-				&:first-child{
-					padding-left: 15px;
-				}
-			}
-		}
-		.tvp-product-image{
-			width: 88px;
-			height: 85px;
-		}
-	}
-
 }

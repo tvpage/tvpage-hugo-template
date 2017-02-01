@@ -173,9 +173,30 @@ h1.seo{
 			top: 50%;
 			left: 50%;
 			transform: translate(-50%, -50%);
+			display: none;
+		}
+		.now-playing{
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			margin: 0;
+			display: none;
+			color: #fff;
+			font-weight: 600;
+			letter-spacing: 1px;
+			font-size: 32px;
+			white-space: nowrap;
 		}
 		&.active{
 			display: block;
+			.play-icon{ display: block}
+			.now-playing{display: none};
+		}
+		&.now-playing{
+			display: block;
+			.play-icon{ display: none}
+			.now-playing{display: block};
 		}
 	}
 }
@@ -205,7 +226,7 @@ h1.seo{
 		    border-bottom-left-radius: 25px;
 		    border: 0;
 		    padding-left: 15px;
-		    width: 80%;//179px;
+		    width: 80%;
 		    height: 56px;
 		    position: absolute;
 		    top: 0;
@@ -763,7 +784,6 @@ footer{
 		color: #1F1D26;
 		height: 24px;
 		padding: 0 6px;
-		//text-transform: capitalize;
 		text-align: justify;
 		font-size: 14px;
 	}
@@ -1118,7 +1138,6 @@ footer{
 		padding-bottom: 30px;
 	}
 	&-sorry{
-		//width: 107px;
 		height: 48px;
 		font-family: Dosis;
 		font-size: 38px;
@@ -1130,7 +1149,6 @@ footer{
 		margin-top: 25px;
 	}
 	&-message{
-		//width: 318px;
 		font-family: Dosis;
 		font-size: 28px;
 		font-weight: 200;

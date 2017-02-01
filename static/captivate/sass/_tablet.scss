@@ -67,8 +67,6 @@
 		margin-top: 3px;
 	}
 	.featured-channel {	
-		//padding: 0 3px 3px;
-		//margin: 0;	
 		padding-top: 10px;
 		&-container{
 			line-height: 34px;
@@ -144,7 +142,7 @@
 				line-height: 22px;
 				font-weight: 700;
 				color: #fff;
-				width: 75%;
+				width: 73%;
 				outline: none;
 			}
 		}
@@ -277,6 +275,9 @@
 		> div{		
 			padding: 0;
 		}
+		&-products{
+			position: relative;
+		}
 	}
 	.video-details{
 		margin-bottom: 15px;
@@ -405,7 +406,6 @@
 			z-index: 999999;
 			top: 65px;
 			bottom: 48px;
-			//left: 0;
 			width: 87%;
 			height: 290px;
 			background: transparent;
@@ -459,5 +459,23 @@
 			line-height: 22px;
 			color: #FFFFFF;
 		}		
+	}
+	.tvp-products-wrapper{
+		height: 105px;
+		ul{			
+			height: 100%;
+			li{				
+				display: inline-block;
+				float: left;
+				padding: 10px 15px 10px 0;
+				&:first-child{
+					padding-left: 15px;
+				}
+			}
+		}
+		.tvp-product-image{
+			width: 88px;
+			height: 85px;
+		}
 	}
 }
