@@ -55,6 +55,12 @@
             "value" : ""
         },
         {
+            "type": "text",
+            "label" : "favicon",
+            "code" : "favicon",
+            "value" : ""
+        },
+        {
             "for": "player",
             "type": "boolean",
             "label": "Autoplay",

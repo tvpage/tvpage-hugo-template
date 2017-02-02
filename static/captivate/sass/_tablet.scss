@@ -203,8 +203,8 @@
 			padding: 0;
 			max-height: 40px;
 			margin: 10px 0 10px;
-			left: 50%;
-			top: 50%;
+			// left: 50%;
+			// top: 50%;
 		}
 	}
 	.slider{		
@@ -315,7 +315,6 @@
 			right: 0;
 			top: 0;
 			bottom: 0;
-			padding: 1px;
 		}
 	}
 	.video-details-row{
@@ -413,8 +412,8 @@
 		}
 	}
 	.tvp-mobile-search-results{
-		&-holder{
-			
+		&-holder{			
+			padding-right: 10px;
 			position: absolute;
 			z-index: 999999;
 			top: 65px;
@@ -492,6 +491,15 @@
 		.tvp-product-image{
 			width: 88px;
 			height: 85px;
+		}
+	}
+	.tvp-404{
+		&-message-main{
+			margin-bottom: 40px;
+		}
+		&-homepage{
+			display: flex;
+			margin-bottom: 30px;
 		}
 	}
 }

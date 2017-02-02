@@ -1,4 +1,11 @@
-{{ $baseUrl := .Site.BaseURL }}
+{{- $baseUrl := .Site.BaseURL -}}
+<!-- {{ .Site.Params.tvppages | jsonify }} -->
+
+{{- range $element := .Site.Params.tvppages -}}
+    {{ if eq $element.code "channelgalleryids"  }}
+        {{ $.Scratch.Add "channelIds" $element.value }}
+    {{ end }}    
+{{- end -}}
 <script type="text/javascript">
     TVSite = window.TVSite || {};
     var apiVersion = {{ getenv "HUGO_API_URL" }};
@@ -15,7 +22,7 @@
         TVSite.channelId = {{ ($.Scratch.Get "settings").homechannelid }};
     }
     TVSite.channelInfo = {{ ($.Scratch.Get "settings").channelData }} || {};
-
+    TVSite.channelIds = '{{ $.Scratch.Get "channelIds" }}';
     (function() {
         var ga = document.createElement("script");
         ga.type = "text/javascript";
