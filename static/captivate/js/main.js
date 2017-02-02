@@ -128,7 +128,7 @@
             var url = "";
             if (result && redefine(result)) {
                 if (TVSite.isSearchPage) {
-                    url = TVSite.baseUrl + '/' + String(result.entityTitleParent).replace(/\s/g,"-").replace(/\./g,"") + "/" + String(result.titleTextEncoded).replace(/\s/g,"-") + "/" + (result.entityIdParent || TVSite.channelId) + "-" + result.id;
+                    url = TVSite.baseUrl + '/' + String(result.entityTitleParent).replace(/\s/g,"-").replace(/\./g,"") + "/" + String(result.titleTextEncoded).replace(/\s/g,"-") + "/" + (result.entityIdParent || TVSite.channelId) + "-" + result.id+"/";
                 }
                 else{
                     url = TVSite.baseUrl + '/' +( (isLoadMore || (isFiltering || !isFiltering)) ? TVSite.channelInfo.titleTextEncoded : String(result.entityTitleParent).replace(/\s/g,"-").replace(/\./g,"") )+ "/" + String(result.titleTextEncoded).replace(/\s/g,"-") + "/" + (result.entityIdParent || TVSite.channelId) + "-" + result.id;
@@ -144,7 +144,7 @@
             };
             var url = "";
             if (result && redefine(result)) {
-                url = TVSite.baseUrl + '/' +String(result.entityTitleParent).replace(/\s/g,"-").replace(/\./g,"")+ "/" + String(result.titleTextEncoded).replace(/\s/g,"-") + "/" + (result.entityIdParent || TVSite.channelId) + "-" + result.id;
+                url = TVSite.baseUrl + '/' +String(result.entityTitleParent).replace(/\s/g,"-").replace(/\./g,"")+ "/" + String(result.titleTextEncoded).replace(/\s/g,"-") + "/" + (result.entityIdParent || TVSite.channelId) + "-" + result.id+"/";
             }
             return url;
         },
