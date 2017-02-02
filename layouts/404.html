@@ -1,9 +1,9 @@
-{{ range .Data.Pages }}
-	{{ if eq .Layout "404" }}
+{{- range .Data.Pages -}}
+	{{- if eq .Layout "404" -}}
 	{{ partial (printf "%s/dochead.html" .Type) . }}
 	{{ partial (printf "%s/header.html" .Type) . }}
 	{{ partial (printf "%s/main_404.html" .Type) . }}
 	{{ partial (printf "%s/scripts.html" .Type) . }}
 	{{ partial (printf "%s/footer.html" .Type) . }}
 	{{ end }}
-{{ end }}
+{{- end -}}
