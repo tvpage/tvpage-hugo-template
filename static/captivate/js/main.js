@@ -405,9 +405,15 @@
         VideoThumbnail: function (container) {
             $(container).on('click', '.latest-video', function(event) {
                 event.preventDefault();
-                //  Act on the event 
+                //  Act on the event
+                var thisLink = $(this).attr('href'),
+                    thisText = $(this).find('span').text(),
+                    $breadcrumb = $('.breadcrumb').find('#breadcrumb-2');
+
                 activeVideoId = $(this).data('id');
                 tvp_Player.loadSelectedVideo(activeVideoId);
+                $breadcrumb.find('span').empty().html(thisText);
+                $breadcrumb.find('a').attr('href', thisLink);
             });
         }
     };
