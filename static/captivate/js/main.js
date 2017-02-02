@@ -37,9 +37,9 @@
 			return [month, day, year].join(' ');
     };
     var customEllipsis = function () {
-        var els = '.latest-video-title',
-            maxHeight = parseInt($(els).css('max-height')) + 1;
-            lineHeight = isLoadMore ? 0 : parseInt($(els).css('line-height'));
+        var els = '.latest-video-title';
+        var maxHeight = parseInt($(els).css('max-height')) + 1;
+        var lineHeight = isLoadMore ? 0 : parseInt($(els).css('line-height'));
             
         _.each($(els).find('span'), function (ele, i) {            
             var actualHeight = ele.offsetHeight - lineHeight;
