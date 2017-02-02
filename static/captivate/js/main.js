@@ -138,6 +138,16 @@
             }
             return url;
         },
+        getLiveResultUrl :function(result) {
+            var redefine = function(val) {
+                return ("undefined" !== typeof val && null !== typeof val && val);
+            };
+            var url = "";
+            if (result && redefine(result)) {
+                url = TVSite.baseUrl + '/' +String(result.entityTitleParent).replace(/\s/g,"-").replace(/\./g,"")+ "/" + String(result.titleTextEncoded).replace(/\s/g,"-") + "/" + (result.entityIdParent || TVSite.channelId) + "-" + result.id;
+            }
+            return url;
+        },
     	resetLiveSearch : function() {
             $('#tvp-desktop-search-results ul')
                 .empty()
@@ -229,7 +239,7 @@
                     holder = '#tvp-desktop-search-results-holder';
                 for (var i = 0; i < results.length; ++i) {
                     var result = results[i];
-                    result['url'] = this.getResultUrl(result);
+                    result['url'] = this.getLiveResultUrl(result);
                     if ('description' in result) result.description = this.stripHtml(result.description);
                     html += this.tmpl(this.liveResultHtml, result);
                 }
@@ -294,7 +304,7 @@
                     that = this;
                 _.each(results, function(el, idx){
                     var result = results[idx];
-                    result['url'] = that.getResultUrl(result);                    
+                    result['url'] = that.getLiveResultUrl(result);                    
                     html += that.tmpl(template, result);
                 });
                 $("#tvp-result-list").append(html);
@@ -665,7 +675,7 @@
               channelTitle = TVSite.baseUrl+'/' + channel.titleTextEncoded;
               //channelTitle = channelTitle.replace("//", "/");
             }
-            url = channelTitle + videoTitle + videoUrl;
+            url = channelTitle + videoTitle + videoUrl+"/";
           }
           return url;
         },
