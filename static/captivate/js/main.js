@@ -37,13 +37,14 @@
 			return [month, day, year].join(' ');
     };
     var customEllipsis = function () {
+        console.log('customEllipsis');
         var els = '.latest-video-title';
         var maxHeight = parseInt($(els).css('max-height')) + 1;
-        var lineHeight = isLoadMore ? 0 : parseInt($(els).css('line-height'));
-            
-        _.each($(els).find('span'), function (ele, i) {            
-            var actualHeight = ele.offsetHeight - lineHeight;
+        var lineHeight = isLoadMore ? 0 : parseInt($(els).css('line-height'));        
 
+        _.each($(els).find('span'), function (ele, i) {            
+            var actualHeight = ele.offsetHeight; //- lineHeight;
+            console.log(ele.offsetHeight);
             if (actualHeight > maxHeight) {
                 $(ele).parent().addClass('tvp-custom-ellipsis');
             }
@@ -351,8 +352,7 @@
                         $hoverDiv.removeClass('active');
                     }
                 }
-            }, '.latest-video');
-            customEllipsis();
+            }, '.latest-video');            
         },
         Filters : function(){
             $("#product_category li a").on("click", function(event){
@@ -500,7 +500,7 @@
             else
                 btnLoadMore.attr("disabled", true);
         });
-        
+        customEllipsis();
     });
 
 
@@ -1441,6 +1441,10 @@
         }
     }
 
-    $('form').get(0).reset();
-    // customEllipsis();
+    $(window).on('orientationchange', function(event) {
+        customEllipsis();
+    });
+
+    $('form').get(0).reset();    
+    customEllipsis();
 }(jQuery, window.IScroll, window._, window.BigScreen));
