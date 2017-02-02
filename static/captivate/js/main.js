@@ -988,6 +988,9 @@
                     },
                     'hide.bs.popover': function () {
                         that.currentId = 0;
+                    },
+                    'touchstart' : function(e){
+                        
                     }
                 });
 
@@ -1001,6 +1004,12 @@
                     // window.open($(this).attr('href'), "_blank");
                     e.stopPropagation();
                     Analytics.registerProductClick($(this).data('id'));
+                }).on('touchstart', '.analyticsClick', function(e) {
+                    // e.preventDefault();
+                    //window.open($(e.currentTarget).attr('href'));
+                    //e.stopPropagation();
+                    //Analytics.registerProductClick($(this).data('id'));
+                    
                 });
             },
             initializeSlider: function () {
