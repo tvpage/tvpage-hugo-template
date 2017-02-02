@@ -72,6 +72,13 @@
             resize();
             root.addEventListener('resize', debounce(resize,50));
           }
+
+          if ('solo' === type) {
+            var that = this;
+            root.addEventListener('resize', debounce(function(){
+              that.contentWindow._tvplayer_.resize(holder.offsetWidth,holder.offsetHeight);
+            },50));
+          }
         };
         
         //Because iframes aare loaded first before the host page loading, we load them empties, making this load time
