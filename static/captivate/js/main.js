@@ -6,6 +6,7 @@
     var searchDesktopButton = $("#brand-header-search-button");
     var $nullResults = $('#tvp-null-results');
     var	resultsScroller;
+    var resultsScrollerMObile;
     var $searchMobileInput = $("#tvp-mobile-search-input");
     var $searchMobileCancelBtn = $('.mobile-search-modal-cancel-btn');
     var $searchMobileResultHolder = $('#tvp-mobile-search-results');
@@ -34,6 +35,22 @@
 			day = '' + d.getDate() + ',',
 			year = d.getFullYear();
 			return [month, day, year].join(' ');
+    };
+    var customEllipsis = function () {
+        var els = '.latest-video-title',
+            maxHeight = parseInt($(els).css('max-height')) + 1;
+            lineHeight = isLoadMore ? 0 : parseInt($(els).css('line-height'));
+            
+        _.each($(els).find('span'), function (ele, i) {            
+            var actualHeight = ele.offsetHeight - lineHeight;
+
+            if (actualHeight > maxHeight) {
+                $(ele).parent().addClass('tvp-custom-ellipsis');
+            }
+            else{
+                $(ele).parent().removeClass('tvp-custom-ellipsis');
+            }
+        });
     };
 
     var channelDataExtractor = {
@@ -100,7 +117,7 @@
                   +'</div>'
                 +'</div>'
                 +'<p class="latest-video-title">'
-                    +'{title}'
+                    +'<span>{title}</span>'
                 +'</p>'
             +'</a>'
         +'</div>',
@@ -164,22 +181,22 @@
             }
         },
         checkResultsScroller : function() {
-            if (!this.resultsScroller) {
-                this.resultsScroller = this.createDesktopScroller('#tvp-desktop-search-results-holder');
-                this.resultsScroller.on('scrollEnd', this.handleScrollEnd);
+            if (!resultsScroller) {
+                resultsScroller = this.createDesktopScroller('#tvp-desktop-search-results-holder');
+                resultsScroller.on('scrollEnd', this.handleScrollEnd);
             } else {
                 setTimeout(function() {
-                    renderUtil.resultsScroller.refresh();
+                    resultsScroller.refresh();
                 }, 0);
             }
         },
         checkResultsScrollerMobile : function(){
-            if (!this.resultsScrollerMObile) {
-                this.resultsScrollerMObile = this.createDesktopScroller('#tvp-mobile-search-results-holder');
-                this.resultsScrollerMObile.on('scrollEnd', this.handleScrollEndMobile);
+            if (!resultsScrollerMObile) {
+                resultsScrollerMObile = this.createDesktopScroller('#tvp-mobile-search-results-holder');
+                resultsScrollerMObile.on('scrollEnd', this.handleScrollEndMobile);
             } else {
                 setTimeout(function() {
-                    renderUtil.resultsScrollerMObile.refresh();
+                    resultsScrollerMObile.refresh();
                 }, 0);
             }
         },
@@ -333,6 +350,7 @@
                     }
                 }
             }, '.latest-video');
+            customEllipsis();
         },
         Filters : function(){
             $("#product_category li a").on("click", function(event){
@@ -365,10 +383,7 @@
 
                     Filters.reset();
                 }
-                
             });
-
-
         },
         VideoThumbnail: function (container) {
             $(container).on('click', '.latest-video', function(event) {
@@ -455,7 +470,10 @@
         else{
             $nullMobileResults.hide();
             $searchMobileResultHolder.hide();
+            if(resultsScrollerMObile)
+                resultsScrollerMObile.refresh();
             $("#tvp-result-list").empty();
+            $searchMobileResultHolder.hide();
         }
     });
     
@@ -463,8 +481,12 @@
         e.preventDefault();
         $searchMobileInput.val('');
         $nullMobileResults.hide();
+        $searchMobileResultHolder.hide();
+        if(resultsScrollerMObile)
+            resultsScrollerMObile.refresh();
         $("#tvp-result-list").empty();
         $searchMobileResultHolder.hide();
+
     });
 
     btnLoadMore.on("click", function(event){
@@ -966,6 +988,9 @@
                     },
                     'hide.bs.popover': function () {
                         that.currentId = 0;
+                    },
+                    'touchstart' : function(e){
+                        
                     }
                 });
 
@@ -979,6 +1004,12 @@
                     // window.open($(this).attr('href'), "_blank");
                     e.stopPropagation();
                     Analytics.registerProductClick($(this).data('id'));
+                }).on('touchstart', '.analyticsClick', function(e) {
+                    // e.preventDefault();
+                    //window.open($(e.currentTarget).attr('href'));
+                    //e.stopPropagation();
+                    //Analytics.registerProductClick($(this).data('id'));
+                    
                 });
             },
             initializeSlider: function () {
@@ -1417,4 +1448,5 @@
     }
 
     $('form').get(0).reset();
+    // customEllipsis();
 }(jQuery, window.IScroll, window._, window.BigScreen));

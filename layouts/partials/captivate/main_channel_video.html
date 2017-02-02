@@ -72,7 +72,7 @@
             
              <div class="latest-video-thumbnail">    
                 <div class="content">
-                  <img {{with .asset.thumbnailUrl}} src="{{ . }}"{{else}} src='/{{ .Type }}{{ .Param "thumbdefault" }}'{{end}}
+                  <img {{with .asset.thumbnailUrl}} src="{{ . }}"{{else}} src='{{$baseUrl}}{{ .Type }}/images/defaults/asset.png' {{end}}
                         alt="">
                   <div class="latest-video-hover">
                     <div class="play-icon"></div>
@@ -80,9 +80,7 @@
                   </div>                  
                 </div>
               </div>
-              <p class="latest-video-title">
-                {{- .title -}}
-              </p>
+              <p class="latest-video-title"><span>{{- .title -}}</span></p>
               </a>
             </div>
             {{- if eq (mod (add $i 1) 3) 0 -}}<div class="col-sm-12"></div>{{ end }}
