@@ -144,14 +144,9 @@
             swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+that.version+'-flash.swf',
             onReady: function(e, pl){
               that.instance = pl;
+              window._tvplayer_ = pl;
               that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progresscolor;
-              
-              var resize = debounce(function() {
-                that.instance.resize(that.el.clientWidth, that.el.clientHeight);
-              }, 180);
-              resize();
-              root.addEventListener('resize', resize);
-              root.addEventListener('orientationchange', resize);
+              that.instance.resize(that.el.parentNode.clientWidth, that.el.parentNode.clientHeight);
             
               var currentIndex = 0;
               if (startWith && startWith.length) {

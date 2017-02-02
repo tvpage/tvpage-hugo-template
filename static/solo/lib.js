@@ -73,7 +73,7 @@
           render(unique,body);
           loadData(settings,unique,function(data){
             settings.data = data || [];
-            new Player(doc.getElementById('tvp-player-el-'+unique),settings);
+            new Player('tvp-player-el-'+unique,settings);
           });
         }(random(),getSettings('dynamic')));
 
