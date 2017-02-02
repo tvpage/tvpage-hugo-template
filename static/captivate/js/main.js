@@ -36,6 +36,22 @@
 			year = d.getFullYear();
 			return [month, day, year].join(' ');
     };
+    var customEllipsis = function () {
+        var els = '.latest-video-title',
+            maxHeight = parseInt($(els).css('max-height')) + 1;
+            lineHeight = isLoadMore ? 0 : parseInt($(els).css('line-height'));
+            
+        _.each($(els).find('span'), function (ele, i) {            
+            var actualHeight = ele.offsetHeight - lineHeight;
+
+            if (actualHeight > maxHeight) {
+                $(ele).parent().addClass('tvp-custom-ellipsis');
+            }
+            else{
+                $(ele).parent().removeClass('tvp-custom-ellipsis');
+            }
+        });
+    };
 
     var channelDataExtractor = {
     	commonRequest : function(url, page, query){
@@ -101,7 +117,7 @@
                   +'</div>'
                 +'</div>'
                 +'<p class="latest-video-title">'
-                    +'{title}'
+                    +'<span>{title}</span>'
                 +'</p>'
             +'</a>'
         +'</div>',
@@ -334,6 +350,7 @@
                     }
                 }
             }, '.latest-video');
+            customEllipsis();
         },
         Filters : function(){
             $("#product_category li a").on("click", function(event){
@@ -366,10 +383,7 @@
 
                     Filters.reset();
                 }
-                
             });
-
-
         },
         VideoThumbnail: function (container) {
             $(container).on('click', '.latest-video', function(event) {
@@ -1425,4 +1439,5 @@
     }
 
     $('form').get(0).reset();
+    // customEllipsis();
 }(jQuery, window.IScroll, window._, window.BigScreen));
