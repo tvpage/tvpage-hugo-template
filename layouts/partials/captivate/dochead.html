@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 {{- range $i, $def := (getJSON (printf "themes/tvpage/defaults/%s.json" .Type)).option -}}
   {{- $.Scratch.SetInMap "settings" .code .value -}}
 {{ end }}
@@ -10,7 +11,6 @@
   {{ end }}
 {{ end }}
 {{- $baseUrl := .Site.BaseURL -}}
-<!DOCTYPE html>
 <html>
   <head>
     {{- partial (printf "%s/single-meta.html" .Type) . -}}
