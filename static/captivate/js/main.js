@@ -6,6 +6,7 @@
     var searchDesktopButton = $("#brand-header-search-button");
     var $nullResults = $('#tvp-null-results');
     var	resultsScroller;
+    var resultsScrollerMObile;
     var $searchMobileInput = $("#tvp-mobile-search-input");
     var $searchMobileCancelBtn = $('.mobile-search-modal-cancel-btn');
     var $searchMobileResultHolder = $('#tvp-mobile-search-results');
@@ -164,22 +165,22 @@
             }
         },
         checkResultsScroller : function() {
-            if (!this.resultsScroller) {
-                this.resultsScroller = this.createDesktopScroller('#tvp-desktop-search-results-holder');
-                this.resultsScroller.on('scrollEnd', this.handleScrollEnd);
+            if (!resultsScroller) {
+                resultsScroller = this.createDesktopScroller('#tvp-desktop-search-results-holder');
+                resultsScroller.on('scrollEnd', this.handleScrollEnd);
             } else {
                 setTimeout(function() {
-                    renderUtil.resultsScroller.refresh();
+                    resultsScroller.refresh();
                 }, 0);
             }
         },
         checkResultsScrollerMobile : function(){
-            if (!this.resultsScrollerMObile) {
-                this.resultsScrollerMObile = this.createDesktopScroller('#tvp-mobile-search-results-holder');
-                this.resultsScrollerMObile.on('scrollEnd', this.handleScrollEndMobile);
+            if (!resultsScrollerMObile) {
+                resultsScrollerMObile = this.createDesktopScroller('#tvp-mobile-search-results-holder');
+                resultsScrollerMObile.on('scrollEnd', this.handleScrollEndMobile);
             } else {
                 setTimeout(function() {
-                    renderUtil.resultsScrollerMObile.refresh();
+                    resultsScrollerMObile.refresh();
                 }, 0);
             }
         },
@@ -455,7 +456,10 @@
         else{
             $nullMobileResults.hide();
             $searchMobileResultHolder.hide();
+            if(resultsScrollerMObile)
+                resultsScrollerMObile.refresh();
             $("#tvp-result-list").empty();
+            $searchMobileResultHolder.hide();
         }
     });
     
@@ -463,8 +467,12 @@
         e.preventDefault();
         $searchMobileInput.val('');
         $nullMobileResults.hide();
+        $searchMobileResultHolder.hide();
+        if(resultsScrollerMObile)
+            resultsScrollerMObile.refresh();
         $("#tvp-result-list").empty();
         $searchMobileResultHolder.hide();
+
     });
 
     btnLoadMore.on("click", function(event){

@@ -72,7 +72,7 @@
             
              <div class="latest-video-thumbnail">    
                 <div class="content">
-                  <img {{with .asset.thumbnailUrl}} src="{{ . }}"{{else}} src='/{{ .Type }}{{ .Param "thumbdefault" }}'{{end}}
+                  <img {{with .asset.thumbnailUrl}} src="{{ . }}"{{else}} src='{{$baseUrl}}{{ .Type }}/images/defaults/asset.png' {{end}}
                         alt="">
                   <div class="latest-video-hover">
                     <div class="play-icon"></div>
