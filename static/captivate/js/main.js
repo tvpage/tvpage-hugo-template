@@ -37,7 +37,6 @@
 			return [month, day, year].join(' ');
     };
     var customEllipsis = function () {
-        console.log('customEllipsis');
         var els = '.latest-video-title';
         var maxHeight = parseInt($(els).css('max-height')) + 1;
         var lineHeight = isLoadMore ? 0 : parseInt($(els).css('line-height'));        
@@ -906,7 +905,8 @@
                     interactiveScrollbars : true,
                     scrollX : false,
                     mouseWheel : true,
-                    scrollbars : true                    
+                    scrollbars : true,
+                    fadeScrollbars: true
                 },
                 scrollx: {
                     scrollX : true,

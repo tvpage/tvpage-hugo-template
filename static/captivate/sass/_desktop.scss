@@ -136,7 +136,8 @@ h1.seo{
 	cursor: pointer;
 	margin-bottom: 28px;
 	position: relative;
-	&:hover{
+	text-decoration: none;
+	&:hover, &:focus{
 		text-decoration: none;
 	}
 	&-thumbnail{
@@ -1160,6 +1161,9 @@ footer{
 		color: #1F1D26;
 		margin-top: 25px;
 	}
+	&-message-main{
+		margin-bottom: 120px;
+	}
 	&-message{
 		font-family: Dosis;
 		font-size: 28px;
@@ -1182,6 +1186,16 @@ footer{
 			width: 100%;
 			left: 0px;
 			border-bottom : 1px solid #1f1d26;
+		}
+	}
+	&-homepage{
+		display: none;		
+		.btn{
+			max-width: 369px;
+			width: 100%;
+			font-size: 20px;
+			line-height: 26px;
+			margin:0 15px;
 		}
 	}
 }

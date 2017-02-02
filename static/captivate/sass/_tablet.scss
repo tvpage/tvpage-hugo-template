@@ -315,7 +315,6 @@
 			right: 0;
 			top: 0;
 			bottom: 0;
-			padding: 1px;
 		}
 	}
 	.video-details-row{
@@ -492,6 +491,15 @@
 		.tvp-product-image{
 			width: 88px;
 			height: 85px;
+		}
+	}
+	.tvp-404{
+		&-message-main{
+			margin-bottom: 40px;
+		}
+		&-homepage{
+			display: flex;
+			margin-bottom: 30px;
 		}
 	}
 }
