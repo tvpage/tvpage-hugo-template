@@ -912,7 +912,8 @@
                     scrollX : true,
                     scrollY : false,
                     mouseWheel : true,
-                    tap : true
+                    tap : true,
+                    click: true
                 }
             },
             initialize: function (settings) {
