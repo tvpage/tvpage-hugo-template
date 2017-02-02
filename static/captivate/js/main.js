@@ -250,6 +250,8 @@
                 $('#tvp-video-container').append(html);
                 if(isMobile === false || isIOS === false)
                     eventsBinder.onLoadMore();
+                // >>
+                tvp_Player.showNowPlayingOverlay(activeVideoId);
         },
         addFilters : function(filters){
             var getOption = function(opt, selected) {
