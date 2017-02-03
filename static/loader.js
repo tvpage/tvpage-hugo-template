@@ -76,7 +76,7 @@
           if ('solo' === type) {
             var that = this;
             root.addEventListener('resize', debounce(function(){
-              if(isset(that.contentWindow, '_tvp_'+id)){
+              if(isset(that.contentWindow, '_tvp_'+id) && !that.contentWindow['_tvp_'+id+'isFullScreen']){
                 that.contentWindow['_tvp_'+id].resize(holder.offsetWidth,holder.offsetHeight);
               }
             },50));
