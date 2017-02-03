@@ -13,7 +13,7 @@
 
 	var settings = {{ $.Scratch.Get "settings" }},
 		videoid = {{ with .Params.videoid }}{{ . }}{{ else }}''{{ end }},
-		channelid = {{ with .Params.channelId }}{{ . }}{{ else }}''{{ end }},
+		channelid = {{ with .Params.channelid }}{{ . }}{{ else }}''{{ end }},
 		videos = [];
 
 	if (videoid) {
@@ -31,6 +31,7 @@
 	}
 	
 	settings.data = videos;
+	settings.widgetId = settings.name;
 	
 	new Player('tvp-player-el', settings);
 

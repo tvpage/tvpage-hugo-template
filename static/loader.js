@@ -56,7 +56,7 @@
         iframe.classList.add('tvp-iframe');
         iframe.setAttribute('frameborder', '0');
         iframe.setAttribute('scrolling', 'no');
-        
+
         holder.classList.add(type);
         holder.appendChild(iframe);
         
@@ -76,7 +76,9 @@
           if ('solo' === type) {
             var that = this;
             root.addEventListener('resize', debounce(function(){
-              that.contentWindow._tvplayer_.resize(holder.offsetWidth,holder.offsetHeight);
+              if(isset(that.contentWindow, '_tvp_'+id)){
+                that.contentWindow['_tvp_'+id].resize(holder.offsetWidth,holder.offsetHeight);
+              }
             },50));
           }
         };
@@ -91,7 +93,7 @@
 
           var libs = {
                 tvpa: '\'\/\/a.tvpage.com\/tvpa.min.js\'',
-                tvpp: '\'\/\/appcdn.tvpage.com\/player\/assets\/tvp/tvp-1.8.4-min.js\'',
+                tvpp: '\'\/\/appcdn.tvpage.com\/player\/assets\/tvp/tvp-1.8.5-min.js\'',
                 tvpsolo: '\''+domain+'\/' + type + '\/lib'+libsExt+'\'',
                 player: '\''+domain+'\/player'+libsExt+'\''
               },
@@ -135,7 +137,7 @@
         var libsFrag = doc.createDocumentFragment(),
             libs = {
               tvpa: '//a.tvpage.com/tvpa.min.js',
-              tvpp: '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.4-min.js',
+              tvpp: '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
               tvpsolo: domain + '/'+ type + '/lib' + libsExt,
               player: domain + '/player' + libsExt
             },
