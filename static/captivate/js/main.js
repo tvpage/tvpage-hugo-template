@@ -1034,10 +1034,19 @@
                     that.currentId = 0;
                 }).on('mouseleave', function() {
                     $('*[data-toggle="popover"]').popover('hide');                
-                }).off().on('click', '.analyticsClick', function(e) {
+                });
+
+                if(isMobile){
+                  $('.player-product').off('touchstart').on('touchstart', '.analyticsClick', function(e) {
                     e.stopPropagation();
                     Analytics.registerProductClick($(this).data('id'));
-                });
+                  });
+                }else{
+                  $('.player-product').off('click').on('click', '.analyticsClick', function(e) {
+                      e.stopPropagation();
+                      Analytics.registerProductClick($(this).data('id'));
+                  });
+                }
             },
             initializeSlider: function () {
                 var config = {};
