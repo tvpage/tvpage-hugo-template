@@ -986,10 +986,10 @@
                 });
                 $('.tvp-products-wrapper ul').html(html);
             },
-            bindEvents: function () {
+            bindEvents: function (position) {
                 var that = this;
                 $(this.el).popover({
-                    placement: 'left',
+                    placement: "left",
                     template: '<div class="popover tvp-prod-hover" role="tooltip"><div class="arrow"></div><div class="popover-content tvp-prod-hover-content"></div></div>',
                     html: true,
                     trigger: 'manual',
@@ -1494,6 +1494,9 @@
         searchDesktopInput.val("");
     });
     
+    $(window).resize(function(){
+        var currentWidth = $(window).width();
+    });
 
     $('form').get(0).reset();    
     customEllipsis();
