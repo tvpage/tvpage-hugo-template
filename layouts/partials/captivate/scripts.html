@@ -7,7 +7,7 @@
 <script type="text/javascript">
     TVSite = window.TVSite || {};
     var apiVersion = {{ getenv "HUGO_API_URL" }};
-    TVSite.loginId = {{ .Site.Params.loginid }};
+    TVSite.loginId = {{ .Site.Params.loginId }};
     TVSite.apiUrl = apiVersion || "https:\/\/api.tvpage.com/v1/";
     TVSite.baseUrl = "";
     //checking page type
@@ -32,11 +32,11 @@
 
     var _tvpa = _tvpa || [];
     _tvpa.push(["config", {
-        "li": {{ .Site.Params.loginid }},
+        "li": TVSite.loginId,
         "gaDomain": "preview.bandh.tv",
         "logUrl": "\/\/api.tvpage.com\/v1\/__tvpa.gif"
     }]);
-    _tvpa.push(["track", "ci", { li: {{ .Site.Params.loginid }} }]);
+    _tvpa.push(["track", "ci", { li: TVSite.loginId }]);
 
 </script>
 <script src="{{$baseUrl}}/{{ .Type }}/js/vendor/underscore-min.js" ></script>
