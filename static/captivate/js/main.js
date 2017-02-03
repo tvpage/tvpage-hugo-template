@@ -64,9 +64,9 @@
     				n : TVSite.isHomePage ? 6 : 6 ,
     				s : (query == null || query == undefined) ? "" : query,
     				"X-login-id" : TVSite.loginId,
-                    status: 'approved',
-                    o: 'date_created',
-                    od: 'asc',
+                    //status: 'approved',
+                    // o: 'date_created',
+                    // od: 'asc',
     			},
                 isSearchHeader ? {channelsLimit : TVSite.channelIds} : {})
     		});
@@ -1359,7 +1359,7 @@
                 p: liveResultsPage,
                 n: 1000,
                 'X-login-id': TVSite.loginId,
-                status: 'approved',
+                //status: 'approved',
                 o: 'date_created',
                 od: 'desc',
                 channelsLimit: TVSite.channelIds

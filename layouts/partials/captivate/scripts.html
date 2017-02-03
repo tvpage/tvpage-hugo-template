@@ -1,6 +1,4 @@
 {{- $baseUrl := .Site.BaseURL -}}
-<!-- {{ .Site.Params.tvppages | jsonify }} -->
-
 {{- range $element := .Site.Params.tvppages -}}
     {{ if eq $element.code "channelgalleryids"  }}
         {{ $.Scratch.Add "channelIds" $element.value }}
@@ -41,9 +39,9 @@
     _tvpa.push(["track", "ci", { li: {{ .Site.Params.loginid }} }]);
 
 </script>
-<script src="{{$baseUrl}}{{ .Type }}/js/vendor/underscore-min.js" ></script>
-<script src="{{$baseUrl}}{{.Type}}/js/vendor/jquery-3.1.1.min.js"></script>
-<script src="{{$baseUrl}}{{.Type}}/js/vendor/bootstrap.min.js"></script>
-<script src="{{$baseUrl}}{{.Type}}/js/vendor/slick.min.js"></script>
-<script src="{{$baseUrl}}{{.Type}}/js/vendor/iscroll-5.2.0.min.js"></script>
-<script src="{{$baseUrl}}{{.Type}}/js/main.js" type="text/javascript"></script>
+<script src="{{$baseUrl}}/{{ .Type }}/js/vendor/underscore-min.js" ></script>
+<script src="{{$baseUrl}}/{{.Type}}/js/vendor/jquery-3.1.1.min.js"></script>
+<script src="{{$baseUrl}}/{{.Type}}/js/vendor/bootstrap.min.js"></script>
+<script src="{{$baseUrl}}/{{.Type}}/js/vendor/slick.min.js"></script>
+<script src="{{$baseUrl}}/{{.Type}}/js/vendor/iscroll-5.2.0.min.js"></script>
+<script src="{{$baseUrl}}/{{.Type}}/js/main.js" type="text/javascript"></script>

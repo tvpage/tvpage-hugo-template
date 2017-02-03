@@ -68,11 +68,11 @@
           {{- range $i, $p := first 6 $page.data -}}
             <div class="col-sm-4 col-md-4 latest-video-container">
             
-              <a href="{{$baseUrl}}{{slicestr .url 1}}" class="latest-video" data-id="{{.id}}">
+              <a href="{{$baseUrl}}/{{slicestr .url 1}}" class="latest-video" data-id="{{.id}}">
             
              <div class="latest-video-thumbnail">    
                 <div class="content">
-                  <img {{with .asset.thumbnailUrl}} src="{{ . }}"{{else}} src='{{$baseUrl}}{{ .Type }}/images/defaults/asset.png' {{end}}
+                  <img {{with .asset.thumbnailUrl}} src="{{ . }}"{{else}} src='{{$baseUrl}}/{{ .Type }}/images/defaults/asset.png' {{end}}
                         alt="">
                   <div class="latest-video-hover">
                     <div class="play-icon"></div>
