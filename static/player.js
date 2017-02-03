@@ -1,7 +1,8 @@
 //The solo js library.
 ;(function(root,doc) {
 
-  var isset = function(o,p){
+  var isFullScreen = false,
+      isset = function(o,p){
         var val = o;
         if (p) val = o[p];
         return 'undefined' !== typeof val;
@@ -150,7 +151,9 @@
               //Add the player instance here locally and also to parent document.
               that.instance = pl;
               var resize = debounce(function() {
-                that.instance.resize(that.el.parentNode.clientWidth, that.el.parentNode.clientHeight);
+                if (pl && !isFullScreen) {
+                  that.instance.resize(that.el.parentNode.clientWidth, that.el.parentNode.clientHeight);
+                }
                }, 180);
               resize();
 
@@ -173,6 +176,12 @@
 
               if (root.DEBUG) {
                 console.debug("endTime = " + performance.now());
+              }
+              if ("undefined" !== typeof window.BigScreen) {
+                BigScreen.onchange = function(){
+                  isFullScreen = !isFullScreen;
+                  window['_tvp_'+options.widgetId+'isFullScreen'] = isFullScreen;
+                };
               }
             },
             onStateChange: function(e){
