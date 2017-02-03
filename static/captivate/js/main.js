@@ -1026,9 +1026,6 @@
                     },
                     'hide.bs.popover': function () {
                         that.currentId = 0;
-                    },
-                    'touchstart' : function(e){
-                        
                     }
                 });
 
@@ -1037,17 +1034,9 @@
                     that.currentId = 0;
                 }).on('mouseleave', function() {
                     $('*[data-toggle="popover"]').popover('hide');                
-                }).on('click', '.analyticsClick', function(e) {
-                    // e.preventDefault();
-                    // window.open($(this).attr('href'), "_blank");
+                }).off().on('click', '.analyticsClick', function(e) {
                     e.stopPropagation();
                     Analytics.registerProductClick($(this).data('id'));
-                }).on('touchstart', '.analyticsClick', function(e) {
-                    // e.preventDefault();
-                    //window.open($(e.currentTarget).attr('href'));
-                    //e.stopPropagation();
-                    //Analytics.registerProductClick($(this).data('id'));
-                    
                 });
             },
             initializeSlider: function () {
