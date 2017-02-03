@@ -14,6 +14,6 @@
   TVSite.channelVideosData.video = "undefined" !== typeof TVSite.channelVideosData.video || {};
   TVSite.channelVideosData.video = {{ $video | jsonify | safeJS }};
 </script>
-<script type="text/javascript" src="https://appcdn.tvpage.com/player/assets/tvp/tvp-1.8.3-min.js"></script>  
+<script type="text/javascript" src="https://appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js"></script>  
 {{ partial (printf "%s/scripts.html" .Type) . }}
 {{ partial (printf "%s/footer.html" .Type) . }}
