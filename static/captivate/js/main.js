@@ -487,10 +487,12 @@
             search.mobile(val).done(function (results) {                
                 isSearchHeader = false;
                 if(results.length){
+                    $("#tvp-result-list").empty();
                     $nullMobileResults.hide();
                     renderUtil.handleMobileSearchResults(results);
                 }
                 else{
+                    $("#tvp-result-list").empty();
                     $searchMobileResultHolder.hide();
                     $nullMobileResults.show();
                 }

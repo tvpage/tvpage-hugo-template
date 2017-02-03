@@ -19,14 +19,14 @@
 <main id="main-content" class="main-content">
     <section class="channel-page-banner">      
       <div class="channel-page-banner-desktop">
-        {{ if (where (readDir $directory) "Name" $fileDesktop) }}
+        {{- if (where (readDir $directory) "Name" $fileDesktop) -}}
           <img src='{{$baseUrl}}{{.Type}}/images/channel/{{.Params.channelid}}-banner.jpg' alt="">
         {{- else -}}
           <img src='{{$baseUrl}}{{.Type}}/images/defaults/channel-banner.jpg' alt="">
         {{- end -}}
       </div>
       <div class="channel-page-banner-mobile">
-        {{ if (where (readDir $directory) "Name" $fileMobile) }}
+        {{- if (where (readDir $directory) "Name" $fileMobile) -}}
           <img src='{{$baseUrl}}{{.Type}}/images/channel/{{.Params.channelid}}.jpg' alt="">
         {{- else -}}
           <img src='{{$baseUrl}}{{.Type}}/images/defaults/channel-banner-mobile.jpg' alt="">
@@ -34,10 +34,10 @@
       </div>
       <div class="main-channel-banner">
         <div class="main-channel-banner-title">
-          {{ $channel.title }}
+          {{- $channel.title -}}
         </div>
         <div class="main-channel-banner-total-videos">
-          {{ $channelVideosQty }} videos
+          {{- $channelVideosQty -}} videos
         </div>
         <div class="main-channel-banner-subscribe">
           <a id="subscribe-channel" href="#" data-channelid="{{ .Params.channelid }}" class="subscribe-btn">subscribe to channel</a>
