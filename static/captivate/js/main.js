@@ -1485,6 +1485,11 @@
         customEllipsis();
     });
 
+    $(window).bind("pageshow", function() {
+        searchDesktopInput.val("");
+    });
+    
+
     $('form').get(0).reset();    
     customEllipsis();
 }(jQuery, window.IScroll, window._, window.BigScreen));
