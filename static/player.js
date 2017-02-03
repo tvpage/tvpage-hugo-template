@@ -34,11 +34,11 @@
 
     this.autoplay = isset(options.autoplay) ? options.autoplay : false;
     this.autonext = isset(options.autonext) ? options.autonext : true;
-    this.version = isset(options.version) ? options.version : '1.8.4';
+    this.version = isset(options.version) ? options.version : '1.8.5';
     this.progresscolor = isset(options.progresscolor) ? options.progresscolor : '#E57211';
     this.transcript = isset(options.transcript) ? options.transcript : false;
     this.removecontrols = isset(options.removecontrols) ? options.removecontrols : ["hd"];
-    this.tvpa = isset(options.tvpa) ? options.tvpa : false;
+    this.tvpa = isset(options.tvpa) ? options.tvpa : true;
 
     this.el = 'string' === typeof el ? doc.getElementById(el) : el;
     this.instance = null;
@@ -61,7 +61,9 @@
           channelId = 'undefined' !== typeof options.channel ? options.channel.id : 0;
         }
         asset.uniqueId = video.id;
-        asset.analyticsObj = { vd: video.id, li: video.loginId, pg: channelId };
+        if(that.tvpa){
+          asset.analyticsObj = { vd: video.id, li: video.loginId, pg: channelId };
+        }
         if (!asset.sources) asset.sources = [{ file: asset.videoId }];
         asset.type = asset.type || 'youtube';
         assets.push(asset);
@@ -128,12 +130,13 @@
         if ( !isset(root,'TVPage') || !isset(root,'_tvpa') ) {
           (++checks < 20) ? libsReady() : console.log('limit reached');
         } else {
-
-          _tvpa.push(['config', {li: options.loginid,
-            gaDomain: 'www.tvpage.tv',
-            logUrl: '\/\/api.tvpage.com\/v1\/__tvpa.gif'
-          }]);
-          _tvpa.push(['track', 'ci', {li:options.loginid}]);
+          if(that.tvpa){
+            _tvpa.push(['config', {li: options.loginid,
+              gaDomain: 'www.tvpage.tv',
+              logUrl: '\/\/api.tvpage.com\/v1\/__tvpa.gif'
+            }]);
+            _tvpa.push(['track', 'ci', {li:options.loginid}]);
+          }
 
           //We create insntances on the tvpage player.
           new TVPage.player({
@@ -143,11 +146,21 @@
             apiBaseUrl: '//api.tvpage.com/v1',
             swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+that.version+'-flash.swf',
             onReady: function(e, pl){
+
+              //Add the player instance here locally and also to parent document.
               that.instance = pl;
-              window._tvplayer_ = pl;
+              var resize = debounce(function() {
+                that.instance.resize(that.el.parentNode.clientWidth, that.el.parentNode.clientHeight);
+               }, 180);
+              resize();
+
+              if(window.frameElement){
+                window['_tvp_'+options.widgetId] = pl;
+              }else{
+                root.addEventListener('resize', resize);
+              }
+
               that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progresscolor;
-              that.instance.resize(that.el.parentNode.clientWidth, that.el.parentNode.clientHeight);
-            
               var currentIndex = 0;
               if (startWith && startWith.length) {
                 for (var i = 0; i < that.assets.length; i++) {
