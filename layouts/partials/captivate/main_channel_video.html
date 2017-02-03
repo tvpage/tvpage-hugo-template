@@ -29,7 +29,7 @@
             </div>
           </div>
         </div>
-        <div class="row container" style="position: relative">
+        <div class="row container tvp-video-container-mobile">
           <h1 class="video-title-mobile"><span class="title">{{ .Title }}</span> <span class="caret" data-toggle="collapse" data-target=".video-details-row.description .mobile" aria-expanded="false"></span></h1>
           <h2 class="section-header video-details-header">VIDEO DETAILS
             <div class="social-share">                
@@ -73,7 +73,7 @@
              <div class="latest-video-thumbnail">    
                 <div class="content">
                   <img {{with .asset.thumbnailUrl}} src="{{ . }}"{{else}} src='{{$baseUrl}}/{{ .Type }}/images/defaults/asset.png' {{end}}
-                        alt="">
+                        alt="{{.id}}">
                   <div class="latest-video-hover">
                     <div class="play-icon"></div>
                     <p class="now-playing">NOW PLAYING</p>

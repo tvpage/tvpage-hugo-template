@@ -20,16 +20,16 @@
     <section class="channel-page-banner">      
       <div class="channel-page-banner-desktop">
         {{- if (where (readDir $directory) "Name" $fileDesktop) -}}
-          <img src='{{$baseUrl}}/{{.Type}}/images/channel/{{.Params.channelid}}-banner.jpg' alt="">
+          <img src='{{$baseUrl}}/{{.Type}}/images/channel/{{.Params.channelid}}-banner.jpg' alt="{{.Params.channelid}}">
         {{- else -}}
-          <img src='{{$baseUrl}}/{{.Type}}/images/defaults/channel-banner.jpg' alt="">
+          <img src='{{$baseUrl}}/{{.Type}}/images/defaults/channel-banner.jpg' alt="{{.Params.channelid}}">
         {{- end -}}
       </div>
       <div class="channel-page-banner-mobile">
         {{- if (where (readDir $directory) "Name" $fileMobile) -}}
-          <img src='{{$baseUrl}}/{{.Type}}/images/channel/{{.Params.channelid}}.jpg' alt="">
+          <img src='{{$baseUrl}}/{{.Type}}/images/channel/{{.Params.channelid}}.jpg' alt="{{.Params.channelid}}">
         {{- else -}}
-          <img src='{{$baseUrl}}/{{.Type}}/images/defaults/channel-banner-mobile.jpg' alt="">
+          <img src='{{$baseUrl}}/{{.Type}}/images/defaults/channel-banner-mobile.jpg' alt="{{.Params.channelid}}">
         {{- end -}}
       </div>
       <div class="main-channel-banner">
@@ -50,14 +50,14 @@
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="selected">Product Category</span> <span class="caret"></span>
               </button>
-              <ul id="product_category" style="display: none" class="dropdown-menu">
+              <ul id="product_category" class="dropdown-menu">
               </ul>
             </div>
             <div class="btn-group">
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="selected">Type of Video</span> <span class="caret"></span>
               </button>
-              <ul id="type_of_video" style="display: none" class="dropdown-menu">
+              <ul id="type_of_video" class="dropdown-menu">
               </ul>
             </div>
             <span class="tvp-filter-reset">reset</span>
@@ -80,7 +80,7 @@
             <div class="latest-video-thumbnail">    
               <div class="content">
                   <img {{with .asset.thumbnailUrl}} src="{{ . }}"{{else}} src='{{$baseUrl}}/{{ .Type }}/images/defaults/asset.png'{{end}}
-                      alt="">
+                      alt="{{.id}}">
                     <div class="latest-video-hover">              
                   <div class="play-icon"></div>
                 </div>

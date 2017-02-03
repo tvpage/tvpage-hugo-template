@@ -493,15 +493,7 @@
 			height: 85px;
 		}
 	}
-	.tvp-404{
-		&-message-main{
-			margin-bottom: 40px;
-		}
-		&-homepage{
-			display: flex;
-			margin-bottom: 30px;
-		}
-	}
+	
 }
 @media (max-width: $screen-md-max) and (orientation:portrait){
 	.latest-video-container{

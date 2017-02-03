@@ -109,7 +109,7 @@
             +'<a href="{url}" class="latest-video" data-id="{id}">'
                 +'<div class="latest-video-thumbnail">'        
                     +'<div class="content" >'
-                        +'<img src="{asset.thumbnailUrl}" alt="">'
+                        +'<img src="{asset.thumbnailUrl}" alt="{id}">'
                         +'<div class="latest-video-hover">'
                             +'<div class="play-icon"></div>'
                             +'<p class="now-playing">NOW PLAYING</p>'
@@ -292,11 +292,12 @@
                 }
                 var $filter = $('#' + key );
                 if(1=== frag.childElementCount){
-                    $filter.addClass('tvp-filter-inactive');
+                    $filter.removeClass("dropdown-menu");
+                    $filter.addClass("tvp-filter-inactive");    
                 }
                 else{
                     $filter.html(frag);
-                    $filter.removeAttr("style");
+                    //$filter.addClass('tvp-filter-active');
                 }
             }
         },
@@ -1043,8 +1044,8 @@
                 }).on('touchstart', '.analyticsClick', function(e) {
                     // e.preventDefault();
                     //window.open($(e.currentTarget).attr('href'));
-                    //e.stopPropagation();
-                    //Analytics.registerProductClick($(this).data('id'));
+                    e.stopPropagation();
+                    Analytics.registerProductClick($(this).data('id'));
                     
                 });
             },
