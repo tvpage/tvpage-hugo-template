@@ -21,11 +21,11 @@ body {
 }
 
 .slick-arrow.slick-prev {
-  left: 10px;
+  left: 0;
 }
 
 .slick-arrow.slick-next {
-  right: 10px;
+  right: 0;
 }
 
 .tvp-player {
@@ -79,20 +79,16 @@ body {
   pointer-events: none;
 }
 
-.tvp-products {
-  padding: 0 10px;
-}
-
 .tvp-products-title {
   margin: 10px 0;
   padding-left: 10px;
 }
 
 .tvp-product {
+  border: 1px solid gray;
   display: block;
   overflow: hidden;
-  width: 245px;
-  margin: 0 auto;
+  margin: 0 5px;
 }
 
 .tvp-product-image {
@@ -103,6 +99,12 @@ body {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+}
+@media only screen and (min-width : 480px) {
+  .tvp-product-image {
+    width: 100px;
+    height: 100px;
+  }
 }
 
 .tvp-product-data {
