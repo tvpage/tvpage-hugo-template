@@ -2,7 +2,7 @@
 {{- range $i, $p := first ($.Scratch.Get "settings").itemsperpage (index $.Site.Data.channelVideos (printf "x%s_page_1" ($.Scratch.Get "settings").channelid) "data") -}}
 {{- $.Scratch.SetInMap "videos" .id (index $.Site.Data.videos (printf "x%s" .id )) -}}
 {{- end -}}
-<link rel="stylesheet" type="text/css" href="{{.Site.BaseURL}}{{.Type}}/css/main.css">
+<link rel="stylesheet" type="text/css" href="{{.Site.BaseURL}}/{{.Type}}/css/main.css">
 <div id='{{ ($.Scratch.Get "settings").name }}' class="iframe-content">
   <header class="tvp-sidebar-header">
     <h2>Recommended Videos</h2>  
