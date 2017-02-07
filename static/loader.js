@@ -42,7 +42,7 @@
     }
     
     var domain = spot.getAttribute('data-domain'),
-        type = id.split('-').shift();
+        type = spot.getAttribute('class').split('-').pop();
 
     widget.run = function() {
       spot.insertAdjacentHTML('beforebegin', '<div id="' + id + '-holder" class="tvp-iframe-holder"></div>');

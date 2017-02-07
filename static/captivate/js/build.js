@@ -1282,10 +1282,10 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
                 });
                 $('.tvp-products-wrapper ul').html(html);
             },
-            bindEvents: function (position) {
+            bindEvents: function () {
                 var that = this;
                 $(this.el).popover({
-                    placement: "left",
+                    placement: 'left',
                     template: '<div class="popover tvp-prod-hover" role="tooltip"><div class="arrow"></div><div class="popover-content tvp-prod-hover-content"></div></div>',
                     html: true,
                     trigger: 'manual',
@@ -1349,7 +1349,6 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
                   $('.player-product').off('touchstart').on('touchstart', '.analyticsClick', function(e) {
                     e.stopPropagation();
                     Analytics.registerProductClick($(this).data('id'));
-
                   });
                 }else{
                   $('.player-product').off('click').on('click', '.analyticsClick', function(e) {
@@ -1833,9 +1832,6 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
         searchDesktopInput.val("");
     });
     
-    $(window).resize(function(){
-        var currentWidth = $(window).width();
-    });
 
     $('form').get(0).reset();    
     customEllipsis();
