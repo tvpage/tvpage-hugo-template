@@ -1335,7 +1335,7 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
                         $('*[data-toggle="popover"]').popover('hide');                
                     }).on('click', '.analyticsClick', function(e) {
                         e.stopPropagation();
-                        Analytics.registerProductClick($(this).data('id'));
+                        //Analytics.registerProductClick($(this).data('id'));
                     });
                 }
                 $('.player-product').on('mouseleave', '.popover', function() {
