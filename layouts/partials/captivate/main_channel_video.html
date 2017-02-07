@@ -72,8 +72,8 @@
             
              <div class="latest-video-thumbnail">    
                 <div class="content">
-                  <img {{with .asset.thumbnailUrl}} src="{{ . }}"{{else}} src='{{$baseUrl}}/{{ .Type }}/images/defaults/asset.png' {{end}}
-                        alt="{{.id}}">
+                  <img class="lazyImg" {{with .asset.thumbnailUrl}} data-original="{{ . }}"{{else}} data-original='{{$baseUrl}}{{ .Type }}/images/defaults/asset.png' {{end}}
+                        alt="{{- .title -}}">
                   <div class="latest-video-hover">
                     <div class="play-icon"></div>
                     <p class="now-playing">NOW PLAYING</p>
