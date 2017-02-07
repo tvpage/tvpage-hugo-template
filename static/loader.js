@@ -7,7 +7,8 @@
     console.debug("startTime = " + performance.now());
   }
 
-  var isset = function(o,p){
+  var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
+      isset = function(o,p){
         return 'undefined' !== typeof o[p]
       },
       appendToHead = function(el){
@@ -41,22 +42,26 @@
     }
     
     var domain = spot.getAttribute('data-domain'),
-        type = id.split('-').shift(),
-        cssLib = domain+'/'+type+'/styles.css';
+        type = id.split('-').shift();
 
     widget.run = function() {
-      spot.insertAdjacentHTML('beforebegin', '<div id="' + id + '-holder" class="' + pre + '-holder"></div>');
+      spot.insertAdjacentHTML('beforebegin', '<div id="' + id + '-holder" class="tvp-iframe-holder"></div>');
       
       var holder = doc.getElementById(id + '-holder'),
           embedMethod = spot.getAttribute('data-embedmethod') || 'iframe';
       
       if (embedMethod === 'iframe') {
+        var link = doc.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = domain+'/'+type+'/css/host'+(isMobile?'-mobile':'')+'.css';
+        appendToHead(link);
+
         var iframe = doc.createElement('iframe');
         iframe.setAttribute('allowfullscreen', '');
-        iframe.classList.add('tvp-iframe');
         iframe.setAttribute('frameborder', '0');
         iframe.setAttribute('scrolling', 'no');
-
+        iframe.classList.add('tvp-iframe');
+        
         holder.classList.add(type);
         holder.appendChild(iframe);
         
@@ -66,17 +71,30 @@
           }
 
           if ('sidebar' === type) {
-            var content = this.contentWindow.document.body.firstChild,
-              resize = function() { holder.style.height = content.offsetHeight + 'px';};
-              
-            resize();
+            var ifrBody = this.contentWindow.document.body,
+                content = ifrBody.firstChild,
+                resize = function() { 
+                  holder.style.height = content.offsetHeight + 'px';
+                };
+
+            var checks = 0;
+            (function contentReady() {
+              setTimeout(function() {
+                if (!content.classList.contains('first-render')) {
+                  (++checks < 20) ? contentReady() : console.log('limit reached');
+                } else {
+                  resize();
+                }
+              },200);
+            })();
+            
             root.addEventListener('resize', debounce(resize,50));
           }
 
           if ('solo' === type) {
             var that = this;
             root.addEventListener('resize', debounce(function(){
-              if(isset(that.contentWindow, '_tvp_'+id)){
+              if(isset(that.contentWindow, '_tvp_'+id) && !that.contentWindow['_tvp_'+id+'isFullScreen']){
                 that.contentWindow['_tvp_'+id].resize(holder.offsetWidth,holder.offsetHeight);
               }
             },50));
@@ -91,22 +109,20 @@
           'var d = document, head = d.getElementsByTagName(\'head\')[0],'+
           'injScr = function(sr){ var s=d.createElement(\'script\');s.src=sr;head.appendChild(s);};';
 
-          var libs = {
-                tvpa: '\'\/\/a.tvpage.com\/tvpa.min.js\'',
-                tvpp: '\'\/\/appcdn.tvpage.com\/player\/assets\/tvp/tvp-1.8.5-min.js\'',
-                tvpsolo: '\''+domain+'\/' + type + '\/lib'+libsExt+'\'',
-                player: '\''+domain+'\/player'+libsExt+'\''
-              },
-              libsCounter = Object.keys(libs).length;
+          var libs = [
+            '\'//a.tvpage.com/tvpa.min.js\'',
+            '\'//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js\'',
+            '\'' + domain + '/analytics' + libsExt + '\'',
+            '\'' + domain + '/player' + libsExt + '\'',
+            '\'' + domain + '/' + type + '/js/main' + libsExt + '\''
+          ];
 
-          while (libsCounter > 0) {
-            var key = Object.keys(libs)[libsCounter-1];
-            html += 'injScr(' + libs[key] + ');';
-            libsCounter--;
+          for (var i = 0; i < libs.length; i++) {
+            html += 'injScr(' + libs[i] + ');';
           }
 
           html += 'var css=d.createElement(\'link\');css.rel=\'stylesheet\';css.type=\'text/css\';';
-          html += 'css.href='+('\''+domain+'\/' + type)+'\/styles.css\';head.appendChild(css);';
+          html += 'css.href='+('\''+domain+'/' + type)+'/styles.css\';head.appendChild(css);';
 
           if (root.DEBUG) {
             html += 'window.DEBUG=1;';
@@ -136,27 +152,28 @@
         //Appending libs to be used for inline.
         var libsFrag = doc.createDocumentFragment(),
             libs = {
-              tvpa: '//a.tvpage.com/tvpa.min.js',
+              tvpsolo: domain + '/'+ type + '/js/main' + libsExt,
+              player: domain + '/player' + libsExt,
+              analytics: domain + '/analytics' + libsExt,
               tvpp: '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
-              tvpsolo: domain + '/'+ type + '/lib' + libsExt,
-              player: domain + '/player' + libsExt
+              tvpa: '//a.tvpage.com/tvpa.min.js'
             },
-            libsCounter = Object.keys(libs).length;
+            libsCount = Object.keys(libs).length;
 
-        while (libsCounter > 0) {
-          var key = Object.keys(libs)[libsCounter-1];
+        while (libsCount > 0) {
+          var key = Object.keys(libs)[libsCount-1];
           if (doc.getElementById(key)) break;
           var scr = doc.createElement('script');
           scr.id = key;
           scr.async = true;
           scr.src = libs[key].replace(/'/g,'');
           libsFrag.appendChild(scr);
-          libsCounter--;
+          libsCount--;
         }
 
         var link = doc.createElement('link');
         link.rel = 'stylesheet';
-        link.href = cssLib;
+        link.href = domain+'/'+type+'/styles.css';
         libsFrag.appendChild(link);
         appendToHead(libsFrag);
       }
@@ -167,18 +184,6 @@
     return widget;
   }
 
-//Adding the css for host page
-var style = doc.createElement('style'),
-    pre = 'tvp-iframe',
-    holderClass = '.' + pre + '-holder';
-
-style.innerHTML = holderClass + '{height:0;position:relative;transition:height ease-out 0.0001s;}'+
-holderClass + '.solo{padding-top:56.25%;}'+
-holderClass + '.inline{padding-top:0;}'+
-'.' + pre + '{top:0;left:0;width:100%;height:100%;position:absolute;}';
-appendToHead(style);
-
-//ENTRY POINT
 //Load each widget spots from the page.
 var spots = doc.querySelectorAll('.tvp-sidebar, .tvp-solo'),
     spotsCount = spots.length;

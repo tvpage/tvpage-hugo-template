@@ -70,9 +70,9 @@
     				n : TVSite.isHomePage ? 6 : 6 ,
     				s : (query == null || query == undefined) ? "" : query,
     				"X-login-id" : TVSite.loginId,
-                    status: 'approved',
-                    o: 'date_created',
-                    od: 'asc',
+                    //status: 'approved',
+                    // o: 'date_created',
+                    // od: 'asc',
     			},
                 isSearchHeader ? {channelsLimit : TVSite.channelIds} : {})
     		});
@@ -177,7 +177,10 @@
                     scrollX: false,
                     click: true,
                     mouseWheel: true,
-                    scrollbars: true
+                    scrollbars: true,
+                    disablePointer: true, // important to disable the pointer events that causes the issues
+                    disableTouch: false, // false if you want the slider to be usable with touch devices
+                    disableMouse: false // false if you want the slider to be usable with a mouse (desktop)
                 });
             }
             return scroller;
@@ -298,11 +301,12 @@
                 }
                 var $filter = $('#' + key );
                 if(1=== frag.childElementCount){
-                    $filter.addClass('tvp-filter-inactive');
+                    $filter.removeClass("dropdown-menu");
+                    $filter.addClass("tvp-filter-inactive");    
                 }
                 else{
                     $filter.html(frag);
-                    $filter.removeAttr("style");
+                    //$filter.addClass('tvp-filter-active');
                 }
             }
         },
@@ -996,31 +1000,51 @@
                 });
                 $('.tvp-products-wrapper ul').html(html);
             },
-            bindEvents: function () {
+            bindEvents: function (position) {
                 var that = this;
-                $(this.el).on({
+                $(this.el).popover({
+                    placement: "left",
+                    template: '<div class="popover tvp-prod-hover" role="tooltip"><div class="arrow"></div><div class="popover-content tvp-prod-hover-content"></div></div>',
+                    html: true,
+                    trigger: 'manual',
+                    container: 'div.player-product',
+                    content: function(){
+                        var hoverTmpl = '<div class="tvp-prod-hover-img-container"><div class="content"> <img src="{imageUrl}" alt=""></div></div><div class="tvp-prod-hover-title">{title}</div><div class="tvp-prod-hover-price-rate"> <span class="price">{price}</span></div> <a data-id="{id}" href="{linkUrl}" target="_blank" class="btn btn-primary btn-more-button analyticsClick">VIEW DETAILS</a>';
+                        var hoverHtml = '';
+                        var prodId = $(this).attr('id');
+
+                        var currentProd = _.filter(that.products, function(item){
+                            return item.id == prodId;
+                        })[0];
+
+                        hoverHtml = renderUtil.tmpl(hoverTmpl, currentProd);
+
+                        return hoverHtml;
+                    }
+                }).on({
+
                     'mouseenter' : function () {
-                        if (that.currentId === 0) {
-                            $(this).popover('show');
+                        if(!isMobile){
+                          if (that.currentId === 0) {
+                              $(this).popover('show');
+                          }
+                          else{
+                              var _id = $(this).attr('id');
+                              if (_id !== that.currentId) {
+                                  $('div[id="'+that.currentId+'"][data-toggle="popover"]').popover('hide');
+                                  $(this).popover('show');
+                              }
+                          }                        
                         }
-                        else{
-                            var _id = $(this).attr('id');
-                            if (_id !== that.currentId) {
-                                $('div[id="'+that.currentId+'"][data-toggle="popover"]').popover('hide');
-                                $(this).popover('show');
-                            }
-                        }                        
                     },
                     'show.bs.popover': function () {
                         that.currentId = $(this).attr('id');
                     },
                     'hide.bs.popover': function () {
                         that.currentId = 0;
-                    },
-                    'touchstart' : function(e){
-                        
                     }
                 });
+
                 if (!$._data( $('.player-product')[0], 'events' )) {
                     $('.player-product').on('mouseleave', '.popover', function() {
                         $('div[id="'+that.currentId+'"]').popover('hide');
@@ -1031,6 +1055,26 @@
                         e.stopPropagation();
                         Analytics.registerProductClick($(this).data('id'));
                     });
+                }
+                $('.player-product').on('mouseleave', '.popover', function() {
+                    $('div[id="'+that.currentId+'"]').popover('hide');
+                    that.currentId = 0;
+                }).on('mouseleave', function() {
+                    $('*[data-toggle="popover"]').popover('hide');                
+                });
+
+                if(isMobile){
+                  $('.player-product').off('touchstart').on('touchstart', '.analyticsClick', function(e) {
+                    e.stopPropagation();
+                    Analytics.registerProductClick($(this).data('id'));
+
+                  });
+                }else{
+                  $('.player-product').off('click').on('click', '.analyticsClick', function(e) {
+                      e.stopPropagation();
+                      Analytics.registerProductClick($(this).data('id'));
+                  });
+
                 }
             },
             initializeSlider: function () {
@@ -1378,7 +1422,7 @@
                 p: liveResultsPage,
                 n: 1000,
                 'X-login-id': TVSite.loginId,
-                status: 'approved',
+                //status: 'approved',
                 o: 'date_created',
                 od: 'desc',
                 channelsLimit: TVSite.channelIds
@@ -1503,8 +1547,17 @@
         customEllipsis();
     });
 
+    $(window).bind("pageshow", function() {
+        searchDesktopInput.val("");
+    });
+    
+    $(window).resize(function(){
+        var currentWidth = $(window).width();
+    });
+
     $('form').get(0).reset();    
     customEllipsis();
+
     lazyLoadImage({
         selector: '.lazyImg',
         container: '#main-content'

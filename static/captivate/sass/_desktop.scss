@@ -1,6 +1,9 @@
 h1.seo{
 	display: none;
 }
+.tvp-video-container-mobile{
+	position: relative;;
+}
 .channel-items{
 	@include aspect-ratio(16, 9);
 	img{
@@ -531,7 +534,7 @@ footer{
 			height: 100%;
 			width: 100%;
 			top: 0;
-			background: linear-gradient(180deg, transparent, #FFFFFF 100%);
+			background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,1) 100%);
 		}
 		&.expand-description{
 			max-height: none;
@@ -1031,6 +1034,12 @@ footer{
 			opacity: 1;
 		}
 	}
+	&-inactive{
+		display: none;
+	}
+	&-active{
+		display: block;
+	}
 
 }
 .caret{
@@ -1168,7 +1177,8 @@ footer{
 		margin-top: 25px;
 	}
 	&-message-main{
-		margin-bottom: 120px;
+		/*margin-bottom: 120px;*/
+		margin-bottom: 40px;
 	}
 	&-message{
 		font-family: Dosis;
@@ -1195,7 +1205,8 @@ footer{
 		}
 	}
 	&-homepage{
-		display: none;		
+		//display: none;
+		margin-bottom: 30px;		
 		.btn{
 			max-width: 369px;
 			width: 100%;

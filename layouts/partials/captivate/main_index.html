@@ -14,8 +14,8 @@
 					{{- $currentPage := index $.Site.Data.channels (printf "x%s" .Params.channelid ) -}}
 						<div class="col-xs-12 col-sm-6 col-md-6 featured-channel">
 							<article class="channel-items">
-								<a href="{{$baseUrl}}c/{{$currentPage.titleTextEncoded}}/{{.Params.channelid}}/" class="content">
-									<img class="lazyImg" data-original="{{$baseUrl}}{{ $.Type }}/images/channel/{{.Params.channelid}}.jpg" alt="">
+								<a href="{{$baseUrl}}/c/{{$currentPage.titleTextEncoded}}/{{.Params.channelid}}/" class="content" >
+									<img class="lazyImg" src="{{$baseUrl}}/{{ $.Type }}/images/channel/{{.Params.channelid}}.jpg" alt="{{ .Title }}">
 									<span class="featured-channel-container">
 										<span class="featured-channel-title">{{ .Title }}</span>
 									</span>
@@ -32,9 +32,9 @@
 				{{- range where .Site.Pages "Layout" "channel" -}}
 					{{ if in ($.Scratch.Get "settings").channelsliderids .Params.channelid }}
 					<div>
-						<a href="{{ $baseUrl }}{{ slicestr .URL 1}}" class="brand-item">
+						<a href="{{ $baseUrl }}/{{ slicestr .URL 1}}" class="brand-item">
 							<div class="content">
-								<img data-lazy="{{$baseUrl}}{{ .Type }}/images/{{.Params.channelid}}-logo.png" alt="">
+								<img data-lazy="{{$baseUrl}}/{{ .Type }}/images/{{.Params.channelid}}-logo.png" alt="{{ .Title }}">
 							</div>
 						</a>
 					</div>
@@ -50,10 +50,10 @@
 				{{ $i := 0 }}
 				{{- range first 6 $page.data -}}
 					<div class="col-sm-4 col-md-4 latest-video-container">
-					    <a href="{{$baseUrl}}{{slicestr .url 1}}" class="latest-video" data-id="{{.id}}">				
+					    <a href="{{$baseUrl}}/{{slicestr .url 1}}" class="latest-video" data-id="{{.id}}">				
 						<div class="latest-video-thumbnail">		
 						  <div class="content">
-					      	<img class="lazyImg" {{with .asset.thumbnailUrl}} data-original="{{ . }}"{{else}} data-original='{{$baseUrl}}{{ .Type }}/images/defaults/asset.png'{{end}}
+					      	<img class="lazyImg" {{with .asset.thumbnailUrl}} data-original="{{ . }}"{{else}} data-original='{{$baseUrl}}/{{ .Type }}/images/defaults/asset.png'{{end}}
 					      			alt="{{- .title -}}">
 					      		<div class="latest-video-hover">	      			
 									<div class="play-icon"></div>

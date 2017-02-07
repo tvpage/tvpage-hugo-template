@@ -50,14 +50,14 @@
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="selected">Product Category</span> <span class="caret"></span>
               </button>
-              <ul id="product_category" style="display: none" class="dropdown-menu">
+              <ul id="product_category" class="dropdown-menu">
               </ul>
             </div>
             <div class="btn-group">
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="selected">Type of Video</span> <span class="caret"></span>
               </button>
-              <ul id="type_of_video" style="display: none" class="dropdown-menu">
+              <ul id="type_of_video" class="dropdown-menu">
               </ul>
             </div>
             <span class="tvp-filter-reset">reset</span>
@@ -76,7 +76,7 @@
         {{- with $page.data -}}
           {{- range $i, $p := first 6 $page.data -}}
             <div class="col-sm-4 col-md-4 latest-video-container">
-            <a href="{{$baseUrl}}{{slicestr .url 1}}" class="latest-video" data-id="{{.id}}">
+            <a href="{{$baseUrl}}/{{slicestr .url 1}}" class="latest-video" data-id="{{.id}}">
             <div class="latest-video-thumbnail">    
               <div class="content">
                   <img class="lazyImg" {{with .asset.thumbnailUrl}} data-original="{{ . }}"{{else}} src='{{$baseUrl}}{{ .Type }}/images/defaults/asset.png'{{end}}

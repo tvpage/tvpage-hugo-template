@@ -1,7 +1,7 @@
-//The solo js library.
 ;(function(root,doc) {
 
-  var isset = function(o,p){
+  var isFullScreen = false,
+      isset = function(o,p){
         var val = o;
         if (p) val = o[p];
         return 'undefined' !== typeof val;
@@ -29,8 +29,7 @@
   //player and expose most utilities, helping to encapsualte what is
   //required for a few players to co-exist.
   function Player(el, options, startWith) {
-    if (!el) return console.log('need element');
-    if (!isset(options) || !isset(options.data) || options.data.length <= 0) return console.log('need aseets');
+    if (!el || !isset(options) || !isset(options.data) || options.data.length <= 0) return console.log('bad args');
 
     this.autoplay = isset(options.autoplay) ? options.autoplay : false;
     this.autonext = isset(options.autonext) ? options.autonext : true;
@@ -38,12 +37,11 @@
     this.progresscolor = isset(options.progresscolor) ? options.progresscolor : '#E57211';
     this.transcript = isset(options.transcript) ? options.transcript : false;
     this.removecontrols = isset(options.removecontrols) ? options.removecontrols : ["hd"];
-    this.tvpa = isset(options.tvpa) ? options.tvpa : true;
-
-    this.el = 'string' === typeof el ? doc.getElementById(el) : el;
+    this.analytics = isset(options.analytics) ? options.analytics : true;
+    
     this.instance = null;
+    this.el = 'string' === typeof el ? doc.getElementById(el) : el;
 
-    var that = this;
     this.assets = (function(data){
       var assets = [],
           counter = data.length;
@@ -55,15 +53,21 @@
         var asset = video.asset,
             channelId;
 
-        if(video.parentId){
-          channelId = video.parentId
-        }else{
-          channelId = 'undefined' !== typeof options.channel ? options.channel.id : 0;
-        }
         asset.uniqueId = video.id;
-        if(that.tvpa){
-          asset.analyticsObj = { vd: video.id, li: video.loginId, pg: channelId };
+        asset.loginId = video.loginId;
+
+        if (isset(video,'events') && video.events.length) {
+          asset.analyticsLogUrl = video.analytics;
+          asset.analyticsObj = video.events[1].data;
+          console.log("OBJECT TO BE TRACKED (analyticsObj)", asset.analyticsObj);
+        } else {
+          asset.analyticsObj = { 
+            pg: isset(video,'parentId') ? video.parentId : ( isset(options,'channel') ? options.channel.id : 0 ),
+            vd: video.id, 
+            li: video.loginId
+          };
         }
+
         if (!asset.sources) asset.sources = [{ file: asset.videoId }];
         asset.type = asset.type || 'youtube';
         assets.push(asset);
@@ -78,6 +82,8 @@
     this.hideEl = function(el){
       return el.style.display = 'none';
     };
+
+    var that = this;
     this.showPlayBtn = function(imgUrl){
       var frag = document.createDocumentFragment(),
           div = doc.createElement('div');
@@ -113,6 +119,23 @@
           willCue = true;
         }
       }
+
+      var analytics =  new Analytics(),
+          config = {
+            domain: isset(location,'hostname') ?  location.hostname : '',
+            loginId: asset.loginId
+          };
+      
+      //Update tvpa analytics configuration depending on the video type 
+      //(exhange or standard)
+      if (isset(asset,'analyticsLogUrl')) {
+        console.log("ANALYTICS LOG URL", asset.analyticsLogUrl);
+        config.logUrl = asset.analyticsLogUrl;
+        analytics.initConfig(config);
+      } else {
+        config.logUrl = '\/\/api.tvpage.com\/v1\/__tvpa.gif';
+        analytics.initConfig(config);
+      }
       
       if (willCue) {
         this.instance.cueVideo(asset)
@@ -120,7 +143,7 @@
           this.showPlayBtn(asset.thumbnailUrl);
         }
       } else {
-       this.instance.loadVideo(asset);
+       this.instance.loadVideo(asset);   
       }
     };
 
@@ -130,62 +153,64 @@
         if ( !isset(root,'TVPage') || !isset(root,'_tvpa') ) {
           (++checks < 20) ? libsReady() : console.log('limit reached');
         } else {
-          if(that.tvpa){
-            _tvpa.push(['config', {li: options.loginid,
-              gaDomain: 'www.tvpage.tv',
-              logUrl: '\/\/api.tvpage.com\/v1\/__tvpa.gif'
-            }]);
-            _tvpa.push(['track', 'ci', {li:options.loginid}]);
-          }
 
           //We create insntances on the tvpage player.
           new TVPage.player({
             poster: true,
             techOrder: 'html5,flash',
-            analytics: { tvpa: that.tvpa },
+            analytics: { tvpa: that.analytics },
             apiBaseUrl: '//api.tvpage.com/v1',
             swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+that.version+'-flash.swf',
             onReady: function(e, pl){
-
-              //Add the player instance here locally and also to parent document.
+              //Add the player instance locally and also to parent document.
               that.instance = pl;
+              
               var resize = debounce(function() {
-                that.instance.resize(that.el.parentNode.clientWidth, that.el.parentNode.clientHeight);
+                if (pl && !isFullScreen) {
+                  that.instance.resize(that.el.parentNode.clientWidth, that.el.parentNode.clientHeight);
+                }
                }, 180);
               resize();
 
-              if(window.frameElement){
-                window['_tvp_'+options.widgetId] = pl;
+              if(root.frameElement){
+                root['_tvp_'+options.widgetId] = pl;
               }else{
                 root.addEventListener('resize', resize);
               }
 
               that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progresscolor;
-              var currentIndex = 0;
+              var current = 0;
               if (startWith && startWith.length) {
                 for (var i = 0; i < that.assets.length; i++) {
-                  if (that.assets[i].uniqueId === startWith) currentIndex = i;
+                  if (that.assets[i].uniqueId === startWith) current = i;
                 }
               }
 
-              that.current = currentIndex;
+              that.current = current;
               that.play(that.assets[that.current]);
 
               if (root.DEBUG) {
                 console.debug("endTime = " + performance.now());
               }
+              
+              if (isset(root,'BigScreen')) {
+                BigScreen.onchange = function(){
+                  isFullScreen = !isFullScreen;
+                  root['_tvp_'+options.widgetId+'isFullScreen'] = isFullScreen;
+                };
+              }
             },
             onStateChange: function(e){
-              if ('tvp:media:videoended' === e){
-                if(isset(that.autonext) && that.autonext){
-                  that.current++;
-                  if (!that.assets[that.current]) {
-                    that.current = 0;
-                  }
+              if ('tvp:media:videoended' !== e) return;
+              
+              if(isset(that.autonext) && that.autonext){
+                that.current++;
+                if (!that.assets[that.current]) {
+                  that.current = 0;
                 }
-
-                that.play(that.assets[that.current], true);
               }
+
+              that.play(that.assets[that.current], true);
             },
             divId: that.el.id,
             controls: {
