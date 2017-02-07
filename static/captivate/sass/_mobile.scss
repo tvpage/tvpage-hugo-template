@@ -432,12 +432,15 @@
 		padding-right: 0;
 	}
 }
-@media (max-width: 750px) and (orientation:portrait){
+@media (max-width: 750px){
 	.latest-video-container{
 			height: auto;
 	}
-	.mobile-menu .row .col-xs-2{
+	nav.menu-bar .mobile-menu .row .col-xs-2{
 		padding-left: 0;
 		padding-right: 0;
+		& .navbar-toggle{
+			margin-right: 0px;
+		}
 	}
 }
