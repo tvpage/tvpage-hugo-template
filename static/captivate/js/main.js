@@ -987,8 +987,7 @@
                 });
                 $('.tvp-products-wrapper ul').html(html);
             },
-            bindEvents: function () {                
-                
+            bindEvents: function () {
                 var that = this;
                 $(this.el).on({
                     'mouseenter' : function () {
