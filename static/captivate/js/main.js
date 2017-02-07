@@ -959,6 +959,10 @@
                             that.bindEvents();
                             that.initializeSlider();
                         }
+                        else{
+                            that.destroy();
+                            $('#tvp-products-wrapper ul').html('');
+                        }
                     });
             },
             renderProducts: function (results) {                
@@ -985,7 +989,9 @@
             bindEvents: function () {
                 var that = this;
                 $(this.el).popover({
-                    placement: 'left',
+                    placement: function (d, t) {
+                        return $(window).width() < that.breakpoint ? 'top' : 'left';
+                    },
                     template: '<div class="popover tvp-prod-hover" role="tooltip"><div class="arrow"></div><div class="popover-content tvp-prod-hover-content"></div></div>',
                     html: true,
                     trigger: 'manual',
@@ -1072,6 +1078,10 @@
             },
             destroy: function () {
                 $(this.el).popover('destroy');
+                if(this.prodSlider){
+                    this.prodSlider.destroy();
+                    this.prodSlider = null;                    
+                }
             },
             resizeCheck: function () {            
                 if (($(window).width() < this.breakpoint) && (!this.isHorizontalScroll)) {
