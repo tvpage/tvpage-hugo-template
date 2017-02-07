@@ -956,8 +956,9 @@
                             that.products = results;
                             that.renderProducts(results);
                             Analytics.registerProductPanel($('#tvp-products-wrapper .tvp-product-image'));
-                            that.bindEvents();
+                            that.initializePopupProducts();
                             that.initializeSlider();
+                            that.bindEvents();
                         }
                         else{
                             that.destroy();
@@ -986,30 +987,10 @@
                 });
                 $('.tvp-products-wrapper ul').html(html);
             },
-            bindEvents: function () {
+            bindEvents: function () {                
+                
                 var that = this;
-                $(this.el).popover({
-                    placement: function (d, t) {
-                        return $(window).width() < that.breakpoint ? 'top' : 'left';
-                    },
-                    template: '<div class="popover tvp-prod-hover" role="tooltip"><div class="arrow"></div><div class="popover-content tvp-prod-hover-content"></div></div>',
-                    html: true,
-                    trigger: 'manual',
-                    container: 'div.player-product',
-                    content: function(){
-                        var hoverTmpl = '<div class="tvp-prod-hover-img-container"><div class="content"> <img src="{imageUrl}" alt=""></div></div><div class="tvp-prod-hover-title">{title}</div><div class="tvp-prod-hover-price-rate"> <span class="price">{price}</span></div> <a data-id="{id}" href="{linkUrl}" target="_blank" class="btn btn-primary btn-more-button analyticsClick">VIEW DETAILS</a>';
-                        var hoverHtml = '';
-                        var prodId = $(this).attr('id');
-
-                        var currentProd = _.filter(that.products, function(item){
-                            return item.id == prodId;
-                        })[0];
-
-                        hoverHtml = renderUtil.tmpl(hoverTmpl, currentProd);
-
-                        return hoverHtml;
-                    }
-                }).on({
+                $(this.el).on({
                     'mouseenter' : function () {
                         if (that.currentId === 0) {
                             $(this).popover('show');
@@ -1032,24 +1013,17 @@
                         
                     }
                 });
-
-                $('.player-product').on('mouseleave', '.popover', function() {
-                    $('div[id="'+that.currentId+'"]').popover('hide');
-                    that.currentId = 0;
-                }).on('mouseleave', function() {
-                    $('*[data-toggle="popover"]').popover('hide');                
-                }).on('click', '.analyticsClick', function(e) {
-                    // e.preventDefault();
-                    // window.open($(this).attr('href'), "_blank");
-                    e.stopPropagation();
-                    Analytics.registerProductClick($(this).data('id'));
-                }).on('touchstart', '.analyticsClick', function(e) {
-                    // e.preventDefault();
-                    //window.open($(e.currentTarget).attr('href'));
-                    //e.stopPropagation();
-                    //Analytics.registerProductClick($(this).data('id'));
-                    
-                });
+                if (!$._data( $('.player-product')[0], 'events' )) {
+                    $('.player-product').on('mouseleave', '.popover', function() {
+                        $('div[id="'+that.currentId+'"]').popover('hide');
+                        that.currentId = 0;
+                    }).on('mouseleave', function() {
+                        $('*[data-toggle="popover"]').popover('hide');                
+                    }).on('click', '.analyticsClick', function(e) {
+                        e.stopPropagation();
+                        Analytics.registerProductClick($(this).data('id'));
+                    });
+                }
             },
             initializeSlider: function () {
                 var config = {};
@@ -1064,6 +1038,31 @@
 
                 this.prodSlider = new IScroll('#tvp-products-wrapper', $(window).width() < this.breakpoint ? this.config.scrollx : this.config.scrolly);
             },
+            initializePopupProducts: function () {
+                var that = this;
+                $(this.el).popover({
+                    placement: function (d, t) {
+                        return $(window).width() < that.breakpoint ? 'top' : 'left';
+                    },
+                    template: '<div class="popover tvp-prod-hover" role="tooltip"><div class="arrow"></div><div class="popover-content tvp-prod-hover-content"></div></div>',
+                    html: true,
+                    trigger: 'manual',
+                    container: 'div.player-product',
+                    content: function(){
+                        var hoverTmpl = '<div class="tvp-prod-hover-img-container"><div class="content"> <img src="{imageUrl}" alt=""></div></div><div class="tvp-prod-hover-title">{title}</div><div class="tvp-prod-hover-price-rate"> <span class="price">{price}</span></div> <a data-id="{id}" href="{linkUrl}" target="_blank" class="btn btn-primary btn-more-button analyticsClick">VIEW DETAILS</a>';
+                        var hoverHtml = '';
+                        var prodId = $(this).attr('id');
+
+                        var currentProd = _.filter(that.products, function(item){
+                            return item.id == prodId;
+                        })[0];
+
+                        hoverHtml = renderUtil.tmpl(hoverTmpl, currentProd);
+
+                        return hoverHtml;
+                    }
+                });
+            },
             resizeWrapper: function (isX) {
                 if (isX) {
                     var xWidth = 0;
@@ -1077,6 +1076,8 @@
                 }
             },
             destroy: function () {
+
+
                 $(this.el).popover('destroy');
                 if(this.prodSlider){
                     this.prodSlider.destroy();
