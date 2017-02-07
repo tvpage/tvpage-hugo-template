@@ -64,6 +64,7 @@ module.exports = function(grunt) {
               'js/vendor/underscore-min.js',
               'js/vendor/slick.min.js',
               'js/vendor/iscroll-5.2.0.min.js',
+              'js/vendor/jquery.lazyload.js',
               'js/main.js'
             ],
             dest: 'js/build.js'
@@ -90,7 +91,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-imagemin');
     grunt.loadNpmTasks('grunt-contrib-concat');
 
-    grunt.registerTask('default', ['sass:dev', 'watch']);
-    grunt.registerTask('build', ['sass:dist', 'postcss:dist', 'concat', 'uglify:build']);
+    grunt.registerTask('default', ['sass:dev', 'watch']);    
     grunt.registerTask('images', ['imagemin']);
+    grunt.registerTask('build', ['sass:dist', 'postcss:dist', 'concat', 'uglify:build']);
 };

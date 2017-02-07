@@ -52,6 +52,12 @@
             }
         });
     };
+    var lazyLoadImage = function (settings) {
+        $(settings.selector).lazyload({
+            effect: 'fadeIn',
+            container: settings.container
+        });
+    };
 
     var channelDataExtractor = {
     	commonRequest : function(url, page, query){
@@ -109,7 +115,7 @@
             +'<a href="{url}" class="latest-video" data-id="{id}">'
                 +'<div class="latest-video-thumbnail">'        
                     +'<div class="content" >'
-                        +'<img src="{asset.thumbnailUrl}" alt="">'
+                        +'<img class="lazyImgAjax" data-original="{asset.thumbnailUrl}" alt="{title}">'
                         +'<div class="latest-video-hover">'
                             +'<div class="play-icon"></div>'
                             +'<p class="now-playing">NOW PLAYING</p>'
@@ -268,14 +274,17 @@
                     eventsBinder.onLoadMore();
                 // >>
                 tvp_Player.showNowPlayingOverlay(activeVideoId);
+                lazyLoadImage({
+                    selector : '.lazyImgAjax',
+                    container: TVSite.isSearchPage ? '#search-content' : '#main-content'
+                });
         },
         addFilters : function(filters){
             var getOption = function(opt, selected) {
                 var $opt = $('<a/>').attr({'value': opt.code, "href" : "#"});
                 var li = $("<li/>");
                 if (opt.id) $opt.attr('id', opt.id);
-                $opt.html(opt.label || '');
-                //if (selected) $opt.attr('selected', 'selected');
+                $opt.html(opt.label || '');                
                 li.append($opt[0]);
                 return li[0];
             };
@@ -1262,7 +1271,7 @@
             contentUrl: window.location.href,
             title: TVSite.channelInfo.title,
             description: TVSite.channelInfo.description
-        });
+        });        
     }
 
     if (TVSite.isChannelPage) {
@@ -1485,7 +1494,6 @@
                     $(".channel-title").empty().text(data.title);
                     $("#mail").addClass("channel-check");
                     $(checkbox).insertAfter($("#mail"));
-                    
                 });
             }
         }
@@ -1497,4 +1505,8 @@
 
     $('form').get(0).reset();    
     customEllipsis();
+    lazyLoadImage({
+        selector: '.lazyImg',
+        container: '#main-content'
+    });
 }(jQuery, window.IScroll, window._, window.BigScreen));

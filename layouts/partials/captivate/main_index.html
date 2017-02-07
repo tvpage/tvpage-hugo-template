@@ -14,8 +14,8 @@
 					{{- $currentPage := index $.Site.Data.channels (printf "x%s" .Params.channelid ) -}}
 						<div class="col-xs-12 col-sm-6 col-md-6 featured-channel">
 							<article class="channel-items">
-								<a href="{{$baseUrl}}c/{{$currentPage.titleTextEncoded}}/{{.Params.channelid}}/" class="content" style='background-image: url({{$baseUrl}}{{ $.Type }}/images/channel/{{.Params.channelid}}.jpg);'>
-									<img src="{{$baseUrl}}{{ $.Type }}/images/channel/{{.Params.channelid}}.jpg" alt="">
+								<a href="{{$baseUrl}}c/{{$currentPage.titleTextEncoded}}/{{.Params.channelid}}/" class="content">
+									<img class="lazyImg" data-original="{{$baseUrl}}{{ $.Type }}/images/channel/{{.Params.channelid}}.jpg" alt="">
 									<span class="featured-channel-container">
 										<span class="featured-channel-title">{{ .Title }}</span>
 									</span>
@@ -34,7 +34,7 @@
 					<div>
 						<a href="{{ $baseUrl }}{{ slicestr .URL 1}}" class="brand-item">
 							<div class="content">
-								<img src="{{$baseUrl}}{{ .Type }}/images/{{.Params.channelid}}-logo.png" alt="">
+								<img data-lazy="{{$baseUrl}}{{ .Type }}/images/{{.Params.channelid}}-logo.png" alt="">
 							</div>
 						</a>
 					</div>
@@ -53,8 +53,8 @@
 					    <a href="{{$baseUrl}}{{slicestr .url 1}}" class="latest-video" data-id="{{.id}}">				
 						<div class="latest-video-thumbnail">		
 						  <div class="content">
-					      	<img {{with .asset.thumbnailUrl}} src="{{ . }}"{{else}} src='{{$baseUrl}}{{ .Type }}/images/defaults/asset.png'{{end}}
-					      			alt="">
+					      	<img class="lazyImg" {{with .asset.thumbnailUrl}} data-original="{{ . }}"{{else}} data-original='{{$baseUrl}}{{ .Type }}/images/defaults/asset.png'{{end}}
+					      			alt="{{- .title -}}">
 					      		<div class="latest-video-hover">	      			
 									<div class="play-icon"></div>
 								</div>
