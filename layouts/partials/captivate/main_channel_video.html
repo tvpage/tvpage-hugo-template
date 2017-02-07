@@ -72,7 +72,7 @@
             
              <div class="latest-video-thumbnail">    
                 <div class="content">
-                  <img class="lazyImg" {{with .asset.thumbnailUrl}} data-original="{{ . }}"{{else}} data-original='{{$baseUrl}}{{ .Type }}/images/defaults/asset.png' {{end}}
+                  <img class="lazyImg" {{with .asset.thumbnailUrl}} data-original="{{ . }}"{{else}} data-original='{{$baseUrl}}/{{ .Type }}/images/defaults/asset.png' {{end}}
                         alt="{{- .title -}}">
                   <div class="latest-video-hover">
                     <div class="play-icon"></div>
