@@ -1,4 +1,4 @@
-(function($, IScroll, _, BigScreen){
+(function($, IScroll, _, BigScreen, Modernizr){
 	var liveResultsPage=0;
     var loadMorePage = 0;
     var btnLoadMore = $(".load-more .btn-more-button");
@@ -65,7 +65,7 @@
     			url : url,
     			cache : false,
     			dataType : "jsonp",
-    			data : _.extend({},isFiltering ? Filters.selected : {} ,{
+    			data : _.extend({},(isFiltering ? Filters.selected : {}) ,{
     				p : (page == null || page == undefined) ? 0 : page,
     				n : TVSite.isHomePage ? 6 : 6 ,
     				s : (query == null || query == undefined) ? "" : query,
@@ -388,29 +388,29 @@
                 $(this).parent().parent().prev().find(".selected").text($(this).text());
                 var _id = event.currentTarget.id;
                 Filters.selected["product_category"] = event.currentTarget.text;
-                liveResultsPage = 0;
+                loadMorePage = 0;
                 if(_id){
                     Filters.filterVideos();    
                 }
                 else{
-
+                    $("#product_category").prev().find(".selected").text("Product Category");
                     Filters.reset();
                 }
                 
             });
 
 
-            $("#type_of_video li a").on("click", function(event){
+            $("#video_type li a").on("click", function(event){
                 event.preventDefault();
                 $(this).parent().parent().prev().find(".selected").text($(this).text());
                 var _id = event.currentTarget.id;
-                Filters.selected["type_of_video"] = event.currentTarget.text;
-                liveResultsPage = 0;
+                Filters.selected["video_type"] = event.currentTarget.text;
+                loadMorePage = 0;
                 if(_id){
                     Filters.filterVideos();    
                 }
                 else{
-
+                    $("#video_type").prev().find(".selected").text("Type of Video");
                     Filters.reset();
                 }
             });
@@ -550,11 +550,12 @@
     var Filters = {
         selected: {},
         defaultFilters: null,
-        filters: { type_of_video: {}, product_category: {} },
+        filters: { video_type: {}, product_category: {} },
         reset : function(){
             $('.tvp-filter-reset').css("display", "none");
             btnLoadMore.attr("disabled", false);
             isFiltering = false;
+            this.selected["video_type"] = {};
             loadMorePage = 0;
             $('#tvp-video-container').empty();
             channelDataExtractor.videos(TVSite.channelId, loadMorePage ,null).done(function(data){
@@ -600,7 +601,7 @@
                 else{
                     $(document).on('click', '.tvp-filter-reset', _.bind(function() {
                         $("#product_category").prev().find(".selected").text("Product Category");
-                        $("#type_of_video").prev().find(".selected").text("Type of Video");
+                        $("#video_type").prev().find(".selected").text("Type of Video");
                         this.reset();
                     }, this));
                 }
@@ -610,6 +611,7 @@
     };
 
     var tvp_Player = {
+        isFirstPlay: true,
         updateTitle : function(title){
           if (title) {
             $('#video-playing-title').empty()
@@ -658,7 +660,10 @@
               TVPlayer.loadVideo(data);
             }
             var url = tvp_Player.getVideoUrl(video);
-            tvp_Player.updateSiteUrlAndTitle(url, video.title);
+            if (!this.isFirstPlay) {
+                tvp_Player.updateSiteUrlAndTitle(url, video.title);
+            }
+            this.isFirstPlay = false;
             tvp_Player.updateSocialShareLink(url, video);
             tvp_Player.showNowPlayingOverlay(video.id);
           }
@@ -936,7 +941,7 @@
 
     
     var ProductSlider = {
-            breakpoint: 1200,
+            breakpoint: 992,
             products : [],
             $currentPopUp: null,
             currentId: 0,
@@ -997,6 +1002,14 @@
                     }                    
                     result['videoId'] = activeVideoId || TVSite.channelVideosData.video.id;
                     html += renderUtil.tmpl(template, result); 
+                    
+                    schemaStructure.createProductSchema({
+                        name: result.title,
+                        image: result.imageUrl,
+                        description: result.description,
+                        mpn: result.mpn,
+                        price: result.price
+                    });
                 });
                 $('.tvp-products-wrapper ul').html(html);
             },
@@ -1022,7 +1035,6 @@
                         return hoverHtml;
                     }
                 }).on({
-
                     'mouseenter' : function () {
                         if(!isMobile){
                           if (that.currentId === 0) {
@@ -1093,7 +1105,7 @@
                 var that = this;
                 $(this.el).popover({
                     placement: function (d, t) {
-                        return $(window).width() < that.breakpoint ? 'top' : 'left';
+                        return Modernizr.mq('(max-width: 1199px)') ? 'top' : 'left';
                     },
                     template: '<div class="popover tvp-prod-hover" role="tooltip"><div class="arrow"></div><div class="popover-content tvp-prod-hover-content"></div></div>',
                     html: true,
@@ -1114,7 +1126,7 @@
                     }
                 });
             },
-            resizeWrapper: function (isX) {
+            resizeWrapper: function (isX) {                
                 if (isX) {
                     var xWidth = 0;
                     _.each($('#tvp-products-wrapper li'), function(el, i){
@@ -1127,15 +1139,13 @@
                 }
             },
             destroy: function () {
-
-
                 $(this.el).popover('destroy');
                 if(this.prodSlider){
                     this.prodSlider.destroy();
                     this.prodSlider = null;                    
                 }
             },
-            resizeCheck: function () {            
+            resizeCheck: function () {                
                 if (($(window).width() < this.breakpoint) && (!this.isHorizontalScroll)) {
                     this.isHorizontalScroll = true;
                     this.prodSlider.destroy();
@@ -1232,24 +1242,40 @@
 
     var schemaStructure = {
         createSchema: function (opt) {
-            var data = [],
-                el = document.createElement('script');
-
             if (TVSite.isHomePage) {
-                data.push(this.webPage(opt));
+                this.renderSchema(this.webPage(opt));
             }
             if (TVSite.isPlayerPage) {
-                data.push(this.videoObject(opt));
+                this.renderSchema(this.videoObject(opt));
             }
             if (TVSite.isChannelPage){
-                data.push(this.webPage(opt));
+                this.renderSchema(this.webPage(opt));
             }
-
-            data.push(this.viewAction(opt));
+        },
+        renderSchema: function (schema) {
+            var data = [];
+            var el = document.createElement('script');
+            data.push(schema);
             el.type = 'application/ld+json';
             el.text = JSON.stringify(data);
-
             document.querySelector('head').appendChild(el);
+        },
+        createProductSchema: function (opt) {
+            var schemaStructure = {
+              "@context": "http://schema.org/",
+              "@type": "Product",
+              "name": opt.name,
+              "image": opt.image,
+              "description": opt.description,
+              "mpn": opt.mpn,
+              "offers": {
+                "@type": "Offer",
+                "priceCurrency": "USD",                
+                "price": opt.price === 'Out Of Stock' ? '0.00' : opt.price,
+                "availability" : opt.price === 'Out Of Stock' ? "http://schema.org/OutOfStock" : "http://schema.org/InStock"
+              }
+            };
+            this.renderSchema(schemaStructure);
         },
         videoObject: function (opt) {
             return {
@@ -1275,7 +1301,6 @@
                 "Target": opt.contentUrl
             }
         },
-
         webPage: function (opt) {
             return {
               "@context": "http://schema.org",
@@ -1287,13 +1312,44 @@
                 "Target": opt.contentUrl
               }
             }
+        },
+        productObject: function (opt) {
+            return {
+              "@context": "http://schema.org/",
+              "@type": "Product",
+              "name": opt.name,
+              "image": opt.image,
+              "description": opt.description,
+              "mpn": "925872",
+              // "brand": {
+              //   "@type": "Thing",
+              //   "name": "ACME"
+              // },
+              // "aggregateRating": {
+              //   "@type": "AggregateRating",
+              //   "ratingValue": "4.4",
+              //   "reviewCount": "89"
+              // },
+              "offers": {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": opt.price
+                // "priceValidUntil": "2020-11-05",
+                // "itemCondition": "http://schema.org/UsedCondition"
+                // "availability": "http://schema.org/InStock",
+                // "seller": {
+                //   "@type": "Organization",
+                //   "name": "Executive Objects"
+                // }
+              }
+            }
         }
     }
 
     $('.slider').slick({
         infinite: true,
 	    speed: 900,
-	    slidesToShow: 3,
+	    slidesToShow: 4,
 	    slidesToScroll: 1,
 	    responsive: [{
 	        breakpoint: 768,
@@ -1558,4 +1614,4 @@
         selector: '.lazyImg',
         container: '#main-content'
     });
-}(jQuery, window.IScroll, window._, window.BigScreen));
+}(jQuery, window.IScroll, window._, window.BigScreen, window.Modernizr));

@@ -20,7 +20,6 @@
   <head>
     {{- partial (printf "%s/favicon.html" .Type) . -}}
     {{- partial (printf "%s/single-meta.html" .Type) . -}}
-    <link href='{{ ($.Scratch.Get "settings").googlefont }}' rel="stylesheet">
     {{- block "meta" . -}}{{ end }}
     <link rel="apple-touch-icon" href="{{$baseUrl}}/{{ .Type }}/images/logo.png">
     <link rel="stylesheet" href="{{$baseUrl}}/{{ .Type }}/css/styles.css">
