@@ -52,6 +52,12 @@
             }
         });
     };
+    var lazyLoadImage = function (settings) {
+        $(settings.selector).lazyload({
+            effect: 'fadeIn',
+            container: settings.container
+        });
+    };
 
     var channelDataExtractor = {
     	commonRequest : function(url, page, query){
@@ -109,7 +115,7 @@
             +'<a href="{url}" class="latest-video" data-id="{id}">'
                 +'<div class="latest-video-thumbnail">'        
                     +'<div class="content" >'
-                        +'<img src="{asset.thumbnailUrl}" alt="{id}">'
+                        +'<img class="lazyImgAjax" data-original="{asset.thumbnailUrl}" alt="{title}">'
                         +'<div class="latest-video-hover">'
                             +'<div class="play-icon"></div>'
                             +'<p class="now-playing">NOW PLAYING</p>'
@@ -271,14 +277,17 @@
                     eventsBinder.onLoadMore();
                 // >>
                 tvp_Player.showNowPlayingOverlay(activeVideoId);
+                lazyLoadImage({
+                    selector : '.lazyImgAjax',
+                    container: TVSite.isSearchPage ? '#search-content' : '#main-content'
+                });
         },
         addFilters : function(filters){
             var getOption = function(opt, selected) {
                 var $opt = $('<a/>').attr({'value': opt.code, "href" : "#"});
                 var li = $("<li/>");
                 if (opt.id) $opt.attr('id', opt.id);
-                $opt.html(opt.label || '');
-                //if (selected) $opt.attr('selected', 'selected');
+                $opt.html(opt.label || '');                
                 li.append($opt[0]);
                 return li[0];
             };
@@ -960,8 +969,13 @@
                             that.products = results;
                             that.renderProducts(results);
                             Analytics.registerProductPanel($('#tvp-products-wrapper .tvp-product-image'));
-                            that.bindEvents();
+                            that.initializePopupProducts();
                             that.initializeSlider();
+                            that.bindEvents();
+                        }
+                        else{
+                            that.destroy();
+                            $('#tvp-products-wrapper ul').html('');
                         }
                     });
             },
@@ -986,10 +1000,10 @@
                 });
                 $('.tvp-products-wrapper ul').html(html);
             },
-            bindEvents: function (position) {
+            bindEvents: function () {
                 var that = this;
                 $(this.el).popover({
-                    placement: "left",
+                    placement: 'left',
                     template: '<div class="popover tvp-prod-hover" role="tooltip"><div class="arrow"></div><div class="popover-content tvp-prod-hover-content"></div></div>',
                     html: true,
                     trigger: 'manual',
@@ -1008,6 +1022,7 @@
                         return hoverHtml;
                     }
                 }).on({
+
                     'mouseenter' : function () {
                         if(!isMobile){
                           if (that.currentId === 0) {
@@ -1030,6 +1045,17 @@
                     }
                 });
 
+                if (!$._data( $('.player-product')[0], 'events' )) {
+                    $('.player-product').on('mouseleave', '.popover', function() {
+                        $('div[id="'+that.currentId+'"]').popover('hide');
+                        that.currentId = 0;
+                    }).on('mouseleave', function() {
+                        $('*[data-toggle="popover"]').popover('hide');                
+                    }).on('click', '.analyticsClick', function(e) {
+                        e.stopPropagation();
+                        //Analytics.registerProductClick($(this).data('id'));
+                    });
+                }
                 $('.player-product').on('mouseleave', '.popover', function() {
                     $('div[id="'+that.currentId+'"]').popover('hide');
                     that.currentId = 0;
@@ -1041,13 +1067,13 @@
                   $('.player-product').off('touchstart').on('touchstart', '.analyticsClick', function(e) {
                     e.stopPropagation();
                     Analytics.registerProductClick($(this).data('id'));
-
                   });
                 }else{
                   $('.player-product').off('click').on('click', '.analyticsClick', function(e) {
                       e.stopPropagation();
                       Analytics.registerProductClick($(this).data('id'));
                   });
+
                 }
             },
             initializeSlider: function () {
@@ -1063,6 +1089,31 @@
 
                 this.prodSlider = new IScroll('#tvp-products-wrapper', $(window).width() < this.breakpoint ? this.config.scrollx : this.config.scrolly);
             },
+            initializePopupProducts: function () {
+                var that = this;
+                $(this.el).popover({
+                    placement: function (d, t) {
+                        return $(window).width() < that.breakpoint ? 'top' : 'left';
+                    },
+                    template: '<div class="popover tvp-prod-hover" role="tooltip"><div class="arrow"></div><div class="popover-content tvp-prod-hover-content"></div></div>',
+                    html: true,
+                    trigger: 'manual',
+                    container: 'div.player-product',
+                    content: function(){
+                        var hoverTmpl = '<div class="tvp-prod-hover-img-container"><div class="content"> <img src="{imageUrl}" alt=""></div></div><div class="tvp-prod-hover-title">{title}</div><div class="tvp-prod-hover-price-rate"> <span class="price">{price}</span></div> <a data-id="{id}" href="{linkUrl}" target="_blank" class="btn btn-primary btn-more-button analyticsClick">VIEW DETAILS</a>';
+                        var hoverHtml = '';
+                        var prodId = $(this).attr('id');
+
+                        var currentProd = _.filter(that.products, function(item){
+                            return item.id == prodId;
+                        })[0];
+
+                        hoverHtml = renderUtil.tmpl(hoverTmpl, currentProd);
+
+                        return hoverHtml;
+                    }
+                });
+            },
             resizeWrapper: function (isX) {
                 if (isX) {
                     var xWidth = 0;
@@ -1076,7 +1127,13 @@
                 }
             },
             destroy: function () {
+
+
                 $(this.el).popover('destroy');
+                if(this.prodSlider){
+                    this.prodSlider.destroy();
+                    this.prodSlider = null;                    
+                }
             },
             resizeCheck: function () {            
                 if (($(window).width() < this.breakpoint) && (!this.isHorizontalScroll)) {
@@ -1257,7 +1314,7 @@
             contentUrl: window.location.href,
             title: TVSite.channelInfo.title,
             description: TVSite.channelInfo.description
-        });
+        });        
     }
 
     if (TVSite.isChannelPage) {
@@ -1480,7 +1537,6 @@
                     $(".channel-title").empty().text(data.title);
                     $("#mail").addClass("channel-check");
                     $(checkbox).insertAfter($("#mail"));
-                    
                 });
             }
         }
@@ -1494,10 +1550,12 @@
         searchDesktopInput.val("");
     });
     
-    $(window).resize(function(){
-        var currentWidth = $(window).width();
-    });
 
     $('form').get(0).reset();    
     customEllipsis();
+
+    lazyLoadImage({
+        selector: '.lazyImg',
+        container: '#main-content'
+    });
 }(jQuery, window.IScroll, window._, window.BigScreen));

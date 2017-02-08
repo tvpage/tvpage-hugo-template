@@ -55,10 +55,30 @@ module.exports = function(grunt) {
                 src: 'css/styles.css'
             }
         },
+        concat: {
+          dist: {
+            src: [
+
+              'js/vendor/jquery-3.1.1.min.js',
+              'js/vendor/bootstrap.min.js',
+              'js/vendor/underscore-min.js',
+              'js/vendor/slick.min.js',
+              'js/vendor/iscroll-5.2.0.min.js',
+              'js/vendor/jquery.lazyload.js',
+              'js/main.js'
+            ],
+            dest: 'js/build.js'
+          }
+        },
         uglify: {
           dist: {
             files: {
               'js/main.min.js': ['js/main.js']
+            }
+          },
+          build:{
+            files: {
+              'js/build.min.js': ['js/build.js']
             }
           }
         }
@@ -69,8 +89,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-postcss');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-imagemin');
+    grunt.loadNpmTasks('grunt-contrib-concat');
 
-    grunt.registerTask('default', ['sass:dev', 'watch']);
-    grunt.registerTask('build', ['sass:dist', 'postcss:dist', 'uglify:dist']);
+    grunt.registerTask('default', ['sass:dev', 'watch']);    
     grunt.registerTask('images', ['imagemin']);
+    grunt.registerTask('build', ['sass:dist', 'postcss:dist', 'concat', 'uglify:build']);
 };

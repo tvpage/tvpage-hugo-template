@@ -42,7 +42,7 @@
     }
     
     var domain = spot.getAttribute('data-domain'),
-        type = id.split('-').shift(),
+        type = spot.getAttribute('class').split('-').pop();
         typeStaticPath = domain + type + (root.DEBUG ? '/' : '/dist/');
 
     widget.run = function() {
