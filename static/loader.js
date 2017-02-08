@@ -32,7 +32,7 @@
   function Widget(spot) {
     var widget = function(){};
 
-    var libsExt = root.DEBUG ? '.js' : '.min.js',
+    var cssExt = root.DEBUG ? '.css' : '.min.css',
         dataMethod = 'static',
         id = spot.getAttribute('data-id');
 
@@ -43,17 +43,21 @@
     
     var domain = spot.getAttribute('data-domain'),
         type = spot.getAttribute('class').split('-').pop();
+        typeStaticPath = domain + type + (root.DEBUG ? '' : '/') + (root.DEBUG ? '/' : '/dist/');
 
     widget.run = function() {
       spot.insertAdjacentHTML('beforebegin', '<div id="' + id + '-holder" class="tvp-iframe-holder"></div>');
       
       var holder = doc.getElementById(id + '-holder'),
           embedMethod = spot.getAttribute('data-embedmethod') || 'iframe';
-      
+
       if (embedMethod === 'iframe') {
         var link = doc.createElement('link');
         link.rel = 'stylesheet';
-        link.href = domain+'/'+type+'/css/host'+(isMobile?'-mobile':'')+'.css';
+
+        var hostCssPath = typeStaticPath;
+        hostCssPath += 'css/' + (isMobile ? 'mobile/' : '') + 'host' + cssExt;
+        link.href = hostCssPath;
         appendToHead(link);
 
         var iframe = doc.createElement('iframe');
@@ -70,32 +74,39 @@
             this.contentWindow['DEBUG'] = 1;
           }
 
+          var iframeWindow = this.contentWindow,
+              iframeContent = iframeWindow.document.querySelector('.iframe-content');
+
           if ('sidebar' === type) {
-            var ifrBody = this.contentWindow.document.body,
-                content = ifrBody.firstChild,
-                resize = function() { 
-                  holder.style.height = content.offsetHeight + 'px';
-                };
+            var resizeHolder = function() {
+              holder.style.height = iframeContent.offsetHeight + 'px';
+            };
 
             var checks = 0;
             (function contentReady() {
               setTimeout(function() {
-                if (!content.classList.contains('first-render')) {
+                if (!iframeContent.classList.contains('first-render')) {
                   (++checks < 20) ? contentReady() : console.log('limit reached');
                 } else {
-                  resize();
+                  resizeHolder();
                 }
               },200);
             })();
             
-            root.addEventListener('resize', debounce(resize,50));
+            root.addEventListener('resize', debounce(function(){
+              var widgetId = '_tvp_'+id;
+              if(isset(iframeWindow, widgetId)){
+                iframeWindow[widgetId].resize(function(){
+                  holder.style.height = iframeContent.offsetHeight + 'px';
+                });
+              }
+            },50));
           }
 
           if ('solo' === type) {
-            var that = this;
             root.addEventListener('resize', debounce(function(){
-              if(isset(that.contentWindow, '_tvp_'+id) && !that.contentWindow['_tvp_'+id+'isFullScreen']){
-                that.contentWindow['_tvp_'+id].resize(holder.offsetWidth,holder.offsetHeight);
+              if(isset(iframeWindow, '_tvp_'+id) && !iframeWindow['_tvp_'+id+'isFullScreen']){
+                iframeWindow['_tvp_'+id].resize(holder.offsetWidth,holder.offsetHeight);
               }
             },50));
           }
@@ -109,20 +120,24 @@
           'var d = document, head = d.getElementsByTagName(\'head\')[0],'+
           'injScr = function(sr){ var s=d.createElement(\'script\');s.src=sr;head.appendChild(s);};';
 
-          var libs = [
-            '\'//a.tvpage.com/tvpa.min.js\'',
-            '\'//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js\'',
-            '\'' + domain + '/analytics' + libsExt + '\'',
-            '\'' + domain + '/player' + libsExt + '\'',
-            '\'' + domain + '/' + type + '/js/main' + libsExt + '\''
-          ];
+          var typeDeps = [
+                '\'//a.tvpage.com/tvpa.min.js\'',
+                '\'//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js\''
+              ],
+              prodLibs = typeDeps.concat(['\'' + typeStaticPath + 'js/scripts.min.js\'']),
+              devLibs = typeDeps.concat([
+                '\'' + typeStaticPath + 'js/libs/analytics.js\'',
+                '\'' + typeStaticPath + 'js/libs/player.js\'',
+                '\'' + typeStaticPath + 'js/index.js\''
+              ]);
 
+          var libs = root.DEBUG ? devLibs : prodLibs;
           for (var i = 0; i < libs.length; i++) {
             html += 'injScr(' + libs[i] + ');';
           }
 
           html += 'var css=d.createElement(\'link\');css.rel=\'stylesheet\';css.type=\'text/css\';';
-          html += 'css.href='+('\''+domain+'/' + type)+'/styles.css\';head.appendChild(css);';
+          html += 'css.href=\'' + typeStaticPath + 'css/styles'+cssExt+'\';head.appendChild(css);';
 
           if (root.DEBUG) {
             html += 'window.DEBUG=1;';
@@ -151,15 +166,21 @@
 
         //Appending libs to be used for inline.
         var libsFrag = doc.createDocumentFragment(),
-            libs = {
-              tvpsolo: domain + '/'+ type + '/js/main' + libsExt,
-              player: domain + '/player' + libsExt,
-              analytics: domain + '/analytics' + libsExt,
+            devLibs = {
+              tvpsolo: typeStaticPath + 'js/index.js',
+              player: typeStaticPath + 'js/libs/player.js',
+              analytics: typeStaticPath + 'js/libs/analytics.js',
               tvpp: '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
               tvpa: '//a.tvpage.com/tvpa.min.js'
             },
-            libsCount = Object.keys(libs).length;
-
+            prodLibs = {
+              tvpsolo: typeStaticPath + 'js/scripts.min.js',
+              tvpp: '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
+              tvpa: '//a.tvpage.com/tvpa.min.js'
+            };
+        
+        var libs = root.DEBUG ? devLibs : prodLibs,
+            libsCount = Object.keys(libs).length
         while (libsCount > 0) {
           var key = Object.keys(libs)[libsCount-1];
           if (doc.getElementById(key)) break;
@@ -173,7 +194,7 @@
 
         var link = doc.createElement('link');
         link.rel = 'stylesheet';
-        link.href = domain+'/'+type+'/styles.css';
+        link.href = typeStaticPath + '/css/styles' + cssExt;
         libsFrag.appendChild(link);
         appendToHead(libsFrag);
       }

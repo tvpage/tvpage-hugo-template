@@ -1,0 +1,267 @@
+/* Let's get this party started */
+::-webkit-scrollbar {
+  width: 5px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: black;
+}
+
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+html {
+  margin: 0;
+  height: 100%;
+}
+
+body  {
+  margin: 0;
+  padding: 10px 0;
+  height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+.slick-slide {
+  height: auto !important;
+}
+
+.slick-arrow {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  background: black;
+  width: 20px;
+  height: 20px;
+  z-index: 9999;
+  color: transparent;
+  border: 0;
+}
+
+.slick-arrow.slick-prev {
+  left: 0;
+}
+
+.slick-arrow.slick-next {
+  right: 0;
+}
+
+.tvp-player {
+  height: 0;
+  width: 100%;
+  position: relative;
+  padding-bottom: 56.25%;
+}
+
+.tvp-player-holder {
+  width: 82%;
+  float: left;
+}
+
+.tvp-clearfix:before, 
+.tvp-clearfix:after {
+    display: table;
+    content: " ";
+    clear: both;
+}
+
+.tvp-player.inline {
+  position: absolute;
+  top:0;
+  left:0;
+  padding: 0;
+}
+
+#tvp-player-el {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-color: black;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.tvp-play {
+  background-color: black;
+  box-sizing: border-box;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+  display: none;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.tvp-play > polygon {
+  fill: white;
+  pointer-events: none;
+}
+
+.tvp-products {
+  height: inherit;
+  overflow: auto;
+}
+
+.tvp-products-holder {
+  float: right;
+  width: 140px;
+  height: 358px;
+  padding-left: 10px;
+  position: relative;
+}
+
+.tvp-products-mobile {
+  width: 18.5%;
+  float: right;
+}
+
+.tvp-product {
+  border: 1px solid black;
+  display: block;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  position: relative;
+}
+
+.tvp-products-title {
+  margin: 10px 0;
+  padding-left: 10px;
+}
+
+.tvp-product-title {
+  height: 37px;
+  overflow: hidden;
+  font-size: 14px;
+  text-decoration: none;
+  margin: 10px 0;
+}
+
+.tvp-product-price {
+  margin: 0;
+  float: left;
+  font-size: 14px;
+}
+
+.tvp-product-rating {
+  float: right;
+}
+
+.tvp-product-cta {
+  width: 100%;
+  height: 35px;
+  background: black;
+  border: 0;
+  color: white;
+  text-transform: uppercase;
+  padding: 0 10px;
+  display: block;
+  line-height: 35px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.tvp-product-cta:hover {
+ background: rgba(0,0,0,0.85); 
+}
+
+#tvp-arrow-indicator {
+  display: none;
+  background-color: transparent;
+  position: absolute;
+  top: 0;
+  left: 3px;
+  z-index: 10;
+}
+
+#tvp-arrow-indicator:before {
+  content: " ";
+  width: 0;
+  height: 0;
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  border-left: 13px solid black;
+  position: absolute;
+  top: 0;
+  left: 1px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#tvp-arrow-indicator:after {
+  content: " ";
+  width: 0;
+  height: 0;
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  border-left: 13px solid white;
+  position: absolute;
+  top: 0;
+  left: 0px;
+}
+
+.tvp-product:last-child {
+  margin-bottom: 0; 
+}
+
+.tvp-product-popup {
+  display: none;
+  position: absolute;
+  right: 135px;
+  width: 215px;
+  background: white;
+  padding: 10px;
+  border: 1px solid black;
+  text-decoration: none;
+}
+.tvp-product-image {
+  display: block;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding-top: 100%;
+}
+
+.tvp-product-data {
+  float: left;
+  width: 60%;
+  margin-left: 5%;
+}
+
+.tvp-product-data > p {
+  height: 29px;
+  overflow: hidden;
+  margin: 0;
+  font-size: 12px;
+}
+
+.tvp-product-data > h2 {
+  margin: 5px 0;
+  font-size: 16px;
+}
+
+.tvp-product-data > button {
+  margin: 0;
+  border: 0;
+  padding: 0 10px;
+  height: 20px;
+  line-height: 20px;
+  text-transform: uppercase;
+}
