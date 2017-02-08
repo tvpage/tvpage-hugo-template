@@ -611,6 +611,7 @@
     };
 
     var tvp_Player = {
+        isFirstPlay: true,
         updateTitle : function(title){
           if (title) {
             $('#video-playing-title').empty()
@@ -659,7 +660,10 @@
               TVPlayer.loadVideo(data);
             }
             var url = tvp_Player.getVideoUrl(video);
-            tvp_Player.updateSiteUrlAndTitle(url, video.title);
+            if (!this.isFirstPlay) {
+                tvp_Player.updateSiteUrlAndTitle(url, video.title);
+            }
+            this.isFirstPlay = false;
             tvp_Player.updateSocialShareLink(url, video);
             tvp_Player.showNowPlayingOverlay(video.id);
           }

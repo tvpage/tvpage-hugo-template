@@ -896,6 +896,7 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
     };
 
     var tvp_Player = {
+        isFirstPlay: true,
         updateTitle : function(title){
           if (title) {
             $('#video-playing-title').empty()
@@ -944,7 +945,10 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
               TVPlayer.loadVideo(data);
             }
             var url = tvp_Player.getVideoUrl(video);
-            tvp_Player.updateSiteUrlAndTitle(url, video.title);
+            if (!this.isFirstPlay) {
+                tvp_Player.updateSiteUrlAndTitle(url, video.title);
+            }
+            this.isFirstPlay = false;
             tvp_Player.updateSocialShareLink(url, video);
             tvp_Player.showNowPlayingOverlay(video.id);
           }
