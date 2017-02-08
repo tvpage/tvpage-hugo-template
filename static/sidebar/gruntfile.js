@@ -21,21 +21,21 @@ module.exports = function(grunt) {
         },
         desktop: {
           files: {
-            'dist/css/styles.css': ['css/styles.css'],
-            'dist/css/host.css': ['css/host.css'],
-            'dist/css/modal/styles.css': ['css/modal/styles.css']
+            'dist/css/styles.min.css': ['css/styles.css'],
+            'dist/css/host.min.css': ['css/host.css'],
+            'dist/css/modal/styles.min.css': ['css/modal/styles.css']
           }
         },
         mobile: {
           files: {
-            'dist/css/mobile/modal/styles.css': ['css/vendor/slick.css', 'css/mobile/modal/styles.css'],
-            'dist/css/mobile/host.css': ['css/mobile/host.css']
+            'dist/css/mobile/modal/styles.min.css': ['css/vendor/slick.css', 'css/mobile/modal/styles.css'],
+            'dist/css/mobile/host.min.css': ['css/mobile/host.css']
           }
         }
       },
       uglify: {
         options: {
-          //beautify: true
+          beautify: true
         },
         scripts: {
           files: {

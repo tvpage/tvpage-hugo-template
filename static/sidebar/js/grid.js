@@ -114,12 +114,12 @@
               var xchg = [];
               if (xhr.status === 200) {
                 xchg = xhr.responseText;
-                var xchgCount = xchg.length;
-                while(xchgCount > 0) {
-                  var xchgVideo = xchg[xchgCount-1];
-                  xchgVideo = $.extend(xchgVideo, xchgVideo.entity);
-                  xchgCount--;
-                }
+                // var xchgCount = xchg.length;
+                // while(xchgCount > 0) {
+                //   var xchgVideo = xchg[xchgCount-1];
+                //   xchgVideo = $.extend(xchgVideo, xchgVideo.entity);
+                //   xchgCount--;
+                // }
               }
               
               if (!data.length) {
@@ -127,7 +127,7 @@
               }
 
               that.data = data;
-              callback($.merge(xchg, data));
+              callback(data.concat(xchg));
               that.loading = false;
             });
           }

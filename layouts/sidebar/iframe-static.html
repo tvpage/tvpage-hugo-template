@@ -7,7 +7,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-  <link rel="stylesheet" type="text/css" href="{{ (printf "%s/dist/css/styles.css" .Type ) | absURL }}">
+  {{ if (getenv "HUGO_DEBUG") }}
+  <link rel="stylesheet" type="text/css" href="{{ (printf "%s/css/styles.css" .Type ) | absURL }}">
+  {{ else }}
+  <link rel="stylesheet" type="text/css" href="{{ (printf "%s/dist/css/styles.min.css" .Type ) | absURL }}">
+  {{ end }}
 </head>
 <body>
 <div id='{{ ($.Scratch.Get "settings").name }}' class="iframe-content">
@@ -42,7 +46,6 @@
     baseUrl: {{- $.Site.BaseURL -}}
   };
 </script>
-<script src="{{ (printf "%s/js/vendor/jquery.js" .Type ) | absURL }}"></script>
 {{ if (getenv "HUGO_DEBUG") }}
 <script src="{{ (printf "%s/js/libs/utils.js" .Type ) | absURL }}"></script>
 <script src="{{ (printf "%s/js/grid.js" .Type ) | absURL }}"></script>

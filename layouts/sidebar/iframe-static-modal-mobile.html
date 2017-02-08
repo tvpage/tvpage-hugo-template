@@ -4,7 +4,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-  <link rel="stylesheet" type="text/css" href="{{.Site.BaseURL}}/{{.Type}}/dist/css/mobile/modal/styles.css">
+  {{ if (getenv "HUGO_DEBUG") }}
+  <link rel="stylesheet" type="text/css" href="{{ (printf "%s/css/mobile/modal/styles.css" .Type ) | absURL }}">
+  {{ else }}
+  <link rel="stylesheet" type="text/css" href="{{ (printf "%s/dist/css/mobile/modal/styles.min.css" .Type ) | absURL }}">
+  {{ end }}
 </head>
 <body>
 <div id='{{ ($.Scratch.Get "settings").name }}' class="iframe-content">
@@ -40,8 +44,7 @@
 <script src="{{ (printf "%s/js/libs/player.js" .Type ) | absURL }}"></script>
 <script src="{{ (printf "%s/js/mobile/modal/index.js" .Type ) | absURL }}"></script>
 {{ else }}
-<script src="{{ (printf "%s/dist/js/mobile/modal/index.js" .Type ) | absURL }}"></script>
+<script src="{{ (printf "%s/dist/js/mobile/modal/scripts.min.js" .Type ) | absURL }}"></script>
 {{ end }}
-
 </body>
 </html>

@@ -1,37 +1,51 @@
 {{- partial "settings.html" . -}}
-<style>{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/css-base.css" .Type ) .)) | safeCSS }}</style>
-<div class="tvp-player">
-<div id="tvp-player-el"></div>
-<svg class="tvp-play" viewBox="0 0 200 200" alt="Play video"><polygon points="70, 55 70, 145 145, 100" fill="#e57211"></polygon></svg>
-</div>
-<script src="//a.tvpage.com/tvpa.min.js"></script>
-<script src='//appcdn.tvpage.com/player/assets/tvp/tvp-{{ ($.Scratch.Get "settings").version }}-min.js'></script>
-<script src="{{.Site.BaseURL}}/analytics.js"></script>
-<script src="{{.Site.BaseURL}}/player.js"></script>
-<script>;(function(doc){
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+  {{ if (getenv "HUGO_DEBUG") }}
+  <link rel="stylesheet" type="text/css" href="{{ (printf "%s/css/styles.css" .Type ) | absURL }}">
+  {{ else }}
+  <link rel="stylesheet" type="text/css" href="{{ (printf "%s/dist/css/styles.min.css" .Type ) | absURL }}">
+  {{ end }}
+</head>
+<body>
+  <div class="tvp-player">
+    <div id="tvp-player-el"></div>
+    <svg class="tvp-play" viewBox="0 0 200 200" alt="Play video"><polygon points="70, 55 70, 145 145, 100" fill="#e57211"></polygon></svg>
+  </div>
+  <script async src="//a.tvpage.com/tvpa.min.js"></script>
+  <script async src='//appcdn.tvpage.com/player/assets/tvp/tvp-{{ ($.Scratch.Get "settings").version }}-min.js'></script>
+  {{ if (getenv "HUGO_DEBUG") }}
+  <script src="{{ (printf "%s/js/libs/analytics.js" .Type ) | absURL }}"></script>
+  <script src="{{ (printf "%s/js/libs/player.js" .Type ) | absURL }}"></script>
+  {{ else }}
+  <script src="{{ (printf "%s/dist/js/scripts.min.js" .Type ) | absURL }}"></script>
+  {{ end }}
+	<script>;(function(doc,settings,videoId,channelId,video,channel){
+  	
+    new Player('tvp-player-el', function(){
+      var videos = [];
+      
+      if (videoId) {
+        videos.push(video);
+      } else if (channelId && 'undefined' !== typeof channel.data) {
+        videos = channel.data;
+      } else if (!videos.length) {
+        return console.debug("No content found on data/");
+      }
 
-	var settings = {{ $.Scratch.Get "settings" }},
-		videoid = {{ with .Params.videoid }}{{ . }}{{ else }}''{{ end }},
-		channelid = {{ with .Params.channelid }}{{ . }}{{ else }}''{{ end }},
-		videos = [];
+      settings.data = videos;
+      settings.widgetId = settings.name;
+      return settings;
+    }());
 
-	if (videoid) {
-	  videos.push({{ index $.Site.Data.videos (printf "x%s" .Params.videoid) }} || {});
-	} else if (channelid) {
-	  var channel = {{index $.Site.Data.channelVideos (printf "x%s_page_1" .Params.channelid)}};
-	  
-	  if ('undefined' !== typeof channel.data) {
-	  	videos = channel.data;
-	  }
-	}
-	
-	if (!videos.length) {
-		return console.log('need videos');
-	}
-	
-	settings.data = videos;
-	settings.widgetId = settings.name;
-	
-	new Player('tvp-player-el', settings);
-
-}(document));</script>
+}(document,
+{{ $.Scratch.Get "settings" }},
+{{ with .Params.videoid }}{{ . }}{{ else }}''{{ end }},
+{{ with .Params.channelid }}{{ . }}{{ else }}''{{ end }},
+{{ index $.Site.Data.videos (printf "x%s" .Params.videoid) }},
+{{index $.Site.Data.channelVideos (printf "x%s_page_1" .Params.channelid)}}));</script>
+</body>
+</html>

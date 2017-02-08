@@ -1,4 +1,4 @@
-;(function(doc,$, utils) {
+;(function(doc,utils) {
 
   var videos = [],
       videosObj = Widget.videosObj;
@@ -83,4 +83,4 @@
 
   });
 
-}(document, jQuery, Utils));
+}(document, Utils));
