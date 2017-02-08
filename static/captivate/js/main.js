@@ -65,7 +65,7 @@
     			url : url,
     			cache : false,
     			dataType : "jsonp",
-    			data : _.extend({},isFiltering ? Filters.selected : {} ,{
+    			data : _.extend({},(isFiltering ? Filters.selected : {}) ,{
     				p : (page == null || page == undefined) ? 0 : page,
     				n : TVSite.isHomePage ? 6 : 6 ,
     				s : (query == null || query == undefined) ? "" : query,
@@ -388,29 +388,29 @@
                 $(this).parent().parent().prev().find(".selected").text($(this).text());
                 var _id = event.currentTarget.id;
                 Filters.selected["product_category"] = event.currentTarget.text;
-                liveResultsPage = 0;
+                loadMorePage = 0;
                 if(_id){
                     Filters.filterVideos();    
                 }
                 else{
-
+                    $("#product_category").prev().find(".selected").text("Product Category");
                     Filters.reset();
                 }
                 
             });
 
 
-            $("#type_of_video li a").on("click", function(event){
+            $("#video_type li a").on("click", function(event){
                 event.preventDefault();
                 $(this).parent().parent().prev().find(".selected").text($(this).text());
                 var _id = event.currentTarget.id;
-                Filters.selected["type_of_video"] = event.currentTarget.text;
-                liveResultsPage = 0;
+                Filters.selected["video_type"] = event.currentTarget.text;
+                loadMorePage = 0;
                 if(_id){
                     Filters.filterVideos();    
                 }
                 else{
-
+                    $("#video_type").prev().find(".selected").text("Type of Video");
                     Filters.reset();
                 }
             });
@@ -550,11 +550,12 @@
     var Filters = {
         selected: {},
         defaultFilters: null,
-        filters: { type_of_video: {}, product_category: {} },
+        filters: { video_type: {}, product_category: {} },
         reset : function(){
             $('.tvp-filter-reset').css("display", "none");
             btnLoadMore.attr("disabled", false);
             isFiltering = false;
+            this.selected["video_type"] = {};
             loadMorePage = 0;
             $('#tvp-video-container').empty();
             channelDataExtractor.videos(TVSite.channelId, loadMorePage ,null).done(function(data){
@@ -600,7 +601,7 @@
                 else{
                     $(document).on('click', '.tvp-filter-reset', _.bind(function() {
                         $("#product_category").prev().find(".selected").text("Product Category");
-                        $("#type_of_video").prev().find(".selected").text("Type of Video");
+                        $("#video_type").prev().find(".selected").text("Type of Video");
                         this.reset();
                     }, this));
                 }
