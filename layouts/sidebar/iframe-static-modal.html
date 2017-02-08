@@ -42,8 +42,8 @@
 <script src="{{ (printf "%s/js/vendor/jquery.js" .Type ) | absURL }}"></script>
 {{ if (getenv "HUGO_DEBUG") }}
 <script src="{{ (printf "%s/js/libs/analytics.js" .Type ) | absURL }}"></script>
-<script src="{{ (printf "%s/js/grid.js" .Type ) | absURL }}"></script>
-<script src="{{ (printf "%s/js/index.js" .Type ) | absURL }}"></script>
+<script src="{{ (printf "%s/js/libs/player.js" .Type ) | absURL }}"></script>
+<script src="{{ (printf "%s/js/modal/index.js" .Type ) | absURL }}"></script>
 {{ else }}
 <script src="{{ (printf "%s/dist/js/modal/scripts.min.js" .Type ) | absURL }}"></script>
 {{ end }}

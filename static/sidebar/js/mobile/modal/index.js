@@ -32,12 +32,6 @@
     var $products = $('#' + settings.name).find('.tvp-products');
     
     $products.html(html);
-
-    var analytics = {};
-    var config = {
-      domain: isset(location,'hostname') ?  location.hostname : '',
-      loginId: settings.loginId
-    };
     
     setTimeout(function(){
       $products.addClass('first-render');
@@ -52,13 +46,17 @@
         slickConfig.centerMode = true;
         slickConfig.centerPadding = '25px';
       }
-
+      
       $products.slick(slickConfig);
 
       if (!settings.analytics) return;
 
       //Dynamic analytics configuration, we need to switch if this is an ad.
       var analytics =  new Analytics();
+      var config = {
+        domain: isset(location,'hostname') ?  location.hostname : '',
+        loginId: settings.loginId
+      };
       if (exchangeVideo) {
         config.logUrl = exchangeVideo.analytics;
       } else {
