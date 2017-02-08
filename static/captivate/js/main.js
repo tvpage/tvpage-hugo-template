@@ -937,7 +937,7 @@
 
     
     var ProductSlider = {
-            breakpoint: 1200,
+            breakpoint: 992,
             products : [],
             $currentPopUp: null,
             currentId: 0,
@@ -1031,7 +1031,6 @@
                         return hoverHtml;
                     }
                 }).on({
-
                     'mouseenter' : function () {
                         if(!isMobile){
                           if (that.currentId === 0) {
@@ -1123,7 +1122,7 @@
                     }
                 });
             },
-            resizeWrapper: function (isX) {
+            resizeWrapper: function (isX) {                
                 if (isX) {
                     var xWidth = 0;
                     _.each($('#tvp-products-wrapper li'), function(el, i){
@@ -1144,7 +1143,7 @@
                     this.prodSlider = null;                    
                 }
             },
-            resizeCheck: function () {            
+            resizeCheck: function () {                
                 if (($(window).width() < this.breakpoint) && (!this.isHorizontalScroll)) {
                     this.isHorizontalScroll = true;
                     this.prodSlider.destroy();
