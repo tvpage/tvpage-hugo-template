@@ -43,7 +43,7 @@
     
     var domain = spot.getAttribute('data-domain'),
         type = spot.getAttribute('class').split('-').pop();
-        typeStaticPath = domain + type + (root.DEBUG ? '/' : '/dist/');
+        typeStaticPath = domain + type + (root.DEBUG ? '' : '/') + (root.DEBUG ? '/' : '/dist/');
 
     widget.run = function() {
       spot.insertAdjacentHTML('beforebegin', '<div id="' + id + '-holder" class="tvp-iframe-holder"></div>');
