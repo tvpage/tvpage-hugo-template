@@ -40,13 +40,20 @@
     };
     
     setTimeout(function(){
-      $products.addClass('first-render').slick({
+      $products.addClass('first-render');
+      
+      var slickConfig = {
         slidesToSlide: 1,
         slidesToShow: 1,
-        arrows: false,
-        centerMode: true,
-        centerPadding: '25px'
-      });
+        arrows: false
+      };
+      
+      if (products.length > 1) {
+        slickConfig.centerMode = true;
+        slickConfig.centerPadding = '25px';
+      }
+
+      $products.slick(slickConfig);
 
       if (!settings.analytics) return;
 
@@ -79,7 +86,7 @@
       
       analytics.track('pi',trackObj);
 
-    },5);
+    },0);
   };
   
   //Receiving the data from the parent iframe....

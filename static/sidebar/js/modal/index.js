@@ -60,13 +60,14 @@
         
         //We must first check if it's overflowing. To do this we first check if it's overflowing in the top, this is an
         //easy one, if it's a negative value then it's overflowing.
-        if (topValue < 0) {
-          topValue = 0;
-        } 
+        if (topValue <= 0) {
+          topValue = -10;
+        }
         
         //Otherwise if it's failing in the bottom, we rectify by removing the excess from the top value.
         else if ( popupBottomEdge > $productsHolder.outerHeight() )  {
           topValue = topValue - (popupBottomEdge - $productsHolder.outerHeight()) + 1;
+          topValue = topValue + 10;
         }
 
         //Arrow indicator shall just be aligned to the middile of thumb.
