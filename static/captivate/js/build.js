@@ -1630,7 +1630,7 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
     $('.slider').slick({
         infinite: true,
 	    speed: 900,
-	    slidesToShow: 3,
+	    slidesToShow: 4,
 	    slidesToScroll: 1,
 	    responsive: [{
 	        breakpoint: 768,

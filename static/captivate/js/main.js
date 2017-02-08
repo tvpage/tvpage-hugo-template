@@ -1345,7 +1345,7 @@
     $('.slider').slick({
         infinite: true,
 	    speed: 900,
-	    slidesToShow: 3,
+	    slidesToShow: 4,
 	    slidesToScroll: 1,
 	    responsive: [{
 	        breakpoint: 768,
