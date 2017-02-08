@@ -60,6 +60,7 @@ module.exports = function(grunt) {
             src: [
 
               'js/vendor/jquery-3.1.1.min.js',
+              'js/vendor/modernizr.js',
               'js/vendor/bootstrap.min.js',
               'js/vendor/underscore-min.js',
               'js/vendor/slick.min.js',
