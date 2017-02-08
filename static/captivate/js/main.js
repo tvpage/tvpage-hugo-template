@@ -997,6 +997,14 @@
                     }                    
                     result['videoId'] = activeVideoId || TVSite.channelVideosData.video.id;
                     html += renderUtil.tmpl(template, result); 
+                    
+                    schemaStructure.createProductSchema({
+                        name: result.title,
+                        image: result.imageUrl,
+                        description: result.description,
+                        mpn: result.mpn,
+                        price: result.price
+                    });
                 });
                 $('.tvp-products-wrapper ul').html(html);
             },
@@ -1232,24 +1240,40 @@
 
     var schemaStructure = {
         createSchema: function (opt) {
-            var data = [],
-                el = document.createElement('script');
-
             if (TVSite.isHomePage) {
-                data.push(this.webPage(opt));
+                this.renderSchema(this.webPage(opt));
             }
             if (TVSite.isPlayerPage) {
-                data.push(this.videoObject(opt));
+                this.renderSchema(this.videoObject(opt));
             }
             if (TVSite.isChannelPage){
-                data.push(this.webPage(opt));
+                this.renderSchema(this.webPage(opt));
             }
-
-            data.push(this.viewAction(opt));
+        },
+        renderSchema: function (schema) {
+            var data = [];
+            var el = document.createElement('script');
+            data.push(schema);
             el.type = 'application/ld+json';
             el.text = JSON.stringify(data);
-
             document.querySelector('head').appendChild(el);
+        },
+        createProductSchema: function (opt) {
+            var schemaStructure = {
+              "@context": "http://schema.org/",
+              "@type": "Product",
+              "name": opt.name,
+              "image": opt.image,
+              "description": opt.description,
+              "mpn": opt.mpn,
+              "offers": {
+                "@type": "Offer",
+                "priceCurrency": "USD",                
+                "price": opt.price === 'Out Of Stock' ? '0.00' : opt.price,
+                "availability" : opt.price === 'Out Of Stock' ? "http://schema.org/OutOfStock" : "http://schema.org/InStock"
+              }
+            };
+            this.renderSchema(schemaStructure);
         },
         videoObject: function (opt) {
             return {
@@ -1275,7 +1299,6 @@
                 "Target": opt.contentUrl
             }
         },
-
         webPage: function (opt) {
             return {
               "@context": "http://schema.org",
@@ -1285,6 +1308,37 @@
               "PotentialAction": {
                 "@type": "ViewAction", 
                 "Target": opt.contentUrl
+              }
+            }
+        },
+        productObject: function (opt) {
+            return {
+              "@context": "http://schema.org/",
+              "@type": "Product",
+              "name": opt.name,
+              "image": opt.image,
+              "description": opt.description,
+              "mpn": "925872",
+              // "brand": {
+              //   "@type": "Thing",
+              //   "name": "ACME"
+              // },
+              // "aggregateRating": {
+              //   "@type": "AggregateRating",
+              //   "ratingValue": "4.4",
+              //   "reviewCount": "89"
+              // },
+              "offers": {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": opt.price
+                // "priceValidUntil": "2020-11-05",
+                // "itemCondition": "http://schema.org/UsedCondition"
+                // "availability": "http://schema.org/InStock",
+                // "seller": {
+                //   "@type": "Organization",
+                //   "name": "Executive Objects"
+                // }
               }
             }
         }
