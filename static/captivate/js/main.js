@@ -1,4 +1,4 @@
-(function($, IScroll, _, BigScreen){
+(function($, IScroll, _, BigScreen, Modernizr){
 	var liveResultsPage=0;
     var loadMorePage = 0;
     var btnLoadMore = $(".load-more .btn-more-button");
@@ -1101,7 +1101,7 @@
                 var that = this;
                 $(this.el).popover({
                     placement: function (d, t) {
-                        return $(window).width() < that.breakpoint ? 'top' : 'left';
+                        return Modernizr.mq('(max-width: 1199px)') ? 'top' : 'left';
                     },
                     template: '<div class="popover tvp-prod-hover" role="tooltip"><div class="arrow"></div><div class="popover-content tvp-prod-hover-content"></div></div>',
                     html: true,
@@ -1135,8 +1135,6 @@
                 }
             },
             destroy: function () {
-
-
                 $(this.el).popover('destroy');
                 if(this.prodSlider){
                     this.prodSlider.destroy();
@@ -1612,4 +1610,4 @@
         selector: '.lazyImg',
         container: '#main-content'
     });
-}(jQuery, window.IScroll, window._, window.BigScreen));
+}(jQuery, window.IScroll, window._, window.BigScreen, window.Modernizr));
