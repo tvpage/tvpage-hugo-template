@@ -46,7 +46,7 @@
       if (window.parent && window.parent.parent) {
         window.parent.parent.postMessage({
           event: '_tvp_sidebar_modal_rendered',
-          height: $el.height() + 'px'
+          height: ($el.height() + 20) + 'px'
         }, '*');
       }
 
