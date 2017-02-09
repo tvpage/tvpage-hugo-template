@@ -2,7 +2,7 @@
 {{ partial (printf "%s/header.html" .Type) . }}
 {{ partial (printf "%s/main_channel_video.html" .Type) . }}
 {{ $channel := index $.Site.Data.channels (printf "x%s" .Params.channelid ) }}
-{{ $.Scratch.Add "channelVideos" (index $.Site.Data.channelVideos (printf "x%s_page_1" $channel.id) "data") }}
+{{ $.Scratch.Add "channelVideos" (index $.Site.Data.channelVideos (printf "x%s_page_0" $channel.id) "data") }}
 {{ $video := index $.Site.Data.videos (printf "x%s" .Params.videoid ) }}
 {{ $channelVideosQty := len ($.Scratch.Get "channelVideos") }}
 <script type='text/javascript'>

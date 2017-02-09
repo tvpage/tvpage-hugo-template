@@ -350,7 +350,7 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
     			url : url,
     			cache : false,
     			dataType : "jsonp",
-    			data : _.extend({},(isFiltering ? Filters.selected : {}) ,{
+    			data : _.extend({}, Filters.selected  ,{
     				p : (page == null || page == undefined) ? 0 : page,
     				n : TVSite.isHomePage ? 6 : 6 ,
     				s : (query == null || query == undefined) ? "" : query,
@@ -679,6 +679,7 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
                 }
                 else{
                     $("#product_category").prev().find(".selected").text("Product Category");
+                    Filters.selected["product_category"] = {};
                     Filters.reset();
                 }
                 
@@ -696,6 +697,7 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
                 }
                 else{
                     $("#video_type").prev().find(".selected").text("Type of Video");
+                    Filters.selected["video_type"] = {};
                     Filters.reset();
                 }
             });
@@ -737,19 +739,29 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
             isFiltering = false;
             search.desktop(val).done(function(results) {
                 isSearchHeader = false;
-            	if (results.length) {
-            		$nullResults.hide();
+                var value = searchDesktopInput.val();
+            	if (results.length && value !== "") {
+                    $nullResults.hide();
             		renderUtil.handleVideoResults(results);
 				} else {
-                    if(!$(".brand-header-search-container").hasClass("connector"))
+                    if(!$(".brand-header-search-container").hasClass("connector")){
                         $(".brand-header-search-container").addClass("connector");
-                    $nullResults.show();
+                    }
+                    if(value !== ""){
+                        $nullResults.show();
+                    }else{
+                        $(".brand-header-search-container").removeClass("connector");   
+                    }
+                    renderUtil.resetLiveSearch();
                 }
             });
         } else {
             $nullResults.hide();
             if($(".brand-header-search-container").hasClass("connector"))
                 $(".brand-header-search-container").removeClass("connector");
+
+            renderUtil.resetLiveSearch();
+
         }
     });
 
@@ -837,10 +849,11 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
         defaultFilters: null,
         filters: { video_type: {}, product_category: {} },
         reset : function(){
-            $('.tvp-filter-reset').css("display", "none");
+            //$('.tvp-filter-reset').css("display", "none");
+            if(Filters.selected["product_category"].length == undefined && Filters.selected["video_type"].length == undefined);
+                $('.tvp-filter-reset').css("display", "none");
             btnLoadMore.attr("disabled", false);
             isFiltering = false;
-            this.selected["video_type"] = {};
             loadMorePage = 0;
             $('#tvp-video-container').empty();
             channelDataExtractor.videos(TVSite.channelId, loadMorePage ,null).done(function(data){
@@ -880,6 +893,7 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
                 eventsBinder.Filters();
                 if(isIOS){
                     $(document).on('touchstart', '.tvp-filter-reset', _.bind(function() {
+                        Filters.selected = {};
                         this.reset();
                     }, this));
                 }
@@ -887,6 +901,7 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
                     $(document).on('click', '.tvp-filter-reset', _.bind(function() {
                         $("#product_category").prev().find(".selected").text("Product Category");
                         $("#video_type").prev().find(".selected").text("Type of Video");
+                        Filters.selected = {};
                         this.reset();
                     }, this));
                 }

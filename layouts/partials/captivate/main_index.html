@@ -45,7 +45,7 @@
 		</div>
 		<h2 class="section-header">LATEST VIDEOS</h2>
 		<div id="tvp-video-container" class="row">
-			{{- $page := index $.Site.Data.channelVideos (printf "x%s_page_1" ($.Scratch.Get "settings").homechannelid) -}}
+			{{- $page := index $.Site.Data.channelVideos (printf "x%s_page_0" ($.Scratch.Get "settings").homechannelid) -}}
 			{{- with $page.data -}}
 				{{ $i := 0 }}
 				{{- range first 6 $page.data -}}
