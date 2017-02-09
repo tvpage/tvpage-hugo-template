@@ -29,15 +29,22 @@
       }
       
       $products.slick(slickConfig);
-
+      $products.on('init',function(){
+        console.log('INIT CAROUSEL', $('#' + settings.name).height())
+      });
+      
       setTimeout(function(){
+        
+        console.log($('#' + settings.name).height())
+        
         if (window.parent && window.parent.parent) {
           window.parent.parent.postMessage({
             event: '_tvp_sidebar_modal_rendered',
-            height: Math.ceil($('#' + settings.name).height()) + 'px'
+            height: '260px'
+            //height: Math.ceil($('#' + settings.name).height()) + 'px'
           }, '*');
         }
-      },2000);
+      },0);
 
       if (!settings.analytics) return;
 
