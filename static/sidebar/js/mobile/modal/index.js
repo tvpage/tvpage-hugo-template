@@ -17,11 +17,11 @@
     $products.html(html).promise().done(function(){
       $products.on('init',function(){
         $products.addClass('first-render');
+        
         if (window.parent && window.parent.parent) {
           window.parent.parent.postMessage({
             event: '_tvp_sidebar_modal_rendered',
-            height: '260px'
-            //height: Math.ceil($('#' + settings.name).height()) + 'px'
+            height: Math.ceil($('#' + settings.name).height()) + 'px'
           }, '*');
         }
       });
@@ -32,10 +32,10 @@
         arrows: false
       };
       
-      if (products.length > 1) {
-        slickConfig.centerMode = true;
-        slickConfig.centerPadding = '25px';
-      }
+      // if (products.length > 1) {
+      //   slickConfig.centerMode = true;
+      //   slickConfig.centerPadding = '25px';
+      // }
       
       $products.slick(slickConfig);
 
