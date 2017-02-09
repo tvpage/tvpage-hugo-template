@@ -41,9 +41,10 @@
 <script src='//appcdn.tvpage.com/player/assets/tvp/tvp-{{ ($.Scratch.Get "settings").version }}-min.js'></script>
 <script src="{{ (printf "%s/js/vendor/jquery.js" .Type ) | absURL }}"></script>
 {{ if (getenv "HUGO_DEBUG") }}
-<script src="http://localhost:1313/sidebar/js/libs/analytics.js"></script>
-<script src="http://localhost:1313/sidebar/js/libs/player.js"></script>
-<script src="http://localhost:1313/sidebar/js/modal/index.js"></script>
+<script src="{{ (printf "%s/js/libs/utils.js" .Type ) | absURL }}"></script>
+<script src="{{ (printf "%s/js/libs/analytics.js" .Type ) | absURL }}"></script>
+<script src="{{ (printf "%s/js/libs/player.js" .Type ) | absURL }}"></script>
+<script src="{{ (printf "%s/js/modal/index.js" .Type ) | absURL }}"></script>
 {{ else }}
 <script src="{{ (printf "%s/dist/js/modal/scripts.min.js" .Type ) | absURL }}"></script>
 {{ end }}

@@ -1,6 +1,4 @@
 * {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 
@@ -156,7 +154,6 @@ footer {
 }
 
 .tvp-video:hover .tvp-play-button-outer{
-   -moz-transform: scale(1.1);
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
 }
@@ -202,7 +199,8 @@ footer {
 .tvp-sidebar-load:active {
   background-color: #666666;
   box-shadow: 1px 1px #666;
-  transform: translateY(2px);
+  -webkit-transform: translateY(2px);
+          transform: translateY(2px);
 }
 
 .tvp-sidebar-load:focus {

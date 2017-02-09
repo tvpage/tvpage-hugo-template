@@ -41,6 +41,7 @@
 <script src="{{ (printf "%s/js/vendor/jquery.js" .Type ) | absURL }}"></script>
 <script src="{{ (printf "%s/js/vendor/slick-min.js" .Type ) | absURL }}"></script>
 {{ if (getenv "HUGO_DEBUG") }}
+<script src="{{ (printf "%s/js/libs/utils.js" .Type ) | absURL }}"></script>
 <script src="{{ (printf "%s/js/libs/analytics.js" .Type ) | absURL }}"></script>
 <script src="{{ (printf "%s/js/libs/player.js" .Type ) | absURL }}"></script>
 <script src="{{ (printf "%s/js/mobile/modal/index.js" .Type ) | absURL }}"></script>
