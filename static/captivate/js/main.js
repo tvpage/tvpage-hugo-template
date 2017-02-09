@@ -1591,7 +1591,7 @@
                     'transform': 'rotate('+now+'deg)'
                   });
                 },
-                duration:'slow',
+                duration:'medium',
                 complete: function () {
                     $(this).addClass('up').removeAttr('style');
                 }
@@ -1607,16 +1607,19 @@
                     'transform': 'rotate('+now+'deg)'
                   });
                 },
-                duration:'slow',
+                duration:'medium',
                 complete: function(){
                     $(this).removeClass('up').removeAttr('style');
                 }
             },'linear');
         }
     });
-    $("#show-more-mobile").on("touchstart", function(){
+    $("#show-more-mobile").tap({
         //alert("touch enter");
-        $($(this).data("target")).collapse("toggle");
+        link:false,
+        tap:function(){
+        $($("#show-more-mobile").data("target")).collapse("toggle");
+        }
     });
 
     $('#mobile-subscribe').click(function(e) {

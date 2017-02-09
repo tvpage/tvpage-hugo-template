@@ -312,9 +312,21 @@
 		.caret{
 			position: absolute;
 			margin: auto 0;			
-			right: 0;
+			right: 2px;
 			top: 0;
 			bottom: 0;
+		}
+		.carret-container{
+			padding: 10px;
+		    position: absolute;
+		    /* width: 0; */
+		    /* height: 0; */
+		    display: inline-block;
+		    content: " ";
+		    vertical-align: middle;
+		    right: 3px;
+		    top: 0;
+		    bottom: 0;
 		}
 	}
 	.video-details-row{
