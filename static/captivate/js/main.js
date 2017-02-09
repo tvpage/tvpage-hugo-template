@@ -142,7 +142,7 @@
                 
                 //url = url.replace("//", "/");
             }
-            return url;
+            return url.toLowerCase();
         },
         getLiveResultUrl :function(result) {
             var redefine = function(val) {
@@ -152,7 +152,7 @@
             if (result && redefine(result)) {
                 url = TVSite.baseUrl + '/' +String(result.entityTitleParent).replace(/\s/g,"-").replace(/\./g,"")+ "/" + String(result.titleTextEncoded).replace(/\s/g,"-") + "/" + (result.entityIdParent || TVSite.channelId) + "-" + result.id+"/";
             }
-            return url;
+            return url.toLowerCase();
         },
     	resetLiveSearch : function() {
             $('#tvp-desktop-search-results ul')
@@ -718,7 +718,7 @@
             }
             url = channelTitle + videoTitle + videoUrl+"/";
           }
-          return url;
+          return url.toLowerCase();
         },
         resizePlayer : function(){
           var $playerHolder = $('#TVPagePlayer');
