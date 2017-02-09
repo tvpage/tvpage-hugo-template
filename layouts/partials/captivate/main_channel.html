@@ -72,7 +72,7 @@
         </div>
         <div id="tvp-video-container" class="row video-row">
         {{- $channelid := .Params.channelid -}}
-        {{- $page := index $.Site.Data.channelVideos (printf "x%s_page_1" $channelid) -}}        
+        {{- $page := index $.Site.Data.channelVideos (printf "x%s_page_0" $channelid) -}}        
         {{- with $page.data -}}
           {{- range $i, $p := first 6 $page.data -}}
             <div class="col-sm-4 col-md-4 latest-video-container">
