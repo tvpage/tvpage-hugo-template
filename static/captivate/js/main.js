@@ -293,7 +293,8 @@
             };
             for (var key in filters) {
                 var frag = document.createDocumentFragment();
-                frag.appendChild(getOption({ code: null, label: key.replace(/_/g, ' ') }));
+                var labelKey = key === "video_type" ? "Type of Video" : key.replace(/_/g, ' '); 
+                frag.appendChild(getOption({ code: null, label: labelKey }));
                 var opts = filters[key].options;
                 for (var i = 0; i < (opts ? opts.length : 0); i++) {
                     if (opts[i].hasValues) 
@@ -385,7 +386,7 @@
         Filters : function(){
             $("#product_category li a").on("click", function(event){
                 event.preventDefault();
-                $(this).parent().parent().prev().find(".selected").text($(this).text());
+                $("#product_category_text").text($(this).text());
                 var _id = event.currentTarget.id;
                 Filters.selected["product_category"] = event.currentTarget.text;
                 loadMorePage = 0;
@@ -393,7 +394,7 @@
                     Filters.filterVideos();    
                 }
                 else{
-                    $("#product_category").prev().find(".selected").text("Product Category");
+                    $("#product_category_text").text("Product Category");
                     Filters.selected["product_category"] = {};
                     Filters.reset();
                 }
@@ -403,7 +404,7 @@
 
             $("#video_type li a").on("click", function(event){
                 event.preventDefault();
-                $(this).parent().parent().prev().find(".selected").text($(this).text());
+                $("#video_type_text").text($(this).text());
                 var _id = event.currentTarget.id;
                 Filters.selected["video_type"] = event.currentTarget.text;
                 loadMorePage = 0;
@@ -411,7 +412,7 @@
                     Filters.filterVideos();    
                 }
                 else{
-                    $("#video_type").prev().find(".selected").text("Type of Video");
+                    $("#video_type_text").text("Type of Video");
                     Filters.selected["video_type"] = {};
                     Filters.reset();
                 }
@@ -563,10 +564,27 @@
         selected: {},
         defaultFilters: null,
         filters: { video_type: {}, product_category: {} },
+        haveActiveFilter : function(filter){
+            var haveFilter = false;
+            if(Filters.selected.hasOwnProperty(filter)){
+                if(typeof Filters.selected[filter] ===  "object"){
+                    haveFilter = false;
+                }else{
+                    haveFilter = true;
+                }
+            }else{
+                haveFilter = false;
+            }
+            return haveFilter;
+
+        },
         reset : function(){
             //$('.tvp-filter-reset').css("display", "none");
-            if(Filters.selected["product_category"].length == undefined && Filters.selected["video_type"].length == undefined);
+            var haveFilterCategory = Filters.haveActiveFilter("product_category");
+            var haveFilterType = Filters.haveActiveFilter("video_type");
+            if(!haveFilterType && !haveFilterCategory)
                 $('.tvp-filter-reset').css("display", "none");
+            
             btnLoadMore.attr("disabled", false);
             isFiltering = false;
             loadMorePage = 0;
@@ -585,9 +603,7 @@
                 loadMorePage =  loadMorePage+1;
                 if (results.length) {
                     renderUtil.handleLoadMore(results);
-                    // if(!isMobile || !isIOS){
-                    //     this.hoverCheck();    
-                    // }
+                    
                 } 
 
             }, this));
@@ -608,14 +624,16 @@
                 eventsBinder.Filters();
                 if(isIOS){
                     $(document).on('touchstart', '.tvp-filter-reset', _.bind(function() {
+                        $("#product_category_text").text("Product Category");
+                        $("#video_type_text").text("Type of Video");
                         Filters.selected = {};
                         this.reset();
                     }, this));
                 }
                 else{
                     $(document).on('click', '.tvp-filter-reset', _.bind(function() {
-                        $("#product_category").prev().find(".selected").text("Product Category");
-                        $("#video_type").prev().find(".selected").text("Type of Video");
+                        $("#product_category_text").text("Product Category");
+                        $("#video_type_text").text("Type of Video");
                         Filters.selected = {};
                         this.reset();
                     }, this));
@@ -1372,7 +1390,13 @@
 	            arrows: false,
 	            slidesToShow: 3,
 	            slidesToScroll: 3
-	        }
+	        },
+            breakpoint: 1119,
+            settings: {
+                arrows: false,
+                slidesToShow: 4,
+                slidesToScroll: 1
+            }
 	    }]
     });
     
@@ -1586,6 +1610,11 @@
             },'linear');
         }
     });
+    $("#show-more-mobile").on("touchstart", function(){
+        //alert("touch enter");
+        $($(this).data("target")).collapse("toggle");
+    });
+
     $('#mobile-subscribe').click(function(e) {
         e.preventDefault();
         window.location.href = "/subscribe";

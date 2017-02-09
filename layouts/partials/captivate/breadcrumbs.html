@@ -11,12 +11,12 @@
 			{{- if eq .Layout "channel" -}}
 				{{- $channel := index $.Site.Data.channels (printf "x%s" .Params.channelid ) -}}
 				{{- if $channel -}}
-					<li id="breadcrumb-1" itemscope itemtype="http://data-vocabulary.org/Breadcrumb" class="active"><a href='{{$baseUrl}}/c/{{$channel.titleTextEncoded}}/{{$channel.id}}/' itemprop="url"><span itemprop="title">{{ $channel.title }}</span></a></li>
+					<li id="breadcrumb-1" itemscope itemtype="http://data-vocabulary.org/Breadcrumb" class="active"><a href='{{$baseUrl}}/c/{{lower $channel.titleTextEncoded}}/{{$channel.id}}/' itemprop="url"><span itemprop="title">{{ $channel.title }}</span></a></li>
 				{{ end }}
 			{{- else -}}
 				{{- $channel := index $.Site.Data.channels (printf "x%s" .Params.channelid ) -}}
 				{{- if $channel -}}
-					<li id="breadcrumb-1" itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href='{{$baseUrl}}/c/{{$channel.titleTextEncoded}}/{{$channel.id}}/' itemprop="url"><span itemprop="title">{{ $channel.title }}</span></a></li>
+					<li id="breadcrumb-1" itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href='{{$baseUrl}}/c/{{lower $channel.titleTextEncoded}}/{{$channel.id}}/' itemprop="url"><span itemprop="title">{{ $channel.title }}</span></a></li>
 				{{ end }}
 			{{ end }}
 			{{- if eq .Layout "channelVideo" -}}
@@ -24,7 +24,7 @@
 				{{- $video := index $.Site.Data.videos (printf "x%s" .Params.videoid ) -}}
 				{{- if $channel -}}
 					<li id="breadcrumb-2" itemscope itemtype="http://data-vocabulary.org/Breadcrumb" class="active">
-						<a itemprop="url" href='{{$baseUrl}}/{{$channel.titleTextEncoded}}/{{$video.titleTextEncoded}}/{{$channel.id}}-{{.Params.videoid}}/'>
+						<a itemprop="url" href='{{$baseUrl}}/{{lower $channel.titleTextEncoded}}/{{lower $video.titleTextEncoded}}/{{$channel.id}}-{{.Params.videoid}}/'>
 							<span itemprop="title">{{ .Title }}</span>
 						</a>
 					</li>
