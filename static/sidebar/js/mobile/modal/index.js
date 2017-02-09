@@ -14,13 +14,9 @@
 
     var $products = $('#' + settings.name).find('.tvp-products');
     
-    if (products.length <= 1) {
-      $products.html(html);
-    }
-    
-    setTimeout(function(){
+    $products.html(html).promise().done(function(){
       $products.addClass('first-render');
-      
+
       var slickConfig = {
         slidesToSlide: 1,
         slidesToShow: 1,
@@ -32,16 +28,16 @@
         slickConfig.centerPadding = '25px';
       }
       
-      if (products.length <= 1) {
-        $products.slick(slickConfig);
-      }
+      $products.slick(slickConfig);
 
-      if (window.parent && window.parent.parent) {
-        window.parent.parent.postMessage({
-          event: '_tvp_sidebar_modal_rendered',
-          height: Math.ceil($('#' + settings.name).height()) + 'px'
-        }, '*');
-      }
+      setTimeout(function(){
+        if (window.parent && window.parent.parent) {
+          window.parent.parent.postMessage({
+            event: '_tvp_sidebar_modal_rendered',
+            height: Math.ceil($('#' + settings.name).height()) + 'px'
+          }, '*');
+        }
+      },2000);
 
       if (!settings.analytics) return;
 
@@ -78,7 +74,7 @@
       
       analytics.track('pi',trackObj);
 
-    },0);
+    });
   };
 
   window.addEventListener('message', function(e){
