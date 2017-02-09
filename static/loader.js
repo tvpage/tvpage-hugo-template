@@ -159,24 +159,8 @@
           }
 
           html += '">';
-          
-          var iframeDoc = iframe.contentWindow.document;
-          iframeDoc.open().write(html);
-          iframeDoc.close();
 
-        } 
-
-        //Handling the static iframe scenario, not much to do, just delay the src addition.
-        else {
-          function setSrc() {
-            var src = spot.href;
-            (-1 == navigator.userAgent.indexOf("MSIE")) ? iframe.src = src : iframe.location = src;
-          }
-          setTimeout(setSrc,5);
-        }
-
-        //Handling widget's iframe aspect ratio.
-        var handleSizing = function(){
+          //Handling the resizing of widgets & their holders.
           if ('sidebar' === type) {
             window.addEventListener('message', function(e){
               if (!e || !isset(e, 'data') || !isset(e.data, 'event')) return;
@@ -198,9 +182,20 @@
           } else {
             console.log('type: ' + type + ' unknown');
           }
-        };
+          
+          var iframeDoc = iframe.contentWindow.document;
+          iframeDoc.open().write(html);
+          iframeDoc.close();
 
-        handleSizing();
+        }
+        //Handling the static iframe scenario, not much to do, just delay the src addition.
+        else {
+          function setSrc() {
+            var src = spot.href;
+            (-1 == navigator.userAgent.indexOf("MSIE")) ? iframe.src = src : iframe.location = src;
+          }
+          setTimeout(setSrc,5);
+        }
 
       } else {
 
