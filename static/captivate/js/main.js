@@ -565,7 +565,7 @@
         defaultFilters: null,
         filters: { video_type: {}, product_category: {} },
         haveActiveFilter : function(filter){
-            var haveFilter = false;
+            var haveFilter = true;
             if(Filters.selected.hasOwnProperty(filter)){
                 if(typeof Filters.selected[filter] ===  "object"){
                     haveFilter = false;
@@ -1108,11 +1108,15 @@
                     $('*[data-toggle="popover"]').popover('hide');                
                 });
 
-                if(isMobile){
-                  $('.player-product').off('touchstart').on('touchstart', '.analyticsClick', function(e) {
-                    e.stopPropagation();
-                    Analytics.registerProductClick($(this).data('id'));
+                if(isIOS){
+                  $('.analyticsClick').tap({
+                    link : true,
+                    tap: function(){
+                        //e.stopPropagation();
+                        Analytics.registerProductClick($(this).data('id'));
+                    }
                   });
+                  
                 }else{
                   $('.player-product').off('click').on('click', '.analyticsClick', function(e) {
                       e.stopPropagation();
@@ -1389,7 +1393,7 @@
 	        settings: {
 	            arrows: false,
 	            slidesToShow: 3,
-	            slidesToScroll: 3
+	            slidesToScroll: 1
 	        },
             breakpoint: 1119,
             settings: {

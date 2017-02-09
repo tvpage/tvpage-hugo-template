@@ -6,6 +6,92 @@ void 0!==c?null===c?void r.removeAttr(a,b):e&&"set"in e&&void 0!==(d=e.set(a,c,b
 /*! modernizr 3.3.1 (Custom Build) | MIT *
  * https://modernizr.com/download/?-mq !*/
 !function(e,n,t){function o(e,n){return typeof e===n}function a(){var e,n,t,a,i,s,r;for(var d in l)if(l.hasOwnProperty(d)){if(e=[],n=l[d],n.name&&(e.push(n.name.toLowerCase()),n.options&&n.options.aliases&&n.options.aliases.length))for(t=0;t<n.options.aliases.length;t++)e.push(n.options.aliases[t].toLowerCase());for(a=o(n.fn,"function")?n.fn():n.fn,i=0;i<e.length;i++)s=e[i],r=s.split("."),1===r.length?Modernizr[r[0]]=a:(!Modernizr[r[0]]||Modernizr[r[0]]instanceof Boolean||(Modernizr[r[0]]=new Boolean(Modernizr[r[0]])),Modernizr[r[0]][r[1]]=a),f.push((a?"":"no-")+r.join("-"))}}function i(){return"function"!=typeof n.createElement?n.createElement(arguments[0]):c?n.createElementNS.call(n,"http://www.w3.org/2000/svg",arguments[0]):n.createElement.apply(n,arguments)}function s(){var e=n.body;return e||(e=i(c?"svg":"body"),e.fake=!0),e}function r(e,t,o,a){var r,l,d,f,c="modernizr",p=i("div"),h=s();if(parseInt(o,10))for(;o--;)d=i("div"),d.id=a?a[o]:c+(o+1),p.appendChild(d);return r=i("style"),r.type="text/css",r.id="s"+c,(h.fake?h:p).appendChild(r),h.appendChild(p),r.styleSheet?r.styleSheet.cssText=e:r.appendChild(n.createTextNode(e)),p.id=c,h.fake&&(h.style.background="",h.style.overflow="hidden",f=u.style.overflow,u.style.overflow="hidden",u.appendChild(h)),l=t(p,e),h.fake?(h.parentNode.removeChild(h),u.style.overflow=f,u.offsetHeight):p.parentNode.removeChild(p),!!l}var l=[],d={_version:"3.3.1",_config:{classPrefix:"",enableClasses:!0,enableJSClass:!0,usePrefixes:!0},_q:[],on:function(e,n){var t=this;setTimeout(function(){n(t[e])},0)},addTest:function(e,n,t){l.push({name:e,fn:n,options:t})},addAsyncTest:function(e){l.push({name:null,fn:e})}},Modernizr=function(){};Modernizr.prototype=d,Modernizr=new Modernizr;var f=[],u=n.documentElement,c="svg"===u.nodeName.toLowerCase(),p=function(){var n=e.matchMedia||e.msMatchMedia;return n?function(e){var t=n(e);return t&&t.matches||!1}:function(n){var t=!1;return r("@media "+n+" { #modernizr { position: absolute; } }",function(n){t="absolute"==(e.getComputedStyle?e.getComputedStyle(n,null):n.currentStyle).position}),t}}();d.mq=p,a(),delete d.addTest,delete d.addAsyncTest;for(var h=0;h<Modernizr._q.length;h++)Modernizr._q[h]();e.Modernizr=Modernizr}(window,document);
+var tap = function(el, options) {
+    var defaults = {
+      link: true,
+      target: '_blank'
+    };
+
+    options = $.extend({}, defaults, options);
+
+    var started = false,
+        x = 0,
+        y = 0,
+        touchEvent = function(e) {
+          return e.originalEvent.targetTouches ?
+          e.originalEvent.targetTouches[0] :
+          e;
+        };
+
+    function listen() {
+      onTouchStart();
+      onTouchEnd();
+      onTouchMove();
+    }
+
+    function onTouchStart() {
+      $(el).on('touchstart', function(e) {
+        var touch = touchEvent(e),
+            that = this;
+
+        x = touch.pageX;
+        y = touch.pageY;
+
+        $('div').data('start-x', x);
+        $('div').data('start-y', y);
+
+        $(this).addClass('hovered');
+      });
+    }
+
+    function onTouchEnd() {
+      $(el).on('touchend', function(e) {
+        var startX = $('div').data('start-x'),
+            startY = $('div').data('start-y');
+
+        if ( startX === x && startY === y ) {
+          if (options.link) {
+            window.open($(el).data('link'), options.target);
+          }
+
+          if (options.tap) {
+            options.tap($(el));
+          }
+        }
+
+        $(this).removeClass('hovered');
+
+        x = 0;
+        y = 0;
+
+        e.preventDefault();
+      });
+    }
+
+    function onTouchMove() {
+      $(el).on('touchmove', function(e) {
+
+        var touch = touchEvent(e);
+
+        x = touch.pageX;
+        y = touch.pageY;
+      });
+    }
+
+    listen();
+
+    return {};
+};
+
+// Plugin wrapp
+$.fn.tap = function(options) {
+  return this.each(function() {
+  if (!$(this).data('tap'))
+    $(this).data('tap', new tap(this, options));
+  });
+};
+
+
 /*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)
  * Copyright 2011-2016 Twitter, Inc.
@@ -850,7 +936,7 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
         defaultFilters: null,
         filters: { video_type: {}, product_category: {} },
         haveActiveFilter : function(filter){
-            var haveFilter = false;
+            var haveFilter = true;
             if(Filters.selected.hasOwnProperty(filter)){
                 if(typeof Filters.selected[filter] ===  "object"){
                     haveFilter = false;
@@ -1393,11 +1479,15 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
                     $('*[data-toggle="popover"]').popover('hide');                
                 });
 
-                if(isMobile){
-                  $('.player-product').off('touchstart').on('touchstart', '.analyticsClick', function(e) {
-                    e.stopPropagation();
-                    Analytics.registerProductClick($(this).data('id'));
+                if(isIOS){
+                  $('.analyticsClick').tap({
+                    link : true,
+                    tap: function(){
+                        //e.stopPropagation();
+                        Analytics.registerProductClick($(this).data('id'));
+                    }
                   });
+                  
                 }else{
                   $('.player-product').off('click').on('click', '.analyticsClick', function(e) {
                       e.stopPropagation();
@@ -1674,7 +1764,7 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
 	        settings: {
 	            arrows: false,
 	            slidesToShow: 3,
-	            slidesToScroll: 3
+	            slidesToScroll: 1
 	        },
             breakpoint: 1119,
             settings: {
