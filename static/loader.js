@@ -69,7 +69,27 @@
         iframe.setAttribute('name', location.origin);
         iframe.classList.add('tvp-iframe');
 
+        if ('solo' === type) {
+          iframe.onload = function(){
+            var ifr = this;
+            window.addEventListener('resize', debounce(function(){
+              ifr.contentWindow.postMessage({
+                event: '_tvp_widget_holder_resize',
+                size: [holder.offsetWidth, holder.offsetHeight]
+              }, '*');
+            },50));
+          };
+        }
+
         if ('sidebar' === type) {
+          
+          window.addEventListener('message', function(e){
+            if (!e || !isset(e, 'data') || !isset(e.data, 'event')) return;
+            var eventName = e.data.event;
+            if ('_tvp_widget_first_render' === eventName || '_tvp_widget_grid_resize' === eventName) {
+              holder.style.height = e.data.height;
+            }
+          });
 
           //Whe need to receive the data from the click first, then we create the overlay & modal on the fly.
           window.addEventListener('message', function(e){
@@ -159,29 +179,6 @@
           }
 
           html += '">';
-
-          //Handling the resizing of widgets & their holders.
-          if ('sidebar' === type) {
-            window.addEventListener('message', function(e){
-              if (!e || !isset(e, 'data') || !isset(e.data, 'event')) return;
-              var eventName = e.data.event;
-              if ('_tvp_widget_first_render' === eventName || '_tvp_widget_grid_resize' === eventName) {
-                holder.style.height = e.data.height;
-              }
-            });
-          } else if ('solo' === type) {
-            iframe.onload = function(){
-              var ifr = this;
-              window.addEventListener('resize', debounce(function(){
-                ifr.contentWindow.postMessage({
-                  event: '_tvp_widget_holder_resize',
-                  size: [holder.offsetWidth, holder.offsetHeight]
-                }, '*');
-              },50));
-            };
-          } else {
-            console.log('type: ' + type + ' unknown');
-          }
           
           var iframeDoc = iframe.contentWindow.document;
           iframeDoc.open().write(html);
