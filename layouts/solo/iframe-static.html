@@ -46,6 +46,6 @@
 {{ with .Params.videoid }}{{ . }}{{ else }}''{{ end }},
 {{ with .Params.channelid }}{{ . }}{{ else }}''{{ end }},
 {{ index $.Site.Data.videos (printf "x%s" .Params.videoid) }},
-{{index $.Site.Data.channelVideos (printf "x%s_page_1" .Params.channelid)}}));</script>
+{{index $.Site.Data.channelVideos (printf "x%s_page_0" .Params.channelid)}}));</script>
 </body>
 </html>
