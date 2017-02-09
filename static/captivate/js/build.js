@@ -849,7 +849,9 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
         defaultFilters: null,
         filters: { video_type: {}, product_category: {} },
         reset : function(){
-            console.log(Filters.selected);
+            //$('.tvp-filter-reset').css("display", "none");
+            if(Filters.selected["product_category"].length == undefined && Filters.selected["video_type"].length == undefined);
+                $('.tvp-filter-reset').css("display", "none");
             btnLoadMore.attr("disabled", false);
             isFiltering = false;
             loadMorePage = 0;
@@ -891,8 +893,7 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
                 eventsBinder.Filters();
                 if(isIOS){
                     $(document).on('touchstart', '.tvp-filter-reset', _.bind(function() {
-                        Filters.selected["video_type"] = {};
-                        Filters.selected["product_category"] = {};
+                        Filters.selected = {};
                         this.reset();
                     }, this));
                 }
@@ -900,8 +901,7 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
                     $(document).on('click', '.tvp-filter-reset', _.bind(function() {
                         $("#product_category").prev().find(".selected").text("Product Category");
                         $("#video_type").prev().find(".selected").text("Type of Video");
-                        Filters.selected["video_type"] = {};
-                        Filters.selected["product_category"] = {};
+                        Filters.selected = {};
                         this.reset();
                     }, this));
                 }
