@@ -51,5 +51,9 @@
     }
 
   });
+  
+  if (window.DEBUG) {
+    console.debug("endTime = " + performance.now());
+  }
 
 }(window, document, Utils));
