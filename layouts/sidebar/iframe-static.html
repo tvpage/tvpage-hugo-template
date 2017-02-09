@@ -1,5 +1,5 @@
 {{- partial "settings.html" . -}}
-{{- range $i, $p := (index $.Site.Data.channelVideos (printf "x%s_page_1" ($.Scratch.Get "settings").channelid) "data") -}}
+{{- range $i, $p := (index $.Site.Data.channelVideos (printf "x%s_page_0" ($.Scratch.Get "settings").channelid) "data") -}}
 {{- $.Scratch.SetInMap "videos" .id (index $.Site.Data.videos (printf "x%s" .id )) -}}
 {{- end -}}
 <!doctype html>
