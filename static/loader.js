@@ -33,13 +33,6 @@
   function Widget(spot) {
     var widget = function(){};
 
-    var ifrTmpl = function(dataMethod,domain,id){
-      var html = '<body class="' + dataMethod + ' is-iframe" data-domain="'+domain+'" data-id="' + id + '" onload="'+
-      'var d = document, head = d.getElementsByTagName(\'head\')[0],'+
-      'injScr = function(sr){ var s=d.createElement(\'script\');s.src=sr;head.appendChild(s);};';
-      return html;
-    }();
-
     var cssExt = window.DEBUG ? '.css' : '.min.css',
         dataMethod = 'static',
         id = spot.getAttribute('data-id');
@@ -135,7 +128,6 @@
         //reduced as its minimum, we start then creating the content of the iframe dynamically.
         //Reference: http://www.aaronpeters.nl/blog/iframe-loading-techniques-performance?%3E
         if ('dynamic' === dataMethod) {
-          //var html = ifrTmpl(dataMethod, domain, id);
           var html = '<body class="' + dataMethod + ' is-iframe" data-domain="'+domain+'" data-id="' + id + '" onload="'+
           'var d = document, head = d.getElementsByTagName(\'head\')[0],'+
           'injScr = function(sr){ var s=d.createElement(\'script\');s.src=sr;head.appendChild(s);};';
@@ -146,14 +138,15 @@
           ];
           
           if (window.DEBUG) {
-            libs.concat([
+            libs = libs.concat([
               '\'' + typeStaticPath + 'js/libs/analytics.js\'',
               '\'' + typeStaticPath + 'js/libs/player.js\'',
               '\'' + typeStaticPath + 'js/index.js\''
             ]);
           } else {
-            libs.concat(['\'' + typeStaticPath + 'js/scripts.min.js\'']);
+            libs = libs.concat(['\'' + typeStaticPath + 'js/scripts.min.js\'']);
           }
+
           for (var i = 0; i < libs.length; i++) {
             html += 'injScr(' + libs[i] + ');';
           }
