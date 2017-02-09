@@ -1,4 +1,4 @@
-(function(doc,parentDoc,$){
+(function(document,$){
  
  var settings = Widget.settings;
 
@@ -33,15 +33,23 @@
       prodCount--;
     }
 
-    var $products = $('#' + settings.name).find('.tvp-products');
+    var $el = $('#' + settings.name);
     
+    var $products = $el.find('.tvp-products');
     $products.html(thumbHtml);
-
     var $productsHolder = $products.parent();
     $productsHolder.append(popupHtml);
     
     setTimeout(function(){
-      $products.addClass('first-render');
+
+      //Notify when products had been rendered (should we wait?)
+      if (window.parent && window.parent.parent) {
+        window.parent.parent.postMessage({
+          event: '_tvp_sidebar_modal_rendered',
+          height: $el.height() + 'px'
+        }, '*');
+      }
+
       var $indicator = $productsHolder.find('#tvp-arrow-indicator');
       
       $productsHolder.on('mouseleave', function(){
@@ -82,33 +90,23 @@
       });
     },5);
   };
-  
-  //Receiving the data from the parent iframe....
-  window.addEventListener('message',function(e){
 
-    if (!e || !isset(e,'origin') || 'http://localhost:1313' !== e.origin || !isset(e,'data') || !isset(e.data,'videos')) return;
+  window.addEventListener('message', function(e){
+    if (!e || !isset(e, 'data') || !isset(e.data, 'event') || '_tvp_sidebar_modal_data' !== e.data.event) return;
     
-    var data = e.data,
-        videos = data.videos,
-        selected = data.selected;
-    
+    var data = e.data;
+    var selectedVideo = data.selectedVideo;
+    var videos = data.videos;
     settings.data = videos;
 
-    new Player('tvp-player-el',settings,selected);
-    
-    var selectedVideo = {};
-    for (var i = 0; i < videos.length; i++) {
-      if (videos[i].id === selected) {
-        selectedVideo = videos[i];
-      }
-    }
+    new Player('tvp-player-el',settings,selectedVideo);
 
     if (isset(selectedVideo,'products')) {
       renderProducts(selectedVideo.products);
     } else {
       $.ajax({
        type: 'GET',
-       url: '//api.tvpage.com/v1/videos/' + selected + '/products',
+       url: '//api.tvpage.com/v1/videos/' + selectedVideo.id + '/products',
        dataType: 'jsonp',
        data: {
          'X-login-id': settings.loginId
@@ -121,4 +119,4 @@
 
   });
 
-}(document,parent.document,jQuery));
+}(document,jQuery));

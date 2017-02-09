@@ -155,23 +155,26 @@
       }
     };
 
-    this.resize = function(callback){
+    this.resize = function(){
       var newSize = (window.innerWidth || doc.documentElement.clientWidth || doc.body.clientWidth) <= 200 ? 'small' : 'medium';
-      var end = function(){
-        if (!callback || 'function' !== typeof callback) return;
-        setTimeout(callback,0);
+      var notify = function(){
+        if (window.parent && window.parent.parent) {
+          window.parent.parent.postMessage(['_tvp_widget_grid_resize', {
+            height: that.el.offsetHeight + 'px'
+          }], '*');
+        }
       };
-      if (that.windowSize === newSize) {
-        end();
-      } else {
+      if (that.windowSize !== newSize) {
         that.windowSize = newSize;
         var isSmall = newSize === 'small';
         that.itemsPerPage = isSmall ? 2 : options.itemsperpage;
         that.itemsPerRow = isSmall ? 1 : options.itemsperrow;
         that.load(function(){
           that.render();
-          end();
+          notify();
         });
+      } else {
+        notify();
       }
     };
 
@@ -193,6 +196,8 @@
     this.load(function(data){
       that.render(data);
     });
+
+    root.addEventListener('resize', debounce(this.resize,50));
 
   }
 

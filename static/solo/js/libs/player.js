@@ -162,7 +162,6 @@
             apiBaseUrl: '//api.tvpage.com/v1',
             swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+that.version+'-flash.swf',
             onReady: function(e, pl){
-              //Add the player instance locally and also to parent document.
               that.instance = pl;
               
               var resize = debounce(function() {
@@ -172,9 +171,15 @@
                }, 180);
               resize();
 
-              if(root.frameElement){
-                root['_tvp_'+options.widgetId] = pl;
-              }else{
+              if (root.location != root.parent.location){
+                root.addEventListener('message', function(e){
+                  if (!e || !isset(e, 'data') || !isset(e.data, 'event')) return;
+                  if ('_tvp_widget_holder_resize' === e.data.event && isset(e.data, 'size')) {
+                    var size = e.data.size;
+                    that.instance.resize(size[0], size[1]);
+                  }
+                });
+              } else {
                 root.addEventListener('resize', resize);
               }
 
@@ -188,17 +193,14 @@
 
               that.current = current;
               that.play(that.assets[that.current]);
-
               if (root.DEBUG) {
                 console.debug("endTime = " + performance.now());
               }
               
-              if (isset(root,'BigScreen')) {
-                BigScreen.onchange = function(){
-                  isFullScreen = !isFullScreen;
-                  root['_tvp_'+options.widgetId+'isFullScreen'] = isFullScreen;
-                };
-              }
+              if (!isset(root,'BigScreen')) return;
+              BigScreen.onchange = function(){
+                isFullScreen = !isFullScreen;
+              };
             },
             onStateChange: function(e){
               if ('tvp:media:videoended' !== e) return;

@@ -1,9 +1,10 @@
 //The widgets loader, so far it takes care of the aspect ratio of the iframes,
 //it can also optionaly fetch the content from a widget url, it also permits
 //to load the iframe scripts asynchronouse, this hides the browser spinner.
-;(function(root,doc){
+//Loader is the delegator of iframe messages.
+;(function(window,document){
 
-  if (root.DEBUG) {
+  if (window.DEBUG) {
     console.debug("startTime = " + performance.now());
   }
 
@@ -12,7 +13,7 @@
         return 'undefined' !== typeof o[p]
       },
       appendToHead = function(el){
-        (doc.getElementsByTagName('head')[0]||doc.getElementsByTagName('body')[0]).appendChild(el);
+        (document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(el);
       },
       debounce = function(func,wait,immediate) {
         var timeout;  
@@ -32,85 +33,95 @@
   function Widget(spot) {
     var widget = function(){};
 
-    var cssExt = root.DEBUG ? '.css' : '.min.css',
+    var cssExt = window.DEBUG ? '.css' : '.min.css',
         dataMethod = 'static',
         id = spot.getAttribute('data-id');
 
-    if (isset(root,'__TVPage__') && isset(__TVPage__,'config') && isset(__TVPage__.config,id) &&
+    if (isset(window,'__TVPage__') && isset(__TVPage__,'config') && isset(__TVPage__.config,id) &&
       isset(__TVPage__.config[id],'channel') && isset(__TVPage__.config[id].channel,'id')) {
       dataMethod = 'dynamic';
     }
     
     var domain = spot.getAttribute('data-domain'),
         type = spot.getAttribute('class').split('-').pop();
-        typeStaticPath = domain + (-1 !== domain.indexOf('localhost') ? '' : '/') + type + (root.DEBUG ? '/' : '/dist/');
+        typeStaticPath = domain + '/' + type + (window.DEBUG ? '/' : '/dist/');
 
     widget.run = function() {
       spot.insertAdjacentHTML('beforebegin', '<div id="' + id + '-holder" class="tvp-iframe-holder"></div>');
       
-      var holder = doc.getElementById(id + '-holder'),
+      var holder = document.getElementById(id + '-holder'),
           embedMethod = spot.getAttribute('data-embedmethod') || 'iframe';
 
       if (embedMethod === 'iframe') {
-        var link = doc.createElement('link');
-        link.rel = 'stylesheet';
 
+        //Add the host (parent) css.
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
         var hostCssPath = typeStaticPath;
         hostCssPath += 'css/' + (isMobile ? 'mobile/' : '') + 'host' + cssExt;
         link.href = hostCssPath;
         appendToHead(link);
 
-        var iframe = doc.createElement('iframe');
+        var iframe = document.createElement('iframe');
         iframe.setAttribute('allowfullscreen', '');
         iframe.setAttribute('frameborder', '0');
         iframe.setAttribute('scrolling', 'no');
+        iframe.setAttribute('name', location.origin);
         iframe.classList.add('tvp-iframe');
-        
+
+        if ('sidebar' === type) {
+
+          //Whe need to receive the data from the click first, then we create the overlay & modal on the fly.
+          window.addEventListener('message', function(e){
+            if (!e || !isset(e, 'data') || !isset(e.data, 'event')) return;
+
+            var eventName = e.data.event;
+            if ('_tvp_sidebar_video_click' === eventName) {
+              var close = function(){
+                overlay.removeEventListener('click',close,false);
+                overlay.remove();
+                modal.remove();
+              };
+
+              //The overlay & modal elements.
+              var modalFrag = document.createDocumentFragment();
+              var overlay = document.createElement('div');
+              
+              overlay.classList.add('tvp-modal-overlay');
+              overlay.addEventListener('click',close);
+              modalFrag.appendChild(overlay);
+                
+              var data = e.data;
+              var selectedVideo = data.selectedVideo || {};
+              var modal = document.createElement('div');
+              
+              modal.classList.add('tvp-modal');
+              modal.innerHTML = '<svg class="tvp-modal-close" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">'+
+              '<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>'+
+              '<div class="tvp-modal-guts"><p class="tvp-modal-title">'+selectedVideo.title+'</p><iframe id="tvp-iframe-modal_' + id + '" src="'+ domain + '/tvpwidget/'+ id + '-modal" allowfullscreen frameborder="0" scrolling="no" class="tvp-iframe-modal"></iframe></div>';
+              modalFrag.appendChild(modal);
+              modalFrag.querySelector('.tvp-modal-close').addEventListener('click', close);
+
+              var iframe = modalFrag.querySelector('.tvp-iframe-modal');
+              iframe.onload = function(){
+                this.contentWindow.postMessage({
+                  event: '_tvp_sidebar_modal_data',
+                  videos: data.videos || [],
+                  selectedVideo: selectedVideo
+                }, '*');
+              };
+
+              document.body.appendChild(modalFrag);
+
+            } else if ('_tvp_sidebar_modal_rendered' === eventName) {
+              document.getElementById('tvp-iframe-modal_'+id).style.height = e.data.height;
+            }
+          });
+
+        }        
+
         holder.classList.add(type);
         holder.appendChild(iframe);
-        
-        iframe.onload = function(){
-          if (root.DEBUG) {
-            this.contentWindow['DEBUG'] = 1;
-          }
-
-          var iframeWindow = this.contentWindow,
-              iframeContent = iframeWindow.document.querySelector('.iframe-content');
-
-          if ('sidebar' === type) {
-            var resizeHolder = function() {
-              holder.style.height = iframeContent.offsetHeight + 'px';
-            };
-
-            var checks = 0;
-            (function contentReady() {
-              setTimeout(function() {
-                if (!iframeContent.classList.contains('first-render')) {
-                  (++checks < 20) ? contentReady() : console.log('limit reached');
-                } else {
-                  resizeHolder();
-                }
-              },200);
-            })();
-            
-            root.addEventListener('resize', debounce(function(){
-              var widgetId = '_tvp_'+id;
-              if(isset(iframeWindow, widgetId)){
-                iframeWindow[widgetId].resize(function(){
-                  holder.style.height = iframeContent.offsetHeight + 'px';
-                });
-              }
-            },50));
-          }
-
-          if ('solo' === type) {
-            root.addEventListener('resize', debounce(function(){
-              if(isset(iframeWindow, '_tvp_'+id) && !iframeWindow['_tvp_'+id+'isFullScreen']){
-                iframeWindow['_tvp_'+id].resize(holder.offsetWidth,holder.offsetHeight);
-              }
-            },50));
-          }
-        };
         
         //Because iframes aare loaded first before the host page loading, we load them empties, making this load time
         //reduced as its minimum, we start then creating the content of the iframe dynamically.
@@ -131,7 +142,7 @@
                 '\'' + typeStaticPath + 'js/index.js\''
               ]);
 
-          var libs = root.DEBUG ? devLibs : prodLibs;
+          var libs = window.DEBUG ? devLibs : prodLibs;
           for (var i = 0; i < libs.length; i++) {
             html += 'injScr(' + libs[i] + ');';
           }
@@ -139,23 +150,54 @@
           html += 'var css=d.createElement(\'link\');css.rel=\'stylesheet\';css.type=\'text/css\';';
           html += 'css.href=\'' + typeStaticPath + 'css/styles'+cssExt+'\';head.appendChild(css);';
 
-          if (root.DEBUG) {
+          if (window.DEBUG) {
             html += 'window.DEBUG=1;';
           }
 
           html += '">';
           
           var iframeDoc = iframe.contentWindow.document;
-          iframeDoc.open().write(html);
-          iframeDoc.close();
+          iframeDocument.open().write(html);
+          iframeDocument.close();
 
-        } else {
+        } 
+
+        //Handling the static iframe scenario, not much to do, just delay the src addition.
+        else {
           function setSrc() {
             var src = spot.href;
             (-1 == navigator.userAgent.indexOf("MSIE")) ? iframe.src = src : iframe.location = src;
           }
           setTimeout(setSrc,5);
         }
+
+        //Handling widget's iframe aspect ratio.
+        var handleSizing = function(){
+          if ('sidebar' === type) {
+            window.addEventListener('message', function(e){
+              if (!e || !isset(e, 'data') || !isset(e.data, 'event')) return;
+              var eventName = e.data.event;
+              if ('_tvp_widget_first_render' === eventName || '_tvp_widget_grid_resize' === eventName) {
+                holder.style.height = e.data.height;
+              }
+            });
+          } else if ('solo' === type) {
+            iframe.onload = function(){
+              var ifr = this;
+              window.addEventListener('resize', debounce(function(){
+                ifr.contentWindow.postMessage({
+                  event: '_tvp_widget_holder_resize',
+                  size: [holder.offsetWidth, holder.offsetHeight]
+                }, '*');
+              },50));
+            };
+          } else {
+            console.log('type: ' + type + ' unknown');
+          }
+        };
+
+        handleSizing();
+
       } else {
 
         holder.classList.add('inline');
@@ -165,7 +207,7 @@
         if (!__TVPage__.inline.length) return;
 
         //Appending libs to be used for inline.
-        var libsFrag = doc.createDocumentFragment(),
+        var libsFrag = document.createDocumentFragment(),
             devLibs = {
               tvpsolo: typeStaticPath + 'js/index.js',
               player: typeStaticPath + 'js/libs/player.js',
@@ -179,12 +221,13 @@
               tvpa: '//a.tvpage.com/tvpa.min.js'
             };
         
-        var libs = root.DEBUG ? devLibs : prodLibs,
-            libsCount = Object.keys(libs).length
+        var libs = window.DEBUG ? devLibs : prodLibs,
+            libsCount = Object.keys(libs).length;
+
         while (libsCount > 0) {
           var key = Object.keys(libs)[libsCount-1];
-          if (doc.getElementById(key)) break;
-          var scr = doc.createElement('script');
+          if (document.getElementById(key)) break;
+          var scr = document.createElement('script');
           scr.id = key;
           scr.async = true;
           scr.src = libs[key].replace(/'/g,'');
@@ -192,7 +235,7 @@
           libsCount--;
         }
 
-        var link = doc.createElement('link');
+        var link = document.createElement('link');
         link.rel = 'stylesheet';
         link.href = typeStaticPath + '/css/styles' + cssExt;
         libsFrag.appendChild(link);
@@ -206,7 +249,7 @@
   }
 
 //Load each widget spots from the page.
-var spots = doc.querySelectorAll('.tvp-sidebar, .tvp-solo'),
+var spots = document.querySelectorAll('.tvp-sidebar, .tvp-solo'),
     spotsCount = spots.length;
 
 function load(){
@@ -218,6 +261,6 @@ function load(){
   }
 };
 
-root.addEventListener('load', load);
+window.addEventListener('load', load);
 
 }(window,document));
