@@ -4,13 +4,17 @@ module.exports = function(grunt) {
       watch: {
         css: {
           files: ['css/**/*.css'],
-          tasks: ['cssmin', 'autoprefixer']
+          tasks: ['autoprefixer']
         }
       },
       autoprefixer: {
         css: {
           files: {
-            'dist/css/*.css': 'dist/css/*.css'
+            'css/host.css': 'css/host.css',
+            'css/mobile/host.css': 'css/mobile/host.css',
+            'css/styles.css': 'css/styles.css',
+            'css/modal/styles.css': 'css/modal/styles.css',
+            'css/mobile/modal/styles.css': 'css/mobile/modal/styles.css'
           }
         }
       },
@@ -55,7 +59,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-autoprefixer');
     grunt.loadNpmTasks('grunt-contrib-watch');
-    
-    grunt.registerTask('default', ['uglify', 'cssmin', 'autoprefixer']);
+
+    grunt.registerTask('default', ['uglify', 'autoprefixer', 'cssmin']);
 
 };

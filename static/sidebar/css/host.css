@@ -5,7 +5,8 @@ div[class^="tvp-"] {
 .tvp-iframe-holder {
   height: 0;
   position: relative;
-  transition: height ease-out 0.0001s;
+  -webkit-transition: height ease-out 0.0001s;
+          transition: height ease-out 0.0001s;
 }
 
 .tvp-iframe {
@@ -34,7 +35,8 @@ div[class^="tvp-"] {
   z-index: 100;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
   background: white;
   border: 1px solid black;
 }
