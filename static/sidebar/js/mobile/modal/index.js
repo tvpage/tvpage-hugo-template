@@ -14,7 +14,9 @@
 
     var $products = $('#' + settings.name).find('.tvp-products');
     
-    $products.html(html);
+    if (products.length <= 1) {
+      $products.html(html);
+    }
     
     setTimeout(function(){
       $products.addClass('first-render');
@@ -26,11 +28,13 @@
       };
       
       if (products.length > 1) {
-        // slickConfig.centerMode = true;
-        // slickConfig.centerPadding = '25px';
+        slickConfig.centerMode = true;
+        slickConfig.centerPadding = '25px';
       }
       
-      $products.slick(slickConfig);
+      if (products.length <= 1) {
+        $products.slick(slickConfig);
+      }
 
       if (window.parent && window.parent.parent) {
         window.parent.parent.postMessage({
