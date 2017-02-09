@@ -105,7 +105,8 @@
               modal.classList.add('tvp-modal');
               modal.innerHTML = '<svg class="tvp-modal-close" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">'+
               '<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>'+
-              '<div class="tvp-modal-guts"><p class="tvp-modal-title">'+selectedVideo.title+'</p><iframe id="tvp-iframe-modal_' + id + '" src="'+ domain + '/tvpwidget/'+ id + '-modal" allowfullscreen frameborder="0" scrolling="no" class="tvp-iframe-modal"></iframe></div>';
+              '<div class="tvp-modal-guts"><p class="tvp-modal-title">'+selectedVideo.title+'</p><iframe id="tvp-iframe-modal_' + id + '" src="'+ domain + '/tvpwidget/'+
+              id + '-modal' + (isMobile ? '-mobile' : '') + '" allowfullscreen frameborder="0" scrolling="no" class="tvp-iframe-modal"></iframe></div>';
               modalFrag.appendChild(modal);
               modalFrag.querySelector('.tvp-modal-close').addEventListener('click', close);
 
@@ -167,8 +168,8 @@
           html += '">';
           
           var iframeDoc = iframe.contentWindow.document;
-          iframeDocument.open().write(html);
-          iframeDocument.close();
+          iframeDoc.open().write(html);
+          iframeDoc.close();
 
         } 
 

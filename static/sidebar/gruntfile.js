@@ -44,8 +44,8 @@ module.exports = function(grunt) {
         },
         modal: {
           files: {
-            'dist/js/modal/scripts.min.js': ['js/libs/analytics.js','js/libs/player.js', 'js/modal/index.js'],
-            'dist/js/mobile/modal/scripts.min.js': ['js/libs/analytics.js','js/libs/player.js', 'js/mobile/modal/index.js']
+            'dist/js/modal/scripts.min.js': ['js/libs/utils.js', 'js/libs/analytics.js','js/libs/player.js', 'js/modal/index.js'],
+            'dist/js/mobile/modal/scripts.min.js': ['js/libs/utils.js', 'js/libs/analytics.js','js/libs/player.js', 'js/mobile/modal/index.js']
           }
         }
       }

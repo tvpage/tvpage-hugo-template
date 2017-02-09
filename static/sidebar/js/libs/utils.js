@@ -4,7 +4,8 @@
 
   	this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     
-    this.isset = function(e,data){
+    this.isset = function(o,p){
+      if (!arguments.length) return;
       var val = o;
       if (p) val = o[p];
       return 'undefined' !== typeof val;

@@ -1,23 +1,6 @@
-(function(document,$){
+(function(document,$, utils){
  
- var settings = Widget.settings;
-
-  var tmpl = function(template, data) {
-    if (template && 'object' == typeof data) {
-      return template.replace(/\{([\w\.]*)\}/g, function(str, key) {
-        var keys = key.split("."),
-          v = data[keys.shift()];
-        for (var i = 0, l = keys.length; i < l; i++) v = v[keys[i]];
-        return (typeof v !== "undefined" && v !== null) ? v : "";
-      });
-    }
-  };
-
-  var isset = function(o,p){
-    var val = o;
-    if (p) val = o[p];
-    return 'undefined' !== typeof val;
-  };
+  var settings = Widget.settings;
 
   var renderProducts = function(products){
     var prodCount = products.length,
@@ -28,8 +11,8 @@
 
     while (prodCount > 0) {
       var prod = products[prodCount-1];
-      thumbHtml += tmpl(thumbTmpl, prod);
-      popupHtml += tmpl(popupTmpl, prod);
+      thumbHtml += utils.tmpl(thumbTmpl, prod);
+      popupHtml += utils.tmpl(popupTmpl, prod);
       prodCount--;
     }
 
@@ -92,7 +75,7 @@
   };
 
   window.addEventListener('message', function(e){
-    if (!e || !isset(e, 'data') || !isset(e.data, 'event') || '_tvp_sidebar_modal_data' !== e.data.event) return;
+    if (!e || !utils.isset(e, 'data') || !utils.isset(e.data, 'event') || '_tvp_sidebar_modal_data' !== e.data.event) return;
     
     var data = e.data;
     var selectedVideo = data.selectedVideo;
@@ -101,7 +84,7 @@
 
     new Player('tvp-player-el',settings,selectedVideo);
 
-    if (isset(selectedVideo,'products')) {
+    if (utils.isset(selectedVideo,'products')) {
       renderProducts(selectedVideo.products);
     } else {
       $.ajax({
@@ -119,4 +102,4 @@
 
   });
 
-}(document,jQuery));
+}(document,jQuery, Utils));
