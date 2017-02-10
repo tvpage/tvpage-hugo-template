@@ -85,7 +85,7 @@
     var videos = data.videos;
     settings.data = videos;
 
-    new Player('tvp-player-el',settings,selectedVideo);
+    new Player('tvp-player-el',settings,selectedVideo.id);
 
     if (utils.isset(selectedVideo,'products')) {
       renderProducts(selectedVideo.products);

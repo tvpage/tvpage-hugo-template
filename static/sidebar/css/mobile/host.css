@@ -89,9 +89,7 @@ div[class^="tvp-"] {
 }
 
 .tvp-modal-close {
-  z-index: 2000;
   position: absolute;
-  z-index: 1;
   top: 10px;
   right: 10px;
   border: 0;
@@ -101,4 +99,5 @@ div[class^="tvp-"] {
   height: 20px;
   fill: #000000;
   cursor: pointer;
+  z-index: 2000;
 }
