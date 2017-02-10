@@ -337,6 +337,7 @@ nav.menu-bar{
 	border-top : 1px dashed white;
 	border-bottom: 1px dashed white;
 	position: relative;
+	max-height: 49px;
 	&:before{
 		position: absolute;
 		bottom: 0;
