@@ -99,8 +99,8 @@
             if ('_tvp_sidebar_video_click' === eventName) {
               var close = function(){
                 overlay.removeEventListener('click',close,false);
-                overlay.remove();
-                modal.remove();
+                overlay.parentNode.removeChild(overlay);
+                modal.parentNode.removeChild(modal);
               };
 
               //The overlay & modal elements.
@@ -252,7 +252,7 @@ function load(){
   while (spotsCount > 0) {
     var spot = spots[spotsCount - 1]
     Widget(spots[spotsCount - 1]);
-    spot.remove();
+    spot.parentNode.removeChild(spot);
     spotsCount--;
   }
 };
