@@ -80,8 +80,10 @@ body {
 }
 
 .tvp-products {
-  height: 85px;
-  overflow: hidden;
+  /*height: 85px;
+  overflow: hidden;*/
+  width: 1px;
+  min-width: 100%;
 }
 
 .tvp-products-title {

@@ -21,6 +21,7 @@
         if (window.parent && window.parent.parent) {
           window.parent.parent.postMessage({
             event: '_tvp_sidebar_modal_rendered',
+            width: Math.ceil($('#' + settings.name).width()) + 'px',
             height: Math.ceil($('#' + settings.name).height()) + 'px'
           }, '*');
         }
