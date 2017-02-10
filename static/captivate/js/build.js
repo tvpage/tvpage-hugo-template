@@ -180,13 +180,6 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
             }
         });
     };
-    var lazyLoadImage = function (settings) {
-        $(settings.selector).lazyload({
-            effect: 'fadeIn',
-            container: settings.container
-        });
-    };
-
     var channelDataExtractor = {
     	commonRequest : function(url, page, query){
     		return $.ajax({
@@ -243,7 +236,7 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
             +'<a href="{url}" class="latest-video" data-id="{id}">'
                 +'<div class="latest-video-thumbnail">'        
                     +'<div class="content" >'
-                        +'<img class="lazyImgAjax" data-original="{asset.thumbnailUrl}" alt="{title}">'
+                        +'<img src="{asset.thumbnailUrl}" alt="{title}">'
                         +'<div class="latest-video-hover">'
                             +'<div class="play-icon"></div>'
                             +'<p class="now-playing">NOW PLAYING</p>'
@@ -405,10 +398,7 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
                     eventsBinder.onLoadMore();
                 // >>
                 tvp_Player.showNowPlayingOverlay(activeVideoId);
-                lazyLoadImage({
-                    selector : '.lazyImgAjax',
-                    container: TVSite.isSearchPage ? '#search-content' : '#main-content'
-                });
+                
         },
         addFilters : function(filters){
             var getOption = function(opt, selected) {
@@ -1789,8 +1779,4 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
     $('form').get(0).reset();    
     customEllipsis();
 
-    lazyLoadImage({
-        selector: '.lazyImg',
-        container: '#main-content'
-    });
 }(jQuery, window.IScroll, window._, window.BigScreen, window.Modernizr));
