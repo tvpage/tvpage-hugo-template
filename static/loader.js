@@ -81,19 +81,20 @@
           };
         } else if ('sidebar' === type) {
 
-          window.addEventListener('message', function(e){
-            if (!e || !isset(e, 'data') || !isset(e.data, 'event')) return;
-            var eventName = e.data.event;
-            if ('_tvp_widget_first_render' === eventName || '_tvp_widget_grid_resize' === eventName) {
-              holder.style.height = e.data.height;
-            }
-          });
-
           //Whe need to receive the data from the click first, then we create the overlay & modal on the fly.
           window.addEventListener('message', function(e){
             if (!e || !isset(e, 'data') || !isset(e.data, 'event')) return;
 
             var eventName = e.data.event;
+
+            if ('_tvp_widget_first_render' === eventName || '_tvp_widget_grid_resize' === eventName) {
+              holder.style.height = e.data.height;
+            }
+
+            if ('_tvp_sidebar_modal_rendered' === eventName || '_tvp_sidebar_modal_resized' === eventName) {
+              document.getElementById('tvp-iframe-modal_'+id).style.height = e.data.height;  
+            }
+
             if ('_tvp_sidebar_video_click' === eventName) {
 
               //The overlay & modal elements.
@@ -138,8 +139,6 @@
 
               document.body.appendChild(modalFrag);
 
-            } else if ('_tvp_sidebar_modal_rendered' === eventName) {
-              document.getElementById('tvp-iframe-modal_'+id).style.height = e.data.height;
             }
           });
         }

@@ -12,10 +12,23 @@
       prodCount--;
     }
 
-    var $products = $('#' + settings.name).find('.tvp-products');
+    var $products = $('#' + settings.name).find('.tvp-products-carousel');
     
     $products.html(html).promise().done(function(){
+      var slickInitialized = false;
+      
+      $products.on('setPosition',utils.debounce(function(){
+        if (!slickInitialized) return;
+        if (window.parent && window.parent.parent) {
+          window.parent.parent.postMessage({
+            event: '_tvp_sidebar_modal_resized',
+            height: Math.ceil($('#' + settings.name).height()) + 'px'
+          }, '*');
+        }
+      },100));
+      
       $products.on('init',function(){
+        slickInitialized = true;
         $products.addClass('first-render');
         
         if (window.parent && window.parent.parent) {
@@ -85,7 +98,10 @@
     var videos = data.videos;
     settings.data = videos;
 
-    new Player('tvp-player-el',settings,selectedVideo.id);
+    var player = new Player('tvp-player-el',settings,selectedVideo.id);
+    window.addEventListener('resize', utils.debounce(function(){
+      player.resize();
+    },50));
 
     if (utils.isset(selectedVideo,'products')) {
       renderProducts(selectedVideo.products);

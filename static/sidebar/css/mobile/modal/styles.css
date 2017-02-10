@@ -80,15 +80,17 @@ body {
 }
 
 .tvp-products {
-  /*height: 85px;
-  overflow: hidden;*/
+  padding-bottom: 15px;
+}
+
+.tvp-products-carousel {
   width: 1px;
   min-width: 100%;
 }
 
 .tvp-products-title {
-  margin: 10px 0;
-  padding-left: 10px;
+  margin: 0;
+  padding: 15px;
 }
 
 .tvp-product {
