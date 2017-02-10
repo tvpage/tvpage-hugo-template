@@ -2,6 +2,7 @@
 <!doctype html>
 <html class="no-js" lang="">
 <head>
+  <base target="_blank" />
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
   {{ if (getenv "HUGO_DEBUG") }}
@@ -23,7 +24,7 @@
   </div>
 </div>
 <script id="productTemplate" type="text/template">
-  <a class="tvp-product" href="{linkUrl}" target="_parent" data-id="{id}" data-entity-id-parent="{entityIdParent}">
+  <a class="tvp-product" href="{linkUrl}" data-id="{id}" data-entity-id-parent="{entityIdParent}">
     <div class="tvp-product-image" style="background-image:url('{imageUrl}');"></div>
     <div class="tvp-product-data">
       <p>{title}</p>
