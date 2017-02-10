@@ -52,13 +52,6 @@
             }
         });
     };
-    var lazyLoadImage = function (settings) {
-        $(settings.selector).lazyload({
-            effect: 'fadeIn',
-            container: settings.container
-        });
-    };
-
     var channelDataExtractor = {
     	commonRequest : function(url, page, query){
     		return $.ajax({
@@ -115,7 +108,7 @@
             +'<a href="{url}" class="latest-video" data-id="{id}">'
                 +'<div class="latest-video-thumbnail">'        
                     +'<div class="content" >'
-                        +'<img class="lazyImgAjax" data-original="{asset.thumbnailUrl}" alt="{title}">'
+                        +'<img src="{asset.thumbnailUrl}" alt="{title}">'
                         +'<div class="latest-video-hover">'
                             +'<div class="play-icon"></div>'
                             +'<p class="now-playing">NOW PLAYING</p>'
@@ -277,10 +270,7 @@
                     eventsBinder.onLoadMore();
                 // >>
                 tvp_Player.showNowPlayingOverlay(activeVideoId);
-                lazyLoadImage({
-                    selector : '.lazyImgAjax',
-                    container: TVSite.isSearchPage ? '#search-content' : '#main-content'
-                });
+                
         },
         addFilters : function(filters){
             var getOption = function(opt, selected) {
@@ -1661,8 +1651,4 @@
     $('form').get(0).reset();    
     customEllipsis();
 
-    lazyLoadImage({
-        selector: '.lazyImg',
-        container: '#main-content'
-    });
 }(jQuery, window.IScroll, window._, window.BigScreen, window.Modernizr));

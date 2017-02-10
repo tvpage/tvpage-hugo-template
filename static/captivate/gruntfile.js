@@ -66,7 +66,7 @@ module.exports = function(grunt) {
               'js/vendor/underscore-min.js',
               'js/vendor/slick.min.js',
               'js/vendor/iscroll-5.2.0.min.js',
-              'js/vendor/jquery.lazyload.js',
+              //'js/vendor/jquery.lazyload.js',
               'js/main.js'
             ],
             dest: 'js/build.js'

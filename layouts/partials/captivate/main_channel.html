@@ -20,16 +20,16 @@
     <section class="channel-page-banner">      
       <div class="channel-page-banner-desktop">
         {{- if (where (readDir $directory) "Name" $fileDesktop) -}}
-          <img class="lazyImg" data-original='{{$baseUrl}}/{{.Type}}/images/channel/{{.Params.channelid}}-banner.jpg' alt="">
+          <img src='{{$baseUrl}}/{{.Type}}/images/channel/{{.Params.channelid}}-banner.jpg' alt="">
         {{- else -}}
-          <img class="lazyImg" data-original='{{$baseUrl}}/{{.Type}}/images/defaults/channel-banner.jpg' alt="">
+          <img src='{{$baseUrl}}/{{.Type}}/images/defaults/channel-banner.jpg' alt="">
         {{- end -}}
       </div>
       <div class="channel-page-banner-mobile">
         {{- if (where (readDir $directory) "Name" $fileMobile) -}}
-          <img class="lazyImg" data-original='{{$baseUrl}}/{{.Type}}/images/channel/{{.Params.channelid}}.jpg' alt="">
+          <img src='{{$baseUrl}}/{{.Type}}/images/channel/{{.Params.channelid}}.jpg' alt="">
         {{- else -}}
-          <img class="lazyImg" data-original='{{$baseUrl}}/{{.Type}}/images/defaults/channel-banner-mobile.jpg' alt="">
+          <img src='{{$baseUrl}}/{{.Type}}/images/defaults/channel-banner-mobile.jpg' alt="">
         {{- end -}}
       </div>
       <div class="main-channel-banner">
@@ -79,7 +79,7 @@
             <a href="{{$baseUrl}}/{{slicestr .url 1}}/" class="latest-video" data-id="{{.id}}">
             <div class="latest-video-thumbnail">    
               <div class="content">
-                  <img class="lazyImg" {{with .asset.thumbnailUrl}} data-original="{{ . }}"{{else}} src='{{$baseUrl}}{{ .Type }}/images/defaults/asset.png'{{end}}
+                  <img {{with .asset.thumbnailUrl}} src="{{ . }}"{{else}} src='{{$baseUrl}}{{ .Type }}/images/defaults/asset.png'{{end}}
                       alt="{{- .title -}}">
                     <div class="latest-video-hover">              
                   <div class="play-icon"></div>
