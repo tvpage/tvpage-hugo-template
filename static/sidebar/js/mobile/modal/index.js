@@ -32,10 +32,10 @@
         arrows: false
       };
       
-      // if (products.length > 1) {
-      //   slickConfig.centerMode = true;
-      //   slickConfig.centerPadding = '25px';
-      // }
+      if (products.length > 1) {
+        slickConfig.centerMode = true;
+        slickConfig.centerPadding = '25px';
+      }
       
       $products.slick(slickConfig);
 
