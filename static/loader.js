@@ -109,7 +109,6 @@
               
               var modal = document.createElement('div');
               modal.classList.add('tvp-modal');
-              modal.style.display = 'block';
 
               modal.innerHTML = '<div class="tvp-modal-wrapper"><div class="tvp-modal-content"><div class="tvp-modal-header">'+
               '<svg class="tvp-modal-close" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">'+
@@ -135,6 +134,7 @@
                   videos: data.videos || [],
                   selectedVideo: selectedVideo
                 }, '*');
+                modal.style.display = 'block';
               };
 
               document.body.appendChild(modalFrag);
