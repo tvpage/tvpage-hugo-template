@@ -59,7 +59,7 @@ body  {
 }
 
 .tvp-player-holder {
-  width: 82%;
+  width: 80%;
   float: left;
 }
 
@@ -120,8 +120,8 @@ body  {
 
 .tvp-products-holder {
   float: right;
-  width: 140px;
-  height: 358px;
+  width: 20%;
+  height: 0;
   padding-left: 10px;
   position: relative;
 }
@@ -221,7 +221,7 @@ body  {
 .tvp-product-popup {
   display: none;
   position: absolute;
-  right: 135px;
+  right: 97%;
   width: 215px;
   background: white;
   padding: 10px;

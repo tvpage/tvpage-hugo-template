@@ -63,7 +63,7 @@ div[class^="tvp-"] {
 
 .tvp-modal-body {
   position: relative;
-  padding: 15px;
+  padding: 5px 15px;
 }
 
 .tvp-iframe-holder {

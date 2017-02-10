@@ -92,7 +92,7 @@
             }
 
             if ('_tvp_sidebar_modal_rendered' === eventName || '_tvp_sidebar_modal_resized' === eventName) {
-              document.getElementById('tvp-iframe-modal_'+id).style.height = e.data.height;  
+              document.getElementById('tvp-iframe-modal_'+id).style.height = e.data.height;
             }
 
             if ('_tvp_sidebar_video_click' === eventName) {

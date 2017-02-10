@@ -38,6 +38,7 @@
     this.transcript = isset(options.transcript) ? options.transcript : false;
     this.removecontrols = isset(options.removecontrols) ? options.removecontrols : ["hd"];
     this.analytics = isset(options.analytics) ? options.analytics : true;
+    this.onResize = isset(options.onResize) && 'function' === typeof options.onResize ? options.onResize : null;
     
     this.instance = null;
     this.el = 'string' === typeof el ? document.getElementById(el) : el;
@@ -160,6 +161,8 @@
         height = parentEl.clientHeight;
       }
       that.instance.resize(width, height);
+      if(!this.onResize) return;
+      this.onResize([width, height]);
     }
 
     var checks = 0;
@@ -178,13 +181,7 @@
             swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+that.version+'-flash.swf',
             onReady: function(e, pl){
               that.instance = pl;
-              
-              var resize = debounce(function() {
-                if (pl && !isFullScreen) {
-                  that.instance.resize(that.el.parentNode.clientWidth, that.el.parentNode.clientHeight);
-                }
-               }, 180);
-              resize();
+              that.resize();
               
               //We don't want to resize the player here on fullscreen... we need the player be.
               if (!isset(window,'BigScreen')) return;
