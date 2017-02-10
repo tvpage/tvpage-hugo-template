@@ -79,10 +79,8 @@
               }, '*');
             },50));
           };
-        }
+        } else if ('sidebar' === type) {
 
-        if ('sidebar' === type) {
-          
           window.addEventListener('message', function(e){
             if (!e || !isset(e, 'data') || !isset(e.data, 'event')) return;
             var eventName = e.data.event;
@@ -97,35 +95,41 @@
 
             var eventName = e.data.event;
             if ('_tvp_sidebar_video_click' === eventName) {
-              var close = function(){
-                overlay.removeEventListener('click',close,false);
-                overlay.parentNode.removeChild(overlay);
-                modal.parentNode.removeChild(modal);
-              };
 
               //The overlay & modal elements.
               var modalFrag = document.createDocumentFragment();
-              var overlay = document.createElement('div');
               
+              var overlay = document.createElement('div');
               overlay.classList.add('tvp-modal-overlay');
-              overlay.addEventListener('click',close);
               modalFrag.appendChild(overlay);
-                
+              
               var data = e.data;
               var selectedVideo = data.selectedVideo || {};
-              var modal = document.createElement('div');
               
+              var modal = document.createElement('div');
               modal.classList.add('tvp-modal');
-              modal.innerHTML = '<svg class="tvp-modal-close" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">'+
-              '<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>'+
-              '<div class="tvp-modal-guts"><p class="tvp-modal-title">'+selectedVideo.title+'</p><iframe id="tvp-iframe-modal_' + id + '" src="'+ domain + '/tvpwidget/'+
-              id + '-modal' + (isMobile ? '-mobile' : '') + '" allowfullscreen frameborder="0" scrolling="no" class="tvp-iframe-modal"></iframe></div>';
-              modalFrag.appendChild(modal);
-              modalFrag.querySelector('.tvp-modal-close').addEventListener('click', close);
+              modal.style.display = 'block';
 
-              var iframe = modalFrag.querySelector('.tvp-iframe-modal');
-              iframe.onload = function(){
-                this.contentWindow.postMessage({
+              modal.innerHTML = '<div class="tvp-modal-wrapper"><div class="tvp-modal-content"><div class="tvp-modal-header">'+
+              '<svg class="tvp-modal-close" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">'+
+              '<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>'+
+              '<h4 class="tvp-modal-title">' + selectedVideo.title + '</h4></div><div class="tvp-modal-body"><iframe id="tvp-iframe-modal_' + id + '" src="'+ domain + '/tvpwidget/'+
+              id + '-modal' + (isMobile ? '-mobile' : '') + '" allowfullscreen frameborder="0" scrolling="no" class="tvp-iframe-modal"></iframe></div></div></div>';
+              modalFrag.appendChild(modal);
+
+              var closeButton = modalFrag.querySelector('.tvp-modal-close');
+              var close = function(){
+                modal.parentNode.removeChild(modal);
+                overlay.parentNode.removeChild(overlay);
+                closeButton.removeEventListener('click',close,false);
+                closeButton.parentNode.removeChild(closeButton);
+              };
+              closeButton.addEventListener('click', close);
+
+              var iframeModal = modalFrag.querySelector('.tvp-iframe-modal');
+              iframeModal.onload = function(){
+                var ifr = this;
+                ifr.contentWindow.postMessage({
                   event: '_tvp_sidebar_modal_data',
                   videos: data.videos || [],
                   selectedVideo: selectedVideo
@@ -138,8 +142,7 @@
               document.getElementById('tvp-iframe-modal_'+id).style.height = e.data.height;
             }
           });
-
-        }        
+        }
 
         holder.classList.add(type);
         holder.appendChild(iframe);

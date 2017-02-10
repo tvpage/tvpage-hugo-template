@@ -2,6 +2,62 @@ div[class^="tvp-"] {
     box-sizing: border-box;
 }
 
+.tvp-modal-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1040;
+  background-color: black;
+  opacity: 0.5;
+}
+
+.tvp-modal {
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1050;
+  -webkit-overflow-scrolling: touch;
+  outline: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.tvp-modal-wrapper {
+  position: relative;
+  width: auto;
+  margin: 10px;
+}
+
+.tvp-modal-content {
+  position: relative;
+  background-color: #fff;
+  border: 1px solid #999;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+  background-clip: padding-box;
+  outline: 0;
+}
+
+.tvp-modal-header {
+  padding: 15px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.tvp-modal-title {
+  margin: 0;
+  line-height: 1.4285;
+}
+
+.tvp-modal-body {
+  position: relative;
+  padding: 15px;
+}
+
 .tvp-iframe-holder {
   height: 0;
   position: relative;
@@ -9,6 +65,7 @@ div[class^="tvp-"] {
           transition: height ease-out 0.0001s;
 }
 
+/*This is the gallery iframe*/
 .tvp-iframe {
   top: 0;
   left: 0;
@@ -17,6 +74,7 @@ div[class^="tvp-"] {
   position: absolute;
 }
 
+/*This is the modal iframe*/
 .tvp-iframe-modal {
   margin: 15px auto 0 auto;
   border: 0;
@@ -25,23 +83,16 @@ div[class^="tvp-"] {
   display: block;
 }
 
-.tvp-modal {
-  display: block;
-  width: 320px;
-  max-width: 100%;
-  height: 355px;
-  max-height: 100%;
-  position: fixed;
-  z-index: 100;
-  left: 50%;
-  top: 50%;
-  -webkit-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
-  background: white;
-  border: 1px solid black;
+.tvp-modal-close {
+  padding: 0;
+  cursor: pointer;
+  background: rgb(239, 239, 239);
+  border: 0;
+  -webkit-appearance: none;
+  float: right;
 }
 
-@media only screen and (min-device-width : 414px) and (orientation: portrait) {
+/*@media only screen and (min-device-width : 414px) and (orientation: portrait) {
   .tvp-modal {
     width: 390px;
     height: 395px;
@@ -60,44 +111,4 @@ div[class^="tvp-"] {
     width: 520px;
     height: 485px;
   }
-}
-
-.tvp-modal-title {
-  margin: 5px 0 0 0;
-  text-transform: capitalize;
-}
-
-.tvp-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 50;
-  background: rgba(0, 0, 0, 0.6);
-}
-
-.tvp-modal-guts {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  padding: 10px;
-  z-index: 1000;
-}
-
-.tvp-modal-close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  border: 0;
-  background: rgb(234,234,234);
-  padding: 0;
-  width: 20px;
-  height: 20px;
-  fill: #000000;
-  cursor: pointer;
-  z-index: 2000;
-}
+}*/

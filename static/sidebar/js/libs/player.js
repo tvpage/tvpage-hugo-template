@@ -170,7 +170,7 @@
                 }
                }, 180);
               resize();
-
+              
               if (root.location != root.parent.location){
                 root.addEventListener('message', function(e){
                   if (!e || !isset(e, 'data') || !isset(e.data, 'event')) return;
