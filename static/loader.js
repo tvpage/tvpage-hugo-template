@@ -135,9 +135,7 @@
               document.body.appendChild(modalFrag);
 
             } else if ('_tvp_sidebar_modal_rendered' === eventName) {
-              var ifrModal = document.getElementById('tvp-iframe-modal_'+id);
-              ifrModal.style.width = e.data.width;
-              ifrModal.style.height = e.data.height;
+              document.getElementById('tvp-iframe-modal_'+id).style.height = e.data.height;
             }
           });
 
