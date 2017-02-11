@@ -1,124 +1,93 @@
-(function(window,document,$,utils){
- 
-  var settings = Widget.settings;
+(function(window,document){
 
-  var renderProducts = function(products, exchangeVideo){
-    var prodCount = products.length,
-        htmlTmpl = $('#productTemplate').html(),
-        html = '';
+  var initialize = function(){
+    var body = document.getElementsByTagName('body')[0];
+    var staticPath = body.getAttribute('data-domain') + '/sidebar' + (window.DEBUG ? '/' : '/dist/');
 
-    while (prodCount > 0) {
-      html += '<div>' + utils.tmpl(htmlTmpl, products[prodCount-1]) + '</div>';
-      prodCount--;
-    }
-
-    var $products = $('#' + settings.name).find('.tvp-products-carousel');
-    
-    $products.html(html).promise().done(function(){
-      var slickInitialized = false;
+    //We start loading our slick dependency here, it was breaking while rendering it dynamicaly.
+    $.ajax({
+      dataType: 'script',
+      cache: true,
+      url: staticPath + 'js/vendor/slick-min.js'
+    }).done(function() {
       
-      $products.on('setPosition',utils.debounce(function(){
-        if (!slickInitialized) return;
-        if (window.parent && window.parent.parent) {
-          window.parent.parent.postMessage({
-            event: 'tvp_sidebar:modal_resized',
-            height: Math.ceil($('#' + settings.name).height()) + 'px'
-          }, '*');
-        }
-      },100));
+      //Notify when products had been rendered (should we wait?)
+      // setTimeout(function(){
+      //   if (window.parent && window.parent.parent) {
+      //     window.parent.parent.postMessage({
+      //       event: 'tvp_sidebar:modal_rendered',
+      //       height: (el.offsetHeight + 20) + 'px'
+      //     }, '*');
+      //   }
+      // },0);
+
+    });
+
+    // var initPlayer = function(data){
+    //   var s = JSON.parse(JSON.stringify(data.runTime));
+    //   s.data = data.data;
+
+    //   s.onResize = function(size){
+    //     resizeProducts(size[1]);
+    //     if (window.parent && window.parent.parent) {
+    //       window.parent.parent.postMessage({
+    //         event: 'tvp_sidebar:modal_resized',
+    //         height: (el.offsetHeight + 20) + 'px'
+    //       }, '*');
+    //     }
+    //   };
+
+    //   var player = new Player('tvp-player-el',s,data.selectedVideo.id);
+
+    //   //Resize player when this window is resized.
+    //   window.addEventListener('resize', Utils.debounce(function(){
+    //     player.resize();
+    //   },100));
+    // };
+
+    window.addEventListener('message', function(e){
+      if (!e || !isset(e, 'data') || !isset(e.data, 'event')) return;
+      var data = e.data;
       
-      $products.on('init',function(){
-        slickInitialized = true;
-        $products.addClass('first-render');
+      if ('_tvp_sidebar_modal_data' === data.event) {
+        initPlayer(data);
         
-        if (window.parent && window.parent.parent) {
-          window.parent.parent.postMessage({
-            event: 'tvp_sidebar:modal_rendered',
-            height: Math.ceil($('#' + settings.name).height()) + 'px'
-          }, '*');
-        }
-      });
-
-      var slickConfig = {
-        slidesToSlide: 1,
-        slidesToShow: 1,
-        arrows: false
-      };
-      
-      if (products.length > 1) {
-        slickConfig.centerMode = true;
-        slickConfig.centerPadding = '25px';
+        var selectedVideo = data.selectedVideo;
+        if (Utils.isset(selectedVideo,'products')) {
+          render(selectedVideo.products);
+        } else {
+          var src = '//api.tvpage.com/v1/videos/' + selectedVideo.id + '/products?X-login-id=' + data.runTime.config[el.id].loginid;
+          var cbName = 'tvp_' + Math.floor(Math.random() * 555);
+          src += '&callback='+cbName;
+          var script = document.createElement('script');
+          script.src = src;
+          window[cbName || 'callback'] = function(data){
+            if (!data && !data.length) return console.log('no products');
+            setTimeout(function(){
+              render(data);
+            },0);
+            
+          };
+          document.body.appendChild(script);
+        } 
       }
-      
-      $products.slick(slickConfig);
-
-      if (!settings.analytics) return;
-
-      //Dynamic analytics configuration, we need to switch if this is an ad.
-      var analytics =  new Analytics();
-      var config = {
-        domain: utils.isset(location,'hostname') ?  location.hostname : '',
-        loginId: settings.loginId
-      };
-      if (exchangeVideo) {
-        config.logUrl = exchangeVideo.analytics;
-      } else {
-        config.logUrl = '\/\/api.tvpage.com\/v1\/__tvpa.gif';
-      }
-      analytics.initConfig(config);
-
-      var $product = $products.find('.slick-active').find('.tvp-product');
-      var id = $product.data('id');
-      var trackObj = {
-        vd: $product.data('entityIdParent'),
-        ct: id,
-        li: settings.loginId,
-        pg: settings.channelid
-      };
-      
-      if (exchangeVideo) {
-        for (var i = 0; i < products.length; i++) {
-          var prod = products[i];
-          if (id == prod.id && utils.isset(prod,'events') && prod.events.length) {
-            trackObj = prod.events[0].data;
-          }
-        }
-      }
-      
-      analytics.track('pi',trackObj);
-
     });
   };
 
-  window.addEventListener('message', function(e){
-    if (!e || !utils.isset(e, 'data') || !utils.isset(e.data, 'event') || '_tvp_sidebar_modal_data' !== e.data.event) return;
-    
-    var data = e.data;
-    var selectedVideo = data.selectedVideo;
-    var videos = data.videos;
-    settings.data = videos;
+  var not = function(obj){return 'undefined' === typeof obj};
+  if (not(window.TVPage) || not(window.jQuery) || not(window.Utils) || not(window.Analytics) || not(window.Player)) {
+    var libsCheck = 0;
+    (function libsReady() {
+      setTimeout(function(){
+        if (not(window.TVPage) || not(window.jQuery) || not(window.Utils) || not(window.Analytics) || not(window.Player)) {
+          (++libsCheck < 20) ? libsReady() : console.log('limit reached');
+        } else {
+          initialize();
+        }
+      },50);
+    })();
+  } else {
+    initialize();
+  }
 
-    var player = new Player('tvp-player-el',settings,selectedVideo.id);
-    window.addEventListener('resize', utils.debounce(function(){
-      player.resize();
-    },50));
-
-    if (utils.isset(selectedVideo,'products')) {
-      renderProducts(selectedVideo.products);
-    } else {
-      $.ajax({
-       type: 'GET',
-       url: '//api.tvpage.com/v1/videos/' + selectedVideo.id + '/products',
-       dataType: 'jsonp',
-       data: {
-         'X-login-id': settings.loginId
-       }
-     }).done(function(products){
-       if (!products && !products.length) return console.log('no products');
-       renderProducts(products);
-     }); 
-    }
-
-  });
-
-}(window,document,jQuery,Utils));
+}(window,document));

@@ -1,7 +1,6 @@
 ;(function(window,document) {
 
-  var isFullScreen = false,
-      isset = function(o,p){
+  var isset = function(o,p){
         var val = o;
         if (p) val = o[p];
         return 'undefined' !== typeof val;
@@ -31,6 +30,7 @@
   function Player(el, options, startWith) {
     if (!el || !isset(options) || !isset(options.data) || options.data.length <= 0) return console.log('bad args');
 
+    this.isFullScreen = false;
     this.autoplay = isset(options.autoplay) ? options.autoplay : false;
     this.autonext = isset(options.autonext) ? options.autonext : true;
     this.version = isset(options.version) ? options.version : '1.8.5';
@@ -150,7 +150,7 @@
     };
 
     this.resize = function(){
-      if (!that.instance) return;
+      if (!that.instance || that.isFullScreen) return;
       var width, height;
       if (arguments.length) {
         width = arguments[0];
@@ -184,10 +184,11 @@
               that.resize();
               
               //We don't want to resize the player here on fullscreen... we need the player be.
-              if (!isset(window,'BigScreen')) return;
-              BigScreen.onchange = function(){
-                isFullScreen = !isFullScreen;
-              };
+              if (isset(window,'BigScreen')) {
+                BigScreen.onchange = function(){
+                  that.isFullScreen = !that.isFullScreen;
+                };
+              }
 
               //If we are inside an iframe, we should listen to an external event.
               if (window.location !== window.parent.location){

@@ -76,11 +76,13 @@
       }(getSettings('dynamic')));
     } else {
       (function(settings){
+        var gridSettings = JSON.parse(JSON.stringify(settings));
         var name = settings.name;
+        
         var el = document.getElementById(name);
-        settings.onLoad = function(){el.classList.add('loading');};
-        settings.onLoadEnd = function(){el.classList.remove('loading');};
-        new Grid(name, settings);
+        gridSettings.onLoad = function(){el.classList.add('loading');};
+        gridSettings.onLoadEnd = function(){el.classList.remove('loading');};
+        new Grid(name, gridSettings);
       }(getSettings('static')));
     }
   };

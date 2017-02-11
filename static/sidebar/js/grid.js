@@ -240,6 +240,7 @@
 
       if (window.parent && window.parent.parent) {
         window.parent.parent.postMessage({
+          runTime: __TVPage__,
           event: 'tvp_sidebar:video_click',
           selectedVideo: selected,
           videos: data

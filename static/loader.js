@@ -86,13 +86,29 @@
     var domain = spot.getAttribute('data-domain'),
         type = spot.getAttribute('class').split('-').pop();
         typeStaticPath = domain + '/' + type + (window.DEBUG ? '/' : '/dist/'),
-        jsPath = typeStaticPath + 'js/';
+        jsPath = typeStaticPath + 'js/',
+        mobileJsPath = jsPath + 'mobile/';
 
     var sidebarJS = {
       dev: [
         jsPath + 'libs/utils.js',
         jsPath + 'grid.js',
         jsPath + 'index.js'
+      ],
+      prod: [
+        jsPath + 'scripts.min.js'
+      ]
+    };
+
+    var sidebarMobileModalJS = {
+      dev: [
+        '//a.tvpage.com/tvpa.min.js',
+        '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
+        jsPath + 'vendor/jquery.js',
+        jsPath + 'libs/utils.js',
+        jsPath + 'libs/analytics.js',
+        jsPath + 'libs/player.js',
+        mobileJsPath + 'modal/index.js'
       ],
       prod: [
         jsPath + 'scripts.min.js'
@@ -146,6 +162,8 @@
       if (embedMethod === 'iframe') {
         var iframe = createIframe();
 
+
+
         if ('solo' === type) {
           iframe.onload = function(){
             var ifr = this;
@@ -156,7 +174,9 @@
               }, '*');
             },50));
           };
-        } else if ('sidebar' === type) {
+        } 
+
+        else if ('sidebar' === type) {
 
           //Whe need to receive the data from the click first, then we create the overlay & modal on the fly.
           window.addEventListener('message', function(e){
@@ -169,15 +189,17 @@
             }
 
             if ('tvp_sidebar:modal_rendered' === eventName) {
-              document.getElementById('tvp-iframe-modal_'+id).style.height = e.data.height;
+
+              var iframeModal = document.getElementById('tvp-iframe-modal_'+id);
+              iframeModal.style.height = e.data.height;
               var widgetData = widget[id];
               holder.classList.add('rendered');
 
-              document.getElementById('tvp-iframe-modal_' + id).contentWindow.postMessage({
+              iframeModal.contentWindow.postMessage({
                 event: '_tvp_sidebar_modal_data',
                 data: widgetData.data,
                 selectedVideo: widgetData.selectedVideo,
-                runTime:__TVPage__
+                runTime: widgetData.runTime
               }, '*');
             }
 
@@ -203,7 +225,8 @@
               widget[id] = widget[id] || {};
               widget[id] = {
                 data: data.videos || [],
-                selectedVideo: selectedVideo
+                selectedVideo: selectedVideo,
+                runTime: data.runTime
               };
 
               modal.innerHTML = '<div class="tvp-modal-wrapper"><div class="tvp-modal-content"><div class="tvp-modal-header">'+
@@ -228,15 +251,26 @@
               var ifrWindow = iframeModal.contentWindow;
               var iframeModalDoc = ifrWindow.document;
 
-              var iframeContent = '<div id="' + id + '" class="tvp-clearfix iframe-content">'+
-              '<div class="tvp-player-holder"><div class="tvp-player"><div id="tvp-player-el"></div></div></div>'+
-              '<div class="tvp-products-holder"><div class="tvp-products"><a class="tvp-product"></a><a class="tvp-product"></a><a class="tvp-product"></a></div></div></div>';
+              var iframeContent = '<div id="' + id + '" class="tvp-clearfix iframe-content">';
+              if (isMobile) {
+                iframeContent += '<div class="tvp-player"><div id="tvp-player-el"><svg class="tvp-play" viewBox="0 0 200 200" alt="Play video"><polygon points="70, 55 70, 145 145, 100" fill="#e57211"></polygon></svg></div></div>'+
+                '<div class="tvp-products"><div class="tvp-products-carousel"></div></div>';
+              } else {
+                iframeContent += '<div class="tvp-player-holder"><div class="tvp-player"><div id="tvp-player-el"></div></div></div>'+
+                '<div class="tvp-products-holder"><div class="tvp-products"><a class="tvp-product"></a><a class="tvp-product"></a><a class="tvp-product"></a></div></div>';
+              }
+              iframeContent += '</div>';
 
+              var jsLibs = sidebarModalJS[env];
+              if (isMobile) {
+                jsLibs = sidebarMobileModalJS[env];
+              }
               iframeModalDoc.open().write(createIframeHtml({
+                domain: domain,
                 html: iframeContent,
-                js: sidebarModalJS.dev,
+                js: jsLibs,
                 css: [
-                  typeStaticPath + 'css/modal/styles'+cssExt
+                  typeStaticPath + 'css/' + (isMobile ? 'mobile' : '') + '/modal/styles'+cssExt
                 ]
               }));
               iframeModalDoc.close();
@@ -278,48 +312,6 @@
           setTimeout(setSrc,5);
         }
 
-      } else {
-
-        holder.classList.add('inline');
-
-        __TVPage__.inline = __TVPage__.inline || [];
-        __TVPage__.inline.push(id);
-        if (!__TVPage__.inline.length) return;
-
-        //Appending libs to be used for inline.
-        var libsFrag = document.createDocumentFragment(),
-            devLibs = {
-              tvpsolo: typeStaticPath + 'js/index.js',
-              player: typeStaticPath + 'js/libs/player.js',
-              analytics: typeStaticPath + 'js/libs/analytics.js',
-              tvpp: '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
-              tvpa: '//a.tvpage.com/tvpa.min.js'
-            },
-            prodLibs = {
-              tvpsolo: typeStaticPath + 'js/scripts.min.js',
-              tvpp: '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
-              tvpa: '//a.tvpage.com/tvpa.min.js'
-            };
-        
-        var libs = window.DEBUG ? devLibs : prodLibs,
-            libsCount = Object.keys(libs).length;
-
-        while (libsCount > 0) {
-          var key = Object.keys(libs)[libsCount-1];
-          if (document.getElementById(key)) break;
-          var scr = document.createElement('script');
-          scr.id = key;
-          scr.async = true;
-          scr.src = libs[key].replace(/'/g,'');
-          libsFrag.appendChild(scr);
-          libsCount--;
-        }
-
-        var link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = typeStaticPath + '/css/styles' + cssExt;
-        libsFrag.appendChild(link);
-        appendToHead(libsFrag);
       }
     }
 
