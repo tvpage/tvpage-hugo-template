@@ -226,7 +226,7 @@
               widget[id] = {
                 data: data.videos || [],
                 selectedVideo: selectedVideo,
-                runTime: data.runTime
+                runTime: data.runTime || __TVPage__
               };
 
               modal.innerHTML = '<div class="tvp-modal-wrapper"><div class="tvp-modal-content"><div class="tvp-modal-header">'+
@@ -267,6 +267,7 @@
               }
               iframeModalDoc.open().write(createIframeHtml({
                 domain: domain,
+                id: id,
                 html: iframeContent,
                 js: jsLibs,
                 css: [

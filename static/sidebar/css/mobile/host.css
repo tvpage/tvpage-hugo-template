@@ -14,7 +14,6 @@ div[class^="tvp-"] {
 }
 
 .tvp-modal {
-  display: none;
   overflow: hidden;
   position: fixed;
   top: 0;
