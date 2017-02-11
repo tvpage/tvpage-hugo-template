@@ -140,6 +140,13 @@ body  {
   position: relative;
 }
 
+.tvp-product:before {
+  display: block;
+  content: "";
+  width: 100%;
+  padding-top: 100%;
+}
+
 .tvp-products-title {
   margin: 10px 0;
 }
@@ -234,7 +241,12 @@ body  {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  padding-top: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
 }
 
 .tvp-product-data {

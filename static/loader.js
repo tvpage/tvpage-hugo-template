@@ -171,8 +171,9 @@
             if ('tvp_sidebar:modal_rendered' === eventName) {
               document.getElementById('tvp-iframe-modal_'+id).style.height = e.data.height;
               var widgetData = widget[id];
-              holder.classList.add('rendered')
-              window.postMessage({
+              holder.classList.add('rendered');
+
+              document.getElementById('tvp-iframe-modal_' + id).contentWindow.postMessage({
                 event: '_tvp_sidebar_modal_data',
                 data: widgetData.data,
                 selectedVideo: widgetData.selectedVideo,
@@ -229,7 +230,7 @@
 
               var iframeContent = '<div id="' + id + '" class="tvp-clearfix iframe-content">'+
               '<div class="tvp-player-holder"><div class="tvp-player"><div id="tvp-player-el"></div></div></div>'+
-              '<div class="tvp-products-holder"></div></div>';
+              '<div class="tvp-products-holder"><div class="tvp-products"><a class="tvp-product"></a><a class="tvp-product"></a><a class="tvp-product"></a></div></div></div>';
 
               iframeModalDoc.open().write(createIframeHtml({
                 html: iframeContent,
