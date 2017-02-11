@@ -282,14 +282,18 @@ h1.seo{
 		
 	}
 	&-menu-top{
+		width: 303px;
+		min-height: 178px;
 		&-options{
 			list-style-type: none;
+			height: 37px;
 			& > li{
 				display: inline;
 				padding : 15px;
 				font-size: 26px;
 				font-weight: bold;
 				text-decoration : none;
+				line-height: 37px;
 				& a {
 					color: white;
 					display: inline;
