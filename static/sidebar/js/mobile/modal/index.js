@@ -21,7 +21,7 @@
         if (!slickInitialized) return;
         if (window.parent && window.parent.parent) {
           window.parent.parent.postMessage({
-            event: '_tvp_sidebar_modal_resized',
+            event: 'tvp_sidebar:modal_resized',
             height: Math.ceil($('#' + settings.name).height()) + 'px'
           }, '*');
         }
@@ -33,7 +33,7 @@
         
         if (window.parent && window.parent.parent) {
           window.parent.parent.postMessage({
-            event: '_tvp_sidebar_modal_rendered',
+            event: 'tvp_sidebar:modal_rendered',
             height: Math.ceil($('#' + settings.name).height()) + 'px'
           }, '*');
         }

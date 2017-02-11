@@ -15,6 +15,10 @@
       appendToHead = function(el){
         (document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(el);
       },
+      removeEl = function(el){
+        if (!el) return;
+        el.parentNode.removeChild(el);
+      },
       debounce = function(func,wait,immediate) {
         var timeout;  
         return function() {
@@ -28,6 +32,43 @@
           timeout = setTimeout(later, wait);
           if (callNow) func.apply(context, args);
         };
+      },
+      createIframe = function(){
+        var ifr = document.createElement('iframe');
+        ifr.setAttribute('allowfullscreen', '');
+        ifr.setAttribute('frameborder', '0');
+        ifr.setAttribute('scrolling', 'no');
+        ifr.classList.add('tvp-iframe');
+        return ifr;
+      },
+      createIframeHtml = function(options){
+        var html = '<body class="' + (options.className || '') + '" data-domain="' + (options.domain || '') + '" data-id="' + (options.id || '') + '" onload="'+
+        'var doc = document, head = doc.getElementsByTagName(\'head\')[0],'+
+        'addScript = function(src){ var script = doc.createElement(\'script\');script.src=src;doc.body.appendChild(script);};'+
+        'addCSSLink = function(href){ var link = doc.createElement(\'link\');link.type=\'text/css\';link.rel=\'stylesheet\';link.href=href;head.appendChild(link);};'+
+        'window.DEBUG=' + (window.DEBUG || 0) + ';';
+
+        if (options.js && options.js.length) {
+          var js = options.js;
+          for (var i = 0; i < js.length; i++) {
+            html += 'addScript(\'' + js[i] + '\');';
+          }
+        }
+
+        if (options.css && options.css.length) {
+          var css = options.css;
+          for (var i = 0; i < css.length; i++) {
+            html += 'addCSSLink(\'' + css[i] + '\');';
+          }
+        }
+
+        html += '">';
+
+        if (options.html && options.html.length) {
+          html += options.html;
+        }
+
+        return html;
       };
 
   function Widget(spot) {
@@ -44,30 +85,66 @@
     
     var domain = spot.getAttribute('data-domain'),
         type = spot.getAttribute('class').split('-').pop();
-        typeStaticPath = domain + '/' + type + (window.DEBUG ? '/' : '/dist/');
+        typeStaticPath = domain + '/' + type + (window.DEBUG ? '/' : '/dist/'),
+        jsPath = typeStaticPath + 'js/';
+
+    var sidebarJS = {
+      dev: [
+        jsPath + 'libs/utils.js',
+        jsPath + 'grid.js',
+        jsPath + 'index.js'
+      ],
+      prod: [
+        jsPath + 'scripts.min.js'
+      ]
+    };
+
+    var sidebarModalJS = {
+      dev: [
+        '//a.tvpage.com/tvpa.min.js',
+        '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
+        jsPath + 'libs/utils.js',
+        jsPath + 'libs/analytics.js',
+        jsPath + 'libs/player.js',
+        jsPath + 'modal/index.js'
+      ],
+      prod: [
+        jsPath + 'scripts.min.js'
+      ]
+    };
+    
+    var soloJS = {
+      dev: [
+        '//a.tvpage.com/tvpa.min.js',
+        '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
+        jsPath + 'libs/analytics.js',
+        jsPath + 'libs/player.js',
+        jsPath + 'index.js'
+      ],
+      prod: [
+        jsPath + 'scripts.min.js'
+      ]
+    };
+
+    widget[id] = {};
 
     widget.run = function() {
       spot.insertAdjacentHTML('beforebegin', '<div id="' + id + '-holder" class="tvp-iframe-holder"></div>');
       
       var holder = document.getElementById(id + '-holder'),
-          embedMethod = spot.getAttribute('data-embedmethod') || 'iframe';
+          embedMethod = spot.getAttribute('data-embedmethod') || 'iframe',
+          env = window.DEBUG ? 'dev' : 'prod';
+
+      //Add the host (parent) css.
+      var link = document.createElement('link');
+      link.rel = 'stylesheet';
+      var hostCssPath = typeStaticPath;
+      hostCssPath += 'css/' + (isMobile ? 'mobile/' : '') + 'host' + cssExt;
+      link.href = hostCssPath;
+      appendToHead(link);
 
       if (embedMethod === 'iframe') {
-
-        //Add the host (parent) css.
-        var link = document.createElement('link');
-        link.rel = 'stylesheet';
-        var hostCssPath = typeStaticPath;
-        hostCssPath += 'css/' + (isMobile ? 'mobile/' : '') + 'host' + cssExt;
-        link.href = hostCssPath;
-        appendToHead(link);
-
-        var iframe = document.createElement('iframe');
-        iframe.setAttribute('allowfullscreen', '');
-        iframe.setAttribute('frameborder', '0');
-        iframe.setAttribute('scrolling', 'no');
-        iframe.setAttribute('name', location.origin);
-        iframe.classList.add('tvp-iframe');
+        var iframe = createIframe();
 
         if ('solo' === type) {
           iframe.onload = function(){
@@ -87,15 +164,27 @@
 
             var eventName = e.data.event;
 
-            if ('_tvp_widget_first_render' === eventName || '_tvp_widget_grid_resize' === eventName) {
+            if ('tvp_sidebar:first_render' === eventName || 'tvp_sidebar:grid_resize' === eventName) {
               holder.style.height = e.data.height;
             }
 
-            if ('_tvp_sidebar_modal_rendered' === eventName || '_tvp_sidebar_modal_resized' === eventName) {
+            if ('tvp_sidebar:modal_rendered' === eventName) {
+              document.getElementById('tvp-iframe-modal_'+id).style.height = e.data.height;
+              var widgetData = widget[id];
+              holder.classList.add('rendered')
+              window.postMessage({
+                event: '_tvp_sidebar_modal_data',
+                data: widgetData.data,
+                selectedVideo: widgetData.selectedVideo,
+                runTime:__TVPage__
+              }, '*');
+            }
+
+            if('tvp_sidebar:modal_resized' === eventName){
               document.getElementById('tvp-iframe-modal_'+id).style.height = e.data.height;
             }
 
-            if ('_tvp_sidebar_video_click' === eventName) {
+            if ('tvp_sidebar:video_click' === eventName) {
 
               //The overlay & modal elements.
               var modalFrag = document.createDocumentFragment();
@@ -104,89 +193,81 @@
               overlay.classList.add('tvp-modal-overlay');
               modalFrag.appendChild(overlay);
               
-              var data = e.data;
-              var selectedVideo = data.selectedVideo || {};
-              
               var modal = document.createElement('div');
               modal.classList.add('tvp-modal');
+
+              var data = e.data;
+              var selectedVideo = data.selectedVideo || {};
+
+              widget[id] = widget[id] || {};
+              widget[id] = {
+                data: data.videos || [],
+                selectedVideo: selectedVideo
+              };
 
               modal.innerHTML = '<div class="tvp-modal-wrapper"><div class="tvp-modal-content"><div class="tvp-modal-header">'+
               '<svg class="tvp-modal-close" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">'+
               '<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>'+
-              '<h4 class="tvp-modal-title">' + selectedVideo.title + '</h4></div><div class="tvp-modal-body"><iframe id="tvp-iframe-modal_' + id + '" src="'+ domain + '/tvpwidget/'+
-              id + '-modal' + (isMobile ? '-mobile' : '') + '" allowfullscreen frameborder="0" scrolling="no" class="tvp-iframe-modal"></iframe></div></div></div>';
+              '<h4 class="tvp-modal-title">' + selectedVideo.title + '</h4></div><div class="tvp-modal-body"><iframe id="tvp-iframe-modal_' + id + '" src="about:blank"'+
+              'allowfullscreen frameborder="0" scrolling="no" class="tvp-iframe-modal"></iframe></div></div></div>';
+
               modalFrag.appendChild(modal);
 
-              var closeButton = modalFrag.querySelector('.tvp-modal-close');
+              var button = modalFrag.querySelector('.tvp-modal-close');
               var close = function(){
-                modal.parentNode.removeChild(modal);
-                overlay.parentNode.removeChild(overlay);
-                closeButton.removeEventListener('click',close,false);
-                closeButton.parentNode.removeChild(closeButton);
+                button.removeEventListener('click',close,false);
+                [modal,overlay,button].forEach(function(el){removeEl(el);});
               };
-              closeButton.addEventListener('click', close);
+              button.addEventListener('click', close);
 
               var iframeModal = modalFrag.querySelector('.tvp-iframe-modal');
-              iframeModal.onload = function(){
-                var ifr = this;
-                ifr.contentWindow.postMessage({
-                  event: '_tvp_sidebar_modal_data',
-                  videos: data.videos || [],
-                  selectedVideo: selectedVideo
-                }, '*');
-                modal.style.display = 'block';
-              };
 
               document.body.appendChild(modalFrag);
 
+              var ifrWindow = iframeModal.contentWindow;
+              var iframeModalDoc = ifrWindow.document;
+
+              var iframeContent = '<div id="' + id + '" class="tvp-clearfix iframe-content">'+
+              '<div class="tvp-player-holder"><div class="tvp-player"><div id="tvp-player-el"></div></div></div>'+
+              '<div class="tvp-products-holder"></div></div>';
+
+              iframeModalDoc.open().write(createIframeHtml({
+                html: iframeContent,
+                js: sidebarModalJS.dev,
+                css: [
+                  typeStaticPath + 'css/modal/styles'+cssExt
+                ]
+              }));
+              iframeModalDoc.close();
             }
           });
         }
 
-        holder.classList.add(type);
         holder.appendChild(iframe);
         
         //Because iframes aare loaded first before the host page loading, we load them empties, making this load time
         //reduced as its minimum, we start then creating the content of the iframe dynamically.
         //Reference: http://www.aaronpeters.nl/blog/iframe-loading-techniques-performance?%3E
         if ('dynamic' === dataMethod) {
-          var html = '<body class="' + dataMethod + ' is-iframe" data-domain="'+domain+'" data-id="' + id + '" onload="'+
-          'var d = document, head = d.getElementsByTagName(\'head\')[0],'+
-          'injScr = function(sr){ var s=d.createElement(\'script\');s.src=sr;head.appendChild(s);};';
-
-          var libs = [
-            '\'//a.tvpage.com/tvpa.min.js\'',
-            '\'//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js\''
-          ];
-          
-          if (window.DEBUG) {
-            libs = libs.concat([
-              '\'' + typeStaticPath + 'js/libs/analytics.js\'',
-              '\'' + typeStaticPath + 'js/libs/player.js\'',
-              '\'' + typeStaticPath + 'js/index.js\''
-            ]);
-          } else {
-            libs = libs.concat(['\'' + typeStaticPath + 'js/scripts.min.js\'']);
-          }
-
-          for (var i = 0; i < libs.length; i++) {
-            html += 'injScr(' + libs[i] + ');';
-          }
-
-          html += 'var css=d.createElement(\'link\');css.rel=\'stylesheet\';css.type=\'text/css\';';
-          html += 'css.href=\'' + typeStaticPath + 'css/styles'+cssExt+'\';head.appendChild(css);';
-
-          if (window.DEBUG) {
-            html += 'window.DEBUG=1;';
-          }
-
-          html += '">';
-          
           var iframeDoc = iframe.contentWindow.document;
-          iframeDoc.open().write(html);
+          iframeDoc.open().write(createIframeHtml({
+            js: function(){
+              var js;
+              if ('solo' === type) {
+                js = soloJS[env];
+              } else if ('sidebar' === type) {
+                js = sidebarJS[env];
+              }
+              return js
+            }(),
+            css: [typeStaticPath + 'css/styles'+cssExt],
+            className: dataMethod,
+            domain: domain,
+            id: id
+          }));
           iframeDoc.close();
-
         }
+        
         //Handling the static iframe scenario, not much to do, just delay the src addition.
         else {
           function setSrc() {
@@ -242,7 +323,6 @@
     }
 
     widget.run();
-
     return widget;
   }
 
@@ -254,7 +334,7 @@ function load(){
   while (spotsCount > 0) {
     var spot = spots[spotsCount - 1]
     Widget(spots[spotsCount - 1]);
-    spot.parentNode.removeChild(spot);
+    removeEl(spot);
     spotsCount--;
   }
 };

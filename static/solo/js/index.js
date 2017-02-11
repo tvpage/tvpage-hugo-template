@@ -23,10 +23,10 @@
       var id = doc.body.getAttribute('data-id');
       if (!isset(runTime, id)) return console.log('need settings');
       s = runTime[id];
-      s.widgetId = id;
+      s.name = id;
     } else if (type && type.length) {
       s = runTime[type];
-      s.widgetId = type;
+      s.name = type;
     }
     return s;
   },

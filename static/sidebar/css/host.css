@@ -1,5 +1,5 @@
 div[class^="tvp-"] {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .tvp-modal-overlay {
@@ -14,7 +14,6 @@ div[class^="tvp-"] {
 }
 
 .tvp-modal {
-  display: none;
   overflow: hidden;
   position: fixed;
   top: 0;
@@ -60,6 +59,8 @@ div[class^="tvp-"] {
   margin: 0;
   line-height: 1.4285;
   color: black;
+  font-size: 16px;
+  font-family: Helvetica;
 }
 
 .tvp-modal-body {
@@ -95,7 +96,7 @@ div[class^="tvp-"] {
 .tvp-modal-close {
   padding: 0;
   cursor: pointer;
-  background: rgb(239, 239, 239);
+  background: whitesmoke;
   border: 0;
   -webkit-appearance: none;
   float: right;
