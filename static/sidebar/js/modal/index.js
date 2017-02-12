@@ -103,14 +103,14 @@
       holder.onmouseleave = function(e){
         var activeThumbs = document.querySelectorAll('.tvp-product.active');
         for (var i = activeThumbs.length - 1; i >= 0; i--) {
-          activeThumbs[i].clasList.remove('active');
+          activeThumbs[i].classList.remove('active');
         }
         
         arrow.classList.remove('active');
 
         var activePopups = document.querySelectorAll('.tvp-product-popup.active');
         for (var i = activePopups.length - 1; i >= 0; i--) {
-          activePopups[i].clasList.remove('active');
+          activePopups[i].classList.remove('active');
         }
       }
     },0);
