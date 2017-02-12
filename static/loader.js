@@ -184,17 +184,19 @@
 
             var eventName = e.data.event;
 
-            if ('tvp_sidebar:first_render' === eventName || 'tvp_sidebar:grid_resize' === eventName) {
+            if ('tvp_sidebar:render' === eventName || 'tvp_sidebar:grid_resize' === eventName) {
               holder.style.height = e.data.height;
             }
 
+            
             if ('tvp_sidebar:modal_rendered' === eventName) {
-
               var iframeModal = document.getElementById('tvp-iframe-modal_'+id);
               iframeModal.style.height = e.data.height;
-              var widgetData = widget[id];
-              holder.classList.add('rendered');
+            }
 
+            if ('tvp_sidebar:modal_initialized' === eventName) {
+              var iframeModal = document.getElementById('tvp-iframe-modal_'+id);
+              var widgetData = widget[id];
               iframeModal.contentWindow.postMessage({
                 event: '_tvp_sidebar_modal_data',
                 data: widgetData.data,

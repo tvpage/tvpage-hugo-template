@@ -113,7 +113,7 @@
         this.container.appendChild(pageFrag);
         if (window.parent && window.parent.parent) {
           window.parent.parent.postMessage({
-            event: 'tvp_sidebar:first_render',
+            event: 'tvp_sidebar:render',
             height: that.el.offsetHeight + 'px'
           }, '*');
         }

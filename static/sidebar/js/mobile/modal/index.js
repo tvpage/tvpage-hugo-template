@@ -8,117 +8,49 @@
     return document.getElementsByClassName(c || '')[0];
   };
 
-  var render = function(products, exchangeVideo){
+  var render = function(data, exchangeVideo){
     var el = getbyClass('iframe-content');
-    var prodCount = products.length,
-        htmlTmpl = $('#productTemplate').html(),
-        html = '';
 
-    while (prodCount > 0) {
-      html += '<div>' + Utils.tmpl(htmlTmpl, products[prodCount-1]) + '</div>';
-      prodCount--;
+    var container = getbyClass('tvp-products-carousel');
+    var frag = document.createDocumentFragment();
+    
+    for (var i = 0; i < data.length; i++) {
+      var product = data[i];
+      var prodNode = document.createElement('a');
+      prodNode.classList.add('tvp-product');
+      prodNode.href = product.linkUrl;
+      prodNode.innerHTML = '<div class="tvp-product-image" style="background-image:url(' + product.imageUrl + ')"><div/>';
+      frag.appendChild(prodNode);
     }
 
-    var $products = $(el).find('.tvp-products-carousel');
-    
-    $products.html(html).promise().done(function(){
-      var slickInitialized = false;
-      
-      $products.on('setPosition',utils.debounce(function(){
-        if (!slickInitialized) return;
-        if (window.parent && window.parent.parent) {
-          window.parent.parent.postMessage({
-            event: 'tvp_sidebar:modal_resized',
-            height: Math.ceil($('#' + settings.name).height()) + 'px'
-          }, '*');
-        }
-      },100));
-      
-      $products.on('init',function(){
-        slickInitialized = true;
-        $products.addClass('first-render');
-        
-        if (window.parent && window.parent.parent) {
-          window.parent.parent.postMessage({
-            event: 'tvp_sidebar:modal_rendered',
-            height: Math.ceil($('#' + settings.name).height()) + 'px'
-          }, '*');
-        }
-      });
-
-      var slickConfig = {
-        slidesToSlide: 1,
-        slidesToShow: 1,
-        arrows: false
-      };
-      
-      if (products.length > 1) {
-        slickConfig.centerMode = true;
-        slickConfig.centerPadding = '25px';
-      }
-      
-      $products.slick(slickConfig);
-
-      if (!settings.analytics) return;
-
-      //Dynamic analytics configuration, we need to switch if this is an ad.
-      var analytics =  new Analytics();
-      var config = {
-        domain: utils.isset(location,'hostname') ?  location.hostname : '',
-        loginId: settings.loginId
-      };
-      if (exchangeVideo) {
-        config.logUrl = exchangeVideo.analytics;
-      } else {
-        config.logUrl = '\/\/api.tvpage.com\/v1\/__tvpa.gif';
-      }
-      analytics.initConfig(config);
-
-      var $product = $products.find('.slick-active').find('.tvp-product');
-      var id = $product.data('id');
-      var trackObj = {
-        vd: $product.data('entityIdParent'),
-        ct: id,
-        li: settings.loginId,
-        pg: settings.channelid
-      };
-      
-      if (exchangeVideo) {
-        for (var i = 0; i < products.length; i++) {
-          var prod = products[i];
-          if (id == prod.id && utils.isset(prod,'events') && prod.events.length) {
-            trackObj = prod.events[0].data;
-          }
-        }
-      }
-      
-      analytics.track('pi',trackObj);
-
-    });
-  };
-
-  var initialize = function(){
-    var body = document.getElementsByTagName('body')[0];
-    var staticPath = body.getAttribute('data-domain') + '/sidebar' + (window.DEBUG ? '/' : '/dist/');
-    var el = getbyClass('iframe-content');
+    container.innerHTML = '';
+    container.appendChild(frag);
 
     //We start loading our slick dependency here, it was breaking while rendering it dynamicaly.
+    var body = document.getElementsByTagName('body')[0];
+    var staticPath = body.getAttribute('data-domain') + '/sidebar' + (window.DEBUG ? '/' : '/dist/');
     $.ajax({
       dataType: 'script',
       cache: true,
       url: staticPath + 'js/vendor/slick-min.js'
     }).done(function() {
+      
       //Notify when products had been rendered (should we wait?)
       setTimeout(function(){
         if (window.parent && window.parent.parent) {
           window.parent.parent.postMessage({
             event: 'tvp_sidebar:modal_rendered',
-            height: (el.offsetHeight + 20) + 'px'
+            height: el.offsetHeight + 'px'
           }, '*');
         }
       },0);
 
     });
+  
+  };
+
+  var initialize = function(){
+    var el = getbyClass('iframe-content');
 
     var initPlayer = function(data){
       var s = JSON.parse(JSON.stringify(data.runTime));
@@ -159,6 +91,16 @@
         } 
       }
     });
+
+    //Notify when the widget has been initialized.
+    setTimeout(function(){
+      if (window.parent && window.parent.parent) {
+        window.parent.parent.postMessage({
+          event: 'tvp_sidebar:modal_initialized',
+          height: (el.offsetHeight + 20) + 'px'
+        }, '*');
+      }
+    },0);
   };
 
   var not = function(obj){return 'undefined' === typeof obj};

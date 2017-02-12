@@ -15,15 +15,62 @@
     
     for (var i = 0; i < data.length; i++) {
       var product = data[i];
+      
       var prodNode = document.createElement('a');
       prodNode.classList.add('tvp-product');
+      prodNode.id = 'tvp-product-' + product.id;
       prodNode.href = product.linkUrl;
       prodNode.innerHTML = '<div class="tvp-product-image" style="background-image:url(' + product.imageUrl + ')"><div/>';
       frag.appendChild(prodNode);
+
+      var prodPopupNode = document.createElement('a');
+      prodPopupNode.id = 'tvp-product-popup-' + product.id;
+      prodPopupNode.classList.add('tvp-product-popup');
+      prodPopupNode.href = product.linkUrl;
+      prodPopupNode.innerHTML = '<div class="tvp-product-image" style="background-image:url(' + product.imageUrl + ')"><div/>'+
+      '<p class="tvp-product-title">'+product.title+'</p><div class="tvp-clearfix"><p class="tvp-product-price"><span>$</span>'+product.price+'</p></div>'+
+      '<button class="tvp-product-cta">View Details</button>';
+      frag.appendChild(prodPopupNode);
+      
     }
 
     container.innerHTML = '';
+    var arrow = document.createElement('div');
+    arrow.id = 'tvp-arrow-indicator';
+    frag.appendChild(arrow);
     container.appendChild(frag);
+
+    setTimeout(function(){
+      var holder = getbyClass('tvp-products-holder');
+      
+      holder.onmouseover = function(e){
+        if (!e.target.classList.contains('tvp-product-image')) return;
+        document.querySelectorAll('.tvp-product-popup.active').forEach(function(el){
+          console.log(el);
+        });
+        var productEl = e.target.parentNode;
+        var id = productEl.id.split('-').pop();
+
+        productEl.classList.add('active');
+
+        var popup = document.getElementById('tvp-product-popup-'+id);
+
+        var topValue = productEl.offsetTop;
+        
+        console.log(popup)
+
+        var popupBottomEdge = topValue + popup.offsetHeight;
+        
+        console.log(topValue, popupBottomEdge)
+        
+        
+      };
+
+      container.onmouseleave = function(){
+        console.log('hide');
+      }
+    },0);
+
   };
 
   var initialize = function(){
@@ -40,7 +87,7 @@
     setTimeout(function(){
       if (window.parent && window.parent.parent) {
         window.parent.parent.postMessage({
-          event: 'tvp_sidebar:modal_rendered',
+          event: 'tvp_sidebar:modal_initialized',
           height: (el.offsetHeight + 20) + 'px'
         }, '*');
       }
@@ -54,7 +101,7 @@
         resizeProducts(size[1]);
         if (window.parent && window.parent.parent) {
           window.parent.parent.postMessage({
-            event: 'tvp_sidebar:modal_resized',
+            event: 'tvp_sidebar:modal_rendered',
             height: (el.offsetHeight + 20) + 'px'
           }, '*');
         }
