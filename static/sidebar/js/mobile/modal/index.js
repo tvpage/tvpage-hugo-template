@@ -98,7 +98,6 @@
       var player = new Player('tvp-player-el',s,data.selectedVideo.id);
       document.addEventListener("orientationchange", function(){
         if (player.isReady) {
-          alert('resizing')
           player.resize();
         }
       });

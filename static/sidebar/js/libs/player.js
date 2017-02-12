@@ -151,6 +151,7 @@
     };
 
     this.resize = function(){
+      alert('in resize');
       if (!that.instance || that.isFullScreen) return;
       var width, height;
       if (arguments.length && arguments[0] && arguments[1]) {
@@ -161,9 +162,9 @@
         width = parentEl.clientWidth;
         height = parentEl.clientHeight;
       }
+      alert(width+' / '+height);
       that.instance.resize(width, height);
       if(!this.onResize) return;
-      alert(width+' / '+height);
       this.onResize([width, height]);
     }
 
