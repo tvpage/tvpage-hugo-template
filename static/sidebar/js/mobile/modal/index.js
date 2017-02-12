@@ -97,12 +97,10 @@
       
       var player = new Player('tvp-player-el',s,data.selectedVideo.id);
       document.addEventListener("orientationchange", function(){
-        alert('hello');
-        // if (player.isReady) {
-        //   player.resize();
-        // }
+        if (player.isReady) {
+          player.resize();
+        }
       });
-
       
     };
 
