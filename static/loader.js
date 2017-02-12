@@ -251,11 +251,21 @@
               iframeModal.onload = function(){
                 if (isMobile) {
                   var ifr = this;
+                  console.log(ifr.parentNode)
                   document.addEventListener('orientationchange', function(){
+                    var width, height;
+
+                    var ref = ifr.parentNode;
+
+                    width = ref.offsetWidth;
+                    height = Math.floor(ref.offsetWidth * (9 / 16));
+
+                    alert(width + '/' + height);
+
                     ifr.contentWindow.postMessage({
                       event: '_tvp_widget_holder_resize',
-                      size: [ifr.offsetWidth,Math.floor(ifr.offsetWidth * (9 / 16))]
-                    }, '*');
+                      size: [width,height]
+                    },'*');
                   });
                 }                
               };
