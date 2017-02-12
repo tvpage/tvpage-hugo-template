@@ -163,8 +163,6 @@
       if (embedMethod === 'iframe') {
         var iframe = createIframe();
 
-
-
         if ('solo' === type) {
           iframe.onload = function(){
             var ifr = this;
@@ -178,6 +176,18 @@
         } 
 
         else if ('sidebar' === type) {
+
+          if (isMobile) {
+            document.addEventListener('orientationchange', function(){
+              
+              alert('or change');
+
+              iframeModal.contentWindow.postMessage({
+                event: '_tvp_widget_holder_resize',
+                size: [10,10]
+              }, '*');
+            });
+          }
 
           //Whe need to receive the data from the click first, then we create the overlay & modal on the fly.
           window.addEventListener('message', function(e){
@@ -205,12 +215,6 @@
             if ('tvp_sidebar:modal_resized' === eventName) {
               document.getElementById(ifrIModalId).style.height = e.data.height;
             }
-
-            // window.addEventListener('resize', debounce(function(){
-            //   iframeModal.contentWindow.postMessage({
-            //     event: '_tvp_widget_holder_resize'
-            //   }, '*');
-            // },50));
 
             //On sidebar item click!
             if ('tvp_sidebar:video_click' === eventName) {

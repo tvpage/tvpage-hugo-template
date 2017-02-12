@@ -1,7 +1,5 @@
 (function(window,document){
 
-  var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
   var isset = function(o,p){
     return 'undefined' !== typeof o[p];
   };
@@ -94,14 +92,8 @@
     var initPlayer = function(data){
       var s = JSON.parse(JSON.stringify(data.runTime));
       s.data = data.data;
-      
-      var player = new Player('tvp-player-el',s,data.selectedVideo.id);
-      document.addEventListener("orientationchange", function(){
-        if (player.isReady) {
-          player.resize();
-        }
-      });
-      
+
+      new Player('tvp-player-el',s,data.selectedVideo.id);
     };
 
     window.addEventListener('message', function(e){
