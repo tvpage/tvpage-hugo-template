@@ -30,7 +30,7 @@
           </div>
         </div>
         <div class="row container tvp-video-container-mobile">
-          <h1 class="video-title-mobile"><span class="title">{{ .Title }}</span> <span class="caret" data-toggle="collapse" data-target=".video-details-row.description .mobile" aria-expanded="false"></span></h1>
+          <h1 class="video-title-mobile"><span class="title">{{ .Title }}</span> <div id="show-more-mobile" class="carret-container" data-toggle="collapse" data-target=".video-details-row.description .mobile" aria-expanded="false"><span class="caret" ></span></div> </h1>
           <h2 class="section-header video-details-header">VIDEO DETAILS
             <div class="social-share">                
               SHARE: <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ .Permalink }}" class="
@@ -72,7 +72,7 @@
             
              <div class="latest-video-thumbnail">    
                 <div class="content">
-                  <img class="lazyImg" {{with .asset.thumbnailUrl}} data-original="{{ . }}"{{else}} data-original='{{$baseUrl}}/{{ .Type }}/images/defaults/asset.png' {{end}}
+                  <img {{with .asset.thumbnailUrl}} src="{{ . }}"{{else}} src='{{$baseUrl}}/{{ .Type }}/images/defaults/asset.png' {{end}}
                         alt="{{- .title -}}">
                   <div class="latest-video-hover">
                     <div class="play-icon"></div>

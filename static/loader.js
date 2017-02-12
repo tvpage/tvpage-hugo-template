@@ -159,6 +159,7 @@
       link.href = hostCssPath;
       appendToHead(link);
 
+      holder.classList.add(type);
       if (embedMethod === 'iframe') {
         var iframe = createIframe();
 
