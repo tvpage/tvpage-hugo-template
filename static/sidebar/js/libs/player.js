@@ -198,7 +198,6 @@
                 window.addEventListener('message', function(e){
                   if (!e || !isset(e, 'data') || !isset(e.data, 'event')) return;
                   if ('_tvp_widget_holder_resize' === e.data.event) {
-                    console.log('once')
                     var size = e.data.size || [];
                     that.resize(size[0], size[1]);
                   }
