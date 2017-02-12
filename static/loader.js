@@ -179,12 +179,9 @@
 
           if (isMobile) {
             document.addEventListener('orientationchange', function(){
-              
-              alert('or change');
-
               iframeModal.contentWindow.postMessage({
                 event: '_tvp_widget_holder_resize',
-                size: [10,10]
+                size: [100,100]
               }, '*');
             });
           }
