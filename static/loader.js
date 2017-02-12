@@ -206,12 +206,12 @@
               }, '*');
 
 
-              // window.addEventListener('resize', debounce(function(){
-              //   iframeModal.contentWindow.postMessage({
-              //     event: '_tvp_widget_holder_resize',
-              //     size: [400,200]
-              //   }, '*');
-              // },50));
+              window.addEventListener('resize', debounce(function(){
+                iframeModal.contentWindow.postMessage({
+                  event: '_tvp_widget_holder_resize',
+                  size: [100,100]
+                }, '*');
+              },50));
             }
 
             // if('tvp_sidebar:modal_resized' === eventName){
