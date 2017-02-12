@@ -59,7 +59,6 @@
 
         var popup = document.getElementById('tvp-product-popup-'+id);
         var topValue = productEl.getBoundingClientRect().top;
-        console.log('top', topValue)
         popup.classList.add('active');
         var bottomLimit = topValue + popup.offsetHeight;
         var holderHeight = holder.offsetHeight;
@@ -77,7 +76,6 @@
         }
         
         popup.classList.add('active');
-        console.log(topValue)
         popup.style.top = topValue + 'px';
 
         arrow.classList.add('active');

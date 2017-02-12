@@ -247,8 +247,8 @@
               iframeModal.onload = function(){
                 if (!isMobile) return;
                 var ifr = this;
-                window.addEventListener('resize', function(){
-                //document.addEventListener('orientationchange', function(){
+                // window.addEventListener('resize', function(){
+                document.addEventListener('orientationchange', function(){
                   setTimeout(function(){
                     var ref = ifr.parentNode;
                     if (ifr.contentWindow) {
