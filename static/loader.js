@@ -252,13 +252,12 @@
                 if (isMobile) return;
                 var ifr = this;
                 document.addEventListener('orientationchange', function(){
-                  setTimeout(function(){
-                    var ref = ifr.parentNode;
-                    ifr.contentWindow.postMessage({
-                      event: '_tvp_widget_holder_resize',
-                      size: [ref.offsetWidth, Math.floor(ref.offsetWidth * (9 / 16))]
-                    },'*');
-                  },50);
+                  var ref = ifr.parentNode;
+                  alert(ref.offsetWidth);
+                  ifr.contentWindow.postMessage({
+                    event: '_tvp_widget_holder_resize',
+                    size: [ref.offsetWidth, Math.floor(ref.offsetWidth * (9 / 16))]
+                  },'*');
                 });               
               };
 
