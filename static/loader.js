@@ -184,37 +184,33 @@
             if (!e || !isset(e, 'data') || !isset(e.data, 'event')) return;
 
             var eventName = e.data.event;
-            var ifrIModalId = 'tvp-iframe-modal_'+id;
 
             if ('tvp_sidebar:render' === eventName || 'tvp_sidebar:grid_resize' === eventName) {
               holder.style.height = e.data.height;
             }
 
-            if ('tvp_sidebar:modal_rendered' === eventName) {
-              var iframeModal = document.getElementById(ifrIModalId);
-              iframeModal.style.height = e.data.height;
-            }
+            var ifrIModalId = 'tvp-iframe-modal_'+id;
 
             if ('tvp_sidebar:modal_initialized' === eventName) {
-              var iframeModal = document.getElementById(ifrIModalId);
-              var data = widget[id];
-              iframeModal.contentWindow.postMessage({
+              document.getElementById(ifrIModalId).style.height = e.data.height;
+              var widgetData = widget[id];
+              document.getElementById(ifrIModalId).contentWindow.postMessage({
                 event: '_tvp_sidebar_modal_data',
-                data: data.data,
-                selectedVideo: data.selectedVideo,
-                runTime: data.runTime
+                data: widgetData.data,
+                selectedVideo: widgetData.selectedVideo,
+                runTime: widgetData.runTime
               }, '*');
-
-              // window.addEventListener('resize', debounce(function(){
-              //   iframeModal.contentWindow.postMessage({
-              //     event: '_tvp_widget_holder_resize'
-              //   }, '*');
-              // },50));
             }
 
-            // if('tvp_sidebar:modal_resized' === eventName){
-            //   document.getElementById('tvp-iframe-modal_'+id).style.height = e.data.height;
-            // }
+            if ('tvp_sidebar:modal_resized' === eventName) {
+              document.getElementById(ifrIModalId).style.height = e.data.height;
+            }
+
+            // window.addEventListener('resize', debounce(function(){
+            //   iframeModal.contentWindow.postMessage({
+            //     event: '_tvp_widget_holder_resize'
+            //   }, '*');
+            // },50));
 
             //On sidebar item click!
             if ('tvp_sidebar:video_click' === eventName) {

@@ -1,5 +1,7 @@
 (function(window,document){
 
+  var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
   var isset = function(o,p){
     return 'undefined' !== typeof o[p];
   };
@@ -42,14 +44,14 @@
         arrows: false
       };
 
-      setTimeout(function(){
-        if (window.parent && window.parent.parent) {
-          window.parent.parent.postMessage({
-            event: 'tvp_sidebar:modal_rendered',
-            height: el.offsetHeight + 'px'
-          }, '*');
-        }
-      },0);
+      // setTimeout(function(){
+      //   if (window.parent && window.parent.parent) {
+      //     window.parent.parent.postMessage({
+      //       event: 'tvp_sidebar:modal_resized',
+      //       height: el.offsetHeight + 'px'
+      //     }, '*');
+      //   }
+      // },0);
       
       // $container.on('setPosition',Utils.debounce(function(){
       //   if (!slickInitialized) return;
@@ -94,15 +96,14 @@
       s.data = data.data;
       
       var player = new Player('tvp-player-el',s,data.selectedVideo.id);
+      document.addEventListener("orientationchange", function(){
+        alert('hello');
+        // if (player.isReady) {
+        //   player.resize();
+        // }
+      });
 
-      //Resize player when this window is resized.
-      window.addEventListener('resize', Utils.debounce(function(){
-        alert(player.isReady);
-        if(player.isReady){
-          alert('is ready')
-          player.resize();
-        }
-      },50));
+      
     };
 
     window.addEventListener('message', function(e){

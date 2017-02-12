@@ -52,8 +52,6 @@
         document.querySelectorAll('.tvp-product-popup.active').forEach(function(el){
           el.classList.remove('active');
         });
-
-        console.log(e.target)
         
         var productEl = e.target.parentNode;
         var id = productEl.id.split('-').pop();
@@ -109,16 +107,6 @@
     var player = getbyClass('tvp-player-holder');
     resizeProducts(player.offsetHeight);
 
-    //Notify when products had been rendered (should we wait?)
-    setTimeout(function(){
-      if (window.parent && window.parent.parent) {
-        window.parent.parent.postMessage({
-          event: 'tvp_sidebar:modal_initialized',
-          height: (el.offsetHeight + 20) + 'px'
-        }, '*');
-      }
-    },0);
-
     var initPlayer = function(data){
       var s = JSON.parse(JSON.stringify(data.runTime));
       s.data = data.data;
@@ -127,18 +115,16 @@
         resizeProducts(size[1]);
         if (window.parent && window.parent.parent) {
           window.parent.parent.postMessage({
-            event: 'tvp_sidebar:modal_rendered',
+            event: 'tvp_sidebar:modal_resized',
             height: (el.offsetHeight + 20) + 'px'
           }, '*');
         }
       };
 
       var player = new Player('tvp-player-el',s,data.selectedVideo.id);
-
-      //Resize player when this window is resized.
       window.addEventListener('resize', Utils.debounce(function(){
         player.resize();
-      },100));
+      },85));
     };
 
     window.addEventListener('message', function(e){
@@ -168,9 +154,16 @@
         } 
       }
     });
-  };
 
-  
+    setTimeout(function(){
+      if (window.parent && window.parent.parent) {
+        window.parent.parent.postMessage({
+          event: 'tvp_sidebar:modal_initialized',
+          height: (el.offsetHeight + 20) + 'px'
+        }, '*');
+      }
+    },0);
+  };
 
   var not = function(obj){return 'undefined' === typeof obj};
   if (not(window.Player) || not(window.Utils)) {
