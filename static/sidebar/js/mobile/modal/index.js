@@ -87,12 +87,12 @@
       var player = new Player('tvp-player-el',s,data.selectedVideo.id);
 
       //Resize player when this window is resized.
-      // window.addEventListener('resize', Utils.debounce(function(){
+      window.addEventListener('resize', Utils.debounce(function(){
 
-      //   console.log('player resize');
+        console.log('player resize');
         
-      //   //player.resize();
-      // },100));
+        player.resize();
+      },50));
     };
 
     window.addEventListener('message', function(e){
