@@ -46,6 +46,28 @@
         slickConfig.centerMode = true;
         slickConfig.centerPadding = '25px';
       }
+
+      $container.on('setPosition',function(){
+        if (!slickInitialized) return;
+        if (window.parent && window.parent.parent) {
+          window.parent.parent.postMessage({
+            event: 'tvp_sidebar:modal_resized',
+            height: el.offsetHeight + 'px'
+          }, '*');
+        }
+      });
+
+      $container.on('init',function(){
+        slickInitialized = true;
+        setTimeout(function(){
+          if (window.parent && window.parent.parent) {
+            window.parent.parent.postMessage({
+              event: 'tvp_sidebar:modal_resized',
+              height: el.offsetHeight + 'px'
+            }, '*');
+          }
+        },0);
+      });
       
       $container.slick(slickConfig);
     });
@@ -58,14 +80,6 @@
     var initPlayer = function(data){
       var s = JSON.parse(JSON.stringify(data.runTime));
       s.data = data.data;
-      s.onResize = function(size){
-        if (window.parent && window.parent.parent) {
-          window.parent.parent.postMessage({
-            event: 'tvp_sidebar:modal_resized',
-            height: (el.offsetHeight + 20) + 'px'
-          }, '*');
-        }
-      };
       new Player('tvp-player-el',s,data.selectedVideo.id);
     };
 
