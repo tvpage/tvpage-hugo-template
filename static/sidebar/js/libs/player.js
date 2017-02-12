@@ -153,6 +153,7 @@
     this.resize = function(){
       if (!that.instance || that.isFullScreen) return;
       var width, height;
+      
       if (arguments.length && arguments[0] && arguments[1]) {
         width = arguments[0];
         height = arguments[1];
@@ -161,7 +162,7 @@
         width = parentEl.clientWidth;
         height = parentEl.clientHeight;
       }
-      alert(width+' / '+height);
+
       that.instance.resize(width, height);
       if(!this.onResize) return;
       this.onResize([width, height]);
