@@ -42,7 +42,7 @@
         return ifr;
       },
       createIframeHtml = function(options){
-        var html = '<body class="' + (options.className || '') + '" data-domain="' + (options.domain || '') + '" data-id="' + (options.id || '') + '" onload="'+
+        var html = '<head><base target="_blank" /></head><body class="' + (options.className || '') + '" data-domain="' + (options.domain || '') + '" data-id="' + (options.id || '') + '" onload="'+
         'var doc = document, head = doc.getElementsByTagName(\'head\')[0],'+
         'addScript = function(src){ var script = doc.createElement(\'script\');script.src=src;doc.body.appendChild(script);};'+
         'addCSSLink = function(href){ var link = doc.createElement(\'link\');link.type=\'text/css\';link.rel=\'stylesheet\';link.href=href;head.appendChild(link);};'+

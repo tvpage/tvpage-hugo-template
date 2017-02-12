@@ -82,7 +82,7 @@
         arrow.style.top = (productEl.getBoundingClientRect().top + 20) + 'px';
       };
 
-      container.onmouseleave = function(e){
+      holder.onmouseleave = function(e){
         document.querySelectorAll('.tvp-product.active').forEach(function(el){
           el.classList.remove('active');
         });

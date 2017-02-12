@@ -121,9 +121,9 @@ body  {
 
 .tvp-products-holder {
   float: right;
-  width: 18.5%;
+  width: 20%;
   height: 0;
-  margin-left: 1.35%;
+  padding-left: 1.35%;
   position: relative;
   background-color: whitesmoke;
 }
@@ -193,7 +193,7 @@ body  {
   background-color: transparent;
   position: absolute;
   top: 0;
-  left: -8px;
+  left: 3px;
   z-index: 10;
 }
 
@@ -234,7 +234,7 @@ body  {
 .tvp-product-popup {
   display: none;
   position: absolute;
-  right: 104%;
+  right: 97%;
   width: 215px;
   background: white;
   padding: 10px;
