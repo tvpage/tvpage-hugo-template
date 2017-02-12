@@ -37,7 +37,7 @@
 
     container.innerHTML = '';
     var arrow = document.createElement('div');
-    arrow.id = 'tvp-arrow-indicator';
+    arrow.classList.add('tvp-arrow-indicator');
     thumbsFrag.appendChild(arrow);
     container.appendChild(thumbsFrag);
 
@@ -55,30 +55,33 @@
         
         var productEl = e.target.parentNode;
         var id = productEl.id.split('-').pop();
-
         productEl.classList.add('active');
 
         var popup = document.getElementById('tvp-product-popup-'+id);
-        var topValue = productEl.offsetTop;
-        var popupBottomEdge = topValue + popup.offsetHeight;
+        var topValue = productEl.getBoundingClientRect().top;
+        console.log('top', topValue)
+        popup.classList.add('active');
+        var bottomLimit = topValue + popup.offsetHeight;
+        var holderHeight = holder.offsetHeight;
         
         //We must first check if it's overflowing. To do this we first check if it's overflowing in the top, this is an
         //easy one, if it's a negative value then it's overflowing.
-        if (topValue <= 0) {
+        if (topValue <= 10) {
           topValue = -10;
         }
         
         //Otherwise if it's failing in the bottom, we rectify by removing the excess from the top value.
-        else if ( popupBottomEdge > holder.offsetHeight )  {
-          topValue = topValue - (popupBottomEdge - holder.offsetHeight) + 1;
+        else if ( bottomLimit > holderHeight )  {
+          topValue = topValue - (bottomLimit - holderHeight);
           topValue = topValue + 10;
         }
         
         popup.classList.add('active');
+        console.log(topValue)
         popup.style.top = topValue + 'px';
 
         arrow.classList.add('active');
-        arrow.style.top = (productEl.offsetTop + 20) + 'px';
+        arrow.style.top = (productEl.getBoundingClientRect().top + 20) + 'px';
       };
 
       container.onmouseleave = function(e){
@@ -89,7 +92,6 @@
         arrow.classList.remove('active');
 
         document.querySelectorAll('.tvp-product-popup.active').forEach(function(el){
-          console.log('here', el.classList.remove)
           el.classList.remove('active');
         });
       }

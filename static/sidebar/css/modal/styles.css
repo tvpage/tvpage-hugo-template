@@ -21,6 +21,7 @@ body  {
   margin: 0;
   padding: 10px 0;
   height: 100%;
+  font-family: Helvetica;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -187,16 +188,20 @@ body  {
  background: rgba(0,0,0,0.85); 
 }
 
-#tvp-arrow-indicator {
+.tvp-arrow-indicator {
   display: none;
   background-color: transparent;
   position: absolute;
   top: 0;
-  left: 3px;
+  left: -8px;
   z-index: 10;
 }
 
-#tvp-arrow-indicator:before {
+.tvp-arrow-indicator.active {
+  display: block;
+}
+
+.tvp-arrow-indicator:before {
   content: " ";
   width: 0;
   height: 0;
@@ -210,7 +215,7 @@ body  {
   margin-right: auto;
 }
 
-#tvp-arrow-indicator:after {
+.tvp-arrow-indicator:after {
   content: " ";
   width: 0;
   height: 0;
@@ -229,7 +234,7 @@ body  {
 .tvp-product-popup {
   display: none;
   position: absolute;
-  right: 97%;
+  right: 104%;
   width: 215px;
   background: white;
   padding: 10px;

@@ -10,6 +10,7 @@ html {
 body  {
   margin: 0;
   height: 100%;
+  font-family: Helvetica;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -37,6 +38,7 @@ footer {
 .tvp-sidebar-title {
   margin: 0;
   padding: 0 5px 10px 5px;
+  font-weight: normal;
 }
 
 .loading .tvp-cover {
