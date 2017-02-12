@@ -152,7 +152,7 @@
 
     this.resize = function(){
       
-      alert('will resize', Boolean(that.isFullScreen), Boolean(that.instance));
+      alert('will resize');
 
       if (!that.instance || that.isFullScreen) return;
       var width, height;
