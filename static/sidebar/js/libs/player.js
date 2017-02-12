@@ -163,6 +163,7 @@
       }
       that.instance.resize(width, height);
       if(!this.onResize) return;
+      alert(width+' / '+height);
       this.onResize([width, height]);
     }
 
