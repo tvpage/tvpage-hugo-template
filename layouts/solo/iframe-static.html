@@ -11,6 +11,7 @@
   {{ end }}
 </head>
 <body>
+
   <div class="tvp-player">
     <div id="tvp-player-el"></div>
     <svg class="tvp-play" viewBox="0 0 200 200" alt="Play video"><polygon points="70, 55 70, 145 145, 100" fill="#e57211"></polygon></svg>
@@ -23,6 +24,7 @@
   {{ else }}
   <script src="{{ (printf "%s/dist/js/scripts.min.js" .Type ) | absURL }}"></script>
   {{ end }}
+
 	<script>;(function(doc,settings,videoId,channelId,video,channel){
   	
     new Player('tvp-player-el', function(){

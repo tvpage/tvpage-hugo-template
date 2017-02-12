@@ -52,6 +52,7 @@
       var holder = document.getElementById(id + '-holder'),
           embedMethod = spot.getAttribute('data-embedmethod') || 'iframe';
 
+      holder.classList.add(type);
       if (embedMethod === 'iframe') {
 
         //Add the host (parent) css.
