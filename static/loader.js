@@ -249,15 +249,16 @@
               //Long story here, first window resize is not friendly for mobile (duh!), then we started listening to
               //orientation change and we noticed that same
               iframeModal.onload = function(){
-                if (isMobile) return;
+                if (!isMobile) return;
                 var ifr = this;
                 document.addEventListener('orientationchange', function(){
-                  var ref = ifr.parentNode;
-                  alert(ref.offsetWidth);
-                  ifr.contentWindow.postMessage({
-                    event: '_tvp_widget_holder_resize',
-                    size: [ref.offsetWidth, Math.floor(ref.offsetWidth * (9 / 16))]
-                  },'*');
+                  setTimeout(function(){
+                    var ref = ifr.parentNode;
+                    ifr.contentWindow.postMessage({
+                      event: '_tvp_widget_holder_resize',
+                      size: [ref.offsetWidth, Math.floor(ref.offsetWidth * (9 / 16))]
+                    },'*');
+                  },100);
                 });               
               };
 

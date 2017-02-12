@@ -151,7 +151,6 @@
     };
 
     this.resize = function(){
-      alert('in resize');
       if (!that.instance || that.isFullScreen) return;
       var width, height;
       if (arguments.length && arguments[0] && arguments[1]) {
