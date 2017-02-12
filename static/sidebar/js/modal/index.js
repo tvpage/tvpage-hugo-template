@@ -66,9 +66,10 @@
       holder.onmouseover = function(e){
 
         if (!e.target.classList.contains('tvp-product-image')) return;
-        document.querySelectorAll('.tvp-product-popup.active').forEach(function(el){
-          el.classList.remove('active');
-        });
+        var activePopups = document.querySelectorAll('.tvp-product-popup.active');
+        for (var i = activePopups.length - 1; i >= 0; i--) {
+          activePopups[i].remove('active');
+        }
         
         var productEl = e.target.parentNode;
         var id = productEl.id.split('-').pop();
@@ -100,15 +101,17 @@
       };
 
       holder.onmouseleave = function(e){
-        document.querySelectorAll('.tvp-product.active').forEach(function(el){
-          el.classList.remove('active');
-        });
+        var activeThumbs = document.querySelectorAll('.tvp-product.active');
+        for (var i = activeThumbs.length - 1; i >= 0; i--) {
+          activeThumbs[i].clasList.remove('active');
+        }
         
         arrow.classList.remove('active');
 
-        document.querySelectorAll('.tvp-product-popup.active').forEach(function(el){
-          el.classList.remove('active');
-        });
+        var activePopups = document.querySelectorAll('.tvp-product-popup.active');
+        for (var i = activePopups.length - 1; i >= 0; i--) {
+          activePopups[i].clasList.remove('active');
+        }
       }
     },0);
 
@@ -141,7 +144,6 @@
 
       s.onNext = function(next){
         if (!next) return;
-        console.log('NEXT?')
         if (Utils.isset(next,'products')) {
           render(next.products);
         } else {
