@@ -88,7 +88,10 @@
 
       //Resize player when this window is resized.
       window.addEventListener('resize', Utils.debounce(function(){
-        player.resize();
+
+        console.log('player resize');
+        
+        //player.resize();
       },100));
     };
 
