@@ -92,11 +92,11 @@
     (function gridReady() {
       setTimeout(function() {
         if ('undefined' === typeof window.Grid) {
-          (++gridCheck < 20) ? gridReady() : console.log('limit reached');
+          (++gridCheck < 50) ? gridReady() : console.log('limit reached');
         } else  {
           initialize();
         }
-      },200);
+      },150);
     })();
   } else {
     initialize();

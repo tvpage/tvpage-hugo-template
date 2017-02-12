@@ -174,7 +174,7 @@
     (function libsReady() {
       setTimeout(function() {
         if ( !isset(window,'TVPage') || !isset(window,'_tvpa') ) {
-          (++checks < 20) ? libsReady() : console.log('limit reached');
+          (++checks < 50) ? libsReady() : console.log('limit reached');
         } else {
 
           //We create insntances on the tvpage player.
@@ -247,7 +247,7 @@
           });
 
         }
-      },300);
+      },150);
     })();
     
   }
