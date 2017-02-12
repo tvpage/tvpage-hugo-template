@@ -177,15 +177,6 @@
 
         else if ('sidebar' === type) {
 
-          if (isMobile) {
-            document.addEventListener('orientationchange', function(){
-              iframeModal.contentWindow.postMessage({
-                event: '_tvp_widget_holder_resize',
-                size: [100,100]
-              }, '*');
-            });
-          }
-
           //Whe need to receive the data from the click first, then we create the overlay & modal on the fly.
           window.addEventListener('message', function(e){
             if (!e || !isset(e, 'data') || !isset(e.data, 'event')) return;
@@ -254,6 +245,20 @@
               document.body.appendChild(modalFrag);
 
               var ifrWindow = iframeModal.contentWindow;
+
+              iframeModal.onload = function(){
+                alert('onload');
+                if (isMobile) {
+                  var ifr = this;
+                  document.addEventListener('orientationchange', function(){
+                    ifr.contentWindow.postMessage({
+                      event: '_tvp_widget_holder_resize',
+                      size: [100,100]
+                    }, '*');
+                  });
+                }                
+              };
+
               var iframeModalDoc = ifrWindow.document;
 
               var iframeContent = '<div id="' + id + '" class="tvp-clearfix iframe-content">';
