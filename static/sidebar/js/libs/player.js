@@ -151,7 +151,9 @@
     };
 
     this.resize = function(){
-      console.log('resizing player');
+      
+      alert('will resize', Boolean(that.isFullScreen), Boolean(that.instance));
+
       if (!that.instance || that.isFullScreen) return;
       var width, height;
       if (arguments.length && arguments[0] && arguments[1]) {
@@ -162,7 +164,6 @@
         width = parentEl.clientWidth;
         height = parentEl.clientHeight;
       }
-      alert(width, height);
       that.instance.resize(width, height);
       if(!this.onResize) return;
       console.log('after resize');
