@@ -365,6 +365,9 @@ nav.menu-bar{
 		background: white;
 	}
 	& .container{
+		& .nav{
+			max-height: 46px;
+		}
 		background-color : #1F1D26;
 	}
 	& .nav-justified li a {
