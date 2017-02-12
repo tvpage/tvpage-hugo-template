@@ -45,10 +45,10 @@
       $container.on('setPosition',Utils.debounce(function(){
         if (!slickInitialized) return;
         if (window.parent && window.parent.parent) {
-          window.parent.parent.postMessage({
-            event: 'tvp_sidebar:modal_resized',
-            height: el.offsetHeight + 'px'
-          }, '*');
+          // window.parent.parent.postMessage({
+          //   event: 'tvp_sidebar:modal_resized',
+          //   height: el.offsetHeight + 'px'
+          // }, '*');
         }
       },100));
       
@@ -83,16 +83,16 @@
     var initPlayer = function(data){
       var s = JSON.parse(JSON.stringify(data.runTime));
       s.data = data.data;
-
+      
       var player = new Player('tvp-player-el',s,data.selectedVideo.id);
 
       //Resize player when this window is resized.
-      window.addEventListener('resize', Utils.debounce(function(){
+      // window.addEventListener('resize', Utils.debounce(function(){
 
-        console.log('player resize');
+      //   console.log('player resize');
         
-        //player.resize();
-      },100));
+      //   //player.resize();
+      // },100));
     };
 
     window.addEventListener('message', function(e){

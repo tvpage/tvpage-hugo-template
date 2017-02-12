@@ -184,35 +184,41 @@
             if (!e || !isset(e, 'data') || !isset(e.data, 'event')) return;
 
             var eventName = e.data.event;
+            var ifrIModalId = 'tvp-iframe-modal_'+id;
 
             if ('tvp_sidebar:render' === eventName || 'tvp_sidebar:grid_resize' === eventName) {
               holder.style.height = e.data.height;
             }
 
-            
             if ('tvp_sidebar:modal_rendered' === eventName) {
-              var iframeModal = document.getElementById('tvp-iframe-modal_'+id);
+              var iframeModal = document.getElementById(ifrIModalId);
               iframeModal.style.height = e.data.height;
             }
 
             if ('tvp_sidebar:modal_initialized' === eventName) {
-              var iframeModal = document.getElementById('tvp-iframe-modal_'+id);
-              var widgetData = widget[id];
+              var iframeModal = document.getElementById(ifrIModalId);
+              var data = widget[id];
               iframeModal.contentWindow.postMessage({
                 event: '_tvp_sidebar_modal_data',
-                data: widgetData.data,
-                selectedVideo: widgetData.selectedVideo,
-                runTime: widgetData.runTime
+                data: data.data,
+                selectedVideo: data.selectedVideo,
+                runTime: data.runTime
               }, '*');
+
+
+              window.addEventListener('resize', debounce(function(){
+                iframeModal.contentWindow.postMessage({
+                  event: '_tvp_widget_holder_resize'
+                }, '*');
+              },50));
             }
 
-            if('tvp_sidebar:modal_resized' === eventName){
-              document.getElementById('tvp-iframe-modal_'+id).style.height = e.data.height;
-            }
+            // if('tvp_sidebar:modal_resized' === eventName){
+            //   document.getElementById('tvp-iframe-modal_'+id).style.height = e.data.height;
+            // }
 
+            //On sidebar item click!
             if ('tvp_sidebar:video_click' === eventName) {
-
-              //The overlay & modal elements.
               var modalFrag = document.createDocumentFragment();
               
               var overlay = document.createElement('div');

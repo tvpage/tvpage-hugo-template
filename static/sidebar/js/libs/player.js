@@ -152,7 +152,7 @@
     this.resize = function(){
       if (!that.instance || that.isFullScreen) return;
       var width, height;
-      if (arguments.length) {
+      if (arguments.length && arguments[0] && arguments[1]) {
         width = arguments[0];
         height = arguments[1];
       } else {
@@ -194,9 +194,9 @@
               if (window.location !== window.parent.location){
                 window.addEventListener('message', function(e){
                   if (!e || !isset(e, 'data') || !isset(e.data, 'event')) return;
-                  if ('_tvp_widget_holder_resize' === e.data.event && isset(e.data, 'size')) {
-                    var size = e.data.size;
-                    that.instance.resize(size[0], size[1]);
+                  if ('_tvp_widget_holder_resize' === e.data.event) {
+                    var size = e.data.size || [];
+                    that.resize(size[0], size[1]);
                   }
                 });
               } else {
