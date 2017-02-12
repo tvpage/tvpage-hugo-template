@@ -267,14 +267,19 @@
               if (isMobile) {
                 jsLibs = sidebarMobileModalJS[env];
               }
+
+              var cssLibs = [
+                typeStaticPath + 'css/' + (isMobile ? 'mobile' : '') + '/modal/styles'+cssExt
+              ];
+              if (isMobile) {
+                cssLibs = cssLibs.concat(typeStaticPath + 'css/vendor/slick.css');
+              }              
               iframeModalDoc.open().write(createIframeHtml({
                 domain: domain,
                 id: id,
                 html: iframeContent,
                 js: jsLibs,
-                css: [
-                  typeStaticPath + 'css/' + (isMobile ? 'mobile' : '') + '/modal/styles'+cssExt
-                ]
+                css: cssLibs
               }));
               iframeModalDoc.close();
             }

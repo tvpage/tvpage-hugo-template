@@ -235,7 +235,13 @@ body  {
   padding: 10px;
   border: 1px solid black;
   text-decoration: none;
+  top: 0;
 }
+
+.tvp-product-popup.active {
+  display: block;
+}
+
 .tvp-product-image {
   display: block;
   background-size: cover;
@@ -247,6 +253,15 @@ body  {
   left: 0;
   right: 0;
   margin: auto;
+
+}
+
+.tvp-product-popup-image {
+  display: block;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding-top: 100%;
 }
 
 .tvp-product-data {

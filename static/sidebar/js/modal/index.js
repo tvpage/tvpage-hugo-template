@@ -11,7 +11,8 @@
   var render = function(data){
     var container = getbyClass('tvp-products');
     var dataCount = data.length;
-    var frag = document.createDocumentFragment();
+    var thumbsFrag = document.createDocumentFragment();
+    var popupsFrag = document.createDocumentFragment();
     
     for (var i = 0; i < data.length; i++) {
       var product = data[i];
@@ -21,53 +22,78 @@
       prodNode.id = 'tvp-product-' + product.id;
       prodNode.href = product.linkUrl;
       prodNode.innerHTML = '<div class="tvp-product-image" style="background-image:url(' + product.imageUrl + ')"><div/>';
-      frag.appendChild(prodNode);
+      thumbsFrag.appendChild(prodNode);
 
       var prodPopupNode = document.createElement('a');
       prodPopupNode.id = 'tvp-product-popup-' + product.id;
       prodPopupNode.classList.add('tvp-product-popup');
       prodPopupNode.href = product.linkUrl;
-      prodPopupNode.innerHTML = '<div class="tvp-product-image" style="background-image:url(' + product.imageUrl + ')"><div/>'+
+      prodPopupNode.innerHTML = '<div class="tvp-product-popup-image" style="background-image:url(' + product.imageUrl + ');"></div>'+
       '<p class="tvp-product-title">'+product.title+'</p><div class="tvp-clearfix"><p class="tvp-product-price"><span>$</span>'+product.price+'</p></div>'+
       '<button class="tvp-product-cta">View Details</button>';
-      frag.appendChild(prodPopupNode);
+      popupsFrag.appendChild(prodPopupNode);
       
     }
 
     container.innerHTML = '';
     var arrow = document.createElement('div');
     arrow.id = 'tvp-arrow-indicator';
-    frag.appendChild(arrow);
-    container.appendChild(frag);
+    thumbsFrag.appendChild(arrow);
+    container.appendChild(thumbsFrag);
+
+    container.parentNode.appendChild(popupsFrag);
 
     setTimeout(function(){
       var holder = getbyClass('tvp-products-holder');
       
       holder.onmouseover = function(e){
+
         if (!e.target.classList.contains('tvp-product-image')) return;
         document.querySelectorAll('.tvp-product-popup.active').forEach(function(el){
-          console.log(el);
+          el.classList.remove('active');
         });
+
+        console.log(e.target)
+        
         var productEl = e.target.parentNode;
         var id = productEl.id.split('-').pop();
 
         productEl.classList.add('active');
 
         var popup = document.getElementById('tvp-product-popup-'+id);
-
         var topValue = productEl.offsetTop;
-        
-        console.log(popup)
-
         var popupBottomEdge = topValue + popup.offsetHeight;
         
-        console.log(topValue, popupBottomEdge)
+        //We must first check if it's overflowing. To do this we first check if it's overflowing in the top, this is an
+        //easy one, if it's a negative value then it's overflowing.
+        if (topValue <= 0) {
+          topValue = -10;
+        }
         
+        //Otherwise if it's failing in the bottom, we rectify by removing the excess from the top value.
+        else if ( popupBottomEdge > holder.offsetHeight )  {
+          topValue = topValue - (popupBottomEdge - holder.offsetHeight) + 1;
+          topValue = topValue + 10;
+        }
         
+        popup.classList.add('active');
+        popup.style.top = topValue + 'px';
+
+        arrow.classList.add('active');
+        arrow.style.top = (productEl.offsetTop + 20) + 'px';
       };
 
-      container.onmouseleave = function(){
-        console.log('hide');
+      container.onmouseleave = function(e){
+        document.querySelectorAll('.tvp-product.active').forEach(function(el){
+          el.classList.remove('active');
+        });
+        
+        arrow.classList.remove('active');
+
+        document.querySelectorAll('.tvp-product-popup.active').forEach(function(el){
+          console.log('here', el.classList.remove)
+          el.classList.remove('active');
+        });
       }
     },0);
 

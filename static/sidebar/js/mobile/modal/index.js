@@ -16,10 +16,9 @@
     
     for (var i = 0; i < data.length; i++) {
       var product = data[i];
-      var prodNode = document.createElement('a');
-      prodNode.classList.add('tvp-product');
-      prodNode.href = product.linkUrl;
-      prodNode.innerHTML = '<div class="tvp-product-image" style="background-image:url(' + product.imageUrl + ')"><div/>';
+      var prodNode = document.createElement('div');
+      prodNode.innerHTML = '<a class="tvp-product" href="' + product.linkUrl + '"><div class="tvp-product-image" style="background-image:url(' + product.imageUrl + ')"></div>'+
+      '<div class="tvp-product-data"><p>'+product.title+'</p><h2>$'+product.price+'</h2><button>View Details</button></div></a>';
       frag.appendChild(prodNode);
     }
 
@@ -35,15 +34,44 @@
       url: staticPath + 'js/vendor/slick-min.js'
     }).done(function() {
       
-      //Notify when products had been rendered (should we wait?)
-      setTimeout(function(){
+      var slickInitialized = false;
+      var $container = $(container);
+      var slickConfig = {
+        slidesToSlide: 1,
+        slidesToShow: 1,
+        arrows: false
+      };
+      
+      $container.on('setPosition',Utils.debounce(function(){
+        if (!slickInitialized) return;
         if (window.parent && window.parent.parent) {
           window.parent.parent.postMessage({
-            event: 'tvp_sidebar:modal_rendered',
+            event: 'tvp_sidebar:modal_resized',
             height: el.offsetHeight + 'px'
           }, '*');
         }
-      },0);
+      },100));
+      
+      $container.on('init',function(){
+        slickInitialized = true;
+        
+        //Notify when products had been rendered (should we wait?)
+        setTimeout(function(){
+          if (window.parent && window.parent.parent) {
+            window.parent.parent.postMessage({
+              event: 'tvp_sidebar:modal_rendered',
+              height: el.offsetHeight + 'px'
+            }, '*');
+          }
+        },0);
+      });
+      
+      if (data.length > 1) {
+        slickConfig.centerMode = true;
+        slickConfig.centerPadding = '25px';
+      }
+      
+      $container.slick(slickConfig);
 
     });
   
