@@ -244,10 +244,6 @@
 
               document.body.appendChild(modalFrag);
 
-              var ifrWindow = iframeModal.contentWindow;
-
-              //Long story here, first window resize is not friendly for mobile (duh!), then we started listening to
-              //orientation change and we noticed that same
               iframeModal.onload = function(){
                 if (!isMobile) return;
                 var ifr = this;
@@ -262,8 +258,7 @@
                 });               
               };
 
-              var iframeModalDoc = ifrWindow.document;
-
+              var iframeModalDoc = iframeModal.contentWindow.document;
               var iframeContent = '<div id="' + id + '" class="tvp-clearfix iframe-content">';
               if (isMobile) {
                 iframeContent += '<div class="tvp-player"><div id="tvp-player-el"><svg class="tvp-play" viewBox="0 0 200 200" alt="Play video"><polygon points="70, 55 70, 145 145, 100" fill="#e57211"></polygon></svg></div></div>'+
