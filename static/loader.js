@@ -250,10 +250,12 @@
                 document.addEventListener('orientationchange', function(){
                   setTimeout(function(){
                     var ref = ifr.parentNode;
-                    ifr.contentWindow.postMessage({
-                      event: '_tvp_widget_holder_resize',
-                      size: [ref.offsetWidth, Math.floor(ref.offsetWidth * (9 / 16))]
-                    },'*');
+                    if (ifr.contentWindow) {
+                      ifr.contentWindow.postMessage({
+                        event: '_tvp_widget_holder_resize',
+                        size: [ref.offsetWidth, Math.floor(ref.offsetWidth * (9 / 16))]
+                      },'*');
+                    }
                   },100);
                 });               
               };

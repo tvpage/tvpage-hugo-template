@@ -23,7 +23,7 @@
     }
 
     container.innerHTML = '';
-    //container.appendChild(frag);
+    container.appendChild(frag);
 
     //We start loading our slick dependency here, it was breaking while rendering it dynamicaly.
     var body = document.getElementsByTagName('body')[0];
@@ -42,46 +42,12 @@
         arrows: false
       };
 
-      // setTimeout(function(){
-      //   if (window.parent && window.parent.parent) {
-      //     window.parent.parent.postMessage({
-      //       event: 'tvp_sidebar:modal_resized',
-      //       height: el.offsetHeight + 'px'
-      //     }, '*');
-      //   }
-      // },0);
-      
-      // $container.on('setPosition',Utils.debounce(function(){
-      //   if (!slickInitialized) return;
-      //   if (window.parent && window.parent.parent) {
-      //     // window.parent.parent.postMessage({
-      //     //   event: 'tvp_sidebar:modal_resized',
-      //     //   height: el.offsetHeight + 'px'
-      //     // }, '*');
-      //   }
-      // },100));
-      
-      // $container.on('init',function(){
-      //   slickInitialized = true;
-        
-      //   //Notify when products had been rendered (should we wait?)
-      //   setTimeout(function(){
-      //     if (window.parent && window.parent.parent) {
-      //       window.parent.parent.postMessage({
-      //         event: 'tvp_sidebar:modal_rendered',
-      //         height: el.offsetHeight + 'px'
-      //       }, '*');
-      //     }
-      //   },0);
-      // });
-      
       if (data.length > 1) {
         slickConfig.centerMode = true;
         slickConfig.centerPadding = '25px';
       }
       
-      //$container.slick(slickConfig);
-
+      $container.slick(slickConfig);
     });
   
   };
@@ -92,7 +58,14 @@
     var initPlayer = function(data){
       var s = JSON.parse(JSON.stringify(data.runTime));
       s.data = data.data;
-
+      s.onResize = function(size){
+        if (window.parent && window.parent.parent) {
+          window.parent.parent.postMessage({
+            event: 'tvp_sidebar:modal_resized',
+            height: (el.offsetHeight + 20) + 'px'
+          }, '*');
+        }
+      };
       new Player('tvp-player-el',s,data.selectedVideo.id);
     };
 
@@ -117,7 +90,6 @@
             setTimeout(function(){
               render(data);
             },0);
-            
           };
           document.body.appendChild(script);
         } 
