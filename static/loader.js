@@ -204,6 +204,10 @@
               document.getElementById(ifrIModalId).style.height = e.data.height;
             }
 
+            if ('tvp_sidebar:player_next' === eventName) {
+              document.querySelector('.tvp-modal-title').innerHTML = e.data.next.assetTitle;
+            }
+
             //On sidebar item click!
             if ('tvp_sidebar:video_click' === eventName) {
               var modalFrag = document.createDocumentFragment();

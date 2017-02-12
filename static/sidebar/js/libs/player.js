@@ -40,6 +40,7 @@
     this.removecontrols = isset(options.removecontrols) ? options.removecontrols : ["hd"];
     this.analytics = isset(options.analytics) ? options.analytics : true;
     this.onResize = isset(options.onResize) && 'function' === typeof options.onResize ? options.onResize : null;
+    this.onNext = isset(options.onNext) && 'function' === typeof options.onNext ? options.onNext : null;
     
     this.instance = null;
     this.el = 'string' === typeof el ? document.getElementById(el) : el;
@@ -55,7 +56,8 @@
         var asset = video.asset,
             channelId;
 
-        asset.uniqueId = video.id;
+        asset.assetId = video.id;
+        asset.assetTitle = video.title;
         asset.loginId = video.loginId;
 
         if (isset(video,'events') && video.events.length) {
@@ -211,7 +213,7 @@
               var current = 0;
               if (startWith && startWith.length) {
                 for (var i = 0; i < that.assets.length; i++) {
-                  if (that.assets[i].uniqueId === startWith) current = i;
+                  if (that.assets[i].assetId === startWith) current = i;
                 }
               }
 
@@ -231,7 +233,11 @@
                 }
               }
 
-              that.play(that.assets[that.current], true);
+              var next = that.assets[that.current];
+              if(that.onNext) {
+                that.onNext(next);
+              }
+              that.play(next, true);
             },
             divId: that.el.id,
             controls: {

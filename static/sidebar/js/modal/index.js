@@ -8,6 +8,23 @@
     return document.getElementsByClassName(c || '')[0];
   };
 
+  var loadProducts = function(videoId,loginId,fn){
+    if (!videoId) return;
+    var src = '//api.tvpage.com/v1/videos/' + videoId + '/products?X-login-id=' + loginId;
+    var cbName = 'tvp_' + Math.floor(Math.random() * 555);
+    src += '&callback='+cbName;
+    var script = document.createElement('script');
+    script.src = src;
+    window[cbName || 'callback'] = function(data){
+      if (data && data.length && 'function' === typeof fn) {
+        fn(data);
+      } else {
+        fn([]);
+      }
+    };
+    document.body.appendChild(script);
+  };
+
   var render = function(data){
     var container = getbyClass('tvp-products');
     var dataCount = data.length;
@@ -112,11 +129,36 @@
       s.data = data.data;
 
       s.onResize = function(size){
+
         resizeProducts(size[1]);
         if (window.parent && window.parent.parent) {
           window.parent.parent.postMessage({
             event: 'tvp_sidebar:modal_resized',
             height: (el.offsetHeight + 20) + 'px'
+          }, '*');
+        }
+      };
+
+      s.onNext = function(next){
+        if (!next) return;
+        console.log('NEXT?')
+        if (Utils.isset(next,'products')) {
+          render(next.products);
+        } else {
+          loadProducts(
+            next.assetId,
+            data.runTime.config[el.id].loginid,
+            function(data){
+              setTimeout(function(){
+                render(data);
+              },0);
+          });
+        }
+        
+        if (window.parent && window.parent.parent) {
+          window.parent.parent.postMessage({
+            event: 'tvp_sidebar:player_next',
+            next: next
           }, '*');
         }
       };
@@ -138,20 +180,15 @@
         if (Utils.isset(selectedVideo,'products')) {
           render(selectedVideo.products);
         } else {
-          var src = '//api.tvpage.com/v1/videos/' + selectedVideo.id + '/products?X-login-id=' + data.runTime.config[el.id].loginid;
-          var cbName = 'tvp_' + Math.floor(Math.random() * 555);
-          src += '&callback='+cbName;
-          var script = document.createElement('script');
-          script.src = src;
-          window[cbName || 'callback'] = function(data){
-            if (!data && !data.length) return console.log('no products');
-            setTimeout(function(){
-              render(data);
-            },0);
-            
-          };
-          document.body.appendChild(script);
-        } 
+          loadProducts(
+            selectedVideo.id,
+            data.runTime.config[el.id].loginid,
+            function(data){
+              setTimeout(function(){
+                render(data);
+              },0);
+          });
+        }
       }
     });
 
