@@ -23,7 +23,7 @@
     }
 
     container.innerHTML = '';
-    container.appendChild(frag);
+    //container.appendChild(frag);
 
     //We start loading our slick dependency here, it was breaking while rendering it dynamicaly.
     var body = document.getElementsByTagName('body')[0];
