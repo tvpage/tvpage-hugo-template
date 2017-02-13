@@ -23,15 +23,27 @@
   {{ else }}
   <script src="{{ (printf "%s/dist/js/scripts.min.js" .Type ) | absURL }}"></script>
   {{ end }}
-	<script>;(function(doc,settings,videoId,channelId,video,channel){
-  	
+
+  <script>;(function(doc,settings,videoId,channelId){
+
+    var video = "";
+    {{ if (isset .Params "videoid") }}
+      video = {{ index $.Site.Data.videos (printf "x%s" .Params.videoid) }};
+    {{ end }}
+
+    var channelVideos = "";
+    {{ if (isset .Params "channelid") }}
+      channelVideos = {{ index $.Site.Data.channelVideos (printf "x%s_page_0" .Params.channelid) }};
+    {{ end }}
+
+    
     new Player('tvp-player-el', function(){
       var videos = [];
       
       if (videoId) {
         videos.push(video);
-      } else if (channelId && 'undefined' !== typeof channel.data) {
-        videos = channel.data;
+      } else if (channelId && 'undefined' !== typeof channelVideos.data) {
+        videos = channelVideos.data;
       } else if (!videos.length) {
         return console.debug("No content found on data/");
       }
@@ -44,8 +56,6 @@
 }(document,
 {{ $.Scratch.Get "settings" }},
 {{ with .Params.videoid }}{{ . }}{{ else }}''{{ end }},
-{{ with .Params.channelid }}{{ . }}{{ else }}''{{ end }},
-{{ index $.Site.Data.videos (printf "x%s" .Params.videoid) }},
-{{index $.Site.Data.channelVideos (printf "x%s_page_0" .Params.channelid)}}));</script>
+{{ with .Params.channelid }}{{ . }}{{ else }}''{{ end }}));</script>
 </body>
 </html>
