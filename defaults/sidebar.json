@@ -4,7 +4,7 @@
             "type": "text",
             "label": "Player Version",
             "code": "version",
-            "value": "1.8.4"
+            "value": "1.8.5"
         },
         {
             "type": "boolean",
