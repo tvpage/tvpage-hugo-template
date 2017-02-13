@@ -68,7 +68,7 @@
         if (!e.target.classList.contains('tvp-product-image')) return;
         var activePopups = document.querySelectorAll('.tvp-product-popup.active');
         for (var i = activePopups.length - 1; i >= 0; i--) {
-          activePopups[i].remove('active');
+          activePopups[i].classList.remove('active');
         }
         
         var productEl = e.target.parentNode;
