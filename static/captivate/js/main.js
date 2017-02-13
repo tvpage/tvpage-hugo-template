@@ -262,6 +262,7 @@
                 for (var i = 0; i < results.length; ++i) {
                     var result = results[i];
                     result['url'] = this.getResultUrl(result);
+                    videoList.push(result);
                     html += this.tmpl(this.videoTemplate, result);
                 }
 
