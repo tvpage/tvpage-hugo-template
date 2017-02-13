@@ -1,4 +1,4 @@
-;(function(doc, parentGlob, parentDoc) {
+;(function(document) {
 
   var random = function(){
     return 'tvp_' + Math.floor(Math.random() * 50005);
@@ -9,18 +9,18 @@
     return 'undefined' !== typeof val;
   },
   jsonpCall = function(opts,callback){
-    var s = doc.createElement('script');
+    var s = document.createElement('script');
     s.src = opts.src;
     if (!callback || 'function' !== typeof callback) return;
     window[opts.cbName || 'callback'] = callback;
-    var b = opts.body || doc.body;
+    var b = opts.body || document.body;
     b.appendChild(s);
   },
   getSettings = function(type){
     var s = {},
     runTime = parent.__TVPage__.config;
     if ('dynamic' === type) {
-      var id = doc.body.getAttribute('data-id');
+      var id = document.body.getAttribute('data-id');
       if (!isset(runTime, id)) return console.log('need settings');
       s = runTime[id];
       s.name = id;
@@ -48,7 +48,7 @@
   var render = function(idEl,target){
     if (!idEl || !target) return console.log('need target');
     var frag = document.createDocumentFragment(),
-    main = doc.createElement('div');
+    main = document.createElement('div');
     main.classList.add('tvp-player');
     main.innerHTML =  '<div id="tvp-player-el-'+idEl+'" class="tvp-player-el"></div>'+
     '<svg class="tvp-play" viewBox="0 0 200 200" alt="Play video">'+
@@ -62,7 +62,7 @@
   //this here or somehow the will be content (when used with iframe).
   function initialize(){
 
-    var body = doc.body,
+    var body = document.body,
         runTime = parent.__TVPage__;
 
     //We deal diff with some stuff on iframe.
@@ -89,10 +89,10 @@
 
         (function(unique,id){
           var settings = getSettings(id);
-          render(unique,doc.getElementById(id+'-holder'),!doc.getElementById('tvphost'));
+          render(unique,document.getElementById(id+'-holder'),!document.getElementById('tvphost'));
           loadData(settings,unique,function(data){
             settings.data = data || [];
-            new Player(doc.getElementById('tvp-player-el-'+unique),settings);
+            new Player(document.getElementById('tvp-player-el-'+unique),settings);
           });
         }(random(),inline[inlineCount-1]));
         
@@ -105,4 +105,4 @@
 
   initialize();
 
-}(document, parent, parent.document));
+}(document));
