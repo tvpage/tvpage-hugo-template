@@ -111,7 +111,10 @@
         mobileJsPath + 'modal/index.js'
       ],
       prod: [
-        jsPath + 'scripts.min.js'
+        '//a.tvpage.com/tvpa.min.js',
+        '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
+        domain + '/' + type + '/js/vendor/jquery.js',
+        jsPath + (isMobile ? 'mobile/' : '') + 'modal/scripts.min.js'
       ]
     };
 
@@ -125,7 +128,9 @@
         jsPath + 'modal/index.js'
       ],
       prod: [
-        jsPath + 'scripts.min.js'
+        '//a.tvpage.com/tvpa.min.js',
+        '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
+        domain + '/' + type + '/dist/js/modal/scripts.min.js'
       ]
     };
     
@@ -138,6 +143,8 @@
         jsPath + 'index.js'
       ],
       prod: [
+        '//a.tvpage.com/tvpa.min.js',
+        '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
         jsPath + 'scripts.min.js'
       ]
     };
@@ -285,8 +292,9 @@
                 typeStaticPath + 'css/' + (isMobile ? 'mobile' : '') + '/modal/styles'+cssExt
               ];
               if (isMobile) {
-                cssLibs = cssLibs.concat(typeStaticPath + 'css/vendor/slick.css');
-              }              
+                cssLibs = cssLibs.concat(domain + '/' + type + '/css/vendor/slick.css');
+              }
+
               iframeModalDoc.open().write(createIframeHtml({
                 domain: domain,
                 id: id,

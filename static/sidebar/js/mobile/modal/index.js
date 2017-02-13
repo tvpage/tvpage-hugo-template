@@ -27,11 +27,10 @@
 
     //We start loading our slick dependency here, it was breaking while rendering it dynamicaly.
     var body = document.getElementsByTagName('body')[0];
-    var staticPath = body.getAttribute('data-domain') + '/sidebar' + (window.DEBUG ? '/' : '/dist/');
     $.ajax({
       dataType: 'script',
       cache: true,
-      url: staticPath + 'js/vendor/slick-min.js'
+      url: body.getAttribute('data-domain') + '/sidebar/js/vendor/slick-min.js'
     }).done(function() {
       
       var slickInitialized = false;

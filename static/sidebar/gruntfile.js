@@ -52,6 +52,15 @@ module.exports = function(grunt) {
             'dist/js/mobile/modal/scripts.min.js': ['js/libs/utils.js', 'js/libs/analytics.js','js/libs/player.js', 'js/mobile/modal/index.js']
           }
         }
+      },
+      concat: {
+        options: {
+          separator: ';',
+        },
+        dist: {
+          src: ['src/intro.js', 'src/project.js', 'src/outro.js'],
+          dest: 'dist/built.js',
+        },
       }
     });
 

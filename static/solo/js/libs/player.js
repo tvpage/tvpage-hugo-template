@@ -31,6 +31,7 @@
     if (!el || !isset(options) || !isset(options.data) || options.data.length <= 0) return console.log('bad args');
 
     this.isFullScreen = false;
+    this.isReady = false;
     this.autoplay = isset(options.autoplay) ? options.autoplay : false;
     this.autonext = isset(options.autonext) ? options.autonext : true;
     this.version = isset(options.version) ? options.version : '1.8.5';
@@ -39,6 +40,7 @@
     this.removecontrols = isset(options.removecontrols) ? options.removecontrols : ["hd"];
     this.analytics = isset(options.analytics) ? options.analytics : true;
     this.onResize = isset(options.onResize) && 'function' === typeof options.onResize ? options.onResize : null;
+    this.onNext = isset(options.onNext) && 'function' === typeof options.onNext ? options.onNext : null;
     
     this.instance = null;
     this.el = 'string' === typeof el ? document.getElementById(el) : el;
@@ -54,7 +56,8 @@
         var asset = video.asset,
             channelId;
 
-        asset.uniqueId = video.id;
+        asset.assetId = video.id;
+        asset.assetTitle = video.title;
         asset.loginId = video.loginId;
 
         if (isset(video,'events') && video.events.length) {
@@ -152,7 +155,8 @@
     this.resize = function(){
       if (!that.instance || that.isFullScreen) return;
       var width, height;
-      if (arguments.length) {
+      
+      if (arguments.length && arguments[0] && arguments[1]) {
         width = arguments[0];
         height = arguments[1];
       } else {
@@ -160,6 +164,7 @@
         width = parentEl.clientWidth;
         height = parentEl.clientHeight;
       }
+
       that.instance.resize(width, height);
       if(!this.onResize) return;
       this.onResize([width, height]);
@@ -169,7 +174,7 @@
     (function libsReady() {
       setTimeout(function() {
         if ( !isset(window,'TVPage') || !isset(window,'_tvpa') ) {
-          (++checks < 20) ? libsReady() : console.log('limit reached');
+          (++checks < 50) ? libsReady() : console.log('limit reached');
         } else {
 
           //We create insntances on the tvpage player.
@@ -180,6 +185,7 @@
             apiBaseUrl: '//api.tvpage.com/v1',
             swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+that.version+'-flash.swf',
             onReady: function(e, pl){
+              that.isReady = true;
               that.instance = pl;
               that.resize();
               
@@ -194,8 +200,8 @@
               if (window.location !== window.parent.location){
                 window.addEventListener('message', function(e){
                   if (!e || !isset(e, 'data') || !isset(e.data, 'event')) return;
-                  if ('_tvp_widget_holder_resize' === e.data.event && isset(e.data, 'size')) {
-                    var size = e.data.size;
+                  if ('_tvp_widget_holder_resize' === e.data.event) {
+                    var size = e.data.size || [];
                     that.resize(size[0], size[1]);
                   }
                 });
@@ -207,7 +213,7 @@
               var current = 0;
               if (startWith && startWith.length) {
                 for (var i = 0; i < that.assets.length; i++) {
-                  if (that.assets[i].uniqueId === startWith) current = i;
+                  if (that.assets[i].assetId === startWith) current = i;
                 }
               }
 
@@ -227,7 +233,11 @@
                 }
               }
 
-              that.play(that.assets[that.current], true);
+              var next = that.assets[that.current];
+              if(that.onNext) {
+                that.onNext(next);
+              }
+              that.play(next, true);
             },
             divId: that.el.id,
             controls: {
@@ -237,7 +247,7 @@
           });
 
         }
-      },300);
+      },150);
     })();
     
   }
