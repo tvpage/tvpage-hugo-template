@@ -2,6 +2,7 @@
 <!doctype html>
 <html class="no-js" lang="">
 <head>
+  <base target="_blank" />
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
   {{ if (getenv "HUGO_DEBUG") }}
@@ -17,11 +18,13 @@
     <div id="tvp-player-el"></div>
     <svg class="tvp-play" viewBox="0 0 200 200" alt="Play video"><polygon points="70, 55 70, 145 145, 100" fill="#e57211"></polygon></svg>
   </div>
-  <p class="tvp-products-title">Recommended Products</p>
-  <div class="tvp-products"></div>
+  <div class="tvp-products">
+    <p class="tvp-products-title">Recommended Products</p>
+    <div class="tvp-products-carousel"></div>
+  </div>
 </div>
 <script id="productTemplate" type="text/template">
-  <a class="tvp-product" href="{linkUrl}" target="_parent" data-id="{id}" data-entity-id-parent="{entityIdParent}">
+  <a class="tvp-product" href="{linkUrl}" data-id="{id}" data-entity-id-parent="{entityIdParent}">
     <div class="tvp-product-image" style="background-image:url('{imageUrl}');"></div>
     <div class="tvp-product-data">
       <p>{title}</p>
