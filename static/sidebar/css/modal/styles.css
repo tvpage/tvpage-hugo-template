@@ -21,6 +21,7 @@ body  {
   margin: 0;
   padding: 10px 0;
   height: 100%;
+  font-family: Helvetica;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -59,7 +60,7 @@ body  {
 }
 
 .tvp-player-holder {
-  width: 82%;
+  width: 80%;
   float: left;
 }
 
@@ -120,10 +121,11 @@ body  {
 
 .tvp-products-holder {
   float: right;
-  width: 140px;
-  height: 358px;
-  padding-left: 10px;
+  width: 20%;
+  height: 0;
+  padding-left: 1.35%;
   position: relative;
+  background-color: whitesmoke;
 }
 
 .tvp-products-mobile {
@@ -139,13 +141,19 @@ body  {
   position: relative;
 }
 
+.tvp-product:before {
+  display: block;
+  content: "";
+  width: 100%;
+  padding-top: 100%;
+}
+
 .tvp-products-title {
   margin: 10px 0;
-  padding-left: 10px;
 }
 
 .tvp-product-title {
-  height: 37px;
+  height: 35px;
   overflow: hidden;
   font-size: 14px;
   text-decoration: none;
@@ -180,7 +188,7 @@ body  {
  background: rgba(0,0,0,0.85); 
 }
 
-#tvp-arrow-indicator {
+.tvp-arrow-indicator {
   display: none;
   background-color: transparent;
   position: absolute;
@@ -189,7 +197,11 @@ body  {
   z-index: 10;
 }
 
-#tvp-arrow-indicator:before {
+.tvp-arrow-indicator.active {
+  display: block;
+}
+
+.tvp-arrow-indicator:before {
   content: " ";
   width: 0;
   height: 0;
@@ -203,7 +215,7 @@ body  {
   margin-right: auto;
 }
 
-#tvp-arrow-indicator:after {
+.tvp-arrow-indicator:after {
   content: " ";
   width: 0;
   height: 0;
@@ -222,14 +234,34 @@ body  {
 .tvp-product-popup {
   display: none;
   position: absolute;
-  right: 135px;
+  right: 97%;
   width: 215px;
   background: white;
   padding: 10px;
   border: 1px solid black;
   text-decoration: none;
+  top: 0;
 }
+
+.tvp-product-popup.active {
+  display: block;
+}
+
 .tvp-product-image {
+  display: block;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+
+}
+
+.tvp-product-popup-image {
   display: block;
   background-size: cover;
   background-repeat: no-repeat;

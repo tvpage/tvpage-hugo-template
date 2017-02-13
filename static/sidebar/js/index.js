@@ -1,55 +1,109 @@
-;(function(window,document,utils) {
-
-  var videos = [],
-      videosObj = Widget.videosObj;
+;(function(window,document) {
   
-  for (var key in videosObj) {
-    videos.push(videosObj[key]);
+  var isset = function(o,p){
+    var val = o;
+    if (p) val = o[p];
+    return 'undefined' !== typeof val;
+  };
+
+  var getSettings = function(type){
+    var getConfig = function(g){
+      var c = {};
+      if (isset(g) && isset(g,'__TVPage__') && isset(g.__TVPage__, 'config')) {
+        c = g.__TVPage__.config;
+      } else {
+        return console.log('need config');
+      }
+      return c;
+    };
+    var s = {};
+    if ('dynamic' === type) {
+      var config = getConfig(parent);
+      var id = document.body.getAttribute('data-id');
+      if (!isset(config, id)) return console.log('need settings');
+      s = config[id];
+      s.name = id;
+    } else if ('inline' === type && type && type.length) {
+      var config = getConfig(parent);
+      s = config[type];
+      s.name = type;
+    } else if ('static' === type) {
+      var config = getConfig(window);
+      var id = document.body.getAttribute('data-id');
+      if (!isset(config, id)) return console.log('need settings');
+      s = config[id];
+      s.name = id;
+    }
+    return s;
+  };
+
+  var render = function(target,data){
+    if (!target) return console.log('need target');
+    var frag = document.createDocumentFragment(),
+    main = document.createElement('div');
+    var d = data || {};
+    main.id = d.id || '';
+    main.classList.add('iframe-content');
+    main.innerHTML =  '<div class="tvp-sidebar-title">' + (d.title || '') + '</div>'+
+    '<div class="tvp-sidebar-container"></div><div class="tvp-sidebar-footer">'+
+    '<button class="tvp-sidebar-load">' + (d.loadBtnText || '') + '</button>'+
+    '</div><div class="tvp-cover"></div>';
+    frag.appendChild(main);
+    target.appendChild(frag);
+  };
+
+  var body = document.body;
+
+  var initialize = function(){
+    if (body.classList.contains('dynamic')) {
+      (function(settings){
+        var gridSettings = JSON.parse(JSON.stringify(settings));
+
+        var name = settings.name;
+
+        render(body,{
+          id: name,
+          title: settings.title || 'Recommended Videos',
+          loadBtnText: settings.loadBtnText || 'View More'
+        });
+
+        var el = document.getElementById(name);
+        gridSettings.onLoad = function(){el.classList.add('loading');};
+        gridSettings.onLoadEnd = function(){el.classList.remove('loading');};
+        
+        new Grid(name, gridSettings);
+
+      }(getSettings('dynamic')));
+    } else {
+      (function(settings){
+        var gridSettings = JSON.parse(JSON.stringify(settings));
+        var name = settings.name;
+        
+        var el = document.getElementById(name);
+        gridSettings.onLoad = function(){el.classList.add('loading');};
+        gridSettings.onLoadEnd = function(){el.classList.remove('loading');};
+        new Grid(name, gridSettings);
+      }(getSettings('static')));
+    }
+  };
+
+  if ('undefined' === typeof window.Grid) {
+    var gridCheck = 0;
+    (function gridReady() {
+      setTimeout(function() {
+        if ('undefined' === typeof window.Grid) {
+          (++gridCheck < 50) ? gridReady() : console.log('limit reached');
+        } else  {
+          initialize();
+        }
+      },150);
+    })();
+  } else {
+    initialize();
   }
-  
-  var settings = Widget.settings;
-  settings.data = videos;
-  var name = settings.name;
 
-  var grid = new Grid(name, settings);
-  var mainEl = document.getElementById(name);
+  if (window.DEBUG) {
+    console.debug("endTime = " + performance.now());
+  }
 
-  var renderCheck = 0;
-  (function renderReady() {
-    setTimeout(function() {
-      if (!mainEl.classList.contains('first-render')) {
-        (++renderCheck < 20) ? renderReady() : console.log('limit reached');
-      } else if (window.parent && window.parent.parent) {
-        window.parent.parent.postMessage({
-          event: '_tvp_widget_first_render',
-          height: mainEl.offsetHeight + 'px'
-        }, '*');
-      }
-    },200);
-  })();
-  
-  //Each time a grid item is clicked.
-  mainEl.addEventListener('click', function(e){
-    
-    var target = e.target;
-    if (!target.classList.contains('tvp-video')) return;
-    
-    var selectedId = target.id.split('-').pop(),
-        selectedVideo = {};
-    for (var i = 0; i < videos.length; i++) {
-      if (videos[i].id === selectedId) {
-        selectedVideo = videos[i];
-      }
-    }
-
-    if (window.parent && window.parent.parent) {
-      window.parent.parent.postMessage({
-        event: '_tvp_sidebar_video_click',
-        selectedVideo: selectedVideo,
-        videos: videos
-      }, '*');
-    }
-
-  });
-
-}(window, document, Utils));
+}(window, document));

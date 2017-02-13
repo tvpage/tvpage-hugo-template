@@ -79,16 +79,26 @@ body {
   pointer-events: none;
 }
 
+.tvp-products {
+  padding: 15px 0;
+}
+
+.tvp-products-carousel {
+  width: 1px;
+  min-width: 100%;
+}
+
 .tvp-products-title {
-  margin: 10px 0;
-  padding-left: 10px;
+  margin: 0;
+  padding: 15px;
 }
 
 .tvp-product {
   border: 1px solid gray;
   display: block;
   overflow: hidden;
-  margin: 0 5px;
+  margin: 0 7px;
+  z-index: 9999;
 }
 
 .tvp-product-image {
@@ -110,7 +120,7 @@ body {
 .tvp-product-data {
   float: left;
   width: 60%;
-  margin-left: 5%;
+  margin-left: 2.5%;
 }
 
 .tvp-product-data > p {

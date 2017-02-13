@@ -1,7 +1,6 @@
-;(function(root,doc) {
+;(function(window,document) {
 
-  var isFullScreen = false,
-      isset = function(o,p){
+  var isset = function(o,p){
         var val = o;
         if (p) val = o[p];
         return 'undefined' !== typeof val;
@@ -31,6 +30,8 @@
   function Player(el, options, startWith) {
     if (!el || !isset(options) || !isset(options.data) || options.data.length <= 0) return console.log('bad args');
 
+    this.isFullScreen = false;
+    this.isReady = false;
     this.autoplay = isset(options.autoplay) ? options.autoplay : false;
     this.autonext = isset(options.autonext) ? options.autonext : true;
     this.version = isset(options.version) ? options.version : '1.8.5';
@@ -38,8 +39,12 @@
     this.transcript = isset(options.transcript) ? options.transcript : false;
     this.removecontrols = isset(options.removecontrols) ? options.removecontrols : ["hd"];
     this.analytics = isset(options.analytics) ? options.analytics : true;
+    this.onResize = isset(options.onResize) && 'function' === typeof options.onResize ? options.onResize : null;
+    this.onNext = isset(options.onNext) && 'function' === typeof options.onNext ? options.onNext : null;
+    
     this.instance = null;
-    this.el = 'string' === typeof el ? doc.getElementById(el) : el;
+    this.el = 'string' === typeof el ? document.getElementById(el) : el;
+
     this.assets = (function(data){
       var assets = [],
           counter = data.length;
@@ -51,7 +56,8 @@
         var asset = video.asset,
             channelId;
 
-        asset.uniqueId = video.id;
+        asset.assetId = video.id;
+        asset.assetTitle = video.title;
         asset.loginId = video.loginId;
 
         if (isset(video,'events') && video.events.length) {
@@ -84,7 +90,7 @@
     var that = this;
     this.showPlayBtn = function(imgUrl){
       var frag = document.createDocumentFragment(),
-          div = doc.createElement('div');
+          div = document.createElement('div');
 
       div.classList.add('tvp-mp4-poster');
       div.style.backgroundImage = 'url("'+imgUrl+'")';
@@ -101,6 +107,7 @@
       frag.appendChild(btn);
       this.el.appendChild(frag);
     };
+
     this.play = function(asset,ongoing){
 
       if (!asset) return console.log('need asset');
@@ -141,15 +148,33 @@
           this.showPlayBtn(asset.thumbnailUrl);
         }
       } else {
-       this.instance.loadVideo(asset);   
+       this.instance.loadVideo(asset);
       }
     };
+
+    this.resize = function(){
+      if (!that.instance || that.isFullScreen) return;
+      var width, height;
+      
+      if (arguments.length && arguments[0] && arguments[1]) {
+        width = arguments[0];
+        height = arguments[1];
+      } else {
+        var parentEl = that.el.parentNode;
+        width = parentEl.clientWidth;
+        height = parentEl.clientHeight;
+      }
+
+      that.instance.resize(width, height);
+      if(!this.onResize) return;
+      this.onResize([width, height]);
+    }
 
     var checks = 0;
     (function libsReady() {
       setTimeout(function() {
-        if ( !isset(root,'TVPage') || !isset(root,'_tvpa') ) {
-          (++checks < 20) ? libsReady() : console.log('limit reached');
+        if ( !isset(window,'TVPage') || !isset(window,'_tvpa') ) {
+          (++checks < 50) ? libsReady() : console.log('limit reached');
         } else {
 
           //We create insntances on the tvpage player.
@@ -160,42 +185,42 @@
             apiBaseUrl: '//api.tvpage.com/v1',
             swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+that.version+'-flash.swf',
             onReady: function(e, pl){
-              //Add the player instance locally and also to parent document.
+              that.isReady = true;
               that.instance = pl;
+              that.resize();
               
-              var resize = debounce(function() {
-                if (pl && !isFullScreen) {
-                  that.instance.resize(that.el.parentNode.clientWidth, that.el.parentNode.clientHeight);
-                }
-               }, 180);
-              resize();
+              //We don't want to resize the player here on fullscreen... we need the player be.
+              if (isset(window,'BigScreen')) {
+                BigScreen.onchange = function(){
+                  that.isFullScreen = !that.isFullScreen;
+                };
+              }
 
-              if (root.frameElement){
-                root['_tvp_'+options.widgetId] = pl;
-              }else{
-                root.addEventListener('resize', resize);
+              //If we are inside an iframe, we should listen to an external event.
+              if (window.location !== window.parent.location){
+                window.addEventListener('message', function(e){
+                  if (!e || !isset(e, 'data') || !isset(e.data, 'event')) return;
+                  if ('_tvp_widget_holder_resize' === e.data.event) {
+                    var size = e.data.size || [];
+                    that.resize(size[0], size[1]);
+                  }
+                });
+              } else {
+                window.addEventListener('resize', resize);
               }
 
               that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progresscolor;
               var current = 0;
               if (startWith && startWith.length) {
                 for (var i = 0; i < that.assets.length; i++) {
-                  if (that.assets[i].uniqueId === startWith) current = i;
+                  if (that.assets[i].assetId === startWith) current = i;
                 }
               }
 
               that.current = current;
               that.play(that.assets[that.current]);
-
-              if (root.DEBUG) {
+              if (window.DEBUG) {
                 console.debug("endTime = " + performance.now());
-              }
-              
-              if (isset(root,'BigScreen')) {
-                BigScreen.onchange = function(){
-                  isFullScreen = !isFullScreen;
-                  root['_tvp_'+options.widgetId+'isFullScreen'] = isFullScreen;
-                };
               }
             },
             onStateChange: function(e){
@@ -208,7 +233,11 @@
                 }
               }
 
-              that.play(that.assets[that.current], true);
+              var next = that.assets[that.current];
+              if(that.onNext) {
+                that.onNext(next);
+              }
+              that.play(next, true);
             },
             divId: that.el.id,
             controls: {
@@ -218,11 +247,11 @@
           });
 
         }
-      },300);
+      },150);
     })();
     
   }
 
-  root.Player = Player;
+  window.Player = Player;
 
 }(window, document));
