@@ -93,7 +93,7 @@
         if (Utils.isset(selectedVideo,'products')) {
           render(selectedVideo.products);
         } else {
-          var src = '//api.tvpage.com/v1/videos/' + selectedVideo.id + '/products?X-login-id=' + data.runTime.config[el.id].loginid;
+          var src = '//api.tvpage.com/v1/videos/' + selectedVideo.id + '/products?X-login-id=' + data.runTime.loginid;
           var cbName = 'tvp_' + Math.floor(Math.random() * 555);
           src += '&callback='+cbName;
           var script = document.createElement('script');

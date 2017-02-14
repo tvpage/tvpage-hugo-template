@@ -4,6 +4,13 @@
 {{ range $i, $param := .Params }}
 {{ $.Scratch.SetInMap "settings" $i . }}
 {{ end }}
+{{ $isWidget := (eq .Section "tvpwidget") }}
 {{ range $i, $param := .Site.Params }}
-{{ $.Scratch.SetInMap "settings" $i . }}
+{{ if eq $i "tvppages"}}
+	{{ if not $isWidget }}
+		{{ $.Scratch.SetInMap "settings" $i . }}		
+	{{ end }}
+{{ else }}
+	{{ $.Scratch.SetInMap "settings" $i . }}
+{{ end }}
 {{ end }}

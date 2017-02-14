@@ -136,7 +136,7 @@ footer {
   opacity: 0.95;
   cursor: pointer;
   border-radius: 1px;
-  border: 2px solid #e57211;
+  border: 2px solid black;
 }
 
 .tvp-play > polygon {

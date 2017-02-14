@@ -1,103 +1,175 @@
 {
     "option": [
         {
+            "for": "player",
             "type": "text",
             "label": "Player Version",
-            "code": "version",
+            "code": "playerVersion",
             "value": "1.8.5"
         },
         {
+            "for": "player",
             "type": "boolean",
             "label": "Transcript",
             "code": "transcript",
-            "value": false
+            "value": true
         },
         {
+            "for": "player",
             "type": "boolean",
             "label": "Autoplay",
             "code": "autoplay",
-            "value": true
+            "value": false
         },
         {
+            "for": "player",
             "type": "boolean",
-            "label": "Analytics",
-            "code": "analytics",
-            "value": true
+            "label": "Autonext",
+            "code": "autonext",
+            "value": false
         },
         {
+            "for": "player",
             "type": "text",
             "label": "Progress Color",
-            "code": "progresscolor",
+            "code": "progressColor",
             "value": "#E57211"
         },
         {
+            "for": "player",
             "type": "text",
-            "label": "removeControls",
-            "code": "removecontrols",
+            "label": "Remove Controls",
+            "code": "removeControls",
             "value": [
                 "tvplogo",
                 "hd"
             ]
         },
         {
+            "for": "player",
             "type": "text",
             "label": "Play Button Background",
-            "code": "playbuttonbackground",
+            "code": "playButtonBackground",
             "value": "white"
         },
         {
+            "for": "player",
             "type": "text",
-            "label": "Play Button Shape",
-            "code": "playbuttonshape",
-            "value": "square"
+            "label": "Play Button Border Radius",
+            "code": "playButtonBorderRadius",
+            "value": "0"
         },
         {
+            "for": "player",
             "type": "text",
             "label": "Play Button Border Thickness",
-            "code": "playbuttonborderthickness",
+            "code": "playButtonBorderThickness",
             "value": "2px"
         },
         {
+            "for": "player",
             "type": "text",
             "label": "Play Button Background",
-            "code": "playbuttonbackground",
+            "code": "playButtonBackground",
             "value": "white"
         },
         {
+            "for": "player",
             "type": "text",
             "label": "Play Button Icon Color",
-            "code": "playbuttoniconcolor",
-            "value": "#e57211"
+            "code": "playButtonIconColor",
+            "value": "black"
         },
         {
+            "for": "analytics",
+            "type": "boolean",
+            "label": "Analytics",
+            "code": "analytics",
+            "value": true
+        },
+        {
+            "for": "styles",
+            "type": "text",
+            "label": "Title",
+            "code": "title",
+            "value": "Recommended Videos"
+        },
+        {
+            "for": "styles",
             "type": "text",
             "label": "Items Per Page",
-            "code": "itemsperpage",
+            "code": "itemsPerPage",
             "value": "6"
         },
         {
+            "for": "styles",
             "type": "text",
             "label": "Items Per Row",
-            "code": "itemsperrow",
+            "code": "itemsPerRow",
             "value": "2"
         },
         {
+            "for": "styles",
             "type": "text",
-            "label": "Load Button Text",
-            "code": "loadbuttontext",
-            "value": "View More"
+            "label": "Item Title Color",
+            "code": "itemTitleColor",
+            "value": "#333333"
         },
         {
+            "for": "styles",
             "type": "text",
-            "label": "Load Button Text Color",
-            "code": "loadbuttontextcolor",
+            "label": "Item Play Button Background",
+            "code": "itemPlayButtonBackground",
             "value": "white"
         },
         {
+            "for": "styles",
+            "type": "text",
+            "label": "Item Play Button Border Radius",
+            "code": "itemPlayButtonBorderRadius",
+            "value": "0"
+        },
+        {
+            "for": "styles",
+            "type": "text",
+            "label": "Item Play Button Border",
+            "code": "itemPlayButtonBorder",
+            "value": "1px solid black"
+        },
+        {
+            "for": "styles",
+            "type": "text",
+            "label": "Item Play Button Icon Color",
+            "code": "itemPlayButtonIconColor",
+            "value": "black"
+        },
+        {
+            "for": "styles",
+            "type": "text",
+            "label": "Load Button Text",
+            "code": "loadButtonText",
+            "value": "View More"
+        },
+        {
+            "for": "styles",
+            "type": "text",
+            "label": "Load Button Text Color",
+            "code": "loadButtonTextColor",
+            "value": "white"
+        },
+        {
+            "for": "styles",
             "type": "text",
             "label": "Load Button Background Color",
-            "code": "loadbuttonbackgroundcolor",
+            "code": "loadButtonBackgroundColor",
             "value": "#1F1D26"
+        },
+        {
+            "for": "styles",
+            "type": "text",
+            "label": "Load Button Border Radius",
+            "code": "loadButtonBorderRadius",
+            "value": "0"
         }
     ]
 }

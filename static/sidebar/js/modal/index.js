@@ -149,7 +149,7 @@
         } else {
           loadProducts(
             next.assetId,
-            data.runTime.config[el.id].loginid,
+            data.runTime.loginid,
             function(data){
               setTimeout(function(){
                 render(data);
@@ -184,7 +184,7 @@
         } else {
           loadProducts(
             selectedVideo.id,
-            data.runTime.config[el.id].loginid,
+            data.runTime.loginid,
             function(data){
               setTimeout(function(){
                 render(data);
