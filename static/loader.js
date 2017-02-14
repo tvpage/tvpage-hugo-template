@@ -186,27 +186,6 @@
               holder.style.height = e.data.height;
             }
 
-            var ifrIModalId = 'tvp-iframe-modal_'+id;
-
-            if ('tvp_sidebar:modal_initialized' === eventName) {
-              document.getElementById(ifrIModalId).style.height = e.data.height;
-              var widgetData = widget[id];
-              document.getElementById(ifrIModalId).contentWindow.postMessage({
-                event: '_tvp_sidebar_modal_data',
-                data: widgetData.data,
-                selectedVideo: widgetData.selectedVideo,
-                runTime: widgetData.runTime
-              }, '*');
-            }
-
-            if ('tvp_sidebar:modal_resized' === eventName) {
-              document.getElementById(ifrIModalId).style.height = e.data.height;
-            }
-
-            if ('tvp_sidebar:player_next' === eventName) {
-              document.querySelector('.tvp-modal-title').innerHTML = e.data.next.assetTitle;
-            }
-
             if ('tvp_sidebar:video_click' === eventName) {
               var data = e.data;
               var selectedVideo = data.selectedVideo || {};
@@ -245,24 +224,9 @@
 
               document.body.appendChild(modalFrag);
 
-              iframeModal.onload = function(){
-                if (!isMobile) return;
-                var ifr = this;
-                document.addEventListener('orientationchange', function(){
-                  setTimeout(function(){
-                    var ref = ifr.parentNode;
-                    if (ifr.contentWindow) {
-                      ifr.contentWindow.postMessage({
-                        event: '_tvp_widget_holder_resize',
-                        size: [ref.offsetWidth, Math.floor(ref.offsetWidth * (9 / 16))]
-                      },'*');
-                    }
-                  },100);
-                });               
-              };
-
               var iframeModalDoc = iframeModal.contentWindow.document;
               var html = '<div id="' + id + '" class="tvp-clearfix iframe-content">';
+              
               if (isMobile) {
                 html += '<div class="tvp-player"><div id="tvp-player-el"></div></div>'+
                 '<div class="tvp-products"><div class="tvp-products-carousel"></div></div>';
@@ -283,6 +247,42 @@
                 ].filter(Boolean)
               }));
               iframeModalDoc.close();
+            }
+
+            var ifrIModalId = 'tvp-iframe-modal_'+id;
+
+            if ('tvp_sidebar:modal_initialized' === eventName) {
+              var widgetData = widget[id];
+              var iframeModal = document.getElementById(ifrIModalId);
+              
+              if (iframeModal.contentWindow) {
+                iframeModal.contentWindow.postMessage({
+                  event: '_tvp_sidebar_modal_data',
+                  data: widgetData.data,
+                  selectedVideo: widgetData.selectedVideo,
+                  runTime: widgetData.runTime
+                }, '*');
+
+                window.addEventListener(
+                  'onorientationchange' in window ? 'orientationchange' : 'resize',
+                  debounce(function() {
+                    setTimeout(function(){
+                      var ref = iframeModal.parentNode;
+                      iframeModal.contentWindow.postMessage({
+                        event: '_tvp_widget_holder_resize',
+                        size: [ref.offsetWidth, Math.floor(ref.offsetWidth * (9 / 16))]
+                      },'*');
+                    },100);
+                },50), false);
+              }
+            }
+
+            if ('tvp_sidebar:modal_resized' === eventName) {
+              document.getElementById(ifrIModalId).style.height = e.data.height;
+            }
+
+            if ('tvp_sidebar:player_next' === eventName) {
+              document.querySelector('.tvp-modal-title').innerHTML = e.data.next.assetTitle;
             }
           });
         }

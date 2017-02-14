@@ -31,7 +31,7 @@
     if (!el || !isset(options) || !isset(options.data) || options.data.length <= 0) return console.log('bad args');
 
     this.isFullScreen = false;
-    this.isReady = false;
+    this.initialResize = true;
     this.autoplay = isset(options.autoplay) ? options.autoplay : false;
     this.autonext = isset(options.autonext) ? options.autonext : true;
     this.version = isset(options.version) ? options.version : '1.8.5';
@@ -146,10 +146,13 @@
         width = parentEl.clientWidth;
         height = parentEl.clientHeight;
       }
-
+      
       that.instance.resize(width, height);
+      
       if(!this.onResize) return;
-      this.onResize([width, height]);
+      this.onResize(that.initialResize, [width, height]);
+      
+      that.initialResize = false;
     }
 
     var checks = 0;
@@ -167,7 +170,6 @@
             apiBaseUrl: '//api.tvpage.com/v1',
             swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+that.version+'-flash.swf',
             onReady: function(e, pl){
-              that.isReady = true;
               that.instance = pl;
               that.resize();
               
@@ -181,11 +183,9 @@
               //If we are inside an iframe, we should listen to an external event.
               if (window.location !== window.parent.location){
                 window.addEventListener('message', function(e){
-                  if (!e || !isset(e, 'data') || !isset(e.data, 'event')) return;
-                  if ('_tvp_widget_holder_resize' === e.data.event) {
-                    var size = e.data.size || [];
-                    that.resize(size[0], size[1]);
-                  }
+                  if (!e || !isset(e, 'data') || !isset(e.data, 'event') || '_tvp_widget_holder_resize' !== e.data.event) return;
+                  var size = e.data.size || [];
+                  that.resize(size[0], size[1]);
                 });
               } else {
                 window.addEventListener('resize', resize);
