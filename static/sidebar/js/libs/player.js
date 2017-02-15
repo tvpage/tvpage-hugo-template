@@ -31,7 +31,7 @@
     if (!el || !isset(options) || !isset(options.data) || options.data.length <= 0) return console.log('bad args');
 
     this.isFullScreen = false;
-    this.isReady = false;
+    this.initialResize = true;
     this.autoplay = isset(options.autoplay) ? options.autoplay : false;
     this.autonext = isset(options.autonext) ? options.autonext : true;
     this.version = isset(options.version) ? options.version : '1.8.5';
@@ -46,16 +46,13 @@
     this.el = 'string' === typeof el ? document.getElementById(el) : el;
 
     this.assets = (function(data){
-      var assets = [],
-          counter = data.length;
-
-      while (counter > 0) {
-        var video = data[counter-1];
-        if (isEmpty(video)) return console.log('empty data');
+      var assets = [];
+      for (var i = 0; i < data.length; i++) {
+        var video = data[i];
         
-        var asset = video.asset,
-            channelId;
+        if (isEmpty(video)) break;
 
+        var asset = video.asset;
         asset.assetId = video.id;
         asset.assetTitle = video.title;
         asset.loginId = video.loginId;
@@ -63,9 +60,8 @@
         if (isset(video,'events') && video.events.length) {
           asset.analyticsLogUrl = video.analytics;
           asset.analyticsObj = video.events[1].data;
-          console.log("OBJECT TO BE TRACKED (analyticsObj)", asset.analyticsObj);
         } else {
-          asset.analyticsObj = { 
+          asset.analyticsObj = {
             pg: isset(video,'parentId') ? video.parentId : ( isset(options,'channel') ? options.channel.id : 0 ),
             vd: video.id, 
             li: video.loginId
@@ -74,44 +70,30 @@
 
         if (!asset.sources) asset.sources = [{ file: asset.videoId }];
         asset.type = asset.type || 'youtube';
-        assets.push(asset);
-        counter--;
+        assets.push(asset); 
       }
-
       return assets;
     }(options.data));
     
 
-    //Methods
-    this.hideEl = function(el){
-      return el.style.display = 'none';
-    };
-
+    //Context reference for Methods.
     var that = this;
-    this.showPlayBtn = function(imgUrl){
-      var frag = document.createDocumentFragment(),
-          div = document.createElement('div');
-
-      div.classList.add('tvp-mp4-poster');
-      div.style.backgroundImage = 'url("'+imgUrl+'")';
-      frag.appendChild(div);
-
-      var btn = this.el.parentNode.getElementsByClassName('tvp-play')[0];
-      btn.style.display = 'block';
-      btn.onclick = function(){
+    
+    this.showPlayBtn = function(){
+      var playBtn = document.createElement('div');
+      playBtn.innerHTML = '<svg class="tvp-play" viewBox="0 0 200 200"><polygon points="70, 55 70, 145 145, 100"></polygon></svg>';
+      var btnClick = function(){
         if (!that.instance) return;
-        that.hideEl(div);
-        that.hideEl(btn);
+        playBtn.removeEventListener('click',btnClick,false);
+        playBtn.parentNode.removeChild(playBtn);
         that.instance.play();
       };
-      frag.appendChild(btn);
-      this.el.appendChild(frag);
+      playBtn.addEventListener('click', btnClick);
+      this.el.appendChild(playBtn);
     };
 
     this.play = function(asset,ongoing){
-
       if (!asset) return console.log('need asset');
-      
       var willCue = false,
           isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
       
@@ -164,10 +146,13 @@
         width = parentEl.clientWidth;
         height = parentEl.clientHeight;
       }
-
+      
       that.instance.resize(width, height);
+      
       if(!this.onResize) return;
-      this.onResize([width, height]);
+      this.onResize(that.initialResize, [width, height]);
+      
+      that.initialResize = false;
     }
 
     var checks = 0;
@@ -185,7 +170,6 @@
             apiBaseUrl: '//api.tvpage.com/v1',
             swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+that.version+'-flash.swf',
             onReady: function(e, pl){
-              that.isReady = true;
               that.instance = pl;
               that.resize();
               
@@ -199,11 +183,9 @@
               //If we are inside an iframe, we should listen to an external event.
               if (window.location !== window.parent.location){
                 window.addEventListener('message', function(e){
-                  if (!e || !isset(e, 'data') || !isset(e.data, 'event')) return;
-                  if ('_tvp_widget_holder_resize' === e.data.event) {
-                    var size = e.data.size || [];
-                    that.resize(size[0], size[1]);
-                  }
+                  if (!e || !isset(e, 'data') || !isset(e.data, 'event') || '_tvp_widget_holder_resize' !== e.data.event) return;
+                  var size = e.data.size || [];
+                  that.resize(size[0], size[1]);
                 });
               } else {
                 window.addEventListener('resize', resize);
@@ -226,23 +208,24 @@
             onStateChange: function(e){
               if ('tvp:media:videoended' !== e) return;
               
-              if(isset(that.autonext) && that.autonext){
-                that.current++;
-                if (!that.assets[that.current]) {
-                  that.current = 0;
-                }
+              that.current++;
+              if (!that.assets[that.current]) {
+                that.current = 0;
               }
-
+              
               var next = that.assets[that.current];
+              that.play(next, true);
               if(that.onNext) {
                 that.onNext(next);
               }
-              that.play(next, true);
             },
             divId: that.el.id,
             controls: {
               active: true,
-              floater: { removeControls: that.removecontrols,transcript: that.transcript}
+              floater: {
+                removeControls: that.removecontrols,
+                transcript: that.transcript
+              }
             }
           });
 

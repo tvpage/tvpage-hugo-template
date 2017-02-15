@@ -57,6 +57,7 @@ body {
 }
 
 .tvp-play {
+  display: block;
   background-color: #fff;
   box-sizing: border-box;
   width: 45px;
@@ -68,11 +69,11 @@ body {
   bottom: 0;
   right: 0;
   margin: auto;
-  display: none;
   opacity: 0.95;
   cursor: pointer;
   border-radius: 1px;
-  border: 2px solid #e57211;
+  border: 1px solid black;
+  z-index: 10000;
 }
 
 .tvp-play > polygon {
@@ -136,10 +137,17 @@ body {
 }
 
 .tvp-product-data > button {
-  margin: 0;
-  border: 0;
-  padding: 0 10px;
-  height: 20px;
-  line-height: 20px;
+  display: block;
+  padding: 0 2px;
+  line-height: 26px;
+  font-size: 10px;
+  text-align: center;
+  width: 85px;
+  height: 26px;
+  background-color: #F5F5F5;
+  border: 1px solid #DFDFDF;
+  border-radius: 2px;
+  color: #666666;
   text-transform: uppercase;
+  cursor: pointer;
 }

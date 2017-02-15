@@ -1,4 +1,13 @@
 (function(document){
+
+  var analytics;
+
+  var pkTrack = function(){
+    analytics.track('pk',{
+      vd: this.getAttribute('data-vd'),
+      ct: this.id.split('-').pop()
+    });
+  };
 	
 	var isset = function(o,p){
 		return 'undefined' !== typeof o[p];
@@ -33,38 +42,65 @@
     
     for (var i = 0; i < data.length; i++) {
       var product = data[i];
+      var productId = product.id;
+      var productLink = product.linkUrl;
+      var productImgStyle = 'style="background-image:url(\''+product.imageUrl+'\');"';
+      var productVideoId = product.entityIdParent;
       
       var prodNode = document.createElement('a');
       prodNode.classList.add('tvp-product');
-      prodNode.id = 'tvp-product-' + product.id;
-      prodNode.href = product.linkUrl;
-      prodNode.innerHTML = '<div class="tvp-product-image" style="background-image:url(' + product.imageUrl + ')"><div/>';
+      prodNode.id = 'tvp-product-' + productId;
+      prodNode.setAttribute('data-vd', productVideoId);
+      prodNode.href = productLink;
+      prodNode.innerHTML = '<div class="tvp-product-image" '+productImgStyle+'><div/>';
       thumbsFrag.appendChild(prodNode);
 
       var prodPopupNode = document.createElement('a');
-      prodPopupNode.id = 'tvp-product-popup-' + product.id;
       prodPopupNode.classList.add('tvp-product-popup');
-      prodPopupNode.href = product.linkUrl;
-      prodPopupNode.innerHTML = '<div class="tvp-product-popup-image" style="background-image:url(' + product.imageUrl + ');"></div>'+
+      prodPopupNode.id = 'tvp-product-popup-' + productId;
+      prodPopupNode.setAttribute('data-vd', productVideoId);
+      prodPopupNode.href = productLink;
+      prodPopupNode.innerHTML = '<div class="tvp-product-popup-image" '+productImgStyle+'></div>'+
       '<p class="tvp-product-title">'+product.title+'</p><div class="tvp-clearfix"><p class="tvp-product-price"><span>$</span>'+product.price+'</p></div>'+
       '<button class="tvp-product-cta">View Details</button>';
       popupsFrag.appendChild(prodPopupNode);
-      
+
+      analytics.track('pi',{
+        vd: productVideoId,
+        ct: productId
+      });
+    }
+
+    var classNames = ['tvp-product', 'tvp-product-popup'];
+    for (var i = 0; i < classNames.length; i++) {
+      var elements = container.getElementsByClassName(classNames[i]);
+      for (var j = 0; j < elements.length; j++) {
+        elements[j].removeEventListener('click', pkTrack, false);
+      }
     }
 
     container.innerHTML = '';
+    
     var arrow = document.createElement('div');
     arrow.classList.add('tvp-arrow-indicator');
     thumbsFrag.appendChild(arrow);
-    container.appendChild(thumbsFrag);
 
+    container.appendChild(thumbsFrag);
     container.parentNode.appendChild(popupsFrag);
 
     setTimeout(function(){
+      
       var holder = getbyClass('tvp-products-holder');
+
+      var classNames = ['tvp-product', 'tvp-product-popup'];
+      for (var i = 0; i < classNames.length; i++) {
+        var elements = holder.getElementsByClassName(classNames[i]);
+        for (var j = 0; j < elements.length; j++) {
+          elements[j].addEventListener('click', pkTrack, false);
+        }
+      }
       
       holder.onmouseover = function(e){
-
         if (!e.target.classList.contains('tvp-product-image')) return;
         var activePopups = document.querySelectorAll('.tvp-product-popup.active');
         for (var i = activePopups.length - 1; i >= 0; i--) {
@@ -82,12 +118,11 @@
         var holderHeight = holder.offsetHeight;
         
         //We must first check if it's overflowing. To do this we first check if it's overflowing in the top, this is an
-        //easy one, if it's a negative value then it's overflowing.
+        //easy one, if it's a negative value then it's overflowing. Otherwise if it's failing in the bottom, we rectify 
+        //by removing the excess from the top value.
         if (topValue <= 10) {
           topValue = -10;
         }
-        
-        //Otherwise if it's failing in the bottom, we rectify by removing the excess from the top value.
         else if ( bottomLimit > holderHeight )  {
           topValue = topValue - (bottomLimit - holderHeight);
           topValue = topValue + 10;
@@ -132,7 +167,6 @@
       s.data = data.data;
 
       s.onResize = function(size){
-
         resizeProducts(size[1]);
         if (window.parent && window.parent.parent) {
           window.parent.parent.postMessage({
@@ -149,7 +183,7 @@
         } else {
           loadProducts(
             next.assetId,
-            data.runTime.config[el.id].loginid,
+            data.runTime.loginid,
             function(data){
               setTimeout(function(){
                 render(data);
@@ -178,13 +212,22 @@
       if ('_tvp_sidebar_modal_data' === data.event) {
         initPlayer(data);
         
+        var loginId = data.runTime.loginid || data.runTime.loginId;
+        
+        analytics =  new Analytics();
+        analytics.initConfig({
+          logUrl: '\/\/api.tvpage.com\/v1\/__tvpa.gif',
+          domain: isset(location,'hostname') ?  location.hostname : '',
+          loginId: loginId
+        });
+
         var selectedVideo = data.selectedVideo;
         if (Utils.isset(selectedVideo,'products')) {
           render(selectedVideo.products);
         } else {
           loadProducts(
             selectedVideo.id,
-            data.runTime.config[el.id].loginid,
+            loginId,
             function(data){
               setTimeout(function(){
                 render(data);
@@ -205,11 +248,11 @@
   };
 
   var not = function(obj){return 'undefined' === typeof obj};
-  if (not(window.Player) || not(window.Utils)) {
+  if (not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player)) {
     var libsCheck = 0;
     (function libsReady() {
-      setTimeout(function() {
-        if (not(window.Player) || not(window.Utils)) {
+      setTimeout(function(){
+        if (not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player)) {
           (++libsCheck < 50) ? libsReady() : console.log('limit reached');
         } else {
           initialize();

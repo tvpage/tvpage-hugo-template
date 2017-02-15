@@ -1,9 +1,7 @@
-/* Let's get this party started */
 ::-webkit-scrollbar {
   width: 5px;
 }
  
-/* Handle */
 ::-webkit-scrollbar-thumb {
   background: black;
 }
@@ -25,31 +23,6 @@ body  {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-}
-
-.slick-slide {
-  height: auto !important;
-}
-
-.slick-arrow {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  margin: auto 0;
-  background: black;
-  width: 20px;
-  height: 20px;
-  z-index: 9999;
-  color: transparent;
-  border: 0;
-}
-
-.slick-arrow.slick-prev {
-  left: 0;
-}
-
-.slick-arrow.slick-next {
-  right: 0;
 }
 
 .tvp-player {
@@ -93,10 +66,11 @@ body  {
 }
 
 .tvp-play {
-  background-color: black;
+  display: block;
+  background-color: #fff;
   box-sizing: border-box;
-  width: 30px;
-  height: 30px;
+  width: 45px;
+  height: 45px;
   padding: 0;
   position: absolute;
   top: 0;
@@ -104,13 +78,14 @@ body  {
   bottom: 0;
   right: 0;
   margin: auto;
-  display: none;
+  opacity: 0.95;
   cursor: pointer;
-  border-radius: 50%;
+  border-radius: 1px;
+  border: 1px solid black;
+  z-index: 10000;
 }
 
 .tvp-play > polygon {
-  fill: white;
   pointer-events: none;
 }
 
@@ -126,11 +101,6 @@ body  {
   padding-left: 1.35%;
   position: relative;
   background-color: whitesmoke;
-}
-
-.tvp-products-mobile {
-  width: 18.5%;
-  float: right;
 }
 
 .tvp-product {
@@ -267,31 +237,4 @@ body  {
   background-repeat: no-repeat;
   background-position: center;
   padding-top: 100%;
-}
-
-.tvp-product-data {
-  float: left;
-  width: 60%;
-  margin-left: 5%;
-}
-
-.tvp-product-data > p {
-  height: 29px;
-  overflow: hidden;
-  margin: 0;
-  font-size: 12px;
-}
-
-.tvp-product-data > h2 {
-  margin: 5px 0;
-  font-size: 16px;
-}
-
-.tvp-product-data > button {
-  margin: 0;
-  border: 0;
-  padding: 0 10px;
-  height: 20px;
-  line-height: 20px;
-  text-transform: uppercase;
 }

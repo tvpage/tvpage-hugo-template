@@ -46,8 +46,8 @@
     this.initialResize = true;
     
     var isSmall = this.windowSize == 'small';
-    this.itemsPerPage = isSmall ? 2 : (options.itemsperpage || 6);
-    this.itemsPerRow = isSmall ? 1 : (options.itemsperrow || 2);
+    this.itemsPerPage = isSmall ? 2 : (options.itemsPerPage || 6);
+    this.itemsPerRow = isSmall ? 1 : (options.itemsPerRow || 2);
     this.loginId = (options.loginId || options.loginid) || 0;
     this.channel = options.channel || {};
     this.loading = false;
@@ -93,7 +93,7 @@
               className += ' tvp-exchange';
             }
 
-            if (that.windowSize === 'medium') {
+            if (that.windowSize === 'medium' && this.itemsPerRow > 1) {
               className += ' col-6';
             }
 
@@ -212,8 +212,8 @@
       if (that.windowSize !== newSize) {
         that.windowSize = newSize;
         var isSmall = newSize === 'small';
-        that.itemsPerPage = isSmall ? 2 : (options.itemsperpage || 6);
-        that.itemsPerRow = isSmall ? 1 : (options.itemsperrow || 2);
+        that.itemsPerPage = isSmall ? 2 : (options.itemsPerPage || 6);
+        that.itemsPerRow = isSmall ? 1 : (options.itemsPerRow || 2);
         that.load(function(){
           that.render();
           notify();
