@@ -821,7 +821,7 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
           }
         },
         updateSiteUrlAndTitle : function(url, title){
-          var newUrl = window.location.protocol +'//' + window.location.host + url;
+          var newUrl = /*window.location.protocol +'//' + window.location.host + */url;
           if (newUrl && window.history && history.pushState) {
             history.pushState({state: 1}, null, newUrl);
             if ( 'string' === typeof title ) title = title;
@@ -830,17 +830,18 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
         },
         updateSocialShareLink : function(url, video){
           $('.facebook').attr('href', function(i, val) {
-            return 'https://www.facebook.com/sharer/sharer.php?u=' + window.location.protocol +'//' + window.location.host + url;
+            return 'https://www.facebook.com/sharer/sharer.php?u=' /*+ window.location.protocol +'//' + window.location.host*/ + url;
           });
 
           $('.twitter').attr('href', function(i, val) {
-            return 'https://twitter.com/share?text=' + video.title + '%20%7C%0A&url=' + window.location.protocol +'//' + window.location.host  + url;
+            return 'https://twitter.com/share?text=' + video.title + '%20%7C%0A&url=' /*+ window.location.protocol +'//' + window.location.host*/  + url;
           });
         },
         getVideoUrl : function(video){
           var url;
           if('undefined' !== typeof video.url){
-            url = video.url;
+            url = TVSite.baseUrl+video.url;
+            //url = url.replace("//", "/");
           }else{
             var channel = TVSite.channelVideosData;
             var videoUrl = '/' + channel.id +'-' + video.id;
@@ -1093,6 +1094,24 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
 
     
     var ProductSlider = {
+            star : '<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">'
+                    +'<path d="M0 0h24v24H0z" fill="none"/>'
+                    +'<path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>'
+                    +'<path d="M0 0h24v24H0z" fill="none"/>'
+                +'</svg>',
+            halfStar : '<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">'
+                    +'<defs>'
+                    +    '<path d="M0 0h24v24H0V0z" id="a"/>'
+                    +'</defs>'
+                    +'<clipPath id="b">'
+                        +'<use overflow="visible" xlink:href="#a"/>'
+                    +'</clipPath>'
+                    +'<path clip-path="url(#b)" d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4V6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/>'
+                +'</svg>',
+            emptyStar : '<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">'
+                    +'<path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/>'
+                    +'<path d="M0 0h24v24H0z" fill="none"/>'
+                +'</svg>',
             breakpoint: 992,
             products : [],
             $currentPopUp: null,
@@ -1174,7 +1193,7 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
                     trigger: 'manual',
                     container: 'div.player-product',
                     content: function(){
-                        var hoverTmpl = '<div class="tvp-prod-hover-img-container"><div class="content"> <img src="{imageUrl}" alt=""></div></div><div class="tvp-prod-hover-title">{title}</div><div class="tvp-prod-hover-price-rate"> <span class="price">{price}</span></div> <a data-id="{id}" href="{linkUrl}" target="_blank" class="btn btn-primary btn-more-button analyticsClick">VIEW DETAILS</a>';
+                        var hoverTmpl = '<div class="tvp-prod-hover-img-container"><div class="content"> <img src="{imageUrl}" alt=""></div></div><div class="tvp-prod-hover-title">{title}</div><div class="tvp-prod-hover-price-rate"> <span class="price">{price}</span>span class"rate">{rate}</span></div> <a data-id="{id}" href="{linkUrl}" target="_blank" class="btn btn-primary btn-more-button analyticsClick">VIEW DETAILS</a>';
                         var hoverHtml = '';
                         var prodId = $(this).attr('id');
 
@@ -1268,13 +1287,47 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
                     trigger: 'manual',
                     container: 'div.player-product',
                     content: function(){
-                        var hoverTmpl = '<div class="tvp-prod-hover-img-container"><div class="content"> <img src="{imageUrl}" alt=""></div></div><div class="tvp-prod-hover-title">{title}</div><div class="tvp-prod-hover-price-rate"> <span class="price">{price}</span></div> <a data-id="{id}" href="{linkUrl}" target="_blank" class="btn btn-primary btn-more-button analyticsClick">VIEW DETAILS</a>';
+                        var hoverTmpl = '<div class="tvp-prod-hover-img-container"><div class="content"> <img src="{imageUrl}" alt=""></div></div><div class="tvp-prod-hover-title">{title}</div><div class="tvp-prod-hover-price-rate"> <span class="price">{price}</span><span class"rate">{rate}</span></div> <a data-id="{id}" href="{linkUrl}" target="_blank" class="btn btn-primary btn-more-button analyticsClick">VIEW DETAILS</a>';
                         var hoverHtml = '';
                         var prodId = $(this).attr('id');
 
                         var currentProd = _.filter(that.products, function(item){
                             return item.id == prodId;
                         })[0];
+
+                        var stars = "";
+                        if(currentProd["rating"]){
+                            var totalStars = 0;
+                            var rate = currentProd["rating"].toString();
+                            var rateArray = rate.split(".");
+                            if (rateArray.length > 0){
+                                for (var i = 0; i < rateArray[0]; i++) {
+                                    stars +=  "<span class='tvp-star-full'>"+ProductSlider.star+"</span>";
+                                    totalStars = totalStars+1;
+                                }
+                                if(rateArray[1]){
+                                    totalStars = totalStars+1;
+                                    var decimal = parseFloat(rateArray[1]);
+                                    if (decimal >= .7){
+                                        stars += "<span class='tvp-star-full'>"+ProductSlider.star+"</span>";
+                                    }
+                                    else if(decimal > .3 && decimal < .7){
+                                        stars += "<span class='tvp-star-half'>"+ProductSlider.halfStar+"</span>";   
+                                    }
+                                    else{
+                                        stars += "<span class='tvp-star-empty'>"+ProductSlider.emptyStar+"</span>";      
+                                    }
+                                }
+                                if(totalStars<5){
+                                    var remaining = 5- totalStars;
+                                    for (var i = 0; i < remaining; i++) {
+                                        stars +=  "<span class='tvp-star-empty'>"+ProductSlider.emptyStar+"</span>";
+                                    }
+                                }
+                            } 
+
+                        }
+                        currentProd["rate"] = stars;
 
                         hoverHtml = renderUtil.tmpl(hoverTmpl, currentProd);
 

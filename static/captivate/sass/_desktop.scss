@@ -1,6 +1,23 @@
 h1.seo{
 	display: none;
 }
+.tvp-star{
+	&-full svg{
+		fill : #B2C6B8;
+		width: 20px;
+		height: 20px;
+	}
+	&-half svg{
+		fill : #B2C6B8;
+		width: 20px;
+		height: 20px;
+	}
+	&-empty svg{
+		fill : #B2C6B8;
+		width: 20px;
+		height: 20px;
+	}
+}
 .tvp-video-container-mobile{
 	position: relative;;
 }
