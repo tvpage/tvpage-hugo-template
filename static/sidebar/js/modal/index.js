@@ -212,7 +212,7 @@
       if ('_tvp_sidebar_modal_data' === data.event) {
         initPlayer(data);
         
-        var loginId = data.runTime.loginid;
+        var loginId = data.runTime.loginid || data.runTime.loginId;
         
         analytics =  new Analytics();
         analytics.initConfig({
