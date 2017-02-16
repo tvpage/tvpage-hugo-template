@@ -25,9 +25,17 @@
             "value": ["tvplogo","hd"]
         },
         {
+            "for": "player",
             "type": "boolean",
             "label": "Autoplay",
             "code": "autoplay",
+            "value": false
+        },
+        {
+            "for": "player",
+            "type": "boolean",
+            "label": "Autonext",
+            "code": "autonext",
             "value": true
         },
         {
