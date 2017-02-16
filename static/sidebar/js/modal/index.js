@@ -54,6 +54,11 @@
       prodNode.href = productLink;
       prodNode.innerHTML = '<div class="tvp-product-image" '+productImgStyle+'><div/>';
       thumbsFrag.appendChild(prodNode);
+      
+      var trimmedTitle = product.title.length > 50 ? product.title.substring(0, 50 - 3) + "..." :product.title;
+      var price = product.price.toString().replace(/[^0-9.]+/g, '');
+      price = parseFloat(price).toFixed(2);
+      var fixedPrice = price > 0 ? ('$' + price): '';
 
       var prodPopupNode = document.createElement('a');
       prodPopupNode.classList.add('tvp-product-popup');
@@ -61,7 +66,7 @@
       prodPopupNode.setAttribute('data-vd', productVideoId);
       prodPopupNode.href = productLink;
       prodPopupNode.innerHTML = '<div class="tvp-product-popup-image" '+productImgStyle+'></div>'+
-      '<p class="tvp-product-title">'+product.title+'</p><div class="tvp-clearfix"><p class="tvp-product-price"><span>$</span>'+product.price+'</p></div>'+
+      '<p class="tvp-product-title">'+trimmedTitle+'<span class="tvp-tooltip">'+product.title+'</span></p><div class="tvp-clearfix"><p class="tvp-product-price">'+fixedPrice+'</p></div>'+
       '<button class="tvp-product-cta">View Details</button>';
       popupsFrag.appendChild(prodPopupNode);
 
@@ -91,7 +96,6 @@
     setTimeout(function(){
       
       var holder = getbyClass('tvp-products-holder');
-
       var classNames = ['tvp-product', 'tvp-product-popup'];
       for (var i = 0; i < classNames.length; i++) {
         var elements = holder.getElementsByClassName(classNames[i]);
@@ -99,7 +103,6 @@
           elements[j].addEventListener('click', pkTrack, false);
         }
       }
-      
       holder.onmouseover = function(e){
         if (!e.target.classList.contains('tvp-product-image')) return;
         var activePopups = document.querySelectorAll('.tvp-product-popup.active');

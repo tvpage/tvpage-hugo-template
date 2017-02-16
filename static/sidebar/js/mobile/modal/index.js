@@ -50,10 +50,15 @@
         ct: productId
       });
 
+      var trimmedTitle = product.title.length > 50 ? product.title.substring(0, 50 - 3) + "..." :product.title;
+      var price = product.price.toString().replace(/[^0-9.]+/g, '');
+      price = parseFloat(price).toFixed(2);
+      var fixedPrice = price > 0 ? ('$' + price): '';
+
       var prodNode = document.createElement('div');
       prodNode.innerHTML = '<a id="tvp-product-' + productId + '" class="tvp-product" data-vd="' + productVideoId + '" href="' +
       product.linkUrl + '"><div class="tvp-product-image" style="background-image:url(' + product.imageUrl + ')"></div>'+
-      '<div class="tvp-product-data"><p>'+product.title+'</p><h2>$'+product.price+'</h2><button>View Details</button></div></a>';
+      '<div class="tvp-product-data"><p>'+trimmedTitle+'</p><h2>'+fixedPrice+'</h2><button>View Details</button></div></a>';
       frag.appendChild(prodNode);
     }
 

@@ -128,12 +128,33 @@ body  {
   font-size: 14px;
   text-decoration: none;
   margin: 10px 0;
+  color: #1F1D26;
+}
+
+.tvp-product-title .tvp-tooltip {
+  visibility: hidden;
+  width: 195px;
+  bottom: 36%;
+  left: 4%;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  font-size: 10px;
+}
+
+.tvp-product-title:hover .tvp-tooltip {
+  visibility: visible;
 }
 
 .tvp-product-price {
   margin: 0;
   float: left;
   font-size: 14px;
+  color: #00DBC0;
 }
 
 .tvp-product-rating {

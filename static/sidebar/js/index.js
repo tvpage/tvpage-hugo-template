@@ -47,6 +47,7 @@
     main.innerHTML =  '<div class="tvp-sidebar-title">' + (d.title || '') + '</div>'+
     '<div class="tvp-sidebar-container"></div><div class="tvp-sidebar-footer">'+
     '<button class="tvp-sidebar-load">' + (d.loadBtnText || '') + '</button>'+
+    '<a class="tvp-logo" href="https://www.tvpage.com/"></a>'+
     '</div><div class="tvp-cover"></div>';
     frag.appendChild(main);
     target.appendChild(frag);
@@ -58,7 +59,6 @@
     if (body.classList.contains('dynamic')) {
       (function(settings){
         var gridSettings = JSON.parse(JSON.stringify(settings));
-
         var name = settings.name;
 
         render(body,{
