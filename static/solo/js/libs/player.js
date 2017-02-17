@@ -34,9 +34,9 @@
     this.autoplay = isset(options.autoplay) ? Number(options.autoplay) : false;
     this.autonext = isset(options.autonext) ? Number(options.autonext) : true;
     this.version = isset(options.version) ? options.version : '1.8.5';
-    this.progresscolor = isset(options.progresscolor) ? options.progresscolor : '#E57211';
+    this.progressColor = isset(options.progressColor) ? options.progressColor : '#E57211';
     this.transcript = isset(options.transcript) ? options.transcript : false;
-    this.removecontrols = isset(options.removecontrols) ? options.removecontrols : ["hd"];
+    this.removeControls = isset(options.removeControls) ? options.removeControls : ["tvplogo","hd"];
     this.analytics = isset(options.analytics) ? options.analytics : true;
     this.onResize = isset(options.onResize) && 'function' === typeof options.onResize ? options.onResize : null;
     this.onNext = isset(options.onNext) && 'function' === typeof options.onNext ? options.onNext : null;
@@ -46,8 +46,7 @@
     this.playButtonBackgroundColor = isset(options.playButtonBackgroundColor) ? options.playButtonBackgroundColor : 'white';
     this.playButtonBorderRadius = isset(options.playButtonBorderRadius) ? options.playButtonBorderRadius : '0';
     this.playButtonBorderWidth = isset(options.playButtonBorderWidth) ? options.playButtonBorderWidth : '1px';
-    this.playButtonBorderColor = isset(options.playButtonBorderColor) ? options.playButtonBorderColor : '1px';
-    this.playButtonBorder = isset(options.playButtonBorder) ? options.playButtonBorder : '1px solid black';
+    this.playButtonBorderColor = isset(options.playButtonBorderColor) ? options.playButtonBorderColor : 'black';
     this.playButtonIconColor = isset(options.playButtonIconColor) ? options.playButtonIconColor : 'black';
     
     this.instance = null;
@@ -206,7 +205,7 @@
                 window.addEventListener('resize', resize);
               }
 
-              that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progresscolor;
+              that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progressColor;
               var current = 0;
               if (startWith && startWith.length) {
                 for (var i = 0; i < that.assets.length; i++) {
@@ -238,7 +237,7 @@
             controls: {
               active: true,
               floater: {
-                removeControls: that.removecontrols,
+                removeControls: that.removeControls,
                 transcript: that.transcript
               }
             }
