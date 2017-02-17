@@ -87,7 +87,7 @@
       "type": "text",
       "label": "Overlay Color",
       "code": "overlayColor",
-      "value": "000"
+      "value": null
     },
     {
       "for": "player",
