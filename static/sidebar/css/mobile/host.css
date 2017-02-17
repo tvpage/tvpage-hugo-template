@@ -52,7 +52,9 @@ div[class^="tvp-"] {
   margin: 0;
   line-height: 1.4285;
 }
-
+.tvp-title p{
+  display: none;
+}
 .tvp-modal-body {
   position: relative;
 }

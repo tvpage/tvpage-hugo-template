@@ -199,9 +199,13 @@
               };
 
               var modalFrag = document.createDocumentFragment();
-              for (var i = 0; i < dataVideos.length; i++) {
-                var trimmedTitle = dataVideos[i].title.length > 62 ? dataVideos[i].title.substring(0, 62 - 3) + "..." : dataVideos[i].title;
-                dataVideos[i].title = trimmedTitle;
+
+              //we shorten the lenght of long titles and add 3 point at the end
+              if (dataVideos) {
+                for (var i = 0; i < dataVideos.length; i++) {
+                  var trimmedTitle = dataVideos[i].title.length > 62 ? dataVideos[i].title.substring(0, 62) + "..." : dataVideos[i].title;
+                  dataVideos[i].title = trimmedTitle;
+                }
               }
 
               var overlay = document.createElement('div');

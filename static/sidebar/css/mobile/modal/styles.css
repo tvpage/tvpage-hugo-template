@@ -129,25 +129,28 @@ body {
   overflow: hidden;
   margin: 0;
   font-size: 12px;
+  color: #1F1D26;
 }
 
 .tvp-product-data > h2 {
   margin: 5px 0;
   font-size: 16px;
+  color: #00DBC0;
 }
 
 .tvp-product-data > button {
-  display: block;
-  padding: 0 2px;
-  line-height: 26px;
   font-size: 10px;
   text-align: center;
-  width: 85px;
-  height: 26px;
-  background-color: #F5F5F5;
-  border: 1px solid #DFDFDF;
+  width: 95px;
   border-radius: 2px;
-  color: #666666;
   text-transform: uppercase;
+  height: 25px;
+  background: black;
+  border: 0;
+  color: white;
+  text-transform: uppercase;
+  display: block;
   cursor: pointer;
+  position: absolute;
+  bottom: 0;
 }

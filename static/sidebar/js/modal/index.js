@@ -46,6 +46,8 @@
       var productLink = product.linkUrl;
       var productImgStyle = 'style="background-image:url(\''+product.imageUrl+'\');"';
       var productVideoId = product.entityIdParent;
+      var fixedPrice = '';
+      var prodTitle = product.title;
       
       var prodNode = document.createElement('a');
       prodNode.classList.add('tvp-product');
@@ -55,10 +57,14 @@
       prodNode.innerHTML = '<div class="tvp-product-image" '+productImgStyle+'><div/>';
       thumbsFrag.appendChild(prodNode);
       
-      var trimmedTitle = product.title.length > 50 ? product.title.substring(0, 50 - 3) + "..." :product.title;
-      var price = product.price.toString().replace(/[^0-9.]+/g, '');
-      price = parseFloat(price).toFixed(2);
-      var fixedPrice = price > 0 ? ('$' + price): '';
+      //we want to remove all special character, so they don't duplicate
+      //also we shorten the lenght of long titles and add 3 point at the end
+      if (prodTitle || product.price) {
+        prodTitle = prodTitle.length > 50 ? prodTitle.substring(0, 50) + "...":prodTitle;
+        var price = product.price.toString().replace(/[^0-9.]+/g, '');
+        price = parseFloat(price).toFixed(2);
+        fixedPrice = price > 0 ? ('$' + price):'';
+      }
 
       var prodPopupNode = document.createElement('a');
       prodPopupNode.classList.add('tvp-product-popup');
@@ -66,7 +72,7 @@
       prodPopupNode.setAttribute('data-vd', productVideoId);
       prodPopupNode.href = productLink;
       prodPopupNode.innerHTML = '<div class="tvp-product-popup-image" '+productImgStyle+'></div>'+
-      '<p class="tvp-product-title">'+trimmedTitle+'<span class="tvp-tooltip">'+product.title+'</span></p><div class="tvp-clearfix"><p class="tvp-product-price">'+fixedPrice+'</p></div>'+
+      '<p class="tvp-product-title">'+prodTitle+'<span class="tvp-tooltip">'+prodTitle+'</span></p><div class="tvp-clearfix"><p class="tvp-product-price">'+fixedPrice+'</p></div>'+
       '<button class="tvp-product-cta">View Details</button>';
       popupsFrag.appendChild(prodPopupNode);
 

@@ -44,21 +44,27 @@
       var product = data[i];
       var productId = product.id;
       var productVideoId = product.entityIdParent;
+      var fixedPrice = '';
+      var prodTitle = product.title;
 
       analytics.track('pi',{
         vd: product.entityIdParent,
         ct: productId
       });
-
-      var trimmedTitle = product.title.length > 50 ? product.title.substring(0, 50 - 3) + "..." :product.title;
-      var price = product.price.toString().replace(/[^0-9.]+/g, '');
-      price = parseFloat(price).toFixed(2);
-      var fixedPrice = price > 0 ? ('$' + price): '';
+      
+      //we want to remove all special character, so they don't duplicate
+      //also we shorten the lenght of long titles and add 3 point at the end
+      if (prodTitle || product.price) {
+        prodTitle = prodTitle.length > 50 ? prodTitle.substring(0, 50) + "...":prodTitle;
+        var price = product.price.toString().replace(/[^0-9.]+/g, '');
+        price = parseFloat(price).toFixed(2);
+        fixedPrice = price > 0 ? ('$' + price):'';
+      }
 
       var prodNode = document.createElement('div');
       prodNode.innerHTML = '<a id="tvp-product-' + productId + '" class="tvp-product" data-vd="' + productVideoId + '" href="' +
       product.linkUrl + '"><div class="tvp-product-image" style="background-image:url(' + product.imageUrl + ')"></div>'+
-      '<div class="tvp-product-data"><p>'+trimmedTitle+'</p><h2>'+fixedPrice+'</h2><button>View Details</button></div></a>';
+      '<div class="tvp-product-data"><p>'+prodTitle+'</p><h2>'+fixedPrice+'</h2><button>View Details</button></div></a>';
       frag.appendChild(prodNode);
     }
 
