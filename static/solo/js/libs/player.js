@@ -95,7 +95,7 @@
       overlay.style.backgroundImage = 'url("' + imgUrl + '")';
       overlay.innerHTML = '<div class="tvp-overlay-cover" style="opacity:' + this.overlayOpacity + ';background-image:linear-gradient(to bottom right,'+this.overlayColor+','+this.overlayColor+');"></div>'+
       '<svg class="tvp-play" style="background-color:'+this.playButtonBackgroundColor+';border:'+this.playButtonBorderWidth+' solid '+this.playButtonBorderColor+';border-radius:'+this.playButtonBorderRadius+
-      '" viewBox="0 0 200 200"><polygon fill="'+this.playButtonIconColor+'" points="70, 55 70, 145 145, 100"></polygon></svg>';
+      '" viewBox="0 0 200 200"><polygon fill="#'+this.playButtonIconColor+'" points="70, 55 70, 145 145, 100"></polygon></svg>';
 
       var click = function(){
         if (!that.instance) return;
