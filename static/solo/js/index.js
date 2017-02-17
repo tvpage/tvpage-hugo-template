@@ -17,16 +17,32 @@
     b.appendChild(s);
   },
   getSettings = function(type){
-    var s = {},
-    runTime = parent.__TVPage__.config;
+    var getConfig = function(g){
+      var c = {};
+      if (isset(g) && isset(g,'__TVPage__') && isset(g.__TVPage__, 'config')) {
+        c = g.__TVPage__.config;
+      } else {
+        return console.log('need config');
+      }
+      return c;
+    };
+    var s = {};
     if ('dynamic' === type) {
+      var config = getConfig(parent);
       var id = document.body.getAttribute('data-id');
-      if (!isset(runTime, id)) return console.log('need settings');
-      s = runTime[id];
+      if (!isset(config, id)) return console.log('need settings');
+      s = config[id];
       s.name = id;
-    } else if (type && type.length) {
-      s = runTime[type];
+    } else if ('inline' === type && type && type.length) {
+      var config = getConfig(parent);
+      s = config[type];
       s.name = type;
+    } else if ('static' === type) {
+      var config = getConfig(window);
+      var id = document.body.getAttribute('data-id');
+      if (!isset(config, id)) return console.log('need settings');
+      s = config[id];
+      s.name = id;
     }
     return s;
   },
@@ -50,10 +66,7 @@
     var frag = document.createDocumentFragment(),
     main = document.createElement('div');
     main.classList.add('tvp-player');
-    main.innerHTML =  '<div id="tvp-player-el-'+idEl+'" class="tvp-player-el"></div>'+
-    '<svg class="tvp-play" viewBox="0 0 200 200" alt="Play video">'+
-    '<polygon points="70, 55 70, 145 145, 100" fill="#e57211">'+
-    '</polygon></svg></div>';
+    main.innerHTML =  '<div id="tvp-player-el-'+idEl+'" class="tvp-player-el"></div></div>';
     frag.appendChild(main);
     target.appendChild(frag);
   };
@@ -61,46 +74,16 @@
   //We need to know a few things before we can start a player. We need to know if we will render
   //this here or somehow the will be content (when used with iframe).
   function initialize(){
-
-    var body = document.body,
-        runTime = parent.__TVPage__;
-
-    //We deal diff with some stuff on iframe.
-    if (window.frameElement) {
-      
-      if (body.classList.contains('dynamic')) {
-
-        (function(unique,settings){
-          render(unique,body);
-          loadData(settings,unique,function(data){
-            settings.data = data || [];
-            new Player('tvp-player-el-'+unique,settings);
-          });
-        }(random(),getSettings('dynamic')));
-
-      }
-
-    } else if (isset(runTime,'inline') && runTime.inline.length) {
-
-      var inline = runTime.inline,
-          inlineCount = inline.length;
-
-      while (inlineCount > 0) {
-
-        (function(unique,id){
-          var settings = getSettings(id);
-          render(unique,document.getElementById(id+'-holder'),!document.getElementById('tvphost'));
-          loadData(settings,unique,function(data){
-            settings.data = data || [];
-            new Player(document.getElementById('tvp-player-el-'+unique),settings);
-          });
-        }(random(),inline[inlineCount-1]));
-        
-        inline.pop();
-        inlineCount--;
-      }
+    if (document.body.classList.contains('dynamic')) {
+      //We deal diff with some stuff on iframe.
+      (function(unique,settings){
+        render(unique,document.body);
+        loadData(settings,unique,function(data){
+          settings.data = data || [];
+          new Player('tvp-player-el-'+unique,settings);
+        });
+      }(random(),getSettings('dynamic')));
     }
-
   };
 
   initialize();

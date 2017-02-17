@@ -43,6 +43,48 @@
             "label": "Analytics",
             "code": "analytics",
             "value": true
+        },
+        {
+            "for": "player",
+            "type": "text",
+            "label": "Play Button Background",
+            "code": "playButtonBackground",
+            "value": "white"
+        },
+        {
+            "for": "player",
+            "type": "text",
+            "label": "Play Button Border Radius",
+            "code": "playButtonBorderRadius",
+            "value": "0"
+        },
+        {
+            "for": "player",
+            "type": "text",
+            "label": "Play Button Border",
+            "code": "playButtonBorder",
+            "value": "2px solid black"
+        },
+        {
+            "for": "player",
+            "type": "text",
+            "label": "Play Button Icon Color",
+            "code": "playButtonIconColor",
+            "value": "black"
+        },
+        {
+            "for": "player",
+            "type": "text",
+            "label": "Overlay Color",
+            "code": "overlayColor",
+            "value": "black"
+        },
+        {
+            "for": "player",
+            "type": "text",
+            "label": "Overlay Opacity",
+            "code": "overlayOpacity",
+            "value": "0.6"
         }
     ]
 }

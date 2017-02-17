@@ -10,13 +10,10 @@ div[class^="tvp-"] {
 
 .tvp-iframe-holder.solo {
   padding-top: 56.25%;
+  background-color: black;
 }
 
-.tvp-iframe-holder.inline {
-  padding-top: 0;
-}
-
-.tvp-iframe {
+.tvp-iframe-holder > iframe {
   top: 0;
   left: 0;
   width: 100%;
