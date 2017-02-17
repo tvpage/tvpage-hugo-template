@@ -9,7 +9,7 @@
         {
             "type": "text",
             "label": "Progress Color",
-            "code": "progresscolor",
+            "code": "progressColor",
             "value": "#E57211"
         },
         {
@@ -20,8 +20,8 @@
         },
         {
             "type": "text",
-            "label": "removeControls",
-            "code": "removecontrols",
+            "label": "Remove Controls",
+            "code": "removeControls",
             "value": ["tvplogo","hd"]
         },
         {
@@ -43,6 +43,55 @@
             "label": "Analytics",
             "code": "analytics",
             "value": true
+        },
+        {
+            "for": "player",
+            "type": "text",
+            "label": "Play Button Background Color",
+            "code": "playButtonBackgroundColor",
+            "value": "white"
+        },
+        {
+            "for": "player",
+            "type": "text",
+            "label": "Play Button Border Radius",
+            "code": "playButtonBorderRadius",
+            "value": "0"
+        },
+        {
+            "for": "player",
+            "type": "text",
+            "label": "Play Button Border",
+            "code": "playButtonBorderWidth",
+            "value": "1px"
+        },
+        {
+            "for": "player",
+            "type": "text",
+            "label": "Play Button Border Color",
+            "code": "playButtonBorderColor",
+            "value": "black"
+        },
+        {
+            "for": "player",
+            "type": "text",
+            "label": "Play Button Icon Color",
+            "code": "playButtonIconColor",
+            "value": "black"
+        },
+        {
+            "for": "player",
+            "type": "text",
+            "label": "Overlay Color",
+            "code": "overlayColor",
+            "value": "black"
+        },
+        {
+            "for": "player",
+            "type": "text",
+            "label": "Overlay Opacity",
+            "code": "overlayOpacity",
+            "value": "0.5"
         }
     ]
 }
