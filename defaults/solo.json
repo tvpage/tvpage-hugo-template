@@ -47,9 +47,9 @@
         {
             "for": "player",
             "type": "text",
-            "label": "Play Button Background",
-            "code": "playButtonBackground",
-            "value": "white"
+            "label": "Play Button Background Color",
+            "code": "playButtonBackgroundColor",
+            "value": "black"
         },
         {
             "for": "player",
@@ -61,9 +61,16 @@
         {
             "for": "player",
             "type": "text",
-            "label": "Play Button Border",
-            "code": "playButtonBorder",
-            "value": "2px solid black"
+            "label": "Play Button Border Color",
+            "code": "playButtonBorderColor",
+            "value": "black"
+        },
+        {
+            "for": "player",
+            "type": "text",
+            "label": "Play Button Border Width",
+            "code": "playButtonBorderWidth",
+            "value": "2px"
         },
         {
             "for": "player",
