@@ -34,8 +34,6 @@ body {
 .tvp-play {
   box-sizing: border-box;
   position: absolute;
-  width: 55px;
-  height: 55px;
   padding: 0;
   top: 0;
   left: 0;

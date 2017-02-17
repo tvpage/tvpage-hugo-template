@@ -38,16 +38,21 @@
     this.transcript = isset(options.transcript) ? options.transcript : false;
     this.removeControls = isset(options.removeControls) ? options.removeControls : ["tvplogo","hd"];
     this.analytics = isset(options.analytics) ? options.analytics : true;
+    
     this.onResize = isset(options.onResize) && 'function' === typeof options.onResize ? options.onResize : null;
     this.onNext = isset(options.onNext) && 'function' === typeof options.onNext ? options.onNext : null;
+    
     this.overlay = isset(options.overlay) ? options.overlay : false;
     this.overlayColor = isset(options.overlayColor) ? options.overlayColor : '000';
     this.overlayOpacity = isset(options.overlayOpacity) ? options.overlayOpacity : '0.5';
-    this.playButtonBackgroundColor = isset(options.playButtonBackgroundColor) ? options.playButtonBackgroundColor : 'white';
+    
+    this.playButtonBackgroundColor = isset(options.playButtonBackgroundColor) ? options.playButtonBackgroundColor : 'fff';
     this.playButtonBorderRadius = isset(options.playButtonBorderRadius) ? options.playButtonBorderRadius : '0';
-    this.playButtonBorderWidth = isset(options.playButtonBorderWidth) ? options.playButtonBorderWidth : '1px';
-    this.playButtonBorderColor = isset(options.playButtonBorderColor) ? options.playButtonBorderColor : 'black';
-    this.playButtonIconColor = isset(options.playButtonIconColor) ? options.playButtonIconColor : 'black';
+    this.playButtonBorderWidth = isset(options.playButtonBorderWidth) ? options.playButtonBorderWidth : '0';
+    this.playButtonBorderColor = isset(options.playButtonBorderColor) ? options.playButtonBorderColor : '000';
+    this.playButtonIconColor = isset(options.playButtonIconColor) ? options.playButtonIconColor : '000';
+    this.playButtonWidth = isset(options.playButtonWidth) ? options.playButtonWidth : '55px';
+    this.playButtonHeight = isset(options.playButtonHeight) ? options.playButtonHeight : '55px';
     
     this.instance = null;
     this.el = 'string' === typeof el ? document.getElementById(el) : el;
@@ -93,7 +98,7 @@
       overlay.classList.add('tvp-overlay');
       overlay.style.backgroundImage = 'url("' + imgUrl + '")';
       overlay.innerHTML = '<div class="tvp-overlay-cover" style="opacity:' + this.overlayOpacity + ';background-image:linear-gradient(to bottom right,#'+this.overlayColor+',#'+this.overlayColor+');"></div>'+
-      '<svg class="tvp-play" style="background-color:#'+this.playButtonBackgroundColor+';border:'+this.playButtonBorderWidth+' solid #'+this.playButtonBorderColor+';border-radius:'+this.playButtonBorderRadius+
+      '<svg class="tvp-play" style="width:'+this.playButtonWidth+';height:'+this.playButtonHeight+';background-color:#'+this.playButtonBackgroundColor+';border:'+this.playButtonBorderWidth+' solid #'+this.playButtonBorderColor+';border-radius:'+this.playButtonBorderRadius+
       '%;" viewBox="0 0 200 200"><polygon fill="#'+this.playButtonIconColor+'" points="70, 55 70, 145 145, 100"></polygon></svg>';
 
       var click = function(){
