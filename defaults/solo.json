@@ -52,7 +52,7 @@
       "type": "text",
       "label": "Play Button Background Color",
       "code": "playButtonBackgroundColor",
-      "value": "white"
+      "value": "fff"
     },
     {
       "for": "player",
@@ -66,28 +66,28 @@
       "type": "text",
       "label": "Play Button Border",
       "code": "playButtonBorderWidth",
-      "value": "1px"
+      "value": "0"
     },
     {
       "for": "player",
       "type": "text",
       "label": "Play Button Border Color",
       "code": "playButtonBorderColor",
-      "value": "black"
+      "value": "000"
     },
     {
       "for": "player",
       "type": "text",
       "label": "Play Button Icon Color",
       "code": "playButtonIconColor",
-      "value": "black"
+      "value": "000"
     },
     {
       "for": "player",
       "type": "text",
       "label": "Overlay Color",
       "code": "overlayColor",
-      "value": "black"
+      "value": null
     },
     {
       "for": "player",
