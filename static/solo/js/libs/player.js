@@ -41,10 +41,12 @@
     this.onResize = isset(options.onResize) && 'function' === typeof options.onResize ? options.onResize : null;
     this.onNext = isset(options.onNext) && 'function' === typeof options.onNext ? options.onNext : null;
     this.overlay = isset(options.overlay) ? options.overlay : false;
-    this.overlayColor = isset(options.overlayColor) ? options.overlayColor : 'white';
-    this.overlayOpacity = isset(options.overlayOpacity) ? options.overlayOpacity : '0.6';
-    this.playButtonBackground = isset(options.playButtonBackground) ? options.playButtonBackground : 'white';
+    this.overlayColor = isset(options.overlayColor) ? ('#' + options.overlayColor) : '#000';
+    this.overlayOpacity = isset(options.overlayOpacity) ? options.overlayOpacity : '0.5';
+    this.playButtonBackgroundColor = isset(options.playButtonBackgroundColor) ? options.playButtonBackgroundColor : 'white';
     this.playButtonBorderRadius = isset(options.playButtonBorderRadius) ? options.playButtonBorderRadius : '0';
+    this.playButtonBorderWidth = isset(options.playButtonBorderWidth) ? options.playButtonBorderWidth : '1px';
+    this.playButtonBorderColor = isset(options.playButtonBorderColor) ? options.playButtonBorderColor : '1px';
     this.playButtonBorder = isset(options.playButtonBorder) ? options.playButtonBorder : '1px solid black';
     this.playButtonIconColor = isset(options.playButtonIconColor) ? options.playButtonIconColor : 'black';
     
@@ -92,7 +94,8 @@
       overlay.classList.add('tvp-overlay');
       overlay.style.backgroundImage = 'url("' + imgUrl + '")';
       overlay.innerHTML = '<div class="tvp-overlay-cover" style="opacity:' + this.overlayOpacity + ';background-image:linear-gradient(to bottom right,'+this.overlayColor+','+this.overlayColor+');"></div>'+
-      '<svg class="tvp-play" style="background-color:'+this.playButtonBackground+';border:'+this.playButtonBorder+';border-radius:'+this.playButtonBorderRadius+'" viewBox="0 0 200 200"><polygon fill="'+this.playButtonIconColor+'" points="70, 55 70, 145 145, 100"></polygon></svg>';
+      '<svg class="tvp-play" style="background-color:'+this.playButtonBackgroundColor+';border:'+this.playButtonBorderWidth+' solid '+this.playButtonBorderColor+';border-radius:'+this.playButtonBorderRadius+
+      '" viewBox="0 0 200 200"><polygon fill="'+this.playButtonIconColor+'" points="70, 55 70, 145 145, 100"></polygon></svg>';
 
       var click = function(){
         if (!that.instance) return;
