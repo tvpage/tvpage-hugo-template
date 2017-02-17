@@ -66,39 +66,14 @@
         runTime = parent.__TVPage__;
 
     //We deal diff with some stuff on iframe.
-    if (window.frameElement) {
-      
-      if (body.classList.contains('dynamic')) {
-
-        (function(unique,settings){
-          render(unique,body);
-          loadData(settings,unique,function(data){
-            settings.data = data || [];
-            new Player('tvp-player-el-'+unique,settings);
-          });
-        }(random(),getSettings('dynamic')));
-
-      }
-
-    } else if (isset(runTime,'inline') && runTime.inline.length) {
-
-      var inline = runTime.inline,
-          inlineCount = inline.length;
-
-      while (inlineCount > 0) {
-
-        (function(unique,id){
-          var settings = getSettings(id);
-          render(unique,document.getElementById(id+'-holder'),!document.getElementById('tvphost'));
-          loadData(settings,unique,function(data){
-            settings.data = data || [];
-            new Player(document.getElementById('tvp-player-el-'+unique),settings);
-          });
-        }(random(),inline[inlineCount-1]));
-        
-        inline.pop();
-        inlineCount--;
-      }
+    if (body.classList.contains('dynamic')) {
+      (function(unique,settings){
+        render(unique,body);
+        loadData(settings,unique,function(data){
+          settings.data = data || [];
+          new Player('tvp-player-el-'+unique,settings);
+        });
+      }(random(),getSettings('dynamic')));
     }
 
   };
