@@ -34,18 +34,19 @@
     this.autoplay = isset(options.autoplay) ? Number(options.autoplay) : false;
     this.autonext = isset(options.autonext) ? Number(options.autonext) : true;
     this.version = isset(options.version) ? options.version : '1.8.5';
-    this.progresscolor = isset(options.progresscolor) ? options.progresscolor : '#E57211';
+    this.progressColor = isset(options.progressColor) ? options.progressColor : '#E57211';
     this.transcript = isset(options.transcript) ? options.transcript : false;
-    this.removecontrols = isset(options.removecontrols) ? options.removecontrols : ["hd"];
+    this.removeControls = isset(options.removeControls) ? options.removeControls : ["tvplogo","hd"];
     this.analytics = isset(options.analytics) ? options.analytics : true;
     this.onResize = isset(options.onResize) && 'function' === typeof options.onResize ? options.onResize : null;
     this.onNext = isset(options.onNext) && 'function' === typeof options.onNext ? options.onNext : null;
     this.overlay = isset(options.overlay) ? options.overlay : false;
-    this.overlayColor = isset(options.overlayColor) ? options.overlayColor : 'white';
-    this.overlayOpacity = isset(options.overlayOpacity) ? options.overlayOpacity : '0.6';
-    this.playButtonBackground = isset(options.playButtonBackground) ? options.playButtonBackground : 'white';
+    this.overlayColor = isset(options.overlayColor) ? options.overlayColor : '000';
+    this.overlayOpacity = isset(options.overlayOpacity) ? options.overlayOpacity : '0.5';
+    this.playButtonBackgroundColor = isset(options.playButtonBackgroundColor) ? options.playButtonBackgroundColor : 'white';
     this.playButtonBorderRadius = isset(options.playButtonBorderRadius) ? options.playButtonBorderRadius : '0';
-    this.playButtonBorder = isset(options.playButtonBorder) ? options.playButtonBorder : '1px solid black';
+    this.playButtonBorderWidth = isset(options.playButtonBorderWidth) ? options.playButtonBorderWidth : '1px';
+    this.playButtonBorderColor = isset(options.playButtonBorderColor) ? options.playButtonBorderColor : 'black';
     this.playButtonIconColor = isset(options.playButtonIconColor) ? options.playButtonIconColor : 'black';
     
     this.instance = null;
@@ -91,8 +92,9 @@
       var overlay = document.createElement('div');
       overlay.classList.add('tvp-overlay');
       overlay.style.backgroundImage = 'url("' + imgUrl + '")';
-      overlay.innerHTML = '<div class="tvp-overlay-cover" style="opacity:' + this.overlayOpacity + ';background-image:linear-gradient(to bottom right,'+this.overlayColor+','+this.overlayColor+');"></div>'+
-      '<svg class="tvp-play" style="background-color:'+this.playButtonBackground+';border:'+this.playButtonBorder+';border-radius:'+this.playButtonBorderRadius+'" viewBox="0 0 200 200"><polygon fill="'+this.playButtonIconColor+'" points="70, 55 70, 145 145, 100"></polygon></svg>';
+      overlay.innerHTML = '<div class="tvp-overlay-cover" style="opacity:' + this.overlayOpacity + ';background-image:linear-gradient(to bottom right,#'+this.overlayColor+',#'+this.overlayColor+');"></div>'+
+      '<svg class="tvp-play" style="background-color:#'+this.playButtonBackgroundColor+';border:'+this.playButtonBorderWidth+' solid #'+this.playButtonBorderColor+';border-radius:'+this.playButtonBorderRadius+
+      '%;" viewBox="0 0 200 200"><polygon fill="#'+this.playButtonIconColor+'" points="70, 55 70, 145 145, 100"></polygon></svg>';
 
       var click = function(){
         if (!that.instance) return;
@@ -203,7 +205,7 @@
                 window.addEventListener('resize', resize);
               }
 
-              that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progresscolor;
+              that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progressColor;
               var current = 0;
               if (startWith && startWith.length) {
                 for (var i = 0; i < that.assets.length; i++) {
@@ -235,7 +237,7 @@
             controls: {
               active: true,
               floater: {
-                removeControls: that.removecontrols,
+                removeControls: that.removeControls,
                 transcript: that.transcript
               }
             }
