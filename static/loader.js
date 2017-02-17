@@ -12,7 +12,10 @@
     cssExt = window.DEBUG ? '.css' : '.min.css',
     isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
     isset = function(o, p) {
-      return 'undefined' !== typeof o[p]
+      if (!arguments.length) return;
+      var val = o;
+      if (p) val = o[p];
+      return 'undefined' !== typeof val;
     },
     removeEl = function(el) {
       if (!el) return;
@@ -68,7 +71,7 @@
   };
 
   //Dynamically creates an iframe & appends it's required CSS & JS libraries.
-  var createIframeHtml = function(options) {
+  var getIframeHtml = function(options) {
     var html = '<head><base target="_blank" /></head><body class="' + (options.className || '') + '" data-domain="' + (options.domain || '') + '" data-id="' + (options.id || '') + '" onload="' +
       'var doc = document, head = doc.getElementsByTagName(\'head\')[0],' +
       'addJS = function(s){ var sc = doc.createElement(\'script\');sc.src=s;doc.body.appendChild(sc);};' +
@@ -109,7 +112,8 @@
     widget.dataMethod = 'static';
     widget.type = options.type || '';
     widget.holder = options.holder || null;
-    
+    widget.config = {};
+
     if (isset(window, '__TVPage__') && isset(__TVPage__, 'config') && isset(__TVPage__.config, widget.id)) {
       widget.config = __TVPage__.config[widget.id];
     }
@@ -117,14 +121,8 @@
     if (isset(widget.config, 'channel') && isset(widget.config.channel, 'id')) {
       widget.dataMethod = 'dynamic';
     }
-    
-    if (window.DEBUG) {
-      console.log("EMBED METHOD", widget.dataMethod);
-    }
 
-    var domain = widget.config.domain;
-
-    var staticPath = domain + '/' + widget.type;
+    var staticPath = widget.config.domain + '/' + widget.type;
     widget.staticPath = staticPath;
     widget.paths = {
       solo: {
@@ -189,7 +187,7 @@
         if ('tvp_sidebar:video_click' === eventName) {
           var data = e.data;
           var selectedVideo = data.selectedVideo || {};
-          var runTime = (data.runTime || __TVPage__).config[id];
+          var runTime = (data.runTime || (isset(__TVPage__) ? __TVPage__ : {}) ).config[id];
           var id = widget.id;
           
           widget.data[id] = widget[id] || {};
@@ -239,7 +237,7 @@
           }
           html += '</div>';
 
-          iframeModalDoc.open().write(createIframeHtml({
+          iframeModalDoc.open().write(getIframeHtml({
             domain: domain,
             id: id,
             html: html,
@@ -299,7 +297,7 @@
       if ('dynamic' === widget.dataMethod) {
 
         var iframeDoc = iframe.contentWindow.document;
-        iframeDoc.open().write(createIframeHtml({
+        iframeDoc.open().write(getIframeHtml({
           js: function() {
             var js, type = widget.type;
             if ('solo' === type || 'solo-click' === type) {
@@ -337,6 +335,7 @@
       var spot = spots[i];
       var spotId = spot.id;
 
+      //Looks like this vey performant:
       //http://stackoverflow.com/questions/7589853/how-is-insertadjacenthtml-so-much-faster-than-innerhtml
       spot.insertAdjacentHTML('beforebegin', '<div id="' + spotId + '-holder" class="tvp-iframe-holder"><iframe id="src="about:blank"" allowfullscreen frameborder="0" scrolling="no"></iframe></div>');
 
