@@ -50,10 +50,7 @@
     var frag = document.createDocumentFragment(),
     main = document.createElement('div');
     main.classList.add('tvp-player');
-    main.innerHTML =  '<div id="tvp-player-el-'+idEl+'" class="tvp-player-el"></div>'+
-    '<svg class="tvp-play" viewBox="0 0 200 200">'+
-    '<polygon points="70, 55 70, 145 145, 100">'+
-    '</polygon></svg></div>';
+    main.innerHTML =  '<div id="tvp-player-el-'+idEl+'" class="tvp-player-el"></div></div>';
     frag.appendChild(main);
     target.appendChild(frag);
   };
@@ -62,19 +59,17 @@
   //this here or somehow the will be content (when used with iframe).
   function initialize(){
 
-    var body = document.body,
-        runTime = parent.__TVPage__;
-
     //We deal diff with some stuff on iframe.
-    if (body.classList.contains('dynamic')) {
-      (function(unique,settings){
-        render(unique,body);
-        loadData(settings,unique,function(data){
-          settings.data = data || [];
-          new Player('tvp-player-el-'+unique,settings);
-        });
-      }(random(),getSettings('dynamic')));
-    }
+    (function(unique,settings){
+      render(unique,document.body);
+      loadData(settings,unique,function(data){
+        
+        settings.data = data || [];
+        settings.overlay = true;
+        
+        new Player('tvp-player-el-'+unique,settings);
+      });
+    }(random(),getSettings('dynamic')));
 
   };
 

@@ -34,8 +34,8 @@ body {
 .tvp-play {
   background-color: #fff;
   box-sizing: border-box;
-  width: 45px;
-  height: 45px;
+  width: 55px;
+  height: 55px;
   padding: 0;
   position: absolute;
   top: 0;
@@ -45,11 +45,21 @@ body {
   margin: auto;
   opacity: 0.95;
   cursor: pointer;
-  border-radius: 1px;
-  border: 2px solid black;
+  border-radius: 50%;
+  border: 1px solid black;
 }
 
 .tvp-play > polygon {
   pointer-events: none;
-  fill: black;
+  fill: #273691;
+}
+
+.tvp-overlay {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  /*background-repeat: no-repeat; 
+  background-size: cover;*/
 }
