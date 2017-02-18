@@ -11,7 +11,9 @@
   var env = window.DEBUG ? 'dev' : 'prod',
     isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
     isset = function(o, p) {
-      return 'undefined' !== typeof o[p]
+      var val = o;
+      if (p) val = o[p];
+      return 'undefined' !== typeof val;
     },
     appendToHead = function(el) {
       (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(el);
@@ -113,9 +115,10 @@
     }
 
     var domain = spot.getAttribute('data-domain'),
-      type = spot.getAttribute('class').split('-').pop();
-    typeStaticPath = domain + '/' + type + (window.DEBUG ? '/' : '/dist/'),
-      jsPath = typeStaticPath + 'js/';
+      type = spot.getAttribute('class').replace('tvp-','');
+
+    var typeStaticPath = domain + '/' + type + (window.DEBUG ? '/' : '/dist/');
+    var jsPath = typeStaticPath + 'js/';
 
     var sidebarJS = {
       dev: [
@@ -163,7 +166,7 @@
       if (embedMethod === 'iframe') {
         var iframe = createIframe();
 
-        if ('solo' === type) {
+        if ('solo' === type || 'solo-click' === type) {
           iframe.onload = function() {
             var ifr = this;
             window.addEventListener('resize', debounce(function() {
@@ -188,7 +191,7 @@
             if ('tvp_sidebar:video_click' === eventName) {
               var data = e.data;
               var selectedVideo = data.selectedVideo || {};
-              var runTime = (data.runTime || __TVPage__).config[id];
+              var runTime = (data.runTime || (isset(__TVPage__) ? __TVPage__ : {}) ).config[id];
 
               widget[id] = widget[id] || {};
               widget[id] = {
@@ -300,7 +303,7 @@
           iframeDoc.open().write(createIframeHtml({
             js: function() {
               var js;
-              if ('solo' === type) {
+              if ('solo' === type || 'solo-click' === type) {
                 js = soloJS[env];
               } else if ('sidebar' === type) {
                 js = sidebarJS[env];
@@ -317,11 +320,10 @@
 
         //Handling the static iframe scenario, not much to do, just delay the src addition.
         else {
-          function setSrc() {
+          setTimeout(function() {
             var src = spot.href;
             (-1 == navigator.userAgent.indexOf("MSIE")) ? iframe.src = src: iframe.location = src;
-          }
-          setTimeout(setSrc, 5);
+          },5);
         }
 
       }
@@ -332,7 +334,7 @@
   }
 
   //Load each widget spots from the page.
-  var spots = document.querySelectorAll('.tvp-sidebar, .tvp-solo'),
+  var spots = document.querySelectorAll('.tvp-sidebar, .tvp-solo, .tvp-solo-click'),
     spotsCount = spots.length;
 
   function load() {
