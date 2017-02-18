@@ -11,7 +11,9 @@
   var env = window.DEBUG ? 'dev' : 'prod',
     isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
     isset = function(o, p) {
-      return 'undefined' !== typeof o[p]
+      var val = o;
+      if (p) val = o[p];
+      return 'undefined' !== typeof val;
     },
     appendToHead = function(el) {
       (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(el);
@@ -115,8 +117,8 @@
     var domain = spot.getAttribute('data-domain'),
       type = spot.getAttribute('class').replace('tvp-','');
 
-    typeStaticPath = domain + '/' + type + (window.DEBUG ? '/' : '/dist/'),
-      jsPath = typeStaticPath + 'js/';
+    var typeStaticPath = domain + '/' + type + (window.DEBUG ? '/' : '/dist/');
+    var jsPath = typeStaticPath + 'js/';
 
     var sidebarJS = {
       dev: [
@@ -189,7 +191,7 @@
             if ('tvp_sidebar:video_click' === eventName) {
               var data = e.data;
               var selectedVideo = data.selectedVideo || {};
-              var runTime = (data.runTime || __TVPage__).config[id];
+              var runTime = (data.runTime || (isset(__TVPage__) ? __TVPage__ : {}) ).config[id];
 
               widget[id] = widget[id] || {};
               widget[id] = {
