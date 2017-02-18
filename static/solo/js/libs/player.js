@@ -208,7 +208,7 @@
                   that.resize(size[0], size[1]);
                 });
               } else {
-                window.addEventListener('resize', resize);
+                window.addEventListener('resize', debounce(that.resize,50));
               }
 
               that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progressColor;

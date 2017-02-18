@@ -50,16 +50,30 @@
     {
       "for": "player",
       "type": "text",
+      "label": "Play Button Height",
+      "code": "playButtonHeight",
+      "value": "105px"
+    },
+    {
+      "for": "player",
+      "type": "text",
+      "label": "Play Button Width",
+      "code": "playButtonWidth",
+      "value": "105px"
+    },
+    {
+      "for": "player",
+      "type": "text",
       "label": "Play Button Background Color",
       "code": "playButtonBackgroundColor",
-      "value": "fff"
+      "value": "db5726"
     },
     {
       "for": "player",
       "type": "text",
       "label": "Play Button Border Radius",
       "code": "playButtonBorderRadius",
-      "value": "0"
+      "value": "5"
     },
     {
       "for": "player",
@@ -80,14 +94,14 @@
       "type": "text",
       "label": "Play Button Icon Color",
       "code": "playButtonIconColor",
-      "value": "000"
+      "value": "fff"
     },
     {
       "for": "player",
       "type": "text",
       "label": "Overlay Color",
       "code": "overlayColor",
-      "value": null
+      "value": ""
     },
     {
       "for": "player",
@@ -95,6 +109,13 @@
       "label": "Overlay Opacity",
       "code": "overlayOpacity",
       "value": "0.5"
+    },
+    {
+      "for": "player",
+      "type": "boolean",
+      "label": "Overlay",
+      "code": "overlay",
+      "value": true
     }
   ]
 }
