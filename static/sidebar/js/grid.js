@@ -56,7 +56,6 @@
 
     this.el = 'string' === typeof el ? document.getElementById(el) : el;
     this.loadBtn = this.el.getElementsByClassName('tvp-sidebar-load')[0];
-    this.tvpLogo = this.el.getElementsByClassName('tvp-logo')[0];
     this.container = this.el.getElementsByClassName('tvp-sidebar-container')[0];
     this.onLoad = options.onLoad && isFunction(options.onLoad) ? options.onLoad : null;
     this.onLoadEnd = options.onLoadEnd && isFunction(options.onLoadEnd) ? options.onLoadEnd : null;
@@ -215,9 +214,6 @@
         var isSmall = newSize === 'small';
         that.itemsPerPage = isSmall ? 2 : (options.itemsPerPage || 6);
         that.itemsPerRow = isSmall ? 1 : (options.itemsPerRow || 2);
-        that.tvpLogo.style = (isSmall ? 'display:none' : '')&&(isSmall ? 'width:65%' : '');
-        that.loadBtn.style = (isSmall ? 'width:45px' : '');
-        that.loadBtn.innerHTML = isSmall ? '+' : 'VIEW MORE';
         that.load(function(){
           that.render();
           notify();

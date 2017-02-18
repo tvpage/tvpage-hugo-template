@@ -45,7 +45,7 @@
       var productId = product.id;
       var productVideoId = product.entityIdParent;
       var fixedPrice = '';
-      var prodTitle = product.title;
+      var prodTitle = product.title || '';
 
       analytics.track('pi',{
         vd: product.entityIdParent,

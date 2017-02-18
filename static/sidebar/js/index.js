@@ -47,7 +47,7 @@
     main.innerHTML =  '<div class="tvp-sidebar-title">' + (d.title || '') + '</div>'+
     '<div class="tvp-sidebar-container"></div><div class="tvp-sidebar-footer">'+
     '<button class="tvp-sidebar-load">' + (d.loadBtnText || '') + '</button>'+
-    '<a class="tvp-logo" href="https://www.tvpage.com/"></a>'+
+    '<a class="tvp-logo" href="https://www.tvpage.com/"><div class="tvp-logo-img"></div></a>'+
     '</div><div class="tvp-cover"></div>';
     frag.appendChild(main);
     target.appendChild(frag);
