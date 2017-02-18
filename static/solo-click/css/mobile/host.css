@@ -8,8 +8,9 @@ div[class^="tvp-"] {
   transition: height ease-out 0.0001s;
 }
 
-.tvp-iframe-holder.solo {
+.tvp-iframe-holder.solo-click {
   padding-top: 56.25%;
+  background-color: black;
 }
 
 .tvp-iframe-holder.inline {

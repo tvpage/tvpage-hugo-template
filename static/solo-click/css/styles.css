@@ -31,30 +31,33 @@ body {
   height: 100%;
 }
 
-.tvp-play {
-  background-color: #fff;
+.tvp-play-holder {
   box-sizing: border-box;
-  width: 55px;
-  height: 55px;
-  padding: 0;
   position: absolute;
+  padding: 0;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
   margin: auto;
-  opacity: 0.95;
   cursor: pointer;
-  border-radius: 50%;
-  border: 1px solid black;
+  width: 135px;
+}
+
+.tvp-play {
+  box-sizing: border-box;
+  padding: 0;
+  margin: auto;
+  cursor: pointer;
+  display: block;
 }
 
 .tvp-play > polygon {
   pointer-events: none;
-  fill: #273691;
 }
 
 .tvp-overlay {
+  cursor: pointer;
   width: 100%;
   height: 100%;
   background-size: cover;
@@ -65,13 +68,15 @@ body {
   position: absolute;
 }
 
-.tvp-overlay:before {
-  content: '';
+.tvp-overlay-cover {
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  background-image: linear-gradient(to bottom right,#002f4b,#dc4225);
-  opacity: .6; 
+}
+
+.tvp-play-text {
+  margin-top: 10px;
+  text-align: center;
 }

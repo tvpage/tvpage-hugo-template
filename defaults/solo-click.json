@@ -1,0 +1,150 @@
+{
+  "option": [
+    {
+      "type": "text",
+      "label": "Player Version",
+      "code": "version",
+      "value": "1.8.5"
+    },
+    {
+      "type": "text",
+      "label": "Progress Color",
+      "code": "progressColor",
+      "value": "#E57211"
+    },
+    {
+      "type": "boolean",
+      "label": "Transcript",
+      "code": "transcript",
+      "value": false
+    },
+    {
+      "type": "text",
+      "label": "Remove Controls",
+      "code": "removeControls",
+      "value": [
+        "tvplogo",
+        "hd"
+      ]
+    },
+    {
+      "for": "player",
+      "type": "boolean",
+      "label": "Autoplay",
+      "code": "autoplay",
+      "value": false
+    },
+    {
+      "for": "player",`
+      "type": "boolean",
+      "label": "Autonext",
+      "code": "autonext",
+      "value": true
+    },
+    {
+      "type": "boolean",
+      "label": "Analytics",
+      "code": "analytics",
+      "value": true
+    },
+    {
+      "for": "player",
+      "type": "text",
+      "label": "Play Button Height",
+      "code": "playButtonHeight",
+      "value": "75px"
+    },
+    {
+      "for": "player",
+      "type": "text",
+      "label": "Play Button Width",
+      "code": "playButtonWidth",
+      "value": "75px"
+    },
+    {
+      "for": "player",
+      "type": "text",
+      "label": "Play Button Background Color",
+      "code": "playButtonBackgroundColor",
+      "value": "fff"
+    },
+    {
+      "for": "player",
+      "type": "text",
+      "label": "Play Button Border Radius",
+      "code": "playButtonBorderRadius",
+      "value": "0"
+    },
+    {
+      "for": "player",
+      "type": "text",
+      "label": "Play Button Border",
+      "code": "playButtonBorderWidth",
+      "value": "0"
+    },
+    {
+      "for": "player",
+      "type": "text",
+      "label": "Play Button Border Color",
+      "code": "playButtonBorderColor",
+      "value": "000"
+    },
+    {
+      "for": "player",
+      "type": "text",
+      "label": "Play Button Icon Color",
+      "code": "playButtonIconColor",
+      "value": "000"
+    },
+    {
+      "for": "player",
+      "type": "text",
+      "label": "Overlay Color",
+      "code": "overlayColor",
+      "value": ""
+    },
+    {
+      "for": "player",
+      "type": "text",
+      "label": "Overlay Opacity",
+      "code": "overlayOpacity",
+      "value": "0.5"
+    },
+    {
+      "for": "player",
+      "type": "text",
+      "label": "Click Text",
+      "code": "clickText",
+      "value": "Watch Video"
+    }
+
+    {
+      "for": "player",
+      "type": "text",
+      "label": "Play Text",
+      "code": "playText",
+      "value": "Watch Video"
+    },
+    {
+      "for": "player",
+      "type": "text",
+      "label": "Play Text Size",
+      "code": "playTextSize",
+      "value": "12px"
+    },
+    {
+      "for": "player",
+      "type": "text",
+      "label": "Play Text Color",
+      "code": "playTextColor",
+      "value": "000"
+    },
+    {
+      "for": "player",
+      "type": "text",
+      "label": "Play Text Font Family",
+      "code": "playTextFontFamily",
+      "value": "Helvetica"
+    }
+  ]
+}
