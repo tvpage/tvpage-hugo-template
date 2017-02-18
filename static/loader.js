@@ -320,11 +320,10 @@
 
         //Handling the static iframe scenario, not much to do, just delay the src addition.
         else {
-          function setSrc() {
+          setTimeout(function() {
             var src = spot.href;
             (-1 == navigator.userAgent.indexOf("MSIE")) ? iframe.src = src: iframe.location = src;
-          }
-          setTimeout(setSrc, 5);
+          },5);
         }
 
       }
