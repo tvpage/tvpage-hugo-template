@@ -12,10 +12,12 @@
     cssExt = window.DEBUG ? '.css' : '.min.css',
     isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
     isset = function(o, p) {
-      if (!arguments.length) return;
       var val = o;
       if (p) val = o[p];
       return 'undefined' !== typeof val;
+    },
+    appendToHead = function(el) {
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(el);
     },
     removeEl = function(el) {
       if (!el) return;
@@ -196,6 +198,13 @@
             selectedVideo: selectedVideo,
             runTime: runTime
           };
+                css: [
+                  typeStaticPath + 'css/' + (isMobile ? 'mobile' : '') + '/modal/styles' + cssExt,
+                  (isMobile ? domain + '/' + type + '/css/vendor/slick.css' : '')
+                ].filter(Boolean)
+              }));
+              iframeModalDoc.close();
+            }
 
           var modalFrag = document.createDocumentFragment();
 
