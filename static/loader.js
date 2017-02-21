@@ -1,5 +1,5 @@
-//The widgets loader, so far it takes care of the aspect ratio of the iframes,
-//it can also optionaly fetch the content from a widget url, it also permits
+//The selfs loader, so far it takes care of the aspect ratio of the iframes,
+//it can also optionaly fetch the content from a self url, it also permits
 //to load the iframe scripts asynchronouse, this hides the browser spinner.
 //Loader is the delegator of iframe messages.
 (function(window, document) {
@@ -103,74 +103,81 @@
     return html;
   };
 
-  function Widget(options) {
-    var widget = function() {};
+  //self Singleton...
+  function Widget(spot, options) {
+    var self = function() {};
 
-    //Define the data method to be used.
-    var id = options.id || '';
-    widget.id = id;
-    widget.data = {};
-    widget.data[id] = {};
-    widget.dataMethod = 'static';
-    widget.type = options.type || '';
-    widget.holder = options.holder || null;
-    widget.config = {};
+    self.id = spot.id;
+    
+    spot.insertAdjacentHTML('beforebegin', '<div id="' + self.id + '-holder" class="tvp-iframe-holder">'+
+    '<iframe id="src="about:blank"" allowfullscreen frameborder="0" scrolling="no"></iframe></div>');
 
-    if (isset(window, '__TVPage__') && isset(__TVPage__, 'config') && isset(__TVPage__.config, widget.id)) {
-      widget.config = __TVPage__.config[widget.id];
+    self.holder = document.getElementById(self.id + '-holder') || null;
+    self.type = spot.className.replace('tvp-', '') || '';
+    self.holder.classList.add(self.type);
+    self.data = {};
+    self.data[self.id] = {};
+    self.dataMethod = 'static';
+    self.config = {};
+    
+    removeEl(spot);
+
+    if (isset(window, '__TVPage__') && isset(__TVPage__, 'config') && isset(__TVPage__.config, self.id)) {
+      self.config = __TVPage__.config[self.id];
     }
 
-    if (isset(widget.config, 'channel') && isset(widget.config.channel, 'id')) {
-      widget.dataMethod = 'dynamic';
+    if (isset(self.config, 'channel') && isset(self.config.channel, 'id')) {
+      self.dataMethod = 'dynamic';
     }
 
-    var staticPath = widget.config.domain + '/' + widget.type;
-    widget.staticPath = staticPath;
-    widget.paths = {
-      solo: {
-        dev: [
-          '//a.tvpage.com/tvpa.min.js',
-          '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
-          staticPath + '/js/libs/analytics.js',
-          staticPath + '/js/libs/player.js',
-          staticPath + '/js/index.js'
-        ],
-        prod: [
-          '//a.tvpage.com/tvpa.min.js',
-          '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
-          staticPath + '/js/scripts.min.js'
-        ]
-      },
-      sidebar: {
-        dev: [
-          staticPath + '/js/libs/utils.js',
-          staticPath + '/js/grid.js',
-          staticPath + '/js/index.js'  
-        ],
-        prod: [
-          staticPath + 'js/scripts.min.js' 
-        ]
-      }
-    };
+    if (isset(self.config, 'domain')) {
+      self.static = self.config.domain + '/' + self.type;
+      self.paths = {
+        solo: {
+          dev: [
+            '//a.tvpage.com/tvpa.min.js',
+            '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
+            self.static + '/js/libs/analytics.js',
+            self.static + '/js/libs/player.js',
+            self.static + '/js/index.js'
+          ],
+          prod: [
+            '//a.tvpage.com/tvpa.min.js',
+            '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
+            self.static + '/js/scripts.min.js'
+          ]
+        },
+        sidebar: {
+          dev: [
+            self.static + '/js/libs/utils.js',
+            self.static + '/js/grid.js',
+            self.static + '/js/index.js'  
+          ],
+          prod: [
+            self.static + 'js/scripts.min.js' 
+          ]
+        }
+      };
+    }
 
-    widget.initialize = function() {
+    self.initialize = function() {
 
-      //Add target/host page css for our widget
+      //Add target/host page css for our self
       var link = document.createElement('link');
       link.rel = 'stylesheet';
-      var hostCssPath = widget.staticPath;
-      link.href = widget.staticPath + (window.DEBUG ? '/' : '/dist/') + 'css/' + (isMobile ? 'mobile/' : '') + 'host' + cssExt;
+      var hostCssPath = self.static;
+      link.href = self.static + (window.DEBUG ? '/' : '/dist/') + 'css/' + (isMobile ? 'mobile/' : '') + 'host' + cssExt;
       document.getElementsByTagName('head')[0].appendChild(link);
 
-      var iframe = widget.holder.querySelector('iframe');
+      var iframe = self.holder.querySelector('iframe');
       
       iframe.onload = function() {
-        if ('solo' === widget.type || 'solo-click' === widget.type) {
+        if ('solo' === self.type || 'solo-click' === self.type) {
           var ifr = this;
           window.addEventListener('resize', debounce(function() {
             ifr.contentWindow.postMessage({
-              event: '_tvp_widget_holder_resize',
-              size: [widget.holder.offsetWidth, widget.holder.offsetHeight]
+              event: '_tvp_self_holder_resize',
+              size: [self.holder.offsetWidth, self.holder.offsetHeight]
             }, '*');
           }, 50));
         }
@@ -183,17 +190,17 @@
         var eventName = e.data.event;
 
         if ('tvp_sidebar:render' === eventName || 'tvp_sidebar:grid_resize' === eventName) {
-          widget.holder.style.height = e.data.height;
+          self.holder.style.height = e.data.height;
         }
 
         if ('tvp_sidebar:video_click' === eventName) {
           var data = e.data;
           var selectedVideo = data.selectedVideo || {};
           var runTime = (data.runTime || (isset(__TVPage__) ? __TVPage__ : {}) ).config[id];
-          var id = widget.id;
+          var id = self.id;
           
-          widget.data[id] = widget[id] || {};
-          widget[id] = {
+          self.data[id] = self[id] || {};
+          self[id] = {
             data: data.videos || [],
             selectedVideo: selectedVideo,
             runTime: runTime
@@ -245,7 +252,7 @@
             html: html,
             js: getModalJSFilePaths(domain, runTime.playerVersion),
             css: [
-              widget.staticPath + (window.DEBUG ? '/' : '/dist/') + 'css/' + (isMobile ? 'mobile' : '') + '/modal/styles' + cssExt,
+              self.static + (window.DEBUG ? '/' : '/dist/') + 'css/' + (isMobile ? 'mobile' : '') + '/modal/styles' + cssExt,
               (isMobile ? domain + '/' + type + '/css/vendor/slick.css' : '')
             ].filter(Boolean)
           }));
@@ -255,14 +262,14 @@
         var ifrIModalId = 'tvp-iframe-modal_' + id;
 
         if ('tvp_sidebar:modal_initialized' === eventName) {
-          var widgetData = widget[id];
+          var selfData = self[id];
           var iframeModal = document.getElementById(ifrIModalId);
           if (iframeModal.contentWindow) {
             iframeModal.contentWindow.postMessage({
               event: '_tvp_sidebar_modal_data',
-              data: widgetData.data,
-              selectedVideo: widgetData.selectedVideo,
-              runTime: widgetData.runTime
+              data: selfData.data,
+              selectedVideo: selfData.selectedVideo,
+              runTime: selfData.runTime
             }, '*');
           }
 
@@ -274,7 +281,7 @@
                 if (iframeModal.contentWindow && iframeModal.parentNode) {
                   var ref = iframeModal.parentNode;
                   iframeModal.contentWindow.postMessage({
-                    event: '_tvp_widget_holder_resize',
+                    event: '_tvp_self_holder_resize',
                     size: [ref.offsetWidth, Math.floor(ref.offsetWidth * (9 / 16))]
                   }, '*');
                 }
@@ -296,23 +303,23 @@
       //Because iframes are loaded first before the host page loading, we load them empties, making this load time
       //reduced as its minimum, we start then creating the content of the iframe dynamically.
       //Reference: http://www.aaronpeters.nl/blog/iframe-loading-techniques-performance?%3E
-      if ('dynamic' === widget.dataMethod) {
+      if ('dynamic' === self.dataMethod) {
 
         var iframeDoc = iframe.contentWindow.document;
         iframeDoc.open().write(getIframeHtml({
           js: function() {
-            var js, type = widget.type;
+            var js, type = self.type;
             if ('solo' === type || 'solo-click' === type) {
-              js = widget.paths.solo[env];
+              js = self.paths.solo[env];
             } else if ('sidebar' === type) {
-              js = widget.paths.sidebar[env];
+              js = self.paths.sidebar[env];
             }
             return js
           }(),
-          css: [widget.staticPath + (window.DEBUG ? '/' : '/dist/') + 'css/styles' + cssExt],
-          className: widget.dataMethod,
-          domain: widget.domain,
-          id: id
+          css: [self.static + (window.DEBUG ? '/' : '/dist/') + 'css/styles' + cssExt],
+          className: self.dataMethod,
+          domain: self.domain,
+          id: self.id
         }));
         iframeDoc.close();
       }
@@ -327,33 +334,19 @@
       }
     }
 
-    return widget;
+    return self;
   }
 
   function load () {
     var spots = document.querySelectorAll('.tvp-sidebar, .tvp-solo, .tvp-solo-click');
     for (var i = 0; i < spots.length; i++) {
 
-      var spot = spots[i];
-      var spotId = spot.id;
-
-      //Looks like this vey performant:
+      //We want to show somehting immediately.
+      //References:
       //http://stackoverflow.com/questions/7589853/how-is-insertadjacenthtml-so-much-faster-than-innerhtml
-      spot.insertAdjacentHTML('beforebegin', '<div id="' + spotId + '-holder" class="tvp-iframe-holder"><iframe id="src="about:blank"" allowfullscreen frameborder="0" scrolling="no"></iframe></div>');
-
-      var holder = document.getElementById(spotId + '-holder');
-      var type = spot.className.replace('tvp-', '');
-      holder.classList.add(type);
-
-      var widget  = new Widget({
-        type: type,
-        holder: holder,
-        id: spotId
-      }); 
+      var widget  = new Widget(spots[i],{});
 
       widget.initialize();
-
-      removeEl(spot);
     }
   }
 
