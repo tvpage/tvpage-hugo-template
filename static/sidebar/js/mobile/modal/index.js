@@ -1,11 +1,13 @@
 (function(window,document){
 
-  var analytics;
+  var analytics,
+      channelId;
 
   var pkTrack = function(){
     analytics.track('pk',{
       vd: this.getAttribute('data-vd'),
-      ct: this.id.split('-').pop()
+      ct: this.id.split('-').pop(),
+      pg: channelId
     });
   };
 
@@ -49,7 +51,8 @@
 
       analytics.track('pi',{
         vd: product.entityIdParent,
-        ct: productId
+        ct: productId,
+        pg: channelId
       });
       
       //we want to remove all special character, so they don't duplicate
@@ -180,6 +183,7 @@
         initPlayer(data);
 
         var loginId = data.runTime.loginid || data.runTime.loginId;
+        channelId = data.runTime.channel.id;
 
         analytics =  new Analytics();
         analytics.initConfig({
