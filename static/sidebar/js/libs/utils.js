@@ -1,9 +1,11 @@
-;(function(root,doc) {
+;(function(window,document) {
 
   function Utils() {
 
-    this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    
+    this.getByClass = function(c){
+      return document.getElementsByClassName(c || '')[0];
+    };
+
     this.isset = function(o,p){
       if (!arguments.length) return;
       var val = o;
@@ -39,6 +41,6 @@
     
   }
 
-  root.Utils = new Utils();
+  window.Utils = new Utils();
 
 }(window, document));

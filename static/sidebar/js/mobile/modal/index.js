@@ -11,14 +11,6 @@
     });
   };
 
-  var isset = function(o,p){
-    return 'undefined' !== typeof o[p];
-  };
-
-  var getByClass = function(c){
-    return document.getElementsByClassName(c || '')[0];
-  };
-
   var loadProducts = function(videoId,loginId,fn){
     if (!videoId) return;
     var src = '//api.tvpage.com/v1/videos/' + videoId + '/products?X-login-id=' + loginId;
@@ -36,10 +28,10 @@
     document.body.appendChild(script);
   };
 
-  var render = function(data, exchangeVideo){
-    var el = getByClass('iframe-content');
+  var render = function(data){
+    var el = Utils.getByClass('iframe-content');
 
-    var container = getByClass('tvp-products');
+    var container = Utils.getByClass('tvp-products');
     var frag = document.createDocumentFragment();
     
     for (var i = 0; i < data.length; i++) {
@@ -132,14 +124,14 @@
   };
 
   var initialize = function(){
-    var el = getByClass('iframe-content');
+    var el = Utils.getByClass('iframe-content');
 
     var initPlayer = function(data){
       var s = JSON.parse(JSON.stringify(data.runTime));
       
       s.data = data.data;
       
-      s.onResize = function(initial,size){
+      s.onResize = function(initial){
         if (!initial && window.parent && window.parent.parent) {
           window.parent.parent.postMessage({
             event: 'tvp_sidebar:modal_resized',
@@ -176,7 +168,7 @@
     };
 
     window.addEventListener('message', function(e){
-      if (!e || !isset(e, 'data') || !isset(e.data, 'event')) return;
+      if (!e || !Utils.isset(e, 'data') || !Utils.isset(e.data, 'event')) return;
       var data = e.data;
       
       if ('_tvp_sidebar_modal_data' === data.event) {
@@ -188,7 +180,7 @@
         analytics =  new Analytics();
         analytics.initConfig({
           logUrl: '\/\/api.tvpage.com\/v1\/__tvpa.gif',
-          domain: isset(location,'hostname') ?  location.hostname : '',
+          domain: Utils.isset(location,'hostname') ?  location.hostname : '',
           loginId: loginId
         });
         

@@ -278,16 +278,15 @@
               window.addEventListener(
                 'onorientationchange' in window ? 'orientationchange' : 'resize',
                 debounce(function() {
-                  setTimeout(function() {
-                    var iframeModal = document.getElementById(ifrIModalId);
-                    if (iframeModal.contentWindow && iframeModal.parentNode) {
-                      var ref = iframeModal.parentNode;
-                      iframeModal.contentWindow.postMessage({
-                        event: '_tvp_widget_holder_resize',
-                        size: [ref.offsetWidth, Math.floor(ref.offsetWidth * (9 / 16))]
+                  var ifrModal = document.getElementById(ifrIModalId);
+                  if (ifrModal.contentWindow && iframeModal.parentNode) {
+                      var ref = ifrModal.parentNode;
+                      var size = isMobile ? [ref.offsetWidth, Math.floor(ref.offsetWidth * (9 / 16))] : [];
+                      ifrModal.contentWindow.postMessage({
+                          event: '_tvp_widget_holder_resize',
+                          size: size
                       }, '*');
-                    }
-                  }, 100);
+                  }
                 }, 50), false);
             }
 

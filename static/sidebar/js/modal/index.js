@@ -10,14 +10,6 @@
       pg: channelId
     });
   };
-	
-	var isset = function(o,p){
-		return 'undefined' !== typeof o[p];
-	};
-
-  var getbyClass = function(c){
-    return document.getElementsByClassName(c || '')[0];
-  };
 
   var loadProducts = function(videoId,loginId,fn){
     if (!videoId) return;
@@ -37,8 +29,7 @@
   };
 
   var render = function(data){
-    var container = getbyClass('tvp-products');
-    var dataCount = data.length;
+    var container = Utils.getByClass('tvp-products');
     var thumbsFrag = document.createDocumentFragment();
     var popupsFrag = document.createDocumentFragment();
     
@@ -104,7 +95,7 @@
 
     setTimeout(function(){
       
-      var holder = getbyClass('tvp-products-holder');
+      var holder = Utils.getByClass('tvp-products-holder');
       var classNames = ['tvp-product', 'tvp-product-popup'];
       for (var i = 0; i < classNames.length; i++) {
         var elements = holder.getElementsByClassName(classNames[i]);
@@ -165,20 +156,20 @@
   };
 
   var initialize = function(){
-    var el = getbyClass('iframe-content');
-    var products = getbyClass('tvp-products-holder');
+    var el = Utils.getByClass('iframe-content');
+    var products = Utils.getByClass('tvp-products-holder');
     var resizeProducts = function(height){
       products.style.height = height + 'px';
     };
 
-    var player = getbyClass('tvp-player-holder');
+    var player = Utils.getByClass('tvp-player-holder');
     resizeProducts(player.offsetHeight);
 
     var initPlayer = function(data){
       var s = JSON.parse(JSON.stringify(data.runTime));
       s.data = data.data;
 
-      s.onResize = function(size){
+      s.onResize = function(initial, size){
         resizeProducts(size[1]);
         if (window.parent && window.parent.parent) {
           window.parent.parent.postMessage({
@@ -218,7 +209,7 @@
     };
 
     window.addEventListener('message', function(e){
-      if (!e || !isset(e, 'data') || !isset(e.data, 'event')) return;
+      if (!e || !Utils.isset(e, 'data') || !Utils.isset(e.data, 'event')) return;
       var data = e.data;
       
       if ('_tvp_sidebar_modal_data' === data.event) {
@@ -230,7 +221,7 @@
         analytics =  new Analytics();
         analytics.initConfig({
           logUrl: '\/\/api.tvpage.com\/v1\/__tvpa.gif',
-          domain: isset(location,'hostname') ?  location.hostname : '',
+          domain: Utils.isset(location,'hostname') ?  location.hostname : '',
           loginId: loginId
         });
 
