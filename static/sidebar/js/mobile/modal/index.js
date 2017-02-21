@@ -183,7 +183,7 @@
         initPlayer(data);
 
         var loginId = data.runTime.loginid || data.runTime.loginId;
-        channelId = data.runTime.channel.id;
+        channelId = data.runTime.channel.id || data.runTime.channelid;
 
         analytics =  new Analytics();
         analytics.initConfig({

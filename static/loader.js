@@ -191,7 +191,7 @@
             if ('tvp_sidebar:video_click' === eventName) {
               var data = e.data;
               var selectedVideo = data.selectedVideo || {};
-              var dataVideos = data.videos;
+              var dataVideos = isset(data,'videos') ? data.videos : [];
               var runTime = (data.runTime || __TVPage__).config[id];
 
               widget[id] = widget[id] || {};
@@ -204,12 +204,10 @@
               var modalFrag = document.createDocumentFragment();
 
               //we shorten the lenght of long titles and add 3 point at the end
-              if (dataVideos) {
                 for (var i = 0; i < dataVideos.length; i++) {
                   var trimmedTitle = dataVideos[i].title.length > 62 ? dataVideos[i].title.substring(0, 62) + "..." : dataVideos[i].title;
                   dataVideos[i].title = trimmedTitle;
                 }
-              }
 
               var overlay = document.createElement('div');
               overlay.classList.add('tvp-modal-overlay');

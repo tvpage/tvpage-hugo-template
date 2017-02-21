@@ -74,7 +74,7 @@
       prodPopupNode.setAttribute('data-vd', productVideoId);
       prodPopupNode.href = productLink;
       prodPopupNode.innerHTML = '<div class="tvp-product-popup-image" '+productImgStyle+'></div>'+
-      '<p class="tvp-product-title">'+prodTitle+'<span class="tvp-tooltip">'+product.title+'</span></p><div class="tvp-clearfix"><p class="tvp-product-price">'+fixedPrice+'</p></div>'+
+      '<p class="tvp-product-title">'+prodTitle+'</p><div class="tvp-clearfix"><p class="tvp-product-price">'+fixedPrice+'</p></div>'+
       '<button class="tvp-product-cta">View Details</button>';
       popupsFrag.appendChild(prodPopupNode);
 
@@ -225,7 +225,7 @@
         initPlayer(data);
         
         var loginId = data.runTime.loginid || data.runTime.loginId;
-        channelId = data.runTime.channel.id;
+        channelId = data.runTime.channel.id || data.runTime.channelid;
         
         analytics =  new Analytics();
         analytics.initConfig({
