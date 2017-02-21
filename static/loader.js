@@ -16,13 +16,6 @@
       if (p) val = o[p];
       return 'undefined' !== typeof val;
     },
-    appendToHead = function(el) {
-      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(el);
-    },
-    removeEl = function(el) {
-      if (!el) return;
-      el.parentNode.removeChild(el);
-    },
     debounce = function(func, wait, immediate) {
       var timeout;
       return function() {
@@ -37,14 +30,6 @@
         timeout = setTimeout(later, wait);
         if (callNow) func.apply(context, args);
       };
-    },
-    createIframe = function() {
-      var ifr = document.createElement('iframe');
-      ifr.setAttribute('allowfullscreen', '');
-      ifr.setAttribute('frameborder', '0');
-      ifr.setAttribute('scrolling', 'no');
-      ifr.classList.add('tvp-iframe');
-      return ifr;
     };
 
   //It smartly returns the JS files that sidebar modal shall use
@@ -120,7 +105,7 @@
     self.dataMethod = 'static';
     self.config = {};
     
-    removeEl(spot);
+    spot.parentNode.removeChild(spot);
 
     if (isset(window, '__TVPage__') && isset(__TVPage__, 'config') && isset(__TVPage__.config, self.id)) {
       self.config = __TVPage__.config[self.id];
@@ -225,7 +210,7 @@
           var close = function() {
             button.removeEventListener('click', close, false);
             [modal, overlay, button].forEach(function(el) {
-              removeEl(el);
+              el.parentNode.removeChild(el);
             });
           };
           button.addEventListener('click', close);
