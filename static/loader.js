@@ -198,13 +198,6 @@
             selectedVideo: selectedVideo,
             runTime: runTime
           };
-                css: [
-                  typeStaticPath + 'css/' + (isMobile ? 'mobile' : '') + '/modal/styles' + cssExt,
-                  (isMobile ? domain + '/' + type + '/css/vendor/slick.css' : '')
-                ].filter(Boolean)
-              }));
-              iframeModalDoc.close();
-            }
 
           var modalFrag = document.createDocumentFragment();
 
