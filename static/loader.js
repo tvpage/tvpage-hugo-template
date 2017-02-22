@@ -240,7 +240,7 @@
 
               if (isMobile) {
                 html += '<div class="tvp-player"><div id="tvp-player-el"></div></div>' +
-                  '<div class="tvp-products"><div class="tvp-products-carousel"></div></div>';
+                  '<div class="tvp-related-products"><p>Related Products</p></div><div class="tvp-products"><div class="tvp-products-carousel"></div></div>';
               } else {
                 html += '<div class="tvp-player-holder"><div class="tvp-player"><div id="tvp-player-el"></div></div></div>' +
                   '<div class="tvp-products-holder"><div class="tvp-products"><a class="tvp-product"></a><a class="tvp-product"></a><a class="tvp-product"></a></div></div>';

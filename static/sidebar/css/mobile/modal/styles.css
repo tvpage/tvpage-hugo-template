@@ -111,6 +111,15 @@ body {
   background-repeat: no-repeat;
   background-position: center;
 }
+.tvp-related-products{
+  margin: 15px 10px 0;
+}
+
+.tvp-related-products > p{
+  margin:0;
+  color: #1F1D26;
+  font-size: 14px;
+}
 @media only screen and (min-width : 480px) {
   .tvp-product-image {
     width: 100px;
