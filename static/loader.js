@@ -277,17 +277,19 @@
 
               window.addEventListener(
                 'onorientationchange' in window ? 'orientationchange' : 'resize',
-                debounce(function() {
-                  var ifrModal = document.getElementById(ifrIModalId);
-                  if (ifrModal.contentWindow && iframeModal.parentNode) {
-                      var ref = ifrModal.parentNode;
-                      var size = isMobile ? [ref.offsetWidth, Math.floor(ref.offsetWidth * (9 / 16))] : [];
-                      ifrModal.contentWindow.postMessage({
+                function() {
+                  setTimeout(function () {
+                    var ifrModal = document.getElementById(ifrIModalId);
+                      if (ifrModal.contentWindow && iframeModal.parentNode) {
+                        var ref = ifrModal.parentNode;
+                        var size = isMobile ? [ref.offsetWidth, Math.floor(ref.offsetWidth * (9 / 16))] : [];
+                        ifrModal.contentWindow.postMessage({
                           event: '_tvp_widget_holder_resize',
                           size: size
-                      }, '*');
-                  }
-                }, 50), false);
+                        }, '*');
+                      }
+                  },100);
+                }, false);
             }
 
             if ('tvp_sidebar:modal_resized' === eventName) {
