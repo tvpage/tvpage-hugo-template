@@ -289,22 +289,6 @@
                       }
                   }, 100);
               }, 50), false);
-
-              // window.addEventListener(
-              //   'onorientationchange' in window ? 'orientationchange' : 'resize',
-              //   function() {
-              //     setTimeout(function () {
-              //       var ifrModal = document.getElementById(ifrIModalId);
-              //         if (ifrModal.contentWindow && iframeModal.parentNode) {
-              //           var ref = ifrModal.parentNode;
-              //           var size = isMobile ? [ref.offsetWidth, Math.floor(ref.offsetWidth * (9 / 16))] : [];
-              //           ifrModal.contentWindow.postMessage({
-              //             event: '_tvp_widget_holder_resize',
-              //             size: size
-              //           }, '*');
-              //         }
-              //     },100);
-              //   }, false);
             }
 
             if ('tvp_sidebar:modal_resized' === eventName) {
