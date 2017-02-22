@@ -240,3 +240,12 @@ body  {
   background-position: center;
   padding-top: 100%;
 }
+
+@media screen and (max-width: 768px) {
+  .tvp-product-popup{
+    display: none!important;
+  }
+  .tvp-arrow-indicator{
+    display: none!important;
+  }
+}
