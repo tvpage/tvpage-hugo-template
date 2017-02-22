@@ -29,6 +29,9 @@
     };
 
     this.tmpl = function(template, data) {
+      var prodTitle = data.title || '';
+      prodTitle = prodTitle.length > 40 ? prodTitle.substring(0, 40) + "...":prodTitle;
+      data.title = prodTitle;
       if (template && 'object' == typeof data) {
         return template.replace(/\{([\w\.]*)\}/g, function(str, key) {
           var keys = key.split("."),
