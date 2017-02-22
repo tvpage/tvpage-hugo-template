@@ -128,12 +128,14 @@ body  {
   font-size: 14px;
   text-decoration: none;
   margin: 10px 0;
+  color: #1F1D26;
 }
 
 .tvp-product-price {
   margin: 0;
   float: left;
   font-size: 14px;
+  color: #00DBC0;
 }
 
 .tvp-product-rating {
@@ -237,4 +239,13 @@ body  {
   background-repeat: no-repeat;
   background-position: center;
   padding-top: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .tvp-product-popup{
+    display: none!important;
+  }
+  .tvp-arrow-indicator{
+    display: none!important;
+  }
 }

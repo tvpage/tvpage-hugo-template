@@ -1,20 +1,14 @@
-(function(document){
+(function(window,document){
 
-  var analytics;
+  var analytics,
+      channelId;
 
   var pkTrack = function(){
     analytics.track('pk',{
       vd: this.getAttribute('data-vd'),
-      ct: this.id.split('-').pop()
+      ct: this.id.split('-').pop(),
+      pg: channelId
     });
-  };
-	
-	var isset = function(o,p){
-		return 'undefined' !== typeof o[p];
-	};
-
-  var getbyClass = function(c){
-    return document.getElementsByClassName(c || '')[0];
   };
 
   var loadProducts = function(videoId,loginId,fn){
@@ -35,8 +29,7 @@
   };
 
   var render = function(data){
-    var container = getbyClass('tvp-products');
-    var dataCount = data.length;
+    var container = Utils.getByClass('tvp-products');
     var thumbsFrag = document.createDocumentFragment();
     var popupsFrag = document.createDocumentFragment();
     
@@ -46,6 +39,8 @@
       var productLink = product.linkUrl;
       var productImgStyle = 'style="background-image:url(\''+product.imageUrl+'\');"';
       var productVideoId = product.entityIdParent;
+      var fixedPrice = '';
+      var prodTitle = product.title || '';
       
       var prodNode = document.createElement('a');
       prodNode.classList.add('tvp-product');
@@ -54,6 +49,15 @@
       prodNode.href = productLink;
       prodNode.innerHTML = '<div class="tvp-product-image" '+productImgStyle+'><div/>';
       thumbsFrag.appendChild(prodNode);
+      
+      //we want to remove all special character, so they don't duplicate
+      //also we shorten the lenght of long titles and add 3 point at the end
+      if (prodTitle || product.price) {
+        prodTitle = prodTitle.length > 50 ? prodTitle.substring(0, 50) + "...":prodTitle;
+        var price = product.price.toString().replace(/[^0-9.]+/g, '');
+        price = parseFloat(price).toFixed(2);
+        fixedPrice = price > 0 ? ('$' + price):'';
+      }
 
       var prodPopupNode = document.createElement('a');
       prodPopupNode.classList.add('tvp-product-popup');
@@ -61,13 +65,14 @@
       prodPopupNode.setAttribute('data-vd', productVideoId);
       prodPopupNode.href = productLink;
       prodPopupNode.innerHTML = '<div class="tvp-product-popup-image" '+productImgStyle+'></div>'+
-      '<p class="tvp-product-title">'+product.title+'</p><div class="tvp-clearfix"><p class="tvp-product-price"><span>$</span>'+product.price+'</p></div>'+
+      '<p class="tvp-product-title">'+prodTitle+'</p><div class="tvp-clearfix"><p class="tvp-product-price">'+fixedPrice+'</p></div>'+
       '<button class="tvp-product-cta">View Details</button>';
       popupsFrag.appendChild(prodPopupNode);
 
       analytics.track('pi',{
         vd: productVideoId,
-        ct: productId
+        ct: productId,
+        pg: channelId
       });
     }
 
@@ -90,8 +95,7 @@
 
     setTimeout(function(){
       
-      var holder = getbyClass('tvp-products-holder');
-
+      var holder = Utils.getByClass('tvp-products-holder');
       var classNames = ['tvp-product', 'tvp-product-popup'];
       for (var i = 0; i < classNames.length; i++) {
         var elements = holder.getElementsByClassName(classNames[i]);
@@ -99,7 +103,6 @@
           elements[j].addEventListener('click', pkTrack, false);
         }
       }
-      
       holder.onmouseover = function(e){
         if (!e.target.classList.contains('tvp-product-image')) return;
         var activePopups = document.querySelectorAll('.tvp-product-popup.active');
@@ -153,23 +156,23 @@
   };
 
   var initialize = function(){
-    var el = getbyClass('iframe-content');
-    var products = getbyClass('tvp-products-holder');
+    var el = Utils.getByClass('iframe-content');
+    var products = Utils.getByClass('tvp-products-holder');
     var resizeProducts = function(height){
       products.style.height = height + 'px';
     };
 
-    var player = getbyClass('tvp-player-holder');
+    var player = Utils.getByClass('tvp-player-holder');
     resizeProducts(player.offsetHeight);
 
     var initPlayer = function(data){
       var s = JSON.parse(JSON.stringify(data.runTime));
       s.data = data.data;
 
-      s.onResize = function(size){
+      s.onResize = function(initial, size){
         resizeProducts(size[1]);
-        if (window.parent && window.parent.parent) {
-          window.parent.parent.postMessage({
+        if (window.parent) {
+          window.parent.postMessage({
             event: 'tvp_sidebar:modal_resized',
             height: (el.offsetHeight + 20) + 'px'
           }, '*');
@@ -191,8 +194,8 @@
           });
         }
         
-        if (window.parent && window.parent.parent) {
-          window.parent.parent.postMessage({
+        if (window.parent) {
+          window.parent.postMessage({
             event: 'tvp_sidebar:player_next',
             next: next
           }, '*');
@@ -206,18 +209,19 @@
     };
 
     window.addEventListener('message', function(e){
-      if (!e || !isset(e, 'data') || !isset(e.data, 'event')) return;
+      if (!e || !Utils.isset(e, 'data') || !Utils.isset(e.data, 'event')) return;
       var data = e.data;
       
       if ('_tvp_sidebar_modal_data' === data.event) {
         initPlayer(data);
         
         var loginId = data.runTime.loginid || data.runTime.loginId;
+        channelId = data.runTime.channel.id || data.runTime.channelid;
         
         analytics =  new Analytics();
         analytics.initConfig({
           logUrl: '\/\/api.tvpage.com\/v1\/__tvpa.gif',
-          domain: isset(location,'hostname') ?  location.hostname : '',
+          domain: Utils.isset(location,'hostname') ?  location.hostname : '',
           loginId: loginId
         });
 
@@ -238,8 +242,8 @@
     });
 
     setTimeout(function(){
-      if (window.parent && window.parent.parent) {
-        window.parent.parent.postMessage({
+      if (window.parent) {
+        window.parent.postMessage({
           event: 'tvp_sidebar:modal_initialized',
           height: (el.offsetHeight + 20) + 'px'
         }, '*');
@@ -263,4 +267,4 @@
     initialize();
   }
 
-}(document));
+}(window, document));

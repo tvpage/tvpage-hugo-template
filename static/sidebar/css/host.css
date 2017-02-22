@@ -51,16 +51,26 @@ div[class^="tvp-"] {
 }
 
 .tvp-modal-header {
-  padding: 15px;
+  padding: 25px 15px 5px;
   border-bottom: 1px solid #e5e5e5;
 }
 
-.tvp-modal-title {
+.tvp-modal-title,.tvp-title > p{
   margin: 0;
   line-height: 1.4285;
   color: black;
   font-size: 16px;
   font-family: Helvetica;
+  float: left;
+}
+
+.tvp-title > p{
+  float: right;
+  margin-right: 15px;
+}
+
+.tvp-title{
+  height: 22px;
 }
 
 .tvp-modal-body {
@@ -99,7 +109,9 @@ div[class^="tvp-"] {
   background: whitesmoke;
   border: 0;
   -webkit-appearance: none;
-  float: right;
+  right: 3px;
+  position: absolute;
+  top: 3px;
 }
 
 .tvp-modal-close:hover {

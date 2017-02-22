@@ -1,9 +1,11 @@
-;(function(root,doc) {
+;(function(window,document) {
 
   function Utils() {
 
-    this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    
+    this.getByClass = function(c){
+      return document.getElementsByClassName(c || '')[0];
+    };
+
     this.isset = function(o,p){
       if (!arguments.length) return;
       var val = o;
@@ -27,6 +29,9 @@
     };
 
     this.tmpl = function(template, data) {
+      var prodTitle = data.title || '';
+      prodTitle = prodTitle.length > 40 ? prodTitle.substring(0, 40) + "...":prodTitle;
+      data.title = prodTitle;
       if (template && 'object' == typeof data) {
         return template.replace(/\{([\w\.]*)\}/g, function(str, key) {
           var keys = key.split("."),
@@ -39,6 +44,6 @@
     
   }
 
-  root.Utils = new Utils();
+  window.Utils = new Utils();
 
 }(window, document));

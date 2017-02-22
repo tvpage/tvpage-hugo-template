@@ -5,21 +5,6 @@
   '<svg class="tvp-video-play" viewBox="0 0 200 200" alt="Play video"><polygon points="70, 55 70, 145 145, 100"></polygon></svg>'+
   '</div><p class="tvp-video-title">{title}</p></div>';
 
-  var debounce = function(func,wait,immediate) {
-    var timeout;  
-    return function() {
-      var context = this, args = arguments;
-      var later = function() {
-        timeout = null;
-        if (!immediate) func.apply(context, args);
-      };
-      var callNow = immediate && !timeout;
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-      if (callNow) func.apply(context, args);
-    };
-  };
-
   var isEmpty = function(obj) {
     for(var key in obj) { if (obj.hasOwnProperty(key)) return false;}
     return true;
@@ -27,17 +12,6 @@
 
   var isFunction = function(obj) {
     return 'function' === typeof obj;
-  };
-
-  var tmpl = function(template, data) {
-    if (template && 'object' == typeof data) {
-      return template.replace(/\{([\w\.]*)\}/g, function(str, key) {
-        var keys = key.split("."),
-          v = data[keys.shift()];
-        for (var i = 0, l = keys.length; i < l; i++) v = v[keys[i]];
-        return (typeof v !== "undefined" && v !== null) ? v : "";
-      });
-    }
   };
 
   function Grid(el, options) {
@@ -104,15 +78,15 @@
             if (templateScript) {
               template = templateScript.innerHTML;
             }
-            rowEl.innerHTML += tmpl(template, item);
+            rowEl.innerHTML += Utils.tmpl(template, item);
           }
 
           pageFrag.appendChild(rowEl);
         }
 
         this.container.appendChild(pageFrag);
-        if (window.parent && window.parent.parent) {
-          window.parent.parent.postMessage({
+        if (window.parent) {
+          window.parent.postMessage({
             event: 'tvp_sidebar:render',
             height: that.el.offsetHeight + 'px'
           }, '*');
@@ -202,8 +176,8 @@
       var newSize = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) <= 200 ? 'small' : 'medium';
       var notify = function(){
         if (that.initialResize) return;
-        if (window.parent && window.parent.parent) {
-          window.parent.parent.postMessage({
+        if (window.parent) {
+          window.parent.postMessage({
             event: 'tvp_sidebar:grid_resize',
             height: that.el.offsetHeight + 'px'
           }, '*');
@@ -214,6 +188,10 @@
         var isSmall = newSize === 'small';
         that.itemsPerPage = isSmall ? 2 : (options.itemsPerPage || 6);
         that.itemsPerRow = isSmall ? 1 : (options.itemsPerRow || 2);
+        //reset page to 0 if we detect a resize, so we don't have trouble loading the grid
+        that.page = 0;
+        that.isLastPage = false;
+        
         that.load(function(){
           that.render();
           notify();
@@ -238,8 +216,8 @@
         }
       }
 
-      if (window.parent && window.parent.parent) {
-        window.parent.parent.postMessage({
+      if (window.parent) {
+        window.parent.postMessage({
           runTime: 'undefined' !== typeof window.__TVPage__ ? __TVPage__ : null,
           event: 'tvp_sidebar:video_click',
           selectedVideo: selected,
@@ -268,7 +246,7 @@
       that.render(data);
     });
 
-    window.addEventListener('resize', debounce(this.resize,100));
+    window.addEventListener('resize', Utils.debounce(this.resize,100));
   }
 
   window.Grid = Grid;

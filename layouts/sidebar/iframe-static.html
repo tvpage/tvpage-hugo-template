@@ -10,27 +10,6 @@
   {{ else }}
   <link rel="stylesheet" type="text/css" href="{{ (printf "%s/dist/css/styles.min.css" .Type ) | absURL }}">
   {{ end }}
-  <style>
-    .tvp-sidebar-load {
-      background-color: {{ ($.Scratch.Get "settings").loadButtonBackgroundColor }};
-      color: {{ ($.Scratch.Get "settings").loadButtonTextColor }};
-      border-radius: {{ ($.Scratch.Get "settings").loadButtonBorderRadius }};
-    }
-    
-    .tvp-video-title {
-      color: {{ ($.Scratch.Get "settings").itemTitleColor }};
-    }
-
-    .tvp-video-play {
-      background-color: {{ ($.Scratch.Get "settings").itemPlayButtonBackground }};
-      border: {{ ($.Scratch.Get "settings").itemPlayButtonBorder }};
-      border-radius: {{ ($.Scratch.Get "settings").itemPlayButtonBorderRadius }};
-    }
-
-    .tvp-video-play > polygon {
-      fill: {{ ($.Scratch.Get "settings").itemPlayButtonIconColor }};
-    }
-  </style>
 </head>
 <body data-id='{{ $id }}'>
 <div id='{{ $id }}' class="iframe-content">
@@ -38,6 +17,9 @@
   <div class="tvp-sidebar-container"></div>
   <div class="tvp-sidebar-footer">
     <button class="tvp-sidebar-load">{{ ($.Scratch.Get "settings").loadButtonText }}</button>
+    <a class="tvp-logo" target="_blank" href="https://www.tvpage.com/">
+      <div class="tvp-logo-img"></div>
+    </a>
   </div>
   <div class="tvp-cover"></div>
 </div>
