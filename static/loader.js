@@ -183,7 +183,6 @@
             if (!e || !isset(e, 'data') || !isset(e.data, 'event')) return;
 
             var eventName = e.data.event;
-
             if ('tvp_sidebar:render' === eventName || 'tvp_sidebar:grid_resize' === eventName) {
               holder.style.height = e.data.height;
             }

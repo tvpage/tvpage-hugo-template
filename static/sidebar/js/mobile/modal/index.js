@@ -99,8 +99,8 @@
 
         $el.on('init',function(){
           setTimeout(function(){
-            if (window.parent && window.parent.parent) {
-              window.parent.parent.postMessage({
+            if (window.parent) {
+              window.parent.postMessage({
                 event: 'tvp_sidebar:modal_resized',
                 height: el.offsetHeight + 'px'
               }, '*');
@@ -132,8 +132,8 @@
       s.data = data.data;
       
       s.onResize = function(initial){
-        if (!initial && window.parent && window.parent.parent) {
-          window.parent.parent.postMessage({
+        if (!initial && window.parent) {
+          window.parent.postMessage({
             event: 'tvp_sidebar:modal_resized',
             height: el.offsetHeight + 'px'
           }, '*');
@@ -156,8 +156,8 @@
           });
         }
         
-        if (window.parent && window.parent.parent) {
-          window.parent.parent.postMessage({
+        if (window.parent) {
+          window.parent.postMessage({
             event: 'tvp_sidebar:player_next',
             next: next
           }, '*');
@@ -202,8 +202,8 @@
 
     //Notify when the widget has been initialized.
     setTimeout(function(){
-      if (window.parent && window.parent.parent) {
-        window.parent.parent.postMessage({
+      if (window.parent) {
+        window.parent.postMessage({
           event: 'tvp_sidebar:modal_initialized',
           height: (el.offsetHeight + 20) + 'px'
         }, '*');

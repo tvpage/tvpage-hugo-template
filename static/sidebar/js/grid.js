@@ -85,8 +85,8 @@
         }
 
         this.container.appendChild(pageFrag);
-        if (window.parent && window.parent.parent) {
-          window.parent.parent.postMessage({
+        if (window.parent) {
+          window.parent.postMessage({
             event: 'tvp_sidebar:render',
             height: that.el.offsetHeight + 'px'
           }, '*');
@@ -176,8 +176,8 @@
       var newSize = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) <= 200 ? 'small' : 'medium';
       var notify = function(){
         if (that.initialResize) return;
-        if (window.parent && window.parent.parent) {
-          window.parent.parent.postMessage({
+        if (window.parent) {
+          window.parent.postMessage({
             event: 'tvp_sidebar:grid_resize',
             height: that.el.offsetHeight + 'px'
           }, '*');
@@ -216,8 +216,8 @@
         }
       }
 
-      if (window.parent && window.parent.parent) {
-        window.parent.parent.postMessage({
+      if (window.parent) {
+        window.parent.postMessage({
           runTime: 'undefined' !== typeof window.__TVPage__ ? __TVPage__ : null,
           event: 'tvp_sidebar:video_click',
           selectedVideo: selected,

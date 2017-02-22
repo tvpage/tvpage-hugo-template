@@ -171,8 +171,8 @@
 
       s.onResize = function(initial, size){
         resizeProducts(size[1]);
-        if (window.parent && window.parent.parent) {
-          window.parent.parent.postMessage({
+        if (window.parent) {
+          window.parent.postMessage({
             event: 'tvp_sidebar:modal_resized',
             height: (el.offsetHeight + 20) + 'px'
           }, '*');
@@ -194,8 +194,8 @@
           });
         }
         
-        if (window.parent && window.parent.parent) {
-          window.parent.parent.postMessage({
+        if (window.parent) {
+          window.parent.postMessage({
             event: 'tvp_sidebar:player_next',
             next: next
           }, '*');
@@ -242,8 +242,8 @@
     });
 
     setTimeout(function(){
-      if (window.parent && window.parent.parent) {
-        window.parent.parent.postMessage({
+      if (window.parent) {
+        window.parent.postMessage({
           event: 'tvp_sidebar:modal_initialized',
           height: (el.offsetHeight + 20) + 'px'
         }, '*');
