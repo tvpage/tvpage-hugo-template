@@ -166,7 +166,7 @@
       if (embedMethod === 'iframe') {
         var iframe = createIframe();
 
-        if ('solo' === type || 'solo-click' === type) {
+        if (-1 !== type.indexOf('solo')) {
           iframe.onload = function() {
             var ifr = this;
             window.addEventListener('resize', debounce(function() {
@@ -310,7 +310,7 @@
           iframeDoc.open().write(createIframeHtml({
             js: function() {
               var js;
-              if ('solo' === type || 'solo-click' === type) {
+              if (-1 !== type.indexOf('solo')) {
                 js = soloJS[env];
               } else if ('sidebar' === type) {
                 js = sidebarJS[env];
@@ -341,7 +341,7 @@
   }
 
   //Load each widget spots from the page.
-  var spots = document.querySelectorAll('.tvp-sidebar, .tvp-solo, .tvp-solo-click'),
+  var spots = document.querySelectorAll('.tvp-sidebar, .tvp-solo, .tvp-solo-click, .tvp-solo-append'),
     spotsCount = spots.length;
 
   function load() {
