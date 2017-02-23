@@ -73,12 +73,12 @@ min_version = 0.17
 		tablet = "https://do0631budpzeh.cloudfront.net/dev/widgets/templates_preview/preview_Solo_tablet.png"
 
 [[tvp-widgets]]
-	name = "Solo Click"
-	uniqueName = "solo-click"
-	path = "layouts/solo-click"
+	name = "Solo CTA"
+	uniqueName = "solo-cta"
+	path = "layouts/solo-cta"
 	preview = "http://preview.tvpage.com"
 	settings = ['playback']
-	description = "Solo is a simple player that works seamlessly across devices. The video plays inline."
+	description = "Solo CTA is a simple player with a built in “Call To Action” that works seamlessly across devices. The video plays inline."
 	[[tvp-widgets.thumbnails]]
 		desktop = "https://do0631budpzeh.cloudfront.net/dev/widgets/templates_preview/preview_Solo-CTA_dtop.png"
 		mobile = "https://do0631budpzeh.cloudfront.net/dev/widgets/templates_preview/preview_Solo-CTA_mobile.png"
