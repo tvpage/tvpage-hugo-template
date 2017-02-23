@@ -25,34 +25,22 @@
       };
 
   //The player singleton. We basically create an instance from the tvpage
-  //player and expose most utilities, helping to encapsualte what is required for a few players to co-exist.
+  //player and expose most utilities, helping to encapsualte what is
+  //required for a few players to co-exist.
   function Player(el, options, startWith) {
     if (!el || !isset(options) || !isset(options.data) || options.data.length <= 0) return console.log('bad args');
 
     this.isFullScreen = false;
     this.initialResize = true;
-    this.autoplay = isset(options.autoplay) ? Number(options.autoplay) : false;
-    this.autonext = isset(options.autonext) ? Number(options.autonext) : true;
+    this.autoplay = isset(options.autoplay) ? options.autoplay : false;
+    this.autonext = isset(options.autonext) ? options.autonext : true;
     this.version = isset(options.version) ? options.version : '1.8.5';
-    this.progressColor = isset(options.progressColor) ? options.progressColor : '#E57211';
+    this.progresscolor = isset(options.progresscolor) ? options.progresscolor : '#E57211';
     this.transcript = isset(options.transcript) ? options.transcript : false;
-    this.removeControls = isset(options.removeControls) ? options.removeControls : ["tvplogo","hd"];
+    this.removecontrols = isset(options.removecontrols) ? options.removecontrols : ["hd"];
     this.analytics = isset(options.analytics) ? options.analytics : true;
-    
     this.onResize = isset(options.onResize) && 'function' === typeof options.onResize ? options.onResize : null;
     this.onNext = isset(options.onNext) && 'function' === typeof options.onNext ? options.onNext : null;
-    
-    this.overlay = isset(options.overlay) ? options.overlay : false;
-    this.overlayColor = isset(options.overlayColor) ? options.overlayColor : null;
-    this.overlayOpacity = isset(options.overlayOpacity) ? options.overlayOpacity : '0.5';
-    
-    this.playButtonBackgroundColor = isset(options.playButtonBackgroundColor) ? options.playButtonBackgroundColor : 'fff';
-    this.playButtonBorderRadius = isset(options.playButtonBorderRadius) ? options.playButtonBorderRadius : '0';
-    this.playButtonBorderWidth = isset(options.playButtonBorderWidth) ? options.playButtonBorderWidth : '0';
-    this.playButtonBorderColor = isset(options.playButtonBorderColor) ? options.playButtonBorderColor : '000';
-    this.playButtonIconColor = isset(options.playButtonIconColor) ? options.playButtonIconColor : '000';
-    this.playButtonWidth = isset(options.playButtonWidth) ? options.playButtonWidth : '55px';
-    this.playButtonHeight = isset(options.playButtonHeight) ? options.playButtonHeight : '55px';
     
     this.instance = null;
     this.el = 'string' === typeof el ? document.getElementById(el) : el;
@@ -91,26 +79,17 @@
     //Context reference for Methods.
     var that = this;
     
-    //Sometimes we want/need to show an intearctive overlay on top of the player. We need this for MP4 videos that will
-    //cue (mobile or autoplay:off) to actual play the video on demand.
-    this.addOverlay = function(imgUrl){
-      var overlay = document.createElement('div');
-      overlay.classList.add('tvp-overlay');
-      overlay.style.backgroundImage = 'url("' + imgUrl + '")';
-      var overlayColor = this.overlayColor ? '#' + this.overlayColor : 'transparent';
-      overlay.innerHTML = '<div class="tvp-overlay-cover" style="opacity:' + this.overlayOpacity + ';background-image:linear-gradient(to bottom right,'+overlayColor+','+overlayColor+');"></div>'+
-      '<svg class="tvp-play" style="width:'+this.playButtonWidth+';height:'+this.playButtonHeight+';background-color:#'+this.playButtonBackgroundColor+';border:'+this.playButtonBorderWidth+' solid #'+this.playButtonBorderColor+';border-radius:'+this.playButtonBorderRadius+
-      '%;" viewBox="0 0 200 200"><polygon fill="#'+this.playButtonIconColor+'" points="70, 55 70, 145 145, 100"></polygon></svg>';
-
-      var click = function(){
+    this.showPlayBtn = function(){
+      var playBtn = document.createElement('div');
+      playBtn.innerHTML = '<svg class="tvp-play" viewBox="0 0 200 200"><polygon points="70, 55 70, 145 145, 100"></polygon></svg>';
+      var btnClick = function(){
         if (!that.instance) return;
-        this.removeEventListener('click',click,false);
-        this.parentNode.removeChild(this);
+        playBtn.removeEventListener('click',btnClick,false);
+        playBtn.parentNode.removeChild(playBtn);
         that.instance.play();
       };
-
-      overlay.addEventListener('click', click);
-      this.el.appendChild(overlay);
+      playBtn.addEventListener('click', btnClick);
+      this.el.appendChild(playBtn);
     };
 
     this.play = function(asset,ongoing){
@@ -137,6 +116,7 @@
       //Update tvpa analytics configuration depending on the video type 
       //(exhange or standard)
       if (isset(asset,'analyticsLogUrl')) {
+        console.log("ANALYTICS LOG URL", asset.analyticsLogUrl);
         config.logUrl = asset.analyticsLogUrl;
         analytics.initConfig(config);
       } else {
@@ -145,9 +125,9 @@
       }
       
       if (willCue) {
-        this.instance.cueVideo(asset);
-        if ('mp4' === asset.type || this.overlay) {
-          this.addOverlay(asset.thumbnailUrl);
+        this.instance.cueVideo(asset)
+        if ('mp4' === asset.type) {
+          this.showPlayBtn(asset.thumbnailUrl);
         }
       } else {
        this.instance.loadVideo(asset);
@@ -184,7 +164,7 @@
 
           //We create insntances on the tvpage player.
           new TVPage.player({
-            //poster: true,
+            poster: true,
             techOrder: 'html5,flash',
             analytics: { tvpa: that.analytics },
             apiBaseUrl: '//api.tvpage.com/v1',
@@ -202,18 +182,16 @@
 
               //If we are inside an iframe, we should listen to an external event.
               if (window.location !== window.parent.location){
-                window.parent.addEventListener('message', function(e){
-                  if (!e || !isset(e, 'data') || !isset(e.data, 'event')) return;
-                  if ('tvp_solo:holder_resize' === e.data.event || 'tvp_sidebar:holder_resize' === e.data.event ) {
-                      var size = e.data.size || [];
-                      that.resize(size[0], size[1]);
-                  }
+                window.addEventListener('message', function(e){
+                  if (!e || !isset(e, 'data') || !isset(e.data, 'event') || '_tvp_widget_holder_resize' !== e.data.event) return;
+                  var size = e.data.size || [];
+                  that.resize(size[0], size[1]);
                 });
               } else {
-                window.addEventListener('resize', debounce(that.resize,50));
+                window.addEventListener('resize', resize);
               }
 
-              that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progressColor;
+              that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progresscolor;
               var current = 0;
               if (startWith && startWith.length) {
                 for (var i = 0; i < that.assets.length; i++) {
@@ -245,7 +223,7 @@
             controls: {
               active: true,
               floater: {
-                removeControls: that.removeControls,
+                removeControls: that.removecontrols,
                 transcript: that.transcript
               }
             }
