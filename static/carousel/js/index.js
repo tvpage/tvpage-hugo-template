@@ -11,8 +11,6 @@
       var c = {};
       if (isset(g) && isset(g,'__TVPage__') && isset(g.__TVPage__, 'config')) {
         c = g.__TVPage__.config;
-      } else {
-        return console.log('need config');
       }
       return c;
     };
@@ -20,7 +18,7 @@
     if ('dynamic' === type) {
       var config = getConfig(parent);
       var id = document.body.getAttribute('data-id');
-      if (!isset(config, id)) return console.log('need settings');
+      if (!isset(config, id)) return;
       s = config[id];
       s.name = id;
     } else if ('inline' === type && type && type.length) {
@@ -30,7 +28,7 @@
     } else if ('static' === type) {
       var config = getConfig(window);
       var id = document.body.getAttribute('data-id');
-      if (!isset(config, id)) return console.log('need settings');
+      if (!isset(config, id)) return;
       s = config[id];
       s.name = id;
     }
@@ -38,7 +36,7 @@
   };
 
   var render = function(target,data){
-    if (!target) return console.log('need target');
+    if (!target) return;
     var frag = document.createDocumentFragment(),
     main = document.createElement('div');
     var d = data || {};
@@ -71,7 +69,7 @@
         gridSettings.onLoad = function(){el.classList.add('loading');};
         gridSettings.onLoadEnd = function(){el.classList.remove('loading');};
         
-        new Grid(name, gridSettings);
+        Grid(name, gridSettings);
 
       }(getSettings('dynamic')));
     } else {
@@ -83,7 +81,8 @@
         gridSettings.onLoad = function(){el.classList.add('loading');};
         gridSettings.onLoadEnd = function(){el.classList.remove('loading');};
 
-        new Grid(name, gridSettings);
+        Grid(name, gridSettings);
+
       }(getSettings('static')));
     }
   };
@@ -93,7 +92,7 @@
     (function gridReady() {
       setTimeout(function() {
         if ('undefined' === typeof window.Grid) {
-          (++gridCheck < 50) ? gridReady() : console.log('limit reached');
+          (++gridCheck < 50) ? gridReady() : console.debug('limit reached');
         } else  {
           initialize();
         }

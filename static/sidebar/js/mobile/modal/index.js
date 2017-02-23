@@ -164,14 +164,14 @@
         }
       };
 
-      new Player('tvp-player-el',s,data.selectedVideo.id);
+      Player('tvp-player-el',s,data.selectedVideo.id);
     };
 
     window.addEventListener('message', function(e){
       if (!e || !Utils.isset(e, 'data') || !Utils.isset(e.data, 'event')) return;
       var data = e.data;
       
-      if ('_tvp_sidebar_modal_data' === data.event) {
+      if ('tvp_sidebar:modal_data' === data.event) {
         initPlayer(data);
 
         var loginId = data.runTime.loginid || data.runTime.loginId;
@@ -217,7 +217,7 @@
     (function libsReady() {
       setTimeout(function(){
         if (not(window.TVPage) || not(window._tvpa) || not(window.jQuery) || not(window.Utils) || not(window.Analytics) || not(window.Player)) {
-          (++libsCheck < 50) ? libsReady() : console.log('limit reached');
+          (++libsCheck < 50) ? libsReady() : console.debug('limit reached');
         } else {
           initialize();
         }

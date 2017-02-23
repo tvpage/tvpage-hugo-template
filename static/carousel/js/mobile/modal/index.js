@@ -171,7 +171,7 @@
       if (!e || !Utils.isset(e, 'data') || !Utils.isset(e.data, 'event')) return;
       var data = e.data;
       
-      if ('_tvp_sidebar_modal_data' === data.event) {
+      if ('tvp_sidebar:modal_data' === data.event) {
         initPlayer(data);
 
         var loginId = data.runTime.loginid || data.runTime.loginId;

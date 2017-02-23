@@ -229,7 +229,7 @@
                         js: self.paths.sidebar.modal[env].filter(Boolean),
                         css: [
                             self.static + (window.DEBUG ? '/' : '/dist/') + 'css/' + mobilePath + '/modal/styles' + cssExt,
-                            (isMobile ? self.domain + '/' + type + '/css/vendor/slick.css' : '')
+                            (isMobile ? self.domain + '/' + self.type + '/css/vendor/slick.css' : '')
                         ].filter(Boolean)
                     }));
                     iframeModalDoc.close();
@@ -283,7 +283,13 @@
                 var iframeDoc = iframe.contentWindow.document;
 
                 iframeDoc.open().write(getIframeHtml({
-                    js: self.paths[self.type][env],
+                    js: function () {
+                        var jsFiles = self.paths[self.type];
+                        if (self.type === 'sidebar') {
+                            jsFiles = jsFiles.gallery;
+                        }
+                        return jsFiles[env];
+                    }(),
                     css: [self.static + (window.DEBUG ? '/' : '/dist/') + 'css/styles' + cssExt],
                     className: self.dataMethod,
                     domain: self.domain,
@@ -298,7 +304,7 @@
                 setTimeout(function () {
                     var src = spot.href;
                     (-1 == navigator.userAgent.indexOf("MSIE")) ? iframe.src = src: iframe.location = src;
-                }, 5);
+                },5);
             }
         }
 
@@ -308,7 +314,7 @@
     function load () {
         var spots = document.querySelectorAll('.tvp-sidebar, .tvp-solo, .tvp-solo-click');
         for (var i = 0; i < spots.length; i++) {
-            var widget  = new Widget(spots[i]);
+            var widget  = Widget(spots[i]);
             widget.initialize();
         }
     }
