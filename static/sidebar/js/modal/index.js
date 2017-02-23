@@ -39,9 +39,6 @@
       var productLink = product.linkUrl;
       var productImgStyle = 'style="background-image:url(\''+product.imageUrl+'\');"';
       var productVideoId = product.entityIdParent;
-      var fixedPrice = '';
-      var prodTitle = product.title || '';
-      
       var prodNode = document.createElement('a');
       prodNode.classList.add('tvp-product');
       prodNode.id = 'tvp-product-' + productId;
@@ -49,15 +46,14 @@
       prodNode.href = productLink;
       prodNode.innerHTML = '<div class="tvp-product-image" '+productImgStyle+'><div/>';
       thumbsFrag.appendChild(prodNode);
-      
+
+      //we shorten the lenght of long titles and add 3 point at the end
+      var prodTitle = product.title || '';
+      prodTitle = Utils.trimTitle(prodTitle, 50);
       //we want to remove all special character, so they don't duplicate
-      //also we shorten the lenght of long titles and add 3 point at the end
-      if (prodTitle || product.price) {
-        prodTitle = prodTitle.length > 50 ? prodTitle.substring(0, 50) + "...":prodTitle;
-        var price = product.price.toString().replace(/[^0-9.]+/g, '');
-        price = parseFloat(price).toFixed(2);
-        fixedPrice = price > 0 ? ('$' + price):'';
-      }
+      var fixedPrice = product.price || '';
+      fixedPrice = Utils.trimPrice(fixedPrice);
+
 
       var prodPopupNode = document.createElement('a');
       prodPopupNode.classList.add('tvp-product-popup');
@@ -88,10 +84,10 @@
     
     var arrow = document.createElement('div');
     arrow.classList.add('tvp-arrow-indicator');
-    thumbsFrag.appendChild(arrow);
-
     container.appendChild(thumbsFrag);
     container.parentNode.appendChild(popupsFrag);
+    container.parentNode.insertBefore(arrow, container.nextSibling);
+    SimpleScrollbar.initEl(container);
 
     setTimeout(function(){
       
@@ -152,7 +148,6 @@
         }
       }
     },0);
-
   };
 
   var initialize = function(){

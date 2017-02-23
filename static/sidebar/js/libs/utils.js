@@ -28,10 +28,21 @@
       };      
     };
 
+    this.trimTitle = function(data,limit){
+      return data = data.length > limit ? data.substring(0, limit) + "..." : data;
+    };
+
+    this.trimPrice = function(price){
+      (typeof price !== "undefined" && price !== null) ? price:""; 
+      price = price.toString().replace(/[^0-9.]+/g, '');
+      price = parseFloat(price).toFixed(2);
+      price = price > 0 ? ('$' + price):'';
+      return price;
+    };
+
     this.tmpl = function(template, data) {
-      var prodTitle = data.title || '';
-      prodTitle = prodTitle.length > 40 ? prodTitle.substring(0, 40) + "...":prodTitle;
-      data.title = prodTitle;
+      var that = this;
+      data.title = that.trimTitle(data.title,52); 
       if (template && 'object' == typeof data) {
         return template.replace(/\{([\w\.]*)\}/g, function(str, key) {
           var keys = key.split("."),

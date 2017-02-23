@@ -38,8 +38,6 @@
       var product = data[i];
       var productId = product.id;
       var productVideoId = product.entityIdParent;
-      var fixedPrice = '';
-      var prodTitle = product.title || '';
 
       analytics.track('pi',{
         vd: product.entityIdParent,
@@ -47,14 +45,12 @@
         pg: channelId
       });
       
+      //we shorten the lenght of long titles and add 3 point at the end
+      var prodTitle = product.title || '';
+      prodTitle = Utils.trimTitle(prodTitle, 50);
       //we want to remove all special character, so they don't duplicate
-      //also we shorten the lenght of long titles and add 3 point at the end
-      if (prodTitle || product.price) {
-        prodTitle = prodTitle.length > 50 ? prodTitle.substring(0, 50) + "...":prodTitle;
-        var price = product.price.toString().replace(/[^0-9.]+/g, '');
-        price = parseFloat(price).toFixed(2);
-        fixedPrice = price > 0 ? ('$' + price):'';
-      }
+      var fixedPrice = product.price || '';
+      fixedPrice = Utils.trimPrice(fixedPrice);
 
       var prodNode = document.createElement('div');
       prodNode.innerHTML = '<a id="tvp-product-' + productId + '" class="tvp-product" data-vd="' + productVideoId + '" href="' +

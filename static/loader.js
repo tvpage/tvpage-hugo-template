@@ -59,6 +59,7 @@
       files = files.concat([
         devPath + '/libs/utils.js',
         devPath + '/libs/analytics.js',
+        devPath + '/vendor/simple-scrollbar.min.js',
         devPath + '/libs/player.js',
         devPath + (isMobile ? '/mobile' : '') + '/modal/index.js'
       ]);
@@ -190,7 +191,6 @@
             if ('tvp_sidebar:video_click' === eventName) {
               var data = e.data;
               var selectedVideo = data.selectedVideo || {};
-              var dataVideos = isset(data,'videos') ? data.videos : [];
               var runTime = (data.runTime || __TVPage__).config[id];
 
               widget[id] = widget[id] || {};
@@ -201,12 +201,6 @@
               };
 
               var modalFrag = document.createDocumentFragment();
-
-              //we shorten the lenght of long titles and add 3 point at the end
-                for (var i = 0; i < dataVideos.length; i++) {
-                  var trimmedTitle = dataVideos[i].title.length > 62 ? dataVideos[i].title.substring(0, 62) + "..." : dataVideos[i].title;
-                  dataVideos[i].title = trimmedTitle;
-                }
 
               var overlay = document.createElement('div');
               overlay.classList.add('tvp-modal-overlay');
@@ -254,7 +248,8 @@
                 js: getModalJSFilePaths(domain, runTime.playerVersion),
                 css: [
                   typeStaticPath + 'css/' + (isMobile ? 'mobile' : '') + '/modal/styles' + cssExt,
-                  (isMobile ? domain + '/' + type + '/css/vendor/slick.css' : '')
+                  (isMobile ? domain + '/' + type + '/css/vendor/slick.css' : ''),
+                  (domain + '/' + type + '/css/vendor/simple-scrollbar.css')
                 ].filter(Boolean)
               }));
               iframeModalDoc.close();
