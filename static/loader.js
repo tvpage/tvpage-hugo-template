@@ -18,7 +18,7 @@
             return 'undefined' !== typeof val;
         },
         debounce = function(func, wait, immediate) {
-            var timeout;
+            var timeout = null;
             return function() {
                 var context = this,
                     args = arguments;
@@ -105,7 +105,7 @@
                 gallery: {
                     dev: [
                         self.static + '/js/libs/utils.js',
-                        self.static + '/js/grid.js',
+                        self.static + '/js/carousel.js',
                         self.static + '/js/index.js'
                     ],
                     prod: [
@@ -160,7 +160,7 @@
                 }, '*');
             }, 50));
 
-            //By now, this is the central point for cross-domain messaging between iframes.
+            //Central point for cross-domain messaging between iframes, we always us the host page window.
             window.addEventListener('message', function(e) {
                 if (!e || !isset(e, 'data') || !isset(e.data, 'event')) return;
 
@@ -226,7 +226,7 @@
                         domain: self.domain,
                         id: id,
                         html: html,
-                        js: self.paths.sidebar.modal[env].filter(Boolean),
+                        js: self.paths[self.type].modal[env].filter(Boolean),
                         css: [
                             self.static + (window.DEBUG ? '/' : '/dist/') + 'css/' + mobilePath + '/modal/styles' + cssExt,
                             (isMobile ? self.domain + '/' + self.type + '/css/vendor/slick.css' : '')
@@ -266,11 +266,11 @@
                         }, 50), false);
                 }
 
-                if ('tvp_sidebar:modal_resized' === eventName) {
+                if (self.senderId + ':modal_resized' === eventName) {
                     document.getElementById(ifrIModalId).style.height = e.data.height;
                 }
 
-                if ('tvp_sidebar:player_next' === eventName) {
+                if (self.senderId + ':player_next' === eventName) {
                     document.querySelector('.tvp-modal-title').innerHTML = e.data.next.assetTitle;
                 }
             });
@@ -312,7 +312,7 @@
     }
 
     function load () {
-        var spots = document.querySelectorAll('.tvp-sidebar, .tvp-solo, .tvp-solo-click');
+        var spots = document.querySelectorAll('.tvp-sidebar, .tvp-carousel, .tvp-solo, .tvp-solo-click');
         for (var i = 0; i < spots.length; i++) {
             var widget  = Widget(spots[i]);
             widget.initialize();

@@ -56,7 +56,7 @@
   var initialize = function(){
     if (body.classList.contains('dynamic')) {
       (function(settings){
-        var gridSettings = JSON.parse(JSON.stringify(settings));
+        var carouselSettings = JSON.parse(JSON.stringify(settings));
         var name = settings.name;
 
         render(body,{
@@ -66,33 +66,37 @@
         });
 
         var el = document.getElementById(name);
-        gridSettings.onLoad = function(){el.classList.add('loading');};
-        gridSettings.onLoadEnd = function(){el.classList.remove('loading');};
-        
-        Grid(name, gridSettings);
+
+        // carouselSettings.onLoad = function(){el.classList.add('loading');};
+        // carouselSettings.onLoadEnd = function(){el.classList.remove('loading');};
+        //Grid(name, carouselSettings);
 
       }(getSettings('dynamic')));
     } else {
       (function(settings){
-        var gridSettings = JSON.parse(JSON.stringify(settings));
+        var carouselSettings = JSON.parse(JSON.stringify(settings));
         var name = settings.name;
-        
         var el = document.getElementById(name);
-        gridSettings.onLoad = function(){el.classList.add('loading');};
-        gridSettings.onLoadEnd = function(){el.classList.remove('loading');};
 
-        Grid(name, gridSettings);
+        // var slider = document.querySelector('.js_slider');
+        // lory(slider, {
+        //
+        // });
+
+        carouselSettings.onLoad = function(){el.classList.add('loading');};
+        carouselSettings.onLoadEnd = function(){el.classList.remove('loading');};
+        Carousel(name, carouselSettings);
 
       }(getSettings('static')));
     }
   };
 
-  if ('undefined' === typeof window.Grid) {
-    var gridCheck = 0;
-    (function gridReady() {
+  if ('undefined' === typeof window.Carousel) {
+    var libsCheck = 0;
+    (function libsReady() {
       setTimeout(function() {
-        if ('undefined' === typeof window.Grid) {
-          (++gridCheck < 50) ? gridReady() : console.debug('limit reached');
+        if ('undefined' === typeof window.Carousel) {
+          (++libsCheck < 50) ? libsReady() : console.debug('limit reached');
         } else  {
           initialize();
         }
@@ -100,10 +104,6 @@
     })();
   } else {
     initialize();
-  }
-
-  if (window.DEBUG) {
-    console.debug("endTime = " + performance.now());
   }
 
 }(window, document));
