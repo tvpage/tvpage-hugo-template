@@ -28,6 +28,21 @@
     document.body.appendChild(script);
   };
 
+  var checkProducts = function(data){
+    var relatedProds = parent.document.querySelector('.tvp-title p');
+    var productsHolder = Utils.getByClass('tvp-products-holder');
+    var playerHolder = Utils.getByClass('tvp-player-holder');
+    if (!data.length) {
+      relatedProds.style.display = 'none';
+      productsHolder.style.display = 'none';
+      playerHolder.style.width = '100%';
+    }else{
+      relatedProds.style.display = '';
+      productsHolder.style.display = '';
+      playerHolder.style.width = '';
+    }
+  };
+
   var render = function(data){
     var container = Utils.getByClass('tvp-products');
     var thumbsFrag = document.createDocumentFragment();
@@ -184,7 +199,9 @@
             data.runTime.loginid,
             function(data){
               setTimeout(function(){
+                checkProducts(data);
                 render(data);
+                player.resize();
               },0);
           });
         }
@@ -230,6 +247,7 @@
             function(data){
               setTimeout(function(){
                 render(data);
+                checkProducts(data);
               },0);
           });
         }

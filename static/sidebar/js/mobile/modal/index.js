@@ -28,6 +28,19 @@
     document.body.appendChild(script);
   };
 
+  var checkProducts = function(data){
+    var relatedProds = Utils.getByClass('tvp-related-products');
+    var productsHolder = Utils.getByClass('tvp-products');
+    if (!data.length) {
+      relatedProds.style.display = 'none';
+      productsHolder.style.display = 'none';
+    }else{
+      relatedProds.style.display = '';
+      productsHolder.style.display = '';
+    }
+  };
+
+
   var render = function(data){
     var el = Utils.getByClass('iframe-content');
 
@@ -147,7 +160,9 @@
             data.runTime.loginid || data.runTime.loginId,
             function(data){
               setTimeout(function(){
+                checkProducts(data);
                 render(data);
+                player.resize();
               },0);
           });
         }
@@ -160,7 +175,7 @@
         }
       };
 
-      new Player('tvp-player-el',s,data.selectedVideo.id);
+      var player = new Player('tvp-player-el',s,data.selectedVideo.id);
     };
 
     window.addEventListener('message', function(e){
@@ -190,6 +205,7 @@
             function(data){
               setTimeout(function(){
                 render(data);
+                checkProducts(data);
               },0);
           });
         } 
