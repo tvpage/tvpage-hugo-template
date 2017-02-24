@@ -336,7 +336,7 @@
   }
 
   //Load each widget spots from the page.
-  var spots = document.querySelectorAll('.tvp-sidebar, .tvp-solo, .tvp-solo-click, .tvp-solo-append'),
+  var spots = document.querySelectorAll('.tvp-sidebar, .tvp-solo, .tvp-solo-cta, .tvp-solo-append'),
     spotsCount = spots.length;
 
   function load() {

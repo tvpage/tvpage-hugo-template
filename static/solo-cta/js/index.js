@@ -96,7 +96,7 @@
                     settings.data = data || [];
 
                     jsonpCall({
-                        src: settings.domain + '/solo-click/options.json',
+                        src: settings.domain + '/solo-cta/options.json',
                         cbName: 'tvpcallback'
                     },function(data){
                         if (!data) return;
