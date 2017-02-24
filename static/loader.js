@@ -292,6 +292,12 @@
             if ('tvp_sidebar:player_next' === eventName) {
               document.querySelector('.tvp-modal-title').innerHTML = e.data.next.assetTitle;
             }
+
+            if ('tvp_sidebar:modal_no_products' === eventName) {
+              document.querySelector('.tvp-products-headline').classList.add('tvp-no-products');
+            }else if (('tvp_sidebar:modal_no_products' && 'tvp_sidebar:player_next') === eventName) {
+              document.querySelector('.tvp-products-headline').classList.remove('tvp-no-products');
+            }
           });
         }
 

@@ -31,10 +31,15 @@
   var checkProducts = function(data,el){
     if (!data || !data.length) {
       el.classList.add('tvp-no-products');
-      parent.document.querySelectorAll('.tvp-products-headline')[0].classList.add('tvp-no-products');
+      setTimeout(function(){
+        if (window.parent) {
+          window.parent.postMessage({
+            event: 'tvp_sidebar:modal_no_products'
+          }, '*');
+        }
+      },0)
     }else{
       el.classList.remove('tvp-no-products');
-      parent.document.querySelectorAll('.tvp-products-headline')[0].classList.remove('tvp-no-products');
     }
   };
 
