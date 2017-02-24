@@ -312,7 +312,7 @@
     }
 
     function load () {
-        var spots = document.querySelectorAll('.tvp-sidebar, .tvp-carousel, .tvp-solo, .tvp-solo-click');
+        var spots = document.querySelectorAll('.tvp-sidebar, .tvp-solo, .tvp-solo-cta, .tvp-solo-append');
         for (var i = 0; i < spots.length; i++) {
             var widget  = Widget(spots[i]);
             widget.initialize();

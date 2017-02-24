@@ -33,31 +33,28 @@
     this.initialResize = true;
     this.autoplay = isset(options.autoplay) ? Number(options.autoplay) : false;
     this.autonext = isset(options.autonext) ? Number(options.autonext) : true;
-    this.version = isset(options.version) ? options.version : '1.8.5';
-    this.progressColor = isset(options.progressColor) ? options.progressColor : '#E57211';
-    this.transcript = isset(options.transcript) ? options.transcript : false;
-    this.removeControls = isset(options.removeControls) ? options.removeControls : ["tvplogo","hd"];
-    this.analytics = isset(options.analytics) ? options.analytics : true;
-    
+    this.version = isset(options.player_version) ? options.player_version : null;
+    this.progressColor = isset(options.progress_color) ? options.progress_color : null;
+    this.transcript = isset(options.transcript) ? options.transcript : null;
+    this.removeControls = isset(options.remove_controls) ? options.remove_controls : null;
+    this.analytics = isset(options.analytics) ? options.analytics : null;
+    this.overlay = isset(options.overlay) ? options.overlay : null;
+    this.overlayColor = isset(options.overlay_color) ? options.overlay_color : null;
+    this.overlayOpacity = isset(options.overlay_opacity) ? options.overlay_opacity : null;
+    this.playButtonBackgroundColor = isset(options.play_button_background_color) ?  options.play_button_background_color : null;
+    this.playButtonBorderRadius = isset(options.play_button_border_radius) ? options.play_button_border_radius : null;
+    this.playButtonBorderWidth = isset(options.play_button_border_width) ? options.play_button_border_width : null;
+    this.playButtonBorderColor = isset(options.play_button_border_color) ? options.play_button_border_color : null;
+    this.playButtonIconColor = isset(options.play_button_icon_color) ? options.play_button_icon_color : null;
+    this.playButtonWidth = isset(options.play_button_width) ? options.play_button_width : null;
+    this.playButtonHeight = isset(options.play_button_height) ? options.play_button_height : null;
+    this.playText = isset(options.play_text) ? options.play_text : null;
+    this.playTextSize = isset(options.play_text_size) ? options.play_text_size : null;
+    this.playTextColor = isset(options.play_text_color) ? options.play_text_color : null;
+    this.playTextFontFamily = isset(options.play_text_font_family) ? options.play_text_font_family : null;
+
     this.onResize = isset(options.onResize) && 'function' === typeof options.onResize ? options.onResize : null;
     this.onNext = isset(options.onNext) && 'function' === typeof options.onNext ? options.onNext : null;
-    
-    this.overlay = isset(options.overlay) ? options.overlay : false;
-    this.overlayColor = isset(options.overlayColor) ? options.overlayColor : null;
-    this.overlayOpacity = isset(options.overlayOpacity) ? options.overlayOpacity : '0.5';
-    
-    this.playButtonBackgroundColor = isset(options.playButtonBackgroundColor) ? options.playButtonBackgroundColor : 'fff';
-    this.playButtonBorderRadius = isset(options.playButtonBorderRadius) ? options.playButtonBorderRadius : '0';
-    this.playButtonBorderWidth = isset(options.playButtonBorderWidth) ? options.playButtonBorderWidth : '0';
-    this.playButtonBorderColor = isset(options.playButtonBorderColor) ? options.playButtonBorderColor : '000';
-    this.playButtonIconColor = isset(options.playButtonIconColor) ? options.playButtonIconColor : '000';
-    this.playButtonWidth = isset(options.playButtonWidth) ? options.playButtonWidth : '55px';
-    this.playButtonHeight = isset(options.playButtonHeight) ? options.playButtonHeight : '55px';
-    
-    this.playText = isset(options.playText) ? options.playText : 'Watch Video';
-    this.playTextSize = isset(options.playTextSize) ? options.playTextSize : '12px';
-    this.playTextColor = isset(options.playTextColor) ? options.playTextColor : '000';
-    this.playTextFontFamily = isset(options.playTextFontFamily) ? options.playTextFontFamily : 'Helvetica';
     
     this.instance = null;
     this.el = 'string' === typeof el ? document.getElementById(el) : el;
@@ -213,7 +210,9 @@
                   that.resize(size[0], size[1]);
                 });
               } else {
-                window.addEventListener('resize', resize);
+                window.addEventListener('resize', debounce(function(){
+                  that.resize();
+                },60));
               }
 
               that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progressColor;
