@@ -65,6 +65,10 @@ body  {
   height: 100%;
 }
 
+.tvp-full{
+  width: 100%;
+}
+
 .tvp-play {
   display: block;
   background-color: #fff;
@@ -239,6 +243,10 @@ body  {
   background-repeat: no-repeat;
   background-position: center;
   padding-top: 100%;
+}
+
+.tvp-no-products{
+  display: none;
 }
 
 @media screen and (max-width: 768px) {

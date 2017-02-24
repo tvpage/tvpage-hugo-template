@@ -28,12 +28,17 @@
       };      
     };
 
-    this.trimTitle = function(data,limit){
-      return data = data.length > limit ? data.substring(0, limit) + "..." : data;
+    this.trimText = function(text,limit){
+      var t = text || '';
+      var l = limit ? Number(limit) : 0;
+      if (text.length > l) {
+        t = t.substring(0,Number(l)) + '...';
+      }
+      return t;
     };
 
-    this.trimPrice = function(price){
-      (typeof price !== "undefined" && price !== null) ? price:""; 
+    this.trimPrice = function(p){
+      var price = p || '';
       price = price.toString().replace(/[^0-9.]+/g, '');
       price = parseFloat(price).toFixed(2);
       price = price > 0 ? ('$' + price):'';
@@ -41,8 +46,6 @@
     };
 
     this.tmpl = function(template, data) {
-      var that = this;
-      data.title = that.trimTitle(data.title,52); 
       if (template && 'object' == typeof data) {
         return template.replace(/\{([\w\.]*)\}/g, function(str, key) {
           var keys = key.split("."),

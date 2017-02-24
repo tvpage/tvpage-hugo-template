@@ -28,15 +28,13 @@
     document.body.appendChild(script);
   };
 
-  var checkProducts = function(data){
-    var relatedProds = Utils.getByClass('tvp-related-products');
-    var productsHolder = Utils.getByClass('tvp-products');
-    if (!data.length) {
-      relatedProds.style.display = 'none';
-      productsHolder.style.display = 'none';
+  var checkProducts = function(data,el){
+    if (!data || !data.length) {
+      el.querySelectorAll('.tvp-products')[0].classList.add('tvp-no-products');
+      el.querySelectorAll('.tvp-products-headline')[0].classList.add('tvp-no-products');
     }else{
-      relatedProds.style.display = '';
-      productsHolder.style.display = '';
+      el.querySelectorAll('.tvp-products')[0].classList.remove('tvp-no-products');
+      el.querySelectorAll('.tvp-products-headline')[0].classList.remove('tvp-no-products');
     }
   };
 
@@ -58,11 +56,12 @@
         pg: channelId
       });
       
-      //we shorten the lenght of long titles and add 3 point at the end
       var prodTitle = product.title || '';
-      prodTitle = Utils.trimTitle(prodTitle, 50);
-      //we want to remove all special character, so they don't duplicate
+      //shorten the lenght of long titles, we need to set a character limit
+      prodTitle = Utils.trimText(prodTitle, 50);
+   
       var fixedPrice = product.price || '';
+      //remove all special character, so they don't duplicate
       fixedPrice = Utils.trimPrice(fixedPrice);
 
       var prodNode = document.createElement('div');
@@ -160,7 +159,7 @@
             data.runTime.loginid || data.runTime.loginId,
             function(data){
               setTimeout(function(){
-                checkProducts(data);
+                checkProducts(data,el);
                 render(data);
                 player.resize();
               },0);
@@ -205,7 +204,7 @@
             function(data){
               setTimeout(function(){
                 render(data);
-                checkProducts(data);
+                checkProducts(data,Utils.getByClass('iframe-content'));
               },0);
           });
         } 

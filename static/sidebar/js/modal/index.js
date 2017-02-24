@@ -28,18 +28,15 @@
     document.body.appendChild(script);
   };
 
-  var checkProducts = function(data){
-    var relatedProds = parent.document.querySelector('.tvp-title p');
-    var productsHolder = Utils.getByClass('tvp-products-holder');
-    var playerHolder = Utils.getByClass('tvp-player-holder');
-    if (!data.length) {
-      relatedProds.style.display = 'none';
-      productsHolder.style.display = 'none';
-      playerHolder.style.width = '100%';
+  var checkProducts = function(data,el){
+    if (!data || !data.length) {
+      el.querySelectorAll('.tvp-player-holder')[0].classList.add('tvp-full');
+      el.querySelectorAll('.tvp-products-holder')[0].classList.add('tvp-no-products');
+      parent.document.querySelectorAll('.tvp-products-headline')[0].classList.add('tvp-no-products');
     }else{
-      relatedProds.style.display = '';
-      productsHolder.style.display = '';
-      playerHolder.style.width = '';
+      el.querySelectorAll('.tvp-player-holder')[0].classList.remove('tvp-full');
+      el.querySelectorAll('.tvp-products-holder')[0].classList.remove('tvp-no-products');
+      parent.document.querySelectorAll('.tvp-products-headline')[0].classList.remove('tvp-no-products');
     }
   };
 
@@ -62,13 +59,13 @@
       prodNode.innerHTML = '<div class="tvp-product-image" '+productImgStyle+'><div/>';
       thumbsFrag.appendChild(prodNode);
 
-      //we shorten the lenght of long titles and add 3 point at the end
       var prodTitle = product.title || '';
-      prodTitle = Utils.trimTitle(prodTitle, 50);
-      //we want to remove all special character, so they don't duplicate
+      //shorten the lenght of long titles, we need to set a character limit
+      prodTitle = Utils.trimText(prodTitle, 50);
+   
       var fixedPrice = product.price || '';
+      //remove all special character, so they don't duplicate
       fixedPrice = Utils.trimPrice(fixedPrice);
-
 
       var prodPopupNode = document.createElement('a');
       prodPopupNode.classList.add('tvp-product-popup');
@@ -199,7 +196,7 @@
             data.runTime.loginid,
             function(data){
               setTimeout(function(){
-                checkProducts(data);
+                checkProducts(data,el);
                 render(data);
                 player.resize();
               },0);
@@ -247,7 +244,7 @@
             function(data){
               setTimeout(function(){
                 render(data);
-                checkProducts(data);
+                checkProducts(data,Utils.getByClass('iframe-content'));
               },0);
           });
         }
@@ -265,11 +262,11 @@
   };
 
   var not = function(obj){return 'undefined' === typeof obj};
-  if (not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player)) {
+  if (not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player) || not(window.SimpleScrollbar)) {
     var libsCheck = 0;
     (function libsReady() {
       setTimeout(function(){
-        if (not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player)) {
+        if (not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player) || not(window.SimpleScrollbar)) {
           (++libsCheck < 50) ? libsReady() : console.log('limit reached');
         } else {
           initialize();
