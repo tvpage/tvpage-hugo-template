@@ -30,12 +30,10 @@
 
   var checkProducts = function(data,el){
     if (!data || !data.length) {
-      el.querySelectorAll('.tvp-player-holder')[0].classList.add('tvp-full');
-      el.querySelectorAll('.tvp-products-holder')[0].classList.add('tvp-no-products');
+      el.classList.add('tvp-no-products');
       parent.document.querySelectorAll('.tvp-products-headline')[0].classList.add('tvp-no-products');
     }else{
-      el.querySelectorAll('.tvp-player-holder')[0].classList.remove('tvp-full');
-      el.querySelectorAll('.tvp-products-holder')[0].classList.remove('tvp-no-products');
+      el.classList.remove('tvp-no-products');
       parent.document.querySelectorAll('.tvp-products-headline')[0].classList.remove('tvp-no-products');
     }
   };

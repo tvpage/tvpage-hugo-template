@@ -30,14 +30,11 @@
 
   var checkProducts = function(data,el){
     if (!data || !data.length) {
-      el.querySelectorAll('.tvp-products')[0].classList.add('tvp-no-products');
-      el.querySelectorAll('.tvp-products-headline')[0].classList.add('tvp-no-products');
+      el.classList.add('tvp-no-products');
     }else{
-      el.querySelectorAll('.tvp-products')[0].classList.remove('tvp-no-products');
-      el.querySelectorAll('.tvp-products-headline')[0].classList.remove('tvp-no-products');
+      el.classList.remove('tvp-no-products');
     }
   };
-
 
   var render = function(data){
     var el = Utils.getByClass('iframe-content');
@@ -161,7 +158,6 @@
               setTimeout(function(){
                 checkProducts(data,el);
                 render(data);
-                player.resize();
               },0);
           });
         }

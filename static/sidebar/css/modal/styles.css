@@ -65,10 +65,6 @@ body  {
   height: 100%;
 }
 
-.tvp-full{
-  width: 100%;
-}
-
 .tvp-play {
   display: block;
   background-color: #fff;
@@ -91,6 +87,15 @@ body  {
 
 .tvp-play > polygon {
   pointer-events: none;
+}
+
+
+.tvp-no-products .tvp-player-holder{
+  width: 100%;
+}
+
+.tvp-no-products .tvp-products-holder{
+  display: none;
 }
 
 .tvp-products {
@@ -243,10 +248,6 @@ body  {
   background-repeat: no-repeat;
   background-position: center;
   padding-top: 100%;
-}
-
-.tvp-no-products{
-  display: none;
 }
 
 @media screen and (max-width: 768px) {

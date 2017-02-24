@@ -84,7 +84,11 @@ body {
   padding: 15px 0;
 }
 
-.tvp-no-products{
+.tvp-no-products .tvp-products{
+  display: none;
+}
+
+.tvp-no-products .tvp-products-headline{
   display: none;
 }
 
