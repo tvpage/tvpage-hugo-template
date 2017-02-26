@@ -89,11 +89,12 @@
     //this here or somehow the will be content (when used with iframe).
     function initialize(){
         if (document.body.classList.contains('dynamic')) {
-            //We deal diff with some stuff on iframe.
             (function(unique,settings){
                 render(unique,document.body);
                 loadChannelVideos(settings,unique,function(data){
-                    settings.data = data || [];
+                    var playerSettings = JSON.parse(JSON.stringify(settings));
+
+                    playerSettings.data = data || [];
 
                     jsonpCall({
                         src: settings.domain + '/solo-cta/options.json',
@@ -108,12 +109,20 @@
                             opts[option.code] = option.value;
                         }
 
-                        settings = extend(settings, opts);
+                        playerSettings = extend(playerSettings, opts);
+                        playerSettings.onClick = function () {
+                            if (window.parent) {
+                                window.parent.postMessage({
+                                    runTime: 'undefined' !== typeof window.__TVPage__ ? __TVPage__ : null,
+                                    event: 'tvp_solo_cta:video_click',
+                                    selectedVideo: playerSettings.data[0],
+                                    videos: playerSettings.data
+                                }, '*');
+                            }
+                        };
 
-                        new Player('tvp-player-el-'+unique,settings);
+                        new Player('tvp-player-el-'+unique,playerSettings);
                     });
-
-                    // optsRequest.send();
                 });
             }(random(),getSettings('dynamic')));
         }

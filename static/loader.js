@@ -81,7 +81,7 @@
         self.data[self.id] = {};
         self.dataMethod = 'static';
         self.domain = spot.getAttribute('data-domain');
-        self.senderId = 'tvp_' + self.type;
+        self.senderId = 'tvp_' + self.type.replace(/-/g,'_');
 
         spot.parentNode.removeChild(spot);
 
@@ -100,6 +100,39 @@
                     '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
                     self.static + '/dist/js/scripts.min.js'
                 ]
+            },
+            "solo-cta": {
+                player: {
+                    dev: [
+                        '//a.tvpage.com/tvpa.min.js',
+                        '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
+                        self.static + '/js/libs/analytics.js',
+                        self.static + '/js/libs/player.js',
+                        self.static + '/js/index.js'
+                    ],
+                    prod: [
+                        '//a.tvpage.com/tvpa.min.js',
+                        '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
+                        self.static + '/dist/js/scripts.min.js'
+                    ]
+                },
+                modal: {
+                    dev: [
+                        '//a.tvpage.com/tvpa.min.js',
+                        '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
+                        (isMobile ? self.static + '/js/vendor/jquery.js' : ''),
+                        self.static + '/js/libs/utils.js',
+                        self.static + '/js/libs/analytics.js',
+                        self.static + '/js/libs/player.js',
+                        self.static + '/js/' + mobilePath + '/modal/index.js'
+                    ],
+                    prod: [
+                        '//a.tvpage.com/tvpa.min.js',
+                        '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
+                        (isMobile ? self.static + '/js/vendor/jquery.js' : ''),
+                        self.static + '/dist/js/' + mobilePath + '/modal/scripts.min.js'
+                    ]
+                }
             },
             sidebar: {
                 gallery: {
@@ -168,6 +201,8 @@
                 var data = e.data;
                 var id = self.id;
 
+                self.iframeModalId = 'tvp-iframe-modal-' + id;
+
                 if (self.senderId + ':render' === eventName || self.senderId + ':grid_resize' === eventName) {
                     self.holder.style.height = e.data.height;
                 }
@@ -190,10 +225,10 @@
                     var modal = document.createElement('div');
                     modal.classList.add('tvp-modal');
                     modal.innerHTML = '<div class="tvp-modal-wrapper"><div class="tvp-modal-content"><div class="tvp-modal-header">' +
-                        '<svg class="tvp-modal-close" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">' +
-                        '<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>' +
-                        '<h4 class="tvp-modal-title">' + selectedVideo.title + '</h4></div><div class="tvp-modal-body"><iframe id="tvp-iframe-modal_' + id + '" src="about:blank"' +
-                        'allowfullscreen frameborder="0" scrolling="no" class="tvp-iframe-modal"></iframe></div></div></div>';
+                        '<svg class="tvp-modal-close" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">' +
+                        '<path fill="#ffffff" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>' +
+                        '<h4 class="tvp-modal-title">' + selectedVideo.title + '</h4></div><div class="tvp-modal-body"><div class="tvp-iframe-modal-holder"><iframe id="' + self.iframeModalId + '" src="about:blank"' +
+                        'allowfullscreen frameborder="0" scrolling="no" class="tvp-iframe-modal"></iframe></div></div></div></div>';
 
                     modalFrag.appendChild(modal);
 
@@ -217,8 +252,10 @@
                         html += '<div class="tvp-player"><div id="tvp-player-el"></div></div>' +
                         '<div class="tvp-products"><div class="tvp-products-carousel"></div></div>';
                     } else {
-                        html += '<div class="tvp-player-holder"><div class="tvp-player"><div id="tvp-player-el"></div></div></div>' +
-                        '<div class="tvp-products-holder"><div class="tvp-products"><a class="tvp-product"></a><a class="tvp-product"></a><a class="tvp-product"></a></div></div>';
+                        html += '<div class="tvp-player-holder"><div class="tvp-player"><div id="tvp-player-el"></div></div></div>';
+                        if ("solo-cta" !== self.type) {
+                            html += '<div class="tvp-products-holder"><div class="tvp-products"><a class="tvp-product"></a><a class="tvp-product"></a><a class="tvp-product"></a></div></div>';
+                        }
                     }
                     html += '</div>';
 
@@ -235,11 +272,9 @@
                     iframeModalDoc.close();
                 }
 
-                var ifrIModalId = 'tvp-iframe-modal_' + id;
-
                 if (self.senderId + ':modal_initialized' === eventName) {
                     var widgetData = self[id];
-                    var iframeModal = document.getElementById(ifrIModalId);
+                    var iframeModal = document.getElementById(self.iframeModalId);
 
                     if (iframeModal.contentWindow) {
                         iframeModal.contentWindow.postMessage({
@@ -254,8 +289,8 @@
                         'onorientationchange' in window ? 'orientationchange' : 'resize',
                         debounce(function() {
                             setTimeout(function() {
-                                var iframeModal = document.getElementById(ifrIModalId);
-                                if (iframeModal.contentWindow && iframeModal.parentNode) {
+                                var iframeModal = document.getElementById(self.iframeModalId);
+                                if (iframeModal && iframeModal.contentWindow && iframeModal.parentNode) {
                                     var ref = iframeModal.parentNode;
                                     iframeModal.contentWindow.postMessage({
                                         event: self.senderId + ':holder_resize',
@@ -267,7 +302,7 @@
                 }
 
                 if (self.senderId + ':modal_resized' === eventName) {
-                    document.getElementById(ifrIModalId).style.height = e.data.height;
+                    document.getElementById(self.iframeModalId).style.height = e.data.height;
                 }
 
                 if (self.senderId + ':player_next' === eventName) {
@@ -287,6 +322,8 @@
                         var jsFiles = self.paths[self.type];
                         if (self.type === 'sidebar') {
                             jsFiles = jsFiles.gallery;
+                        } else if (self.type === 'solo-cta') {
+                            jsFiles = jsFiles.player;
                         }
                         return jsFiles[env];
                     }(),
