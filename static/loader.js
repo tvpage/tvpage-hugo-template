@@ -11,7 +11,7 @@
     var env = window.DEBUG ? 'dev' : 'prod',
         cssExt = window.DEBUG ? '.css' : '.min.css',
         isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
-        mobilePath = isMobile  ? 'mobile' : '',
+        mobilePath = isMobile  ? 'mobile/' : '',
         isset = function(o, p) {
             var val = o;
             if (p) val = o[p];
@@ -124,13 +124,13 @@
                         self.static + '/js/libs/utils.js',
                         self.static + '/js/libs/analytics.js',
                         self.static + '/js/libs/player.js',
-                        self.static + '/js/' + mobilePath + '/modal/index.js'
+                        self.static + '/js/' + mobilePath + 'modal/index.js'
                     ],
                     prod: [
                         '//a.tvpage.com/tvpa.min.js',
                         '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
                         (isMobile ? self.static + '/js/vendor/jquery.js' : ''),
-                        self.static + '/dist/js/' + mobilePath + '/modal/scripts.min.js'
+                        self.static + '/dist/js/' + mobilePath + 'modal/scripts.min.js'
                     ]
                 }
             },
@@ -153,13 +153,13 @@
                         self.static + '/js/libs/utils.js',
                         self.static + '/js/libs/analytics.js',
                         self.static + '/js/libs/player.js',
-                        self.static + '/js/' + mobilePath + '/modal/index.js'
+                        self.static + '/js/' + mobilePath + 'modal/index.js'
                     ],
                     prod: [
                         '//a.tvpage.com/tvpa.min.js',
                         '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
                         (isMobile ? self.static + '/js/vendor/jquery.js' : ''),
-                        self.static + '/dist/js/' + mobilePath + '/modal/scripts.min.js'
+                        self.static + '/dist/js/' + mobilePath + 'modal/scripts.min.js'
                     ]
                 }
             }
@@ -181,7 +181,7 @@
             //Add target/host page css for our self
             var link = document.createElement('link');
             link.rel = 'stylesheet';
-            link.href = self.static + (window.DEBUG ? '/' : '/dist/') + 'css/' + mobilePath + '/host' + cssExt;
+            link.href = self.static + (window.DEBUG ? '/' : '/dist/') + 'css/' + mobilePath + 'host' + cssExt;
             document.getElementsByTagName('head')[0].appendChild(link);
 
             var iframe = self.holder.querySelector('iframe');
@@ -265,7 +265,7 @@
                         html: html,
                         js: self.paths[self.type].modal[env].filter(Boolean),
                         css: [
-                            self.static + (window.DEBUG ? '/' : '/dist/') + 'css/' + mobilePath + '/modal/styles' + cssExt,
+                            self.static + (window.DEBUG ? '/' : '/dist/') + 'css/' + mobilePath + 'modal/styles' + cssExt,
                             (isMobile ? self.domain + '/' + self.type + '/css/vendor/slick.css' : '')
                         ].filter(Boolean)
                     }));
