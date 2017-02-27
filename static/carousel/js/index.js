@@ -42,11 +42,8 @@
     var d = data || {};
     main.id = d.id || '';
     main.classList.add('iframe-content');
-    main.innerHTML =  '<div class="tvp-sidebar-title">' + (d.title || '') + '</div>'+
-    '<div class="tvp-sidebar-container"></div><div class="tvp-sidebar-footer">'+
-    '<button class="tvp-sidebar-load">' + (d.loadBtnText || '') + '</button>'+
-    '<a class="tvp-logo" target="_blank" href="https://www.tvpage.com/"><div class="tvp-logo-img"></div></a>'+
-    '</div><div class="tvp-cover"></div>';
+    main.innerHTML =  '<div class="tvp-carousel-title">' + (d.title || '') + '</div>'+
+    '<div class="tvp-carousel-content"></div>' + '<div class="tvp-carousel-cover"></div>';
     frag.appendChild(main);
     target.appendChild(frag);
   };
@@ -56,6 +53,7 @@
   var initialize = function(){
     if (body.classList.contains('dynamic')) {
       (function(settings){
+
         var carouselSettings = JSON.parse(JSON.stringify(settings));
         var name = settings.name;
 
@@ -67,43 +65,42 @@
 
         var el = document.getElementById(name);
 
-        // carouselSettings.onLoad = function(){el.classList.add('loading');};
-        // carouselSettings.onLoadEnd = function(){el.classList.remove('loading');};
-        //Grid(name, carouselSettings);
+        carouselSettings.onLoad = function(){el.classList.add('loading');};
+        carouselSettings.onLoadEnd = function(){el.classList.remove('loading');};
+
+        Carousel(name, carouselSettings);
 
       }(getSettings('dynamic')));
     } else {
       (function(settings){
+
         var carouselSettings = JSON.parse(JSON.stringify(settings));
         var name = settings.name;
         var el = document.getElementById(name);
 
-        // var slider = document.querySelector('.js_slider');
-        // lory(slider, {
-        //
-        // });
-
         carouselSettings.onLoad = function(){el.classList.add('loading');};
         carouselSettings.onLoadEnd = function(){el.classList.remove('loading');};
+
         Carousel(name, carouselSettings);
 
       }(getSettings('static')));
     }
   };
 
-  if ('undefined' === typeof window.Carousel) {
-    var libsCheck = 0;
-    (function libsReady() {
-      setTimeout(function() {
-        if ('undefined' === typeof window.Carousel) {
-          (++libsCheck < 50) ? libsReady() : console.debug('limit reached');
-        } else  {
-          initialize();
-        }
-      },150);
-    })();
-  } else {
-    initialize();
-  }
+    var not = function(obj){return 'undefined' === typeof obj};
+    if (not(window.jQuery) || not(window.Carousel)) {
+        var libsCheck = 0;
+        (function libsReady() {
+            setTimeout(function(){
+                if (not(window.jQuery) || not(window.Carousel)) {
+                    (++libsCheck < 50) ? libsReady() : console.log('limit reached');
+                } else {
+                    initialize();
+                }
+            },150);
+        })();
+    } else {
+        initialize();
+    }
 
 }(window, document));

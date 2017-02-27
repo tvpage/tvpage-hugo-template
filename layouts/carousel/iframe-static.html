@@ -7,21 +7,16 @@
   <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
   {{ if (getenv "HUGO_DEBUG") }}
   <link rel="stylesheet" type="text/css" href="{{ (printf "%s/css/styles.css" .Type ) | absURL }}">
+  <link rel="stylesheet" type="text/css" href="{{ (printf "%s/css/vendor/slick.css" .Type ) | absURL }}">
   {{ else }}
   <link rel="stylesheet" type="text/css" href="{{ (printf "%s/dist/css/styles.min.css" .Type ) | absURL }}">
   {{ end }}
 </head>
 <body data-id='{{ $id }}'>
 <div id='{{ $id }}' class="iframe-content">
-  <div class="tvp-sidebar-title">{{ ($.Scratch.Get "settings").title }}</div>
-  <div class="tvp-sidebar-container"></div>
-  <div class="tvp-sidebar-footer">
-    <button class="tvp-sidebar-load">{{ ($.Scratch.Get "settings").loadButtonText }}</button>
-    <a class="tvp-logo" target="_blank" href="https://www.tvpage.com/">
-      <div class="tvp-logo-img"></div>
-    </a>
-  </div>
-  <div class="tvp-cover"></div>
+  <div class="tvp-carousel-title">{{ ($.Scratch.Get "settings").title }}</div>
+  <div class="tvp-carousel-content"></div>
+  <div class="tvp-carousel-cover"></div>
 </div>
 <script id="gridItemTemplate" type="text/template">
   <div id="tvp-video-{id}" class="tvp-video{className}">
@@ -41,7 +36,8 @@
 </script>
 {{ if (getenv "HUGO_DEBUG") }}
 <script>window.DEBUG = Number({{getenv "HUGO_DEBUG"}}) || 0;</script>
-<script src="{{ (printf "%s/js/vendor/lory-2.2.0.min.js" .Type ) | absURL }}"></script>
+<script src="{{ (printf "%s/js/vendor/jquery.js" .Type ) | absURL }}"></script>
+<script src="{{ (printf "%s/js/vendor/slick-min.js" .Type ) | absURL }}"></script>
 <script src="{{ (printf "%s/js/libs/utils.js" .Type ) | absURL }}"></script>
 <script src="{{ (printf "%s/js/carousel.js" .Type ) | absURL }}"></script>
 <script src="{{ (printf "%s/js/index.js" .Type ) | absURL }}"></script>

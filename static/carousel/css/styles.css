@@ -63,11 +63,6 @@ footer {
   margin: 0 auto;
 }
 
-.tvp-video.col-6 {
-  width: 50%;
-  float: left;
-}
-
 .tvp-video-image {
   background-repeat: no-repeat;
   background-position: center;
@@ -166,20 +161,24 @@ footer {
 }
 
 /**
- * (optional) define here the style definitions which should be applied on the slider container
- * e.g. width including further controls like arrows etc.
- */
-.slider {}
+             * (optional) define here the style definitions which should be applied on the slider container
+             * e.g. width including further controls like arrows etc.
+             */
+.slider {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: -moz-none;
+  -o-user-select: none;
+  user-select: none;
+}
 
 .frame {
-  /**
-   * (optional) wrapper width, specifies width of the slider frame.
-   */
-  /*width: 880px;*/
-
   position: relative;
-  font-size: 0;
-  line-height: 0;
+  width: 85%;
+  margin: 0 auto;
   overflow: hidden;
   white-space: nowrap;
 }
@@ -189,11 +188,34 @@ footer {
 }
 
 li {
+  width:100%;
   position: relative;
   display: inline-block;
+  font-family: 'Source Sans Pro', sans-serif;
+  height: 130px;
+  text-align: center;
+  font-size: 15px;
+  line-height: 30px;
+  background: #2E435A;
+  color: #fff;
+}
 
-  /**
-   * (optional) if the content inside the slide element has a defined size.
-   */
-  /*width: 880px;*/
+.prev, .next {
+  position: absolute;
+  top: 50%;
+  margin-top: -25px;
+  display: block;
+  cursor: pointer;
+}
+
+.next {
+  right: 0;
+}
+
+.prev {
+  left: 0;
+}
+
+.next svg, .prev svg {
+  width: 25px;
 }

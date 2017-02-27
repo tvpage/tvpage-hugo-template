@@ -15,7 +15,7 @@
   };
 
   function Carousel(el, options) {
-    this.xchg = options.xchg || true;
+    this.xchg = options.xchg || false;
     this.windowSize = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) <= 200 ? 'small' : 'medium';
     this.initialResize = true;
 
@@ -29,68 +29,44 @@
     this.page = 0;
 
     this.el = 'string' === typeof el ? document.getElementById(el) : el;
-    this.loadBtn = this.el.getElementsByClassName('tvp-sidebar-load')[0];
-    this.container = this.el.getElementsByClassName('tvp-sidebar-container')[0];
+    this.container = this.el.getElementsByClassName('tvp-carousel-content')[0];
     this.onLoad = options.onLoad && isFunction(options.onLoad) ? options.onLoad : null;
     this.onLoadEnd = options.onLoadEnd && isFunction(options.onLoadEnd) ? options.onLoadEnd : null;
-    this.onItemClick = options.onItemClick && isFunction(options.onItemClick) ? options.onItemClick : null;
 
     this.render = function(){
       this.container.innerHTML = '';
 
-      var all = this.data.slice(0),
-          pages = [];
+      var all = this.data.slice(0);
+      var carouselFrag = document.createDocumentFragment();
 
-      while (all.length) {
-        pages.push(all.splice(0, this.itemsPerPage));
-      }
-
-      for (var i = 0; i < pages.length; i++) {
-        var page = pages[i];
-        var pageRows = [];
-        while (page.length) {
-          pageRows.push(page.splice(0, this.itemsPerRow));
-        }
-
-        var pageFrag = document.createDocumentFragment();
-        for (var j = 0; pageRows.length > j; j++) {
-
+      for (var i = 0; i < all.length; i++) {
+          var item = all[i];
           var rowEl = document.createElement('div');
-          rowEl.classList.add('tvp-clearfix');
+          var className = '';
 
-          var row = pageRows[j];
-          for (var k = 0; k < row.length; k++) {
-            var item = row[k];
-            var className = '';
-
-            if ('undefined' !== typeof item.entity) {
+          if ('undefined' !== typeof item.entity) {
               className += ' tvp-exchange';
-            }
-
-            if (that.windowSize === 'medium' && this.itemsPerRow > 1) {
-              className += ' col-6';
-            }
-
-            item.className = className;
-
-            var templateScript = document.getElementById('gridItemTemplate');
-            var template = itemTemplate;
-            if (templateScript) {
-              template = templateScript.innerHTML;
-            }
-            rowEl.innerHTML += Utils.tmpl(template, item);
           }
 
-          pageFrag.appendChild(rowEl);
-        }
+          item.className = className;
 
-        this.container.appendChild(pageFrag);
-        if (window.parent) {
+          var templateScript = document.getElementById('gridItemTemplate');
+          var template = itemTemplate;
+          if (templateScript) {
+              template = templateScript.innerHTML;
+          }
+          rowEl.innerHTML += Utils.tmpl(template, item);
+
+          carouselFrag.appendChild(rowEl);
+      }
+
+      this.container.appendChild(carouselFrag);
+
+      if (window.parent) {
           window.parent.postMessage({
-            event: 'tvp_carousel:render',
-            height: that.el.offsetHeight + 'px'
+              event: 'tvp_carousel:render',
+              height: that.el.offsetHeight + 'px'
           }, '*');
-        }
       }
     };
 
@@ -123,15 +99,15 @@
             getChannelVideos(function(data){
               var xchg = [];
 
-              // if (xhr.status === 200) {
-              //   xchg = xhr.responseText;
-              //   var xchgCount = xchg.length;
-              //   while(xchgCount > 0) {
-              //     var xchgVideo = xchg[xchgCount-1];
-              //     xchgVideo = $.extend(xchgVideo, xchgVideo.entity);
-              //     xchgCount--;
-              //   }
-              // }
+              if (xhr.status === 200) {
+                xchg = xhr.responseText;
+                var xchgCount = xchg.length;
+                while(xchgCount > 0) {
+                  var xchgVideo = xchg[xchgCount-1];
+                  xchgVideo = $.extend(xchgVideo, xchgVideo.entity);
+                  xchgCount--;
+                }
+              }
 
               if (!data.length) {
                 that.isLastPage = true;
@@ -224,23 +200,47 @@
       }
     };
 
-    this.loadBtn.onclick = function() {
-      if (that.loading) return;
-      that.next();
-      that.load(function(data){
-        if (data.length) {
-          that.render(data);
-        } else {
-          that.next();
-          that.load(function(nextData){
-            that.render(nextData);
-          });
-        }
-      });
-    };
-
     this.load(function(data){
       that.render(data);
+
+      var startSlick = function () {
+          setTimeout(function () {
+              $(that.el.querySelector('.tvp-carousel-content')).slick({
+                  centerMode: true,
+                  centerPadding: '60px',
+                  slidesToShow: 3,
+                  responsive: [
+                      {
+                          breakpoint: 768,
+                          settings: {
+                              arrows: false,
+                              centerMode: true,
+                              centerPadding: '40px',
+                              slidesToShow: 3
+                          }
+                      },
+                      {
+                          breakpoint: 480,
+                          settings: {
+                              arrows: false,
+                              centerMode: true,
+                              centerPadding: '40px',
+                              slidesToShow: 1
+                          }
+                      }
+                  ]
+              });
+          },10);
+      };
+      if ('undefined' === typeof $.fn.slick) {
+        $.ajax({
+            dataType: 'script',
+            cache: true,
+            url: document.body.getAttribute('data-domain') + '/carousel/js/vendor/slick-min.js'
+        }).done(startSlick);
+      } else {
+        startSlick();
+      }
     });
 
     window.addEventListener('resize', Utils.debounce(this.resize,100));

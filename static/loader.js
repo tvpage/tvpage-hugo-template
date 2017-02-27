@@ -162,6 +162,36 @@
                         self.static + '/dist/js/' + mobilePath + 'modal/scripts.min.js'
                     ]
                 }
+            },
+            carousel: {
+                gallery: {
+                    dev: [
+                        self.static + '/js/vendor/jquery.js',
+                        self.static + '/js/libs/utils.js',
+                        self.static + '/js/carousel.js',
+                        self.static + '/js/index.js'
+                    ],
+                    prod: [
+                        self.static + 'js/scripts.min.js'
+                    ]
+                },
+                modal: {
+                    dev: [
+                        '//a.tvpage.com/tvpa.min.js',
+                        '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
+                        (isMobile ? self.static + '/js/vendor/jquery.js' : ''),
+                        self.static + '/js/libs/utils.js',
+                        self.static + '/js/libs/analytics.js',
+                        self.static + '/js/libs/player.js',
+                        self.static + '/js/' + mobilePath + 'modal/index.js'
+                    ],
+                    prod: [
+                        '//a.tvpage.com/tvpa.min.js',
+                        '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
+                        (isMobile ? self.static + '/js/vendor/jquery.js' : ''),
+                        self.static + '/dist/js/' + mobilePath + 'modal/scripts.min.js'
+                    ]
+                }
             }
         };
 
@@ -320,9 +350,9 @@
                 iframeDoc.open().write(getIframeHtml({
                     js: function () {
                         var jsFiles = self.paths[self.type];
-                        if (self.type === 'sidebar') {
+                        if ('sidebar' === self.type || 'carousel' === self.type) {
                             jsFiles = jsFiles.gallery;
-                        } else if (self.type === 'solo-cta') {
+                        } else if ('solo-cta' === self.type) {
                             jsFiles = jsFiles.player;
                         }
                         return jsFiles[env];
@@ -349,7 +379,7 @@
     }
 
     function load () {
-        var spots = document.querySelectorAll('.tvp-sidebar, .tvp-solo, .tvp-solo-cta, .tvp-solo-append');
+        var spots = document.querySelectorAll('.tvp-sidebar, .tvp-carousel, .tvp-solo, .tvp-solo-cta, .tvp-solo-append');
         for (var i = 0; i < spots.length; i++) {
             var widget  = Widget(spots[i]);
             widget.initialize();

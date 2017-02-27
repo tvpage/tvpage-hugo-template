@@ -101,7 +101,7 @@
           setTimeout(function(){
             if (window.parent) {
               window.parent.postMessage({
-                event: 'tvp_sidebar:modal_resized',
+                event: 'tvp_carousel:modal_resized',
                 height: el.offsetHeight + 'px'
               }, '*');
             }
@@ -116,7 +116,7 @@
       $.ajax({
         dataType: 'script',
         cache: true,
-        url: document.body.getAttribute('data-domain') + '/sidebar/js/vendor/slick-min.js'
+        url: document.body.getAttribute('data-domain') + '/carousel/js/vendor/slick-min.js'
       }).done(startSlick);
     } else {
       startSlick();
@@ -134,7 +134,7 @@
       s.onResize = function(initial){
         if (!initial && window.parent) {
           window.parent.postMessage({
-            event: 'tvp_sidebar:modal_resized',
+            event: 'tvp_carousel:modal_resized',
             height: el.offsetHeight + 'px'
           }, '*');
         }
@@ -158,7 +158,7 @@
         
         if (window.parent) {
           window.parent.postMessage({
-            event: 'tvp_sidebar:player_next',
+            event: 'tvp_carousel:player_next',
             next: next
           }, '*');
         }
@@ -171,7 +171,7 @@
       if (!e || !Utils.isset(e, 'data') || !Utils.isset(e.data, 'event')) return;
       var data = e.data;
       
-      if ('tvp_sidebar:modal_data' === data.event) {
+      if ('tvp_carousel:modal_data' === data.event) {
         initPlayer(data);
 
         var loginId = data.runTime.loginid || data.runTime.loginId;
@@ -204,7 +204,7 @@
     setTimeout(function(){
       if (window.parent) {
         window.parent.postMessage({
-          event: 'tvp_sidebar:modal_initialized',
+          event: 'tvp_carousel:modal_initialized',
           height: (el.offsetHeight + 20) + 'px'
         }, '*');
       }
