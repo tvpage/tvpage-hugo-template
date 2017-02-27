@@ -213,7 +213,7 @@
       if (window.parent) {
         window.parent.postMessage({
           event: 'tvp_sidebar:modal_initialized',
-          height: (el.offsetHeight + 20) + 'px'
+          height: el.offsetHeight + 'px'
         }, '*');
       }
     },0);

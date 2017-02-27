@@ -150,6 +150,7 @@
                         '//a.tvpage.com/tvpa.min.js',
                         '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
                         (isMobile ? self.static + '/js/vendor/jquery.js' : ''),
+                        self.static + '/js/vendor/simple-scrollbar.min.js',
                         self.static + '/js/libs/utils.js',
                         self.static + '/js/libs/analytics.js',
                         self.static + '/js/libs/player.js',
@@ -257,7 +258,7 @@
                     modal.innerHTML = '<div class="tvp-modal-wrapper"><div class="tvp-modal-content"><div class="tvp-modal-header">' +
                         '<svg class="tvp-modal-close" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">' +
                         '<path fill="#ffffff" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>' +
-                        '<h4 class="tvp-modal-title">' + selectedVideo.title + '</h4></div><div class="tvp-modal-body"><div class="tvp-iframe-modal-holder"><iframe id="' + self.iframeModalId + '" src="about:blank"' +
+                        '<h4 class="tvp-modal-title">' + selectedVideo.title + '</h4><p class="tvp-products-headline">Related Products</p></div><div class="tvp-modal-body"><div class="tvp-iframe-modal-holder"><iframe id="' + self.iframeModalId + '" src="about:blank"' +
                         'allowfullscreen frameborder="0" scrolling="no" class="tvp-iframe-modal"></iframe></div></div></div></div>';
 
                     modalFrag.appendChild(modal);
@@ -280,7 +281,7 @@
                     var html = '<div id="' + id + '" class="tvp-clearfix iframe-content">';
                     if (isMobile) {
                         html += '<div class="tvp-player"><div id="tvp-player-el"></div></div>' +
-                        '<div class="tvp-products"><div class="tvp-products-carousel"></div></div>';
+                        '<p class="tvp-products-headline">Related Products</p><div class="tvp-products"><div class="tvp-products-carousel"></div></div>';
                     } else {
                         html += '<div class="tvp-player-holder"><div class="tvp-player"><div id="tvp-player-el"></div></div></div>';
                         if ("solo-cta" !== self.type) {
@@ -296,7 +297,8 @@
                         js: self.paths[self.type].modal[env].filter(Boolean),
                         css: [
                             self.static + (window.DEBUG ? '/' : '/dist/') + 'css/' + mobilePath + 'modal/styles' + cssExt,
-                            (isMobile ? self.domain + '/' + self.type + '/css/vendor/slick.css' : '')
+                            (isMobile ? self.domain + '/' + self.type + '/css/vendor/slick.css' : ''),
+                            (self.domain + '/' + self.type + '/css/vendor/simple-scrollbar.css')
                         ].filter(Boolean)
                     }));
                     iframeModalDoc.close();
@@ -337,6 +339,12 @@
 
                 if (self.senderId + ':player_next' === eventName) {
                     document.querySelector('.tvp-modal-title').innerHTML = e.data.next.assetTitle;
+                }
+
+                if ('tvp_sidebar:modal_no_products' === eventName) {
+                  document.querySelector('.tvp-products-headline').classList.add('tvp-no-products');
+                }else if (('tvp_sidebar:modal_no_products' && 'tvp_sidebar:player_next') === eventName) {
+                  document.querySelector('.tvp-products-headline').classList.remove('tvp-no-products');
                 }
             });
 

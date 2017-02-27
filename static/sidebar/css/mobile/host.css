@@ -85,12 +85,16 @@ div[class^="tvp-"] {
 }
 
 .tvp-modal-close {
+  width: 20px;
+  height: 20px;
   padding: 0;
   cursor: pointer;
-  background: rgb(239, 239, 239);
+  background: #000;
   border: 0;
   -webkit-appearance: none;
-  float: right;
+  right: 3px;
+  position: absolute;
+  top: 3px;
 }
 
 /*@media only screen and (min-device-width : 414px) and (orientation: portrait) {
