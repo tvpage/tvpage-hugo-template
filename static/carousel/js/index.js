@@ -1,77 +1,109 @@
-define(function(require) {
-
-  var $ = require('jquery-private');
-  require('./jquery.pubsub-loader');
-  require('slick');
+;(function(window,document) {
   
-  var 
-  redefine = function(obj, prop){
-    return 'undefined' !== typeof obj[ prop ];
+  var isset = function(o,p){
+    var val = o;
+    if (p) val = o[p];
+    return 'undefined' !== typeof val;
   };
 
-  //For each widget present in the page.
-  $( 'div[id^="tvpwidget"]' ).attr('id',function(i,id){
-
-    //Dynamic retrieval of configuration object.
-    var config = {};
-    if ( redefine(window,'__TVPage__') && redefine(__TVPage__,'config') ) {
-      for (var i = 0; i < __TVPage__.config.length; i++) {
-        if (id === __TVPage__.config[i].id) config = __TVPage__.config[i];
+  var getSettings = function(type){
+    var getConfig = function(g){
+      var c = {};
+      if (isset(g) && isset(g,'__TVPage__') && isset(g.__TVPage__, 'config')) {
+        c = g.__TVPage__.config;
       }
+      return c;
+    };
+    var s = {};
+    if ('dynamic' === type) {
+      var config = getConfig(parent);
+      var id = document.body.getAttribute('data-id');
+      if (!isset(config, id)) return;
+      s = config[id];
+      s.name = id;
+    } else if ('inline' === type && type && type.length) {
+      var config = getConfig(parent);
+      s = config[type];
+      s.name = type;
+    } else if ('static' === type) {
+      var config = getConfig(window);
+      var id = document.body.getAttribute('data-id');
+      if (!isset(config, id)) return;
+      s = config[id];
+      s.name = id;
     }
+    return s;
+  };
 
-    //Need to parse config to check if we need to load the data with AJAX or if content is already within the 
-    //code-snippet
+  var render = function(target,data){
+    if (!target) return;
+    var frag = document.createDocumentFragment(),
+    main = document.createElement('div');
+    var d = data || {};
+    main.id = d.id || '';
+    main.classList.add('iframe-content');
+    main.innerHTML =  '<div class="tvp-sidebar-title">' + (d.title || '') + '</div>'+
+    '<div class="tvp-sidebar-container"></div><div class="tvp-sidebar-footer">'+
+    '<button class="tvp-sidebar-load">' + (d.loadBtnText || '') + '</button>'+
+    '<a class="tvp-logo" target="_blank" href="https://www.tvpage.com/"><div class="tvp-logo-img"></div></a>'+
+    '</div><div class="tvp-cover"></div>';
+    frag.appendChild(main);
+    target.appendChild(frag);
+  };
 
+  var body = document.body;
 
-    // if ($.isEmpty(config) || !redefine(config,'attributes') || $.isEmptyObject(config.attributes) || !redefine(config.attributes,'search') || ) {
+  var initialize = function(){
+    if (body.classList.contains('dynamic')) {
+      (function(settings){
+        var carouselSettings = JSON.parse(JSON.stringify(settings));
+        var name = settings.name;
 
-    // }
+        render(body,{
+          id: name,
+          title: settings.title || 'Recommended Videos',
+          loadBtnText: settings.loadBtnText || 'View More'
+        });
 
-    // console.log( !redefine(config,'attributes') || $.isEmptyObject(config.attributes) );
-    // console.log( !redefine(config.attributes,'search') || !config.attributes.search )
+        var el = document.getElementById(name);
 
-    //console.log( !redefine(config,'attributes') || $.isEmptyObject(config.attributes) );
+        // carouselSettings.onLoad = function(){el.classList.add('loading');};
+        // carouselSettings.onLoadEnd = function(){el.classList.remove('loading');};
+        //Grid(name, carouselSettings);
 
-    // if ($.isEmpty(config) || ( redefine(config,'attributes') &&  $.isEmpty(config.attributes)) ) {
+      }(getSettings('dynamic')));
+    } else {
+      (function(settings){
+        var carouselSettings = JSON.parse(JSON.stringify(settings));
+        var name = settings.name;
+        var el = document.getElementById(name);
 
-    // } else {
+        // var slider = document.querySelector('.js_slider');
+        // lory(slider, {
+        //
+        // });
 
-    // }
+        carouselSettings.onLoad = function(){el.classList.add('loading');};
+        carouselSettings.onLoadEnd = function(){el.classList.remove('loading');};
+        Carousel(name, carouselSettings);
 
-    //  else if (redefine(config, 'attributes')) {
+      }(getSettings('static')));
+    }
+  };
 
-    // }
+  if ('undefined' === typeof window.Carousel) {
+    var libsCheck = 0;
+    (function libsReady() {
+      setTimeout(function() {
+        if ('undefined' === typeof window.Carousel) {
+          (++libsCheck < 50) ? libsReady() : console.debug('limit reached');
+        } else  {
+          initialize();
+        }
+      },150);
+    })();
+  } else {
+    initialize();
+  }
 
-  });
-
-  // var apiBase = "//localhost:1313/tvpwidget/";
-  // $( "div[id^='tvpwidget']" ).attr("id",function(i,id){
-  //   (function(endpoint,el){
-  //     $.ajax({ url: apiBase + endpoint }).done(function(res){
-  //       $(el).html(res);
-        
-  //       var config = {};
-  //       if ( redefine(window, "__TVPage__") && redefine(__TVPage__, "config") ) {
-  //         for (var i = 0; i < __TVPage__.config.length; i++) {
-  //           if (endpoint === __TVPage__.config[i].id) {
-  //             config = __TVPage__.config[i];
-  //           }
-  //         }
-  //       }
-  //       if (redefine(config, "settings") && redefine(config.settings, "carousel")) {
-  //         console.log(config.settings.carousel);
-  //       }
-  //       $(el).find(".tvpcarousel").slick(function(){
-  //         var sets = {};
-  //         if (redefine(config, "settings") && redefine(config.settings, "carousel")) {
-  //           sets = config.settings.carousel;
-  //         }
-  //         return sets;
-  //       }());
-
-  //     });
-  //   }(id, this));
-  // });
-
-});
+}(window, document));

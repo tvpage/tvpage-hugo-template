@@ -1,0 +1,246 @@
+::-webkit-scrollbar {
+  width: 5px;
+}
+ 
+::-webkit-scrollbar-thumb {
+  background: black;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  margin: 0;
+  height: 100%;
+}
+
+body  {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Helvetica;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+.tvp-player {
+  height: 0;
+  width: 100%;
+  position: relative;
+  padding-bottom: 56.25%;
+}
+
+.tvp-clearfix:before, 
+.tvp-clearfix:after {
+    display: table;
+    content: " ";
+    clear: both;
+}
+
+.tvp-player.inline {
+  position: absolute;
+  top:0;
+  left:0;
+  padding: 0;
+}
+
+#tvp-player-el {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-color: black;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.tvp-play {
+  display: block;
+  background-color: #fff;
+  box-sizing: border-box;
+  width: 45px;
+  height: 45px;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+  opacity: 0.95;
+  cursor: pointer;
+  border-radius: 1px;
+  border: 1px solid black;
+  z-index: 10000;
+}
+
+.tvp-play > polygon {
+  pointer-events: none;
+}
+
+.tvp-products {
+  height: inherit;
+  overflow: auto;
+}
+
+.tvp-products-holder {
+  float: right;
+  width: 20%;
+  height: 0;
+  padding-left: 1.35%;
+  position: relative;
+  background-color: whitesmoke;
+}
+
+.tvp-product {
+  border: 1px solid black;
+  display: block;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  position: relative;
+}
+
+.tvp-product:before {
+  display: block;
+  content: "";
+  width: 100%;
+  padding-top: 100%;
+}
+
+.tvp-products-title {
+  margin: 10px 0;
+}
+
+.tvp-product-title {
+  height: 35px;
+  overflow: hidden;
+  font-size: 14px;
+  text-decoration: none;
+  margin: 10px 0;
+  color: #1F1D26;
+}
+
+.tvp-product-price {
+  margin: 0;
+  float: left;
+  font-size: 14px;
+  color: #00DBC0;
+}
+
+.tvp-product-rating {
+  float: right;
+}
+
+.tvp-product-cta {
+  width: 100%;
+  height: 35px;
+  background: black;
+  border: 0;
+  color: white;
+  text-transform: uppercase;
+  padding: 0 10px;
+  display: block;
+  line-height: 35px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.tvp-product-cta:hover {
+ background: rgba(0,0,0,0.85); 
+}
+
+.tvp-arrow-indicator {
+  display: none;
+  background-color: transparent;
+  position: absolute;
+  top: 0;
+  left: 3px;
+  z-index: 10;
+}
+
+.tvp-arrow-indicator.active {
+  display: block;
+}
+
+.tvp-arrow-indicator:before {
+  content: " ";
+  width: 0;
+  height: 0;
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  border-left: 13px solid black;
+  position: absolute;
+  top: 0;
+  left: 1px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.tvp-arrow-indicator:after {
+  content: " ";
+  width: 0;
+  height: 0;
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  border-left: 13px solid white;
+  position: absolute;
+  top: 0;
+  left: 0px;
+}
+
+.tvp-product:last-child {
+  margin-bottom: 0; 
+}
+
+.tvp-product-popup {
+  display: none;
+  position: absolute;
+  right: 97%;
+  width: 215px;
+  background: white;
+  padding: 10px;
+  border: 1px solid black;
+  text-decoration: none;
+  top: 0;
+}
+
+.tvp-product-popup.active {
+  display: block;
+}
+
+.tvp-product-image {
+  display: block;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+
+}
+
+.tvp-product-popup-image {
+  display: block;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding-top: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .tvp-product-popup{
+    display: none!important;
+  }
+  .tvp-arrow-indicator{
+    display: none!important;
+  }
+}

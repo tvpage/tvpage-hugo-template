@@ -164,7 +164,7 @@
         }
       };
 
-      Player('tvp-player-el',s,data.selectedVideo.id);
+      new Player('tvp-player-el',s,data.selectedVideo.id);
     };
 
     window.addEventListener('message', function(e){
@@ -217,7 +217,7 @@
     (function libsReady() {
       setTimeout(function(){
         if (not(window.TVPage) || not(window._tvpa) || not(window.jQuery) || not(window.Utils) || not(window.Analytics) || not(window.Player)) {
-          (++libsCheck < 50) ? libsReady() : console.debug('limit reached');
+          (++libsCheck < 50) ? libsReady() : console.log('limit reached');
         } else {
           initialize();
         }

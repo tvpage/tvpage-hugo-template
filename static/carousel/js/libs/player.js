@@ -10,7 +10,7 @@
         return true;
       },
       debounce = function(func,wait,immediate) {
-        var timeout = null;
+        var timeout;  
         return function() {
           var context = this, args = arguments;
           var later = function() {
@@ -28,7 +28,7 @@
   //player and expose most utilities, helping to encapsualte what is
   //required for a few players to co-exist.
   function Player(el, options, startWith) {
-    if (!el || !isset(options) || !isset(options.data) || options.data.length <= 0) return;
+    if (!el || !isset(options) || !isset(options.data) || options.data.length <= 0) return console.log('bad args');
 
     this.isFullScreen = false;
     this.initialResize = true;
@@ -93,7 +93,7 @@
     };
 
     this.play = function(asset,ongoing){
-      if (!asset) return console.debug('need asset');
+      if (!asset) return console.log('need asset');
       var willCue = false,
           isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
       
@@ -116,6 +116,7 @@
       //Update tvpa analytics configuration depending on the video type 
       //(exhange or standard)
       if (isset(asset,'analyticsLogUrl')) {
+        console.log("ANALYTICS LOG URL", asset.analyticsLogUrl);
         config.logUrl = asset.analyticsLogUrl;
         analytics.initConfig(config);
       } else {
@@ -124,7 +125,7 @@
       }
       
       if (willCue) {
-        this.instance.cueVideo(asset);
+        this.instance.cueVideo(asset)
         if ('mp4' === asset.type) {
           this.showPlayBtn(asset.thumbnailUrl);
         }
@@ -182,14 +183,12 @@
               //If we are inside an iframe, we should listen to an external event.
               if (window.location !== window.parent.location){
                 window.addEventListener('message', function(e){
-                  if (!e || !isset(e, 'data') || !isset(e.data, 'event') || 'tvp_sidebar:holder_resize' !== e.data.event) return;
+                  if (!e || !isset(e, 'data') || !isset(e.data, 'event') || '_tvp_widget_holder_resize' !== e.data.event) return;
                   var size = e.data.size || [];
                   that.resize(size[0], size[1]);
                 });
               } else {
-                window.addEventListener('resize', debounce(function () {
-                  that.resize();
-                },65));
+                window.addEventListener('resize', resize);
               }
 
               that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progresscolor;

@@ -80,3 +80,12 @@ body {
   margin-top: 10px;
   text-align: center;
 }
+
+.tvp-play-text.abs {
+  margin-top: 0;
+  z-index: 100;
+  position: absolute;
+  width: 100%;
+  max-width: 50%;
+  text-align: left;
+}

@@ -202,10 +202,12 @@
 
               //If we are inside an iframe, we should listen to an external event.
               if (window.location !== window.parent.location){
-                window.addEventListener('message', function(e){
-                  if (!e || !isset(e, 'data') || !isset(e.data, 'event') || '_tvp_widget_holder_resize' !== e.data.event) return;
-                  var size = e.data.size || [];
-                  that.resize(size[0], size[1]);
+                window.parent.addEventListener('message', function(e){
+                  if (!e || !isset(e, 'data') || !isset(e.data, 'event')) return;
+                  if ('tvp_solo:holder_resize' === e.data.event || 'tvp_sidebar:holder_resize' === e.data.event ) {
+                      var size = e.data.size || [];
+                      that.resize(size[0], size[1]);
+                  }
                 });
               } else {
                 window.addEventListener('resize', debounce(that.resize,50));

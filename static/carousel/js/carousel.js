@@ -14,11 +14,11 @@
     return 'function' === typeof obj;
   };
 
-  function Grid(el, options) {
+  function Carousel(el, options) {
     this.xchg = options.xchg || true;
     this.windowSize = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) <= 200 ? 'small' : 'medium';
     this.initialResize = true;
-    
+
     var isSmall = this.windowSize == 'small';
     this.itemsPerPage = isSmall ? 2 : (options.itemsPerPage || 6);
     this.itemsPerRow = isSmall ? 1 : (options.itemsPerRow || 2);
@@ -34,7 +34,7 @@
     this.onLoad = options.onLoad && isFunction(options.onLoad) ? options.onLoad : null;
     this.onLoadEnd = options.onLoadEnd && isFunction(options.onLoadEnd) ? options.onLoadEnd : null;
     this.onItemClick = options.onItemClick && isFunction(options.onItemClick) ? options.onItemClick : null;
-    
+
     this.render = function(){
       this.container.innerHTML = '';
 
@@ -44,7 +44,7 @@
       while (all.length) {
         pages.push(all.splice(0, this.itemsPerPage));
       }
-      
+
       for (var i = 0; i < pages.length; i++) {
         var page = pages[i];
         var pageRows = [];
@@ -54,7 +54,7 @@
 
         var pageFrag = document.createDocumentFragment();
         for (var j = 0; pageRows.length > j; j++) {
-          
+
           var rowEl = document.createElement('div');
           rowEl.classList.add('tvp-clearfix');
 
@@ -87,7 +87,7 @@
         this.container.appendChild(pageFrag);
         if (window.parent) {
           window.parent.postMessage({
-            event: 'tvp_sidebar:render',
+            event: 'tvp_carousel:render',
             height: that.el.offsetHeight + 'px'
           }, '*');
         }
@@ -103,12 +103,10 @@
 
       var getChannelVideos = function(callback){
         var channel = that.channel || {};
-        if (isEmpty(channel) || !channel.id) return;
+        if (isEmpty(channel) || !channel.id) return console.log('bad channel');
         var params = channel.parameters || {};
         var src = '//api.tvpage.com/v1/channels/' + channel.id + '/videos?X-login-id=' + that.loginId;
-        for (var p in params) {
-          src += '&' + p + '=' + params[p];
-        }
+        for (var p in params) { src += '&' + p + '=' + params[p];}
         var cbName = options.callbackName || 'tvp_' + Math.floor(Math.random() * 555);
         src += '&p=' + that.page + '&n=' + that.itemsPerPage + '&callback='+cbName;
         var script = document.createElement('script');
@@ -124,7 +122,7 @@
           if (xhr.readyState == XMLHttpRequest.DONE) {
             getChannelVideos(function(data){
               var xchg = [];
-              
+
               // if (xhr.status === 200) {
               //   xchg = xhr.responseText;
               //   var xchgCount = xchg.length;
@@ -134,7 +132,7 @@
               //     xchgCount--;
               //   }
               // }
-              
+
               if (!data.length) {
                 that.isLastPage = true;
               }
@@ -180,7 +178,7 @@
         if (that.initialResize) return;
         if (window.parent) {
           window.parent.postMessage({
-            event: 'tvp_sidebar:grid_resize',
+            event: 'tvp_carousel:carousel_resize',
             height: that.el.offsetHeight + 'px'
           }, '*');
         }
@@ -190,10 +188,8 @@
         var isSmall = newSize === 'small';
         that.itemsPerPage = isSmall ? 2 : (options.itemsPerPage || 6);
         that.itemsPerRow = isSmall ? 1 : (options.itemsPerRow || 2);
-        //reset page to 0 if we detect a resize, so we don't have trouble loading the grid
-        that.page = 0;
+        that.page = 0;//reset page to 0 if we change the size.
         that.isLastPage = false;
-        
         that.load(function(){
           that.render();
           notify();
@@ -221,7 +217,7 @@
       if (window.parent) {
         window.parent.postMessage({
           runTime: 'undefined' !== typeof window.__TVPage__ ? __TVPage__ : null,
-          event: 'tvp_sidebar:video_click',
+          event: 'tvp_carousel:video_click',
           selectedVideo: selected,
           videos: data
         }, '*');
@@ -243,7 +239,6 @@
       });
     };
 
-    //By default at Grid creation we load & render.
     this.load(function(data){
       that.render(data);
     });
@@ -251,6 +246,6 @@
     window.addEventListener('resize', Utils.debounce(this.resize,100));
   }
 
-  window.Grid = Grid;
+  window.Carousel = Carousel;
 
 }(window, document));
