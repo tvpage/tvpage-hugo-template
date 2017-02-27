@@ -199,8 +199,8 @@
             data.runTime.loginid,
             function(data){
               setTimeout(function(){
-                checkProducts(data,el);
                 render(data);
+                checkProducts(data,el);
                 player.resize();
               },0);
           });
