@@ -78,6 +78,7 @@
             if (templateScript) {
               template = templateScript.innerHTML;
             }
+            item.title = Utils.trimText(item.title,50);
             rowEl.innerHTML += Utils.tmpl(template, item);
           }
 

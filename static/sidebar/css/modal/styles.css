@@ -89,6 +89,15 @@ body  {
   pointer-events: none;
 }
 
+
+.tvp-no-products .tvp-player-holder{
+  width: 100%;
+}
+
+.tvp-no-products .tvp-products-holder{
+  display: none;
+}
+
 .tvp-products {
   height: inherit;
   overflow: auto;

@@ -28,6 +28,14 @@
     document.body.appendChild(script);
   };
 
+  var checkProducts = function(data,el){
+    if (!data || !data.length) {
+      el.classList.add('tvp-no-products');
+    }else{
+      el.classList.remove('tvp-no-products');
+    }
+  };
+
   var render = function(data){
     var el = Utils.getByClass('iframe-content');
 
@@ -38,8 +46,6 @@
       var product = data[i];
       var productId = product.id;
       var productVideoId = product.entityIdParent;
-      var fixedPrice = '';
-      var prodTitle = product.title || '';
 
       analytics.track('pi',{
         vd: product.entityIdParent,
@@ -47,14 +53,13 @@
         pg: channelId
       });
       
-      //we want to remove all special character, so they don't duplicate
-      //also we shorten the lenght of long titles and add 3 point at the end
-      if (prodTitle || product.price) {
-        prodTitle = prodTitle.length > 50 ? prodTitle.substring(0, 50) + "...":prodTitle;
-        var price = product.price.toString().replace(/[^0-9.]+/g, '');
-        price = parseFloat(price).toFixed(2);
-        fixedPrice = price > 0 ? ('$' + price):'';
-      }
+      var prodTitle = product.title || '';
+      //shorten the lenght of long titles, we need to set a character limit
+      prodTitle = Utils.trimText(prodTitle, 50);
+   
+      var fixedPrice = product.price || '';
+      //remove all special character, so they don't duplicate
+      fixedPrice = Utils.trimPrice(fixedPrice);
 
       var prodNode = document.createElement('div');
       prodNode.innerHTML = '<a id="tvp-product-' + productId + '" class="tvp-product" data-vd="' + productVideoId + '" href="' +
@@ -151,6 +156,7 @@
             data.runTime.loginid || data.runTime.loginId,
             function(data){
               setTimeout(function(){
+                checkProducts(data,el);
                 render(data);
               },0);
           });
@@ -164,7 +170,7 @@
         }
       };
 
-      new Player('tvp-player-el',s,data.selectedVideo.id);
+      var player = new Player('tvp-player-el',s,data.selectedVideo.id);
     };
 
     window.addEventListener('message', function(e){
@@ -194,6 +200,7 @@
             function(data){
               setTimeout(function(){
                 render(data);
+                checkProducts(data,Utils.getByClass('iframe-content'));
               },0);
           });
         } 
