@@ -1,9 +1,5 @@
 ::-webkit-scrollbar {
-  width: 5px;
-}
- 
-::-webkit-scrollbar-thumb {
-  background: black;
+  width: 0;
 }
 
 * {
@@ -87,6 +83,15 @@ body  {
 
 .tvp-play > polygon {
   pointer-events: none;
+}
+
+
+.tvp-no-products .tvp-player-holder{
+  width: 100%;
+}
+
+.tvp-no-products .tvp-products-holder{
+  display: none;
 }
 
 .tvp-products {

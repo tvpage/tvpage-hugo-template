@@ -55,16 +55,23 @@ div[class^="tvp-"] {
   border-bottom: 1px solid #e5e5e5;
 }
 
-.tvp-modal-title,.tvp-title > p{
-  margin: 0;
+.tvp-modal-title{
+  margin: 0;  
+  float: left;
+}
+
+.tvp-modal-title,.tvp-products-headline{
   line-height: 1.4285;
   color: black;
   font-size: 16px;
   font-family: Helvetica;
-  float: left;
 }
 
-.tvp-title > p{
+.tvp-no-products{
+  display: none;
+}
+
+.tvp-products-headline{
   float: right;
   margin-right: 15px;
 }

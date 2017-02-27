@@ -59,6 +59,7 @@
       files = files.concat([
         devPath + '/libs/utils.js',
         devPath + '/libs/analytics.js',
+        devPath + '/vendor/simple-scrollbar.min.js',
         devPath + '/libs/player.js',
         devPath + (isMobile ? '/mobile' : '') + '/modal/index.js'
       ]);
@@ -190,7 +191,6 @@
             if ('tvp_sidebar:video_click' === eventName) {
               var data = e.data;
               var selectedVideo = data.selectedVideo || {};
-              var dataVideos = isset(data,'videos') ? data.videos : [];
               var runTime = (data.runTime || __TVPage__).config[id];
 
               widget[id] = widget[id] || {};
@@ -202,12 +202,6 @@
 
               var modalFrag = document.createDocumentFragment();
 
-              //we shorten the lenght of long titles and add 3 point at the end
-                for (var i = 0; i < dataVideos.length; i++) {
-                  var trimmedTitle = dataVideos[i].title.length > 62 ? dataVideos[i].title.substring(0, 62) + "..." : dataVideos[i].title;
-                  dataVideos[i].title = trimmedTitle;
-                }
-
               var overlay = document.createElement('div');
               overlay.classList.add('tvp-modal-overlay');
               modalFrag.appendChild(overlay);
@@ -216,7 +210,7 @@
               modal.innerHTML = '<div class="tvp-modal-wrapper"><div class="tvp-modal-content"><div class="tvp-modal-header">' +
                 '<svg class="tvp-modal-close" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg">' +
                 '<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>'+
-                '<div class="tvp-title"><h4 class="tvp-modal-title">' + selectedVideo.title + '</h4><p>Related Products</p></div>' +
+                '<div class="tvp-title"><h4 class="tvp-modal-title">' + selectedVideo.title + '</h4><p class="tvp-products-headline">Related Products</p></div>' +
                 '</div><div class="tvp-modal-body"><iframe id="tvp-iframe-modal_' + id + '" src="about:blank"' +
                 'allowfullscreen frameborder="0" scrolling="no" class="tvp-iframe-modal"></iframe></div></div></div>';
 
@@ -240,7 +234,7 @@
 
               if (isMobile) {
                 html += '<div class="tvp-player"><div id="tvp-player-el"></div></div>' +
-                  '<div class="tvp-products"><div class="tvp-products-carousel"></div></div>';
+                  '<p class="tvp-products-headline">Related Products</p><div class="tvp-products"><div class="tvp-products-carousel"></div></div>';
               } else {
                 html += '<div class="tvp-player-holder"><div class="tvp-player"><div id="tvp-player-el"></div></div></div>' +
                   '<div class="tvp-products-holder"><div class="tvp-products"><a class="tvp-product"></a><a class="tvp-product"></a><a class="tvp-product"></a></div></div>';
@@ -254,7 +248,8 @@
                 js: getModalJSFilePaths(domain, runTime.playerVersion),
                 css: [
                   typeStaticPath + 'css/' + (isMobile ? 'mobile' : '') + '/modal/styles' + cssExt,
-                  (isMobile ? domain + '/' + type + '/css/vendor/slick.css' : '')
+                  (isMobile ? domain + '/' + type + '/css/vendor/slick.css' : ''),
+                  (domain + '/' + type + '/css/vendor/simple-scrollbar.css')
                 ].filter(Boolean)
               }));
               iframeModalDoc.close();
@@ -296,6 +291,12 @@
 
             if ('tvp_sidebar:player_next' === eventName) {
               document.querySelector('.tvp-modal-title').innerHTML = e.data.next.assetTitle;
+            }
+
+            if ('tvp_sidebar:modal_no_products' === eventName) {
+              document.querySelector('.tvp-products-headline').classList.add('tvp-no-products');
+            }else if (('tvp_sidebar:modal_no_products' && 'tvp_sidebar:player_next') === eventName) {
+              document.querySelector('.tvp-products-headline').classList.remove('tvp-no-products');
             }
           });
         }
