@@ -109,7 +109,7 @@
     container.appendChild(thumbsFrag);
     container.parentNode.appendChild(popupsFrag);
     container.parentNode.insertBefore(arrow, container.nextSibling);
-    //SimpleScrollbar.initEl(container);
+    SimpleScrollbar.initEl(container);
 
     setTimeout(function(){
 
