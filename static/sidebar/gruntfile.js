@@ -14,7 +14,8 @@ module.exports = function(grunt) {
             'css/mobile/host.css': 'css/mobile/host.css',
             'css/styles.css': 'css/styles.css',
             'css/modal/styles.css': 'css/modal/styles.css',
-            'css/mobile/modal/styles.css': 'css/mobile/modal/styles.css'
+            'css/mobile/modal/styles.css': 'css/mobile/modal/styles.css',
+            'css/vendor/simple-scrollbar.css': 'css/vendor/simple-scrollbar.css'
           }
         }
       },
@@ -27,7 +28,7 @@ module.exports = function(grunt) {
           files: {
             'dist/css/styles.min.css': ['css/styles.css'],
             'dist/css/host.min.css': ['css/host.css'],
-            'dist/css/modal/styles.min.css': ['css/modal/styles.css','css/vendor/simple-scrollbar.css']
+            'dist/css/modal/styles.min.css': ['css/modal/styles.css']
           }
         },
         mobile: {

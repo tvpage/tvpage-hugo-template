@@ -27,7 +27,7 @@ module.exports = function(grunt) {
           files: {
             'dist/css/styles.min.css': ['css/vendor/slick.css','css/styles.css'],
             'dist/css/host.min.css': ['css/host.css'],
-            'dist/css/modal/styles.min.css': ['css/modal/styles.css', 'css/vendor/simple-scrollbar.css']
+            'dist/css/modal/styles.min.css': ['css/modal/styles.css']
           }
         },
         mobile: {

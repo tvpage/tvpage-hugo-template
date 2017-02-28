@@ -1,9 +1,5 @@
 ::-webkit-scrollbar {
-  width: 5px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: black;
+  width: 0;
 }
 
 * {

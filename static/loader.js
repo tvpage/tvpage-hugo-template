@@ -300,7 +300,7 @@
                         css: [
                             self.static + (window.DEBUG ? '/' : '/dist/') + 'css/' + mobilePath + 'modal/styles' + cssExt,
                             (isMobile ? self.domain + '/' + self.type + '/css/vendor/slick.css' : ''),
-                            (self.domain + '/' + self.type + '/css/vendor/simple-scrollbar.css')
+                            (isMobile ? '' : (self.domain + '/' + self.type + '/css/vendor/simple-scrollbar.css'))
                         ].filter(Boolean)
                     }));
                     iframeModalDoc.close();
