@@ -84,7 +84,7 @@ body  {
   margin: auto;
   opacity: 0.95;
   cursor: pointer;
-  border-radius: 1px;
+  border-radius: 50%;
   border: 1px solid black;
   z-index: 10000;
 }
@@ -115,6 +115,24 @@ body  {
   position: relative;
 }
 
+.tvp-product-image-overlay {
+  -webkit-transition: all .05s ease-in-out;
+          transition: all .05s ease-in-out;
+  display: none;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: absolute;
+  background-color: black;
+  margin: auto;
+  opacity: 0.2;
+}
+
+.tvp-product:hover .tvp-product-image-overlay {
+  display: block;
+}
+
 .tvp-product:before {
   display: block;
   content: "";
@@ -139,7 +157,6 @@ body  {
   margin: 0;
   float: left;
   font-size: 14px;
-  color: #00DBC0;
 }
 
 .tvp-product-rating {
@@ -158,6 +175,8 @@ body  {
   line-height: 35px;
   margin-top: 10px;
   cursor: pointer;
+  -webkit-transition: all .05s ease-in-out;
+          transition: all .05s ease-in-out;
 }
 
 .tvp-product-cta:hover {
@@ -234,7 +253,6 @@ body  {
   left: 0;
   right: 0;
   margin: auto;
-
 }
 
 .tvp-product-popup-image {

@@ -5,6 +5,7 @@
     var itemTemplate = '<div id="tvp-video-{id}" class="tvp-video{className}">' +
         '<div class="tvp-video-image" style="background-image:url({asset.thumbnailUrl})">'+
         '<svg class="tvp-video-play" viewBox="0 0 200 200" alt="Play video"><polygon points="70, 55 70, 145 145, 100"></polygon></svg>'+
+        '<div class="tvp-video-image-overlay"></div>'+
         '</div><p class="tvp-video-title">{title}</p></div>';
 
     var isEmpty = function(obj) {

@@ -45,18 +45,6 @@ footer {
   display: block;
 }
 
-.tvp-cover {
-  display: none;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  position: absolute;
-  background-color: white;
-  margin: auto;
-  opacity: 0.70;
-}
-
 .tvp-video {
   cursor: pointer;
   padding: 0 5px;
@@ -75,6 +63,20 @@ footer {
   pointer-events: none;
 }
 
+.tvp-video-image-overlay {
+  display: none;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: absolute;
+  background-color: black;
+  margin: auto;
+  opacity: 0.2;
+  -webkit-transition: all .05s ease-in-out;
+          transition: all .05s ease-in-out;
+}
+
 .tvp-video-image:focus {
   outline: 0;
 }
@@ -89,8 +91,8 @@ footer {
 .tvp-video-play {
   background-color: #fff;
   box-sizing: border-box;
-  width: 30px;
-  height: 30px;
+  width: 45px;
+  height: 45px;
   padding: 0;
   position: absolute;
   top: 0;
@@ -100,19 +102,43 @@ footer {
   margin: auto;
   cursor: pointer;
   border-radius: 50%;
-  border: 1px solid black;
+  border: 0;
+  z-index: 1000;
+  -webkit-transition: all .05s ease-in-out;
+          transition: all .05s ease-in-out;
 }
 
 .tvp-video-play > polygon {
   pointer-events: none;
-  fill: black;
+  fill: #333;
+  -webkit-transition: all .05s ease-in-out;
+          transition: all .05s ease-in-out;
+}
+
+@media (min-width: 768px) {
+  .tvp-video-play {
+    width: 65px;
+    height: 65px;
+  }
+
+  .tvp-video:hover .tvp-video-play {
+    background-color: #e57211;
+  }
+
+  .tvp-video:hover .tvp-video-play > polygon {
+    fill: #fff;
+  }
+
+  .tvp-video:hover .tvp-video-image-overlay {
+    display: block;
+  }
 }
 
 .tvp-video-title {
   overflow: hidden;
   font-size: 12px;
   color: #333333;
-  margin: 0;
+  margin: 10px 0;
 }
 
 .tvp-play {
@@ -130,10 +156,12 @@ footer {
   opacity: 0.95;
   cursor: pointer;
   border-radius: 1px;
-  border: 2px solid black;
+  border: 2px solid #333;
 }
 
 .tvp-play > polygon {
+  -webkit-transition: all .05s ease-in-out;
+          transition: all .05s ease-in-out;
   pointer-events: none;
 }
 
@@ -178,23 +206,42 @@ footer {
   visibility: visible;
 }
 
+.tvp-carousel-title {
+  padding: 15px 10px 15px 5px;
+}
+
 .tvp-carousel-arrow {
+  fill: #333;
   display: none;
   position: absolute;
-  top: 0;
+  top: 4%;
   bottom: 0;
-  width: 38px;
-  height: 38px;
+  width: 50px;
+  height: 50px;
   margin: auto 0;
   padding: 0;
   cursor: pointer;
   border: none;
   outline: none;
-  background: transparent;
+  background: white;
   z-index: 1000;
+  -webkit-transition: all .05s ease-in-out;
+          transition: all .05s ease-in-out;
 }
 
-@media (min-width: 768px) {
+.tvp-carousel-arrow > path {
+  pointer-events: none;
+}
+
+.tvp-carousel-arrow:hover {
+  fill:#000;
+}
+
+.mobile .tvp-carousel-arrow {
+  display: none !important;
+}
+
+@media screen and (min-width: 768px) {
   .tvp-carousel-arrow {
     display: block;
   }

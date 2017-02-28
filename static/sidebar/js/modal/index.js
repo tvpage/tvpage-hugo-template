@@ -62,7 +62,7 @@
       prodNode.id = 'tvp-product-' + productId;
       prodNode.setAttribute('data-vd', productVideoId);
       prodNode.href = productLink;
-      prodNode.innerHTML = '<div class="tvp-product-image" '+productImgStyle+'><div/>';
+      prodNode.innerHTML = '<div class="tvp-product-image" '+productImgStyle+'><div class="tvp-product-image-overlay"></div></div>';
       thumbsFrag.appendChild(prodNode);
 
       var prodTitle = product.title || '';
@@ -105,7 +105,7 @@
     container.appendChild(thumbsFrag);
     container.parentNode.appendChild(popupsFrag);
     container.parentNode.insertBefore(arrow, container.nextSibling);
-    SimpleScrollbar.initEl(container);
+    //SimpleScrollbar.initEl(container);
 
     setTimeout(function(){
       

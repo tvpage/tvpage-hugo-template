@@ -14,13 +14,13 @@
 </head>
 <body data-id='{{ $id }}'>
 <div id='{{ $id }}' class="iframe-content">
-  <div class="tvp-carousel-title">{{ ($.Scratch.Get "settings").title }}</div>
+  <div class="tvp-carousel-title">Recommended Videos</div>
   <div class="tvp-carousel-content"></div>
-  <svg class="tvp-carousel-arrow prev" fill="#000000" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <svg class="tvp-carousel-arrow prev" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <path d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z"/>
     <path d="M0-.5h24v24H0z" fill="none"/>
   </svg>
-  <svg class="tvp-carousel-arrow next" fill="#000000" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <svg class="tvp-carousel-arrow next" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"/>
     <path d="M0-.25h24v24H0z" fill="none"/>
   </svg>
@@ -29,6 +29,7 @@
   <div id="tvp-video-{id}" class="tvp-video{className}">
     <div class="tvp-video-image" style="background-image:url({asset.thumbnailUrl})">
       <svg class="tvp-video-play" viewBox="0 0 200 200" alt="Play video"><polygon points="70, 55 70, 145 145, 100"></polygon></svg>
+      <div class="tvp-video-image-overlay"></div>
     </div>
     <p class="tvp-video-title">{title}</p>
   </div>

@@ -2,6 +2,8 @@
 
   function Utils() {
 
+    this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
     this.getByClass = function(c){
       return document.getElementsByClassName(c || '')[0];
     };

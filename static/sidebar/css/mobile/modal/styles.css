@@ -103,10 +103,11 @@ body {
 }
 
 .tvp-product {
-  border: 1px solid gray;
+  border: 1px solid #333;
   display: block;
   overflow: hidden;
   margin: 0 7px;
+  padding: 5px;
   z-index: 9999;
 }
 
@@ -120,8 +121,9 @@ body {
   background-position: center;
 }
 
-.tvp-products-headline{
+.tvp-products-headline {
   margin: 0 0 10px 10px;
+  font-family: Helvetica;
 }
 
 @media only screen and (min-width : 480px) {
@@ -135,6 +137,7 @@ body {
   float: left;
   width: 60%;
   margin-left: 2.5%;
+  font-family: Helvetica;
 }
 
 .tvp-product-data > p {
@@ -146,9 +149,8 @@ body {
 }
 
 .tvp-product-data > h2 {
-  margin: 7px 0 3px;
+  margin: 5px 0;
   font-size: 16px;
-  color: #00DBC0;
 }
 
 .tvp-product-data > button {
@@ -165,5 +167,5 @@ body {
   display: block;
   cursor: pointer;
   position: absolute;
-  bottom: 0;
+  bottom: 5px;
 }

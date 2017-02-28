@@ -85,14 +85,15 @@ div[class^="tvp-"] {
 }
 
 .tvp-modal-close {
-  width: 20px;
-  height: 20px;
+  width: 27px;
+  height: 27px;
   padding: 3px;
   cursor: pointer;
   background: #000;
   border: 0;
   -webkit-appearance: none;
-  right: 0;
+  right: -6px;
   position: absolute;
-  top: 0;
+  top: -6px;
+  border-radius: 50%;
 }
