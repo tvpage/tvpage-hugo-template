@@ -14,7 +14,8 @@ module.exports = function(grunt) {
             'css/mobile/host.css': 'css/mobile/host.css',
             'css/styles.css': 'css/styles.css',
             'css/modal/styles.css': 'css/modal/styles.css',
-            'css/mobile/modal/styles.css': 'css/mobile/modal/styles.css'
+            'css/mobile/modal/styles.css': 'css/mobile/modal/styles.css',
+            'css/vendor/simple-scrollbar.css': 'css/vendor/simple-scrollbar.css'
           }
         }
       },
