@@ -61,6 +61,18 @@ min_version = 0.17
 		tablet = "https://do0631budpzeh.cloudfront.net/dev/widgets/templates_preview/preview_SideBar_tablet.png"
 
 [[tvp-widgets]]
+	name = "Carousel"
+	uniqueName = "carousel"
+	path = "layouts/carousel"
+	preview = "http://preview.tvpage.com"
+	settings = ['playback']
+	description = "Sidebar is a great compliment to a traditional 2-column or 3-column layout. The user is presented with a series of thumbnails. The video plays in a modal after a thumbnail is clicked."
+	[[tvp-widgets.thumbnails]]
+		desktop = "https://do0631budpzeh.cloudfront.net/dev/widgets/templates_preview/preview_SideBar_dtop.png"
+		mobile = "https://do0631budpzeh.cloudfront.net/dev/widgets/templates_preview/preview_SideBar_mobile.png"
+		tablet = "https://do0631budpzeh.cloudfront.net/dev/widgets/templates_preview/preview_SideBar_tablet.png"
+
+[[tvp-widgets]]
 	name = "Solo"
 	uniqueName = "solo"
 	path = "layouts/solo"
