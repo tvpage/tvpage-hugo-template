@@ -11,6 +11,24 @@
     });
   };
 
+  var checkProducts = function(data,el){
+      var eventName;
+
+      if (!data || !data.length) {
+          el.classList.add('tvp-no-products');
+          eventName = 'tvp_carousel:modal_no_products';
+      }else{
+          el.classList.remove('tvp-no-products');
+          eventName = 'tvp_carousel:modal_products';
+      }
+
+      setTimeout(function(){
+          if (window.parent) {
+              window.parent.postMessage({event: eventName}, '*');
+          }
+      },0);
+  };
+
   var loadProducts = function(videoId,loginId,fn){
     if (!videoId) return;
     var src = '//api.tvpage.com/v1/videos/' + videoId + '/products?X-login-id=' + loginId;
@@ -70,6 +88,13 @@
     }
 
     container.innerHTML = '';
+
+    if (data.length) {
+        var productsLabel = document.createElement('p');
+        productsLabel.classList.add('tvp-products-headline');
+        productsLabel.innerHTML = 'Related Products';
+        container.appendChild(productsLabel);
+    }
     
     var carousel = document.createElement('div');
     carousel.classList.add('tvp-products-carousel');
@@ -152,6 +177,7 @@
             function(data){
               setTimeout(function(){
                 render(data);
+                checkProducts(data,el);
               },0);
           });
         }
@@ -194,6 +220,7 @@
             function(data){
               setTimeout(function(){
                 render(data);
+                checkProducts(data,el);
               },0);
           });
         } 

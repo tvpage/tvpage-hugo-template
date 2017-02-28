@@ -116,7 +116,6 @@
       //Update tvpa analytics configuration depending on the video type 
       //(exhange or standard)
       if (isset(asset,'analyticsLogUrl')) {
-        console.log("ANALYTICS LOG URL", asset.analyticsLogUrl);
         config.logUrl = asset.analyticsLogUrl;
         analytics.initConfig(config);
       } else {
@@ -149,8 +148,8 @@
       
       that.instance.resize(width, height);
       
-      if(!this.onResize) return;
-      this.onResize(that.initialResize, [width, height]);
+      if(!that.onResize) return;
+      that.onResize(that.initialResize, [width, height]);
       
       that.initialResize = false;
     }
@@ -183,7 +182,7 @@
               //If we are inside an iframe, we should listen to an external event.
               if (window.location !== window.parent.location){
                 window.addEventListener('message', function(e){
-                  if (!e || !isset(e, 'data') || !isset(e.data, 'event') || '_tvp_widget_holder_resize' !== e.data.event) return;
+                  if (!e || !isset(e, 'data') || !isset(e.data, 'event') || 'tvp_carousel:modal_holder_resize' !== e.data.event) return;
                   var size = e.data.size || [];
                   that.resize(size[0], size[1]);
                 });

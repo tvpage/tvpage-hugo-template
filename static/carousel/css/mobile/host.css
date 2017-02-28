@@ -44,7 +44,7 @@ div[class^="tvp-"] {
 }
 
 .tvp-modal-header {
-  padding: 15px;
+  padding: 10px;
   border-bottom: 1px solid #e5e5e5;
 }
 
@@ -91,30 +91,8 @@ div[class^="tvp-"] {
   cursor: pointer;
   background: #000;
   border: 0;
-  border-radius: 50%;
   -webkit-appearance: none;
-  right: -7px;
+  right: 0;
   position: absolute;
-  top: -7px;
+  top: 0;
 }
-
-/*@media only screen and (min-device-width : 414px) and (orientation: portrait) {
-  .tvp-modal {
-    width: 390px;
-    height: 395px;
-  }
-}
-
-@media only screen and (min-device-width : 550px) and (orientation: portrait) {
-  .tvp-modal {
-    width: 520px;
-    height: 485px;
-  }
-}
-
-@media only screen and (min-device-width : 600px) and (orientation: landscape) {
-  .tvp-modal {
-    width: 520px;
-    height: 485px;
-  }
-}*/

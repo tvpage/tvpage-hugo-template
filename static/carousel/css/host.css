@@ -65,6 +65,12 @@ div[class^="tvp-"] {
   border-bottom: 1px solid #e5e5e5;
 }
 
+.tvp-modal-header:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
 .tvp-modal-title,.tvp-title > p{
   margin: 0;
   line-height: 1.4285;
@@ -73,11 +79,25 @@ div[class^="tvp-"] {
   font-family: Helvetica;
 }
 
+.tvp-modal-title{
+  margin: 0;
+  float: left;
+}
+
+.tvp-products-headline{
+  float: right;
+  margin: 0;
+}
+
 .tvp-iframe-modal-holder {
   height: 0;
   width: 100%;
   position: relative;
-  padding-bottom: 45.25%;
+  padding-bottom: 46.47%;
+}
+
+.tvp-iframe-modal-holder.extended {
+  padding-bottom: 57.40%;
 }
 
 .tvp-title > p{
@@ -91,14 +111,14 @@ div[class^="tvp-"] {
 
 .tvp-modal-body {
   position: relative;
-  padding: 10px;
+  padding: 0;
 }
 
 .tvp-iframe-holder {
   height: 0;
   position: relative;
   -webkit-transition: height ease-out 0.0001s;
-          transition: height ease-out 0.0001s;
+  transition: height ease-out 0.0001s;
 }
 
 /*This is the gallery iframe*/
@@ -117,11 +137,10 @@ div[class^="tvp-"] {
   cursor: pointer;
   background: #000;
   border: 0;
-  border-radius: 50%;
   -webkit-appearance: none;
-  right: -7px;
+  right: 0;
   position: absolute;
-  top: -7px;
+  top: 0;
 }
 
 .tvp-modal-close:hover {

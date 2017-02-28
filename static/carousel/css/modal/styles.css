@@ -1,9 +1,5 @@
 ::-webkit-scrollbar {
-  width: 5px;
-}
- 
-::-webkit-scrollbar-thumb {
-  background: black;
+  width: 0;
 }
 
 * {
@@ -17,12 +13,20 @@ html {
 
 body  {
   margin: 0;
-  padding: 0;
+  padding: 10px;
   height: 100%;
   font-family: Helvetica;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+}
+
+.tvp-no-products .tvp-player-holder {
+  width: 100%;
+}
+
+.tvp-no-products .tvp-products-holder {
+  display: none;
 }
 
 .tvp-player {
@@ -37,11 +41,11 @@ body  {
   float: left;
 }
 
-.tvp-clearfix:before, 
+.tvp-clearfix:before,
 .tvp-clearfix:after {
-    display: table;
-    content: " ";
-    clear: both;
+  display: table;
+  content: " ";
+  clear: both;
 }
 
 .tvp-player.inline {
@@ -157,7 +161,7 @@ body  {
 }
 
 .tvp-product-cta:hover {
- background: rgba(0,0,0,0.85); 
+  background: rgba(0,0,0,0.85);
 }
 
 .tvp-arrow-indicator {
@@ -200,7 +204,7 @@ body  {
 }
 
 .tvp-product:last-child {
-  margin-bottom: 0; 
+  margin-bottom: 0;
 }
 
 .tvp-product-popup {

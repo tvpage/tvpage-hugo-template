@@ -84,6 +84,10 @@ body {
   padding: 15px 0;
 }
 
+.tvp-no-products .tvp-products {
+  display: none;
+}
+
 .tvp-products-carousel {
   width: 1px;
   min-width: 100%;
@@ -92,6 +96,10 @@ body {
 .tvp-products-title {
   margin: 0;
   padding: 15px;
+}
+
+.tvp-products-headline{
+  margin: 0 0 10px 10px;
 }
 
 .tvp-product {

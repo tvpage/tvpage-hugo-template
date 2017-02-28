@@ -1,91 +1,76 @@
 ;(function(window,document) {
-  
-  var isset = function(o,p){
-    var val = o;
-    if (p) val = o[p];
-    return 'undefined' !== typeof val;
-  };
 
-  var getSettings = function(type){
-    var getConfig = function(g){
-      var c = {};
-      if (isset(g) && isset(g,'__TVPage__') && isset(g.__TVPage__, 'config')) {
-        c = g.__TVPage__.config;
-      }
-      return c;
+    var isset = function(o,p){
+        var val = o;
+        if (p) val = o[p];
+        return 'undefined' !== typeof val;
     };
-    var s = {};
-    if ('dynamic' === type) {
-      var config = getConfig(parent);
-      var id = document.body.getAttribute('data-id');
-      if (!isset(config, id)) return;
-      s = config[id];
-      s.name = id;
-    } else if ('inline' === type && type && type.length) {
-      var config = getConfig(parent);
-      s = config[type];
-      s.name = type;
-    } else if ('static' === type) {
-      var config = getConfig(window);
-      var id = document.body.getAttribute('data-id');
-      if (!isset(config, id)) return;
-      s = config[id];
-      s.name = id;
-    }
-    return s;
-  };
 
-  var render = function(target,data){
-    if (!target) return;
-    var frag = document.createDocumentFragment(),
-    main = document.createElement('div');
-    var d = data || {};
-    main.id = d.id || '';
-    main.classList.add('iframe-content');
-    main.innerHTML =  '<div class="tvp-carousel-title">' + (d.title || '') + '</div>'+
-    '<div class="tvp-carousel-content"></div>' + '<div class="tvp-carousel-cover"></div>';
-    frag.appendChild(main);
-    target.appendChild(frag);
-  };
+    var getSettings = function(type){
+        var getConfig = function(g){
+            var c = {};
+            if (isset(g) && isset(g,'__TVPage__') && isset(g.__TVPage__, 'config')) {
+                c = g.__TVPage__.config;
+            }
+            return c;
+        };
+        var s = {};
+        if ('dynamic' === type) {
+            var config = getConfig(parent);
+            var id = document.body.getAttribute('data-id');
+            if (!isset(config, id)) return;
+            s = config[id];
+            s.name = id;
+        } else if ('inline' === type && type && type.length) {
+            var config = getConfig(parent);
+            s = config[type];
+            s.name = type;
+        } else if ('static' === type) {
+            var config = getConfig(window);
+            var id = document.body.getAttribute('data-id');
+            if (!isset(config, id)) return;
+            s = config[id];
+            s.name = id;
+        }
+        return s;
+    };
 
-  var body = document.body;
+    var render = function(target,data){
+        if (!target) return;
+        var frag = document.createDocumentFragment(),
+            main = document.createElement('div');
+        var d = data || {};
+        main.id = d.id || '';
+        main.classList.add('iframe-content');
+        main.innerHTML =  '<div class="tvp-carousel-title">' + (d.title || '') + '</div>'+
+            '<div class="tvp-carousel-content"></div>' + '<div class="tvp-carousel-cover"></div>';
+        frag.appendChild(main);
+        target.appendChild(frag);
+    };
 
-  var initialize = function(){
-    if (body.classList.contains('dynamic')) {
-      (function(settings){
+    var body = document.body;
 
-        var carouselSettings = JSON.parse(JSON.stringify(settings));
-        var name = settings.name;
+    var initialize = function(){
+        if (body.classList.contains('dynamic')) {
+            (function(settings){
+                var name = settings.name;
 
-        render(body,{
-          id: name,
-          title: settings.title || 'Recommended Videos',
-          loadBtnText: settings.loadBtnText || 'View More'
-        });
+                render(body,{
+                    id: name,
+                    title: settings.title || 'Recommended Videos'
+                });
 
-        var el = document.getElementById(name);
+                Carousel(name, JSON.parse(JSON.stringify(settings)));
 
-        carouselSettings.onLoad = function(){el.classList.add('loading');};
-        carouselSettings.onLoadEnd = function(){el.classList.remove('loading');};
+            }(getSettings('dynamic')));
+        } else {
+            (function(settings){
 
-        Carousel(name, carouselSettings);
+                Carousel(settings.name, JSON.parse(JSON.stringify(settings)));
 
-      }(getSettings('dynamic')));
-    } else {
-      (function(settings){
-
-        var carouselSettings = JSON.parse(JSON.stringify(settings));
-        var name = settings.name;
-        var el = document.getElementById(name);
-
-        carouselSettings.onLoad = function(){el.classList.add('loading');};
-        carouselSettings.onLoadEnd = function(){el.classList.remove('loading');};
-
-        Carousel(name, carouselSettings);
-
-      }(getSettings('static')));
-    }
-  };
+            }(getSettings('static')));
+        }
+    };
 
     var not = function(obj){return 'undefined' === typeof obj};
     if (not(window.jQuery) || not(window.Carousel)) {

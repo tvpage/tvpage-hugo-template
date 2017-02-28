@@ -28,7 +28,7 @@ footer {
   position: relative;
 }
 
-.tvp-clearfix:before, 
+.tvp-clearfix:before,
 .tvp-clearfix:after {
   display: table;
   content: " ";
@@ -63,6 +63,10 @@ footer {
   margin: 0 auto;
 }
 
+.tvp-video:focus {
+  outline:0;
+}
+
 .tvp-video-image {
   background-repeat: no-repeat;
   background-position: center;
@@ -71,8 +75,12 @@ footer {
   pointer-events: none;
 }
 
+.tvp-video-image:focus {
+  outline: 0;
+}
+
 .tvp-video-image:before {
- display: block;
+  display: block;
   content: "";
   width: 100%;
   padding-top: 56.25%;
@@ -101,12 +109,10 @@ footer {
 }
 
 .tvp-video-title {
-  height: 30px;
   overflow: hidden;
   font-size: 12px;
   color: #333333;
-  margin: 5px 0;
-  line-height: 15px;
+  margin: 0;
 }
 
 .tvp-play {
@@ -132,27 +138,27 @@ footer {
 }
 
 .tvp-play-button-outer {
-    position: absolute;
-    margin: 25% auto;
-    background-color: #00DBC0;
-    cursor: pointer;
-    border-radius: 80px;
-    width: 37px;
-    height: 37px;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
+  position: absolute;
+  margin: 25% auto;
+  background-color: #00DBC0;
+  cursor: pointer;
+  border-radius: 80px;
+  width: 37px;
+  height: 37px;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
 }
 
 .tvp-play-button {
-    margin: 0px 11px;
-    top: 8px;
-    position: relative;
-    border-style: solid;
-    border-width: 10px 0 10px 20px;
-    border-color: transparent transparent transparent #FFFFFF;
-    opacity: .75; 
+  margin: 0px 11px;
+  top: 8px;
+  position: relative;
+  border-style: solid;
+  border-width: 10px 0 10px 20px;
+  border-color: transparent transparent transparent #FFFFFF;
+  opacity: .75;
 }
 
 .tvp-video:hover .tvp-play-button-outer{
@@ -160,62 +166,39 @@ footer {
   transform: scale(1.1);
 }
 
-/**
-             * (optional) define here the style definitions which should be applied on the slider container
-             * e.g. width including further controls like arrows etc.
-             */
-.slider {
-  position: relative;
-  width: 100%;
-  margin: 0;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: -moz-none;
-  -o-user-select: none;
-  user-select: none;
+@media (min-width: 768px) {
+  .tvp-carousel-content {
+    width: 92%;
+    margin: 0 auto;
+  }
 }
 
-.frame {
-  position: relative;
-  width: 85%;
-  margin: 0 auto;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.slides {
-  display: inline-block;
-}
-
-li {
-  width:100%;
-  position: relative;
-  display: inline-block;
-  font-family: 'Source Sans Pro', sans-serif;
-  height: 130px;
-  text-align: center;
-  font-size: 15px;
-  line-height: 30px;
-  background: #2E435A;
-  color: #fff;
-}
-
-.prev, .next {
+.tvp-carousel-arrow {
+  display: none;
   position: absolute;
-  top: 50%;
-  margin-top: -25px;
-  display: block;
+  top: 0;
+  bottom: 0;
+  width: 38px;
+  height: 38px;
+  margin: auto 0;
+  padding: 0;
   cursor: pointer;
+  border: none;
+  outline: none;
+  background: transparent;
+  z-index: 1000;
 }
 
-.next {
-  right: 0;
+@media (min-width: 768px) {
+  .tvp-carousel-arrow {
+    display: block;
+  }
 }
 
-.prev {
-  left: 0;
+.tvp-carousel-arrow.prev {
+  left:0;
 }
 
-.next svg, .prev svg {
-  width: 25px;
+.tvp-carousel-arrow.next {
+  right:0;
 }

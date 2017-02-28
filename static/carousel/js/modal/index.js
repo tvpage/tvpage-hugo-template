@@ -11,6 +11,24 @@
     });
   };
 
+  var checkProducts = function(data,el){
+      var eventName;
+
+      if (!data || !data.length) {
+          el.classList.add('tvp-no-products');
+          eventName = 'tvp_carousel:modal_no_products';
+      }else{
+          el.classList.remove('tvp-no-products');
+          eventName = 'tvp_carousel:modal_products';
+      }
+
+      setTimeout(function(){
+          if (window.parent) {
+              window.parent.postMessage({event: eventName}, '*');
+          }
+      },0);
+  };
+
   var loadProducts = function(videoId,loginId,fn){
     if (!videoId) return;
     var src = '//api.tvpage.com/v1/videos/' + videoId + '/products?X-login-id=' + loginId;
@@ -32,7 +50,7 @@
     var container = Utils.getByClass('tvp-products');
     var thumbsFrag = document.createDocumentFragment();
     var popupsFrag = document.createDocumentFragment();
-    
+
     for (var i = 0; i < data.length; i++) {
       var product = data[i];
       var productId = product.id;
@@ -41,7 +59,7 @@
       var productVideoId = product.entityIdParent;
       var fixedPrice = '';
       var prodTitle = product.title || '';
-      
+
       var prodNode = document.createElement('a');
       prodNode.classList.add('tvp-product');
       prodNode.id = 'tvp-product-' + productId;
@@ -49,7 +67,7 @@
       prodNode.href = productLink;
       prodNode.innerHTML = '<div class="tvp-product-image" '+productImgStyle+'><div/>';
       thumbsFrag.appendChild(prodNode);
-      
+
       //we want to remove all special character, so they don't duplicate
       //also we shorten the lenght of long titles and add 3 point at the end
       if (prodTitle || product.price) {
@@ -85,16 +103,16 @@
     }
 
     container.innerHTML = '';
-    
+
     var arrow = document.createElement('div');
     arrow.classList.add('tvp-arrow-indicator');
-    thumbsFrag.appendChild(arrow);
-
     container.appendChild(thumbsFrag);
     container.parentNode.appendChild(popupsFrag);
+    container.parentNode.insertBefore(arrow, container.nextSibling);
+    SimpleScrollbar.initEl(container);
 
     setTimeout(function(){
-      
+
       var holder = Utils.getByClass('tvp-products-holder');
       var classNames = ['tvp-product', 'tvp-product-popup'];
       for (var i = 0; i < classNames.length; i++) {
@@ -109,7 +127,7 @@
         for (var i = activePopups.length - 1; i >= 0; i--) {
           activePopups[i].classList.remove('active');
         }
-        
+
         var productEl = e.target.parentNode;
         var id = productEl.id.split('-').pop();
         productEl.classList.add('active');
@@ -119,9 +137,9 @@
         popup.classList.add('active');
         var bottomLimit = topValue + popup.offsetHeight;
         var holderHeight = holder.offsetHeight;
-        
+
         //We must first check if it's overflowing. To do this we first check if it's overflowing in the top, this is an
-        //easy one, if it's a negative value then it's overflowing. Otherwise if it's failing in the bottom, we rectify 
+        //easy one, if it's a negative value then it's overflowing. Otherwise if it's failing in the bottom, we rectify
         //by removing the excess from the top value.
         if (topValue <= 10) {
           topValue = -10;
@@ -130,7 +148,7 @@
           topValue = topValue - (bottomLimit - holderHeight);
           topValue = topValue + 10;
         }
-        
+
         popup.classList.add('active');
         popup.style.top = topValue + 'px';
 
@@ -143,7 +161,7 @@
         for (var i = activeThumbs.length - 1; i >= 0; i--) {
           activeThumbs[i].classList.remove('active');
         }
-        
+
         arrow.classList.remove('active');
 
         var activePopups = document.querySelectorAll('.tvp-product-popup.active');
@@ -162,11 +180,13 @@
       products.style.height = height + 'px';
     };
 
-    var player = Utils.getByClass('tvp-player-holder');
-    resizeProducts(player.offsetHeight);
+    var playerEl = Utils.getByClass('tvp-player-holder');
+    resizeProducts(playerEl.offsetHeight);
 
     var initPlayer = function(data){
       var s = JSON.parse(JSON.stringify(data.runTime));
+      var player = null;
+
       s.data = data.data;
 
       s.onResize = function(initial, size){
@@ -190,6 +210,8 @@
             function(data){
               setTimeout(function(){
                 render(data);
+                checkProducts(data,el);
+                player.resize();
               },0);
           });
         }
@@ -202,7 +224,7 @@
         }
       };
 
-      var player = new Player('tvp-player-el',s,data.selectedVideo.id);
+      player = new Player('tvp-player-el',s,data.selectedVideo.id);
       window.addEventListener('resize', Utils.debounce(function(){
         player.resize();
       },85));
@@ -236,6 +258,7 @@
             function(data){
               setTimeout(function(){
                 render(data);
+                checkProducts(data,el);
               },0);
           });
         }
