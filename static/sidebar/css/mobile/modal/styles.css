@@ -121,9 +121,7 @@ body {
 }
 
 .tvp-products-headline{
-  margin: 15px 15px 0px;
-  color: #1F1D26;
-  font-size: 14px;
+  margin: 0 0 10px 10px;
 }
 
 @media only screen and (min-width : 480px) {

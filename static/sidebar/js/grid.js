@@ -181,7 +181,7 @@
         if (that.initialResize) return;
         if (window.parent) {
           window.parent.postMessage({
-            event: 'tvp_sidebar:grid_resize',
+            event: 'tvp_sidebar:resize',
             height: that.el.offsetHeight + 'px'
           }, '*');
         }

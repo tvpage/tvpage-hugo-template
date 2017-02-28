@@ -75,7 +75,14 @@
     }
 
     container.innerHTML = '';
-    
+
+    if (data.length) {
+        var productsLabel = document.createElement('p');
+        productsLabel.classList.add('tvp-products-headline');
+        productsLabel.innerHTML = 'Related Products';
+        container.appendChild(productsLabel);
+    }
+
     var carousel = document.createElement('div');
     carousel.classList.add('tvp-products-carousel');
     carousel.appendChild(frag);

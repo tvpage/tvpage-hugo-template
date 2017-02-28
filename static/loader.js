@@ -49,7 +49,7 @@
             }
         }
 
-        var css = options.css || [];
+        var css = options.css.filter(Boolean) || [];
         if (css && css.length) {
             for (var i = 0; i < css.length; i++) {
                 html += 'addCSS(\'' + css[i] + '\');';
@@ -150,7 +150,7 @@
                         '//a.tvpage.com/tvpa.min.js',
                         '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
                         (isMobile ? self.static + '/js/vendor/jquery.js' : ''),
-                        self.static + '/js/vendor/simple-scrollbar.min.js',
+                        (isMobile ? '' : self.static + '/js/vendor/simple-scrollbar.min.js'),
                         self.static + '/js/libs/utils.js',
                         self.static + '/js/libs/analytics.js',
                         self.static + '/js/libs/player.js',
@@ -181,6 +181,7 @@
                         '//a.tvpage.com/tvpa.min.js',
                         '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
                         (isMobile ? self.static + '/js/vendor/jquery.js' : ''),
+                        (isMobile ? '' : self.static + '/js/vendor/simple-scrollbar.min.js'),
                         self.static + '/js/libs/utils.js',
                         self.static + '/js/libs/analytics.js',
                         self.static + '/js/libs/player.js',
@@ -234,7 +235,7 @@
 
                 self.iframeModalId = 'tvp-iframe-modal-' + id;
 
-                if (self.senderId + ':render' === eventName || self.senderId + ':grid_resize' === eventName) {
+                if (self.senderId + ':render' === eventName || self.senderId + ':resize' === eventName) {
                     self.holder.style.height = e.data.height;
                 }
 
@@ -258,7 +259,7 @@
                     modal.innerHTML = '<div class="tvp-modal-wrapper"><div class="tvp-modal-content"><div class="tvp-modal-header">' +
                         '<svg class="tvp-modal-close" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">' +
                         '<path fill="#ffffff" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>' +
-                        '<h4 class="tvp-modal-title">' + selectedVideo.title + '</h4><p class="tvp-products-headline">Related Products</p></div><div class="tvp-modal-body"><div class="tvp-iframe-modal-holder"><iframe id="' + self.iframeModalId + '" src="about:blank"' +
+                        '<h4 class="tvp-modal-title">' + selectedVideo.title + '</h4></div><div class="tvp-modal-body"><div class="tvp-iframe-modal-holder"><iframe id="' + self.iframeModalId + '" src="about:blank"' +
                         'allowfullscreen frameborder="0" scrolling="no" class="tvp-iframe-modal"></iframe></div></div></div></div>';
 
                     modalFrag.appendChild(modal);
@@ -281,11 +282,11 @@
                     var html = '<div id="' + id + '" class="tvp-clearfix iframe-content">';
                     if (isMobile) {
                         html += '<div class="tvp-player"><div id="tvp-player-el"></div></div>' +
-                        '<p class="tvp-products-headline">Related Products</p><div class="tvp-products"><div class="tvp-products-carousel"></div></div>';
+                        '<div class="tvp-products"><div class="tvp-products-carousel"></div></div>';
                     } else {
                         html += '<div class="tvp-player-holder"><div class="tvp-player"><div id="tvp-player-el"></div></div></div>';
                         if ("solo-cta" !== self.type) {
-                            html += '<div class="tvp-products-holder"><div class="tvp-products"><a class="tvp-product"></a><a class="tvp-product"></a><a class="tvp-product"></a></div></div>';
+                            html += '<div class="tvp-products-holder"><div class="tvp-products"></div></div>';
                         }
                     }
                     html += '</div>';
@@ -317,20 +318,30 @@
                         }, '*');
                     }
 
-                    window.addEventListener(
-                        'onorientationchange' in window ? 'orientationchange' : 'resize',
-                        debounce(function() {
-                            setTimeout(function() {
-                                var iframeModal = document.getElementById(self.iframeModalId);
-                                if (iframeModal && iframeModal.contentWindow && iframeModal.parentNode) {
-                                    var ref = iframeModal.parentNode;
-                                    iframeModal.contentWindow.postMessage({
-                                        event: self.senderId + ':holder_resize',
-                                        size: [ref.offsetWidth, Math.floor(ref.offsetWidth * (9 / 16))]
-                                    }, '*');
-                                }
-                            }, 100);
-                        }, 50), false);
+                    var send = function () {
+                        var iframeModal = document.getElementById(self.iframeModalId);
+
+                        if (!iframeModal) return;
+
+                        var size = [];
+                        if (isMobile){
+                            var widthRef = document.getElementById(self.iframeModalId).parentNode.offsetWidth;
+                            size =  [widthRef, Math.floor(widthRef * (9 / 16))];
+                        }
+
+                        iframeModal.contentWindow.postMessage({
+                            event: self.senderId + ':modal_holder_resize',
+                            size: size
+                        },'*');
+                    };
+
+                    window.addEventListener('onorientationchange' in window ? 'orientationchange' : 'resize',function () {
+                        if (isMobile) {
+                            setTimeout(send,35);
+                        } else {
+                            debounce(function(){ setTimeout(send,50); },150);
+                        }
+                    }, false);
                 }
 
                 if (self.senderId + ':modal_resized' === eventName) {
@@ -341,10 +352,23 @@
                     document.querySelector('.tvp-modal-title').innerHTML = e.data.next.assetTitle;
                 }
 
-                if ('tvp_sidebar:modal_no_products' === eventName) {
-                  document.querySelector('.tvp-products-headline').classList.add('tvp-no-products');
-                }else if (('tvp_sidebar:modal_no_products' && 'tvp_sidebar:player_next') === eventName) {
-                  document.querySelector('.tvp-products-headline').classList.remove('tvp-no-products');
+                if (!isMobile){
+                    var iframeModalHolder = document.querySelector('.tvp-iframe-modal-holder');
+                    if (self.senderId + ':modal_no_products' === eventName) {
+                        var pLabel = document.querySelector('.tvp-products-headline');
+                        if(pLabel) {
+                            pLabel.remove();
+                        }
+                        iframeModalHolder.classList.add('extended');
+                    }
+
+                    if (self.senderId + ':modal_products' === eventName) {
+                        iframeModalHolder.classList.remove('extended');
+                        var productsLabel = document.createElement('p');
+                        productsLabel.classList.add('tvp-products-headline');
+                        productsLabel.innerHTML = 'Related Products';
+                        document.querySelector('.tvp-modal-header').appendChild(productsLabel);
+                    }
                 }
             });
 

@@ -28,20 +28,23 @@
     document.body.appendChild(script);
   };
 
-  var checkProducts = function(data,el){
-    if (!data || !data.length) {
-      el.classList.add('tvp-no-products');
-      setTimeout(function(){
-        if (window.parent) {
-          window.parent.postMessage({
-            event: 'tvp_sidebar:modal_no_products'
-          }, '*');
+    var checkProducts = function(data,el){
+        var eventName;
+
+        if (!data || !data.length) {
+            el.classList.add('tvp-no-products');
+            eventName = 'tvp_sidebar:modal_no_products';
+        }else{
+            el.classList.remove('tvp-no-products');
+            eventName = 'tvp_sidebar:modal_products';
         }
-      },0)
-    }else{
-      el.classList.remove('tvp-no-products');
-    }
-  };
+
+        setTimeout(function(){
+            if (window.parent) {
+                window.parent.postMessage({event: eventName}, '*');
+            }
+        },0);
+    };
 
   var render = function(data){
     var container = Utils.getByClass('tvp-products');
@@ -184,7 +187,7 @@
         if (window.parent) {
           window.parent.postMessage({
             event: 'tvp_sidebar:modal_resized',
-            height: el.offsetHeight+ 'px'
+            height: (el.offsetHeight + 20) + 'px'
           }, '*');
         }
       };
@@ -258,7 +261,7 @@
       if (window.parent) {
         window.parent.postMessage({
           event: 'tvp_sidebar:modal_initialized',
-          height: el.offsetHeight + 'px'
+          height: (el.offsetHeight + 20) + 'px'
         }, '*');
       }
     },0);

@@ -44,7 +44,11 @@ div[class^="tvp-"] {
   height: 0;
   width: 100%;
   position: relative;
-  padding-bottom: 45.25%;
+  padding-bottom: 46.47%;
+}
+
+.tvp-iframe-modal-holder.extended {
+  padding-bottom: 57.40%;
 }
 
 .tvp-modal-content {
@@ -119,7 +123,7 @@ div[class^="tvp-"] {
 
 .tvp-modal-body {
   position: relative;
-  padding: 5px 15px;
+  padding: 0;
 }
 
 .tvp-modal-close {

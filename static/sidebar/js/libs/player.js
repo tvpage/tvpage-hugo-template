@@ -182,7 +182,7 @@
               //If we are inside an iframe, we should listen to an external event.
               if (window.location !== window.parent.location){
                 window.addEventListener('message', function(e){
-                  if (!e || !isset(e, 'data') || !isset(e.data, 'event') || 'tvp_sidebar:holder_resize' !== e.data.event) return;
+                  if (!e || !isset(e, 'data') || !isset(e.data, 'event') || 'tvp_sidebar:modal_holder_resize' !== e.data.event) return;
                   var size = e.data.size || [];
                   that.resize(size[0], size[1]);
                 });
