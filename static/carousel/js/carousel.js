@@ -70,55 +70,50 @@
             this.container.appendChild(carouselFrag);
 
             var startSlick = function () {
-                setTimeout(function () {
+                $carousel = $(that.el.querySelector('.tvp-carousel-content'));
 
-                    $carousel = $(that.el.querySelector('.tvp-carousel-content'));
-                    var slickInitialized = false;
+                $carousel.on('init', function(){
+                    if (window.parent) {
+                        window.parent.postMessage({
+                            event: 'tvp_carousel:render',
+                            height: that.el.offsetHeight + 'px'
+                        }, '*');
+                    }
+                });
 
-                    $carousel.on('init', function(){
-                        slickInitialized = true;
-                        if (window.parent) {
-                            window.parent.postMessage({
-                                event: 'tvp_carousel:render',
-                                height: that.el.offsetHeight + 'px'
-                            }, '*');
-                        }
-                    });
+                $carousel.on('setPosition', function () {
+                    if (window.parent) {
+                        window.parent.postMessage({
+                            event: 'tvp_carousel:resize',
+                            height: that.el.offsetHeight + 'px'
+                        }, '*');
+                    }
+                });
 
-                    $carousel.on('setPosition', Utils.debounce(function () {
-                        if (window.parent && slickInitialized) {
-                            window.parent.postMessage({
-                                event: 'tvp_carousel:resize',
-                                height: that.el.offsetHeight + 'px'
-                            }, '*');
-                        }
-                    },50));
-
-                    $carousel.slick({
-                        slidesToShow: 3,
-                        arrows: false,
-                        responsive: [
-                            {
-                                breakpoint: 768,
-                                settings: {
-                                    arrows: false,
-                                    centerMode: true,
-                                    centerPadding: '40px',
-                                    slidesToShow: 3
-                                }
-                            },
-                            {
-                                breakpoint: 480,
-                                settings: {
-                                    arrows: false,
-                                    centerMode: true,
-                                    centerPadding: '40px',
-                                    slidesToShow: 1
-                                }
+                $carousel.slick({
+                    slidesToShow: 3,
+                    arrows: false,
+                    responsive: [
+                        {
+                            breakpoint: 768,
+                            settings: {
+                                arrows: false,
+                                centerMode: true,
+                                centerPadding: '40px',
+                                slidesToShow: 3
                             }
-                        ]
-                    });
-                },10);
+                        },
+                        {
+                            breakpoint: 480,
+                            settings: {
+                                arrows: false,
+                                centerMode: true,
+                                centerPadding: '40px',
+                                slidesToShow: 1
+                            }
+                        }
+                    ]
+                });
             };
 
             if ('undefined' === typeof $.fn.slick) {
@@ -126,9 +121,11 @@
                     dataType: 'script',
                     cache: true,
                     url: document.body.getAttribute('data-domain') + '/carousel/js/vendor/slick-min.js'
-                }).done(startSlick);
+                }).done(function () {
+                    setTimeout(startSlick,100);
+                });
             } else {
-                startSlick();
+                setTimeout(startSlick,100);
             }
         };
 
@@ -210,34 +207,6 @@
             }
         };
 
-        this.resize = function(){
-            var newSize = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) <= 200 ? 'small' : 'medium';
-            var notify = function(){
-                if (that.initialResize) return;
-                if (window.parent) {
-                    window.parent.postMessage({
-                        event: 'tvp_carousel:carousel_resize',
-                        height: that.el.offsetHeight + 'px'
-                    }, '*');
-                }
-            };
-            if (that.windowSize !== newSize) {
-                that.windowSize = newSize;
-                var isSmall = newSize === 'small';
-                that.itemsPerPage = isSmall ? 2 : (options.itemsPerPage || 6);
-                that.itemsPerRow = isSmall ? 1 : (options.itemsPerRow || 2);
-                that.page = 0;//reset page to 0 if we change the size.
-                that.isLastPage = false;
-                that.load(function(){
-                    that.render();
-                    notify();
-                });
-            } else {
-                notify();
-            }
-            that.initialResize = false;
-        };
-
         this.el.onclick = function(e) {
             var target = e.target;
 
@@ -274,8 +243,6 @@
         this.load(function(data){
             that.render(data);
         });
-
-        window.addEventListener('resize', Utils.debounce(this.resize,100));
     }
 
     window.Carousel = Carousel;

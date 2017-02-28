@@ -169,6 +169,13 @@ footer {
 .tvp-carousel-content {
   width: 1px;
   min-width: 100%;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.tvp-carousel-content.slick-initialized {
+  opacity: 1;
+  visibility: visible;
 }
 
 .tvp-carousel-arrow {

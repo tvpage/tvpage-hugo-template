@@ -389,7 +389,13 @@
                         }
                         return jsFiles[env];
                     }(),
-                    css: [self.static + (window.DEBUG ? '/' : '/dist/') + 'css/styles' + cssExt],
+                    css: function () {
+                        var cssFiles = [self.static + (window.DEBUG ? '/' : '/dist/') + 'css/styles' + cssExt]
+                        if ('carousel' === self.type) {
+                            cssFiles = cssFiles.concat([self.static + '/css/vendor/slick.css']);
+                        }
+                        return cssFiles;
+                    }(),
                     className: self.dataMethod,
                     domain: self.domain,
                     id: self.id

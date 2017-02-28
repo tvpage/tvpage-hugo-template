@@ -37,13 +37,14 @@
 
     var render = function(target,data){
         if (!target) return;
-        var frag = document.createDocumentFragment(),
-            main = document.createElement('div');
+        var frag = document.createDocumentFragment();
+        var main = document.createElement('div');
         var d = data || {};
+
         main.id = d.id || '';
         main.classList.add('iframe-content');
-        main.innerHTML =  '<div class="tvp-carousel-title">' + (d.title || '') + '</div>'+
-            '<div class="tvp-carousel-content"></div>' + '<div class="tvp-carousel-cover"></div>';
+        main.innerHTML =  '<div class="tvp-carousel-title">' + (d.title || '') +
+        '</div><div class="tvp-carousel-content"></div>';
         frag.appendChild(main);
         target.appendChild(frag);
     };
