@@ -2,7 +2,7 @@
 
     var $carousel = null;
 
-    var itemTemplate = '<div id="tvp-video-{id}" class="tvp-video{className}">' +
+    var itemTemplate = '<div data-id="{id}" class="tvp-video{className}">' +
         '<div class="tvp-video-image" style="background-image:url({asset.thumbnailUrl})">'+
         '<svg class="tvp-video-play" viewBox="0 0 200 200" alt="Play video"><polygon points="70, 55 70, 145 145, 100"></polygon></svg>'+
         '<div class="tvp-video-image-overlay"></div>'+
@@ -203,7 +203,7 @@
             var target = e.target;
 
             if (hasClass(target,'tvp-video')) {
-                var id = target.id.split('-').pop(),
+                var id = target.getAttribute('data-id'),
                     selected = {};
                 var data = that.data;
                 for (var i = 0; i < data.length; i++) {
