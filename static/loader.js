@@ -316,7 +316,7 @@
                             data: widgetData.data,
                             selectedVideo: widgetData.selectedVideo,
                             runTime: widgetData.runTime
-                        }, '*');
+                        },'*');
                     }
 
                     var send = function () {

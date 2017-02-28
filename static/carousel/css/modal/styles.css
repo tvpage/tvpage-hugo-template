@@ -104,7 +104,6 @@ body  {
   height: 0;
   padding-left: 1.35%;
   position: relative;
-  background-color: whitesmoke;
 }
 
 .tvp-product {
@@ -166,7 +165,7 @@ body  {
 .tvp-product-cta {
   width: 100%;
   height: 35px;
-  background: black;
+  background: #333;
   border: 0;
   color: white;
   text-transform: uppercase;

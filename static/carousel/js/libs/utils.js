@@ -8,6 +8,15 @@
       return document.getElementsByClassName(c || '')[0];
     };
 
+    this.isFunction = function(obj) {
+      return 'function' === typeof obj;
+    };
+
+    this.isEmpty = function(obj) {
+      for(var key in obj) { if (obj.hasOwnProperty(key)) return false;}
+      return true;
+    };
+
     this.isset = function(o,p){
       if (!arguments.length) return;
       var val = o;

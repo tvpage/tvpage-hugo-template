@@ -8,15 +8,6 @@
         '<div class="tvp-video-image-overlay"></div>'+
         '</div><p class="tvp-video-title">{title}</p></div>';
 
-    var isEmpty = function(obj) {
-        for(var key in obj) { if (obj.hasOwnProperty(key)) return false;}
-        return true;
-    };
-
-    var isFunction = function(obj) {
-        return 'function' === typeof obj;
-    };
-
     var hasClass = function(obj,c) {
         if (!obj || !c) return;
         return obj.classList.contains(c);
@@ -28,8 +19,8 @@
         this.initialResize = true;
 
         var isSmall = this.windowSize == 'small';
-        this.itemsPerPage = isSmall ? 2 : (options.itemsPerPage || 6);
-        this.itemsPerRow = isSmall ? 1 : (options.itemsPerRow || 2);
+        this.itemsPerPage = Utils.isset(options.items_per_page);
+
         this.loginId = (options.loginId || options.loginid) || 0;
         this.channel = options.channel || {};
         this.loading = false;
@@ -38,8 +29,8 @@
 
         this.el = 'string' === typeof el ? document.getElementById(el) : el;
         this.container = this.el.getElementsByClassName('tvp-carousel-content')[0];
-        this.onLoad = options.onLoad && isFunction(options.onLoad) ? options.onLoad : null;
-        this.onLoadEnd = options.onLoadEnd && isFunction(options.onLoadEnd) ? options.onLoadEnd : null;
+
+        this.onClick = Utils.isset(options.onClick) && Utils.isFunction(options.onClick) ? options.onClick : null;
 
         this.render = function(){
             this.container.innerHTML = '';
@@ -139,7 +130,7 @@
 
             var getChannelVideos = function(callback){
                 var channel = that.channel || {};
-                if (isEmpty(channel) || !channel.id) return console.log('bad channel');
+                if (Utils.isEmpty(channel) || !channel.id) return console.log('bad channel');
                 var params = channel.parameters || {};
                 var src = '//api.tvpage.com/v1/channels/' + channel.id + '/videos?X-login-id=' + that.loginId;
                 for (var p in params) { src += '&' + p + '=' + params[p];}
@@ -214,22 +205,18 @@
             if (hasClass(target,'tvp-video')) {
                 var id = target.id.split('-').pop(),
                     selected = {};
-
                 var data = that.data;
                 for (var i = 0; i < data.length; i++) {
                     if (data[i].id === id) {
                         selected = data[i];
                     }
+
                 }
 
-                if (window.parent) {
-                    window.parent.postMessage({
-                        runTime: 'undefined' !== typeof window.__TVPage__ ? __TVPage__ : null,
-                        event: 'tvp_carousel:video_click',
-                        selectedVideo: selected,
-                        videos: data
-                    }, '*');
+                if (that.onClick) {
+                    that.onClick(selected,data);
                 }
+
             } else if (hasClass(target,'tvp-carousel-arrow')) {
 
                 if (hasClass(target,'next')) {
