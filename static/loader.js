@@ -173,7 +173,8 @@
                         self.static + '/js/index.js'
                     ],
                     prod: [
-                        self.static + '/js/scripts.min.js'
+                        self.static + '/js/vendor/jquery.js',
+                        self.static + '/dist/js/scripts.min.js'
                     ]
                 },
                 modal: {
