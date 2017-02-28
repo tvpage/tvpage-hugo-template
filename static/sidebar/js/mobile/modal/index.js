@@ -28,6 +28,14 @@
     document.body.appendChild(script);
   };
 
+  var checkProducts = function(data,el){
+    if (!data || !data.length) {
+      el.classList.add('tvp-no-products');
+    }else{
+      el.classList.remove('tvp-no-products');
+    }
+  };
+
   var render = function(data){
     var el = Utils.getByClass('iframe-content');
 
@@ -38,8 +46,6 @@
       var product = data[i];
       var productId = product.id;
       var productVideoId = product.entityIdParent;
-      var fixedPrice = '';
-      var prodTitle = product.title || '';
 
       analytics.track('pi',{
         vd: product.entityIdParent,
@@ -47,14 +53,13 @@
         pg: channelId
       });
       
-      //we want to remove all special character, so they don't duplicate
-      //also we shorten the lenght of long titles and add 3 point at the end
-      if (prodTitle || product.price) {
-        prodTitle = prodTitle.length > 50 ? prodTitle.substring(0, 50) + "...":prodTitle;
-        var price = product.price.toString().replace(/[^0-9.]+/g, '');
-        price = parseFloat(price).toFixed(2);
-        fixedPrice = price > 0 ? ('$' + price):'';
-      }
+      var prodTitle = product.title || '';
+      //shorten the lenght of long titles, we need to set a character limit
+      prodTitle = Utils.trimText(prodTitle, 50);
+   
+      var fixedPrice = product.price || '';
+      //remove all special character, so they don't duplicate
+      fixedPrice = Utils.trimPrice(fixedPrice);
 
       var prodNode = document.createElement('div');
       prodNode.innerHTML = '<a id="tvp-product-' + productId + '" class="tvp-product" data-vd="' + productVideoId + '" href="' +
@@ -70,7 +75,14 @@
     }
 
     container.innerHTML = '';
-    
+
+    if (data.length) {
+        var productsLabel = document.createElement('p');
+        productsLabel.classList.add('tvp-products-headline');
+        productsLabel.innerHTML = 'Related Products';
+        container.appendChild(productsLabel);
+    }
+
     var carousel = document.createElement('div');
     carousel.classList.add('tvp-products-carousel');
     carousel.appendChild(frag);
@@ -151,6 +163,7 @@
             data.runTime.loginid || data.runTime.loginId,
             function(data){
               setTimeout(function(){
+                checkProducts(data,el);
                 render(data);
               },0);
           });
@@ -164,14 +177,15 @@
         }
       };
 
-      new Player('tvp-player-el',s,data.selectedVideo.id);
+      var player = new Player('tvp-player-el',s,data.selectedVideo.id);
+
     };
 
     window.addEventListener('message', function(e){
       if (!e || !Utils.isset(e, 'data') || !Utils.isset(e.data, 'event')) return;
       var data = e.data;
       
-      if ('_tvp_sidebar_modal_data' === data.event) {
+      if ('tvp_sidebar:modal_data' === data.event) {
         initPlayer(data);
 
         var loginId = data.runTime.loginid || data.runTime.loginId;
@@ -194,6 +208,7 @@
             function(data){
               setTimeout(function(){
                 render(data);
+                checkProducts(data,Utils.getByClass('iframe-content'));
               },0);
           });
         } 
@@ -205,7 +220,7 @@
       if (window.parent) {
         window.parent.postMessage({
           event: 'tvp_sidebar:modal_initialized',
-          height: (el.offsetHeight + 20) + 'px'
+          height: el.offsetHeight + 'px'
         }, '*');
       }
     },0);
@@ -217,7 +232,7 @@
     (function libsReady() {
       setTimeout(function(){
         if (not(window.TVPage) || not(window._tvpa) || not(window.jQuery) || not(window.Utils) || not(window.Analytics) || not(window.Player)) {
-          (++libsCheck < 50) ? libsReady() : console.log('limit reached');
+          (++libsCheck < 50) ? libsReady() : console.debug('limit reached');
         } else {
           initialize();
         }

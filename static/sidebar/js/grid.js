@@ -78,6 +78,7 @@
             if (templateScript) {
               template = templateScript.innerHTML;
             }
+            item.title = Utils.trimText(item.title,50);
             rowEl.innerHTML += Utils.tmpl(template, item);
           }
 
@@ -103,10 +104,12 @@
 
       var getChannelVideos = function(callback){
         var channel = that.channel || {};
-        if (isEmpty(channel) || !channel.id) return console.log('bad channel');
+        if (isEmpty(channel) || !channel.id) return;
         var params = channel.parameters || {};
         var src = '//api.tvpage.com/v1/channels/' + channel.id + '/videos?X-login-id=' + that.loginId;
-        for (var p in params) { src += '&' + p + '=' + params[p];}
+        for (var p in params) {
+          src += '&' + p + '=' + params[p];
+        }
         var cbName = options.callbackName || 'tvp_' + Math.floor(Math.random() * 555);
         src += '&p=' + that.page + '&n=' + that.itemsPerPage + '&callback='+cbName;
         var script = document.createElement('script');
@@ -178,7 +181,7 @@
         if (that.initialResize) return;
         if (window.parent) {
           window.parent.postMessage({
-            event: 'tvp_sidebar:grid_resize',
+            event: 'tvp_sidebar:resize',
             height: that.el.offsetHeight + 'px'
           }, '*');
         }

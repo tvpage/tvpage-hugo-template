@@ -63,6 +63,18 @@ footer {
   margin: 0 auto;
 }
 
+.tvp-video:hover .tvp-video-play {
+  background-color: #e57211;
+}
+
+.tvp-video:hover .tvp-video-play > polygon {
+  fill: #fff;
+}
+
+.tvp-video:hover .tvp-video-image-overlay {
+  display: block;
+}
+
 .tvp-video.col-6 {
   width: 50%;
   float: left;
@@ -76,6 +88,24 @@ footer {
   pointer-events: none;
 }
 
+.tvp-video-image-overlay {
+  display: none;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: absolute;
+  background-color: black;
+  margin: auto;
+  opacity: 0.2;
+  -webkit-transition: all .05s ease-in-out;
+          transition: all .05s ease-in-out;
+}
+
+.tvp-video-image:focus {
+  outline: 0;
+}
+
 .tvp-video-image:before {
  display: block;
   content: "";
@@ -86,8 +116,8 @@ footer {
 .tvp-video-play {
   background-color: #fff;
   box-sizing: border-box;
-  width: 30px;
-  height: 30px;
+  width: 35px;
+  height: 35px;
   padding: 0;
   position: absolute;
   top: 0;
@@ -97,7 +127,10 @@ footer {
   margin: auto;
   cursor: pointer;
   border-radius: 50%;
-  border: 1px solid black;
+  border: 0;
+  z-index: 1000;
+  -webkit-transition: all .05s ease-in-out;
+          transition: all .05s ease-in-out;
 }
 
 .tvp-exchange .tvp-video-play {
@@ -106,11 +139,7 @@ footer {
 
 .tvp-video-play > polygon {
   pointer-events: none;
-  fill: black;
-}
-
-.tvp-exchange .tvp-video-play > polygon {
-  fill: white;
+  fill: #333;
 }
 
 .tvp-video-title {

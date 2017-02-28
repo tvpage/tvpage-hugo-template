@@ -28,6 +28,24 @@
     document.body.appendChild(script);
   };
 
+    var checkProducts = function(data,el){
+        var eventName;
+
+        if (!data || !data.length) {
+            el.classList.add('tvp-no-products');
+            eventName = 'tvp_sidebar:modal_no_products';
+        }else{
+            el.classList.remove('tvp-no-products');
+            eventName = 'tvp_sidebar:modal_products';
+        }
+
+        setTimeout(function(){
+            if (window.parent) {
+                window.parent.postMessage({event: eventName}, '*');
+            }
+        },0);
+    };
+
   var render = function(data){
     var container = Utils.getByClass('tvp-products');
     var thumbsFrag = document.createDocumentFragment();
@@ -39,25 +57,21 @@
       var productLink = product.linkUrl;
       var productImgStyle = 'style="background-image:url(\''+product.imageUrl+'\');"';
       var productVideoId = product.entityIdParent;
-      var fixedPrice = '';
-      var prodTitle = product.title || '';
-      
       var prodNode = document.createElement('a');
       prodNode.classList.add('tvp-product');
       prodNode.id = 'tvp-product-' + productId;
       prodNode.setAttribute('data-vd', productVideoId);
       prodNode.href = productLink;
-      prodNode.innerHTML = '<div class="tvp-product-image" '+productImgStyle+'><div/>';
+      prodNode.innerHTML = '<div class="tvp-product-image" '+productImgStyle+'><div class="tvp-product-image-overlay"></div></div>';
       thumbsFrag.appendChild(prodNode);
-      
-      //we want to remove all special character, so they don't duplicate
-      //also we shorten the lenght of long titles and add 3 point at the end
-      if (prodTitle || product.price) {
-        prodTitle = prodTitle.length > 50 ? prodTitle.substring(0, 50) + "...":prodTitle;
-        var price = product.price.toString().replace(/[^0-9.]+/g, '');
-        price = parseFloat(price).toFixed(2);
-        fixedPrice = price > 0 ? ('$' + price):'';
-      }
+
+      var prodTitle = product.title || '';
+      //shorten the lenght of long titles, we need to set a character limit
+      prodTitle = Utils.trimText(prodTitle, 50);
+   
+      var fixedPrice = product.price || '';
+      //remove all special character, so they don't duplicate
+      fixedPrice = Utils.trimPrice(fixedPrice);
 
       var prodPopupNode = document.createElement('a');
       prodPopupNode.classList.add('tvp-product-popup');
@@ -88,10 +102,10 @@
     
     var arrow = document.createElement('div');
     arrow.classList.add('tvp-arrow-indicator');
-    thumbsFrag.appendChild(arrow);
-
     container.appendChild(thumbsFrag);
     container.parentNode.appendChild(popupsFrag);
+    container.parentNode.insertBefore(arrow, container.nextSibling);
+    //SimpleScrollbar.initEl(container);
 
     setTimeout(function(){
       
@@ -152,7 +166,6 @@
         }
       }
     },0);
-
   };
 
   var initialize = function(){
@@ -190,6 +203,8 @@
             function(data){
               setTimeout(function(){
                 render(data);
+                checkProducts(data,el);
+                player.resize();
               },0);
           });
         }
@@ -212,7 +227,7 @@
       if (!e || !Utils.isset(e, 'data') || !Utils.isset(e.data, 'event')) return;
       var data = e.data;
       
-      if ('_tvp_sidebar_modal_data' === data.event) {
+      if ('tvp_sidebar:modal_data' === data.event) {
         initPlayer(data);
         
         var loginId = data.runTime.loginid || data.runTime.loginId;
@@ -235,6 +250,7 @@
             function(data){
               setTimeout(function(){
                 render(data);
+                checkProducts(data,Utils.getByClass('iframe-content'));
               },0);
           });
         }
@@ -252,11 +268,11 @@
   };
 
   var not = function(obj){return 'undefined' === typeof obj};
-  if (not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player)) {
+  if (not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player) || not(window.SimpleScrollbar)) {
     var libsCheck = 0;
     (function libsReady() {
       setTimeout(function(){
-        if (not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player)) {
+        if (not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player) || not(window.SimpleScrollbar)) {
           (++libsCheck < 50) ? libsReady() : console.log('limit reached');
         } else {
           initialize();
