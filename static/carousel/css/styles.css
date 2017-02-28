@@ -166,6 +166,11 @@ footer {
   transform: scale(1.1);
 }
 
+.tvp-carousel-content {
+  width: 1px;
+  min-width: 100%;
+}
+
 @media (min-width: 768px) {
   .tvp-carousel-content {
     width: 92%;
