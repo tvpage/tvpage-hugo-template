@@ -171,13 +171,6 @@ footer {
   min-width: 100%;
 }
 
-@media (min-width: 768px) {
-  .tvp-carousel-content {
-    width: 92%;
-    margin: 0 auto;
-  }
-}
-
 .tvp-carousel-arrow {
   display: none;
   position: absolute;
