@@ -173,6 +173,7 @@
                         self.static + '/js/index.js'
                     ],
                     prod: [
+                        self.static + '/js/vendor/jquery.js',
                         self.static + '/dist/js/scripts.min.js'
                     ]
                 },
