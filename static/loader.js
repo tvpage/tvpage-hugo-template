@@ -138,11 +138,11 @@
                 gallery: {
                     dev: [
                         self.static + '/js/libs/utils.js',
-                        self.static + '/js/carousel.js',
+                        self.static + '/js/grid.js',
                         self.static + '/js/index.js'
                     ],
                     prod: [
-                        self.static + 'js/scripts.min.js'
+                        self.static + '/dist/js/scripts.min.js'
                     ]
                 },
                 modal: {
@@ -173,7 +173,7 @@
                         self.static + '/js/index.js'
                     ],
                     prod: [
-                        self.static + 'js/scripts.min.js'
+                        self.static + '/js/scripts.min.js'
                     ]
                 },
                 modal: {
