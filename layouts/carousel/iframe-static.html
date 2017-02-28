@@ -50,6 +50,8 @@
 <script src="{{ (printf "%s/js/carousel.js" .Type ) | absURL }}"></script>
 <script src="{{ (printf "%s/js/index.js" .Type ) | absURL }}"></script>
 {{ else }}
+<script src="{{ (printf "%s/js/vendor/jquery.js" .Type ) | absURL }}"></script>
+<script src="{{ (printf "%s/js/vendor/slick-min.js" .Type ) | absURL }}"></script>
 <script src="{{ (printf "%s/dist/js/scripts.min.js" .Type ) | absURL }}"></script>
 {{ end }}
 </body>
