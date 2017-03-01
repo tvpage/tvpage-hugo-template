@@ -38,7 +38,6 @@
   };
 
   var render = function(target,data){
-    console.log(getConfig(parent))
     if (!target) return console.log('need target');
     var frag = document.createDocumentFragment(),
     main = document.createElement('div');
