@@ -10,6 +10,8 @@
 
     var env = window.DEBUG ? 'dev' : 'prod',
         cssExt = window.DEBUG ? '.css' : '.min.css',
+        playerLib = '//cdnjs.tvpage.com/tvplayer/tvp-1.8.6.min.js',
+        analyticsLib = '//a.tvpage.com/tvpa.min.js',
         isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
         mobilePath = isMobile  ? 'mobile/' : '',
         isset = function(o, p) {
@@ -89,37 +91,37 @@
         self.paths = {
             solo: {
                 dev: [
-                    '//a.tvpage.com/tvpa.min.js',
-                    '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
+                    analyticsLib,
+                    playerLib,
                     self.static + '/js/libs/analytics.js',
                     self.static + '/js/libs/player.js',
                     self.static + '/js/index.js'
                 ],
                 prod: [
-                    '//a.tvpage.com/tvpa.min.js',
-                    '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
+                    analyticsLib,
+                    playerLib,
                     self.static + '/dist/js/scripts.min.js'
                 ]
             },
             "solo-cta": {
                 player: {
                     dev: [
-                        '//a.tvpage.com/tvpa.min.js',
-                        '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
+                        analyticsLib,
+                        playerLib,
                         self.static + '/js/libs/analytics.js',
                         self.static + '/js/libs/player.js',
                         self.static + '/js/index.js'
                     ],
                     prod: [
-                        '//a.tvpage.com/tvpa.min.js',
-                        '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
+                        analyticsLib,
+                        playerLib,
                         self.static + '/dist/js/scripts.min.js'
                     ]
                 },
                 modal: {
                     dev: [
-                        '//a.tvpage.com/tvpa.min.js',
-                        '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
+                        analyticsLib,
+                        playerLib,
                         (isMobile ? self.static + '/js/vendor/jquery.js' : ''),
                         self.static + '/js/libs/utils.js',
                         self.static + '/js/libs/analytics.js',
@@ -127,8 +129,8 @@
                         self.static + '/js/' + mobilePath + 'modal/index.js'
                     ],
                     prod: [
-                        '//a.tvpage.com/tvpa.min.js',
-                        '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
+                        analyticsLib,
+                        playerLib,
                         (isMobile ? self.static + '/js/vendor/jquery.js' : ''),
                         self.static + '/dist/js/' + mobilePath + 'modal/scripts.min.js'
                     ]
@@ -147,8 +149,8 @@
                 },
                 modal: {
                     dev: [
-                        '//a.tvpage.com/tvpa.min.js',
-                        '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
+                        analyticsLib,
+                        playerLib,
                         (isMobile ? self.static + '/js/vendor/jquery.js' : ''),
                         (isMobile ? '' : self.static + '/js/vendor/simple-scrollbar.min.js'),
                         self.static + '/js/libs/utils.js',
@@ -157,8 +159,8 @@
                         self.static + '/js/' + mobilePath + 'modal/index.js'
                     ],
                     prod: [
-                        '//a.tvpage.com/tvpa.min.js',
-                        '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
+                        analyticsLib,
+                        playerLib,
                         (isMobile ? self.static + '/js/vendor/jquery.js' : ''),
                         self.static + '/dist/js/' + mobilePath + 'modal/scripts.min.js'
                     ]
@@ -179,8 +181,8 @@
                 },
                 modal: {
                     dev: [
-                        '//a.tvpage.com/tvpa.min.js',
-                        '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
+                        analyticsLib,
+                        playerLib,
                         (isMobile ? self.static + '/js/vendor/jquery.js' : ''),
                         (isMobile ? '' : self.static + '/js/vendor/simple-scrollbar.min.js'),
                         self.static + '/js/libs/utils.js',
@@ -189,8 +191,8 @@
                         self.static + '/js/' + mobilePath + 'modal/index.js'
                     ],
                     prod: [
-                        '//a.tvpage.com/tvpa.min.js',
-                        '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
+                        analyticsLib,
+                        playerLib,
                         (isMobile ? self.static + '/js/vendor/jquery.js' : ''),
                         self.static + '/dist/js/' + mobilePath + 'modal/scripts.min.js'
                     ]
@@ -198,7 +200,6 @@
             }
         };
 
-        self.paths['solo-click'] = self.paths.solo;
         self.config = {};
 
         if (isset(window, '__TVPage__') && isset(__TVPage__, 'config') && isset(__TVPage__.config, self.id)) {
