@@ -280,7 +280,10 @@
 
                     var iframeModal = modalFrag.querySelector('.tvp-iframe-modal');
 
-                    document.body.appendChild(modalFrag);
+                    var body = document.body;
+
+                    body.classList.add('tvp-modal-open');
+                    body.appendChild(modalFrag);
 
                     var iframeModalDoc = iframeModal.contentWindow.document;
 

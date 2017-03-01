@@ -2,7 +2,7 @@ div[class^="tvp-"] {
   box-sizing: border-box;
 }
 
-body.tvp-modal-open{
+.tvp-modal-open{
   overflow: hidden;
 }
 
