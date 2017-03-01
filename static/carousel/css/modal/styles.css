@@ -86,7 +86,7 @@ body  {
   cursor: pointer;
   border-radius: 50%;
   border: 1px solid black;
-  z-index: 10000;
+  z-index: 9999999999;
 }
 
 .tvp-play > polygon {
