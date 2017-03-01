@@ -11,24 +11,6 @@
     });
   };
 
-  var checkProducts = function(data,el){
-      var eventName;
-
-      if (!data || !data.length) {
-          el.classList.add('tvp-no-products');
-          eventName = 'tvp_carousel:modal_no_products';
-      }else{
-          el.classList.remove('tvp-no-products');
-          eventName = 'tvp_carousel:modal_products';
-      }
-
-      setTimeout(function(){
-          if (window.parent) {
-              window.parent.postMessage({event: eventName}, '*');
-          }
-      },0);
-  };
-
   var loadProducts = function(videoId,loginId,fn){
     if (!videoId) return;
     var src = '//api.tvpage.com/v1/videos/' + videoId + '/products?X-login-id=' + loginId;
@@ -47,9 +29,33 @@
   };
 
   var render = function(data){
-    var el = Utils.getByClass('iframe-content');
-
     var container = Utils.getByClass('tvp-products');
+    var el = Utils.getByClass('iframe-content');
+    var hasData = false;
+
+    if (data && data.length){
+      hasData = true;
+    }
+
+    var notifyState = function () {
+      setTimeout(function () {
+          if (window.parent) {
+              window.parent.postMessage({event: 'tvp_carousel:modal' + (hasData ? '' : '_no') + '_products'}, '*');
+          }
+      },0);
+    };
+
+    if (hasData) {
+      container.classList.add('enabled');
+      el.classList.remove('tvp-no-products');
+      notifyState();
+    } else {
+      container.classList.remove('enabled');
+      el.classList.add('tvp-no-products');
+      notifyState();
+      return;
+    }
+
     var frag = document.createDocumentFragment();
     
     for (var i = 0; i < data.length; i++) {
@@ -123,13 +129,17 @@
         }
 
         $el.on('init',function(){
-          setTimeout(function(){
-            if (window.parent) {
-              window.parent.postMessage({
-                event: 'tvp_carousel:modal_resized',
-                height: el.offsetHeight + 'px'
-              }, '*');
-            }
+            container.classList.add('enabled');
+        });
+
+        $el.on('setPosition',function(){
+          setTimeout(function () {
+              if (window.parent) {
+                  window.parent.postMessage({
+                      event: 'tvp_carousel:modal_resized',
+                      height: el.offsetHeight + 'px'
+                  }, '*');
+              }
           },0);
         });
 
@@ -155,14 +165,16 @@
       var s = JSON.parse(JSON.stringify(data.runTime));
       
       s.data = data.data;
-      
-      s.onResize = function(initial){
-        if (!initial && window.parent) {
-          window.parent.postMessage({
-            event: 'tvp_carousel:modal_resized',
-            height: el.offsetHeight + 'px'
-          }, '*');
-        }
+
+      s.onResize = function(){
+        setTimeout(function () {
+            if (window.parent) {
+                window.parent.postMessage({
+                    event: 'tvp_carousel:modal_resized',
+                    height: el.offsetHeight + 'px'
+                }, '*');
+            }
+        },0);
       }
 
       s.onNext = function(next){
@@ -177,17 +189,18 @@
             function(data){
               setTimeout(function(){
                 render(data);
-                checkProducts(data,el);
               },0);
           });
         }
-        
-        if (window.parent) {
-          window.parent.postMessage({
-            event: 'tvp_carousel:player_next',
-            next: next
-          }, '*');
-        }
+
+        setTimeout(function () {
+            if (window.parent) {
+                window.parent.postMessage({
+                    event: 'tvp_carousel:player_next',
+                    next: next
+                }, '*');
+            }
+        },0);
       };
 
       new Player('tvp-player-el',s,data.selectedVideo.id);
@@ -220,7 +233,6 @@
             function(data){
               setTimeout(function(){
                 render(data);
-                checkProducts(data,el);
               },0);
           });
         } 

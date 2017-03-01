@@ -136,8 +136,7 @@
     this.resize = function(){
       if (!that.instance || that.isFullScreen) return;
       var width, height;
-      
-      if (arguments.length && arguments[0] && arguments[1]) {
+      if (arguments.length > 1 && arguments[0] && arguments[1]) {
         width = arguments[0];
         height = arguments[1];
       } else {
@@ -145,7 +144,7 @@
         width = parentEl.clientWidth;
         height = parentEl.clientHeight;
       }
-      
+
       that.instance.resize(width, height);
       
       if(!that.onResize) return;
@@ -179,15 +178,20 @@
                 };
               }
 
-              //If we are inside an iframe, we should listen to an external event.
-              if (window.location !== window.parent.location){
-                window.addEventListener('message', function(e){
-                  if (!e || !isset(e, 'data') || !isset(e.data, 'event') || 'tvp_carousel:modal_holder_resize' !== e.data.event) return;
-                  var size = e.data.size || [];
-                  that.resize(size[0], size[1]);
-                });
+              //We can't resize using local references when we are inside an iframe. Alternative is to receive external
+              //size from host.
+              if (window.location !== window.parent.location && (/iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream)){
+                var onHolderResize = function (e) {
+                    if (!e || !isset(e, 'data') || !isset(e.data, 'event') || 'tvp_carousel:modal_holder_resize' !== e.data.event) return;
+                    var size = e.data.size || [];
+                    that.resize(size[0], size[1]);
+                };
+                window.removeEventListener('message', onHolderResize, false);
+                window.addEventListener('message', onHolderResize, false);
               } else {
-                window.addEventListener('resize', resize);
+                var onWindowResize = Utils.debounce(that.resize,50);
+                window.removeEventListener('message', onWindowResize, false);
+                window.addEventListener('resize', onWindowResize);
               }
 
               that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progresscolor;

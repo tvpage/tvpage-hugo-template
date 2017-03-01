@@ -2,8 +2,19 @@
 
   function Utils() {
 
+    this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
     this.getByClass = function(c){
       return document.getElementsByClassName(c || '')[0];
+    };
+
+    this.isFunction = function(obj) {
+      return 'function' === typeof obj;
+    };
+
+    this.isEmpty = function(obj) {
+      for(var key in obj) { if (obj.hasOwnProperty(key)) return false;}
+      return true;
     };
 
     this.isset = function(o,p){
