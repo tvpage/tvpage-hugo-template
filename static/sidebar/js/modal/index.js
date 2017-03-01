@@ -89,83 +89,75 @@
         pg: channelId
       });
     }
-
-    var classNames = ['tvp-product', 'tvp-product-popup'];
-    for (var i = 0; i < classNames.length; i++) {
-      var elements = container.getElementsByClassName(classNames[i]);
-      for (var j = 0; j < elements.length; j++) {
-        elements[j].removeEventListener('click', pkTrack, false);
-      }
-    }
-
-    container.innerHTML = '';
-    
+  
     var arrow = document.createElement('div');
     arrow.classList.add('tvp-arrow-indicator');
+    container.innerHTML = '';
     container.appendChild(thumbsFrag);
     container.parentNode.appendChild(popupsFrag);
     container.parentNode.insertBefore(arrow, container.nextSibling);
     SimpleScrollbar.initEl(container);
+    bindPopUpEvent();  
+  };
 
-    setTimeout(function(){
-      
-      var holder = Utils.getByClass('tvp-products-holder');
-      var classNames = ['tvp-product', 'tvp-product-popup'];
-      for (var i = 0; i < classNames.length; i++) {
-        var elements = holder.getElementsByClassName(classNames[i]);
-        for (var j = 0; j < elements.length; j++) {
-          elements[j].addEventListener('click', pkTrack, false);
-        }
+  var bindPopUpEvent = function(){
+    var holder = Utils.getByClass('tvp-products-holder'),
+        classNames = ['tvp-product', 'tvp-product-popup'],
+        arrow = document.querySelectorAll('.tvp-arrow-indicator')[0],
+        TimeOut,
+        elements;
+    showPopUp = function (e) {
+      if (!e.target.classList.contains('tvp-product-image')) return;
+      removeClass();
+      var productEl = e.target.parentNode;
+      var id = productEl.id.split('-').pop();
+      productEl.classList.add('active');
+      var popup = document.getElementById('tvp-product-popup-'+id);
+      var topValue = productEl.getBoundingClientRect().top;
+      popup.classList.add('active');
+      var bottomLimit = topValue + popup.offsetHeight;
+      var holderHeight = holder.offsetHeight;
+
+      //We must first check if it's overflowing. To do this we first check if it's overflowing in the top, this is an
+      //easy one, if it's a negative value then it's overflowing. Otherwise if it's failing in the bottom, we rectify 
+      //by removing the excess from the top value.
+      if (topValue <= 10) {
+        topValue = -10;
       }
-      holder.onmouseover = function(e){
-        if (!e.target.classList.contains('tvp-product-image')) return;
-        var activePopups = document.querySelectorAll('.tvp-product-popup.active');
-        for (var i = activePopups.length - 1; i >= 0; i--) {
-          activePopups[i].classList.remove('active');
-        }
-        
-        var productEl = e.target.parentNode;
-        var id = productEl.id.split('-').pop();
-        productEl.classList.add('active');
+      else if ( bottomLimit > holderHeight )  {
+        topValue = topValue - (bottomLimit - holderHeight);
+        topValue = topValue + 10;
+      }
 
-        var popup = document.getElementById('tvp-product-popup-'+id);
-        var topValue = productEl.getBoundingClientRect().top;
-        popup.classList.add('active');
-        var bottomLimit = topValue + popup.offsetHeight;
-        var holderHeight = holder.offsetHeight;
-        
-        //We must first check if it's overflowing. To do this we first check if it's overflowing in the top, this is an
-        //easy one, if it's a negative value then it's overflowing. Otherwise if it's failing in the bottom, we rectify 
-        //by removing the excess from the top value.
-        if (topValue <= 10) {
-          topValue = -10;
-        }
-        else if ( bottomLimit > holderHeight )  {
-          topValue = topValue - (bottomLimit - holderHeight);
-          topValue = topValue + 10;
-        }
-        
-        popup.classList.add('active');
-        popup.style.top = topValue + 'px';
+      popup.classList.add('active');
+      popup.style.top = topValue + 'px';
 
-        arrow.classList.add('active');
-        arrow.style.top = (productEl.getBoundingClientRect().top + 20) + 'px';
-      };
+      arrow.classList.add('active');
+      arrow.style.top = (productEl.getBoundingClientRect().top + 20) + 'px';
+    },
 
-      holder.onmouseleave = function(e){
-        var activeThumbs = document.querySelectorAll('.tvp-product.active');
-        for (var i = activeThumbs.length - 1; i >= 0; i--) {
-          activeThumbs[i].classList.remove('active');
-        }
-        
+    removeClass = function(){
+      for (var i = elements.length; i--;) {
+        elements[i].classList.remove('active');
         arrow.classList.remove('active');
-
-        var activePopups = document.querySelectorAll('.tvp-product-popup.active');
-        for (var i = activePopups.length - 1; i >= 0; i--) {
-          activePopups[i].classList.remove('active');
-        }
       }
-    },0);
+    };
+
+    for (var i = 0; i < classNames.length; i++) {
+      elements = holder.getElementsByClassName(classNames[i]);
+      for (var j = 0; j < elements.length; j++) {
+        elements[j].addEventListener('click', pkTrack, false);
+        elements[j].onmouseover = function(e){
+          clearTimeout(TimeOut);
+          showPopUp(e);
+        };
+        elements[j].onmouseleave = function(){
+          TimeOut = setTimeout(function() {
+            removeClass();
+          }, 100);
+        };  
+      }
+    }
   };
 
   var initialize = function(){
