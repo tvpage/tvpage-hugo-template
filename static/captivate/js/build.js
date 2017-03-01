@@ -1599,7 +1599,7 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
     if (TVSite.isPlayerPage) {
         window.TVPlayer = new TVPage.player({
             divId: 'TVPagePlayer',
-            swf: '//appcdn.tvpage.com//player/assets/tvp/tvp-1.5.2-flash.swf',
+            swf: '//cdnjs.tvpage.com/tvplayer/tvp-1.8.6.swf',
             displayResolution: tvp_Player.playerResolution,
             analytics: { tvpa : true },
             techOrder: tvp_Player.playerTechOrder,
