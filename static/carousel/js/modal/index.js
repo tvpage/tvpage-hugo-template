@@ -121,20 +121,27 @@
           elements[j].addEventListener('click', pkTrack, false);
         }
       }
+
+      var removeActive = function (c) {
+          var els = document.querySelectorAll( (c || '') + '.active');
+          for (var i = els.length - 1; i >= 0; i--) {
+              els[i].classList.remove('active');
+          }
+      };
+
       holder.onmouseover = function(e){
         if (!e.target.classList.contains('tvp-product-image')) return;
-        var activePopups = document.querySelectorAll('.tvp-product-popup.active');
-        for (var i = activePopups.length - 1; i >= 0; i--) {
-          activePopups[i].classList.remove('active');
-        }
+
+        removeActive('.tvp-product-popup');
 
         var productEl = e.target.parentNode;
-        var id = productEl.id.split('-').pop();
         productEl.classList.add('active');
 
+        var id = productEl.id.split('-').pop();
         var popup = document.getElementById('tvp-product-popup-'+id);
-        var topValue = productEl.getBoundingClientRect().top;
         popup.classList.add('active');
+
+        var topValue = productEl.getBoundingClientRect().top;
         var bottomLimit = topValue + popup.offsetHeight;
         var holderHeight = holder.offsetHeight;
 
@@ -156,19 +163,16 @@
         arrow.style.top = (productEl.getBoundingClientRect().top + 20) + 'px';
       };
 
-      holder.onmouseleave = function(e){
-        var activeThumbs = document.querySelectorAll('.tvp-product.active');
-        for (var i = activeThumbs.length - 1; i >= 0; i--) {
-          activeThumbs[i].classList.remove('active');
+      holder.addEventListener('mouseleave', function (e) {
+        if(e) {
+          e.preventDefault();
+          e.stopPropagation();
         }
-
+        removeActive('.tvp-product');
+        removeActive('.tvp-product-popup');
         arrow.classList.remove('active');
+      });
 
-        var activePopups = document.querySelectorAll('.tvp-product-popup.active');
-        for (var i = activePopups.length - 1; i >= 0; i--) {
-          activePopups[i].classList.remove('active');
-        }
-      }
     },0);
 
   };

@@ -18,8 +18,7 @@
         this.windowSize = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) <= 200 ? 'small' : 'medium';
         this.initialResize = true;
 
-        var isSmall = this.windowSize == 'small';
-        this.itemsPerPage = Utils.isset(options.items_per_page);
+        this.itemsPerPage = Utils.isset(options.items_per_page) || null;
 
         this.loginId = (options.loginId || options.loginid) || 0;
         this.channel = options.channel || {};

@@ -1,4 +1,4 @@
-* {
+﻿* {
   box-sizing: border-box;
 }
 
@@ -211,7 +211,6 @@ footer {
 }
 
 .tvp-carousel-arrow {
-  fill: #333;
   display: none;
   position: absolute;
   top: 4%;
@@ -223,13 +222,26 @@ footer {
   cursor: pointer;
   border: none;
   outline: none;
-  background: white;
   z-index: 1000;
-  -webkit-transition: all .05s ease-in-out;
-          transition: all .05s ease-in-out;
 }
 
-.tvp-carousel-arrow > path {
+.tvp-carousel-arrow.prev {
+  left:0;
+}
+
+.tvp-carousel-arrow.next {
+  right:0;
+}
+
+.tvp-carousel-arrow > svg {
+  -webkit-transition: all .05s ease-in-out;
+  transition: all .05s ease-in-out;
+  fill: #333;
+  background: white;
+  pointer-events: none;
+}
+
+.tvp-carousel-arrow > svg > path {
   pointer-events: none;
 }
 
@@ -245,12 +257,4 @@ footer {
   .tvp-carousel-arrow {
     display: block;
   }
-}
-
-.tvp-carousel-arrow.prev {
-  left:0;
-}
-
-.tvp-carousel-arrow.next {
-  right:0;
 }

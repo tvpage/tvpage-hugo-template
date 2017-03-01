@@ -69,13 +69,13 @@
         main.classList.add('iframe-content');
         main.innerHTML =  '<div class="tvp-carousel-title">' + (d.title || '') + '</div>'+
         '<div class="tvp-carousel-content"></div>'+
-        '<svg class="tvp-carousel-arrow prev" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">'+
+        '<div class="tvp-carousel-arrow prev"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">'+
         '<path d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z"/><path d="M0-.5h24v24H0z" fill="none"/>'+
-        '</svg>'+
-        '<svg class="tvp-carousel-arrow next" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">'+
+        '</svg></div>'+
+        '<div class="tvp-carousel-arrow next"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">'+
         '<path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"/>'+
         '<path d="M0-.25h24v24H0z" fill="none"/>'+
-        '</svg>';
+        '</svg></div>';
 
         frag.appendChild(main);
         target.appendChild(frag);
