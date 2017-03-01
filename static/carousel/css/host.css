@@ -2,6 +2,10 @@ div[class^="tvp-"] {
   box-sizing: border-box;
 }
 
+body.tvp-modal-open{
+  overflow: hidden;
+}
+
 .tvp-modal-overlay {
   position: fixed;
   top: 0;
