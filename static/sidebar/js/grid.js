@@ -206,10 +206,11 @@
     };
 
     this.el.onclick = function(e) {
-      var body = parent.document.getElementsByTagName('body')[0];
-      body.classList.add('tvp-modal-open');
       var target = e.target;
       if (!target.classList.contains('tvp-video')) return;
+      
+      var body = parent.document.getElementsByTagName('body')[0];
+      body.classList.add('tvp-modal-open');
 
       var id = target.id.split('-').pop(),
           selected = {};
