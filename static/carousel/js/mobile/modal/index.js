@@ -150,12 +150,12 @@
 
   var initialize = function(){
     var el = Utils.getByClass('iframe-content');
+    var player = null;
 
     var initPlayer = function(data){
       var s = JSON.parse(JSON.stringify(data.runTime));
       
       s.data = data.data;
-      
       s.onResize = function(initial){
         if (!initial && window.parent) {
           window.parent.postMessage({
@@ -163,7 +163,7 @@
             height: el.offsetHeight + 'px'
           }, '*');
         }
-      }
+      };
 
       s.onNext = function(next){
         if (!next) return;
@@ -190,13 +190,13 @@
         }
       };
 
-      new Player('tvp-player-el',s,data.selectedVideo.id);
+      player = new Player('tvp-player-el',s,data.selectedVideo.id);
     };
 
     window.addEventListener('message', function(e){
       if (!e || !Utils.isset(e, 'data') || !Utils.isset(e.data, 'event')) return;
       var data = e.data;
-      
+
       if ('tvp_carousel:modal_data' === data.event) {
         initPlayer(data);
 

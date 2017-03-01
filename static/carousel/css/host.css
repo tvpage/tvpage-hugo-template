@@ -42,7 +42,7 @@ div[class^="tvp-"] {
 
 .tvp-modal-content {
   position: relative;
-  background-color: #fff;
+  background-color: transparent;
   border: 1px solid #999;
   border: 1px solid rgba(0, 0, 0, 0.2);
   box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
@@ -142,6 +142,10 @@ div[class^="tvp-"] {
   border-radius: 50%;
   -webkit-transition: all .05s ease-in-out;
           transition: all .05s ease-in-out;
+}
+
+.tvp-modal-close > path {
+  fill: #fff;
 }
 
 .tvp-modal-close:hover {

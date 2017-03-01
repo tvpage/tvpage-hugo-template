@@ -195,7 +195,7 @@
 
       s.onResize = function(initial, size){
         resizeProducts(size[1]);
-        if (window.parent) {
+        if (window.parent && !initial) {
           window.parent.postMessage({
             event: 'tvp_carousel:modal_resized',
             height: (el.offsetHeight + 20) + 'px'

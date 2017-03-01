@@ -35,10 +35,9 @@ div[class^="tvp-"] {
 
 .tvp-modal-content {
   position: relative;
-  background-color: #fff;
-  border: 1px solid #999;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+  /*border: 1px solid #999;*/
+  /*border: 1px solid rgba(0, 0, 0, 0.2);*/
+  /*box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);*/
   background-clip: padding-box;
   outline: 0;
 }
@@ -46,17 +45,27 @@ div[class^="tvp-"] {
 .tvp-modal-header {
   padding: 10px;
   border-bottom: 1px solid #e5e5e5;
+  background: #fff;
 }
 
 .tvp-modal-title {
   margin: 0;
   line-height: 1.4285;
 }
-.tvp-title p{
+
+.tvp-title p {
   display: none;
 }
+
 .tvp-modal-body {
   position: relative;
+}
+
+.tvp-modal-iframe-holder {
+  position: relative;
+  height: 0;
+  overflow: hidden;
+  padding-bottom: 56.25%;
 }
 
 .tvp-iframe-holder {
@@ -77,11 +86,10 @@ div[class^="tvp-"] {
 
 /*This is the modal iframe*/
 .tvp-iframe-modal {
-  margin:0;
-  border: 0;
+  top:0;
+  left: 0;
   width: 100%;
-  height: 0;
-  display: block;
+  height: 100%;
 }
 
 .tvp-modal-close {
@@ -89,11 +97,19 @@ div[class^="tvp-"] {
   height: 27px;
   padding: 3px;
   cursor: pointer;
-  background: #000;
+  background: rgba(0, 0, 0, 0.75);
   border: 0;
   -webkit-appearance: none;
   right: -6px;
   position: absolute;
   top: -6px;
   border-radius: 50%;
+}
+
+.tvp-modal-close > path:nth-child(1) {
+  fill: #fff;
+}
+
+.tvp-modal-close > path:nth-child(2){
+  fill: none;
 }
