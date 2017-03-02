@@ -271,7 +271,7 @@
 
                     var button = modalFrag.querySelector('.tvp-modal-close');
                     var close = function() {
-                        parent.document.getElementsByTagName('body')[0].classList.remove('tvp-modal-open');
+                        document.body.classList.remove('tvp-modal-open');
                         button.removeEventListener('click', close, false);
                         [modal, overlay, button].forEach(function(el) {
                             el.parentNode.removeChild(el);
