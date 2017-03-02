@@ -18,7 +18,7 @@
         this.windowSize = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) <= 200 ? 'small' : 'medium';
         this.initialResize = true;
 
-        this.itemsPerPage = Utils.isset(options.items_per_page) || null;
+        this.itemsPerPage = 1000;
 
         this.loginId = (options.loginId || options.loginid) || 0;
         this.channel = options.channel || {};
@@ -42,6 +42,7 @@
                 var rowEl = document.createElement('div');
                 var className = '';
 
+                item.title = Utils.trimText(item.title,50);
                 if ('undefined' !== typeof item.entity) {
                     className += ' tvp-exchange';
                 }
