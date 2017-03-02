@@ -170,8 +170,8 @@
 
             that.instance.resize(width, height);
 
-            if(!this.onResize) return;
-            this.onResize(that.initialResize, [width, height]);
+            if(!that.onResize) return;
+            that.onResize(that.initialResize, [width, height]);
 
             that.initialResize = false;
         }
