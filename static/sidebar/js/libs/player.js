@@ -9,6 +9,9 @@
             for(var key in obj) { if (obj.hasOwnProperty(key)) return false;}
             return true;
         },
+        isFunction = function(obj){
+            return 'undefined' !== typeof obj;
+        },
         debounce = function(func,wait,immediate) {
             var timeout;
             return function() {
@@ -25,22 +28,32 @@
         };
 
     //The player singleton. We basically create an instance from the tvpage
-    //player and expose most utilities, helping to encapsualte what is
-    //required for a few players to co-exist.
+    //player and expose most utilities, helping to encapsualte what is required for a few players to co-exist.
     function Player(el, options, startWith) {
         if (!el || !isset(options) || !isset(options.data) || options.data.length <= 0) return console.log('bad args');
 
         this.isFullScreen = false;
         this.initialResize = true;
-        this.autoplay = isset(options.autoplay) ? options.autoplay : false;
-        this.autonext = isset(options.autonext) ? options.autonext : true;
-        this.version = isset(options.version) ? options.version : '1.8.5';
-        this.progresscolor = isset(options.progresscolor) ? options.progresscolor : '#E57211';
-        this.transcript = isset(options.transcript) ? options.transcript : false;
-        this.removecontrols = isset(options.removecontrols) ? options.removecontrols : ["hd"];
-        this.analytics = isset(options.analytics) ? options.analytics : true;
-        this.onResize = isset(options.onResize) && 'function' === typeof options.onResize ? options.onResize : null;
-        this.onNext = isset(options.onNext) && 'function' === typeof options.onNext ? options.onNext : null;
+        this.autoplay = isset(options.autoplay) ? Number(options.autoplay) : false;
+        this.autonext = isset(options.autonext) ? Number(options.autonext) : true;
+        this.version = isset(options.player_version) ? options.player_version : null;
+        this.progressColor = isset(options.progress_color) ? options.progress_color : null;
+        this.transcript = isset(options.transcript) ? options.transcript : null;
+        this.removeControls = isset(options.remove_controls) ? options.remove_controls : null;
+        this.analytics = isset(options.analytics) ? options.analytics : null;
+        this.overlay = isset(options.overlay) ? options.overlay : null;
+        this.overlayColor = isset(options.overlay_color) ? options.overlay_color : null;
+        this.overlayOpacity = isset(options.overlay_opacity) ? options.overlay_opacity : null;
+        this.playButtonBackgroundColor = isset(options.play_button_background_color) ?  options.play_button_background_color : null;
+        this.playButtonBorderRadius = isset(options.play_button_border_radius) ? options.play_button_border_radius : null;
+        this.playButtonBorderWidth = isset(options.play_button_border_width) ? options.play_button_border_width : null;
+        this.playButtonBorderColor = isset(options.play_button_border_color) ? options.play_button_border_color : null;
+        this.playButtonIconColor = isset(options.play_button_icon_color) ? options.play_button_icon_color : null;
+        this.playButtonWidth = isset(options.play_button_width) ? options.play_button_width : null;
+        this.playButtonHeight = isset(options.play_button_height) ? options.play_button_height : null;
+
+        this.onResize = isset(options.onResize) && isFunction(options.onResize) ? options.onResize : null;
+        this.onNext = isset(options.onNext) && isFunction(options.onNext) ? options.onNext : null;
 
         this.instance = null;
         this.el = 'string' === typeof el ? document.getElementById(el) : el;
@@ -79,17 +92,26 @@
         //Context reference for Methods.
         var that = this;
 
-        this.showPlayBtn = function(){
-            var playBtn = document.createElement('div');
-            playBtn.innerHTML = '<svg class="tvp-play" viewBox="0 0 200 200"><polygon points="70, 55 70, 145 145, 100"></polygon></svg>';
-            var btnClick = function(){
+        //Sometimes we want/need to show an intearctive overlay on top of the player. We need this for MP4 videos that will
+        //cue (mobile or autoplay:off) to actual play the video on demand.
+        this.addOverlay = function(imgUrl){
+            var overlay = document.createElement('div');
+            overlay.classList.add('tvp-overlay');
+            overlay.style.backgroundImage = 'url("' + imgUrl + '")';
+            var overlayColor = this.overlayColor ? '#' + this.overlayColor : 'transparent';
+            overlay.innerHTML = '<div class="tvp-overlay-cover" style="opacity:' + this.overlayOpacity + ';background-image:linear-gradient(to bottom right,'+overlayColor+','+overlayColor+');"></div>'+
+                '<svg class="tvp-play" style="width:'+this.playButtonWidth+';height:'+this.playButtonHeight+';background-color:#'+this.playButtonBackgroundColor+';border:'+this.playButtonBorderWidth+' solid #'+this.playButtonBorderColor+';border-radius:'+this.playButtonBorderRadius+
+                '%;" viewBox="0 0 200 200"><polygon fill="#'+this.playButtonIconColor+'" points="70, 55 70, 145 145, 100"></polygon></svg>';
+
+            var click = function(){
                 if (!that.instance) return;
-                playBtn.removeEventListener('click',btnClick,false);
-                playBtn.parentNode.removeChild(playBtn);
+                this.removeEventListener('click',click,false);
+                this.parentNode.removeChild(this);
                 that.instance.play();
             };
-            playBtn.addEventListener('click', btnClick);
-            this.el.appendChild(playBtn);
+
+            overlay.addEventListener('click', click);
+            this.el.appendChild(overlay);
         };
 
         this.play = function(asset,ongoing){
@@ -124,9 +146,9 @@
             }
 
             if (willCue) {
-                this.instance.cueVideo(asset)
-                if ('mp4' === asset.type) {
-                    this.showPlayBtn(asset.thumbnailUrl);
+                this.instance.cueVideo(asset);
+                if ('mp4' === asset.type || this.overlay) {
+                    this.addOverlay(asset.thumbnailUrl);
                 }
             } else {
                 this.instance.loadVideo(asset);
@@ -136,7 +158,8 @@
         this.resize = function(){
             if (!that.instance || that.isFullScreen) return;
             var width, height;
-            if (arguments.length > 1 && arguments[0] && arguments[1]) {
+
+            if (arguments.length && arguments[0] && arguments[1]) {
                 width = arguments[0];
                 height = arguments[1];
             } else {
@@ -147,8 +170,8 @@
 
             that.instance.resize(width, height);
 
-            if(!that.onResize) return;
-            that.onResize(that.initialResize, [width, height]);
+            if(!this.onResize) return;
+            this.onResize(that.initialResize, [width, height]);
 
             that.initialResize = false;
         }
@@ -161,8 +184,7 @@
                 } else {
 
                     //We create insntances on the tvpage player.
-                    new TVPage.player({
-                        poster: true,
+                    that.player = new TVPage.player({
                         techOrder: 'html5,flash',
                         analytics: { tvpa: that.analytics },
                         apiBaseUrl: '//api.tvpage.com/v1',
@@ -182,7 +204,7 @@
                             //size from host.
                             if (window.location !== window.parent.location && (/iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream)){
                                 var onHolderResize = function (e) {
-                                    if (!e || !isset(e, 'data') || !isset(e.data, 'event') || 'tvp_sidebar:modal_holder_resize' !== e.data.event) return;
+                                    if (!e || !isset(e, 'data') || !isset(e.data, 'event') || 'tvp_carousel:modal_holder_resize' !== e.data.event) return;
                                     var size = e.data.size || [];
                                     that.resize(size[0], size[1]);
                                 };
@@ -194,7 +216,7 @@
                                 window.addEventListener('resize', onWindowResize);
                             }
 
-                            that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progresscolor;
+                            that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progressColor;
                             var current = 0;
                             if (startWith && startWith.length) {
                                 for (var i = 0; i < that.assets.length; i++) {
@@ -226,7 +248,7 @@
                         controls: {
                             active: true,
                             floater: {
-                                removeControls: that.removecontrols,
+                                removeControls: that.removeControls,
                                 transcript: that.transcript
                             }
                         }
