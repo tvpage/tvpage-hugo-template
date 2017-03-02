@@ -161,7 +161,7 @@
             "for": "styles",
             "type": "text",
             "label": "Load Button Border Radius",
-            "code": "loadButtonBorderRadius",
+            "code": "load_button_border_radius",
             "value": "0"
         }
     ]

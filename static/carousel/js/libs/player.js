@@ -159,7 +159,7 @@
             if (!that.instance || that.isFullScreen) return;
             var width, height;
 
-            if (arguments.length && arguments[0] && arguments[1]) {
+            if (arguments.length > 1 && arguments[0] && arguments[1]) {
                 width = arguments[0];
                 height = arguments[1];
             } else {
@@ -170,8 +170,8 @@
 
             that.instance.resize(width, height);
 
-            if(!this.onResize) return;
-            this.onResize(that.initialResize, [width, height]);
+            if(!that.onResize) return;
+            that.onResize(that.initialResize, [width, height]);
 
             that.initialResize = false;
         }
