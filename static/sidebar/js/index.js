@@ -103,8 +103,20 @@
     initialize();
   }
 
-  if (window.DEBUG) {
-    console.debug("endTime = " + performance.now());
+  var not = function(obj){return 'undefined' === typeof obj};
+  if (not(window.Grid) || not(window.Utils)) {
+      var libsCheck = 0;
+      (function libsReady() {
+          setTimeout(function(){
+              if (not(window.Grid) || not(window.Utils)) {
+                  (++libsCheck < 50) ? libsReady() : console.log('limit reached');
+              } else {
+                  initialize();
+              }
+          },150);
+      })();
+  } else {
+      initialize();
   }
 
 }(window, document));
