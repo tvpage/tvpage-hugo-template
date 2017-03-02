@@ -49,11 +49,14 @@
             }
         }
 
-        var css = options.css.filter(Boolean) || [];
-        if (css && css.length) {
-            for (var i = 0; i < css.length; i++) {
-                html += 'addCSS(\'' + css[i] + '\');';
-            }
+        var css = options.css || [];
+        if ('function' === typeof css) {
+            css = css();
+        }
+
+        css = css.filter(Boolean);
+        for (var i = 0; i < css.length; i++) {
+            html += 'addCSS(\'' + css[i] + '\');';
         }
 
         html += '">';
@@ -162,7 +165,6 @@
                     prod: [
                         '//a.tvpage.com/tvpa.min.js',
                         '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
-                        (isMobile ? self.static + '/js/vendor/jquery.js' : ''),
                         self.static + '/dist/js/' + mobilePath + 'modal/scripts.min.js'
                     ]
                 }
@@ -176,7 +178,6 @@
                         self.static + '/js/index.js'
                     ],
                     prod: [
-                        self.static + '/js/vendor/jquery.js',
                         self.static + '/dist/js/scripts.min.js'
                     ]
                 },
@@ -194,7 +195,6 @@
                     prod: [
                         '//a.tvpage.com/tvpa.min.js',
                         '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
-                        (isMobile ? self.static + '/js/vendor/jquery.js' : ''),
                         self.static + '/dist/js/' + mobilePath + 'modal/scripts.min.js'
                     ]
                 }
@@ -306,11 +306,17 @@
                             return (html + '</div>');
                         },
                         js: self.paths[self.type].modal[env].filter(Boolean),
-                        css: [
-                            self.static + (window.DEBUG ? '/' : '/dist/') + 'css/' + mobilePath + 'modal/styles' + cssExt,
-                            (isMobile ? self.domain + '/' + self.type + '/css/vendor/slick.css' : ''),
-                            (isMobile ? '' : (self.domain + '/' + self.type + '/css/vendor/simple-scrollbar.css'))
-                        ].filter(Boolean)
+                        css: function () {
+                            var files = [self.static + (window.DEBUG ? '/' : '/dist/') + 'css/' + mobilePath + 'modal/styles' + cssExt];
+                            if (window.DEBUG) {
+                                if (isMobile) {
+                                    files.push(self.static + '/css/vendor/slick.css');
+                                } else {
+                                    files.push(self.static + '/css/vendor/simple-scrollbar.css');
+                                }
+                            }
+                            return files;
+                        }
                     }));
                     iframeModalDoc.close();
                 }
@@ -398,11 +404,11 @@
                     }(),
                     css: function () {
                         var cssFiles = [self.static + (window.DEBUG ? '/' : '/dist/') + 'css/styles' + cssExt]
-                        if ('carousel' === self.type) {
+                        if ('carousel' === self.type && window.DEBUG) {
                             cssFiles = cssFiles.concat([self.static + '/css/vendor/slick.css']);
                         }
                         return cssFiles;
-                    }(),
+                    },
                     className: self.dataMethod,
                     domain: self.domain,
                     id: self.id
