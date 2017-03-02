@@ -9,7 +9,7 @@
     }
 
     var env = window.DEBUG ? 'dev' : 'prod',
-        playerLib = '//cdnjs.tvpage.com/tvplayer/tvp-1.8.6.min.js',
+        playerLib = '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
         cssExt = window.DEBUG ? '.css' : '.min.css',
         isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
         mobilePath = isMobile  ? 'mobile/' : '',

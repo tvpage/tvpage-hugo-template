@@ -4,7 +4,7 @@
             "for": "player",
             "type": "text",
             "label": "Player Version",
-            "code": "playerVersion",
+            "code": "player_version",
             "value": "1.8.5"
         },
         {
@@ -32,14 +32,14 @@
             "for": "player",
             "type": "text",
             "label": "Progress Color",
-            "code": "progressColor",
+            "code": "progress_color",
             "value": "#E57211"
         },
         {
             "for": "player",
             "type": "text",
             "label": "Remove Controls",
-            "code": "removeControls",
+            "code": "remove_controls",
             "value": [
                 "tvplogo",
                 "hd"
@@ -49,36 +49,29 @@
             "for": "player",
             "type": "text",
             "label": "Play Button Background",
-            "code": "playButtonBackground",
-            "value": "white"
+            "code": "play_button_background_color",
+            "value": "fff"
         },
         {
             "for": "player",
             "type": "text",
             "label": "Play Button Border Radius",
-            "code": "playButtonBorderRadius",
-            "value": "0"
-        },
-        {
-            "for": "player",
-            "type": "text",
-            "label": "Play Button Border Thickness",
-            "code": "playButtonBorderThickness",
-            "value": "2px"
+            "code": "play_button_border_radius",
+            "value": "50"
         },
         {
             "for": "player",
             "type": "text",
             "label": "Play Button Background",
-            "code": "playButtonBackground",
-            "value": "white"
+            "code": "play_button_background_color",
+            "value": "fff"
         },
         {
             "for": "player",
             "type": "text",
             "label": "Play Button Icon Color",
-            "code": "playButtonIconColor",
-            "value": "black"
+            "code": "play_button_icon_color",
+            "value": "000"
         },
         {
             "for": "analytics",

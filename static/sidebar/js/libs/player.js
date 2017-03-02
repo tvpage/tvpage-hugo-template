@@ -39,7 +39,7 @@
         this.version = isset(options.player_version) ? options.player_version : null;
         this.progressColor = isset(options.progress_color) ? options.progress_color : null;
         this.transcript = isset(options.transcript) ? options.transcript : null;
-        this.removeControls = isset(options.remove_controls) ? options.remove_controls : null;
+        this.removeControls = isset(options.remove_controls) ? options.remove_controls : [];
         this.analytics = isset(options.analytics) ? options.analytics : null;
         this.overlay = isset(options.overlay) ? options.overlay : null;
         this.overlayColor = isset(options.overlay_color) ? options.overlay_color : null;
@@ -185,6 +185,7 @@
 
                     //We create insntances on the tvpage player.
                     that.player = new TVPage.player({
+                        poster: true,
                         techOrder: 'html5,flash',
                         analytics: { tvpa: that.analytics },
                         apiBaseUrl: '//api.tvpage.com/v1',
