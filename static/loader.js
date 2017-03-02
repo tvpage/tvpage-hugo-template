@@ -9,6 +9,7 @@
     }
 
     var env = window.DEBUG ? 'dev' : 'prod',
+        playerLib = '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
         cssExt = window.DEBUG ? '.css' : '.min.css',
         isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
         mobilePath = isMobile  ? 'mobile/' : '',
@@ -49,18 +50,24 @@
             }
         }
 
-        var css = options.css.filter(Boolean) || [];
-        if (css && css.length) {
-            for (var i = 0; i < css.length; i++) {
-                html += 'addCSS(\'' + css[i] + '\');';
-            }
+        var css = options.css || [];
+        if ('function' === typeof css) {
+            css = css();
+        }
+
+        css = css.filter(Boolean);
+        for (var i = 0; i < css.length; i++) {
+            html += 'addCSS(\'' + css[i] + '\');';
         }
 
         html += '">';
         var content = options.html || '';
-        if (content && content.length) {
+        if ('function' === typeof content) {
+            html += content();
+        } else if (content.trim().length) {
             html += content;
         }
+
         return html;
     };
 
@@ -90,14 +97,14 @@
             solo: {
                 dev: [
                     '//a.tvpage.com/tvpa.min.js',
-                    '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
+                    playerLib,
                     self.static + '/js/libs/analytics.js',
                     self.static + '/js/libs/player.js',
                     self.static + '/js/index.js'
                 ],
                 prod: [
                     '//a.tvpage.com/tvpa.min.js',
-                    '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
+                    playerLib,
                     self.static + '/dist/js/scripts.min.js'
                 ]
             },
@@ -105,21 +112,21 @@
                 player: {
                     dev: [
                         '//a.tvpage.com/tvpa.min.js',
-                        '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
+                        playerLib,
                         self.static + '/js/libs/analytics.js',
                         self.static + '/js/libs/player.js',
                         self.static + '/js/index.js'
                     ],
                     prod: [
                         '//a.tvpage.com/tvpa.min.js',
-                        '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
+                        playerLib,
                         self.static + '/dist/js/scripts.min.js'
                     ]
                 },
                 modal: {
                     dev: [
                         '//a.tvpage.com/tvpa.min.js',
-                        '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
+                        playerLib,
                         (isMobile ? self.static + '/js/vendor/jquery.js' : ''),
                         self.static + '/js/libs/utils.js',
                         self.static + '/js/libs/analytics.js',
@@ -128,7 +135,7 @@
                     ],
                     prod: [
                         '//a.tvpage.com/tvpa.min.js',
-                        '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
+                        playerLib,
                         (isMobile ? self.static + '/js/vendor/jquery.js' : ''),
                         self.static + '/dist/js/' + mobilePath + 'modal/scripts.min.js'
                     ]
@@ -148,7 +155,7 @@
                 modal: {
                     dev: [
                         '//a.tvpage.com/tvpa.min.js',
-                        '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
+                        playerLib,
                         (isMobile ? self.static + '/js/vendor/jquery.js' : ''),
                         (isMobile ? '' : self.static + '/js/vendor/simple-scrollbar.min.js'),
                         self.static + '/js/libs/utils.js',
@@ -158,8 +165,7 @@
                     ],
                     prod: [
                         '//a.tvpage.com/tvpa.min.js',
-                        '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
-                        (isMobile ? self.static + '/js/vendor/jquery.js' : ''),
+                        playerLib,
                         self.static + '/dist/js/' + mobilePath + 'modal/scripts.min.js'
                     ]
                 }
@@ -173,14 +179,13 @@
                         self.static + '/js/index.js'
                     ],
                     prod: [
-                        self.static + '/js/vendor/jquery.js',
                         self.static + '/dist/js/scripts.min.js'
                     ]
                 },
                 modal: {
                     dev: [
                         '//a.tvpage.com/tvpa.min.js',
-                        '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
+                        playerLib,
                         (isMobile ? self.static + '/js/vendor/jquery.js' : ''),
                         (isMobile ? '' : self.static + '/js/vendor/simple-scrollbar.min.js'),
                         self.static + '/js/libs/utils.js',
@@ -190,8 +195,7 @@
                     ],
                     prod: [
                         '//a.tvpage.com/tvpa.min.js',
-                        '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
-                        (isMobile ? self.static + '/js/vendor/jquery.js' : ''),
+                        playerLib,
                         self.static + '/dist/js/' + mobilePath + 'modal/scripts.min.js'
                     ]
                 }
@@ -260,13 +264,14 @@
                     modal.innerHTML = '<div class="tvp-modal-wrapper"><div class="tvp-modal-content"><div class="tvp-modal-header">' +
                         '<svg class="tvp-modal-close" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">' +
                         '<path fill="#ffffff" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>' +
-                        '<h4 class="tvp-modal-title">' + selectedVideo.title + '</h4></div><div class="tvp-modal-body"><div class="tvp-iframe-modal-holder"><iframe id="' + self.iframeModalId + '" src="about:blank"' +
+                        '<h4 class="tvp-modal-title">' + selectedVideo.title + '</h4></div><div class="tvp-modal-body"><div class="tvp-modal-iframe-holder"><iframe id="' + self.iframeModalId + '" src="about:blank"' +
                         'allowfullscreen frameborder="0" scrolling="no" class="tvp-iframe-modal"></iframe></div></div></div></div>';
 
                     modalFrag.appendChild(modal);
 
                     var button = modalFrag.querySelector('.tvp-modal-close');
                     var close = function() {
+                        parent.document.getElementsByTagName('body')[0].classList.remove('tvp-modal-open');
                         button.removeEventListener('click', close, false);
                         [modal, overlay, button].forEach(function(el) {
                             el.parentNode.removeChild(el);
@@ -276,32 +281,43 @@
 
                     var iframeModal = modalFrag.querySelector('.tvp-iframe-modal');
 
-                    document.body.appendChild(modalFrag);
+                    var body = document.body;
+
+                    body.classList.add('tvp-modal-open');
+                    body.appendChild(modalFrag);
 
                     var iframeModalDoc = iframeModal.contentWindow.document;
-
-                    var html = '<div id="' + id + '" class="tvp-clearfix iframe-content">';
-                    if (isMobile) {
-                        html += '<div class="tvp-player"><div id="tvp-player-el"></div></div>' +
-                        '<div class="tvp-products"><div class="tvp-products-carousel"></div></div>';
-                    } else {
-                        html += '<div class="tvp-player-holder"><div class="tvp-player"><div id="tvp-player-el"></div></div></div>';
-                        if ("solo-cta" !== self.type) {
-                            html += '<div class="tvp-products-holder"><div class="tvp-products"></div></div>';
-                        }
-                    }
-                    html += '</div>';
 
                     iframeModalDoc.open().write(getIframeHtml({
                         domain: self.domain,
                         id: id,
-                        html: html,
+                        html: function () {
+                            var html = '<div id="' + id + '" class="tvp-clearfix iframe-content">';
+
+                            if (isMobile) {
+                                html += '<div class="tvp-player"><div id="tvp-player-el"></div></div><div class="tvp-products"><div class="tvp-products-carousel"></div></div>';
+                            } else {
+                                html += '<div class="tvp-player-holder"><div class="tvp-player"><div id="tvp-player-el"></div></div></div>';
+
+                                if ("solo-cta" !== self.type) {
+                                    html += '<div class="tvp-products-holder"><div class="tvp-products"></div></div>';
+                                }
+                            }
+
+                            return (html + '</div>');
+                        },
                         js: self.paths[self.type].modal[env].filter(Boolean),
-                        css: [
-                            self.static + (window.DEBUG ? '/' : '/dist/') + 'css/' + mobilePath + 'modal/styles' + cssExt,
-                            (isMobile ? self.domain + '/' + self.type + '/css/vendor/slick.css' : ''),
-                            (isMobile ? '' : (self.domain + '/' + self.type + '/css/vendor/simple-scrollbar.css'))
-                        ].filter(Boolean)
+                        css: function () {
+                            var files = [self.static + (window.DEBUG ? '/' : '/dist/') + 'css/' + mobilePath + 'modal/styles' + cssExt];
+                            if (window.DEBUG) {
+                                if (isMobile) {
+                                    files.push(self.static + '/css/vendor/slick.css');
+                                } else {
+                                    files.push(self.static + '/css/vendor/simple-scrollbar.css');
+                                }
+                            }
+                            return files;
+                        }
                     }));
                     iframeModalDoc.close();
                 }
@@ -319,30 +335,21 @@
                         }, '*');
                     }
 
-                    var send = function () {
-                        var iframeModal = document.getElementById(self.iframeModalId);
-
-                        if (!iframeModal) return;
-
-                        var size = [];
-                        if (isMobile){
-                            var widthRef = document.getElementById(self.iframeModalId).parentNode.offsetWidth;
-                            size =  [widthRef, Math.floor(widthRef * (9 / 16))];
-                        }
-
-                        iframeModal.contentWindow.postMessage({
-                            event: self.senderId + ':modal_holder_resize',
-                            size: size
-                        },'*');
-                    };
-
-                    window.addEventListener('onorientationchange' in window ? 'orientationchange' : 'resize',function () {
-                        if (isMobile) {
-                            setTimeout(send,35);
-                        } else {
-                            debounce(function(){ setTimeout(send,50); },150);
-                        }
-                    }, false);
+                    if (/iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream) {
+                        var onOrientationChange = debounce(function () {
+                            var iframeModal = document.getElementById(self.iframeModalId);
+                            if (iframeModal && iframeModal.contentWindow) {
+                                var widthRef = iframeModal.parentNode.offsetWidth;
+                                iframeModal.contentWindow.window.postMessage({
+                                    event: self.senderId + ':modal_holder_resize',
+                                    size: [widthRef, Math.floor(widthRef * (9 / 16))]
+                                },'*');
+                            }
+                        },30);
+                        var orientationChangeEvent = 'onorientationchange' in window ? 'orientationchange' : 'resize';
+                        window.removeEventListener(orientationChangeEvent,onOrientationChange, false);
+                        window.addEventListener(orientationChangeEvent,onOrientationChange, false);
+                    }
                 }
 
                 if (self.senderId + ':modal_resized' === eventName) {
@@ -353,23 +360,29 @@
                     document.querySelector('.tvp-modal-title').innerHTML = e.data.next.assetTitle;
                 }
 
-                if (!isMobile){
-                    var iframeModalHolder = document.querySelector('.tvp-iframe-modal-holder');
-                    if (self.senderId + ':modal_no_products' === eventName) {
+                var iframeModalHolder = document.querySelector('.tvp-modal-iframe-holder');
+
+                if (self.senderId + ':modal_no_products' === eventName) {
+                    if (!isMobile) {
                         var pLabel = document.querySelector('.tvp-products-headline');
-                        if(pLabel) {
+                        if (pLabel) {
                             pLabel.remove();
                         }
-                        iframeModalHolder.classList.add('extended');
                     }
 
-                    if (self.senderId + ':modal_products' === eventName) {
-                        iframeModalHolder.classList.remove('extended');
+                    iframeModalHolder.classList.remove('products');
+                    iframeModalHolder.classList.add('no-products');
+                }
+
+                if (self.senderId + ':modal_products' === eventName) {
+                    if (!isMobile) {
                         var productsLabel = document.createElement('p');
                         productsLabel.classList.add('tvp-products-headline');
                         productsLabel.innerHTML = 'Related Products';
                         document.querySelector('.tvp-modal-header').appendChild(productsLabel);
                     }
+                    iframeModalHolder.classList.remove('no-products');
+                    iframeModalHolder.classList.add('products');
                 }
             });
 
@@ -392,11 +405,11 @@
                     }(),
                     css: function () {
                         var cssFiles = [self.static + (window.DEBUG ? '/' : '/dist/') + 'css/styles' + cssExt]
-                        if ('carousel' === self.type) {
+                        if ('carousel' === self.type && window.DEBUG) {
                             cssFiles = cssFiles.concat([self.static + '/css/vendor/slick.css']);
                         }
                         return cssFiles;
-                    }(),
+                    },
                     className: self.dataMethod,
                     domain: self.domain,
                     id: self.id
