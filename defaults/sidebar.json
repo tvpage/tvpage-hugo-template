@@ -91,14 +91,14 @@
             "for": "styles",
             "type": "text",
             "label": "Items Per Page",
-            "code": "itemsPerPage",
+            "code": "items_per_page",
             "value": "6"
         },
         {
             "for": "styles",
             "type": "text",
             "label": "Items Per Row",
-            "code": "itemsPerRow",
+            "code": "items_per_row",
             "value": "2"
         },
         {
