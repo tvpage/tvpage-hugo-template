@@ -15,7 +15,7 @@
   };
 
   function Grid(el, options) {
-    this.xchg = options.xchg || true;
+    this.xchg = options.xchg || false;
     this.windowSize = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) <= 200 ? 'small' : 'medium';
     this.initialResize = true;
     
@@ -126,15 +126,15 @@
             getChannelVideos(function(data){
               var xchg = [];
               
-              // if (xhr.status === 200) {
-              //   xchg = xhr.responseText;
-              //   var xchgCount = xchg.length;
-              //   while(xchgCount > 0) {
-              //     var xchgVideo = xchg[xchgCount-1];
-              //     xchgVideo = $.extend(xchgVideo, xchgVideo.entity);
-              //     xchgCount--;
-              //   }
-              // }
+              if (xhr.status === 200) {
+                xchg = xhr.responseText;
+                var xchgCount = xchg.length;
+                while(xchgCount > 0) {
+                  var xchgVideo = xchg[xchgCount-1];
+                  xchgVideo = $.extend(xchgVideo, xchgVideo.entity);
+                  xchgCount--;
+                }
+              }
               
               if (!data.length) {
                 that.isLastPage = true;

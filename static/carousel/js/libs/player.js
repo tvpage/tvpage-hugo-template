@@ -94,20 +94,34 @@
 
         //Sometimes we want/need to show an intearctive overlay on top of the player. We need this for MP4 videos that will
         //cue (mobile or autoplay:off) to actual play the video on demand.
-        this.addOverlay = function(imgUrl){
+        this.addOverlay = function(asset){
             var overlay = document.createElement('div');
             overlay.classList.add('tvp-overlay');
-            overlay.style.backgroundImage = 'url("' + imgUrl + '")';
+            overlay.style.backgroundImage = 'url("' + asset.thumbnailUrl + '")';
+
             var overlayColor = this.overlayColor ? '#' + this.overlayColor : 'transparent';
-            overlay.innerHTML = '<div class="tvp-overlay-cover" style="opacity:' + this.overlayOpacity + ';background-image:linear-gradient(to bottom right,'+overlayColor+','+overlayColor+');"></div>'+
-                '<svg class="tvp-play" style="width:'+this.playButtonWidth+';height:'+this.playButtonHeight+';background-color:#'+this.playButtonBackgroundColor+';border:'+this.playButtonBorderWidth+' solid #'+this.playButtonBorderColor+';border-radius:'+this.playButtonBorderRadius+
-                '%;" viewBox="0 0 200 200"><polygon fill="#'+this.playButtonIconColor+'" points="70, 55 70, 145 145, 100"></polygon></svg>';
+            var overlayHtml = '<div class="tvp-overlay-cover" style="opacity:' + this.overlayOpacity + ';' +
+                'background-image:linear-gradient(to bottom right,' + overlayColor + ',' + overlayColor + ');"></div>' +
+                '<div class="tvp-play-holder" style="height:' + this.playButtonHeight + ';">'+
+                '<svg class="tvp-play" style="width:' + this.playButtonWidth + ';height:' + this.playButtonHeight + ';' +
+                'background-color:#' + this.playButtonBackgroundColor + ';border:' + this.playButtonBorderWidth + ' solid #' +
+                this.playButtonBorderColor + ';border-radius:' + this.playButtonBorderRadius + ';" viewBox="0 0 200 200">' +
+                '<polygon fill="#'+this.playButtonIconColor+'" points="70, 55 70, 145 145, 100"></polygon></svg>';
+
+            overlay.innerHTML = overlayHtml;
 
             var click = function(){
-                if (!that.instance) return;
-                this.removeEventListener('click',click,false);
-                this.parentNode.removeChild(this);
-                that.instance.play();
+                var clear = function () {
+                    this.removeEventListener('click',click,false);
+                    this.parentNode.removeChild(this);
+                };
+
+                if (that.onClick) {
+                    that.onClick();
+                } else if (that.instance) {
+                    clear.call(this);
+                    that.instance.play();
+                }
             };
 
             overlay.addEventListener('click', click);
@@ -148,7 +162,7 @@
             if (willCue) {
                 this.instance.cueVideo(asset);
                 if ('mp4' === asset.type || this.overlay) {
-                    this.addOverlay(asset.thumbnailUrl);
+                    this.addOverlay(asset);
                 }
             } else {
                 this.instance.loadVideo(asset);

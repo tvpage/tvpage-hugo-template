@@ -151,11 +151,11 @@
     };
 
     var not = function(obj){return 'undefined' === typeof obj};
-    if (not(window.jQuery) || not(window.Carousel)) {
+    if (not(window.jQuery) || not(window.Carousel) || not(window.Utils)) {
         var libsCheck = 0;
         (function libsReady() {
             setTimeout(function(){
-                if (not(window.jQuery) || not(window.Carousel)) {
+                if (not(window.jQuery) || not(window.Carousel) || not(window.Utils)) {
                     (++libsCheck < 50) ? libsReady() : console.log('limit reached');
                 } else {
                     initialize();
