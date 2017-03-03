@@ -200,15 +200,20 @@
                 };
               }
 
-              //If we are inside an iframe, we should listen to an external event.
-              if (window.location !== window.parent.location){
-                window.addEventListener('message', function(e){
-                  if (!e || !isset(e, 'data') || !isset(e.data, 'event') || '_tvp_widget_holder_resize' !== e.data.event) return;
+              //We can't resize using local references when we are inside an iframe on iOS, the iframe's size doesn't update.
+              //Alternative is to receive external size from host.
+              if (window.location !== window.parent.location && (/iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream)){
+                var onHolderResize = function (e) {
+                  if (!e || !isset(e, 'data') || !isset(e.data, 'event') || 'tvp_carousel:modal_holder_resize' !== e.data.event) return;
                   var size = e.data.size || [];
                   that.resize(size[0], size[1]);
-                });
+                };
+                window.removeEventListener('message', onHolderResize, false);
+                window.addEventListener('message', onHolderResize, false);
               } else {
-                window.addEventListener('resize', resize);
+                var onWindowResize = debounce(that.resize,50);
+                window.removeEventListener('message', onWindowResize, false);
+                window.addEventListener('resize', onWindowResize);
               }
 
               that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progressColor;
