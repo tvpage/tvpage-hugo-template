@@ -13,6 +13,27 @@
         cssExt = window.DEBUG ? '.css' : '.min.css',
         isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
         mobilePath = isMobile  ? 'mobile/' : '',
+        jsonpCall = function(opts,callback){
+            var s = document.createElement('script');
+            s.src = opts.src;
+            if (!callback || 'function' !== typeof callback) return;
+            window[opts.cbName || 'callback'] = callback;
+            var b = opts.body || document.body;
+            b.appendChild(s);
+        },
+        extend = function(out) {
+            out = out || {};
+            for (var i = 1; i < arguments.length; i++) {
+                if (!arguments[i])
+                    continue;
+
+                for (var key in arguments[i]) {
+                    if (arguments[i].hasOwnProperty(key))
+                        out[key] = arguments[i][key];
+                }
+            }
+            return out;
+        },
         isset = function(o, p) {
             var val = o;
             if (p) val = o[p];
@@ -82,6 +103,7 @@
         '<iframe class="tvp-iframe" src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe></div>');
 
         self.holder = document.getElementById(self.id + '-holder') || null;
+        self.iframe = self.holder.querySelector('iframe');
         self.type = spot.className.replace('tvp-', '') || '';
         self.holder.classList.add(self.type);
         self.data = {};
@@ -146,6 +168,7 @@
                     dev: [
                         self.static + '/js/libs/utils.js',
                         self.static + '/js/grid.js',
+                        self.static + '/js/css.js',
                         self.static + '/js/index.js'
                     ],
                     prod: [
@@ -221,14 +244,70 @@
             link.href = self.static + (window.DEBUG ? '/' : '/dist/') + 'css/' + mobilePath + 'host' + cssExt;
             document.getElementsByTagName('head')[0].appendChild(link);
 
-            var iframe = self.holder.querySelector('iframe');
-
+            //Listen to host window resize event and send a message.
             window.addEventListener('resize', debounce(function() {
                 window.postMessage({
                     event: self.senderId + ':holder_resize',
                     size: [self.holder.offsetWidth, self.holder.offsetHeight]
                 }, '*');
             }, 50));
+
+            //Because iframes are loaded first before the host page loading, we load them empties, making this load time
+            //reduced as its minimum, we start then creating the content of the iframe dynamically.
+            //Reference: http://www.aaronpeters.nl/blog/iframe-loading-techniques-performance?%3E
+            if ('dynamic' === self.dataMethod) {
+                jsonpCall({
+                    src: self.domain + '/' + self.type + '/options.js',
+                    cbName: 'tvp_default_config'
+                },function(defaults){
+                    if (!defaults || !isset(defaults,'option')) return;
+                    var defaultConfig = defaults.option;
+                    var options = {};
+
+                    for (var key in defaultConfig) {
+                        var option = defaultConfig[key];
+                        options[option.code] = option.value;
+                    }
+
+                    self.config = extend(self.config, options);
+
+                    //It's not until we pull the default config when we are able to create our dynamic iframe, we need to
+                    //have access to this in the iframe's JS.
+                    var iframeDoc = self.iframe.contentWindow.document;
+
+                    iframeDoc.open().write(getIframeHtml({
+                        js: function () {
+                            var jsFiles = self.paths[self.type];
+                            if ('sidebar' === self.type || 'carousel' === self.type) {
+                                jsFiles = jsFiles.gallery;
+                            } else if ('solo-cta' === self.type) {
+                                jsFiles = jsFiles.player;
+                            }
+                            return jsFiles[env];
+                        }(),
+                        css: function () {
+                            var cssFiles = [self.static + (window.DEBUG ? '/' : '/dist/') + 'css/styles' + cssExt]
+                            if ('carousel' === self.type && window.DEBUG) {
+                                cssFiles = cssFiles.concat([self.static + '/css/vendor/slick.css']);
+                            }
+                            return cssFiles;
+                        },
+                        className: self.dataMethod,
+                        domain: self.domain,
+                        id: self.id
+                    }));
+
+                    iframeDoc.close();
+                });
+            }
+
+            //Handling the static iframe scenario, not much to do, just delay the src addition.
+            else {
+                setTimeout(function () {
+                    var src = spot.href;
+                    (-1 == navigator.userAgent.indexOf("MSIE")) ? self.iframe.src = src: self.iframe.location = src;
+                },5);
+            }
 
             //Central point for cross-domain messaging between iframes, we always us the host page window.
             window.addEventListener('message', function(e) {
@@ -385,46 +464,6 @@
                     iframeModalHolder.classList.add('products');
                 }
             });
-
-            //Because iframes are loaded first before the host page loading, we load them empties, making this load time
-            //reduced as its minimum, we start then creating the content of the iframe dynamically.
-            //Reference: http://www.aaronpeters.nl/blog/iframe-loading-techniques-performance?%3E
-            if ('dynamic' === self.dataMethod) {
-
-                var iframeDoc = iframe.contentWindow.document;
-
-                iframeDoc.open().write(getIframeHtml({
-                    js: function () {
-                        var jsFiles = self.paths[self.type];
-                        if ('sidebar' === self.type || 'carousel' === self.type) {
-                            jsFiles = jsFiles.gallery;
-                        } else if ('solo-cta' === self.type) {
-                            jsFiles = jsFiles.player;
-                        }
-                        return jsFiles[env];
-                    }(),
-                    css: function () {
-                        var cssFiles = [self.static + (window.DEBUG ? '/' : '/dist/') + 'css/styles' + cssExt]
-                        if ('carousel' === self.type && window.DEBUG) {
-                            cssFiles = cssFiles.concat([self.static + '/css/vendor/slick.css']);
-                        }
-                        return cssFiles;
-                    },
-                    className: self.dataMethod,
-                    domain: self.domain,
-                    id: self.id
-                }));
-
-                iframeDoc.close();
-            }
-
-            //Handling the static iframe scenario, not much to do, just delay the src addition.
-            else {
-                setTimeout(function () {
-                    var src = spot.href;
-                    (-1 == navigator.userAgent.indexOf("MSIE")) ? iframe.src = src: iframe.location = src;
-                },5);
-            }
         }
 
         return self;

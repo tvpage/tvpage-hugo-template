@@ -1,48 +1,48 @@
 .tvp-video-play {
-  border-radius: {{ ($.Scratch.Get "settings").item_play_button_border_radius }};
-  border: {{ ($.Scratch.Get "settings").item_play_button_border }};
-  background-color: {{ ($.Scratch.Get "settings").item_play_button_background }};
-  width: {{ ($.Scratch.Get "settings").item_play_button_width }};
-  height: {{ ($.Scratch.Get "settings").item_play_button_height }};
+  border-radius: {item_play_button_border_radius};
+  border: {item_play_button_border};
+  background-color: {item_play_button_background};
+  width: {item_play_button_width};
+  height: {item_play_button_height};
 }
 .tvp-video:hover .tvp-video-play {
-  background-color: {{ ($.Scratch.Get "settings").item_play_button_background_hover }};
+  background-color: {.item_play_button_background_hover};
 }
 .tvp-video-play > polygon {
-  fill: {{ ($.Scratch.Get "settings").item_play_button_polygon_background }};
+  fill: {item_play_button_polygon_background};
 }
 .tvp-video:hover .tvp-video-play > polygon {
-  fill: {{ ($.Scratch.Get "settings").item_play_button_polygon_background_hover }};
+  fill: {item_play_button_polygon_background_hover};
 }
 .tvp-sidebar-load {
-    border-radius: {{ ($.Scratch.Get "settings").load_button_border_radius }};
-	margin: {{ ($.Scratch.Get "settings").load_button_margin }};
-	padding: {{ ($.Scratch.Get "settings").load_button_padding }};
-	font-size: {{ ($.Scratch.Get "settings").load_button_font_size }};
-	width: {{ ($.Scratch.Get "settings").load_button_width }};
-	height: {{ ($.Scratch.Get "settings").load_button_height }};
-	background-color: {{ ($.Scratch.Get "settings").load_button_background_color }};
-	border: {{ ($.Scratch.Get "settings").load_button_border }};
-	color: {{ ($.Scratch.Get "settings").load_button_text_color }};
-	text-transform: {{ ($.Scratch.Get "settings").load_button_text_transform }};
+    border-radius: {load_button_border_radius};
+	margin: {load_button_margin};
+	padding: {load_button_padding};
+	font-size: {load_button_font_size};
+	width: {load_button_width};
+	height: {load_button_height};
+	background-color: {load_button_background_color};
+	border: {load_button_border};
+	color: {load_button_text_color};
+	text-transform: {load_button_text_transform};
 }
 .tvp-sidebar-load:hover{
-  background-color: {{ ($.Scratch.Get "settings").load_button_background_color_hover }};
+  background-color: {load_button_background_color_hover};
 }
 .tvp-sidebar-load:active {
-  box-shadow: {{ ($.Scratch.Get "settings").load_button_box_shadow_active }};
+  box-shadow: {load_button_box_shadow_active};
 }
 .tvp-video-title {
-  height: {{ ($.Scratch.Get "settings").item_title_height }};
-  font-size: {{ ($.Scratch.Get "settings").item_title_font_size }};
-  color: {{ ($.Scratch.Get "settings").item_title_color }};
-  margin: {{ ($.Scratch.Get "settings").item_title_margin }};
-  line-height: {{ ($.Scratch.Get "settings").item_title_line_height }};
+  height: {item_title_height};
+  font-size: {item_title_font_size};
+  color: {item_title_color};
+  margin: {item_title_margin};
+  line-height: {item_title_line_height};
 }
 .tvp-sidebar-title {
-  color:{{ ($.Scratch.Get "settings").widget_title_color }};
-  margin:{{ ($.Scratch.Get "settings").widget_title_margin }};
-  padding: {{ ($.Scratch.Get "settings").widget_title_padding }};
-  font-weight: normal;{{ ($.Scratch.Get "settings").widget_title_font_weight }};
-  font-size: {{ ($.Scratch.Get "settings").widget_title_font_size }};
+  color:{widget_title_color};
+  margin:{widget_title_margin};
+  padding: {widget_title_padding};
+  font-weight: normal;{widget_title_font_weight};
+  font-size: {widget_title_font_size};
 }
