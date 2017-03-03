@@ -44,13 +44,12 @@
         this.overlay = isset(options.overlay) ? options.overlay : null;
         this.overlayColor = isset(options.overlay_color) ? options.overlay_color : null;
         this.overlayOpacity = isset(options.overlay_opacity) ? options.overlay_opacity : null;
-        this.playButtonBackgroundColor = isset(options.play_button_background_color) ?  options.play_button_background_color : null;
-        this.playButtonBorderRadius = isset(options.play_button_border_radius) ? options.play_button_border_radius : null;
-        this.playButtonBorderWidth = isset(options.play_button_border_width) ? options.play_button_border_width : null;
-        this.playButtonBorderColor = isset(options.play_button_border_color) ? options.play_button_border_color : null;
-        this.playButtonIconColor = isset(options.play_button_icon_color) ? options.play_button_icon_color : null;
-        this.playButtonWidth = isset(options.play_button_width) ? options.play_button_width : null;
-        this.playButtonHeight = isset(options.play_button_height) ? options.play_button_height : null;
+        this.playButtonBackgroundColor = isset(options.item_play_button_background) ?  options.item_play_button_background : null;
+        this.playButtonBorderRadius = isset(options.item_play_button_border_radius) ? options.item_play_button_border_radius : null;
+        this.playButtonBorder = isset(options.item_play_button_border) ? options.item_play_button_border : null;
+        this.playButtonIconColor = isset(options.item_play_button_polygon_background) ? options.item_play_button_polygon_background : null;
+        this.playButtonWidth = isset(options.item_play_button_width) ? options.item_play_button_width : null;
+        this.playButtonHeight = isset(options.item_play_button_height) ? options.item_play_button_height : null;
 
         this.onResize = isset(options.onResize) && isFunction(options.onResize) ? options.onResize : null;
         this.onNext = isset(options.onNext) && isFunction(options.onNext) ? options.onNext : null;
@@ -100,8 +99,8 @@
             overlay.style.backgroundImage = 'url("' + imgUrl + '")';
             var overlayColor = this.overlayColor ? '#' + this.overlayColor : 'transparent';
             overlay.innerHTML = '<div class="tvp-overlay-cover" style="opacity:' + this.overlayOpacity + ';background-image:linear-gradient(to bottom right,'+overlayColor+','+overlayColor+');"></div>'+
-                '<svg class="tvp-play" style="width:'+this.playButtonWidth+';height:'+this.playButtonHeight+';background-color:#'+this.playButtonBackgroundColor+';border:'+this.playButtonBorderWidth+' solid #'+this.playButtonBorderColor+';border-radius:'+this.playButtonBorderRadius+
-                '%;" viewBox="0 0 200 200"><polygon fill="#'+this.playButtonIconColor+'" points="70, 55 70, 145 145, 100"></polygon></svg>';
+                '<svg class="tvp-play" style="width:'+this.playButtonWidth+';height:'+this.playButtonHeight+';background-color:'+this.playButtonBackgroundColor+';border:'+this.playButtonBorder+';border-radius:'+this.playButtonBorderRadius+
+                ';" viewBox="0 0 200 200"><polygon fill="'+this.playButtonIconColor+'" points="70, 55 70, 145 145, 100"></polygon></svg>';
 
             var click = function(){
                 if (!that.instance) return;

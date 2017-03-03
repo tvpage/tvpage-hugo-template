@@ -20,8 +20,8 @@
     this.initialResize = true;
     
     var isSmall = this.windowSize == 'small';
-    this.itemsPerPage = isSmall ? 2 : (options.itemsPerPage || 6);
-    this.itemsPerRow = isSmall ? 1 : (options.itemsPerRow || 2);
+    this.itemsPerPage = isSmall ? 2 : (options.items_per_page || 6);
+    this.itemsPerRow = isSmall ? 1 : (options.items_per_row || 2);
     this.loginId = (options.loginId || options.loginid) || 0;
     this.channel = options.channel || {};
     this.loading = false;
@@ -189,8 +189,8 @@
       if (that.windowSize !== newSize) {
         that.windowSize = newSize;
         var isSmall = newSize === 'small';
-        that.itemsPerPage = isSmall ? 2 : (options.itemsPerPage || 6);
-        that.itemsPerRow = isSmall ? 1 : (options.itemsPerRow || 2);
+        that.itemsPerPage = isSmall ? 2 : (options.items_per_page || 6);
+        that.itemsPerRow = isSmall ? 1 : (options.items_per_row || 2);
         //reset page to 0 if we detect a resize, so we don't have trouble loading the grid
         that.page = 0;
         that.isLastPage = false;

@@ -37,12 +37,6 @@ footer {
   clear: both;
 }
 
-.tvp-sidebar-title {
-  margin: 0;
-  padding: 0 5px 10px 5px;
-  font-weight: normal;
-}
-
 .loading .tvp-cover {
   display: block;
 }
@@ -63,14 +57,6 @@ footer {
   cursor: pointer;
   padding: 0 5px;
   margin: 0 auto;
-}
-
-.tvp-video:hover .tvp-video-play {
-  background-color: #e57211;
-}
-
-.tvp-video:hover .tvp-video-play > polygon {
-  fill: #fff;
 }
 
 .tvp-video:hover .tvp-video-image-overlay {
@@ -116,10 +102,7 @@ footer {
 }
 
 .tvp-video-play {
-  background-color: #fff;
   box-sizing: border-box;
-  width: 35px;
-  height: 35px;
   padding: 0;
   position: absolute;
   top: 0;
@@ -128,8 +111,6 @@ footer {
   right: 0;
   margin: auto;
   cursor: pointer;
-  border-radius: 50%;
-  border: 0;
   z-index: 1000;
   -webkit-transition: all .05s ease-in-out;
           transition: all .05s ease-in-out;
@@ -141,16 +122,10 @@ footer {
 
 .tvp-video-play > polygon {
   pointer-events: none;
-  fill: #333;
 }
 
 .tvp-video-title {
-  height: 30px;
   overflow: hidden;
-  font-size: 12px;
-  color: #333333;
-  margin: 5px 0;
-  line-height: 15px;
 }
 
 .tvp-play {
@@ -239,30 +214,15 @@ footer {
 }
 
 .tvp-sidebar-load {
-  margin: 5px auto;
-  padding: 0 2px;
-  font-size: 10px;
-  text-align: center;
-  width: 85px;
-  height: 26px;
-  background-color: #F5F5F5;
-  border: 1px solid #DFDFDF;
-  color: #666666;
-  text-transform: uppercase;
   cursor: pointer;
+  text-align: center;
 }
 
 .tvp-sidebar-load:active {
-  background-color: #666666;
-  box-shadow: 1px 1px #666;
-  -webkit-transform: translateY(2px);
+  -webkit-transform: translateY(5px);
           transform: translateY(2px);
 }
 
 .tvp-sidebar-load:focus {
   outline:none;
-}
-
-.tvp-sidebar-load:hover{
-  background-color: #e2e2e2;
 }
