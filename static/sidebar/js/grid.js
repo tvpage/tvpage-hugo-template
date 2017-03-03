@@ -15,13 +15,12 @@
   };
 
   function Grid(el, options) {
-    console.log(options)
     this.xchg = options.xchg || true;
     this.windowSize = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) <= 200 ? 'small' : 'medium';
     this.initialResize = true;
     
     var isSmall = this.windowSize == 'small';
-    this.itemsPerPage = isSmall ? 2 : (options.options || 6);
+    this.itemsPerPage = isSmall ? 2 : (options.items_per_page || 6);
     this.itemsPerRow = isSmall ? 1 : (options.items_per_row || 2);
     this.loginId = (options.loginId || options.loginid) || 0;
     this.channel = options.channel || {};

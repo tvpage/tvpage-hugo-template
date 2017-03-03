@@ -1,3 +1,48 @@
+.tvp-video-play {
+  border-radius: {{ ($.Scratch.Get "settings").item_play_button_border_radius }};
+  border: {{ ($.Scratch.Get "settings").item_play_button_border }};
+  background-color: {{ ($.Scratch.Get "settings").item_play_button_background }};
+  width: {{ ($.Scratch.Get "settings").item_play_button_width }};
+  height: {{ ($.Scratch.Get "settings").item_play_button_height }};
+}
+.tvp-video:hover .tvp-video-play {
+  background-color: {{ ($.Scratch.Get "settings").item_play_button_background_hover }};
+}
+.tvp-video-play > polygon {
+  fill: {{ ($.Scratch.Get "settings").item_play_button_polygon_background }};
+}
+.tvp-video:hover .tvp-video-play > polygon {
+  fill: {{ ($.Scratch.Get "settings").item_play_button_polygon_background_hover }};
+}
 .tvp-sidebar-load {
     border-radius: {{ ($.Scratch.Get "settings").load_button_border_radius }};
+	margin: {{ ($.Scratch.Get "settings").load_button_margin }};
+	padding: {{ ($.Scratch.Get "settings").load_button_padding }};
+	font-size: {{ ($.Scratch.Get "settings").load_button_font_size }};
+	width: {{ ($.Scratch.Get "settings").load_button_width }};
+	height: {{ ($.Scratch.Get "settings").load_button_height }};
+	background-color: {{ ($.Scratch.Get "settings").load_button_background_color }};
+	border: {{ ($.Scratch.Get "settings").load_button_border }};
+	color: {{ ($.Scratch.Get "settings").load_button_text_color }};
+	text-transform: {{ ($.Scratch.Get "settings").load_button_text_transform }};
+}
+.tvp-sidebar-load:hover{
+  background-color: {{ ($.Scratch.Get "settings").load_button_background_color_hover }};
+}
+.tvp-sidebar-load:active {
+  box-shadow: {{ ($.Scratch.Get "settings").load_button_box_shadow_active }};
+}
+.tvp-video-title {
+  height: {{ ($.Scratch.Get "settings").item_title_height }};
+  font-size: {{ ($.Scratch.Get "settings").item_title_font_size }};
+  color: {{ ($.Scratch.Get "settings").item_title_color }};
+  margin: {{ ($.Scratch.Get "settings").item_title_margin }};
+  line-height: {{ ($.Scratch.Get "settings").item_title_line_height }};
+}
+.tvp-sidebar-title {
+  color:{{ ($.Scratch.Get "settings").widget_title_color }};
+  margin:{{ ($.Scratch.Get "settings").widget_title_margin }};
+  padding: {{ ($.Scratch.Get "settings").widget_title_padding }};
+  font-weight: normal;{{ ($.Scratch.Get "settings").widget_title_font_weight }};
+  font-size: {{ ($.Scratch.Get "settings").widget_title_font_size }};
 }
