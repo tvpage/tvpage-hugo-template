@@ -63,7 +63,7 @@
         render(body,{
           id: name,
           title: settings.title || 'Recommended Videos',
-          loadBtnText: settings.loadBtnText || 'View More'
+          loadBtnText: settings.load_button_text || 'View More'
         });
 
           var el = document.getElementById(name);

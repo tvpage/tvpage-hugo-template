@@ -110,7 +110,7 @@
     var holder = Utils.getByClass('tvp-products-holder'),
         classNames = ['tvp-product', 'tvp-product-popup'],
         arrow = document.querySelectorAll('.tvp-arrow-indicator')[0],
-        TimeOut,
+        timeOut,
         elements;
     showPopUp = function (e) {
       if (!e.target.classList.contains('tvp-product-image')) return;
@@ -144,7 +144,7 @@
 
     removeClass = function(){
       for (var i = 0; i < classNames.length; i++) {
-        var activeElements = document.getElementsByClassName(classNames[i]);
+        var activeElements = holder.getElementsByClassName(classNames[i]);
         for (var j = 0; j < activeElements.length; j++) {
           activeElements[j].classList.remove('active');
           arrow.classList.remove('active');
@@ -157,13 +157,12 @@
       for (var j = 0; j < elements.length; j++) {
         elements[j].addEventListener('click', pkTrack, false);
         elements[j].onmouseover = function(e){
-          clearTimeout(TimeOut);
-          if (e.target.className === "tvp-product-image") {
-            showPopUp(e);
-          }
+          clearTimeout(timeOut);
+          showPopUp(e);
+
         };
         elements[j].onmouseleave = function(){
-          TimeOut = setTimeout(function() {
+          timeOut = setTimeout(function() {
             removeClass();
           }, 100);
         };  
