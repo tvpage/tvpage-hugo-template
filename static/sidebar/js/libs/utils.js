@@ -1,9 +1,11 @@
-;(function(root,doc) {
+;(function(window,document) {
 
   function Utils() {
 
-    this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    
+    this.getByClass = function(c){
+      return document.getElementsByClassName(c || '')[0];
+    };
+
     this.isset = function(o,p){
       if (!arguments.length) return;
       var val = o;
@@ -26,6 +28,23 @@
       };      
     };
 
+    this.trimText = function(text,limit){
+      var t = text || '';
+      var l = limit ? Number(limit) : 0;
+      if (text.length > l) {
+        t = t.substring(0,Number(l)) + '...';
+      }
+      return t;
+    };
+
+    this.trimPrice = function(p){
+      var price = p || '';
+      price = price.toString().replace(/[^0-9.]+/g, '');
+      price = parseFloat(price).toFixed(2);
+      price = price > 0 ? ('$' + price):'';
+      return price;
+    };
+
     this.tmpl = function(template, data) {
       if (template && 'object' == typeof data) {
         return template.replace(/\{([\w\.]*)\}/g, function(str, key) {
@@ -39,6 +58,6 @@
     
   }
 
-  root.Utils = new Utils();
+  window.Utils = new Utils();
 
 }(window, document));

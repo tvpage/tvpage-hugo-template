@@ -10,27 +10,7 @@
   {{ else }}
   <link rel="stylesheet" type="text/css" href="{{ (printf "%s/dist/css/styles.min.css" .Type ) | absURL }}">
   {{ end }}
-  <style>
-    .tvp-sidebar-load {
-      background-color: {{ ($.Scratch.Get "settings").loadButtonBackgroundColor }};
-      color: {{ ($.Scratch.Get "settings").loadButtonTextColor }};
-      border-radius: {{ ($.Scratch.Get "settings").loadButtonBorderRadius }};
-    }
-    
-    .tvp-video-title {
-      color: {{ ($.Scratch.Get "settings").itemTitleColor }};
-    }
-
-    .tvp-video-play {
-      background-color: {{ ($.Scratch.Get "settings").itemPlayButtonBackground }};
-      border: {{ ($.Scratch.Get "settings").itemPlayButtonBorder }};
-      border-radius: {{ ($.Scratch.Get "settings").itemPlayButtonBorderRadius }};
-    }
-
-    .tvp-video-play > polygon {
-      fill: {{ ($.Scratch.Get "settings").itemPlayButtonIconColor }};
-    }
-  </style>
+  <style>{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/config.css" .Type ) .)) | safeCSS }}</style>
 </head>
 <body data-id='{{ $id }}'>
 <div id='{{ $id }}' class="iframe-content">
@@ -38,6 +18,9 @@
   <div class="tvp-sidebar-container"></div>
   <div class="tvp-sidebar-footer">
     <button class="tvp-sidebar-load">{{ ($.Scratch.Get "settings").loadButtonText }}</button>
+    <a class="tvp-logo" target="_blank" href="https://www.tvpage.com/">
+      <div class="tvp-logo-img"></div>
+    </a>
   </div>
   <div class="tvp-cover"></div>
 </div>
@@ -45,18 +28,9 @@
   <div id="tvp-video-{id}" class="tvp-video{className}">
     <div class="tvp-video-image" style="background-image:url({asset.thumbnailUrl})">
       <svg class="tvp-video-play" viewBox="0 0 200 200" alt="Play video"><polygon points="70, 55 70, 145 145, 100"></polygon></svg>
+      <div class="tvp-video-image-overlay"></div>
     </div>
     <p class="tvp-video-title">{title}</p>
-  </div>
-</script>
-<script id="modalTemplate" type="text/template">
-  <svg class="tvp-modal-close" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-    <path d="M0 0h24v24H0z"/>
-  </svg>
-  <div class="tvp-modal-guts">
-    <p class="tvp-modal-title">{title}</p>
-    <iframe src="{src}" allowfullscreen frameborder="0" scrolling="no" class="tvp-iframe-modal"></iframe>
   </div>
 </script>
 <script>

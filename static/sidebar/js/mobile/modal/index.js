@@ -1,20 +1,14 @@
 (function(window,document){
 
-  var analytics;
+  var analytics,
+      channelId;
 
   var pkTrack = function(){
     analytics.track('pk',{
       vd: this.getAttribute('data-vd'),
-      ct: this.id.split('-').pop()
+      ct: this.id.split('-').pop(),
+      pg: channelId
     });
-  };
-
-  var isset = function(o,p){
-    return 'undefined' !== typeof o[p];
-  };
-
-  var getByClass = function(c){
-    return document.getElementsByClassName(c || '')[0];
   };
 
   var loadProducts = function(videoId,loginId,fn){
@@ -34,26 +28,62 @@
     document.body.appendChild(script);
   };
 
-  var render = function(data, exchangeVideo){
-    var el = getByClass('iframe-content');
+  var render = function(data){
+    var container = Utils.getByClass('tvp-products');
+    var el = Utils.getByClass('iframe-content');
+    var hasData = false;
 
-    var container = getByClass('tvp-products');
+    if (data && data.length){
+      hasData = true;
+    }
+
+    var notifyState = function () {
+      setTimeout(function () {
+          if (window.parent) {
+              window.parent.postMessage({event: 'tvp_sidebar:modal' + (hasData ? '' : '_no') + '_products'}, '*');
+          }
+      },0);
+    };
+
+    if (hasData) {
+      container.classList.add('enabled');
+      el.classList.remove('tvp-no-products');
+      notifyState();
+    } else {
+      container.classList.remove('enabled');
+      el.classList.add('tvp-no-products');
+      notifyState();
+      return;
+    }
+
     var frag = document.createDocumentFragment();
     
     for (var i = 0; i < data.length; i++) {
       var product = data[i];
       var productId = product.id;
       var productVideoId = product.entityIdParent;
+      var fixedPrice = '';
+      var prodTitle = product.title || '';
 
       analytics.track('pi',{
         vd: product.entityIdParent,
-        ct: productId
+        ct: productId,
+        pg: channelId
       });
+      
+      //we want to remove all special character, so they don't duplicate
+      //also we shorten the lenght of long titles and add 3 point at the end
+      if (prodTitle || product.price) {
+        prodTitle = prodTitle.length > 50 ? prodTitle.substring(0, 50) + "...":prodTitle;
+        var price = product.price.toString().replace(/[^0-9.]+/g, '');
+        price = parseFloat(price).toFixed(2);
+        fixedPrice = price > 0 ? ('$' + price):'';
+      }
 
       var prodNode = document.createElement('div');
       prodNode.innerHTML = '<a id="tvp-product-' + productId + '" class="tvp-product" data-vd="' + productVideoId + '" href="' +
       product.linkUrl + '"><div class="tvp-product-image" style="background-image:url(' + product.imageUrl + ')"></div>'+
-      '<div class="tvp-product-data"><p>'+product.title+'</p><h2>$'+product.price+'</h2><button>View Details</button></div></a>';
+      '<div class="tvp-product-data"><p>'+prodTitle+'</p><h2>'+fixedPrice+'</h2><button>View Details</button></div></a>';
       frag.appendChild(prodNode);
     }
 
@@ -64,6 +94,13 @@
     }
 
     container.innerHTML = '';
+
+    if (data.length) {
+        var productsLabel = document.createElement('p');
+        productsLabel.classList.add('tvp-products-headline');
+        productsLabel.innerHTML = 'Related Products';
+        container.appendChild(productsLabel);
+    }
     
     var carousel = document.createElement('div');
     carousel.classList.add('tvp-products-carousel');
@@ -92,13 +129,17 @@
         }
 
         $el.on('init',function(){
-          setTimeout(function(){
-            if (window.parent && window.parent.parent) {
-              window.parent.parent.postMessage({
-                event: 'tvp_sidebar:modal_resized',
-                height: el.offsetHeight + 'px'
-              }, '*');
-            }
+            container.classList.add('enabled');
+        });
+
+        $el.on('setPosition',function(){
+          setTimeout(function () {
+              if (window.parent) {
+                  window.parent.postMessage({
+                      event: 'tvp_sidebar:modal_resized',
+                      height: el.offsetHeight + 'px'
+                  }, '*');
+              }
           },0);
         });
 
@@ -110,7 +151,7 @@
       $.ajax({
         dataType: 'script',
         cache: true,
-        url: document.body.getAttribute('data-domain') + '/sidebar/js/vendor/slick-min.js'
+        url: document.body.getAttribute('data-domain') + '/carousel/js/vendor/slick-min.js'
       }).done(startSlick);
     } else {
       startSlick();
@@ -118,20 +159,22 @@
   };
 
   var initialize = function(){
-    var el = getByClass('iframe-content');
+    var el = Utils.getByClass('iframe-content');
 
     var initPlayer = function(data){
       var s = JSON.parse(JSON.stringify(data.runTime));
       
       s.data = data.data;
-      
-      s.onResize = function(initial,size){
-        if (!initial && window.parent && window.parent.parent) {
-          window.parent.parent.postMessage({
-            event: 'tvp_sidebar:modal_resized',
-            height: el.offsetHeight + 'px'
-          }, '*');
-        }
+
+      s.onResize = function(){
+        setTimeout(function () {
+            if (window.parent) {
+                window.parent.postMessage({
+                    event: 'tvp_sidebar:modal_resized',
+                    height: el.offsetHeight + 'px'
+                }, '*');
+            }
+        },0);
       }
 
       s.onNext = function(next){
@@ -149,31 +192,34 @@
               },0);
           });
         }
-        
-        if (window.parent && window.parent.parent) {
-          window.parent.parent.postMessage({
-            event: 'tvp_sidebar:player_next',
-            next: next
-          }, '*');
-        }
+
+        setTimeout(function () {
+            if (window.parent) {
+                window.parent.postMessage({
+                    event: 'tvp_sidebar:player_next',
+                    next: next
+                }, '*');
+            }
+        },0);
       };
 
       new Player('tvp-player-el',s,data.selectedVideo.id);
     };
 
     window.addEventListener('message', function(e){
-      if (!e || !isset(e, 'data') || !isset(e.data, 'event')) return;
+      if (!e || !Utils.isset(e, 'data') || !Utils.isset(e.data, 'event')) return;
       var data = e.data;
       
-      if ('_tvp_sidebar_modal_data' === data.event) {
+      if ('tvp_sidebar:modal_data' === data.event) {
         initPlayer(data);
 
         var loginId = data.runTime.loginid || data.runTime.loginId;
+        channelId = data.runTime.channel.id || data.runTime.channelid;
 
         analytics =  new Analytics();
         analytics.initConfig({
           logUrl: '\/\/api.tvpage.com\/v1\/__tvpa.gif',
-          domain: isset(location,'hostname') ?  location.hostname : '',
+          domain: Utils.isset(location,'hostname') ?  location.hostname : '',
           loginId: loginId
         });
         
@@ -195,8 +241,8 @@
 
     //Notify when the widget has been initialized.
     setTimeout(function(){
-      if (window.parent && window.parent.parent) {
-        window.parent.parent.postMessage({
+      if (window.parent) {
+        window.parent.postMessage({
           event: 'tvp_sidebar:modal_initialized',
           height: (el.offsetHeight + 20) + 'px'
         }, '*');

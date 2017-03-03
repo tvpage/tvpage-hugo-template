@@ -5,21 +5,6 @@
   '<svg class="tvp-video-play" viewBox="0 0 200 200" alt="Play video"><polygon points="70, 55 70, 145 145, 100"></polygon></svg>'+
   '</div><p class="tvp-video-title">{title}</p></div>';
 
-  var debounce = function(func,wait,immediate) {
-    var timeout;  
-    return function() {
-      var context = this, args = arguments;
-      var later = function() {
-        timeout = null;
-        if (!immediate) func.apply(context, args);
-      };
-      var callNow = immediate && !timeout;
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-      if (callNow) func.apply(context, args);
-    };
-  };
-
   var isEmpty = function(obj) {
     for(var key in obj) { if (obj.hasOwnProperty(key)) return false;}
     return true;
@@ -29,19 +14,8 @@
     return 'function' === typeof obj;
   };
 
-  var tmpl = function(template, data) {
-    if (template && 'object' == typeof data) {
-      return template.replace(/\{([\w\.]*)\}/g, function(str, key) {
-        var keys = key.split("."),
-          v = data[keys.shift()];
-        for (var i = 0, l = keys.length; i < l; i++) v = v[keys[i]];
-        return (typeof v !== "undefined" && v !== null) ? v : "";
-      });
-    }
-  };
-
   function Grid(el, options) {
-    this.xchg = options.xchg || true;
+    this.xchg = options.xchg || false;
     this.windowSize = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) <= 200 ? 'small' : 'medium';
     this.initialResize = true;
     
@@ -104,15 +78,16 @@
             if (templateScript) {
               template = templateScript.innerHTML;
             }
-            rowEl.innerHTML += tmpl(template, item);
+            item.title = Utils.trimText(item.title,50);
+            rowEl.innerHTML += Utils.tmpl(template, item);
           }
 
           pageFrag.appendChild(rowEl);
         }
 
         this.container.appendChild(pageFrag);
-        if (window.parent && window.parent.parent) {
-          window.parent.parent.postMessage({
+        if (window.parent) {
+          window.parent.postMessage({
             event: 'tvp_sidebar:render',
             height: that.el.offsetHeight + 'px'
           }, '*');
@@ -129,10 +104,12 @@
 
       var getChannelVideos = function(callback){
         var channel = that.channel || {};
-        if (isEmpty(channel) || !channel.id) return console.log('bad channel');
+        if (isEmpty(channel) || !channel.id) return;
         var params = channel.parameters || {};
         var src = '//api.tvpage.com/v1/channels/' + channel.id + '/videos?X-login-id=' + that.loginId;
-        for (var p in params) { src += '&' + p + '=' + params[p];}
+        for (var p in params) {
+          src += '&' + p + '=' + params[p];
+        }
         var cbName = options.callbackName || 'tvp_' + Math.floor(Math.random() * 555);
         src += '&p=' + that.page + '&n=' + that.itemsPerPage + '&callback='+cbName;
         var script = document.createElement('script');
@@ -149,15 +126,15 @@
             getChannelVideos(function(data){
               var xchg = [];
               
-              // if (xhr.status === 200) {
-              //   xchg = xhr.responseText;
-              //   var xchgCount = xchg.length;
-              //   while(xchgCount > 0) {
-              //     var xchgVideo = xchg[xchgCount-1];
-              //     xchgVideo = $.extend(xchgVideo, xchgVideo.entity);
-              //     xchgCount--;
-              //   }
-              // }
+              if (xhr.status === 200) {
+                xchg = xhr.responseText;
+                var xchgCount = xchg.length;
+                while(xchgCount > 0) {
+                  var xchgVideo = xchg[xchgCount-1];
+                  xchgVideo = $.extend(xchgVideo, xchgVideo.entity);
+                  xchgCount--;
+                }
+              }
               
               if (!data.length) {
                 that.isLastPage = true;
@@ -202,9 +179,9 @@
       var newSize = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) <= 200 ? 'small' : 'medium';
       var notify = function(){
         if (that.initialResize) return;
-        if (window.parent && window.parent.parent) {
-          window.parent.parent.postMessage({
-            event: 'tvp_sidebar:grid_resize',
+        if (window.parent) {
+          window.parent.postMessage({
+            event: 'tvp_sidebar:resize',
             height: that.el.offsetHeight + 'px'
           }, '*');
         }
@@ -214,6 +191,10 @@
         var isSmall = newSize === 'small';
         that.itemsPerPage = isSmall ? 2 : (options.itemsPerPage || 6);
         that.itemsPerRow = isSmall ? 1 : (options.itemsPerRow || 2);
+        //reset page to 0 if we detect a resize, so we don't have trouble loading the grid
+        that.page = 0;
+        that.isLastPage = false;
+        
         that.load(function(){
           that.render();
           notify();
@@ -238,8 +219,8 @@
         }
       }
 
-      if (window.parent && window.parent.parent) {
-        window.parent.parent.postMessage({
+      if (window.parent) {
+        window.parent.postMessage({
           runTime: 'undefined' !== typeof window.__TVPage__ ? __TVPage__ : null,
           event: 'tvp_sidebar:video_click',
           selectedVideo: selected,
@@ -268,7 +249,7 @@
       that.render(data);
     });
 
-    window.addEventListener('resize', debounce(this.resize,100));
+    window.addEventListener('resize', Utils.debounce(this.resize,100));
   }
 
   window.Grid = Grid;

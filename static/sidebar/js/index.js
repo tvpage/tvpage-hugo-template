@@ -47,6 +47,7 @@
     main.innerHTML =  '<div class="tvp-sidebar-title">' + (d.title || '') + '</div>'+
     '<div class="tvp-sidebar-container"></div><div class="tvp-sidebar-footer">'+
     '<button class="tvp-sidebar-load">' + (d.loadBtnText || '') + '</button>'+
+    '<a class="tvp-logo" target="_blank" href="https://www.tvpage.com/"><div class="tvp-logo-img"></div></a>'+
     '</div><div class="tvp-cover"></div>';
     frag.appendChild(main);
     target.appendChild(frag);
@@ -58,7 +59,6 @@
     if (body.classList.contains('dynamic')) {
       (function(settings){
         var gridSettings = JSON.parse(JSON.stringify(settings));
-
         var name = settings.name;
 
         render(body,{
@@ -103,8 +103,20 @@
     initialize();
   }
 
-  if (window.DEBUG) {
-    console.debug("endTime = " + performance.now());
+  var not = function(obj){return 'undefined' === typeof obj};
+  if (not(window.Grid) || not(window.Utils)) {
+      var libsCheck = 0;
+      (function libsReady() {
+          setTimeout(function(){
+              if (not(window.Grid) || not(window.Utils)) {
+                  (++libsCheck < 50) ? libsReady() : console.log('limit reached');
+              } else {
+                  initialize();
+              }
+          },150);
+      })();
+  } else {
+      initialize();
   }
 
 }(window, document));
