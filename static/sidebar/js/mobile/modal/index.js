@@ -120,7 +120,8 @@
         var config = {
           slidesToSlide: 1,
           slidesToShow: 1,
-          arrows: false
+          arrows: false,
+          dots: true
         };
 
         if (data.length > 1) {

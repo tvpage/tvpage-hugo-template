@@ -10,14 +10,13 @@
   {{ else }}
   <link rel="stylesheet" type="text/css" href="{{ (printf "%s/dist/css/styles.min.css" .Type ) | absURL }}">
   {{ end }}
-  <style>{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/config.css" .Type ) .)) | safeCSS }}</style>
 </head>
 <body data-id='{{ $id }}'>
 <div id='{{ $id }}' class="iframe-content">
   <div class="tvp-sidebar-title">{{ ($.Scratch.Get "settings").title }}</div>
   <div class="tvp-sidebar-container"></div>
   <div class="tvp-sidebar-footer">
-    <button class="tvp-sidebar-load">{{ ($.Scratch.Get "settings").loadButtonText }}</button>
+    <button class="tvp-sidebar-load">{{ ($.Scratch.Get "settings").load_button_text }}</button>
     <a class="tvp-logo" target="_blank" href="https://www.tvpage.com/">
       <div class="tvp-logo-img"></div>
     </a>
@@ -34,13 +33,41 @@
   </div>
 </script>
 <script>
-  window.__TVPage__ = window.__TVPage__ || {};
-  __TVPage__.config = __TVPage__.config || {};
-  __TVPage__.config[{{ $id }}] = {{ $.Scratch.Get "settings" }};
-  __TVPage__.config[{{ $id }}].channel = {
-    id: '{{ ($.Scratch.Get "settings").channelid }}'
-  };
+    var extend = function(out) {
+        out = out || {};
+        for (var i = 1; i < arguments.length; i++) {
+            if (!arguments[i])
+                continue;
+
+            for (var key in arguments[i]) {
+                if (arguments[i].hasOwnProperty(key))
+                    out[key] = arguments[i][key];
+            }
+        }
+        return out;
+    };
+
+    window.tvp_default_config = function (defaultConfig) {
+        window.__TVPage__ = window.__TVPage__ || {};
+        __TVPage__.config = __TVPage__.config || {};
+        __TVPage__.config[{{ $id }}] = {{ $.Scratch.Get "settings" }};
+        __TVPage__.config[{{ $id }}].channel = {
+            id: '{{ ($.Scratch.Get "settings").channelid }}'
+        };
+
+        if (!defaultConfig || 'undefined' === typeof defaultConfig.option) return;
+        var defaults = defaultConfig.option;
+        var defaultValues = {};
+
+        for (var key in defaults) {
+            var option = defaults[key];
+            defaultValues[option.code] = option.value;
+        }
+
+        __TVPage__.config[{{ $id }}] = extend(defaultValues, __TVPage__.config[{{ $id }}]);
+    }
 </script>
+<script src="{{ (printf "%s/options.js" .Type ) | absURL }}"></script>
 {{ if (getenv "HUGO_DEBUG") }}
 <script>window.DEBUG = Number({{getenv "HUGO_DEBUG"}}) || 0;</script>
 <script src="{{ (printf "%s/js/libs/utils.js" .Type ) | absURL }}"></script>

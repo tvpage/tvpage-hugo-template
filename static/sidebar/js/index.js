@@ -7,34 +7,29 @@
   };
 
   var getSettings = function(type){
-    var getConfig = function(g){
-      var c = {};
-      if (isset(g) && isset(g,'__TVPage__') && isset(g.__TVPage__, 'config')) {
-        c = g.__TVPage__.config;
-      } else {
-        return console.log('need config');
+      var getConfig = function(g){
+          var c = {};
+          if (isset(g) && isset(g,'__TVPage__') && isset(g.__TVPage__, 'config')) {
+              c = g.__TVPage__.config;
+          }
+          return c;
+      };
+      var s = {};
+      if ('dynamic' === type) {
+          var config = getConfig(parent);
+          var id = document.body.getAttribute('data-id');
+          if (!isset(config, id)) return;
+          s = config[id];
+          s.name = id;
+          s.domain = document.body.getAttribute('data-domain') || '';
+      } else if ('static' === type) {
+          var config = getConfig(window);
+          var id = document.body.getAttribute('data-id');
+          if (!isset(config, id)) return;
+          s = config[id];
+          s.name = id;
       }
-      return c;
-    };
-    var s = {};
-    if ('dynamic' === type) {
-      var config = getConfig(parent);
-      var id = document.body.getAttribute('data-id');
-      if (!isset(config, id)) return console.log('need settings');
-      s = config[id];
-      s.name = id;
-    } else if ('inline' === type && type && type.length) {
-      var config = getConfig(parent);
-      s = config[type];
-      s.name = type;
-    } else if ('static' === type) {
-      var config = getConfig(window);
-      var id = document.body.getAttribute('data-id');
-      if (!isset(config, id)) return console.log('need settings');
-      s = config[id];
-      s.name = id;
-    }
-    return s;
+      return s;
   };
 
   var render = function(target,data){
@@ -54,24 +49,28 @@
   };
 
   var body = document.body;
+  var isDynamic = body.classList.contains('dynamic');
 
   var initialize = function(){
-    if (body.classList.contains('dynamic')) {
+    if (isDynamic) {
       (function(settings){
+
+        new CSS(settings);
+
         var gridSettings = JSON.parse(JSON.stringify(settings));
         var name = settings.name;
 
         render(body,{
           id: name,
           title: settings.title || 'Recommended Videos',
-          loadBtnText: settings.loadBtnText || 'View More'
+          loadBtnText: settings.load_button_text || 'View More'
         });
 
-        var el = document.getElementById(name);
-        gridSettings.onLoad = function(){el.classList.add('loading');};
-        gridSettings.onLoadEnd = function(){el.classList.remove('loading');};
-        
-        new Grid(name, gridSettings);
+          var el = document.getElementById(name);
+          gridSettings.onLoad = function(){el.classList.add('loading');};
+          gridSettings.onLoadEnd = function(){el.classList.remove('loading');};
+
+          new Grid(name, gridSettings);
 
       }(getSettings('dynamic')));
     } else {
@@ -88,27 +87,12 @@
     }
   };
 
-  if ('undefined' === typeof window.Grid) {
-    var gridCheck = 0;
-    (function gridReady() {
-      setTimeout(function() {
-        if ('undefined' === typeof window.Grid) {
-          (++gridCheck < 50) ? gridReady() : console.log('limit reached');
-        } else  {
-          initialize();
-        }
-      },150);
-    })();
-  } else {
-    initialize();
-  }
-
   var not = function(obj){return 'undefined' === typeof obj};
-  if (not(window.Grid) || not(window.Utils)) {
+  if (not(window.Grid) || not(window.Utils) || (!isDynamic && not(window.__TVPage__))) {
       var libsCheck = 0;
       (function libsReady() {
           setTimeout(function(){
-              if (not(window.Grid) || not(window.Utils)) {
+              if (not(window.Grid) || not(window.Utils) || (!isDynamic && not(window.__TVPage__))) {
                   (++libsCheck < 50) ? libsReady() : console.log('limit reached');
               } else {
                   initialize();

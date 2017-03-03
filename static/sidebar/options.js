@@ -1,4 +1,4 @@
-{
+tvp_default_config({
     "option": [
         {
             "for": "player",
@@ -79,28 +79,28 @@
             "label": "Widget Title Color",
             "code": "widget_title_color",
             "value": "#333333"
-        },        
+        },
         {
             "for": "styles",
             "type": "text",
             "label": "Widget Title Margin",
             "code": "widget_title_margin",
             "value": "0"
-        },        
+        },
         {
             "for": "styles",
             "type": "text",
             "label": "Widget Title Padding",
             "code": "widget_title_padding",
             "value": "0 5px 10px 5px"
-        },        
+        },
         {
             "for": "styles",
             "type": "text",
             "label": "Widget Title Font Weight",
             "code": "widget_title_font_weight",
             "value": "normal"
-        },        
+        },
         {
             "for": "styles",
             "type": "text",
@@ -135,7 +135,7 @@
             "label": "Item Title Margin",
             "code": "item_title_margin",
             "value": "5px 0"
-        },                
+        },
         {
             "for": "styles",
             "type": "text",
@@ -149,14 +149,14 @@
             "label": "Item Play Button Background",
             "code": "item_play_button_background",
             "value": "#fff"
-        },        
+        },
         {
             "for": "styles",
             "type": "text",
             "label": "Item Play Button Height",
             "code": "item_play_button_height",
             "value": "35px"
-        },        
+        },
         {
             "for": "styles",
             "type": "text",
@@ -170,14 +170,14 @@
             "label": "Item Play Button Icon Color Hover",
             "code": "item_play_button_background_hover",
             "value": "#e57211"
-        },        
+        },
         {
             "for": "styles",
             "type": "text",
             "label": "Item Play Button Border Radius",
             "code": "item_play_button_border_radius",
             "value": "50%"
-        },        
+        },
         {
             "for": "styles",
             "type": "text",
@@ -240,7 +240,7 @@
             "label": "Load Button Margin",
             "code": "load_button_margin",
             "value": "5px auto"
-        },        
+        },
         {
             "for": "styles",
             "type": "text",
@@ -254,7 +254,7 @@
             "label": "Load Button Font Size",
             "code": "load_button_font_size",
             "value": "10px"
-        },       
+        },
         {
             "for": "styles",
             "type": "text",
@@ -268,7 +268,7 @@
             "label": "Load Button Height",
             "code": "load_button_height",
             "value": "26px"
-        },  
+        },
         {
             "for": "styles",
             "type": "text",
@@ -282,7 +282,7 @@
             "label": "Load Button Text Transform",
             "code": "load_button_text_transform",
             "value": "none"
-        },        
+        },
         {
             "for": "styles",
             "type": "text",
@@ -291,4 +291,4 @@
             "value": "1px 1px #666"
         }
     ]
-}
+})
