@@ -168,10 +168,9 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
     var customEllipsis = function () {
         var els = '.latest-video-title';
         var maxHeight = parseInt($(els).css('max-height')) + 1;
-        var lineHeight = isLoadMore ? 0 : parseInt($(els).css('line-height'));        
 
         _.each($(els).find('span'), function (ele, i) {            
-            var actualHeight = ele.offsetHeight; //- lineHeight;
+            var actualHeight = ele.offsetHeight;
             if (actualHeight > maxHeight) {
                 $(ele).parent().addClass('tvp-custom-ellipsis');
             }
