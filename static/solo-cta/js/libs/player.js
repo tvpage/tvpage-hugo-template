@@ -216,7 +216,7 @@
                 } else {
 
                     //We create insntances on the tvpage player.
-                    new TVPage.player({
+                    that.player = new TVPage.player({
                         //poster: true,
                         techOrder: 'html5,flash',
                         analytics: { tvpa: that.analytics },
