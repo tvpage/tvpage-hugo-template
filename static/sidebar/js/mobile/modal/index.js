@@ -28,24 +28,42 @@
     document.body.appendChild(script);
   };
 
-  var checkProducts = function(data,el){
-    if (!data || !data.length) {
-      el.classList.add('tvp-no-products');
-    }else{
-      el.classList.remove('tvp-no-products');
-    }
-  };
-
   var render = function(data){
-    var el = Utils.getByClass('iframe-content');
-
     var container = Utils.getByClass('tvp-products');
+    var el = Utils.getByClass('iframe-content');
+    var hasData = false;
+
+    if (data && data.length){
+      hasData = true;
+    }
+
+    var notifyState = function () {
+      setTimeout(function () {
+          if (window.parent) {
+              window.parent.postMessage({event: 'tvp_sidebar:modal' + (hasData ? '' : '_no') + '_products'}, '*');
+          }
+      },0);
+    };
+
+    if (hasData) {
+      container.classList.add('enabled');
+      el.classList.remove('tvp-no-products');
+      notifyState();
+    } else {
+      container.classList.remove('enabled');
+      el.classList.add('tvp-no-products');
+      notifyState();
+      return;
+    }
+
     var frag = document.createDocumentFragment();
     
     for (var i = 0; i < data.length; i++) {
       var product = data[i];
       var productId = product.id;
       var productVideoId = product.entityIdParent;
+      var fixedPrice = '';
+      var prodTitle = product.title || '';
 
       analytics.track('pi',{
         vd: product.entityIdParent,
@@ -53,13 +71,14 @@
         pg: channelId
       });
       
-      var prodTitle = product.title || '';
-      //shorten the lenght of long titles, we need to set a character limit
-      prodTitle = Utils.trimText(prodTitle, 50);
-   
-      var fixedPrice = product.price || '';
-      //remove all special character, so they don't duplicate
-      fixedPrice = Utils.trimPrice(fixedPrice);
+      //we want to remove all special character, so they don't duplicate
+      //also we shorten the lenght of long titles and add 3 point at the end
+      if (prodTitle || product.price) {
+        prodTitle = prodTitle.length > 50 ? prodTitle.substring(0, 50) + "...":prodTitle;
+        var price = product.price.toString().replace(/[^0-9.]+/g, '');
+        price = parseFloat(price).toFixed(2);
+        fixedPrice = price > 0 ? ('$' + price):'';
+      }
 
       var prodNode = document.createElement('div');
       prodNode.innerHTML = '<a id="tvp-product-' + productId + '" class="tvp-product" data-vd="' + productVideoId + '" href="' +
@@ -82,7 +101,7 @@
         productsLabel.innerHTML = 'Related Products';
         container.appendChild(productsLabel);
     }
-
+    
     var carousel = document.createElement('div');
     carousel.classList.add('tvp-products-carousel');
     carousel.appendChild(frag);
@@ -110,13 +129,17 @@
         }
 
         $el.on('init',function(){
-          setTimeout(function(){
-            if (window.parent) {
-              window.parent.postMessage({
-                event: 'tvp_sidebar:modal_resized',
-                height: el.offsetHeight + 'px'
-              }, '*');
-            }
+            container.classList.add('enabled');
+        });
+
+        $el.on('setPosition',function(){
+          setTimeout(function () {
+              if (window.parent) {
+                  window.parent.postMessage({
+                      event: 'tvp_sidebar:modal_resized',
+                      height: el.offsetHeight + 'px'
+                  }, '*');
+              }
           },0);
         });
 
@@ -128,7 +151,7 @@
       $.ajax({
         dataType: 'script',
         cache: true,
-        url: document.body.getAttribute('data-domain') + '/sidebar/js/vendor/slick-min.js'
+        url: document.body.getAttribute('data-domain') + '/carousel/js/vendor/slick-min.js'
       }).done(startSlick);
     } else {
       startSlick();
@@ -142,14 +165,16 @@
       var s = JSON.parse(JSON.stringify(data.runTime));
       
       s.data = data.data;
-      
-      s.onResize = function(initial){
-        if (!initial && window.parent) {
-          window.parent.postMessage({
-            event: 'tvp_sidebar:modal_resized',
-            height: el.offsetHeight + 'px'
-          }, '*');
-        }
+
+      s.onResize = function(){
+        setTimeout(function () {
+            if (window.parent) {
+                window.parent.postMessage({
+                    event: 'tvp_sidebar:modal_resized',
+                    height: el.offsetHeight + 'px'
+                }, '*');
+            }
+        },0);
       }
 
       s.onNext = function(next){
@@ -163,22 +188,22 @@
             data.runTime.loginid || data.runTime.loginId,
             function(data){
               setTimeout(function(){
-                checkProducts(data,el);
                 render(data);
               },0);
           });
         }
-        
-        if (window.parent) {
-          window.parent.postMessage({
-            event: 'tvp_sidebar:player_next',
-            next: next
-          }, '*');
-        }
+
+        setTimeout(function () {
+            if (window.parent) {
+                window.parent.postMessage({
+                    event: 'tvp_sidebar:player_next',
+                    next: next
+                }, '*');
+            }
+        },0);
       };
 
-      var player = new Player('tvp-player-el',s,data.selectedVideo.id);
-
+      new Player('tvp-player-el',s,data.selectedVideo.id);
     };
 
     window.addEventListener('message', function(e){
@@ -208,7 +233,6 @@
             function(data){
               setTimeout(function(){
                 render(data);
-                checkProducts(data,Utils.getByClass('iframe-content'));
               },0);
           });
         } 
@@ -220,7 +244,7 @@
       if (window.parent) {
         window.parent.postMessage({
           event: 'tvp_sidebar:modal_initialized',
-          height: el.offsetHeight + 'px'
+          height: (el.offsetHeight + 20) + 'px'
         }, '*');
       }
     },0);
@@ -232,7 +256,7 @@
     (function libsReady() {
       setTimeout(function(){
         if (not(window.TVPage) || not(window._tvpa) || not(window.jQuery) || not(window.Utils) || not(window.Analytics) || not(window.Player)) {
-          (++libsCheck < 50) ? libsReady() : console.debug('limit reached');
+          (++libsCheck < 50) ? libsReady() : console.log('limit reached');
         } else {
           initialize();
         }

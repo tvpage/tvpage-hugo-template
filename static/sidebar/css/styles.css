@@ -16,6 +16,8 @@ body  {
   text-rendering: optimizeLegibility;
 }
 
+
+
 header > h2 {
   margin: 0;
   font-size: 14px;
@@ -245,7 +247,6 @@ footer {
   height: 26px;
   background-color: #F5F5F5;
   border: 1px solid #DFDFDF;
-  border-radius: 2px;
   color: #666666;
   text-transform: uppercase;
   cursor: pointer;

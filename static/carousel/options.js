@@ -1,4 +1,4 @@
-{
+tvpcallback({
     "option": [
         {
             "type": "boolean",
@@ -11,14 +11,14 @@
             "type": "text",
             "label": "Player Version",
             "code": "player_version",
-            "value": "1.8.6"
+            "value": "1.8.5"
         },
         {
             "for": "player",
             "type": "text",
             "label": "Progress Color",
             "code": "progress_color",
-            "value": "#787878"
+            "value": "#E57211"
         },
         {
             "for": "player",
@@ -56,14 +56,14 @@
             "type": "text",
             "label": "Play Button Height",
             "code": "play_button_height",
-            "value": "65px"
+            "value": "75px"
         },
         {
             "for": "player",
             "type": "text",
             "label": "Play Button Width",
             "code": "play_button_width",
-            "value": "65px"
+            "value": "75px"
         },
         {
             "for": "player",
@@ -77,7 +77,7 @@
             "type": "text",
             "label": "Play Button Border Radius",
             "code": "play_button_border_radius",
-            "value": "50%"
+            "value": "0"
         },
         {
             "for": "player",
@@ -101,6 +101,13 @@
             "value": "000"
         },
         {
+            "for":"player",
+            "type":"boolean",
+            "label":"Overlay",
+            "code":"overlay",
+            "value":true
+        },
+        {
             "for": "player",
             "type": "text",
             "label": "Overlay Color",
@@ -115,4 +122,4 @@
             "value": "0.5"
         }
     ]
-}
+})

@@ -8,6 +8,15 @@
       return document.getElementsByClassName(c || '')[0];
     };
 
+    this.isFunction = function(obj) {
+      return 'function' === typeof obj;
+    };
+
+    this.isEmpty = function(obj) {
+      for(var key in obj) { if (obj.hasOwnProperty(key)) return false;}
+      return true;
+    };
+
     this.isset = function(o,p){
       if (!arguments.length) return;
       var val = o;
@@ -30,10 +39,24 @@
       };      
     };
 
+    this.trimText = function(text,limit){
+      var t = text || '';
+      var l = limit ? Number(limit) : 0;
+      if (text.length > l) {
+        t = t.substring(0,Number(l)) + '...';
+      }
+      return t;
+    };
+
+    this.trimPrice = function(p){
+      var price = p || '';
+      price = price.toString().replace(/[^0-9.]+/g, '');
+      price = parseFloat(price).toFixed(2);
+      price = price > 0 ? ('$' + price):'';
+      return price;
+    };
+
     this.tmpl = function(template, data) {
-      var prodTitle = data.title || '';
-      prodTitle = prodTitle.length > 40 ? prodTitle.substring(0, 40) + "...":prodTitle;
-      data.title = prodTitle;
       if (template && 'object' == typeof data) {
         return template.replace(/\{([\w\.]*)\}/g, function(str, key) {
           var keys = key.split("."),

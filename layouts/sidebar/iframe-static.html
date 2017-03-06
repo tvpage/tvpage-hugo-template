@@ -10,6 +10,7 @@
   {{ else }}
   <link rel="stylesheet" type="text/css" href="{{ (printf "%s/dist/css/styles.min.css" .Type ) | absURL }}">
   {{ end }}
+  <style>{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/config.css" .Type ) .)) | safeCSS }}</style>
 </head>
 <body data-id='{{ $id }}'>
 <div id='{{ $id }}' class="iframe-content">
