@@ -33,7 +33,7 @@
     this.initialResize = true;
     this.autoplay = isset(options.autoplay) ? Number(options.autoplay) : false;
     this.autonext = isset(options.autonext) ? Number(options.autonext) : true;
-    this.version = isset(options.version) ? options.version : '1.8.5';
+    this.version = isset(options.version) ? options.version : '1.8.6';
     this.progressColor = isset(options.progressColor) ? options.progressColor : '#E57211';
     this.transcript = isset(options.transcript) ? options.transcript : false;
     this.removeControls = isset(options.removeControls) ? options.removeControls : ["tvplogo","hd"];

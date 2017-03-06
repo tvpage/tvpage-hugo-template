@@ -34,7 +34,7 @@
     this.initialResize = true;
     this.autoplay = isset(options.autoplay) ? options.autoplay : false;
     this.autonext = isset(options.autonext) ? options.autonext : true;
-    this.version = isset(options.version) ? options.version : '1.8.5';
+    this.version = isset(options.version) ? options.version : '1.8.6';
     this.progresscolor = isset(options.progresscolor) ? options.progresscolor : '#E57211';
     this.transcript = isset(options.transcript) ? options.transcript : false;
     this.removecontrols = isset(options.removecontrols) ? options.removecontrols : ["hd"];
