@@ -1,10 +1,11 @@
 {{ partial (printf "%s/dochead.html" .Type) . }}
 {{ partial (printf "%s/header.html" .Type) . }}
 {{ partial (printf "%s/main_channel_video.html" .Type) . }}
-{{ $channel := index $.Site.Data.channels (printf "x%s" .Params.channelid ) }}
-{{ $.Scratch.Add "channelVideos" (index $.Site.Data.channelVideos (printf "x%s_page_0" $channel.id) "data") }}
-{{ $video := index $.Site.Data.videos (printf "x%s" .Params.videoid ) }}
-{{ $channelVideosQty := len ($.Scratch.Get "channelVideos") }}
+{{- $channel := index $.Site.Data.channels (printf "x%s" .Params.channelid ) -}}
+{{- $.Scratch.Add "channelVideos" (index $.Site.Data.channelVideos (printf "x%s_page_0" $channel.id) "data") -}}
+{{- $video := index $.Site.Data.videos (printf "x%s" .Params.videoid ) -}}
+{{- $channelVideosQty := len ($.Scratch.Get "channelVideos") -}}
+{{- $settings := $.Scratch.Get "settings" -}}
 <script type='text/javascript'>
   TVSite = window.TVSite || {};
   TVSite.activeChannelVideosTotal = {{ $channelVideosQty }};
@@ -13,7 +14,8 @@
   TVSite.channelVideosData.videos = {{ $.Scratch.Get "channelVideos" }};
   TVSite.channelVideosData.video = "undefined" !== typeof TVSite.channelVideosData.video || {};
   TVSite.channelVideosData.video = {{ $video | jsonify | safeJS }};
+  TVSite.playerVersion = {{- $settings.player_version -}}
 </script>
-<script type="text/javascript" src="https://cdnjs.tvpage.com/tvplayer/tvp-1.8.6.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.tvpage.com/tvplayer/tvp-{{- $settings.player_version -}}.min.js"></script>
 {{ partial (printf "%s/scripts.html" .Type) . }}
 {{ partial (printf "%s/footer.html" .Type) . }}
