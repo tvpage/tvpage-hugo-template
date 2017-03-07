@@ -7,6 +7,13 @@
       "value": "1.8.5"
     },
     {
+        "for": "apiurl",
+        "type": "text",
+        "label": "API Base Url",
+        "code": "apiBaseUrl",
+        "value": "//api.tvpage.com/v1"
+    },
+    {
       "type": "text",
       "label": "Progress Color",
       "code": "progressColor",
