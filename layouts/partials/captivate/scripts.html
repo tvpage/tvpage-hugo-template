@@ -4,11 +4,12 @@
         {{ $.Scratch.Add "channelIds" $element.value }}
     {{ end }}    
 {{- end -}}
+{{- $settings := $.Scratch.Get "settings" -}}
 <script type="text/javascript">
     TVSite = window.TVSite || {};
     var apiVersion = {{ getenv "HUGO_API_URL" }};
     TVSite.loginId = {{ .Site.Params.loginId }};
-    TVSite.apiUrl = apiVersion || "https:\/\/api.tvpage.com/v1/";
+    TVSite.apiUrl = apiVersion || {{- $settings.apiBaseUrl -}} + '/';
     TVSite.baseUrl = {{- $baseUrl -}};
     //checking page type
     TVSite.isHomePage = ({{ .Params.videoid }} === "" && {{ .Params.channelid }} === "") ? true : false;
