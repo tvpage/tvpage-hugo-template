@@ -196,12 +196,11 @@
                 if ( !isset(window,'TVPage') || !isset(window,'_tvpa') ) {
                     (++checks < 50) ? libsReady() : console.log('limit reached');
                 } else {
-
                     //We create insntances on the tvpage player.
                     that.player = new TVPage.player({
                         techOrder: 'html5,flash',
                         analytics: { tvpa: that.analytics },
-                        apiBaseUrl: '//api.tvpage.com/v1',
+                        apiBaseUrl: options.apiBaseUrl,
                         swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+that.version+'-flash.swf',
                         onReady: function(e, pl){
                             that.instance = pl;
