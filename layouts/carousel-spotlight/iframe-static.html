@@ -1,0 +1,60 @@
+{{- partial "settings.html" . -}}
+{{ $id := ($.Scratch.Get "settings").name }}
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+  {{ if (getenv "HUGO_DEBUG") }}
+  <link rel="stylesheet" type="text/css" href="{{ (printf "%s/css/styles.css" .Type ) | absURL }}">
+  <link rel="stylesheet" type="text/css" href="{{ (printf "%s/css/vendor/slick.css" .Type ) | absURL }}">
+  {{ else }}
+  <link rel="stylesheet" type="text/css" href="{{ (printf "%s/dist/css/styles.min.css" .Type ) | absURL }}">
+  {{ end }}
+</head>
+<body data-id='{{ $id }}'>
+<div id='{{ $id }}' class="iframe-content">
+  <div class="tvp-carousel-title">Recommended Videos</div>
+  <div class="tvp-carousel-content"></div>
+  <div class="tvp-carousel-arrow prev">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z"/>
+      <path d="M0-.5h24v24H0z" fill="none"/>
+    </svg>
+  </div>
+  <div class="tvp-carousel-arrow next">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"/>
+      <path d="M0-.25h24v24H0z" fill="none"/>
+    </svg>
+  </div>
+</div>
+<script id="gridItemTemplate" type="text/template">
+  <div class="tvp-video{className}"  data-id="{id}">
+    <div class="tvp-video-image" style="background-image:url({asset.thumbnailUrl})">
+      <svg class="tvp-video-play" viewBox="0 0 200 200" alt="Play video"><polygon points="70, 55 70, 145 145, 100"></polygon></svg>
+      <div class="tvp-video-image-overlay"></div>
+    </div>
+    <p class="tvp-video-title">{title}</p>
+  </div>
+</script>
+<script>
+    window.__TVPage__ = window.__TVPage__ || {};
+    __TVPage__.config = __TVPage__.config || {};
+    __TVPage__.config[{{ $id }}] = {{ $.Scratch.Get "settings" }};
+    __TVPage__.config[{{ $id }}].channel = {
+        id: '{{ ($.Scratch.Get "settings").channelid }}'
+    };
+</script>
+{{ if (getenv "HUGO_DEBUG") }}
+<script>window.DEBUG = Number({{getenv "HUGO_DEBUG"}}) || 0;</script>
+<script src="{{ (printf "%s/js/vendor/jquery.js" .Type ) | absURL }}"></script>
+<script src="{{ (printf "%s/js/vendor/slick-min.js" .Type ) | absURL }}"></script>
+<script src="{{ (printf "%s/js/libs/utils.js" .Type ) | absURL }}"></script>
+<script src="{{ (printf "%s/js/carousel.js" .Type ) | absURL }}"></script>
+<script src="{{ (printf "%s/js/index.js" .Type ) | absURL }}"></script>
+{{ else }}
+<script src="{{ (printf "%s/dist/js/scripts.min.js" .Type ) | absURL }}"></script>
+{{ end }}
+</body>
+</html>
