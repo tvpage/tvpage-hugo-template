@@ -1,7 +1,8 @@
 (function(window,document){
 
   var analytics,
-      channelId;
+      channelId,
+      apiBaseUrl;
 
   var pkTrack = function(){
     analytics.track('pk',{
@@ -13,7 +14,7 @@
 
   var loadProducts = function(videoId,loginId,fn){
     if (!videoId) return;
-    var src = '//api.tvpage.com/v1/videos/' + videoId + '/products?X-login-id=' + loginId;
+    var src = apiBaseUrl + '/videos/' + videoId + '/products?X-login-id=' + loginId;
     var cbName = 'tvp_' + Math.floor(Math.random() * 555);
     src += '&callback='+cbName;
     var script = document.createElement('script');
@@ -215,7 +216,8 @@
 
         var loginId = data.runTime.loginid || data.runTime.loginId;
         channelId = data.runTime.channel.id || data.runTime.channelid;
-
+        apiBaseUrl = data.runTime.apiBaseUrl;
+        
         analytics =  new Analytics();
         analytics.initConfig({
           logUrl: '\/\/api.tvpage.com\/v1\/__tvpa.gif',
