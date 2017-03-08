@@ -1,0 +1,134 @@
+{{- partial "settings.html" . -}}
+{{ $id := ($.Scratch.Get "settings").name }}
+
+{{ if (getenv "HUGO_DEBUG") }}
+<link rel="stylesheet" property="stylesheet" href="{{ (printf "%s/css/host.css" .Type ) | absURL }}">
+{{ else }}
+<link rel="stylesheet" property="stylesheet" href="{{ (printf "%s/dist/css/host.min.css" .Type ) | absURL }}">
+{{ end }}
+
+<div id='{{ $id }}-holder' class="tvp-iframe-holder {{ .Type }}">
+    <iframe class="tvp-iframe" src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe>
+    <script id="{{ $id }}-script">
+
+        var isset = function(o,p){
+            var val = o;
+            if (p) val = o[p];
+            return 'undefined' !== typeof val;
+        };
+
+        var debounce = function(func, wait, immediate) {
+            var timeout = null;
+            return function() {
+                var context = this,
+                    args = arguments;
+                var later = function() {
+                    timeout = null;
+                    if (!immediate) func.apply(context, args);
+                };
+                var callNow = immediate && !timeout;
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+                if (callNow) func.apply(context, args);
+            };
+        };
+
+        var extend = function(o) {
+            o = o || {};
+            for (var i = 1; i < arguments.length; i++) {
+                if (!arguments[i])
+                    continue;
+                for (var key in arguments[i]) {
+                    if (arguments[i].hasOwnProperty(key))
+                        o[key] = arguments[i][key];
+                }
+            }
+            return o;
+        };
+
+        //Dynamically creates an iframe & appends it's required CSS & JS libraries.
+        var getIframeHtml = function(options) {
+            var html = '<head><base target="_blank" /></head><body class="' + (options.className || '') + '" data-domain="' +
+                (options.domain || '') + '" data-id="' + (options.id || '') + '" onload="' +
+                'var d = document, head = d.getElementsByTagName(\'head\')[0],' +
+                'addJS = function(u){ var s = d.createElement(\'script\');s.src=u;d.body.appendChild(s);},' +
+                'addCSS = function(h){ var l = d.createElement(\'link\');l.type=\'text/css\';l.rel=\'stylesheet\';l.href=h;head.appendChild(l);};' +
+                'window.DEBUG=' + (window.DEBUG || 0) + ';';
+
+            var js = options.js || [];
+            if (js && js.length) {
+                for (var i = 0; i < js.length; i++) {
+                    html += 'addJS(\'' + js[i] + '\');';
+                }
+            }
+
+            var css = options.css || [];
+            if ('function' === typeof css) {
+                css = css();
+            }
+
+            css = css.filter(Boolean);
+            for (var i = 0; i < css.length; i++) {
+                html += 'addCSS(\'' + css[i] + '\');';
+            }
+
+            html += '">';
+            var content = options.html || '';
+            if ('function' === typeof content) {
+                html += content();
+            } else if (content.trim().length) {
+                html += content;
+            }
+
+            return html;
+        };
+
+        window.__TVPage__ = window.__TVPage__ || {};
+        __TVPage__.config = __TVPage__.config || {};
+        __TVPage__.config["{{ $id }}"] = extend({{ $.Scratch.Get "settings" }}, __TVPage__.config["{{ $id }}"]);
+
+        var holder = document.getElementById("{{ $id }}-holder");
+        var iframe = holder.querySelector(".tvp-iframe");
+        var config = __TVPage__.config["{{ $id }}"];
+        var staticPath = "{{ .Type | absURL }}";
+
+        var dataMethod = "static";
+        if (isset(config, "channel") && isset(config.channel, "id")) {
+            dataMethod = "dynamic"
+        }
+
+        window.addEventListener('resize', debounce(function() {
+            window.postMessage({
+                event: 'tvp_{{ .Type }}:holder_resize',
+                size: [holder.offsetWidth, holder.offsetHeight]
+            }, '*');
+        }, 50));
+
+        if ("dynamic" === dataMethod) {
+            var iframeDoc = iframe.contentWindow.document;
+
+            iframeDoc.open().write(getIframeHtml({
+                js: [
+                    '//a.tvpage.com/tvpa.min.js',
+                    'https://cdnjs.tvpage.com/tvplayer/tvp-1.8.6.min.js',
+                    staticPath + '/js/libs/analytics.js',
+                    staticPath + '/js/libs/player.js',
+                    staticPath + '/js/index.js'
+                ],
+                css: [
+                    staticPath + '/css/styles.css'
+                ],
+                id: "{{ $id }}",
+                className: dataMethod,
+                domain: "{{ .Site.BaseURL }}"
+            }));
+
+            iframeDoc.close();
+        } else {
+            var spot = document.getElementById("{{ $id }}");
+            var url = spot ? spot.href : "";
+            (-1 === navigator.userAgent.indexOf("MSIE")) ? iframe.src = url: iframe.location = url;
+        }
+
+    </script>
+</div>
