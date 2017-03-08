@@ -77,11 +77,19 @@
     if (document.body.classList.contains('dynamic')) {
       //We deal diff with some stuff on iframe.
       (function(unique,settings){
+        var playerSettings = JSON.parse(JSON.stringify(settings));
+        var menuSettings = JSON.parse(JSON.stringify(settings));
+
         render(unique,document.body);
+
         loadData(settings,unique,function(data){
-          settings.data = data || [];
-          new Player('tvp-player-el-'+unique,settings);
+          menuSettings.data = data || [];
+          var menu = new Menu(menuSettings);
+
+          playerSettings.data = data || [];
+          var player = new Player('tvp-player-el-'+unique,playerSettings);
         });
+
       }(random(),getSettings('dynamic')));
     }
   };

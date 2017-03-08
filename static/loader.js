@@ -100,6 +100,7 @@
                     playerLib,
                     self.static + '/js/libs/analytics.js',
                     self.static + '/js/libs/player.js',
+                    self.static + '/js/menu.js',
                     self.static + '/js/index.js'
                 ],
                 prod: [
