@@ -6,6 +6,10 @@ div[class^="tvp-"] {
   overflow: hidden;
 }
 
+.tvp-hidden {
+  display: none;
+}
+
 .tvp-modal-overlay {
   position: fixed;
   top: 0;
@@ -18,7 +22,6 @@ div[class^="tvp-"] {
 }
 
 .tvp-modal {
-  overflow: hidden;
   position: fixed;
   top: 0;
   right: 0;
@@ -27,8 +30,11 @@ div[class^="tvp-"] {
   z-index: 1050;
   -webkit-overflow-scrolling: touch;
   outline: 0;
+  overflow: hidden;
   overflow-x: hidden;
   overflow-y: auto;
+  opacity: 1;
+  visibility: visible;
 }
 
 .tvp-modal-wrapper {

@@ -102,6 +102,13 @@
         },
         {
             "for": "player",
+            "type": "boolean",
+            "label": "Overlay",
+            "code": "overlay",
+            "value": false
+        },
+        {
+            "for": "player",
             "type": "text",
             "label": "Overlay Color",
             "code": "overlay_color",

@@ -99,7 +99,7 @@
             overlay.classList.add('tvp-overlay');
             overlay.style.backgroundImage = 'url("' + asset.thumbnailUrl + '")';
 
-            var overlayColor = this.overlayColor ? '#' + this.overlayColor : 'transparent';
+            var overlayColor = this.overlayColor ? this.overlayColor : 'transparent';
             var overlayHtml = '<div class="tvp-overlay-cover" style="opacity:' + this.overlayOpacity + ';' +
                 'background-image:linear-gradient(to bottom right,' + overlayColor + ',' + overlayColor + ');"></div>' +
                 '<div class="tvp-play-holder" style="height:' + this.playButtonHeight + ';">'+
