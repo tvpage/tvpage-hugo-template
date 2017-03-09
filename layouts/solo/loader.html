@@ -103,7 +103,7 @@
         }
 
         window.addEventListener('resize', debounce(function() {
-            window.postMessage({
+            top.postMessage({
                 event: 'tvp_{{ .Type }}:holder_resize',
                 size: [holder.offsetWidth, holder.offsetHeight]
             }, '*');

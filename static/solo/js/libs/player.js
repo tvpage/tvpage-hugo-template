@@ -27,7 +27,7 @@
   //The player singleton. We basically create an instance from the tvpage
   //player and expose most utilities, helping to encapsualte what is required for a few players to co-exist.
   function Player(el, options, startWith) {
-    if (!el || !isset(options) || !isset(options.data) || options.data.length <= 0) return console.log('bad args');
+    if (!el || !isset(options) || !isset(options.data) || options.data.length <= 0) return;
 
     this.isFullScreen = false;
     this.initialResize = true;
@@ -102,7 +102,7 @@
     };
 
     this.play = function(asset,ongoing){
-      if (!asset) return console.log('need asset');
+      if (!asset) return;
       var willCue = false,
           isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
       
@@ -128,7 +128,7 @@
         config.logUrl = asset.analyticsLogUrl;
         analytics.initConfig(config);
       } else {
-        config.logUrl = '\/\/api.tvpage.com\/v1\/__tvpa.gif';
+        config.logUrl = '//api.tvpage.com/v1/__tvpa.gif';
         analytics.initConfig(config);
       }
       
@@ -166,13 +166,10 @@
     var checks = 0;
     (function libsReady() {
       setTimeout(function() {
-        if ( !isset(window,'TVPage') || !isset(window,'_tvpa') ) {
-          (++checks < 50) ? libsReady() : console.log('limit reached');
+        if ( (!isset(window,'TVPage') || !isset(window,'_tvpa')) && (++checks < 50) ) {
+          libsReady();
         } else {
-
-          //We create insntances on the tvpage player.
-          new TVPage.player({
-            //poster: true,
+          that.player = new TVPage.player({
             techOrder: 'html5,flash',
             analytics: { tvpa: that.analytics },
             apiBaseUrl: '//api.tvpage.com/v1',
@@ -196,8 +193,8 @@
                     var size = e.data.size || [];
                     that.resize(size[0], size[1]);
                 };
-                window.parent.removeEventListener('message', onHolderResize, false);
-                window.parent.addEventListener('message', onHolderResize, false);
+                window.removeEventListener('message', onHolderResize, false);
+                window.addEventListener('message', onHolderResize, false);
               } else {
                 var onWindowResize = debounce(that.resize,50);
                 window.removeEventListener('message', onWindowResize, false);
