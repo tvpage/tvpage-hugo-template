@@ -10,6 +10,7 @@
 <div id='{{ $id }}-holder' class="tvp-iframe-holder {{ .Type }}">
     <iframe class="tvp-iframe" src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe>
     <script id="{{ $id }}-script">
+        var DEBUG = Number('{{ getenv "HUGO_DEBUG" }}') || 0;
 
         var isset = function(o,p){
             var val = o;
@@ -53,13 +54,19 @@
                 'var d = document, head = d.getElementsByTagName(\'head\')[0],' +
                 'addJS = function(u){ var s = d.createElement(\'script\');s.src=u;d.body.appendChild(s);},' +
                 'addCSS = function(h){ var l = d.createElement(\'link\');l.type=\'text/css\';l.rel=\'stylesheet\';l.href=h;head.appendChild(l);};' +
-                'window.DEBUG=' + (window.DEBUG || 0) + ';';
+                'window.DEBUG=' + DEBUG + ';';
 
             var js = options.js || [];
-            if (js && js.length) {
-                for (var i = 0; i < js.length; i++) {
-                    html += 'addJS(\'' + js[i] + '\');';
-                }
+            if ('function' === typeof js) {
+                js = js();
+            }
+
+            js = js.filter(Boolean);
+
+            console.log(js);
+
+            for (var i = 0; i < js.length; i++) {
+                html += 'addJS(\'' + js[i] + '\');';
             }
 
             var css = options.css || [];
@@ -111,9 +118,10 @@
                 js: [
                     '//a.tvpage.com/tvpa.min.js',
                     'https://cdnjs.tvpage.com/tvplayer/tvp-1.8.6.min.js',
-                    staticPath + '/js/libs/analytics.js',
-                    staticPath + '/js/libs/player.js',
-                    staticPath + '/js/index.js'
+                    DEBUG ? staticPath + '/js/libs/analytics.js' : '',
+                    DEBUG ? staticPath + '/js/libs/player.js' : '',
+                    DEBUG ? staticPath + '/js/index.js' : '',
+                    DEBUG ? '' : staticPath + '/dist/js/scripts.min.js'
                 ],
                 css: [
                     staticPath + '/css/styles.css'
