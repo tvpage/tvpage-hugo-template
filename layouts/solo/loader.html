@@ -102,16 +102,20 @@
             dataMethod = "dynamic"
         }
 
-        window.addEventListener('resize', debounce(function() {
-            top.postMessage({
-                event: 'tvp_{{ .Type }}:holder_resize',
-                size: [holder.offsetWidth, holder.offsetHeight]
-            }, '*');
-        }, 50));
+        if (/iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream) {
+            var onOrientationChange = debounce(function () {
+                iframe.contentWindow.window.postMessage({
+                    event: 'tvp_{{ .Type }}:holder_resize',
+                    size: [holder.offsetWidth, Math.floor(holder.offsetWidth * (9 / 16))]
+                },'*');
+            },30);
+            var orientationChangeEvent = 'onorientationchange' in window ? 'orientationchange' : 'resize';
+            window.removeEventListener(orientationChangeEvent,onOrientationChange, false);
+            window.addEventListener(orientationChangeEvent,onOrientationChange, false);
+        }
 
         if ("dynamic" === dataMethod) {
             var iframeDoc = iframe.contentWindow.document;
-
             iframeDoc.open().write(getIframeHtml({
                 js: [
                     '//a.tvpage.com/tvpa.min.js',
@@ -128,7 +132,6 @@
                 className: dataMethod,
                 domain: "{{ .Site.BaseURL }}"
             }));
-
             iframeDoc.close();
         } else {
             var spot = document.getElementById("{{ $id }}");

@@ -154,7 +154,7 @@
         width = parentEl.clientWidth;
         height = parentEl.clientHeight;
       }
-      
+
       that.instance.resize(width, height);
       
       if(!this.onResize) return;
