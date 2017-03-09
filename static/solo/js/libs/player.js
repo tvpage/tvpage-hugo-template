@@ -219,12 +219,8 @@
               if (!that.assets[that.current]) {
                 that.current = 0;
               }
-              
-              var next = that.assets[that.current];
-              that.play(next, true);
-              if(that.onNext) {
-                that.onNext(next);
-              }
+
+              that.play(that.assets[that.current], true);
             },
             divId: that.el.id,
             controls: {
