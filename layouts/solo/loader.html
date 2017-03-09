@@ -77,7 +77,7 @@
                 html += 'addCSS(\'' + css[i] + '\');';
             }
 
-            html += '">';
+            html += '"><style>' + (options.style || '') + '</style>';
             var content = options.html || '';
             if ('function' === typeof content) {
                 html += content();
@@ -117,6 +117,7 @@
         if ("dynamic" === dataMethod) {
             var iframeDoc = iframe.contentWindow.document;
             iframeDoc.open().write(getIframeHtml({
+                style: '{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/options.css" .Type ) .)) | safeCSS }}',
                 js: [
                     '//a.tvpage.com/tvpa.min.js',
                     'https://cdnjs.tvpage.com/tvplayer/tvp-1.8.6.min.js',
