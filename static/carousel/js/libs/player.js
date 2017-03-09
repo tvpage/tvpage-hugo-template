@@ -99,16 +99,13 @@
             overlay.classList.add('tvp-overlay');
             overlay.style.backgroundImage = 'url("' + asset.thumbnailUrl + '")';
 
-            var overlayColor = this.overlayColor ? this.overlayColor : 'transparent';
-            var overlayHtml = '<div class="tvp-overlay-cover" style="opacity:' + this.overlayOpacity + ';' +
-                'background-image:linear-gradient(to bottom right,' + overlayColor + ',' + overlayColor + ');"></div>' +
-                '<div class="tvp-play-holder" style="height:' + this.playButtonHeight + ';">'+
-                '<svg class="tvp-play" style="width:' + this.playButtonWidth + ';height:' + this.playButtonHeight + ';' +
-                'background-color:#' + this.playButtonBackgroundColor + ';border:' + this.playButtonBorderWidth + ' solid #' +
-                this.playButtonBorderColor + ';border-radius:' + this.playButtonBorderRadius + ';" viewBox="0 0 200 200">' +
-                '<polygon fill="#'+this.playButtonIconColor+'" points="70, 55 70, 145 145, 100"></polygon></svg>';
-
-            overlay.innerHTML = overlayHtml;
+            overlay.innerHTML = '<div class="tvp-overlay-cover" style="opacity:' + this.overlayOpacity + ';' +
+            'background-image:linear-gradient(to bottom right,' + this.overlayColor + ',' + this.overlayColor + ');"></div>' +
+            '<div class="tvp-play-holder" style="height:' + this.playButtonHeight + ';">'+
+            '<svg class="tvp-play" style="width:' + this.playButtonWidth + ';height:' + this.playButtonHeight + ';' +
+            'background-color:' + this.playButtonBackgroundColor + ';border:' + this.playButtonBorderWidth + ' solid ' +
+            this.playButtonBorderColor + ';border-radius:' + this.playButtonBorderRadius + ';" viewBox="0 0 200 200">' +
+            '<polygon fill="'+this.playButtonIconColor+'" points="70, 55 70, 145 145, 100"></polygon></svg>';
 
             var click = function(){
                 var clear = function () {
@@ -123,8 +120,8 @@
                     that.instance.play();
                 }
             };
-
-            overlay.addEventListener('click', click);
+            overlay.removeEventListener('click', click, false);
+            overlay.addEventListener('click', click, false);
             this.el.appendChild(overlay);
         };
 
@@ -225,7 +222,7 @@
                                 window.removeEventListener('message', onHolderResize, false);
                                 window.addEventListener('message', onHolderResize, false);
                             } else {
-                                var onWindowResize = Utils.debounce(that.resize,50);
+                                var onWindowResize = debounce(that.resize,50);
                                 window.removeEventListener('message', onWindowResize, false);
                                 window.addEventListener('resize', onWindowResize);
                             }

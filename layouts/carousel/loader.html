@@ -53,6 +53,8 @@
 <div id='{{ $id }}-holder' class="tvp-iframe-holder carousel">
     <iframe class="tvp-iframe" src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe>
     <script id="{{ $id }}-script">
+        var DEBUG = Number('{{ getenv "HUGO_DEBUG" }}') || 0;
+
         var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
             mobilePath = isMobile  ? 'mobile/' : '';
 
@@ -96,11 +98,11 @@
         //Dynamically creates an iframe & appends it's required CSS & JS libraries.
         var getIframeHtml = function(options) {
             var html = '<head><base target="_blank" /></head><body class="' + (options.className || '') + '" data-domain="' +
-                (options.domain || '') + '" data-id="' + (options.id || '') + '" onload="' +
-                'var d = document, head = d.getElementsByTagName(\'head\')[0],' +
-                'addJS = function(u){ var s = d.createElement(\'script\');s.src=u;d.body.appendChild(s);},' +
-                'addCSS = function(h){ var l = d.createElement(\'link\');l.type=\'text/css\';l.rel=\'stylesheet\';l.href=h;head.appendChild(l);};' +
-                'window.DEBUG=' + (window.DEBUG || 0) + ';';
+            (options.domain || '') + '" data-id="' + (options.id || '') + '" onload="' +
+            'var d = document, head = d.getElementsByTagName(\'head\')[0],' +
+            'addJS = function(u){ var s = d.createElement(\'script\');s.src=u;d.body.appendChild(s);},' +
+            'addCSS = function(h){ var l = d.createElement(\'link\');l.type=\'text/css\';l.rel=\'stylesheet\';l.href=h;head.appendChild(l);};' +
+            'window.DEBUG=' + (window.DEBUG || 0) + ';';
 
             var js = options.js || [];
             if (js && js.length) {
@@ -119,7 +121,7 @@
                 html += 'addCSS(\'' + css[i] + '\');';
             }
 
-            html += '">';
+            html += '"><style>' + (options.style || '') + '</style>';
             var content = options.html || '';
             if ('function' === typeof content) {
                 html += content();
@@ -273,6 +275,7 @@
         if ("dynamic" === dataMethod) {
             var iframeDoc = iframe.contentWindow.document;
             iframeDoc.open().write(getIframeHtml({
+                style: '{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/options.css" .Type ) .)) | safeCSS }}',
                 js: [
                     staticPath + '/js/vendor/jquery.js',
                     staticPath + '/js/libs/utils.js',

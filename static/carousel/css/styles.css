@@ -16,18 +16,6 @@ body  {
   text-rendering: optimizeLegibility;
 }
 
-header > h2 {
-  margin: 0;
-  font-size: 14px;
-  height: 30px;
-  line-height: 30px;
-  text-transform: uppercase;
-}
-
-footer {
-  position: relative;
-}
-
 .tvp-clearfix:before,
 .tvp-clearfix:after {
   display: table;
@@ -89,10 +77,7 @@ footer {
 }
 
 .tvp-video-play {
-  background-color: #fff;
   box-sizing: border-box;
-  width: 45px;
-  height: 45px;
   padding: 0;
   position: absolute;
   top: 0;
@@ -101,7 +86,6 @@ footer {
   right: 0;
   margin: auto;
   cursor: pointer;
-  border-radius: 50%;
   border: 0;
   z-index: 1000;
   -webkit-transition: all .05s ease-in-out;
@@ -110,35 +94,14 @@ footer {
 
 .tvp-video-play > polygon {
   pointer-events: none;
-  fill: #333;
   -webkit-transition: all .05s ease-in-out;
   transition: all .05s ease-in-out;
 }
 
 @media (min-width: 768px) {
-  .tvp-video-play {
-    width: 65px;
-    height: 65px;
-  }
-
-  .tvp-video:hover .tvp-video-play {
-    background-color: #e57211;
-  }
-
-  .tvp-video:hover .tvp-video-play > polygon {
-    fill: #fff;
-  }
-
   .tvp-video:hover .tvp-video-image-overlay {
     display: block;
   }
-}
-
-.tvp-video-title {
-  overflow: hidden;
-  font-size: 12px;
-  color: #333333;
-  margin: 10px 0;
 }
 
 .tvp-play {

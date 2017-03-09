@@ -70,7 +70,7 @@
             "type": "text",
             "label": "Play Button Background Color",
             "code": "play_button_background_color",
-            "value": "fff"
+            "value": "#fff"
         },
         {
             "for": "player",
@@ -91,14 +91,14 @@
             "type": "text",
             "label": "Play Button Border Color",
             "code": "play_button_border_color",
-            "value": "000"
+            "value": "#000"
         },
         {
             "for": "player",
             "type": "text",
             "label": "Play Button Icon Color",
             "code": "play_button_icon_color",
-            "value": "000"
+            "value": "#000"
         },
         {
             "for": "player",
@@ -112,7 +112,7 @@
             "type": "text",
             "label": "Overlay Color",
             "code": "overlay_color",
-            "value": ""
+            "value": "transparent"
         },
         {
             "for": "player",
@@ -120,6 +120,83 @@
             "label": "Overlay Opacity",
             "code": "overlay_opacity",
             "value": "0.5"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Play Button Background Color",
+            "code": "item_play_button_background_color",
+            "value": "#fff"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Play Button Border Radius",
+            "code": "item_play_button_border_radius",
+            "value": "50%"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Play Button Width",
+            "code": "item_play_button_width",
+            "value": "45px"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Play Button Height",
+            "code": "item_play_button_height",
+            "value": "45px"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Play Button Hover Color",
+            "code": "item_play_button_hover_color",
+            "value": "#e57211"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Overlay Color",
+            "code": "item_overlay_color",
+            "value": "rgba(0, 0, 0, 0.2)"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Play Button Icon Color",
+            "code": "item_play_button_icon_color",
+            "value": "#333"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Play Button Icon Hover Color",
+            "code": "item_play_button_icon_hover_color",
+            "value": "#fff"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Title Font Size",
+            "code": "item_title_font_size",
+            "value": "12px"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Title Font Color",
+            "code": "item_title_font_color",
+            "value": "#333333"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Title Margin",
+            "code": "item_title_margin",
+            "value": "10px 0"
         }
     ]
 }
