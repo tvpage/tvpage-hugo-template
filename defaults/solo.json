@@ -83,14 +83,7 @@
       "for": "player",
       "type": "text",
       "label": "Play Button Border",
-      "code": "play_button_border_width",
-      "value": "0"
-    },
-    {
-      "for": "player",
-      "type": "text",
-      "label": "Play Button Border Color",
-      "code": "play_button_border_color",
+      "code": "play_button_border",
       "value": "#000"
     },
     {
@@ -98,14 +91,14 @@
       "type": "text",
       "label": "Play Button Icon Color",
       "code": "play_button_icon_color",
-      "value": "000"
+      "value": "#000"
     },
     {
       "for": "player",
       "type": "text",
       "label": "Overlay Color",
       "code": "overlay_color",
-      "value": ""
+      "value": "transparent"
     },
     {
       "for": "player",
