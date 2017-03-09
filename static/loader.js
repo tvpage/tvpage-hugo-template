@@ -3,7 +3,6 @@
 //to load the iframe scripts asynchronouse, this hides the browser spinner.
 //Loader is the delegator of iframe messages.
 (function(window, document) {
-
     if (window.DEBUG) {
         console.debug("startTime = " + performance.now());
     }
@@ -199,6 +198,36 @@
                         self.static + '/dist/js/' + mobilePath + 'modal/scripts.min.js'
                     ]
                 }
+            },
+            'carousel-spotlight' : {
+                gallery: {
+                    dev: [
+                        self.static + '/js/vendor/jquery.js',
+                        self.static + '/js/libs/utils.js',
+                        self.static + '/js/carousel.js',
+                        self.static + '/js/index.js'
+                    ],
+                    prod: [
+                        self.static + '/dist/js/scripts.min.js'
+                    ]
+                },
+                modal: {
+                    dev: [
+                        '//a.tvpage.com/tvpa.min.js',
+                        playerLib,
+                        (isMobile ? self.static + '/js/vendor/jquery.js' : ''),
+                        (isMobile ? '' : self.static + '/js/vendor/simple-scrollbar.min.js'),
+                        self.static + '/js/libs/utils.js',
+                        self.static + '/js/libs/analytics.js',
+                        self.static + '/js/libs/player.js',
+                        self.static + '/js/' + mobilePath + 'modal/index.js'
+                    ],
+                    prod: [
+                        '//a.tvpage.com/tvpa.min.js',
+                        playerLib,
+                        self.static + '/dist/js/' + mobilePath + 'modal/scripts.min.js'
+                    ]
+                }                
             }
         };
 
@@ -244,7 +273,7 @@
                     self.holder.style.height = e.data.height;
                 }
 
-                if (self.senderId + ':video_click' === eventName) {
+                if (self.senderId + ':video_click' === eventName) {                    
                     var runTime = (data.runTime || (isset(window, '__TVPage__') ? __TVPage__ : {}) ).config[id];
                     var selectedVideo = data.selectedVideo || {};
 
@@ -287,7 +316,6 @@
                     body.appendChild(modalFrag);
 
                     var iframeModalDoc = iframeModal.contentWindow.document;
-
                     iframeModalDoc.open().write(getIframeHtml({
                         domain: self.domain,
                         id: id,
@@ -431,7 +459,7 @@
     }
 
     function load () {
-        var spots = document.querySelectorAll('.tvp-sidebar, .tvp-carousel, .tvp-solo, .tvp-solo-cta, .tvp-solo-append');
+        var spots = document.querySelectorAll('.tvp-sidebar, .tvp-carousel, .tvp-solo, .tvp-solo-cta, .tvp-solo-append, .tvp-carousel-spotlight');
         for (var i = 0; i < spots.length; i++) {
             var widget  = Widget(spots[i]);
             widget.initialize();

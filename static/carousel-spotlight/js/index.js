@@ -59,6 +59,21 @@
         return s;
     };
 
+    var customize = function (settings) {
+        var holder = document.getElementById(settings.name);
+        var title = holder.getElementsByClassName('tvp-carousel-title')[0];
+        var prevarrow = holder.getElementsByClassName('tvp-carousel-arrow prev')[0];
+        var nextarrow = holder.getElementsByClassName('tvp-carousel-arrow next')[0];
+
+        holder.style.border = "1px solid " + settings.border_color;
+        prevarrow.style.borderLeft = "1px solid " + settings.border_color;
+        nextarrow.style.borderRight = "1px solid " + settings.border_color;
+
+        title.style.backgroundColor = settings.header_background_color;
+        title.style.color = settings.header_font_color;
+        title.style.textAlign = settings.header_text_align;
+    };
+
     var render = function(target,data){
         if (!target) return;
         var frag = document.createDocumentFragment();
@@ -143,7 +158,7 @@
                         }, '*');
                     }
                 };
-
+                customize(carouselSettings);
                 Carousel(name, carouselSettings);
 
             }(getSettings('static')));

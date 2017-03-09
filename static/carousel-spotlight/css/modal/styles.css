@@ -25,7 +25,7 @@ body  {
   width: 100%;
 }
 
-.tvp-no-products .tvp-products {
+.tvp-no-products .tvp-products-holder {
   display: none;
 }
 
@@ -37,7 +37,7 @@ body  {
 }
 
 .tvp-player-holder {
-  width: 66%;
+  width: 80%;
   float: left;
 }
 
@@ -106,21 +106,30 @@ body  {
 }
 
 .tvp-products {
+  height: inherit;
+  overflow: auto;
+}
+
+.tvp-products-holder {
   float: right;
-  width: 33%;
-  margin-left: 1%;
+  width: 20%;
+  height: 0;
+  padding-left: 1.35%;
   position: relative;
-  background-color: white;
+  background-color: whitesmoke;
 }
 
 .tvp-product {
+  border: 1px solid black;
   display: block;
+  margin-bottom: 10px;
+  margin-right: 10px;
   position: relative;
 }
 
 .tvp-product-image-overlay {
   -webkit-transition: all .05s ease-in-out;
-  transition: all .05s ease-in-out;
+          transition: all .05s ease-in-out;
   display: none;
   top: 0;
   bottom: 0;
@@ -140,7 +149,7 @@ body  {
   display: block;
   content: "";
   width: 100%;
-  padding-top: 112.85%;
+  padding-top: 100%;
 }
 
 .tvp-products-title {
@@ -148,53 +157,103 @@ body  {
 }
 
 .tvp-product-title {
+  height: 35px;
+  overflow: hidden;
   font-size: 14px;
   text-decoration: none;
-  margin: 2% auto;
-  width: 70%;
+  margin: 10px 0;
   color: #1F1D26;
 }
 
 .tvp-product-price {
-=: 0font-size: 14px;margin: 3% auto;width: 70%;}
+  margin: 0;
+  float: left;
+  font-size: 14px;
+}
 
 .tvp-product-rating {
   float: right;
 }
 
 .tvp-product-cta {
-  width: 70%;
+  width: 100%;
   background: #333;
   border: 0;
   color: #fff;
   text-transform: uppercase;
   display: block;
+  margin-top: 10px;
   cursor: pointer;
   -webkit-transition: all .05s ease-in-out;
   transition: all .05s ease-in-out;
   font-size: 14px;
-  padding: 4% 0;
-  margin: 0 auto;
+  padding: 10px 0;
 }
 
 .tvp-product-cta:hover {
   background: #000;
 }
 
-.tvp-product-image {
-  position: relative;
-  width: 50%;
-  margin: 0 auto 10% auto;
+.tvp-arrow-indicator {
+  display: none;
+  background-color: transparent;
+  position: absolute;
+  top: 0;
+  left: 3px;
+  z-index: 10;
 }
 
-.tvp-product-image:before {
+.tvp-arrow-indicator.active {
   display: block;
-  content: "";
-  width: 100%;
-  padding-top: 112.85%;
 }
 
-.tvp-product-image > div {
+.tvp-arrow-indicator:before {
+  content: " ";
+  width: 0;
+  height: 0;
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  border-left: 13px solid black;
+  position: absolute;
+  top: 0;
+  left: 1px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.tvp-arrow-indicator:after {
+  content: " ";
+  width: 0;
+  height: 0;
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  border-left: 13px solid white;
+  position: absolute;
+  top: 0;
+  left: 0px;
+}
+
+.tvp-product:last-child {
+  margin-bottom: 0;
+}
+
+.tvp-product-popup {
+  display: none;
+  position: absolute;
+  right: 97%;
+  width: 215px;
+  background: white;
+  padding: 10px;
+  border: 1px solid black;
+  text-decoration: none;
+  top: 0;
+}
+
+.tvp-product-popup.active {
+  display: block;
+}
+
+.tvp-product-image {
   display: block;
   background-size: cover;
   background-repeat: no-repeat;
@@ -207,51 +266,19 @@ body  {
   margin: auto;
 }
 
-.tvp-product-content {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 1px;
-  bottom: 0;
-  margin: auto;
-  padding: 5%;
-  border: 1px solid black;
+.tvp-product-popup-image {
+  display: block;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding-top: 100%;
 }
 
-.tvp-carousel-arrow {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 35px;
-  height: 35px;
-  margin: auto 0;
-  padding: 0;
-  cursor: pointer;
-  border: none;
-  outline: none;
-  z-index: 1000;
-}
-
-.tvp-carousel-arrow.prev {
-  left:0;
-}
-
-.tvp-carousel-arrow.next {
-  right:0;
-}
-
-.tvp-carousel-arrow > svg {
-  -webkit-transition: all .05s ease-in-out;
-  transition: all .05s ease-in-out;
-  fill: #333;
-  background: #858585;
-  pointer-events: none;
-}
-
-.tvp-carousel-arrow > svg > path {
-  pointer-events: none;
-}
-
-.tvp-carousel-arrow:hover {
-  fill:#000;
+@media screen and (max-width: 768px) {
+  .tvp-product-popup{
+    display: none!important;
+  }
+  .tvp-arrow-indicator{
+    display: none!important;
+  }
 }
