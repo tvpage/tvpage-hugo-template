@@ -122,7 +122,7 @@
             domain: isset(location,'hostname') ?  location.hostname : '',
             loginId: asset.loginId
           };
-      
+
       //Update tvpa analytics configuration depending on the video type 
       //(exhange or standard)
       if (isset(asset,'analyticsLogUrl')) {
