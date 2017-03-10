@@ -98,7 +98,7 @@
             this.container.appendChild(carouselFrag);
 
             var config = getSettings('static');
-
+            console.log(config);
             var startSlick = function () {
                 $carousel = $(that.el.querySelector('.tvp-carousel-content'));
 
@@ -130,7 +130,7 @@
                                 arrows: false,
                                 centerMode: true,
                                 centerPadding: '40px',
-                                slidesToShow: 3
+                                slidesToShow: config.no_of_videos_768
                             }
                         },
                         {
@@ -139,7 +139,7 @@
                                 arrows: false,
                                 centerMode: true,
                                 centerPadding: '40px',
-                                slidesToShow: 1
+                                slidesToShow: config.no_of_videos_480
                             }
                         }
                     ]

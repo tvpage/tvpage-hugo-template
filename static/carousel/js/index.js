@@ -132,8 +132,6 @@
                                 selectedVideo: clicked,
                                 videos: videos
                             }, '*');
-                            
-                            console.log(window.parent);
                         }
                     };
 
@@ -160,7 +158,7 @@
                         }, '*');
                     }
                 };
-                customize(carouselSettings);
+                // customize(carouselSettings);
                 Carousel(name, carouselSettings);
 
             }(getSettings('static')));
