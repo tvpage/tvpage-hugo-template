@@ -2,14 +2,13 @@
   box-sizing: border-box;
 }
 
-html {
+html,
+body {
   margin: 0;
   height: 100%;
 }
 
 body  {
-  margin: 0;
-  height: 100%;
   font-family: Helvetica;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -21,16 +20,6 @@ body  {
   display: table;
   content: " ";
   clear: both;
-}
-
-.tvp-sidebar-title {
-  margin: 0;
-  padding: 0 5px 10px 5px;
-  font-weight: normal;
-}
-
-.loading .tvp-cover {
-  display: block;
 }
 
 .tvp-video {
@@ -58,9 +47,7 @@ body  {
   left: 0;
   right: 0;
   position: absolute;
-  background-color: black;
   margin: auto;
-  opacity: 0.2;
   -webkit-transition: all .05s ease-in-out;
   transition: all .05s ease-in-out;
 }
@@ -77,7 +64,6 @@ body  {
 }
 
 .tvp-video-play {
-  box-sizing: border-box;
   padding: 0;
   position: absolute;
   top: 0;
@@ -168,21 +154,14 @@ body  {
   visibility: visible;
 }
 
-.tvp-carousel-title {
-  padding: 15px 10px 15px 5px;
-}
-
 .tvp-carousel-arrow {
   display: none;
   position: absolute;
   top: 4%;
   bottom: 0;
-  width: 50px;
-  height: 50px;
   margin: auto 0;
   padding: 0;
   cursor: pointer;
-  border: none;
   outline: none;
   z-index: 1000;
 }
@@ -198,8 +177,6 @@ body  {
 .tvp-carousel-arrow > svg {
   -webkit-transition: all .05s ease-in-out;
   transition: all .05s ease-in-out;
-  fill: #333;
-  background: white;
   pointer-events: none;
 }
 

@@ -124,9 +124,86 @@
         {
             "for": "carousel",
             "type": "text",
+            "label": "Title Padding",
+            "code": "title_padding",
+            "value": "15px 10px 15px 5px"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Title Color",
+            "code": "title_color",
+            "value": "#333"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Title Font Size",
+            "code": "title_font_size",
+            "value": "16px"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Arrow Width",
+            "code": "arrow_width",
+            "value": "45px"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Arrow Height",
+            "code": "arrow_height",
+            "value": "45px"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Arrow Border",
+            "code": "arrow_border",
+            "value": "none"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Arrow Background Color",
+            "code": "arrow_background_color",
+            "value": "#fff"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Arrow Icon Color",
+            "code": "arrow_icon_color",
+            "value": "#333"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Items To Show",
+            "code": "items_to_show",
+            "value": "3"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Items To Scroll",
+            "code": "items_to_scroll",
+            "value": "1"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
             "label": "Item Play Button Background Color",
             "code": "item_play_button_background_color",
             "value": "#fff"
+        },
+        {
+            "for": "player",
+            "type": "text",
+            "label": "Play Button Border",
+            "code": "play_button_border",
+            "value": "none"
         },
         {
             "for": "carousel",
@@ -159,8 +236,8 @@
         {
             "for": "carousel",
             "type": "text",
-            "label": "Item Overlay Color",
-            "code": "item_overlay_color",
+            "label": "Item Image Overlay Color",
+            "code": "item_image_overlay_color",
             "value": "rgba(0, 0, 0, 0.2)"
         },
         {
@@ -196,6 +273,195 @@
             "type": "text",
             "label": "Item Title Margin",
             "code": "item_title_margin",
+            "value": "10px 0"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Modal Shadow",
+            "code": "modal_shadow",
+            "value": "0 3px 9px rgba(0, 0, 0, 0.5)"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Modal Background",
+            "code": "modal_background",
+            "value": "#fff"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Modal Border",
+            "code": "modal_border",
+            "value": "none"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Modal Header Border Bottom",
+            "code": "modal_header_border_bottom",
+            "value": "1px solid #e5e5e5"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Modal Header Padding",
+            "code": "modal_header_padding",
+            "value": "25px 15px 5px"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Modal Title Font Size",
+            "code": "modal_title_font_size",
+            "value": "16px"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Modal Title Font Color",
+            "code": "modal_title_font_color",
+            "value": "#333"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Modal Close Button Width",
+            "code": "modal_close_button_width",
+            "value": "27px"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Modal Close Button Height",
+            "code": "modal_close_button_height",
+            "value": "27px"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Modal Close Button Padding",
+            "code": "modal_close_button_padding",
+            "value": "3px"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Modal Close Button Border",
+            "code": "modal_close_button_border",
+            "value": "none"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Modal Close Button Border Radius",
+            "code": "modal_close_button_border_radius",
+            "value": "50%"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Modal Close Button Background",
+            "code": "modal_close_button_background",
+            "value": "#333"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Modal Close Button Background Hover",
+            "code": "modal_close_button_background_hover",
+            "value": "#000"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Thumbnail Border",
+            "code": "product_thumbnail_border",
+            "value": "1px solid black"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Thumbnail Image Overlay Color",
+            "code": "product_thumbnail_image_overlay_color",
+            "value": "rgba(0, 0, 0, 0.2)"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Popup Width",
+            "code": "product_popup_width",
+            "value": "215px"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Popup Background",
+            "code": "product_popup_background",
+            "value": "#fff"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Popup Padding",
+            "code": "product_popup_padding",
+            "value": "10px"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Popup Border",
+            "code": "product_popup_border",
+            "value": "1px solid black"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Background",
+            "code": "product_popup_cta_background",
+            "value": "#333"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Background Hover",
+            "code": "product_popup_cta_background_hover",
+            "value": "#000"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Border",
+            "code": "product_popup_cta_border",
+            "value": "none"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Font Color",
+            "code": "product_popup_cta_font_color",
+            "value": "#fff"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Text Transform",
+            "code": "product_popup_cta_text_transform",
+            "value": "uppercase"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Font Size",
+            "code": "product_popup_cta_font_size",
+            "value": "14px"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Padding",
+            "code": "product_popup_cta_padding",
             "value": "10px 0"
         }
     ]
