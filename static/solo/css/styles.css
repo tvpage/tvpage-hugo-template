@@ -12,8 +12,8 @@ body {
 
 .tvp-player.inline {
   position: absolute;
-  top:0;
-  left:0;
+  top: 0;
+  left: 0;
   padding: 0;
 }
 
@@ -65,4 +65,276 @@ body {
   right: 0;
   bottom: 0;
   left: 0;
+}
+
+#tvp-hamburger-container{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width:100%;
+  height: 0;
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+  -webkit-transition: background 0.3s, -webkit-transform 0.5s;
+          transition: background 0.3s, transform 0.5s;
+}
+
+.tvp-hamburger {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  width: 45px;
+  height: 35px;
+  font-size: 0;
+  text-indent: -9999px;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  box-shadow: none;
+  border-radius: none;
+  border: none;
+  cursor: pointer;
+}
+
+.tvp-hamburger:focus,.tvp-hamburger-x:focus {
+  outline: none;
+}
+
+.tvp-hamburger span {
+  display: block;
+  position: absolute;
+  top: 15px;
+  left: 10px;
+  right: 0;
+  height: 3px;
+  width: 24px;
+  background-color: #fff;
+}
+
+.tvp-hamburger span::before,
+.tvp-hamburger span::after {
+  position: absolute;
+  display: block;
+  left: 0;
+  width: 24px;
+  height: 3px;
+  background-color: #fff;
+  content: "";
+}
+
+.tvp-hamburger span::before {
+  top: -7px;
+}
+
+.tvp-hamburger span::after {
+  bottom: -7px;
+}
+
+.tvp-hamburger-x {
+  background-color: transparent;
+}
+
+.tvp-hamburger-x span {
+  -webkit-transition: background 0s 0.3s;
+          transition: background 0s 0.3s;
+}
+
+.tvp-hamburger-x span::before,
+.tvp-hamburger-x span::after {
+  -webkit-transition-duration: 0.3s, 0.3s;
+          transition-duration: 0.3s, 0.3s;
+  -webkit-transition-delay: 0.3s, 0s;
+          transition-delay: 0.3s, 0s;
+}
+
+.tvp-hamburger-x span::before {
+  -webkit-transition-property: top, -webkit-transform;
+          transition-property: top, transform;
+}
+
+.tvp-hamburger-x span::after {
+  -webkit-transition-property: bottom, -webkit-transform;
+          transition-property: bottom, transform;
+}
+
+#tvp-hamburger-container.active{
+  -webkit-transition: -webkit-transform 0.5s;
+          transition: transform 0.5s;
+  -webkit-transform: translate3d(50%, 0, 0);
+          transform: translate3d(50%, 0, 0);
+}
+
+#tvp-hamburger-container.active .tvp-hamburger-x span {
+  background: none;
+}
+
+#tvp-hamburger-container.active .tvp-hamburger-x span::before {
+  top: 0;
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg);
+}
+
+#tvp-hamburger-container.active .tvp-hamburger-x span::after {
+  bottom: 0;
+  -webkit-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+}
+
+#tvp-hamburger-container.active .tvp-hamburger-x span::before,
+#tvp-hamburger-container.active .tvp-hamburger-x span::after {
+  -webkit-transition-delay: 0s, 0.3s;
+          transition-delay: 0s, 0.3s;
+}
+
+#tvp-hidden-menu {
+  width: 50%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  box-sizing: border-box;
+  background: #000;
+  opacity: 0.7;
+  display: block;
+  position: fixed;
+  text-align: center;
+  overflow: auto;
+  -webkit-transition: -webkit-transform 0.5s, visibility 0s 0.5s;
+          transition: transform 0.5s, visibility 0s 0.5s;
+  -webkit-transform: translate3d(-100%, 0, 0);
+          transform: translate3d(-100%, 0, 0);
+  visibility: hidden; /* this is for browsers that don't support CSS3 translate3d in showing the menu */
+}
+
+#tvp-hidden-menu.active {
+  visibility: visible; /* this is for browsers that don't support CSS3 translate3d in showing the menu */
+  -webkit-transition-delay: 0s;
+          transition-delay: 0s;
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+}
+
+.tvp-video-count{
+  width: 65px;
+  max-width: 70px;
+  color: #fff;
+  font-family: Arial;
+  font-size: 14px;
+  top: 8px;
+  left: 45px;
+  position: relative;
+  margin: 0;
+  transition-delay: 0.5s;
+}
+#tvp-hamburger-container.active .tvp-video-count{
+  visibility: hidden;
+  transition: visibility 0.1s;
+}
+
+.tvp-video {
+  cursor: pointer;
+  margin: 10px auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+}
+
+.tvp-video:hover {
+  background: #000;
+  opacity: 0.5;
+}
+
+.tvp-video:hover .tvp-video-play {
+  background-color: #333;
+}
+
+.tvp-video:hover .tvp-video-play > polygon {
+  fill: #fff;
+}
+
+.tvp-video-title,
+.tvp-video-duration {
+  width: 100%;
+  font-size: 12px;
+  color: #FFF;
+  margin: auto 0;
+  line-height: 15px;
+}
+
+.tvp-video-details {
+  width: 50%;
+}
+
+.tvp-video-image {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  position: relative;
+  pointer-events: none;
+  height: 62px;
+  width: 110px;
+}
+
+.tvp-video-image:focus {
+  outline: 0;
+}
+
+.tvp-video-image:before {
+  display: block;
+  content: "";
+  width: 100%;
+  padding-top: 56.25%;
+}
+
+.tvp-video-play {
+  background-color: #fff;
+  box-sizing: border-box;
+  width: 35px;
+  height: 35px;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+  cursor: pointer;
+  border-radius: 50%;
+  border: 0;
+  z-index: 1000;
+  -webkit-transition: all .05s ease-in-out;
+  transition: all .05s ease-in-out;
+}
+
+.tvp-video-play > polygon {
+  pointer-events: none;
+  fill: #333;
+}
+
+.tvp-play {
+  background-color: #fff;
+  box-sizing: border-box;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+  opacity: 0.95;
+  cursor: pointer;
+  border-radius: 1px;
+  border: 2px solid black;
+}
+
+.tvp-play > polygon {
+  pointer-events: none;
 }
