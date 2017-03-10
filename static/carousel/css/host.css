@@ -1,8 +1,8 @@
-div[class^="tvp-"] {
+*[class^="tvp-"] {
   box-sizing: border-box;
 }
 
-.tvp-modal-open{
+.tvp-modal-open {
   overflow: hidden;
 }
 

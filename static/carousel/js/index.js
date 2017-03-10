@@ -67,14 +67,14 @@
                 var carouselSettings = JSON.parse(JSON.stringify(settings));
                 var name = settings.name;
 
-                if (Utils.isMobile) {
-                    document.getElementById(name).classList.add('mobile');
-                }
-
                 render(body,{
                     id: name,
                     title: settings.title || 'Recommended Videos'
                 });
+
+                if (Utils.isMobile) {
+                    document.getElementById(name).classList.add('mobile');
+                }
 
                 carouselSettings.onClick = function (clicked,videos) {
                     if (window.parent) {
