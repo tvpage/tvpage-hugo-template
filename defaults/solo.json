@@ -1,27 +1,37 @@
 {
   "option": [
     {
+      "type": "boolean",
+      "label": "Analytics",
+      "code": "analytics",
+      "value": true
+    },
+    {
+      "for": "player",
       "type": "text",
       "label": "Player Version",
-      "code": "version",
-      "value": "1.8.5"
+      "code": "player_version",
+      "value": "1.8.6"
     },
     {
+      "for": "player",
       "type": "text",
       "label": "Progress Color",
-      "code": "progressColor",
-      "value": "#E57211"
+      "code": "progress_color",
+      "value": "#787878"
     },
     {
+      "for": "player",
       "type": "boolean",
       "label": "Transcript",
       "code": "transcript",
       "value": false
     },
     {
+      "for": "player",
       "type": "text",
       "label": "Remove Controls",
-      "code": "removeControls",
+      "code": "remove_controls",
       "value": [
         "tvplogo",
         "hd"
@@ -42,58 +52,59 @@
       "value": true
     },
     {
-      "type": "boolean",
-      "label": "Analytics",
-      "code": "analytics",
-      "value": true
+      "for": "player",
+      "type": "text",
+      "label": "Play Button Height",
+      "code": "play_button_height",
+      "value": "65px"
+    },
+    {
+      "for": "player",
+      "type": "text",
+      "label": "Play Button Width",
+      "code": "play_button_width",
+      "value": "65px"
     },
     {
       "for": "player",
       "type": "text",
       "label": "Play Button Background Color",
-      "code": "playButtonBackgroundColor",
-      "value": "fff"
+      "code": "play_button_background_color",
+      "value": "#fff"
     },
     {
       "for": "player",
       "type": "text",
       "label": "Play Button Border Radius",
-      "code": "playButtonBorderRadius",
-      "value": "0"
+      "code": "play_button_border_radius",
+      "value": "50%"
     },
     {
       "for": "player",
       "type": "text",
       "label": "Play Button Border",
-      "code": "playButtonBorderWidth",
-      "value": "0"
-    },
-    {
-      "for": "player",
-      "type": "text",
-      "label": "Play Button Border Color",
-      "code": "playButtonBorderColor",
-      "value": "000"
+      "code": "play_button_border",
+      "value": "#000"
     },
     {
       "for": "player",
       "type": "text",
       "label": "Play Button Icon Color",
-      "code": "playButtonIconColor",
-      "value": "000"
+      "code": "play_button_icon_color",
+      "value": "#000"
     },
     {
       "for": "player",
       "type": "text",
       "label": "Overlay Color",
-      "code": "overlayColor",
-      "value": null
+      "code": "overlay_color",
+      "value": "transparent"
     },
     {
       "for": "player",
       "type": "text",
       "label": "Overlay Opacity",
-      "code": "overlayOpacity",
+      "code": "overlay_opacity",
       "value": "0.5"
     }
   ]
