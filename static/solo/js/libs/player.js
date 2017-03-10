@@ -161,7 +161,57 @@
       this.onResize(that.initialResize, [width, height]);
       
       that.initialResize = false;
-    }
+    };
+
+    this.onReady = function(e, pl){
+        that.instance = pl;
+        that.resize();
+
+        //We don't want to resize the player here on fullscreen... we need the player be.
+        if (isset(window,'BigScreen')) {
+            BigScreen.onchange = function(){
+                that.isFullScreen = !that.isFullScreen;
+            };
+        }
+
+        //We can't resize using local references when we are inside an iframe on iOS, the iframe's size doesn't update.
+        //Alternative is to receive external size from host.
+        if (window.location !== window.parent.location && (/iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream)){
+            var onHolderResize = function (e) {
+                if (!e || !isset(e, 'data') || !isset(e.data, 'event') || 'tvp_solo:holder_resize' !== e.data.event) return;
+                var size = e.data.size || [];
+                that.resize(size[0], size[1]);
+            };
+            window.removeEventListener('message', onHolderResize, false);
+            window.addEventListener('message', onHolderResize, false);
+        } else {
+            var onWindowResize = debounce(that.resize,50);
+            window.removeEventListener('message', onWindowResize, false);
+            window.addEventListener('resize', onWindowResize);
+        }
+
+        that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progressColor;
+        var current = 0;
+        if (startWith && startWith.length) {
+            for (var i = 0; i < that.assets.length; i++) {
+                if (that.assets[i].assetId === startWith) current = i;
+            }
+        }
+
+        that.current = current;
+        that.play(that.assets[that.current]);
+    };
+
+    that.onStateChange = function(e){
+        if ('tvp:media:videoended' !== e) return;
+
+        that.current++;
+        if (!that.assets[that.current]) {
+            that.current = 0;
+        }
+
+        that.play(that.assets[that.current], true);
+    };
 
     var checks = 0;
     (function libsReady() {
@@ -174,54 +224,8 @@
             analytics: { tvpa: that.analytics },
             apiBaseUrl: '//api.tvpage.com/v1',
             swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+that.version+'-flash.swf',
-            onReady: function(e, pl){
-              that.instance = pl;
-              that.resize();
-              
-              //We don't want to resize the player here on fullscreen... we need the player be.
-              if (isset(window,'BigScreen')) {
-                BigScreen.onchange = function(){
-                  that.isFullScreen = !that.isFullScreen;
-                };
-              }
-
-              //We can't resize using local references when we are inside an iframe on iOS, the iframe's size doesn't update.
-              //Alternative is to receive external size from host.
-              if (window.location !== window.parent.location && (/iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream)){
-                var onHolderResize = function (e) {
-                    if (!e || !isset(e, 'data') || !isset(e.data, 'event') || 'tvp_solo:holder_resize' !== e.data.event) return;
-                    var size = e.data.size || [];
-                    that.resize(size[0], size[1]);
-                };
-                window.removeEventListener('message', onHolderResize, false);
-                window.addEventListener('message', onHolderResize, false);
-              } else {
-                var onWindowResize = debounce(that.resize,50);
-                window.removeEventListener('message', onWindowResize, false);
-                window.addEventListener('resize', onWindowResize);
-              }
-
-              that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progressColor;
-              var current = 0;
-              if (startWith && startWith.length) {
-                for (var i = 0; i < that.assets.length; i++) {
-                  if (that.assets[i].assetId === startWith) current = i;
-                }
-              }
-
-              that.current = current;
-              that.play(that.assets[that.current]);
-            },
-            onStateChange: function(e){
-              if ('tvp:media:videoended' !== e) return;
-              
-              that.current++;
-              if (!that.assets[that.current]) {
-                that.current = 0;
-              }
-
-              that.play(that.assets[that.current], true);
-            },
+            onReady: that.onReady,
+            onStateChange: that.onStateChange,
             divId: that.el.id,
             controls: {
               active: true,
