@@ -120,6 +120,27 @@ tvpcallback({
             "label": "Overlay Opacity",
             "code": "overlay_opacity",
             "value": "0.5"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "No. of Videos",
+            "code": "no_of_videos",
+            "value": "3"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "No. of Videos",
+            "code": "no_of_videos_768",
+            "value": "3"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "No. of Videos",
+            "code": "no_of_videos_480",
+            "value": "1"
         }
     ]
 })

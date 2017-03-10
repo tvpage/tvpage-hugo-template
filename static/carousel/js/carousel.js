@@ -13,6 +13,42 @@
         return obj.classList.contains(c);
     };
 
+    var isset = function(o,p){
+        var val = o;
+        if (p) val = o[p];
+        return 'undefined' !== typeof val;
+    };
+
+    var getSettings = function(type){
+        var getConfig = function(g){
+            var c = {};
+            if (isset(g) && isset(g,'__TVPage__') && isset(g.__TVPage__, 'config')) {
+                c = g.__TVPage__.config;
+            }
+            return c;
+        };
+        var s = {};
+        if ('dynamic' === type) {
+            var config = getConfig(parent);
+            var id = document.body.getAttribute('data-id');
+            if (!isset(config, id)) return;
+            s = config[id];
+            s.name = id;
+            s.domain = document.body.getAttribute('data-domain') || '';
+        } else if ('inline' === type && type && type.length) {
+            var config = getConfig(parent);
+            s = config[type];
+            s.name = type;
+        } else if ('static' === type) {
+            var config = getConfig(window);
+            var id = document.body.getAttribute('data-id');
+            if (!isset(config, id)) return;
+            s = config[id];
+            s.name = id;
+        }
+        return s;
+    };
+
     function Carousel(el, options) {
         this.xchg = options.xchg || false;
         this.windowSize = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) <= 200 ? 'small' : 'medium';
@@ -61,6 +97,15 @@
 
             this.container.appendChild(carouselFrag);
 
+            var config;
+
+            if(document.getElementsByTagName('body')[0].className){
+                config = options;
+            }
+            else{
+                config = getSettings('static');
+            }
+
             var startSlick = function () {
                 $carousel = $(that.el.querySelector('.tvp-carousel-content'));
 
@@ -83,7 +128,7 @@
                 });
 
                 $carousel.slick({
-                    slidesToShow: 3,
+                    slidesToShow: config.no_of_videos,
                     arrows: false,
                     responsive: [
                         {
@@ -92,7 +137,7 @@
                                 arrows: false,
                                 centerMode: true,
                                 centerPadding: '40px',
-                                slidesToShow: 3
+                                slidesToShow: config.no_of_videos_768
                             }
                         },
                         {
@@ -101,7 +146,7 @@
                                 arrows: false,
                                 centerMode: true,
                                 centerPadding: '40px',
-                                slidesToShow: 1
+                                slidesToShow: config.no_of_videos_480
                             }
                         }
                     ]

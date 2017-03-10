@@ -111,7 +111,7 @@
 
                     carouselSettings.onClick = function (clicked,videos) {
                         if (window.parent) {
-                            window.parent.postMessage({
+                            window.parent.postMessage({                                
                                 runTime: 'undefined' !== typeof window.__TVPage__ ? __TVPage__ : null,
                                 event: 'tvp_carousel:video_click',
                                 selectedVideo: clicked,
@@ -143,7 +143,6 @@
                         }, '*');
                     }
                 };
-
                 Carousel(name, carouselSettings);
 
             }(getSettings('static')));

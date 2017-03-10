@@ -227,7 +227,6 @@
       var eventData = e.data;
 
       if ('tvp_carousel:modal_data' === eventData.event) {
-
         var loginId = eventData.runTime.loginid || eventData.runTime.loginId;
         channelId = eventData.runTime.channel.id || eventData.runTime.channelid;
 
