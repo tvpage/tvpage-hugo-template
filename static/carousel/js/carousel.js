@@ -97,8 +97,15 @@
 
             this.container.appendChild(carouselFrag);
 
-            var config = getSettings('static');
-            
+            var config;
+
+            if(document.getElementsByTagName('body')[0].className){
+                config = options;
+            }
+            else{
+                config = getSettings('static');
+            }
+
             var startSlick = function () {
                 $carousel = $(that.el.querySelector('.tvp-carousel-content'));
 
