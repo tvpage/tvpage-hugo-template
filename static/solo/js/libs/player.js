@@ -1,6 +1,7 @@
 ;(function(window,document) {
 
-  var isset = function(o,p){
+  var isIOS = (/iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream),
+      isset = function(o,p){
         var val = o;
         if (p) val = o[p];
         return 'undefined' !== typeof val;
@@ -176,9 +177,9 @@
 
         //We can't resize using local references when we are inside an iframe on iOS, the iframe's size doesn't update.
         //Alternative is to receive external size from host.
-        if (window.location !== window.parent.location && (/iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream)){
+        if (window.location !== window.parent.location && isIOS){
             var onHolderResize = function (e) {
-                if (!e || !isset(e, 'data') || !isset(e.data, 'event') || 'tvp_solo:holder_resize' !== e.data.event) return;
+                if (!e || !isset(e, 'data') || 'tvp_solo:holder_resize' !== (e.data.event || '')) return;
                 var size = e.data.size || [];
                 that.resize(size[0], size[1]);
             };
@@ -186,19 +187,20 @@
             window.addEventListener('message', onHolderResize, false);
         } else {
             var onWindowResize = debounce(that.resize,50);
-            window.removeEventListener('message', onWindowResize, false);
+            window.removeEventListener('resize', onWindowResize, false);
             window.addEventListener('resize', onWindowResize);
         }
 
         that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progressColor;
+
         var current = 0;
-        if (startWith && startWith.length) {
-            for (var i = 0; i < that.assets.length; i++) {
-                if (that.assets[i].assetId === startWith) current = i;
+        for (var i = 0; i < that.assets.length; i++) {
+            if (that.assets[i].assetId === (startWith || '') ) {
+                current = i;
             }
         }
-
         that.current = current;
+
         that.play(that.assets[that.current]);
     };
 
