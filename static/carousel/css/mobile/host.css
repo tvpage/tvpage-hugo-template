@@ -2,10 +2,6 @@
   box-sizing: border-box;
 }
 
-.tvp-modal-open {
-  overflow: hidden;
-}
-
 .tvp-hidden {
   display: none;
 }
@@ -19,6 +15,10 @@
   z-index: 1040;
   background-color: black;
   opacity: 0.5;
+}
+
+.tvp-modal-open {
+  overflow: hidden;
 }
 
 .tvp-modal {

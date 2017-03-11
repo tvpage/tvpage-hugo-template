@@ -221,8 +221,8 @@
                 if (iframeModalWindow) {
                     iframeModalDoc = iframeModalWindow.document;
                 } else {
-                    iframeModalHolder.innerHTML =  '<iframe class="tvp-iframe" src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe>';
-                    iframeModal = iframeModalHolder.querySelector('.tvp-iframe');
+                    iframeModalHolder.innerHTML =  '<iframe class="tvp-iframe-modal" src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe>';
+                    iframeModal = iframeModalHolder.querySelector('.tvp-iframe-modal');
                     iframeModalDoc = iframeModal.contentWindow.document;
                 }
 
@@ -245,7 +245,7 @@
                     css: [
                         TVP_DEBUG ? staticPath + "/css/" + mobilePath + "modal/styles.css" : "",
                         isMobile && TVP_DEBUG ? staticPath + "/css/vendor/slick.css" : "",
-                        TVP_DEBUG ? staticPath + "/css/vendor/simple-scrollbar.css" : "",
+                        !isMobile && TVP_DEBUG ? staticPath + "/css/vendor/simple-scrollbar.css" : "",
                         TVP_DEBUG ? "" : staticPath + "/dist/css/" + mobilePath + "modal/styles.min.css"
                     ]
                 }));
