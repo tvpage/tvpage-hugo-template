@@ -143,6 +143,19 @@ body  {
   padding-top: 112.85%;
 }
 
+.tvp-products-carousel {
+  -webkit-transition: all .05s ease-in-out;
+  transition: all .05s ease-in-out;
+  height: 0;
+  opacity: 0;
+}
+
+.tvp-products-carousel.slick-initialized,
+.tvp-products-carousel.initialized {
+  height: auto;
+  opacity: 1;
+}
+
 .tvp-products-title {
   margin: 10px 0;
 }

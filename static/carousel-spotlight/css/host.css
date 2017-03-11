@@ -1,9 +1,13 @@
-div[class^="tvp-"] {
+*[class^="tvp-"] {
   box-sizing: border-box;
 }
 
 .tvp-modal-open{
   overflow: hidden;
+}
+
+.tvp-hidden {
+  display: none;
 }
 
 .tvp-modal-overlay {
@@ -127,7 +131,7 @@ div[class^="tvp-"] {
 }
 
 .tvp-iframe-holder {
-  height: 500px;
+  /*height: 500px;*/
   position: relative;
 }
 

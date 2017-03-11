@@ -17,9 +17,7 @@
         this.xchg = options.xchg || false;
         this.windowSize = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) <= 200 ? 'small' : 'medium';
         this.initialResize = true;
-
         this.itemsPerPage = 1000;
-
         this.loginId = (options.loginId || options.loginid) || 0;
         this.channel = options.channel || {};
         this.loading = false;
@@ -64,23 +62,14 @@
             var startSlick = function () {
                 $carousel = $(that.el.querySelector('.tvp-carousel-content'));
 
-                $carousel.on('init', function(){
-                    if (window.parent) {
-                        window.parent.postMessage({
-                            event: 'tvp_carousel_spotlight:render',
-                            height: that.el.offsetHeight + 'px'
-                        }, '*');
-                    }
-                });
-
-                $carousel.on('setPosition', function () {
+                $carousel.on('setPosition', Utils.debounce(function () {
                     if (window.parent) {
                         window.parent.postMessage({
                             event: 'tvp_carousel_spotlight:resize',
                             height: that.el.offsetHeight + 'px'
                         }, '*');
                     }
-                });
+                },100));
 
                 $carousel.slick({
                     slidesToShow: 3,

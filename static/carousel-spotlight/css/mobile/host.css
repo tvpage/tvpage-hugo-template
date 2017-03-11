@@ -80,13 +80,10 @@ div[class^="tvp-"] {
 }
 
 .tvp-iframe-holder {
-  height: 0;
+  /*height: 500px;*/
   position: relative;
-  -webkit-transition: height ease-out 0.0001s;
-  transition: height ease-out 0.0001s;
 }
 
-/*This is the gallery iframe*/
 .tvp-iframe {
   top: 0;
   left: 0;
@@ -95,7 +92,6 @@ div[class^="tvp-"] {
   position: absolute;
 }
 
-/*This is the modal iframe*/
 .tvp-iframe-modal {
   top:0;
   left: 0;

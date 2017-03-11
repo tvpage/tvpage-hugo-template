@@ -101,9 +101,9 @@
 
     container.appendChild(carousel);
 
+    var $el = $(carousel);
     var startSlick = function() {
         setTimeout(function() {
-            var $el = $(carousel);
             var config = {
                 slidesToSlide: 1,
                 slidesToShow: 1,
@@ -147,6 +147,8 @@
       } else {
         startSlick();
       }
+    } else {
+        $el.addClass('initialized');
     }
   };
   
@@ -241,11 +243,11 @@
   };
 
   var not = function(obj){return 'undefined' === typeof obj};
-  if (not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player)) {
+  if (not(window.jQuery) || not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player)) {
     var libsCheck = 0;
     (function libsReady() {
       setTimeout(function(){
-        if (not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player)) {
+        if (not(window.jQuery) || not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player)) {
           (++libsCheck < 50) ? libsReady() : console.log('limit reached');
         } else {
           initialize();
