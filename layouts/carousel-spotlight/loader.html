@@ -191,7 +191,7 @@
             }));
             iframeDocument.close();
         } else {
-            var url = config.baseUrl + "tvpwidget/" + widgetId;
+            var url = config.baseUrl + "/tvpwidget/" + widgetId;
             (-1 === navigator.userAgent.indexOf("MSIE")) ? iframe.src = url: iframe.location = url;
         }
 
