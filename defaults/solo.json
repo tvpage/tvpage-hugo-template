@@ -48,6 +48,13 @@
       "value": true
     },
     {
+        "for": "styles",
+        "type": "text",
+        "label": "Items Per Page",
+        "code": "items_per_page",
+        "value": "3"
+    },
+    {
       "for": "player",
       "type": "text",
       "label": "Play Button Background Color",

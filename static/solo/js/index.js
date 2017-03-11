@@ -1,7 +1,24 @@
 ;(function(document) {
 
-  var random = function(){
+  var channelVideosPage = 0,
+      lastPage,
+
+  random = function(){
     return 'tvp_' + Math.floor(Math.random() * 50005);
+  },
+  debounce = function(func,wait,immediate){
+    var timeout;  
+    return function() {
+      var context = this, args = arguments;
+      var later = function() {
+        timeout = null;
+        if (!immediate) func.apply(context, args);
+      };
+      var callNow = immediate && !timeout;
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+      if (callNow) func.apply(context, args);
+    };      
   },
   isset = function(o,p){
     var val = o;
@@ -9,12 +26,16 @@
     return 'undefined' !== typeof val;
   },
   jsonpCall = function(opts,callback){
-    var s = document.createElement('script');
-    s.src = opts.src;
-    if (!callback || 'function' !== typeof callback) return;
-    window[opts.cbName || 'callback'] = callback;
-    var b = opts.body || document.body;
-    b.appendChild(s);
+    var isFetching = false;
+    if (!isFetching) {
+      isFetching = true;
+      var s = document.createElement('script');
+      s.src = opts.src;
+      if (!callback || 'function' !== typeof callback) return;
+      window[opts.cbName || 'callback'] = callback;
+      var b = opts.body || document.body;
+      b.appendChild(s);
+    }
   },
   getSettings = function(type){
     var getConfig = function(g){
@@ -54,14 +75,14 @@
             url = '//api.tvpage.com/v1/channels/' + channel.id + '/videos?X-login-id=' + s.loginid;
 
         for (var p in params) { url += '&' + p + '=' + params[p];}
+        url += '&n=' + s.items_per_page + '&p=' + channelVideosPage;
         url += '&callback='+cbName;
         return url;
       }(),
       cbName: cbName
     },callback);
-  };
-
-  var render = function(idEl,target){
+  },
+  render = function(idEl,target){
     if (!idEl || !target) return console.log('need target');
     var frag = document.createDocumentFragment(),
     main = document.createElement('div');
@@ -69,6 +90,34 @@
     main.innerHTML =  '<div id="tvp-player-el-'+idEl+'" class="tvp-player-el"></div></div>';
     frag.appendChild(main);
     target.appendChild(frag);
+  },
+  bindLoadMoreEvent = function(menu,data){
+    var scrollMenu = document.querySelectorAll('.ss-content')[0];
+      scrollMenu.addEventListener("scroll", debounce(function() {
+      var st = scrollMenu.scrollTop;
+      var nwh = document.body.clientHeight - scrollMenu.scrollHeight;
+      var percentDocument = (st*100)/nwh;
+      percentDocument = Math.round(percentDocument);
+      percentDocument = Math.abs(percentDocument);
+      if (percentDocument >= 55 && percentDocument <= 100) {
+        channelVideosPage++;
+        (function(unique,settings){
+          var menuSettings = JSON.parse(JSON.stringify(settings));
+          if (!lastPage) {
+            loadData(settings,unique,function(data){
+              if (!data.length) {
+                lastPage = true;
+              }else{
+                lastPage = false;
+              }
+              menuSettings.data = data || [];
+              menu.update(menuSettings);
+            });
+          }
+
+        }(random(),getSettings('dynamic')));
+      }
+    },30));
   };
   
   //We need to know a few things before we can start a player. We need to know if we will render
@@ -83,13 +132,15 @@
         render(unique,document.body);
 
         loadData(settings,unique,function(data){
-          menuSettings.data = data || [];
-          var menu = new Menu(menuSettings);
-
           playerSettings.data = data || [];
           var player = new Player('tvp-player-el-'+unique,playerSettings);
-        });
 
+          menuSettings.data = data || [];
+          var menu = new Menu();
+          menu.render(menuSettings,unique);
+
+          bindLoadMoreEvent(menu);
+        });
       }(random(),getSettings('dynamic')));
     }
   };
