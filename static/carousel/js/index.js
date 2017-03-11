@@ -6,29 +6,6 @@
         return 'undefined' !== typeof val;
     };
 
-    var jsonpCall = function(opts,callback){
-        var s = document.createElement('script');
-        s.src = opts.src;
-        if (!callback || 'function' !== typeof callback) return;
-        window[opts.cbName || 'callback'] = callback;
-        var b = opts.body || document.body;
-        b.appendChild(s);
-    };
-
-    var extend = function(out) {
-        out = out || {};
-        for (var i = 1; i < arguments.length; i++) {
-            if (!arguments[i])
-                continue;
-
-            for (var key in arguments[i]) {
-                if (arguments[i].hasOwnProperty(key))
-                    out[key] = arguments[i][key];
-            }
-        }
-        return out;
-    };
-
     var getSettings = function(type){
         var getConfig = function(g){
             var c = {};
@@ -84,6 +61,7 @@
     var body = document.body;
 
     var initialize = function(){
+
         if (body.classList.contains('dynamic')) {
             (function(settings){
                 var carouselSettings = JSON.parse(JSON.stringify(settings));
@@ -94,34 +72,22 @@
                     title: settings.title || 'Recommended Videos'
                 });
 
-                jsonpCall({
-                    src: settings.domain + '/carousel/options.js',
-                    cbName: 'tvpcallback'
-                },function(data){
-                    if (!data) return;
-                    var options = data.option;
-                    var opts = {};
+                if (Utils.isMobile) {
+                    document.getElementById(name).classList.add('mobile');
+                }
 
-                    for (var key in options) {
-                        var option = options[key];
-                        opts[option.code] = option.value;
+                carouselSettings.onClick = function (clicked,videos) {
+                    if (window.parent) {
+                        window.parent.postMessage({
+                            runTime: 'undefined' !== typeof window.__TVPage__ ? __TVPage__ : null,
+                            event: 'tvp_carousel:video_click',
+                            selectedVideo: clicked,
+                            videos: videos
+                        }, '*');
                     }
+                };
 
-                    carouselSettings = extend(carouselSettings, opts);
-
-                    carouselSettings.onClick = function (clicked,videos) {
-                        if (window.parent) {
-                            window.parent.postMessage({
-                                runTime: 'undefined' !== typeof window.__TVPage__ ? __TVPage__ : null,
-                                event: 'tvp_carousel:video_click',
-                                selectedVideo: clicked,
-                                videos: videos
-                            }, '*');
-                        }
-                    };
-
-                    Carousel(name, carouselSettings);
-                });
+                Carousel(name, carouselSettings);
 
             }(getSettings('dynamic')));
         } else {
@@ -129,7 +95,7 @@
                 var carouselSettings = JSON.parse(JSON.stringify(settings));
                 var name = settings.name;
 
-                if(Utils.isMobile) {
+                if (Utils.isMobile) {
                     document.getElementById(name).classList.add('mobile');
                 }
 

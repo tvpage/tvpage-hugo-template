@@ -2,30 +2,17 @@
   box-sizing: border-box;
 }
 
-html {
+html,
+body {
   margin: 0;
   height: 100%;
 }
 
 body  {
-  margin: 0;
-  height: 100%;
   font-family: Helvetica;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-}
-
-header > h2 {
-  margin: 0;
-  font-size: 14px;
-  height: 30px;
-  line-height: 30px;
-  text-transform: uppercase;
-}
-
-footer {
-  position: relative;
 }
 
 .tvp-clearfix:before,
@@ -33,16 +20,6 @@ footer {
   display: table;
   content: " ";
   clear: both;
-}
-
-.tvp-sidebar-title {
-  margin: 0;
-  padding: 0 5px 10px 5px;
-  font-weight: normal;
-}
-
-.loading .tvp-cover {
-  display: block;
 }
 
 .tvp-video {
@@ -70,9 +47,7 @@ footer {
   left: 0;
   right: 0;
   position: absolute;
-  background-color: black;
   margin: auto;
-  opacity: 0.2;
   -webkit-transition: all .05s ease-in-out;
   transition: all .05s ease-in-out;
 }
@@ -89,10 +64,6 @@ footer {
 }
 
 .tvp-video-play {
-  background-color: #fff;
-  box-sizing: border-box;
-  width: 45px;
-  height: 45px;
   padding: 0;
   position: absolute;
   top: 0;
@@ -101,7 +72,6 @@ footer {
   right: 0;
   margin: auto;
   cursor: pointer;
-  border-radius: 50%;
   border: 0;
   z-index: 1000;
   -webkit-transition: all .05s ease-in-out;
@@ -110,35 +80,14 @@ footer {
 
 .tvp-video-play > polygon {
   pointer-events: none;
-  fill: #333;
   -webkit-transition: all .05s ease-in-out;
   transition: all .05s ease-in-out;
 }
 
 @media (min-width: 768px) {
-  .tvp-video-play {
-    width: 65px;
-    height: 65px;
-  }
-
-  .tvp-video:hover .tvp-video-play {
-    background-color: #e57211;
-  }
-
-  .tvp-video:hover .tvp-video-play > polygon {
-    fill: #fff;
-  }
-
   .tvp-video:hover .tvp-video-image-overlay {
     display: block;
   }
-}
-
-.tvp-video-title {
-  overflow: hidden;
-  font-size: 12px;
-  color: #333333;
-  margin: 10px 0;
 }
 
 .tvp-play {
@@ -205,21 +154,14 @@ footer {
   visibility: visible;
 }
 
-.tvp-carousel-title {
-  padding: 15px 10px 15px 5px;
-}
-
 .tvp-carousel-arrow {
   display: none;
   position: absolute;
   top: 4%;
   bottom: 0;
-  width: 50px;
-  height: 50px;
   margin: auto 0;
   padding: 0;
   cursor: pointer;
-  border: none;
   outline: none;
   z-index: 1000;
 }
@@ -235,8 +177,6 @@ footer {
 .tvp-carousel-arrow > svg {
   -webkit-transition: all .05s ease-in-out;
   transition: all .05s ease-in-out;
-  fill: #333;
-  background: white;
   pointer-events: none;
 }
 

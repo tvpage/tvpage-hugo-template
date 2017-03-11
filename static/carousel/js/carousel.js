@@ -83,7 +83,8 @@
                 });
 
                 $carousel.slick({
-                    slidesToShow: 3,
+                    slidesToShow: options.items_to_show,
+                    slidesToScroll: options.items_to_scroll,
                     arrows: false,
                     responsive: [
                         {

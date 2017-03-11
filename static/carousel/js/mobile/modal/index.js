@@ -46,11 +46,9 @@
         };
 
         if (hasData) {
-            container.classList.add('enabled');
             el.classList.remove('tvp-no-products');
             notifyState();
         } else {
-            container.classList.remove('enabled');
             el.classList.add('tvp-no-products');
             notifyState();
             return;

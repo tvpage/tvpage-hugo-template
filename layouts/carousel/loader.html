@@ -1,0 +1,352 @@
+{{- partial "settings.html" . -}}
+{{- $id := ($.Scratch.Get "settings").name -}}
+<style>
+    .tvp-modal-header {
+        padding:{{ ($.Scratch.Get "settings").modal_header_padding }};
+        border-bottom:{{ ($.Scratch.Get "settings").modal_header_border_bottom }};
+    }
+
+    .tvp-modal-content {
+        background:{{ ($.Scratch.Get "settings").modal_background }};
+        border:{{ ($.Scratch.Get "settings").modal_border }};
+        box-shadow:{{ ($.Scratch.Get "settings").modal_shadow }};
+    }
+
+    .tvp-modal-title {
+        color: {{ ($.Scratch.Get "settings").modal_title_font_color }};
+        font-size: {{ ($.Scratch.Get "settings").modal_title_font_size }};
+    }
+
+    .tvp-modal-close {
+        width: {{ ($.Scratch.Get "settings").modal_close_button_width }};
+        height: {{ ($.Scratch.Get "settings").modal_close_button_height }};
+        padding: {{ ($.Scratch.Get "settings").modal_close_button_padding }};
+        background: {{ ($.Scratch.Get "settings").modal_close_button_background }};
+        border: {{ ($.Scratch.Get "settings").modal_close_button_border }};
+        border-radius: {{ ($.Scratch.Get "settings").modal_close_button_border_radius }};
+    }
+
+    .tvp-modal-close:hover {
+        background: {{ ($.Scratch.Get "settings").modal_close_button_background_hover }};
+    }
+</style>
+<div id="tvp-modal-overlay-{{ $id }}" class="tvp-modal-overlay tvp-hidden"></div>
+<div id="tvp-modal-{{ $id }}" class="tvp-modal tvp-hidden">
+    <div class="tvp-modal-wrapper">
+        <div class="tvp-modal-content">
+            <div id="tvp-modal-header-{{ $id }}" class="tvp-modal-header">
+                <svg id="tvp-modal-close" class="tvp-modal-close" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="#ffffff" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+                    <path d="M0 0h24v24H0z" fill="none"></path>
+                </svg>
+                <h4 id="tvp-modal-title-{{ $id }}" class="tvp-modal-title">Double wall insulated mug</h4></div>
+            <div class="tvp-modal-body">
+                <div id="tvp-modal-iframe-holder-{{ $id }}" class="tvp-modal-iframe-holder">
+                    <iframe id="tvp-iframe-modal-{{ $id }}" class="tvp-iframe-modal" src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script id="tvp-iframe-modal-template" type="text/template">
+    <div id="{{ $id }}" class="tvp-clearfix iframe-content">
+        <div class="tvp-player-holder">
+            <div class="tvp-player">
+                <div id="tvp-player-el"></div>
+            </div>
+        </div>
+        <div class="tvp-products-holder">
+            <div class="tvp-products"></div>
+        </div>
+    </div>
+</script>
+<script id="tvp-iframe-modal-mobile-template" type="text/template">
+    <div id="{{ $id }}" class="tvp-clearfix iframe-content">
+        <div class="tvp-player">
+            <div id="tvp-player-el"></div>
+        </div>
+        <div class="tvp-products">
+            <div class="tvp-products-carousel"></div>
+        </div>
+    </div>
+</script>
+<div id='{{ $id }}-holder' class="tvp-iframe-holder carousel">
+    <iframe class="tvp-iframe" src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe>
+    <script id="{{ $id }}-script">
+        var TVP_DEBUG = Number('{{ getenv "HUGO_DEBUG" }}') || 0;
+        var staticPath = "{{ .Type | absURL }}";
+        var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        var mobilePath = isMobile  ? 'mobile/' : '';
+
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = staticPath + (TVP_DEBUG ? '/' : '/dist/') + 'css/' + mobilePath + 'host' + (TVP_DEBUG ? '.css' : '.min.css');
+        document.getElementsByTagName('head')[0].appendChild(link);
+
+        var isset = function(o,p){
+            var val = o;
+            if (p) val = o[p];
+            return 'undefined' !== typeof val;
+        };
+
+        var removeClass = function(obj,c){
+            if (!obj || !c) return;
+            if ('string' === typeof obj) {
+                document.getElementById(obj).classList.remove(c);
+            } else {
+                obj.classList.remove(c);
+            }
+        };
+
+        var debounce = function(func, wait, immediate) {
+            var timeout = null;
+            return function() {
+                var context = this,
+                    args = arguments;
+                var later = function() {
+                    timeout = null;
+                    if (!immediate) func.apply(context, args);
+                };
+                var callNow = immediate && !timeout;
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+                if (callNow) func.apply(context, args);
+            };
+        };
+
+        var addClass = function(obj,c){
+            if (!obj || !c) return;
+            if ('string' === typeof obj) {
+                document.getElementById(obj).classList.add(c);
+            } else {
+                obj.classList.add(c);
+            }
+        };
+
+        var extend = function(o) {
+            o = o || {};
+            for (var i = 1; i < arguments.length; i++) {
+                if (!arguments[i])
+                    continue;
+                for (var key in arguments[i]) {
+                    if (arguments[i].hasOwnProperty(key))
+                        o[key] = arguments[i][key];
+                }
+            }
+            return o;
+        };
+
+        //Dynamically creates an iframe & appends it's required CSS & JS libraries.
+        var getIframeHtml = function(options) {
+            var html = '<head><base target="_blank" /></head><body class="' + (options.className || '') + '" data-domain="' +
+            (options.domain || '') + '" data-id="' + (options.id || '') + '" onload="' +
+            'var d = document, head = d.getElementsByTagName(\'head\')[0],' +
+            'addJS = function(u){ var s = d.createElement(\'script\');s.src=u;d.body.appendChild(s);},' +
+            'addCSS = function(h){ var l = d.createElement(\'link\');l.type=\'text/css\';l.rel=\'stylesheet\';l.href=h;head.appendChild(l);};' +
+            'window.TVP_DEBUG=' + TVP_DEBUG + ';';
+
+            var js = options.js || [];
+            if ('function' === typeof js) {
+                js = js();
+            }
+
+            js = js.filter(Boolean);
+            for (var i = 0; i < js.length; i++) {
+                html += 'addJS(\'' + js[i] + '\');';
+            }
+
+            var css = options.css || [];
+            if ('function' === typeof css) {
+                css = css();
+            }
+
+            css = css.filter(Boolean);
+            for (var i = 0; i < css.length; i++) {
+                html += 'addCSS(\'' + css[i] + '\');';
+            }
+
+            html += '"><style>' + (options.style || '') + '</style>';
+
+            var content = options.html || '';
+            if ('function' === typeof content) {
+                html += content();
+            } else if (content.trim().length) {
+                html += content;
+            }
+
+            return html;
+        };
+
+        window.__TVPage__ = window.__TVPage__ || {};
+        __TVPage__.config = __TVPage__.config || {};
+        __TVPage__.config["{{ $id }}"] = extend({{ $.Scratch.Get "settings" }}, __TVPage__.config["{{ $id }}"]);
+
+        var holder = document.getElementById("{{ $id }}-holder");
+        var iframe = holder.querySelector(".tvp-iframe");
+        var config = __TVPage__.config["{{ $id }}"];
+        var eventPrefix = "tvp_{{ .Type }}";
+        var carouselData = {};
+
+        var dataMethod = "static";
+        if (isset(config, "channel") && isset(config.channel, "id")) {
+            dataMethod = "dynamic"
+        }
+
+        var iframeModal = document.getElementById('tvp-iframe-modal-{{ $id }}');
+        var iframeModalHolder = document.getElementById('tvp-modal-iframe-holder-{{ $id }}');
+        var iframeModalDoc = null;
+
+        window.addEventListener('message', function(e) {
+            if (!e || !isset(e, 'data') || !isset(e.data, 'event')) return;
+
+            var eventName = e.data.event;
+            var eventData = e.data;
+
+            if (eventPrefix + ':render' === eventName || eventPrefix + ':resize' === eventName) {
+                holder.style.height = eventData.height;
+            }
+
+            if (eventPrefix + ':video_click' === eventName) {
+                carouselData = {
+                    data: eventData.videos,
+                    selectedVideo: eventData.selectedVideo,
+                    runTime: (eventData.runTime || (isset(window, '__TVPage__') ? __TVPage__ : {}) ).config[{{ $id }}]
+                };
+
+                removeClass('tvp-modal-{{ $id }}','tvp-hidden');
+                removeClass('tvp-modal-overlay-{{ $id }}','tvp-hidden');
+                addClass(document.body, 'tvp-modal-open');
+
+                var iframeModalWindow = iframeModal.contentWindow;
+                if (iframeModalWindow) {
+                    iframeModalDoc = iframeModalWindow.document;
+                } else {
+                    iframeModalHolder.innerHTML =  '<iframe class="tvp-iframe-modal" src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe>';
+                    iframeModal = iframeModalHolder.querySelector('.tvp-iframe-modal');
+                    iframeModalDoc = iframeModal.contentWindow.document;
+                }
+
+                iframeModalDoc.open().write(getIframeHtml({
+                    id: "{{ $id }}",
+                    domain: "{{ .Site.BaseURL }}",
+                    style: '{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/options.css" .Type ) .)) | safeCSS }}',
+                    html: document.getElementById('tvp-iframe-modal-' + mobilePath.replace('/','-') + 'template').innerHTML,
+                    js: [
+                        "//a.tvpage.com/tvpa.min.js",
+                        "https://cdnjs.tvpage.com/tvplayer/tvp-1.8.6.min.js",
+                        isMobile && TVP_DEBUG ? staticPath + "/js/vendor/jquery.js" : "",
+                        !isMobile && TVP_DEBUG ? staticPath + "/js/vendor/simple-scrollbar.min.js" : "",
+                        TVP_DEBUG ? staticPath + "/js/libs/utils.js" : "",
+                        TVP_DEBUG ? staticPath + "/js/libs/analytics.js" : "",
+                        TVP_DEBUG ? staticPath + "/js/libs/player.js" : "",
+                        TVP_DEBUG ? staticPath + "/js/" + mobilePath + "modal/index.js" : "",
+                        TVP_DEBUG ? "" : staticPath + "/dist/js/" + mobilePath + "modal/scripts.min.js"
+                    ],
+                    css: [
+                        TVP_DEBUG ? staticPath + "/css/" + mobilePath + "modal/styles.css" : "",
+                        isMobile && TVP_DEBUG ? staticPath + "/css/vendor/slick.css" : "",
+                        !isMobile && TVP_DEBUG ? staticPath + "/css/vendor/simple-scrollbar.css" : "",
+                        TVP_DEBUG ? "" : staticPath + "/dist/css/" + mobilePath + "modal/styles.min.css"
+                    ]
+                }));
+                iframeModalDoc.close();
+            }
+
+            if (eventPrefix + ':modal_initialized' === eventName) {
+                if (iframeModal.contentWindow) {
+                    iframeModal.contentWindow.postMessage({
+                        event: eventPrefix + ':modal_data',
+                        data: carouselData.data,
+                        selectedVideo: carouselData.selectedVideo,
+                        runTime: carouselData.runTime
+                    }, '*');
+                }
+
+                if (/iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream) {
+                    var onOrientationChange = debounce(function () {
+                        if (iframeModal && iframeModal.contentWindow) {
+                            var widthRef = iframeModal.parentNode.offsetWidth;
+                            iframeModal.contentWindow.window.postMessage({
+                                event: eventPrefix + ':modal_holder_resize',
+                                size: [widthRef, Math.floor(widthRef * (9 / 16))]
+                            },'*');
+                        }
+                    },30);
+                    var orientationChangeEvent = 'onorientationchange' in window ? 'orientationchange' : 'resize';
+                    window.removeEventListener(orientationChangeEvent,onOrientationChange, false);
+                    window.addEventListener(orientationChangeEvent,onOrientationChange, false);
+                }
+            }
+
+            if (eventPrefix + ':modal_resized' === eventName) {
+                iframeModal.style.height = eventData.height;
+            }
+
+            if (eventPrefix + ':player_next' === eventName) {
+                document.getElementById('tvp-modal-title-{{ $id }}').innerHTML = eventData.next.assetTitle;
+            }
+
+            if (eventPrefix + ':modal_no_products' === eventName) {
+                if (!isMobile) {
+                    var productsLabel = document.getElementById('tvp-products-headline-{{ $id }}');
+                    if (productsLabel) {
+                        productsLabel.remove();
+                    }
+                }
+
+                removeClass(iframeModalHolder,'products');
+                addClass(iframeModalHolder,'no-products');
+            }
+
+            if (eventPrefix + ':modal_products' === eventName) {
+                if (!isMobile && !document.getElementById('tvp-products-headline-{{ $id }}')) {
+                    var productsLabel = document.createElement('p');
+                    addClass(productsLabel,'tvp-products-headline');
+                    productsLabel.id = 'tvp-products-headline-{{ $id }}';
+                    productsLabel.innerHTML = 'Related Products';
+                    document.getElementById('tvp-modal-header-{{ $id }}').appendChild(productsLabel);
+                }
+                removeClass(iframeModalHolder,'no-products');
+                addClass(iframeModalHolder,'products');
+            }
+        });
+
+        document.getElementById("tvp-modal-close").addEventListener('click', function () {
+            addClass('tvp-modal-{{ $id }}','tvp-hidden');
+            addClass('tvp-modal-overlay-{{ $id }}','tvp-hidden');
+            removeClass(document.body,'tvp-modal-open');
+            removeClass(iframeModalHolder,'products');
+            removeClass(iframeModalHolder,'no-products');
+            iframeModal.remove();
+        },false);
+
+        if ("dynamic" === dataMethod) {
+            var iframeDoc = iframe.contentWindow.document;
+            iframeDoc.open().write(getIframeHtml({
+                style: '{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/options.css" .Type ) .)) | safeCSS }}',
+                js: [
+                    TVP_DEBUG ? staticPath + "/js/vendor/jquery.js" : "",
+                    TVP_DEBUG ? staticPath + "/js/libs/utils.js" : "",
+                    TVP_DEBUG ? staticPath + "/js/carousel.js" : "",
+                    TVP_DEBUG ? staticPath + "/js/index.js" : "",
+                    TVP_DEBUG ? "" : staticPath + "/dist/js/scripts.min.js"
+                ],
+                css: [
+                    TVP_DEBUG ? staticPath + "/css/styles.css" : "",
+                    TVP_DEBUG ? staticPath + "/css/vendor/slick.css" : "",
+                    TVP_DEBUG ? "" : staticPath + "/dist/css/styles.min.css"
+                ],
+                id: "{{ $id }}",
+                className: dataMethod,
+                domain: "{{ .Site.BaseURL }}"
+            }));
+
+            iframeDoc.close();
+        } else {
+            var spot = document.getElementById("{{ $id }}");
+            var url = spot ? spot.href : "";
+            (-1 === navigator.userAgent.indexOf("MSIE")) ? iframe.src = url: iframe.location = url;
+        }
+
+    </script>
+</div>
