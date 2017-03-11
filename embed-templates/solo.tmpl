@@ -1,10 +1,10 @@
 <a class="tvp-solo" id="{{ name }}" href="{{ url }}"></a>
 <script>
-  {% if channel.entityType === 5 %}
+  {% if channel.entityType === entities.TYPE_DYNAMIC_CHANNEL %}
     window.__TVPage__ = window.__TVPage__ || {};
     __TVPage__.config = __TVPage__.config || {};
     __TVPage__.config[{{ name }}] = {
-      loginid: {{ loginId }},
+      loginid: {{ channel.loginId }},
       channel: {{ channel.config }}
     };
   {% endif %}
