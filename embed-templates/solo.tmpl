@@ -3,8 +3,8 @@
   {% if channel.entityType === entities.TYPE_DYNAMIC_CHANNEL %}
     window.__TVPage__ = window.__TVPage__ || {};
     __TVPage__.config = __TVPage__.config || {};
-    __TVPage__.config[{{ name }}] = {
-      loginid: {{ channel.loginId }},
+    __TVPage__.config["{{ name }}"] = {
+      loginid: "{{ channel.loginId }}",
       channel: {{ channel.config }}
     };
   {% endif %}
