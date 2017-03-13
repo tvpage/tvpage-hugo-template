@@ -110,7 +110,6 @@ body  {
   width: 33%;
   margin-left: 1%;
   position: relative;
-  background-color: white;
 }
 
 .tvp-product {
@@ -161,15 +160,15 @@ body  {
 }
 
 .tvp-product-title {
-  font-size: 14px;
   text-decoration: none;
   margin: 2% auto;
   width: 70%;
-  color: #1F1D26;
 }
 
 .tvp-product-price {
-=: 0font-size: 14px;margin: 3% auto;width: 70%;}
+  margin: 3% auto;
+  width: 70%;
+}
 
 .tvp-product-rating {
   float: right;
@@ -177,21 +176,11 @@ body  {
 
 .tvp-product-cta {
   width: 70%;
-  background: #333;
-  border: 0;
-  color: #fff;
-  text-transform: uppercase;
   display: block;
   cursor: pointer;
   -webkit-transition: all .05s ease-in-out;
   transition: all .05s ease-in-out;
-  font-size: 14px;
-  padding: 4% 0;
   margin: 0 auto;
-}
-
-.tvp-product-cta:hover {
-  background: #000;
 }
 
 .tvp-product-image {
@@ -228,43 +217,24 @@ body  {
   bottom: 0;
   margin: auto;
   padding: 5%;
-  border: 1px solid black;
 }
 
-.tvp-carousel-arrow {
+.tvp-products-carousel-arrow {
   position: absolute;
-  top: 0;
   bottom: 0;
-  width: 35px;
-  height: 35px;
   margin: auto 0;
   padding: 0;
   cursor: pointer;
-  border: none;
   outline: none;
   z-index: 1000;
 }
 
-.tvp-carousel-arrow.prev {
-  left:0;
-}
-
-.tvp-carousel-arrow.next {
-  right:0;
-}
-
-.tvp-carousel-arrow > svg {
+.tvp-products-carousel-arrow > svg {
   -webkit-transition: all .05s ease-in-out;
   transition: all .05s ease-in-out;
-  fill: #333;
-  background: #858585;
   pointer-events: none;
 }
 
-.tvp-carousel-arrow > svg > path {
+.tvp-products-carousel-arrow > svg > path {
   pointer-events: none;
-}
-
-.tvp-carousel-arrow:hover {
-  fill:#000;
 }

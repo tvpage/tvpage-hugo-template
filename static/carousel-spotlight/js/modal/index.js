@@ -116,13 +116,13 @@
               var arrows = document.createDocumentFragment();
 
               var prev = document.createElement('div');
-              prev.className = 'tvp-carousel-arrow prev';
+              prev.className = 'tvp-products-carousel-arrow prev';
               prev.innerHTML = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">'+
               '<path d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z"/><path d="M0-.5h24v24H0z" fill="none"/></svg>';
               prev.addEventListener('click', function(){ $el.slick('slickPrev');});
 
               var next = document.createElement('div');
-              next.className = 'tvp-carousel-arrow next';
+              next.className = 'tvp-products-carousel-arrow next';
               next.innerHTML = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">'+
               '<path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"/>'+
               '<path d="M0-.25h24v24H0z" fill="none"/></svg>';
