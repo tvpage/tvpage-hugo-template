@@ -71,7 +71,7 @@
     jsonpCall({
       src: function(){
         var channel = s.channel,
-            params = channel.parameters
+            params = channel.parameters,
             itemsPerPage = isset(s,'items_per_page') ? s.items_per_page : 8,
             url = '//api.tvpage.com/v1/channels/' + channel.id + '/videos?X-login-id=' + s.loginid;
 

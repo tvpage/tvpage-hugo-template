@@ -113,8 +113,8 @@
       this.el.appendChild(overlay);
     };
     this.update = function(selected){
-      var selectedVid = selected || '';
-      currentId = selectedVid.assetId
+      var selectedVid = selected || '',
+      currentId = selectedVid.assetId,
       currentVid = 0;
 
       for (var i = 0; i < selectedVid.length; i++) {
