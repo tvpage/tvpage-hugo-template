@@ -2,7 +2,7 @@
 
   var channelVideosPage = 0,
       lastPage,
-      isFetching;
+      isFetching,
 
   random = function(){
     return 'tvp_' + Math.floor(Math.random() * 50005);
