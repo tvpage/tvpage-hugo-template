@@ -1,0 +1,88 @@
+{{- partial "settings.html" . -}}
+{{ $id := ($.Scratch.Get "settings").name }}
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+  {{ if (getenv "HUGO_DEBUG") }}
+  <link rel="stylesheet" type="text/css" href="{{ (printf "%s/css/styles.css" .Type ) | absURL }}">
+  <link rel="stylesheet" type="text/css" href="{{ (printf "%s/css/vendor/slick.css" .Type ) | absURL }}">
+  {{ else }}
+  <link rel="stylesheet" type="text/css" href="{{ (printf "%s/css/inline.css" .Type ) | absURL }}">
+  {{ end }}
+</head>
+<body data-id='{{ $id }}'>
+<div id='{{ $id }}' class="tvp-rb iframe-content">
+<div class="tvp-content">
+  <div class="tvp-row-titles">
+    <div class="tvp-row-player-title">
+      <h1 id="videoTitle"></h1>
+    </div>
+    <div class="tvp-row-featured-title">
+      <h2>Featured Products</h2>
+    </div>
+    <div class="clear"></div>
+  </div>
+  <div class="tvp-row">
+    <div class="tvp-content">
+      <div class="tvp-player" id="tvpPlayerView">
+        
+      </div>
+      <div class="tvp-featured" id="tvpFeaturedProduct">
+        
+      </div>
+      <div class="tvp-products-scroller" id="tvpProductsView">
+        
+      </div>
+      
+      <!-- Mobile Views -->
+      <div class="tvp-videos-scroller" id="tvpMobileVideoScroller">
+        
+      </div>
+      <div class="tvp-products-scroller" id="tvpMobileProductsScroller">
+        
+      </div>
+      <div class="tvp-clear"></div>
+    </div>
+  </div>
+  <div class="tvp-videos-scroller" id="tvpVideoScroller">
+    
+  </div>
+</div>
+<script id="videoItemTemplate" type="text/template">
+    <!-- <div class="tvp-video-container" data-id="{id}"> -->
+      <span class="tvp-video-image">
+        <span class="tvp-video-thumb" style="background-image: url('{asset.thumbnailUrl}');"></span>
+        <span class="tvp-icon tvp-icon-play-small"></span>
+        <span class="tvp-icon tvp-icon-play-small anim"></span>
+      </span>
+      <span class="tvp-video-title">
+        <span class="tvp-video-title-content">
+          <span class="tvp-video-title-center">
+            {title}
+          </span>
+        </span>
+      </span>
+    <!-- </div> -->
+</script>
+<script>
+    window.__TVPage__ = window.__TVPage__ || {};
+    __TVPage__.config = __TVPage__.config || {};
+    __TVPage__.config[{{ $id }}] = {{ $.Scratch.Get "settings" }};
+    __TVPage__.config[{{ $id }}].channel = {
+        id: '{{ ($.Scratch.Get "settings").channelid }}'
+    };
+</script>
+{{ if not (getenv "HUGO_DEBUG") }}
+<script>window.DEBUG = Number({{getenv "HUGO_DEBUG"}}) || 0;</script>
+<script src="{{ (printf "%s/js/vendor/jquery.js" .Type ) | absURL }}"></script>
+<script src="{{ (printf "%s/js/vendor/slick-min.js" .Type ) | absURL }}"></script>
+<script src="{{ (printf "%s/js/libs/utils.js" .Type ) | absURL }}"></script>
+<script src="{{ (printf "%s/js/inline.js" .Type ) | absURL }}"></script>
+<script src="{{ (printf "%s/js/index.js" .Type ) | absURL }}"></script>
+{{ else }}
+<script src="{{ (printf "%s/dist/js/scripts.min.js" .Type ) | absURL }}"></script>
+{{ end }}
+</body>
+</html>

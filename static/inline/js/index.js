@@ -86,7 +86,7 @@
     var initialize = function(){
         if (body.classList.contains('dynamic')) {
             (function(settings){
-                var carouselSettings = JSON.parse(JSON.stringify(settings));
+                var inlineSettings = JSON.parse(JSON.stringify(settings));
                 var name = settings.name;
 
                 render(body,{
@@ -95,7 +95,7 @@
                 });
 
                 jsonpCall({
-                    src: settings.domain + '/carousel/options.js',
+                    src: settings.domain + '/inline/options.js',
                     cbName: 'tvpcallback'
                 },function(data){
                     if (!data) return;
@@ -107,9 +107,9 @@
                         opts[option.code] = option.value;
                     }
 
-                    carouselSettings = extend(carouselSettings, opts);
+                    inlineSettings = extend(inlineSettings, opts);
 
-                    carouselSettings.onClick = function (clicked,videos) {
+                    inlineSettings.onClick = function (clicked,videos) {
                         if (window.parent) {
                             window.parent.postMessage({
                                 runTime: 'undefined' !== typeof window.__TVPage__ ? __TVPage__ : null,
@@ -120,20 +120,20 @@
                         }
                     };
 
-                    Carousel(name, carouselSettings);
+                    Inline(name, inlineSettings);
                 });
 
             }(getSettings('dynamic')));
         } else {
             (function(settings){
-                var carouselSettings = JSON.parse(JSON.stringify(settings));
+                var inlineSettings = JSON.parse(JSON.stringify(settings));
                 var name = settings.name;
 
                 if(Utils.isMobile) {
                     document.getElementById(name).classList.add('mobile');
                 }
 
-                carouselSettings.onClick = function (clicked,videos) {
+                inlineSettings.onClick = function (clicked,videos) {
                     if (window.parent) {
                         window.parent.postMessage({
                             runTime: 'undefined' !== typeof window.__TVPage__ ? __TVPage__ : null,
@@ -143,19 +143,18 @@
                         }, '*');
                     }
                 };
-                console.log(settings, carouselSettings);
-                Carousel(name, carouselSettings);
+                Inline(name, inlineSettings);
 
             }(getSettings('static')));
         }
     };
 
     var not = function(obj){return 'undefined' === typeof obj};
-    if (not(window.jQuery) || not(window.Carousel) || not(window.Utils)) {
+    if (not(window.jQuery) || not(window.Inline) || not(window.Utils)) {
         var libsCheck = 0;
         (function libsReady() {
             setTimeout(function(){
-                if (not(window.jQuery) || not(window.Carousel) || not(window.Utils)) {
+                if (not(window.jQuery) || not(window.Inline) || not(window.Utils)) {
                     (++libsCheck < 50) ? libsReady() : console.log('limit reached');
                 } else {
                     initialize();

@@ -41,7 +41,7 @@
     id: '{{ ($.Scratch.Get "settings").channelid }}'
   };
 </script>
-{{ if (getenv "HUGO_DEBUG") }}
+{{ if not (getenv "HUGO_DEBUG") }}
 <script>window.DEBUG = Number({{getenv "HUGO_DEBUG"}}) || 0;</script>
 <script src="{{ (printf "%s/js/libs/utils.js" .Type ) | absURL }}"></script>
 <script src="{{ (printf "%s/js/grid.js" .Type ) | absURL }}"></script>
