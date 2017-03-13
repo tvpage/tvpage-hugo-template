@@ -2,6 +2,7 @@
 
   var channelVideosPage = 0,
       lastPage,
+      isFetching;
 
   random = function(){
     return 'tvp_' + Math.floor(Math.random() * 50005);
@@ -26,7 +27,6 @@
     return 'undefined' !== typeof val;
   },
   jsonpCall = function(opts,callback){
-    var isFetching = false;
     if (!isFetching) {
       isFetching = true;
       var s = document.createElement('script');
@@ -82,6 +82,7 @@
       }(),
       cbName: cbName
     },callback);
+    isFetching = false;
   },
   render = function(idEl,target){
     if (!idEl || !target) return console.log('need target');
