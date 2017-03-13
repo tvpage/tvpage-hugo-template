@@ -112,7 +112,17 @@
       overlay.addEventListener('click', click);
       this.el.appendChild(overlay);
     };
+    this.update = function(selected){
+      var selectedVid = selected || '';
+      currentId = selectedVid.assetId
+      currentVid = 0;
 
+      for (var i = 0; i < selectedVid.length; i++) {
+        if (selectedVid.assetId === currentId) currentVid = i;
+      }
+
+      that.play(selectedVid[currentVid]);
+    };
     this.play = function(asset,ongoing){
       if (!asset) return console.log('need asset');
       var willCue = false,

@@ -71,11 +71,12 @@
     jsonpCall({
       src: function(){
         var channel = s.channel,
-            params = channel.parameters,
+            params = channel.parameters
+            itemsPerPage = isset(s,'items_per_page') ? s.items_per_page : 8,
             url = '//api.tvpage.com/v1/channels/' + channel.id + '/videos?X-login-id=' + s.loginid;
 
         for (var p in params) { url += '&' + p + '=' + params[p];}
-        url += '&n=' + s.items_per_page + '&p=' + channelVideosPage;
+        url += '&n=' + itemsPerPage + '&p=' + channelVideosPage;
         url += '&callback='+cbName;
         return url;
       }(),
@@ -126,8 +127,9 @@
     if (document.body.classList.contains('dynamic')) {
       //We deal diff with some stuff on iframe.
       (function(unique,settings){
-        var playerSettings = JSON.parse(JSON.stringify(settings));
-        var menuSettings = JSON.parse(JSON.stringify(settings));
+        var playerSettings = JSON.parse(JSON.stringify(settings)),
+            menuSettings = JSON.parse(JSON.stringify(settings)),
+            playlistOption = isset(settings,'playlist') ? settings.playlist: 'hide';
 
         render(unique,document.body);
 
@@ -135,11 +137,11 @@
           playerSettings.data = data || [];
           var player = new Player('tvp-player-el-'+unique,playerSettings);
 
-          menuSettings.data = data || [];
-          var menu = new Menu();
-          menu.render(menuSettings,unique);
-
-          bindLoadMoreEvent(menu);
+          if (playlistOption === 'show') {
+            menuSettings.data = data || [];
+            var menu = new Menu(player,menuSettings);
+            bindLoadMoreEvent(menu);
+          }
         });
       }(random(),getSettings('dynamic')));
     }
