@@ -206,7 +206,6 @@
     };
 
     this.el.onclick = function(e) {
-      debugger;
       var target = e.target;
       if (!target.classList.contains('tvp-video')) return;
 
