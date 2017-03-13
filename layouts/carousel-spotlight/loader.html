@@ -44,7 +44,7 @@
                     <path fill="#ffffff" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
                     <path d="M0 0h24v24H0z" fill="none"></path>
                 </svg>
-                <h4 id="tvp-modal-title-{{ $id }}" class="tvp-modal-title">Double wall insulated mug</h4></div>
+                <h4 id="tvp-modal-title-{{ $id }}" class="tvp-modal-title"></h4></div>
             <div class="tvp-modal-body">
                 <div id="tvp-modal-iframe-holder-{{ $id }}" class="tvp-modal-iframe-holder"></div>
             </div>
@@ -204,6 +204,10 @@
             return (e && isset(e, "data") && isset(e.data, "event") && config.eventPrefix + type === e.data.event);
         };
 
+        var updateModalTitle = function(title){
+            document.getElementById('tvp-modal-title-' + widgetId).innerHTML = title || "";
+        };
+
         window.addEventListener("message", function(e){
             if (!isEvent(e, ":resize")) return;
             holder.style.height = e.data.height;
@@ -225,6 +229,7 @@
                 runTime: (eventData.runTime || (isset(window, '__TVPage__') ? __TVPage__ : {}) ).config[widgetId]
             };
 
+            updateModalTitle(eventData.selectedVideo.title);
             removeClass('tvp-modal-' + widgetId,'tvp-hidden');
             removeClass('tvp-modal-overlay-' + widgetId,'tvp-hidden');
             addClass(document.body, 'tvp-modal-open');
@@ -287,7 +292,7 @@
 
         window.addEventListener("message", function(e) {
             if (!isEvent(e, ":player_next")) return;
-            document.getElementById('tvp-modal-title-' + widgetId).innerHTML = e.data.next.assetTitle;
+            updateModalTitle(e.data.next.assetTitle);
         });
 
         window.addEventListener("message", function(e) {
