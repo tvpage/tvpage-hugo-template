@@ -57,18 +57,11 @@
   </div>
 </div>
 <script id="videoItemTemplate" type="text/template">
-    <span class="tvp-video-image">
-      <span class="tvp-video-thumb" style="background-image: url('{asset.thumbnailUrl}');"></span>
-      <span class="tvp-icon tvp-icon-play-small"></span>
-      <span class="tvp-icon tvp-icon-play-small anim"></span>
-    </span>
-    <span class="tvp-video-title">
-      <span class="tvp-video-title-content">
-        <span class="tvp-video-title-center">
-          {title}
-        </span>
-      </span>
-    </span>
+    <div class="tvp-video-image" style="background-image: url('{asset.thumbnailUrl}');">
+      <svg class="tvp-video-play" viewBox="0 0 200 200" alt="Play video"><polygon points="70, 55 70, 145 145, 100"></polygon></svg>
+      <div class="tvp-video-image-overlay"></div>
+    </div>
+    <p>{title}</p>
 </script>
 <script>
     window.__TVPage__ = window.__TVPage__ || {};

@@ -12,7 +12,14 @@
 
     var productTemplate = '<div class="tvp-product-image" style="background-image: url({imageUrl})"></div>';
 
-    var productFeatureTemplate = '<span class="tvp-featured-image"> <img src="{imageUrl}"> </span> <span class="tvp-featured-info"> <strong>{title}</strong> <small>{gender}</small> <span class="tvp-featured-price">${price}</span> <span class="tvp-featured-rating">{formattedRating}</span> <span class="clear"></span> </span> ';
+    // var productFeatureTemplate = '<span class="tvp-featured-image"> <img src="{imageUrl}"> </span> <span class="tvp-featured-info"> <strong>{title}</strong> <small>{gender}</small> <span class="tvp-featured-price">${price}</span> <span class="tvp-featured-rating">{formattedRating}</span> <span class="clear"></span> </span> ';
+    var productFeatureTemplate = '<span class="tvp-featured-image" style="background-image: url({imageUrl})" ></span>'
+        +'<span class="tvp-featured-info">'
+        +'<span class="tvp-featured-info-title">{title}</span>'
+        +'<span class="tvp-featured-info-price">${price}</span>'
+        +'<span class="tvp-featured-info-rating">{formattedRating}</span>'
+        +'<span class="clear"></span>'
+        +'</span>';
 
     var hasClass = function(obj,c) {
         if (!obj || !c) return;
@@ -161,9 +168,8 @@
             var s = options;
             this.selectedVideo = this.data[0];
             s.data = data;
-
             this.player = new Player('tvp-player', s, this.selectedVideo.id);
-
+            $(this.el).find('#videoTitle').html(this.selectedVideo.title);
             //render produyts
             var productHolder = Utils.getByClass('tvp-products-scroller');
             var playerHolder = document.getElementById('tvp-player');
@@ -266,6 +272,7 @@
                 }
                 that.player.load(selected.id);
                 renderProducts(selected.id, selected.loginId);
+                $(that.el).find('#videoTitle').html(selected.title);
 
             } else if (hasClass(target,'tvp-product-item')) {
                 var id = target.getAttribute('data-id'),
