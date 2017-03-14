@@ -33,7 +33,7 @@
     this.initialResize = true;
     this.autoplay = isset(options.autoplay) ? Number(options.autoplay) : false;
     this.autonext = isset(options.autonext) ? Number(options.autonext) : true;
-    this.version = isset(options.version) ? options.version : '1.8.5';
+    this.version = isset(options.version) ? options.version : '1.8.6';
     this.progressColor = isset(options.progressColor) ? options.progressColor : '#E57211';
     this.transcript = isset(options.transcript) ? options.transcript : false;
     this.removeControls = isset(options.removeControls) ? options.removeControls : ["tvplogo","hd"];
@@ -183,12 +183,12 @@
         } else {
 
           //We create insntances on the tvpage player.
-          new TVPage.player({
+          that.player = new TVPage.player({
             //poster: true,
             techOrder: 'html5,flash',
             analytics: { tvpa: that.analytics },
             apiBaseUrl: '//api.tvpage.com/v1',
-            swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+that.version+'-flash.swf',
+            swf: '//cdnjs.tvpage.com/tvplayer/tvp-' + that.version + '.swf',
             onReady: function(e, pl){
               that.instance = pl;
               that.resize();

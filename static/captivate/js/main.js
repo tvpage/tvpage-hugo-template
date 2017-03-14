@@ -40,10 +40,9 @@
     var customEllipsis = function () {
         var els = '.latest-video-title';
         var maxHeight = parseInt($(els).css('max-height')) + 1;
-        var lineHeight = isLoadMore ? 0 : parseInt($(els).css('line-height'));        
 
         _.each($(els).find('span'), function (ele, i) {            
-            var actualHeight = ele.offsetHeight; //- lineHeight;
+            var actualHeight = ele.offsetHeight;
             if (actualHeight > maxHeight) {
                 $(ele).parent().addClass('tvp-custom-ellipsis');
             }
@@ -1471,7 +1470,7 @@
     if (TVSite.isPlayerPage) {
         window.TVPlayer = new TVPage.player({
             divId: 'TVPagePlayer',
-            swf: '//appcdn.tvpage.com//player/assets/tvp/tvp-1.5.2-flash.swf',
+            swf: '//cdnjs.tvpage.com/tvplayer/tvp-'+ TVSite.playerVersion +'.swf',
             displayResolution: tvp_Player.playerResolution,
             analytics: { tvpa : true },
             techOrder: tvp_Player.playerTechOrder,
