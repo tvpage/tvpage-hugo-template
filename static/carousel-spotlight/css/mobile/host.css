@@ -42,7 +42,8 @@
 
 .tvp-modal-content {
   position: relative;
-  background-clip: padding-box;
+  background-clip: padding-box !important;
+  background: transparent !important;
   outline: 0;
 }
 
@@ -80,7 +81,6 @@
 }
 
 .tvp-iframe-holder {
-  /*height: 500px;*/
   position: relative;
 }
 
@@ -101,26 +101,21 @@
 
 @media screen and (min-width: 500px){
   .tvp-iframe-modal {
-    height: 650px;
+    height: 750px;
+  }
+
+  .tvp-modal-wrapper {
+    margin: 30px;
   }
 }
 
 .tvp-modal-close {
-  width: 27px;
-  height: 27px;
-  padding: 3px;
   cursor: pointer;
-  background: rgba(0, 0, 0, 0.75);
   border: 0;
   -webkit-appearance: none;
   right: -6px;
   position: absolute;
   top: -6px;
-  border-radius: 50%;
-}
-
-.tvp-modal-close > path:nth-child(1) {
-  fill: #fff;
 }
 
 .tvp-modal-close > path:nth-child(2){

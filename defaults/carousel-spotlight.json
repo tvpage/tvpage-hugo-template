@@ -313,13 +313,6 @@
     {
       "for": "modal",
       "type": "text",
-      "label": "Modal Shadow",
-      "code": "modal_shadow",
-      "value": "0 3px 9px rgba(0, 0, 0, 0.5)"
-    },
-    {
-      "for": "modal",
-      "type": "text",
       "label": "Modal Background",
       "code": "modal_background",
       "value": "#fff"

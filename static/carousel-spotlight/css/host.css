@@ -49,12 +49,11 @@
 
 .tvp-modal-content {
   position: relative;
-  background-color: #fff;
-  border: 1px solid #999;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
   background-clip: padding-box;
   outline: 0;
+  box-shadow: 0px 3px 9px rgba(0, 0, 0, 0.5);
+  -o-box-shadow: 0px 3px 9px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0px 3px 9px rgba(0, 0, 0, 0.5);
 }
 
 .tvp-iframe-modal {
