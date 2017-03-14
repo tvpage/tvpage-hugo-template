@@ -541,7 +541,6 @@ body {
 .tvp-rb .tvp-videos-scroller {
   height: 100%;
   width: 100%;
-  border: 1px solid red;
 }
 .tvp-rb .tvp-videos-scroller .no-arrows {
   margin: 0 auto;
