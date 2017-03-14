@@ -17,6 +17,7 @@
   <script async src="//a.tvpage.com/tvpa.min.js"></script>
   <script async src='//appcdn.tvpage.com/player/assets/tvp/tvp-{{ ($.Scratch.Get "settings").version }}-min.js'></script>
   {{ if (getenv "HUGO_DEBUG") }}
+  <script src="{{ (printf "%s/js/libs/utils.js" .Type ) | absURL }}"></script>
   <script src="{{ (printf "%s/js/libs/analytics.js" .Type ) | absURL }}"></script>
   <script src="{{ (printf "%s/js/libs/player.js" .Type ) | absURL }}"></script>
   <script src="{{ (printf "%s/js/vendor/simple-scrollbar.min.js" .Type ) | absURL }}"></script>
