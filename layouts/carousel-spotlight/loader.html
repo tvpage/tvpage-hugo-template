@@ -295,6 +295,11 @@
         });
 
         window.addEventListener("message", function(e) {
+            if (!isEvent(e, ":modal_resized")) return;
+            iframeModal.style.height = e.data.height;
+        });
+
+        window.addEventListener("message", function(e) {
             if (!isEvent(e, ":modal_no_products")) return;
 
             if (config.isDesktop) {
