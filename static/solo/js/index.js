@@ -107,16 +107,11 @@
           var menuSettings = JSON.parse(JSON.stringify(settings));
           if (!lastPage) {
             loadData(settings,unique,function(data){
-              if (!data.length) {
-                lastPage = true;
-              }else{
-                lastPage = false;
-              }
+              lastPage = (!data.length || data.length < 0) ? true : false;
               menuSettings.data = data || [];
-              menu.update(menuSettings);
+              menu.update(menuSettings,scrollMenu);
             });
           }
-
         }(random(),getSettings('dynamic')));
       }
     },30));
