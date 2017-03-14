@@ -154,7 +154,7 @@
         var libsCheck = 0;
         (function libsReady() {
             setTimeout(function(){
-                if (not(window.jQuery) || not(window.Inline) || not(window.Utils)) {
+                if (not(window.jQuery) || not(window.Inline) || not(window.Utils) || not(window.Player)) {
                     (++libsCheck < 50) ? libsReady() : console.log('limit reached');
                 } else {
                     initialize();

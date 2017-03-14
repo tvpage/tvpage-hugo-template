@@ -70,7 +70,12 @@
                 slidesToScroll: 4,
                 prevArrow: '<div class="tvp-videos-arrows tvp-videos-arrow-prev" data-dir="prev"> <span class="tvp-icon tvp-icon-arrow-prev" data-dir="prev"></span></div>',
                 nextArrow: '<div class="tvp-videos-arrows tvp-videos-arrow-next" data-dir="next"> <span class="tvp-icon tvp-icon-arrow-next" data-dir="next"></span></div>'
-            });            
+            });
+
+            //init player
+            var s = options;
+            s.data = data
+            this.player = new Player('tvp-player', s, this.data[0]);
         };
 
         var that = this;

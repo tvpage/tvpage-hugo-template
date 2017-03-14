@@ -27,7 +27,13 @@
   <div class="tvp-row">
     <div class="tvp-content">
       <div class="tvp-player" id="tvpPlayerView">
-        
+        <div class="tvp-content">
+          <div id="tvp-player"></div>
+          <div id="tvp-controls" class="tvp-not-active">
+            <span class="tvp-icon tvp-icon-play"></span>
+            <span class="tvp-icon tvp-icon-play anim"></span>
+          </div>
+        </div>
       </div>
       <div class="tvp-featured" id="tvpFeaturedProduct">
         
@@ -51,20 +57,18 @@
   </div>
 </div>
 <script id="videoItemTemplate" type="text/template">
-    <!-- <div class="tvp-video-container" data-id="{id}"> -->
-      <span class="tvp-video-image">
-        <span class="tvp-video-thumb" style="background-image: url('{asset.thumbnailUrl}');"></span>
-        <span class="tvp-icon tvp-icon-play-small"></span>
-        <span class="tvp-icon tvp-icon-play-small anim"></span>
-      </span>
-      <span class="tvp-video-title">
-        <span class="tvp-video-title-content">
-          <span class="tvp-video-title-center">
-            {title}
-          </span>
+    <span class="tvp-video-image">
+      <span class="tvp-video-thumb" style="background-image: url('{asset.thumbnailUrl}');"></span>
+      <span class="tvp-icon tvp-icon-play-small"></span>
+      <span class="tvp-icon tvp-icon-play-small anim"></span>
+    </span>
+    <span class="tvp-video-title">
+      <span class="tvp-video-title-content">
+        <span class="tvp-video-title-center">
+          {title}
         </span>
       </span>
-    <!-- </div> -->
+    </span>
 </script>
 <script>
     window.__TVPage__ = window.__TVPage__ || {};
@@ -74,11 +78,15 @@
         id: '{{ ($.Scratch.Get "settings").channelid }}'
     };
 </script>
+<script async src="//a.tvpage.com/tvpa.min.js"></script>
+<script async src='//appcdn.tvpage.com/player/assets/tvp/tvp-{{ ($.Scratch.Get "settings").player_version }}-min.js'></script>
 {{ if not (getenv "HUGO_DEBUG") }}
 <script>window.DEBUG = Number({{getenv "HUGO_DEBUG"}}) || 0;</script>
+<script src="{{ (printf "%s/js/libs/analytics.js" .Type ) | absURL }}"></script>
 <script src="{{ (printf "%s/js/vendor/jquery.js" .Type ) | absURL }}"></script>
 <script src="{{ (printf "%s/js/vendor/slick-min.js" .Type ) | absURL }}"></script>
 <script src="{{ (printf "%s/js/libs/utils.js" .Type ) | absURL }}"></script>
+<script src="{{ (printf "%s/js/libs/player.js" .Type ) | absURL }}"></script>
 <script src="{{ (printf "%s/js/inline.js" .Type ) | absURL }}"></script>
 <script src="{{ (printf "%s/js/index.js" .Type ) | absURL }}"></script>
 {{ else }}
