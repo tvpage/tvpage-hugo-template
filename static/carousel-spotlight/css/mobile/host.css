@@ -43,14 +43,7 @@
 .tvp-modal-content {
   position: relative;
   background-clip: padding-box !important;
-  background: transparent !important;
   outline: 0;
-}
-
-.tvp-modal-header {
-  padding: 10px;
-  border-bottom: 1px solid #e5e5e5;
-  background: #fff;
 }
 
 .tvp-modal-title {
