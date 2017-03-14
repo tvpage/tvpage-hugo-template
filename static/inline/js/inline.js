@@ -34,20 +34,35 @@
     };
 
     var renderProducts = function (vid, lid) {
-        var products = Utils.getByClass('tvp-products-scroller');
+        var products =  document.getElementById('tvpProductsView'); //Utils.getByClass('tvp-products-scroller');
         
         loadProducts(vid, lid, 
             function (data) {
-                for (var i = 0; i < data.length; i++) {
-                    var row = document.createElement('a');                    
-                    row.setAttribute('data-id', data[i].id);
-                    row.className = 'tvp-product-item';
-                    row.innerHTML = Utils.tmpl(productTemplate, data[i]);
-                    row.href = '#';
-                    products.appendChild(row);
-                }
+                var $sscontent = $(products).find('.ss-content');
+                if (data.length) {
+                    var _container;
+                    
+                    if($sscontent.length){
+                        $sscontent.children().remove();
+                        _container = $sscontent;
+                    }
+                    else{
+                        _container = products;
+                    }
 
-                SimpleScrollbar.initEl(products);
+                    for (var i = 0; i < data.length; i++) {
+                        var row = document.createElement('a');                    
+                        row.setAttribute('data-id', data[i].id);
+                        row.className = 'tvp-product-item';
+                        row.innerHTML = Utils.tmpl(productTemplate, data[i]);
+                        row.href = '#';
+                        $(row).appendTo(_container);
+                    }
+                    SimpleScrollbar.initEl(products);
+                }
+                else{
+                    if($sscontent.children().length) $sscontent.children().remove();
+                }
         });
     };
 
@@ -111,7 +126,7 @@
 
             //init player
             var s = options;
-            this.selectedVideo = this.data[1];
+            this.selectedVideo = this.data[0];
             s.data = data;
 
             this.player = new Player('tvp-player', s, this.selectedVideo.id);
@@ -215,12 +230,9 @@
                     if (data[i].id === id) {
                         selected = data[i];
                     }
-
                 }
                 that.player.load(selected.id);
-                // if (that.onClick) {
-                //     that.onClick(selected,data);
-                // }
+                renderProducts(selected.id, selected.loginId);
 
             } else if (hasClass(target,'tvp-carousel-arrow')) {
 

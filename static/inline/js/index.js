@@ -132,17 +132,7 @@
                 if(Utils.isMobile) {
                     document.getElementById(name).classList.add('mobile');
                 }
-
-                // inlineSettings.onClick = function (clicked,videos) {                    
-                //     if (window.parent) {
-                //         window.parent.postMessage({
-                //             runTime: 'undefined' !== typeof window.__TVPage__ ? __TVPage__ : null,
-                //             event: 'tvp_inline:video_click',
-                //             selectedVideo: clicked,
-                //             videos: videos
-                //         }, '*');
-                //     }
-                // };
+                
                 Inline(name, inlineSettings);
 
             }(getSettings('static')));
