@@ -1,5 +1,6 @@
 @import "mixins.scss";
 @import "slick.scss";
+@import "simple-scrollbar.scss";
 // Reebok fonts, kill before deploy!
 /*@import "reebok-fonts.scss";*/
 
@@ -343,11 +344,26 @@
   .tvp-products-scroller {
     box-sizing: border-box;
     height: 100%;
-    float: left;
+    float: right;
     margin-left: 1.2195%;
     position: relative;
-    width: 22.2222%;
-    
+
+    .tvp-product-item{
+      display: block;
+      width: 150px;
+      height: 150px;
+      background-color: #D8D8D8;
+      padding: 23px;
+      margin-bottom: 5px;
+      .tvp-product-image{        
+        @include aspect-ratio(1,1);
+        display: block;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+    }
+    /*
     .tvp-products-container {
       box-sizing: border-box;
       height: 87.0454%;
@@ -489,6 +505,7 @@
         }
       }
     }
+    */
   }
   
   .tvp-videos-scroller {

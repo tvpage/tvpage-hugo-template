@@ -9,9 +9,47 @@
         '<div class="tvp-video-image-overlay"></div>'+
         '</div><p class="tvp-video-title">{title}</p></div>';
 
+    // var productTemplate = '<a href="#" class="tvp-product-link"> <span class="tvp-product-image"> <img src="{imageUrl}"> </span> </a>';
+    var productTemplate = '<div class="tvp-product-image" style="background-image: url({imageUrl})"></div>';
+
     var hasClass = function(obj,c) {
         if (!obj || !c) return;
         return obj.classList.contains(c);
+    };
+
+    var loadProducts = function(videoId, loginId, fn) {
+        if (!videoId) return;
+        var src = '//api.tvpage.com/v1/videos/' + videoId + '/products?X-login-id=' + loginId;
+        var cbName = 'tvp_' + Math.floor(Math.random() * 555);
+        src += '&callback=' + cbName;
+        var script = document.createElement('script');
+        script.src = src;
+        window[cbName || 'callback'] = function(data) {
+            if (data && data.length && 'function' === typeof fn) {
+                fn(data);
+            } else {
+                fn([]);
+            }
+        };
+        document.body.appendChild(script);
+    };
+
+    var renderProducts = function (vid, lid) {
+        var products = Utils.getByClass('tvp-products-scroller');
+        
+        loadProducts(vid, lid, 
+            function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    var row = document.createElement('a');                    
+                    row.setAttribute('data-id', data[i].id);
+                    row.className = 'tvp-product-item';
+                    row.innerHTML = Utils.tmpl(productTemplate, data[i]);
+                    row.href = '#';
+                    products.appendChild(row);
+                }
+
+                SimpleScrollbar.initEl(products);
+        });
     };
 
     function Inline(el, options) {
@@ -58,7 +96,7 @@
                     template = templateScript.innerHTML;
                 }
 
-                rowEl.innerHTML += Utils.tmpl(template, item);
+                rowEl.innerHTML = Utils.tmpl(template, item);
                 
                 this.container.appendChild(rowEl);
             }
@@ -74,8 +112,20 @@
 
             //init player
             var s = options;
-            s.data = data
-            this.player = new Player('tvp-player', s, this.data[0]);
+            this.selectedVideo = this.data[0];
+            s.data = data;
+
+            this.player = new Player('tvp-player', s, this.selectedVideo);
+
+            //render produyts
+            var productHolder = Utils.getByClass('tvp-products-scroller');
+            var playerHolder = document.getElementById('tvp-player');
+            
+            var resizeProducts = function(height){
+                productHolder.style.height = height + 'px';
+            };
+            resizeProducts(playerHolder.offsetHeight);
+            renderProducts(this.selectedVideo.id, options.loginId);
         };
 
         var that = this;
@@ -156,7 +206,7 @@
             }
         };
 
-        this.el.onclick = function(e) {
+        this.el.onclick = function(e) {            
             var target = e.target;
 
             if (hasClass(target,'tvp-video')) {
