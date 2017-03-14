@@ -2,6 +2,7 @@
 
     var $carousel = null;
     var $videoSliderDesktop = null;
+    var productData = [];
 
     var itemTemplate = '<div data-id="{id}" class="tvp-video{className}">' +
         '<div class="tvp-video-image" style="background-image:url({asset.thumbnailUrl})">'+
@@ -65,7 +66,7 @@
                 var $sscontent = $(products).find('.ss-content');
                 if (data.length) {
                     var _container;
-                    
+                    productData = data;
                     if($sscontent.length){
                         $sscontent.children().remove();
                         _container = $sscontent;
@@ -80,7 +81,7 @@
                         row.className = 'tvp-product-item';
                         row.innerHTML = Utils.tmpl(productTemplate, data[i]);
                         row.href = '#';
-                        $(row).appendTo(_container);
+                        $(row).appendTo(_container);                        
                     }
                     SimpleScrollbar.initEl(products);
                     renderFeaturedProduct(data[0]);
@@ -90,7 +91,11 @@
                         $sscontent.children().remove();
                         $('#tvpFeaturedProduct').children().remove();
                     }
+                    while(productData.length > 0){
+                        productData.pop();
+                    }
                 }
+
         });
     };
 
@@ -249,7 +254,6 @@
         };
 
         this.el.onclick = function(e) {
-            console.log(e);
             var target = e.target;
             if (hasClass(target,'tvp-video-container')) {
                 var id = target.getAttribute('data-id'),
@@ -263,14 +267,27 @@
                 that.player.load(selected.id);
                 renderProducts(selected.id, selected.loginId);
 
-            } else if (hasClass(target,'tvp-carousel-arrow')) {
-
-                if (hasClass(target,'next')) {
-                    $carousel.slick('slickNext');
-                } else {
-                    $carousel.slick('slickPrev');
+            } else if (hasClass(target,'tvp-product-item')) {
+                var id = target.getAttribute('data-id'),
+                    selected = {};
+                var data = productData;
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].id === id) {
+                        selected = data[i];
+                    }
                 }
-
+                renderFeaturedProduct(selected);
+            }
+            else if (hasClass(target,'tvp-product-image')) {
+                var id = target.parentNode.getAttribute('data-id'),
+                                    selected = {};
+                var data = productData;
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].id === id) {
+                        selected = data[i];
+                    }
+                }
+                renderFeaturedProduct(selected);
             }
         };
 
