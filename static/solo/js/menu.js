@@ -3,6 +3,7 @@
 
      itemTemplate = '<div id="tvp-video-{id}" class="tvp-video{className}">' +
                         '<div class="tvp-video-image" style="background-image:url({asset.thumbnailUrl})">' +
+                            '<div class="tvp-active-overlay"><p>Now Playing</p></div>'+
                             '<svg class="tvp-video-play" viewBox="0 0 200 200" alt="Play video">' +
                                 '<polygon points="70, 55 70, 145 145, 100"></polygon>' +
                             '</svg>' +
@@ -98,8 +99,7 @@
 
         var menuItemElFrag = document.createDocumentFragment();
         var menuItemEl = document.createElement('div');
-
-        menuItemEl.classList.add('tvp-slide-menu-video-'+i+'');
+        menuItemEl.classList.add('tvp-slide-menu-video');
         menuItemEl.innerHTML = tmpl(itemTemplate, menuItem);
         menuItemElFrag.appendChild(menuItemEl);
         that.hiddenMenu.appendChild(menuItemElFrag);
@@ -113,30 +113,23 @@
     this.bindMenuEvent = function() {
       var toggles = document.querySelectorAll('.tvp-hamburger');
       for (var i = toggles.length - 1; i >= 0; i--) {
-        var toggle = toggles[i];
-        toggle.addEventListener("click", function(e) {
-            e.preventDefault();
+        toggles[i].onclick = function() {
             that.toggleMenu();
-        });
+        };
       }
     };
 
     this.bindClickEvent = function(){
       var tvpVid = document.querySelectorAll('.tvp-video');
+      tvpVid[0].classList.add('active');
       for (var i = tvpVid.length - 1; i >= 0; i--) {
-        var vids = tvpVid[i];
-        that.videoClick(vids);
+        that.videoClick(tvpVid[i]);
       }
     };
 
     this.toggleMenu = function() {
-        if (that.hamburguer.classList.contains('active') || that.hiddenMenu.classList.contains('active')) {
-          that.hamburguer.classList.remove('active');
-          that.hiddenMenu.classList.remove('active');
-        } else {
-          that.hamburguer.classList.add('active');
-          that.hiddenMenu.classList.add('active');
-        }
+        that.hamburguer.classList.contains('active') ? that.hamburguer.classList.remove('active') : that.hamburguer.classList.add('active');
+        that.hiddenMenu.classList.contains('active') ? that.hiddenMenu.classList.remove('active') : that.hiddenMenu.classList.add('active');
     };
 
 
@@ -147,6 +140,7 @@
         that.allVideos.push(videoData[i]);
         settings.data.push(videoData[i]);
         var newItemEl = document.createElement('div');
+        newItemEl.classList.add('tvp-slide-menu-video');
         newItemEl.innerHTML += tmpl(itemTemplate, videoData[i]);
         ssContent.appendChild(newItemEl);
       } 
@@ -154,20 +148,18 @@
     };
 
     this.videoClick = function(vids){
-        var allVids = that.allVideos;
-        vids.onclick = function(e) {
-            e.preventDefault();
-            if (!vids.classList.contains('tvp-video')) return;
-            var id = vids.id.split('-').pop(),
-                selected = [];
-
-            for (var i = 0; i < allVids.length; i++) {
-                if (allVids[i].id === id) {
-                    selected.push(allVids[i]);
+        vids.onclick = function() {
+            if (!this.classList.contains('tvp-video')) return;
+            var tvpV = document.querySelectorAll('.tvp-video');
+            for (var i = tvpV.length - 1; i >= 0; i--) {
+                if(tvpV[i].classList.contains('active')){
+                    tvpV[i].classList.remove('active')
                 }
             }
-            var selectedVid = assety(selected,settings);
-            player.update(selectedVid);
+            this.classList.add('active');
+            var id = this.id.split('-').pop(),
+            selected = that.allVideos.filter(function(v){v.id === id});
+            player.update(assety(selected,settings));
             that.toggleMenu();
         };
     };
