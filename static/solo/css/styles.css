@@ -273,8 +273,11 @@ body {
     font-family: Arial;
     font-size: 10px;
     color: #fff;
-    position: absolute;
-    margin: 22px 27px;
+    width: 100%;
+    top: 25px;
+    text-align: center;
+    position: relative;
+    margin: auto 0;
     display: none;
 }
 
