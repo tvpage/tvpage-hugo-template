@@ -40,7 +40,7 @@
     <div class="tvp-modal-wrapper">
         <div class="tvp-modal-content">
             <div id="tvp-modal-header-{{ $id }}" class="tvp-modal-header">
-                <svg id="tvp-modal-close" class="tvp-modal-close" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg id="tvp-modal-close-{{ $id }}" class="tvp-modal-close" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path fill="#ffffff" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
                     <path d="M0 0h24v24H0z" fill="none"></path>
                 </svg>
@@ -301,7 +301,7 @@
             if (config.isDesktop) {
                 var label = document.getElementById('tvp-products-headline-' + widgetId);
                 if (label) {
-                    label.remove();
+                    label.parentNode.removeChild(label);
                 }
             }
 
@@ -323,13 +323,14 @@
             addClass(iframeModalHolder,'products');
         });
 
-        document.getElementById("tvp-modal-close").addEventListener('click', function () {
+        var closeModal = function () {
             addClass('tvp-modal-' + widgetId,'tvp-hidden');
             addClass('tvp-modal-overlay-' + widgetId,'tvp-hidden');
             removeClass(document.body,'tvp-modal-open');
             removeClass(iframeModalHolder,'products');
             removeClass(iframeModalHolder,'no-products');
-            iframeModal.remove();
-        },false);
+            iframeModal.parentNode.removeChild(iframeModal);
+        };
+        document.getElementById("tvp-modal-close-" + widgetId).addEventListener('click', closeModal, false);
     </script>
 </div>
