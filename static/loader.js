@@ -98,6 +98,7 @@
                 dev: [
                     '//a.tvpage.com/tvpa.min.js',
                     playerLib,
+                    self.static + '/js/libs/utils.js',
                     self.static + '/js/libs/analytics.js',
                     self.static + '/js/libs/player.js',
                     self.static + '/js/vendor/simple-scrollbar.min.js',

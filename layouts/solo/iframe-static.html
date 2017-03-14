@@ -80,8 +80,8 @@
 
       return settings;
     }());
-    var playlist = settings.playlist || 'hide';
-    if (playlist === 'show') {
+    var playlist = settings.playlist || null;
+    if (playlist && "show" === playlist) {
       new Menu(player, channelVideos);
     }
 }(document,

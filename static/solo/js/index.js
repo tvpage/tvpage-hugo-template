@@ -1,46 +1,21 @@
 ;(function(document) {
 
   var channelVideosPage = 0,
-      lastPage,
-      isFetching,
+      lastPage = false,
+      isFetching = false,
 
-  random = function(){
-    return 'tvp_' + Math.floor(Math.random() * 50005);
-  },
-  debounce = function(func,wait,immediate){
-    var timeout;  
-    return function() {
-      var context = this, args = arguments;
-      var later = function() {
-        timeout = null;
-        if (!immediate) func.apply(context, args);
-      };
-      var callNow = immediate && !timeout;
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-      if (callNow) func.apply(context, args);
-    };      
-  },
-  isset = function(o,p){
-    var val = o;
-    if (p) val = o[p];
-    return 'undefined' !== typeof val;
-  },
   jsonpCall = function(opts,callback){
-    if (!isFetching) {
-      isFetching = true;
       var s = document.createElement('script');
       s.src = opts.src;
       if (!callback || 'function' !== typeof callback) return;
       window[opts.cbName || 'callback'] = callback;
       var b = opts.body || document.body;
       b.appendChild(s);
-    }
   },
   getSettings = function(type){
     var getConfig = function(g){
       var c = {};
-      if (isset(g) && isset(g,'__TVPage__') && isset(g.__TVPage__, 'config')) {
+      if (Utils.isset(g) && Utils.isset(g,'__TVPage__') && Utils.isset(g.__TVPage__, 'config')) {
         c = g.__TVPage__.config;
       } else {
         return console.log('need config');
@@ -51,7 +26,7 @@
     if ('dynamic' === type) {
       var config = getConfig(parent);
       var id = document.body.getAttribute('data-id');
-      if (!isset(config, id)) return console.log('need settings');
+      if (!Utils.isset(config, id)) return console.log('need settings');
       s = config[id];
       s.name = id;
     } else if ('inline' === type && type && type.length) {
@@ -61,7 +36,7 @@
     } else if ('static' === type) {
       var config = getConfig(window);
       var id = document.body.getAttribute('data-id');
-      if (!isset(config, id)) return console.log('need settings');
+      if (!Utils.isset(config, id)) return console.log('need settings');
       s = config[id];
       s.name = id;
     }
@@ -72,17 +47,17 @@
       src: function(){
         var channel = s.channel,
             params = channel.parameters,
-            itemsPerPage = isset(s,'items_per_page') ? s.items_per_page : 8,
+            itemsPerPage = Utils.isset(s,'items_per_page') ? '&n=' + s.items_per_page : '&n=8' ,
             url = '//api.tvpage.com/v1/channels/' + channel.id + '/videos?X-login-id=' + s.loginid;
 
         for (var p in params) { url += '&' + p + '=' + params[p];}
-        url += '&n=' + itemsPerPage + '&p=' + channelVideosPage;
+        url += itemsPerPage + '&p=' + channelVideosPage;
         url += '&callback='+cbName;
         return url;
       }(),
       cbName: cbName
     },callback);
-    isFetching = false;
+    channelVideosPage++;
   },
   render = function(idEl,target){
     if (!idEl || !target) return console.log('need target');
@@ -95,24 +70,25 @@
   },
   bindLoadMoreEvent = function(menu,data){
     var scrollMenu = document.querySelectorAll('.ss-content')[0];
-      scrollMenu.addEventListener("scroll", debounce(function() {
-      var st = scrollMenu.scrollTop;
-      var nwh = document.body.clientHeight - scrollMenu.scrollHeight;
-      var percentDocument = (st*100)/nwh;
+    scrollMenu.addEventListener("scroll", Utils.debounce(function() {
+      var menuTop = scrollMenu.scrollTop,
+          newHeight = document.body.clientHeight - scrollMenu.scrollHeight,
+          percentDocument = (menuTop*100)/newHeight;
       percentDocument = Math.round(percentDocument);
       percentDocument = Math.abs(percentDocument);
       if (percentDocument >= 55 && percentDocument <= 100) {
-        channelVideosPage++;
         (function(unique,settings){
           var menuSettings = JSON.parse(JSON.stringify(settings));
-          if (!lastPage) {
+          if (!lastPage && !isFetching) {
             loadData(settings,unique,function(data){
+              isFetching = true;
               lastPage = (!data.length || data.length < 0) ? true : false;
               menuSettings.data = data || [];
               menu.update(menuSettings,scrollMenu);
             });
           }
-        }(random(),getSettings('dynamic')));
+          isFetching = false;
+        }(Utils.random(),getSettings('dynamic')));
       }
     },30));
   };
@@ -125,7 +101,7 @@
       (function(unique,settings){
         var playerSettings = JSON.parse(JSON.stringify(settings)),
             menuSettings = JSON.parse(JSON.stringify(settings)),
-            playlistOption = isset(settings,'playlist') ? settings.playlist: 'hide';
+            playlistOption = Utils.isset(settings,'playlist') ? settings.playlist: 'hide';
 
         render(unique,document.body);
 
@@ -139,7 +115,7 @@
             bindLoadMoreEvent(menu);
           }
         });
-      }(random(),getSettings('dynamic')));
+      }(Utils.random(),getSettings('dynamic')));
     }
   };
 

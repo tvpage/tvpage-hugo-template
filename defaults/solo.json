@@ -46,7 +46,7 @@
         "type": "text",
         "label": "Playlist",
         "code": "playlist",
-        "value": "show"
+        "value": "hide"
     },
     {
       "type": "boolean",
