@@ -187,7 +187,7 @@
             //poster: true,
             techOrder: 'html5,flash',
             analytics: { tvpa: that.analytics },
-            apiBaseUrl: '//api.tvpage.com/v1',
+            apiBaseUrl: options.apiBaseUrl,
             swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+that.version+'-flash.swf',
             onReady: function(e, pl){
               that.instance = pl;

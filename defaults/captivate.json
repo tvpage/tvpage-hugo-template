@@ -1,6 +1,13 @@
 {
     "option": [
         {
+            "for": "apiurl",
+            "type": "text",
+            "label": "API Base Url",
+            "code": "apiBaseUrl",
+            "value": "//api.tvpage.com/v1"
+        },
+        {
             "for": "styles",
             "type": "text",
             "label": "Google Font",

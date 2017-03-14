@@ -1,7 +1,8 @@
 (function(window,document){
 
   var analytics,
-      channelId;
+      channelId,
+      apiBaseUrl;
 
   var pkTrack = function(){
     analytics.track('pk',{
@@ -11,9 +12,9 @@
     });
   };
 
-  var loadProducts = function(videoId,loginId,fn){
+  var loadProducts = function(videoId,loginId,fn){  
     if (!videoId) return;
-    var src = '//api.tvpage.com/v1/videos/' + videoId + '/products?X-login-id=' + loginId;
+    var src = apiBaseUrl+'/videos/' + videoId + '/products?X-login-id=' + loginId;
     var cbName = 'tvp_' + Math.floor(Math.random() * 555);
     src += '&callback='+cbName;
     var script = document.createElement('script');
@@ -217,6 +218,7 @@
       };
 
       player = new Player('tvp-player-el',s,data.selectedVideo.id);
+
       window.addEventListener('resize', Utils.debounce(function(){
         player.resize();
       },85));
@@ -227,10 +229,9 @@
       var eventData = e.data;
 
       if ('tvp_carousel:modal_data' === eventData.event) {
-
         var loginId = eventData.runTime.loginid || eventData.runTime.loginId;
         channelId = eventData.runTime.channel.id || eventData.runTime.channelid;
-
+        apiBaseUrl = eventData.runTime.apiBaseUrl;
         analytics =  new Analytics();
         analytics.initConfig({
             logUrl: '\/\/api.tvpage.com\/v1\/__tvpa.gif',
