@@ -24,6 +24,18 @@ min_version = 0.17
 		mobile = "https://do0631budpzeh.cloudfront.net/dev/widgets/templates_preview/preview_Carousel_mobile.png"
 		tablet = "https://do0631budpzeh.cloudfront.net/dev/widgets/templates_preview/preview_Carousel_tablet.png"
 
+[[tvp-widgets]]
+	name = "Carousel Spotlight"
+	uniqueName = "carousel-spotlight"
+	path = "layouts/carousel-spotlight"
+	preview = "http://preview.tvpage.com"
+	settings = ['playback']
+	description = "Carousel is our most popular widget and can be used on a variety of pages. The user is presented with a series of thumbnails. The video plays in a modal after a thumbnail is clicked."
+	[[tvp-widgets.thumbnails]]
+		desktop = "https://do0631budpzeh.cloudfront.net/dev/widgets/templates_preview/preview_Carousel_dtop.png"
+		mobile = "https://do0631budpzeh.cloudfront.net/dev/widgets/templates_preview/preview_Carousel_mobile.png"
+		tablet = "https://do0631budpzeh.cloudfront.net/dev/widgets/templates_preview/preview_Carousel_tablet.png"
+
 #[[tvp-widgets]]
 #	name = "Inline"
 #	uniqueName = "inline"
