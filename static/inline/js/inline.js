@@ -11,6 +11,8 @@
 
     var productTemplate = '<div class="tvp-product-image" style="background-image: url({imageUrl})"></div>';
 
+    var productFeatureTemplate = '<span class="tvp-featured-image"> <img src="{imageUrl}"> </span> <span class="tvp-featured-info"> <strong>{title}</strong> <small>{gender}</small> <span class="tvp-featured-price">${price}</span> <span class="tvp-featured-rating">{formattedRating}</span> <span class="clear"></span> </span> ';
+
     var hasClass = function(obj,c) {
         if (!obj || !c) return;
         return obj.classList.contains(c);
@@ -32,6 +34,28 @@
         };
         document.body.appendChild(script);
     };
+
+    var renderFeaturedProduct = function (product) {
+        var getRating = function() {
+          var rating = 0;
+          
+          if(product.hasOwnProperty('rating')){
+            rating = parseInt(this.rating);
+          }
+
+          return '<span class="tvp-icon tvp-icon-rating tvp-rating-' + rating + '"></span>';
+        }
+
+        var featuredProductContainer = document.getElementById('tvpFeaturedProduct');
+
+        var featuredProduct = document.createElement('a');
+        product.formattedRating = getRating();
+        featuredProduct.className = 'tvp-featured-product';
+        featuredProduct.href = product.linkUrl;
+        featuredProduct.innerHTML = Utils.tmpl(productFeatureTemplate, product);
+        $(featuredProductContainer).children().remove();
+        $(featuredProduct).appendTo(featuredProductContainer);
+    }
 
     var renderProducts = function (vid, lid) {
         var products =  document.getElementById('tvpProductsView'); //Utils.getByClass('tvp-products-scroller');
@@ -59,9 +83,13 @@
                         $(row).appendTo(_container);
                     }
                     SimpleScrollbar.initEl(products);
+                    renderFeaturedProduct(data[0]);
                 }
                 else{
-                    if($sscontent.children().length) $sscontent.children().remove();
+                    if($sscontent.children().length) {
+                        $sscontent.children().remove();
+                        $('#tvpFeaturedProduct').children().remove();
+                    }
                 }
         });
     };
@@ -220,7 +248,8 @@
             }
         };
 
-        this.el.onclick = function(e) {               
+        this.el.onclick = function(e) {
+            console.log(e);
             var target = e.target;
             if (hasClass(target,'tvp-video-container')) {
                 var id = target.getAttribute('data-id'),
