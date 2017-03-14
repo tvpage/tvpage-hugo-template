@@ -9,7 +9,6 @@
         '<div class="tvp-video-image-overlay"></div>'+
         '</div><p class="tvp-video-title">{title}</p></div>';
 
-    // var productTemplate = '<a href="#" class="tvp-product-link"> <span class="tvp-product-image"> <img src="{imageUrl}"> </span> </a>';
     var productTemplate = '<div class="tvp-product-image" style="background-image: url({imageUrl})"></div>';
 
     var hasClass = function(obj,c) {
@@ -105,17 +104,17 @@
             $videoSliderDesktop.slick({
                 arrows: true,
                 slidesToShow: 4,
-                slidesToScroll: 4,
-                prevArrow: '<div class="tvp-videos-arrows tvp-videos-arrow-prev" data-dir="prev"> <span class="tvp-icon tvp-icon-arrow-prev" data-dir="prev"></span></div>',
-                nextArrow: '<div class="tvp-videos-arrows tvp-videos-arrow-next" data-dir="next"> <span class="tvp-icon tvp-icon-arrow-next" data-dir="next"></span></div>'
+                slidesToScroll: 4,                
+                nextArrow: '<div class="tvp-videos-arrows tvp-videos-arrow-next" data-dir="prev"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"/><path d="M0-.25h24v24H0z" fill="none"/></svg></div>',
+                prevArrow: '<div class="tvp-videos-arrows tvp-videos-arrow-prev" data-dir="next"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z"/><path d="M0-.5h24v24H0z" fill="none"/></svg></div>'
             });
 
             //init player
             var s = options;
-            this.selectedVideo = this.data[0];
+            this.selectedVideo = this.data[1];
             s.data = data;
 
-            this.player = new Player('tvp-player', s, this.selectedVideo);
+            this.player = new Player('tvp-player', s, this.selectedVideo.id);
 
             //render produyts
             var productHolder = Utils.getByClass('tvp-products-scroller');
@@ -206,10 +205,9 @@
             }
         };
 
-        this.el.onclick = function(e) {            
+        this.el.onclick = function(e) {               
             var target = e.target;
-
-            if (hasClass(target,'tvp-video')) {
+            if (hasClass(target,'tvp-video-container')) {
                 var id = target.getAttribute('data-id'),
                     selected = {};
                 var data = that.data;
@@ -219,10 +217,10 @@
                     }
 
                 }
-
-                if (that.onClick) {
-                    that.onClick(selected,data);
-                }
+                that.player.load(selected.id);
+                // if (that.onClick) {
+                //     that.onClick(selected,data);
+                // }
 
             } else if (hasClass(target,'tvp-carousel-arrow')) {
 
