@@ -1,6 +1,7 @@
 ;(function(document) {
 
   var channelVideosPage = 0,
+      itemsPerPage = 6,
       lastPage = false,
       isFetching = false,
 
@@ -47,11 +48,10 @@
       src: function(){
         var channel = s.channel,
             params = channel.parameters,
-            itemsPerPage = Utils.isset(s,'items_per_page') ? '&n=' + s.items_per_page : '&n=8' ,
             url = '//api.tvpage.com/v1/channels/' + channel.id + '/videos?X-login-id=' + s.loginid;
 
         for (var p in params) { url += '&' + p + '=' + params[p];}
-        url += itemsPerPage + '&p=' + channelVideosPage;
+        url += '&n=' + itemsPerPage + '&p=' + channelVideosPage;
         url += '&callback='+cbName;
         return url;
       }(),
@@ -68,7 +68,7 @@
     frag.appendChild(main);
     target.appendChild(frag);
   },
-  bindLoadMoreEvent = function(menu,data){
+  bindLoadMoreEvent = function(menu){
     var scrollMenu = document.querySelectorAll('.ss-content')[0];
     scrollMenu.addEventListener("scroll", Utils.debounce(function() {
       var menuTop = scrollMenu.scrollTop,
@@ -80,14 +80,14 @@
         (function(unique,settings){
           var menuSettings = JSON.parse(JSON.stringify(settings));
           if (!lastPage && !isFetching) {
+            isFetching = true;
             loadData(settings,unique,function(data){
-              isFetching = true;
-              lastPage = (!data.length || data.length < 0) ? true : false;
+              isFetching = false;
+              lastPage = (!data.length || data.length <= itemsPerPage) ? true : false;
               menuSettings.data = data || [];
               menu.update(menuSettings,scrollMenu);
             });
           }
-          isFetching = false;
         }(Utils.random(),getSettings('dynamic')));
       }
     },30));
@@ -112,7 +112,7 @@
           if (playlistOption === 'show') {
             menuSettings.data = data || [];
             var menu = new Menu(player,menuSettings);
-            bindLoadMoreEvent(menu);
+            bindLoadMoreEvent(menu,menuSettings);
           }
         });
       }(Utils.random(),getSettings('dynamic')));
