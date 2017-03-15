@@ -6,13 +6,13 @@
 
     var productTemplate = '<div class="tvp-product-image" style="background-image: url({imageUrl})"></div>';
 
-    // var productFeatureTemplate = '<span class="tvp-featured-image"> <img src="{imageUrl}"> </span> <span class="tvp-featured-info"> <strong>{title}</strong> <small>{gender}</small> <span class="tvp-featured-price">${price}</span> <span class="tvp-featured-rating">{formattedRating}</span> <span class="clear"></span> </span> ';
     var productFeatureTemplate = '<span class="tvp-featured-image" style="background-image: url({imageUrl})" ></span>'
         +'<span class="tvp-featured-info">'
         +'<span class="tvp-featured-info-title">{title}</span>'
         +'<span class="tvp-featured-info-price">${price}</span>'
-        +'<span class="tvp-featured-info-rating">{formattedRating}</span>'
+        +'<span class="tvp-featured-info-rating">{formattedRating}</span>'        
         +'<span class="clear"></span>'
+        +'<button class="tvp-featured-info-view-details">VIEW DETAILS</button>'
         +'</span>';
 
     var videoTemplate = '<div class="tvp-video" data-id="{id}">'
@@ -130,6 +130,7 @@
             renderProducts(e.assetId, e.loginId); 
             $(that.el).find('#videoTitle').html(e.assetTitle);
         };
+
         this.render = function(){
             this.container.innerHTML = '';
 
@@ -139,10 +140,7 @@
             for (var i = 0; i < all.length; i++) {
                 var item = all[i];
                 var rowEl = document.createElement('div');
-                var className = '';
-                // rowEl.className = 'tvp-video';
-                // rowEl.setAttribute('data-id', item.id);
-                
+                var className = '';                
                 item.title = Utils.trimText(item.title,50);
                 if ('undefined' !== typeof item.entity) {
                     className += ' tvp-exchange';
@@ -170,22 +168,14 @@
                 prevArrow: '<div class="tvp-videos-arrows tvp-videos-arrow-prev" data-dir="next"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z"/><path d="M0-.5h24v24H0z" fill="none"/></svg></div>'
             });
 
-            //init player
-            // var s = options;
+            //init player            
             var s = this;
             this.selectedVideo = this.data[0];
             s.data = data;            
             this.player = new Player('tvp-player', s, this.selectedVideo.id);
             $(this.el).find('#videoTitle').html(this.selectedVideo.title);
             //render products
-            var productHolder = Utils.getByClass('tvp-products-scroller');
-            var playerHolder = document.getElementById('tvp-player');
-            
-            var resizeProducts = function(height){
-                productHolder.style.height = height + 'px';
-            };
-            resizeProducts(playerHolder.offsetHeight);
-            renderProducts(this.selectedVideo.id, options.loginId);            
+            renderProducts(this.selectedVideo.id, options.loginId);
         };
 
         var that = this;
@@ -304,29 +294,11 @@
                 var selected = getSelectedData(productData, target.getAttribute('data-id'));
                 renderFeaturedProduct(selected);
             }
-
-            // var target = e.target;            
-            
-            // if (hasClass(target,'tvp-video')) {
-            //     var selected = getSelectedData(that.data, target.getAttribute('data-id'));
-
-            //     that.player.load(selected.id);
-            //     renderProducts(selected.id, selected.loginId);
-            //     $(that.el).find('#videoTitle').html(selected.title);
-            // } 
-            // else if (hasClass(target,'tvp-product-item')) {
-            //     var selected = getSelectedData(productData, target.getAttribute('data-id'));
-            //     renderFeaturedProduct(selected);
-            // }
-            // else if (hasClass(target,'tvp-product-image')) {
-            //     var selected = getSelectedData(productData, target.parentNode.getAttribute('data-id'));
-            //     renderFeaturedProduct(selected);
-            // }
         };
 
         this.load(function(data){
             that.render(data);
-        });
+        });        
     }
 
     window.Inline = Inline;

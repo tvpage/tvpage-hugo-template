@@ -304,6 +304,15 @@ body{
           font-size: 16pt;
           line-height: 23pt;
         }
+        &-view-details{
+          cursor: pointer;
+          width: 100%;
+          background-color: #DDDDDD;
+          border: 0;
+          padding: 9px;
+          font-size: 26px;
+          line-height: 36px;
+        }
       }
     }
   }
