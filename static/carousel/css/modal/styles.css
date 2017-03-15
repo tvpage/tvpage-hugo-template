@@ -116,11 +116,9 @@ body  {
   height: 0;
   padding-left: 1.35%;
   position: relative;
-  background-color: whitesmoke;
 }
 
 .tvp-product {
-  border: 1px solid black;
   display: block;
   margin-bottom: 10px;
   margin-right: 10px;
@@ -129,16 +127,14 @@ body  {
 
 .tvp-product-image-overlay {
   -webkit-transition: all .05s ease-in-out;
-          transition: all .05s ease-in-out;
+  transition: all .05s ease-in-out;
   display: none;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
   position: absolute;
-  background-color: black;
   margin: auto;
-  opacity: 0.2;
 }
 
 .tvp-product:hover .tvp-product-image-overlay {
@@ -177,21 +173,11 @@ body  {
 
 .tvp-product-cta {
   width: 100%;
-  background: #333;
-  border: 0;
-  color: #fff;
-  text-transform: uppercase;
   display: block;
   margin-top: 10px;
   cursor: pointer;
   -webkit-transition: all .05s ease-in-out;
   transition: all .05s ease-in-out;
-  font-size: 14px;
-  padding: 10px 0;
-}
-
-.tvp-product-cta:hover {
-  background: #000;
 }
 
 .tvp-arrow-indicator {
@@ -240,13 +226,9 @@ body  {
 .tvp-product-popup {
   display: none;
   position: absolute;
-  right: 97%;
-  width: 215px;
-  background: white;
-  padding: 10px;
-  border: 1px solid black;
   text-decoration: none;
   top: 0;
+  right: 97%;
 }
 
 .tvp-product-popup.active {

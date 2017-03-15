@@ -42,15 +42,6 @@
         this.removeControls = isset(options.remove_controls) ? options.remove_controls : null;
         this.analytics = isset(options.analytics) ? options.analytics : null;
         this.overlay = isset(options.overlay) ? options.overlay : null;
-        this.overlayColor = isset(options.overlay_color) ? options.overlay_color : null;
-        this.overlayOpacity = isset(options.overlay_opacity) ? options.overlay_opacity : null;
-        this.playButtonBackgroundColor = isset(options.play_button_background_color) ?  options.play_button_background_color : null;
-        this.playButtonBorderRadius = isset(options.play_button_border_radius) ? options.play_button_border_radius : null;
-        this.playButtonBorderWidth = isset(options.play_button_border_width) ? options.play_button_border_width : null;
-        this.playButtonBorderColor = isset(options.play_button_border_color) ? options.play_button_border_color : null;
-        this.playButtonIconColor = isset(options.play_button_icon_color) ? options.play_button_icon_color : null;
-        this.playButtonWidth = isset(options.play_button_width) ? options.play_button_width : null;
-        this.playButtonHeight = isset(options.play_button_height) ? options.play_button_height : null;
 
         this.onResize = isset(options.onResize) && isFunction(options.onResize) ? options.onResize : null;
         this.onNext = isset(options.onNext) && isFunction(options.onNext) ? options.onNext : null;
@@ -96,35 +87,24 @@
         //cue (mobile or autoplay:off) to actual play the video on demand.
         this.addOverlay = function(asset){
             var overlay = document.createElement('div');
-            overlay.classList.add('tvp-overlay');
+            overlay.className = 'tvp-overlay';
             overlay.style.backgroundImage = 'url("' + asset.thumbnailUrl + '")';
-
-            var overlayColor = this.overlayColor ? '#' + this.overlayColor : 'transparent';
-            var overlayHtml = '<div class="tvp-overlay-cover" style="opacity:' + this.overlayOpacity + ';' +
-                'background-image:linear-gradient(to bottom right,' + overlayColor + ',' + overlayColor + ');"></div>' +
-                '<div class="tvp-play-holder" style="height:' + this.playButtonHeight + ';">'+
-                '<svg class="tvp-play" style="width:' + this.playButtonWidth + ';height:' + this.playButtonHeight + ';' +
-                'background-color:#' + this.playButtonBackgroundColor + ';border:' + this.playButtonBorderWidth + ' solid #' +
-                this.playButtonBorderColor + ';border-radius:' + this.playButtonBorderRadius + ';" viewBox="0 0 200 200">' +
-                '<polygon fill="#'+this.playButtonIconColor+'" points="70, 55 70, 145 145, 100"></polygon></svg>';
-
-            overlay.innerHTML = overlayHtml;
+            overlay.innerHTML = '<div class="tvp-overlay-cover"></div><svg class="tvp-play" viewBox="0 0 200 200">' +
+            '<polygon points="70, 55 70, 145 145, 100"></polygon></svg>';
 
             var click = function(){
                 var clear = function () {
                     this.removeEventListener('click',click,false);
                     this.parentNode.removeChild(this);
                 };
-
-                if (that.onClick) {
-                    that.onClick();
-                } else if (that.instance) {
-                    clear.call(this);
+                clear.call(this);
+                if (that.instance) {
                     that.instance.play();
                 }
             };
 
-            overlay.addEventListener('click', click);
+            overlay.removeEventListener('click', click, false);
+            overlay.addEventListener('click', click, false);
             this.el.appendChild(overlay);
         };
 
@@ -240,9 +220,6 @@
 
                             that.current = current;
                             that.play(that.assets[that.current]);
-                            if (window.DEBUG) {
-                                console.debug("endTime = " + performance.now());
-                            }
                         },
                         onStateChange: function(e){
                             if ('tvp:media:videoended' !== e) return;

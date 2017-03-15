@@ -1,3 +1,7 @@
+*[class^="tvp-"] {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -81,7 +85,6 @@ body {
 .tvp-play {
   display: block;
   background-color: #fff;
-  box-sizing: border-box;
   width: 55px;
   height: 55px;
   padding: 0;
