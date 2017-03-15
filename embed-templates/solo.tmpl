@@ -10,18 +10,18 @@
   {% endif %}
 
   (function(w,d,id) {
-    w.onload = function () {
-      var x = new XMLHttpRequest();
-      x.open("GET", "{{ baseUrl }}/tvpwidget/{{ name }}-loader/");
-      x.onload = function (r) {
-        var a = d.getElementById(id);
-        a.insertAdjacentHTML("beforebegin", r.currentTarget.response || r.target.responseText);
-        var s = d.createElement("script");
-        s.appendChild(d.createTextNode(d.getElementById(id + "-script").innerHTML));
-        d.getElementsByTagName("head")[0].appendChild(s);
-        a.parentNode.removeChild(a);
-      };
-      x.send();
-    };
+    w.addEventListener("load",function(){
+        var x = new XMLHttpRequest();
+        x.open("GET", "{{ baseUrl }}/tvpwidget/{{ name }}-loader/");
+        x.onload = function (r) {
+          var a = d.getElementById(id);
+          a.insertAdjacentHTML("beforebegin", r.currentTarget.response || r.target.responseText);
+          var s = d.createElement("script");
+          s.appendChild(d.createTextNode(d.getElementById(id + "-script").innerHTML));
+          d.getElementsByTagName("head")[0].appendChild(s);
+          a.parentNode.removeChild(a);
+        };
+        x.send();
+    });
   })(window,document,{{ name }});
 </script>
