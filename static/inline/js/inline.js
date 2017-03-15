@@ -20,7 +20,7 @@
         + '<svg class="tvp-video-play" viewBox="0 0 200 200" alt="Play video"><polygon points="70, 55 70, 145 145, 100"></polygon></svg>'
         + '<div class="tvp-video-image-overlay"></div>'
         + '</div>'
-        + '<p>{title}</p>'
+        + '<p class="tvp-video-title">{title}</p>'
         + '</div>';
 
     var hasClass = function(obj,c) {
@@ -130,7 +130,10 @@
             renderProducts(e.assetId, e.loginId); 
             $(that.el).find('#videoTitle').html(e.assetTitle);
         };
-
+        var that = this;
+        this.onResize = function (e, d) {
+            $(that.el).find('#tvpProductsView').height(d[1]);
+        };
         this.render = function(){
             this.container.innerHTML = '';
 

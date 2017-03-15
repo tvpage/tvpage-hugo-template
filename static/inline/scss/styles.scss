@@ -8,7 +8,7 @@ body{
   text-rendering: optimizeLegibility !important;
   -webkit-font-smoothing: antialiased !important;
   -moz-osx-font-smoothing: grayscale !important;
-  font-family: 'Helvetica';
+  font-family: 'Open Sans', sans-serif;
 }
 
 .tvp-control-volume-selector-container,
@@ -39,46 +39,10 @@ body{
   display: none !important;
 }
 
-.no-video-scroller {
-  @include aspect-ratio(65, 23.5);
-
-  @media screen and (max-width: 1700px) {
-    padding-top: 1.5%;
-  }
-
-  @media screen and (max-width: 1400px) {
-    padding-top: 2%;
-  }
-
-  @media screen and (max-width: 1200px) {
-    padding-top: 4.5%;
-  }
-}
-
-.hasVideoScroller {
-  @include aspect-ratio(83, 38.5);
-
-  @media screen and (max-width: 1700px) {
-    padding-top: 2%;
-  }
-
-  @media screen and (max-width: 1400px) {
-    padding-top: 4.5%;
-  }
-
-  @media screen and (max-width: 1200px) {
-    padding-top: 7%;
-  }
-}
-
 // Namespace all the things
 .tvp-rb {
   box-sizing: border-box;
   width: 100%;
-
-  .tvp-animate {
-    transition: border .5s ease-out, color .5s linear, opacity .3s ease-out;
-  }
   
   .tvp-content {
     padding: 0 62px 0;
@@ -166,11 +130,12 @@ body{
       line-height: 43px;     
       padding: 0; 
       margin: 0;
+      font-weight: normal;
     }
     .tvp-row-player-title {
       display: inline-block;
       height: 100%;
-      width: 53.1165%;
+      width: 57.8165%;
       white-space: nowrap;
     }
     .tvp-row-featured-title {
@@ -181,9 +146,9 @@ body{
   }
   
   .tvp-row {
-    @include aspect-ratio(369,110);
+    // @include aspect-ratio(369,110);
     
-    height: auto;
+    // height: auto;
     margin-bottom: 32px;
     
     .tvp-content {
@@ -196,8 +161,7 @@ body{
     
     float: left;
     overflow: hidden;
-    width: 53.1165%;
-    
+    width: 57.8165%;
     .tvp-content {
       padding: 0;
     }
@@ -255,6 +219,7 @@ body{
     float: left;
     margin-left: 1.2195%;
     width: 22.2222%;
+    display: inline-block;
     
     .tvp-featured-product {
       background-color: #EBEBEB;
@@ -265,17 +230,17 @@ body{
       width: 100%;
       
       .tvp-featured-image {
-        @include aspect-ratio(1,1);
+        @include aspect-ratio(230,169);
         display: block;
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
+        margin-bottom: 16px;
       }
       .tvp-featured-info {
         display: block;
         height: 28.8888%;
         font-size: 18px;
-        padding-bottom: 30px;
         width: 100%;
         
         &-title {
@@ -296,6 +261,7 @@ body{
           font-size: 14px;
           line-height: 19px;
           letter-spacing: 0.005em;
+          font-weight: bold;
         }
         &-rating {
           display: block;
@@ -312,6 +278,7 @@ body{
           padding: 9px;
           font-size: 26px;
           line-height: 36px;
+          margin-top: 16px;
         }
       }
     }
@@ -321,16 +288,17 @@ body{
     box-sizing: border-box;
     height: 100%;
     float: right;
-    margin-left: 1.2195%;
+    margin-left: 17px;
     position: relative;
-
+    width: 16%;
     .tvp-product-item{
       display: block;
-      width: 150px;
-      height: 150px;
       background-color: #D8D8D8;
       padding: 23px;
       margin-bottom: 5px;
+      &:last-child{
+        margin: 0;
+      }
       .tvp-product-image{        
         @include aspect-ratio(1,1);
         display: block;
@@ -383,8 +351,6 @@ body{
       }
     }
     .tvp-video {
-      // @extend .tvp-animate;
-      
       box-sizing: border-box;
       display: block;
       position: relative;
@@ -422,32 +388,9 @@ body{
         }
       }
       .tvp-video-title {
-        border-top: 1px solid #fff;
-        border-right: 1px solid #fff;
-        border-bottom: 1px solid #fff;
-        border-left: 1px solid #fff;
-        box-sizing: border-box;
-        display: block;
-        height: 100%;
-        float: left;
         overflow: hidden;
-        width: 44%;
-        
-        .tvp-video-title-content {
-          display: table;
-          height: 100%;
-          width: 100%;
-        }
-        .tvp-video-title-center {
-          color: #fff;
-          font-size: 16px;
-          height: 100%;
-          display: table-cell;
-          text-align: left;
-          vertical-align: middle;
-          padding: 14px;
-          width: 100%;
-        }
+        font-size: 12px;        
+        margin: 10px 0;
       }
       .tvp-video-image-overlay{
         display: none;
@@ -475,323 +418,5 @@ body{
   
   #tvpMobileVideoScroller, #tvpMobileProductsScroller {
     display: none;
-  }
-}
-
-// Text breakpoints
-@media only screen and (min-width: 768px) {
-  // .tvp-rb .tvp-video-container:hover {
-  //   opacity: 1;
-
-  //   &:after {
-  //     border: 1px solid #fff;
-  //   }
-  //       .tvp-icon-play-small {
-  //     background-position: -49px -1px;
-  //   }
-
-  //   .tvp-icon-play-small.anim {
-  //     transform: scale(0.6);
-  //   }
-  // }
-}
-@media only screen and (max-width: 1600px) {
-  .tvp-rb .tvp-products-scroller .tvp-products-container .tvp-product .tvp-product-link .tvp-product-text {
-    font-size: 15px;
-  }
-  .tvp-rb .tvp-featured .tvp-featured-product .tvp-featured-info strong {
-    font-size: 18px;
-    line-height: 20px;
-  }
-}
-@media only screen and (max-width: 1200px) {
-  
-  .tvp-rb .tvp-products-scroller .tvp-products-container .tvp-product .tvp-product-link .tvp-product-text-container {
-    padding: 0 14px;
-  }
-  .tvp-rb .tvp-products-scroller .tvp-products-container .tvp-product .tvp-product-link .tvp-product-text {
-    font-size: 12px;
-  }
-  .tvp-rb .tvp-featured .tvp-featured-product .tvp-featured-info strong {
-    font-size: 16px;
-    line-height: 18px;
-  }
-  .tvp-rb .tvp-featured .tvp-featured-product .tvp-featured-info small,
-  .tvp-rb .tvp-featured .tvp-featured-product .tvp-featured-info .tvp-featured-price {
-    font-size: 16px;
-  }
-  .tvp-rb .tvp-videos-scroller .tvp-video-container .tvp-video-title .tvp-video-title-center {
-    font-size: 14px;
-    line-height: 16px;
-    padding: 5px;
-  }
-  
-  .tvp-rb .tvp-products-scroller .tvp-products-nav .tvp-products-button .tvp-icon.tvp-icon-chevron-left {
-    background-size: 100px 112px;
-    background-position: -17px -89px;
-  }
-  .tvp-rb .tvp-products-scroller .tvp-products-nav .tvp-products-button .tvp-icon.tvp-icon-chevron-right {
-    background-size: 100px 112px;
-    background-position: 0 -89px;
-  }
-  
-}
-@media only screen and (max-width: 1000px) {
-  
-  .tvp-rb .tvp-featured .tvp-featured-product {
-    padding: 10px;
-  }
-  .tvp-rb .tvp-products-scroller .tvp-products-container .tvp-product .tvp-product-link .tvp-product-text-container {
-    padding: 0 8px;
-  }
-  .tvp-rb .tvp-products-scroller .tvp-products-container .tvp-product .tvp-product-link .tvp-product-text {
-    font-size: 10px;
-  }
-  .tvp-rb .tvp-featured .tvp-featured-product .tvp-featured-info strong {
-    font-size: 18px;
-    line-height: 18px;
-  }
-  .tvp-rb .tvp-featured .tvp-featured-product .tvp-featured-info small,
-  .tvp-rb .tvp-featured .tvp-featured-product .tvp-featured-info .tvp-featured-price {
-    font-size: 14px;
-    line-height: 18px;
-  }
-  .tvp-rb .tvp-videos-scroller .tvp-video-container .tvp-video-title .tvp-video-title-center {
-    font-size: 12px;
-    line-height: 14px;
-  }
-  
-}
-
-// Responsive by placing the mobile class in the body tag
-body.mobile .tvp-rb {
-  min-height: 100%;
-  max-width: 100%;
-  width: 100%;
-  padding-top: 20px;
-  -webkit-backface-visibility: hidden;
-  
-  #tvpMobileVideoScroller, #tvpMobileProductsScroller {
-    display: block;
-  }
-  &:before {
-    display: none;
-  }
-  > .tvp-content {
-    padding: 0;
-    position: relative;
-  }
-  #tvpVideoScroller {
-    display: none;
-  }
-  .tvp-row {
-    padding: 0;
-    margin: 0;
-    
-    &:before {
-      display: none;
-    }
-    .tvp-content {
-      position: relative;
-    }
-    .tvp-player {
-      @include aspect-ratio(16,9);
-      
-      float: none;
-      width: 100%;
-    }
-    #tvpFeaturedProduct {
-      display: none;
-    }
-    .tvp-products-scroller {
-      height: auto;
-      float: none;
-      margin: 20px 0 0;
-      width: 100%;
-      
-      h2 {
-        color: #fff;
-        font-size: 40px;
-        height: 60px;
-        line-height: 48px;
-        margin: 0;
-        text-align: center;
-      }
-      .tvp-featured {
-        height: auto;
-        float: none;
-        margin: 0;
-        width: 100%;
-      }
-      .tvp-featured-product {
-        height: auto;
-        padding: 0;
-        width: 100%;
-        
-        &:after {
-          visibility: hidden;
-          display: block;
-          font-size: 0;
-          content: " ";
-          clear: both;
-          height: 0;
-        }
-        .tvp-featured-image {
-          @include aspect-ratio(10,10);
-          
-          height: auto;
-          float: left;
-          margin: 0;
-          width: 50%;
-        }
-        .tvp-featured-info {
-          box-sizing: border-box;
-          height: auto;
-          float: left;
-          padding: 5%;
-          width: 50%;
-          
-          strong {
-            font-size: 38px;
-            line-height: 38px;
-            max-height: 114px;
-            margin-bottom: 5px;
-          }
-          small {
-            font-size: 26px;
-            line-height: 36px;
-            margin-bottom: 5px;
-          }
-          .tvp-featured-price {
-            font-size: 28px;
-            line-height: 32px;
-          }
-        }
-      }
-    }
-    .tvp-products-nav {
-      background: #24241C;
-      height: 80px;
-      line-height: 80px;
-      position: relative;
-      
-      .tvp-products-bullets {
-        display: inline-block;
-        height: 80px;
-        line-height: 80px;
-        vertical-align: top;
-      }
-      .tvp-products-nav-bullet {
-        border-radius: 10px;
-        height: 20px;
-        margin: 33px 10px 0;
-        line-height: 80px;
-        width: 20px;
-      }
-      .tvp-products-button {
-        background-color: transparent;
-        background-position: -80px -100px;
-        background-size: 200px 224px;
-        height: 80px;
-        line-height: 80px;
-        
-        &.tvp-icon-chevron-right {
-          background-position: -120px -100px;
-        }
-        
-        &.tvp-active {
-          background-position: -80px -163px;
-        }
-        &.tvp-active.tvp-icon-chevron-right {
-          background-position: -120px -163px;
-        }
-        &:after {
-          background-color: transparent;
-          background-position: -80px -163px;
-          background-size: 200px 224px;
-          content: " ";
-          height: 80px;
-          opacity: 0;
-          position: absolute;
-          top: 0;
-          left: 0;
-        }
-        &.tvp-icon-chevron-right:after {
-          background-position: -120px -163px;
-        }
-        &.tvp-active:after {
-          opacity: 1;
-        }
-      }
-    }
-    .tvp-videos-scroller {
-      box-sizing: border-box;
-      height: 290px;
-      margin-top: 10px;
-      padding: 10px;
-      overflow-x: auto;
-      overflow-y: hidden;
-      
-      .tvp-videos-container {
-        width: auto;
-        
-        .tvp-video-scroller-item-container {
-          margin: 0 10px;
-          width: 220px;
-        }
-        .tvp-video-container {
-          width: 220px;
-          
-          .tvp-video-image {
-            height: 180px;
-            float: none;
-            width: 100%;
-          }
-          .tvp-video-title {
-            font-size: 24px;
-            line-height: 48pt;
-            height: 89px;
-            float: none;
-            width: 100%;
-            
-            .tvp-video-title-center {
-              font-size: 18px;
-              line-height: 20pt;
-              text-align: center;
-              padding: 5px 10px;
-            }
-          }
-        }
-      }
-    }
-  }
-  .tvp-row-titles {
-    height: auto;
-
-    
-    .tvp-row-player-title {
-      box-sizing: border-box;
-      padding: 0 5%;
-      text-align: center;
-      width: 100%;
-      height: auto;
-      
-      h1 {
-        font-size: 42px;
-/*        height: 80px;*/
-        height: auto;
-        line-height: 52px;
-        margin: 0;
-        padding: 0;
-      }
-    }
-    .tvp-row-featured-title {
-      display: none;
-    }
-    
-  }
-  
-  #videoTitle {
-    padding-bottom: 12px;
   }
 }
