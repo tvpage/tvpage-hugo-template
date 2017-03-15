@@ -123,7 +123,11 @@
         this.container = this.el.getElementsByClassName('tvp-videos-scroller')[1];
 
         this.onClick = Utils.isset(options.onClick) && Utils.isFunction(options.onClick) ? options.onClick : null;
-
+        var that = this;
+        this.onNext = function (e) {
+            console.log(e);
+            $(that.el).find('#videoTitle').html(e.assetTitle);
+        };
         this.render = function(){
             this.container.innerHTML = '';
 
@@ -165,12 +169,13 @@
             });
 
             //init player
-            var s = options;
+            // var s = options;
+            var s = this;
             this.selectedVideo = this.data[0];
-            s.data = data;
+            s.data = data;            
             this.player = new Player('tvp-player', s, this.selectedVideo.id);
             $(this.el).find('#videoTitle').html(this.selectedVideo.title);
-            //render produyts
+            //render products
             var productHolder = Utils.getByClass('tvp-products-scroller');
             var playerHolder = document.getElementById('tvp-player');
             
@@ -178,7 +183,7 @@
                 productHolder.style.height = height + 'px';
             };
             resizeProducts(playerHolder.offsetHeight);
-            renderProducts(this.selectedVideo.id, options.loginId);
+            renderProducts(this.selectedVideo.id, options.loginId);            
         };
 
         var that = this;
