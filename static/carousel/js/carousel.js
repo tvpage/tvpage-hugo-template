@@ -6,7 +6,7 @@
         '<div class="tvp-video-image" style="background-image:url({asset.thumbnailUrl})">' +
         '<svg class="tvp-video-play" viewBox="0 0 200 200" alt="Play video"><polygon points="70, 55 70, 145 145, 100"></polygon></svg>' +
         '<div class="tvp-video-image-overlay"></div></div>' +
-        '<div class="tvp-video-metadata tvp-clearfix"><div>Length: 2:30</div><div>Published: 1/20/2017</div></div>' +
+        '<div class="tvp-video-metadata tvp-clearfix"><div>Length: {mediaDuration}</div><div>Published: {publishedDate}</div></div>' +
         '<p class="tvp-video-title">{title}</p></div>'
 
     var hasClass = function(obj,c) {
@@ -48,6 +48,9 @@
                 if ('undefined' !== typeof item.entity) {
                     className += ' tvp-exchange';
                 }
+
+                item.mediaDuration = Utils.formatDuration(item.duration);
+                item.publishedDate = Utils.formatDate(item.date_created);
 
                 item.className = className;
 
