@@ -126,6 +126,7 @@
         var that = this;
         this.onNext = function (e) {
             console.log(e);
+            renderProducts(e.assetId, e.loginId); 
             $(that.el).find('#videoTitle').html(e.assetTitle);
         };
         this.render = function(){
