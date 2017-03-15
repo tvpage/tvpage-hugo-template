@@ -7,10 +7,10 @@
   <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
   {{ if (getenv "HUGO_DEBUG") }}
-  <link rel="stylesheet" type="text/css" href="{{ (printf "%s/css/styles.css" .Type ) | absURL }}">
-  <link rel="stylesheet" type="text/css" href="{{ (printf "%s/css/vendor/slick.css" .Type ) | absURL }}">
+    <link rel="stylesheet" type="text/css" href="{{ (printf "%s/css/styles.css" .Type ) | absURL }}">
+    <link rel="stylesheet" type="text/css" href="{{ (printf "%s/css/vendor/slick.css" .Type ) | absURL }}">
   {{ else }}
-  <link rel="stylesheet" type="text/css" href="{{ (printf "%s/css/inline.css" .Type ) | absURL }}">
+    <link rel="stylesheet" type="text/css" href="{{ (printf "%s/dist/css/inline.min.css" .Type ) | absURL }}">
   {{ end }}
 </head>
 <body data-id='{{ $id }}'>
@@ -67,7 +67,7 @@
 </script>
 <script async src="//a.tvpage.com/tvpa.min.js"></script>
 <script async src='//appcdn.tvpage.com/player/assets/tvp/tvp-{{ ($.Scratch.Get "settings").player_version }}-min.js'></script>
-{{ if not (getenv "HUGO_DEBUG") }}
+{{ if (getenv "HUGO_DEBUG") }}
 <script>window.DEBUG = Number({{getenv "HUGO_DEBUG"}}) || 0;</script>
 <script src="{{ (printf "%s/js/libs/analytics.js" .Type ) | absURL }}"></script>
 <script src="{{ (printf "%s/js/vendor/jquery.js" .Type ) | absURL }}"></script>

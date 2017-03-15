@@ -34,9 +34,6 @@
 .slick-slider .slick-track,
 .slick-slider .slick-list {
   -webkit-transform: translate3d(0, 0, 0);
-  -moz-transform: translate3d(0, 0, 0);
-  -ms-transform: translate3d(0, 0, 0);
-  -o-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
 }
 
@@ -233,7 +230,8 @@ body {
   right: 0;
   bottom: 0;
   position: absolute;
-  transition: all 400ms ease-in-out;
+  -webkit-transition: all 400ms ease-in-out;
+          transition: all 400ms ease-in-out;
 }
 .tvp-rb .tvp-icon.tvp-icon-arrow-next {
   background-position: -190px -162px;
@@ -345,7 +343,8 @@ body {
   width: 59px;
 }
 .tvp-rb .tvp-player #tvp-controls .tvp-icon-play-expanded {
-  transform: scale(0.6);
+  -webkit-transform: scale(0.6);
+          transform: scale(0.6);
 }
 .tvp-rb .tvp-player #tvp-controls.tvp-active .tvp-icon-play {
   display: block;
@@ -354,7 +353,8 @@ body {
   display: none;
 }
 .tvp-rb .tvp-icon-play .anim:hover {
-  transform: scale(0.6);
+  -webkit-transform: scale(0.6);
+          transform: scale(0.6);
 }
 .tvp-rb .tvp-featured {
   height: 100%;
@@ -586,5 +586,3 @@ body {
 .tvp-rb #tvpMobileVideoScroller, .tvp-rb #tvpMobileProductsScroller {
   display: none;
 }
-
-/*# sourceMappingURL=inline.css.map */

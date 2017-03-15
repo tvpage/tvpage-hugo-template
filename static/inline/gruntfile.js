@@ -24,11 +24,12 @@ module.exports = function(grunt) {
       autoprefixer: {
         css: {
           files: {
-            'css/host.css': 'css/host.css',
-            'css/mobile/host.css': 'css/mobile/host.css',
-            'css/styles.css': 'css/styles.css',
-            'css/modal/styles.css': 'css/modal/styles.css',
-            'css/mobile/modal/styles.css': 'css/mobile/modal/styles.css'
+            // 'css/host.css': 'css/host.css',
+            // 'css/mobile/host.css': 'css/mobile/host.css',
+            // 'css/styles.css': 'css/styles.css',
+            // 'css/modal/styles.css': 'css/modal/styles.css',
+            // 'css/mobile/modal/styles.css': 'css/mobile/modal/styles.css'
+            'css/inline.css' : 'css/inline.css'
           }
         }
       },
@@ -36,6 +37,11 @@ module.exports = function(grunt) {
         options: {
           mergeIntoShorthands: false,
           roundingPrecision: -1
+        },
+        dist: {
+          files: {
+            'dist/css/inline.min.css' : ['css/inline.css']
+          }
         },
         desktop: {
           files: {
@@ -59,15 +65,24 @@ module.exports = function(grunt) {
         },
         scripts: {
           files: {
-            'dist/js/scripts.min.js': ['js/vendor/jquery.js','js/vendor/slick-min.js','js/libs/utils.js','js/carousel.js', 'js/index.js']
+            'dist/js/scripts.min.js': [
+               'js/vendor/jquery.js'
+              ,'js/vendor/slick-min.js'
+              ,'js/vendor/simple-scrollbar.min.js'
+              ,'js/carousel.js'
+              ,'js/libs/analytics.js'
+              ,'js/libs/utils.js'
+              ,'js/libs/player.js'
+              , 'js/inline.js'
+              , 'js/index.js']
           }
         },
-        modal: {
-            files: {
-                'dist/js/modal/scripts.min.js': ['js/vendor/jquery.js', 'js/libs/utils.js', 'js/libs/analytics.js','js/libs/player.js','js/vendor/simple-scrollbar.min.js', 'js/modal/index.js'],
-                'dist/js/mobile/modal/scripts.min.js': ['js/vendor/jquery.js', 'js/libs/utils.js', 'js/libs/analytics.js','js/libs/player.js', 'js/mobile/modal/index.js']
-            }
-        }
+        // modal: {
+        //     files: {
+        //         'dist/js/modal/scripts.min.js': ['js/vendor/jquery.js', 'js/libs/utils.js', 'js/libs/analytics.js','js/libs/player.js','js/vendor/simple-scrollbar.min.js', 'js/modal/index.js'],
+        //         'dist/js/mobile/modal/scripts.min.js': ['js/vendor/jquery.js', 'js/libs/utils.js', 'js/libs/analytics.js','js/libs/player.js', 'js/mobile/modal/index.js']
+        //     }
+        // }
       },
       concat: {
         options: {
@@ -85,7 +100,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-autoprefixer');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-sass');
-
-    // grunt.registerTask('default', ['uglify', 'autoprefixer', 'cssmin']);
+    
     grunt.registerTask('default', ['watch']);
+    grunt.registerTask('release', ['uglify', 'sass', 'autoprefixer', 'cssmin:dist']);
 };
