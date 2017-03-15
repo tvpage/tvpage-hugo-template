@@ -17,8 +17,18 @@
 
 .tvp-video-title {
     font-size: {{ ($.Scratch.Get "settings").item_title_font_size }};
+    text-align: {{ ($.Scratch.Get "settings").item_title_text_align }};
     color: {{ ($.Scratch.Get "settings").item_title_font_color }};
     margin: {{ ($.Scratch.Get "settings").item_title_margin }};
+}
+
+.tvp-video-metadata {
+    font-size: {{ ($.Scratch.Get "settings").item_metadata_font_size }};
+    color: {{ ($.Scratch.Get "settings").item_metadata_font_color }};
+}
+
+.tvp-video-metadata > div {
+    padding: {{ ($.Scratch.Get "settings").item_metadata_padding }};
 }
 
 .tvp-video-image-overlay {
@@ -40,6 +50,10 @@
     height: {{ ($.Scratch.Get "settings").arrow_height }};
     border: {{ ($.Scratch.Get "settings").arrow_border }};
 }
+
+/*.tvp-carousel-arrow:hover {*/
+    /*fill: {{ ($.Scratch.Get "settings").arrow_hoe }};*/
+/*}*/
 
 .tvp-carousel-arrow > svg {
     background: {{ ($.Scratch.Get "settings").arrow_background_color }};

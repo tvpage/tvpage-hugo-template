@@ -183,6 +183,20 @@ body  {
   pointer-events: none;
 }
 
-.tvp-carousel-arrow:hover {
-  fill:#000;
+.tvp-video-metadata {
+  display: none;
+}
+
+.metadata .tvp-video-metadata {
+  display: block;
+}
+
+@media (min-width: 200px) {
+  .tvp-video-metadata > div:first-child {
+    float: left;
+  }
+
+  .tvp-video-metadata > div:last-child {
+    float: right;
+  }
 }

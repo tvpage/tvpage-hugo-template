@@ -301,7 +301,7 @@
             "type": "text",
             "label": "Item Title Font Color",
             "code": "item_title_font_color",
-            "value": "#333333"
+            "value": "#333"
         },
         {
             "for": "carousel",
@@ -309,6 +309,34 @@
             "label": "Item Title Margin",
             "code": "item_title_margin",
             "value": "10px 0"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Title Text Align",
+            "code": "item_title_text_align",
+            "value": "left"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Metadata Font Size",
+            "code": "item_metadata_font_size",
+            "value": "60%"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Metadata Font Color",
+            "code": "item_metadata_font_color",
+            "value": "#333"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Metadata Padding",
+            "code": "item_metadata_padding",
+            "value": "5px 0 0 0"
         },
         {
             "for": "carousel",
