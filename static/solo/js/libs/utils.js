@@ -38,38 +38,6 @@
       return t;
     };
 
-    this.assety = function(data, options) {
-      var assets = [];
-      for (var i = 0; i < data.length; i++) {
-        var video = data[i];
-
-        if (this.isEmpty(video)) break;
-
-        var asset = video.asset;
-        asset.assetId = video.id;
-        asset.assetTitle = video.title;
-        asset.loginId = video.loginId;
-
-        if (this.isset(video, 'events') && video.events.length) {
-          asset.analyticsLogUrl = video.analytics;
-          asset.analyticsObj = video.events[1].data;
-        } else {
-          asset.analyticsObj = {
-            pg: this.isset(video, 'parentId') ? video.parentId : (this.isset(options, 'channel') ? options.channel.id : 0),
-            vd: video.id,
-            li: video.loginId
-          };
-        }
-
-        if (!asset.sources) asset.sources = [{
-          file: asset.videoId
-        }];
-        asset.type = asset.type || 'youtube';
-        assets.push(asset);
-      }
-      return assets;
-    };
-
     this.debounce = function(func,wait,immediate){
       var timeout;  
       return function() {

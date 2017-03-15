@@ -19,7 +19,7 @@
       if (Utils.isset(g) && Utils.isset(g,'__TVPage__') && Utils.isset(g.__TVPage__, 'config')) {
         c = g.__TVPage__.config;
       } else {
-        return console.log('need config');
+        return;
       }
       return c;
     };
@@ -27,7 +27,7 @@
     if ('dynamic' === type) {
       var config = getConfig(parent);
       var id = document.body.getAttribute('data-id');
-      if (!Utils.isset(config, id)) return console.log('need settings');
+      if (!Utils.isset(config, id)) return;
       s = config[id];
       s.name = id;
     } else if ('inline' === type && type && type.length) {
@@ -37,7 +37,7 @@
     } else if ('static' === type) {
       var config = getConfig(window);
       var id = document.body.getAttribute('data-id');
-      if (!Utils.isset(config, id)) return console.log('need settings');
+      if (!Utils.isset(config, id)) return;
       s = config[id];
       s.name = id;
     }
@@ -60,7 +60,7 @@
     channelVideosPage++;
   },
   render = function(idEl,target){
-    if (!idEl || !target) return console.log('need target');
+    if (!idEl || !target) return;
     var frag = document.createDocumentFragment(),
     main = document.createElement('div');
     main.classList.add('tvp-player');
@@ -119,6 +119,20 @@
     }
   };
 
-  initialize();
+  var not = function(obj){return 'undefined' === typeof obj};
+  if (not(window.Utils) || not(window.Player) || not(window.Menu) || not(window.SimpleScrollbar)) {
+      var libsCheck = 0;
+      (function libsReady() {
+          setTimeout(function(){
+              if ( (not(window.Utils) || not(window.Player) || not(window.Menu) || not(window.SimpleScrollbar)) && (++libsCheck < 50) ) {
+                  libsReady();
+              } else {
+                  initialize();
+              }
+          },150);
+      })();
+  } else {
+      initialize();
+  }
 
 }(document));

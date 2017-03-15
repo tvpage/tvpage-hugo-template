@@ -95,8 +95,8 @@
             }
             this.classList.add('active');
             var id = this.id.split('-').pop(),
-            selected = that.allVideos.filter(function(v){return v.id === id});
-            player.update(Utils.assety(selected,settings));
+                selected = that.allVideos.filter(function(v){return v.id === id});
+            player.play( player.createAsset(selected[0]) );
             that.toggleMenu();
         };
     };
