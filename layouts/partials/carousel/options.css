@@ -2,6 +2,13 @@
     padding: {{ ($.Scratch.Get "settings").title_padding }};
     color: {{ ($.Scratch.Get "settings").title_color }};
     font-size: {{ ($.Scratch.Get "settings").title_font_size }};
+    background: {{ ($.Scratch.Get "settings").title_background }};
+    text-align: {{ ($.Scratch.Get "settings").title_text_align }};
+}
+
+.tvp-video {
+    padding-left: {{ ($.Scratch.Get "settings").item_padding_left }};
+    padding-right: {{ ($.Scratch.Get "settings").item_padding_right }};
 }
 
 .tvp-video-play {
@@ -45,24 +52,43 @@
     }
 }
 
+.tvp-carousel-content {
+    background: {{ ($.Scratch.Get "settings").content_background }};
+    border: {{ ($.Scratch.Get "settings").content_border }};
+}
+
 .tvp-carousel-arrow {
-    width: {{ ($.Scratch.Get "settings").arrow_width }};
-    height: {{ ($.Scratch.Get "settings").arrow_height }};
+    top: {{ ($.Scratch.Get "settings").arrow_top }};
+    width: {{ ($.Scratch.Get "settings").arrow_size }};
     border: {{ ($.Scratch.Get "settings").arrow_border }};
 }
 
-/*.tvp-carousel-arrow:hover {*/
-    /*fill: {{ ($.Scratch.Get "settings").arrow_hoe }};*/
-/*}*/
+@media (min-width: 480px) {
+    .tvp-carousel-arrow {
+        width: {{ ($.Scratch.Get "settings").arrow_size_480 }};
+    }
+}
 
 .tvp-carousel-arrow > svg {
     background: {{ ($.Scratch.Get "settings").arrow_background_color }};
     fill: {{ ($.Scratch.Get "settings").arrow_icon_color }};
 }
 
-.tvp-overlay-cover {
-    opacity: {{ ($.Scratch.Get "settings").overlay_opacity }};
-    background-image: linear-gradient(to bottom right,{{ ($.Scratch.Get "settings").overlay_color }},{{ ($.Scratch.Get "settings").overlay_color }});
+.tvp-carousel-arrow:hover > svg {
+    background: {{ ($.Scratch.Get "settings").arrow_background_color_hover }};
+    fill: {{ ($.Scratch.Get "settings").arrow_icon_color_hover }};
+}
+
+.tvp-carousel-arrow.prev {
+    fill: {{ ($.Scratch.Get "settings").arrow_icon_color }};
+}
+
+.tvp-carousel-arrow.prev {
+    left: {{ ($.Scratch.Get "settings").arrow_prev_left }};
+}
+
+.tvp-carousel-arrow.next {
+    right: {{ ($.Scratch.Get "settings").arrow_next_right }};
 }
 
 .tvp-play {

@@ -24,7 +24,6 @@ body  {
 
 .tvp-video {
   cursor: pointer;
-  padding: 0 5px;
   margin: 0 auto;
 }
 
@@ -155,28 +154,31 @@ body  {
 }
 
 .tvp-carousel-arrow {
+  -webkit-transition: top .05s ease-in-out;
+  transition: top .05s ease-in-out;
   position: absolute;
-  top: 4%;
-  bottom: 0;
-  margin: auto 0;
+  height: 0;
+  margin: 0;
   padding: 0;
   cursor: pointer;
   outline: none;
   z-index: 1000;
 }
 
-.tvp-carousel-arrow.prev {
-  left:0;
-}
-
-.tvp-carousel-arrow.next {
-  right:0;
+.tvp-carousel-arrow:before {
+  display: block;
+  content: "";
+  width: 100%;
+  padding-top: 100%;
 }
 
 .tvp-carousel-arrow > svg {
   -webkit-transition: all .05s ease-in-out;
   transition: all .05s ease-in-out;
   pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .tvp-carousel-arrow > svg > path {

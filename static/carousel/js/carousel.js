@@ -31,6 +31,8 @@
         this.itemMetaData = Utils.isset(options.item_meta_data) ? options.item_meta_data : null;
         this.onClick = Utils.isset(options.onClick) && Utils.isFunction(options.onClick) ? options.onClick : null;
 
+        var that = this;
+
         this.render = function(){
             this.container.innerHTML = '';
 
@@ -69,6 +71,20 @@
                 $carousel = $(that.el.querySelector('.tvp-carousel-content'));
 
                 $carousel.on('setPosition', Utils.debounce(function () {
+
+                    //Center the arrows using the icon as reference
+                    setTimeout(function () {
+                        var playButtonRect = that.el.querySelector('.tvp-video-play').getBoundingClientRect();
+                        var playButtonCenter = Math.ceil(playButtonRect.top + (playButtonRect.height / 2));
+                        var arrows = document.querySelectorAll(".tvp-carousel-arrow");
+                        for (var i = 0; i < arrows.length; i++) {
+                            var arrow = arrows[i];
+                            arrow.style.top = ( playButtonCenter - (arrow.querySelector("svg").clientHeight / 2) ) + "px";
+                        }
+                    },10);
+
+                    that.el.querySelector('.slick-list').style.margin = "0 -" + ( parseInt(options.item_padding_right) + 1 ) + "px";
+
                     if (window.parent) {
                         window.parent.postMessage({
                             event: 'tvp_carousel:resize',
@@ -78,16 +94,9 @@
                 },100));
 
                 $carousel.slick({
-                    slidesToShow: 3,
+                    slidesToShow: options.items_to_show,
                     arrows: false,
                     responsive: [
-                        {
-                            breakpoint: 768,
-                            settings: {
-                                arrows: false,
-                                slidesToShow: 3
-                            }
-                        },
                         {
                             breakpoint: 480,
                             settings: {
@@ -112,7 +121,6 @@
             }
         };
 
-        var that = this;
         this.load = function(callback){
             that.loading = true;
             if (this.onLoad) {

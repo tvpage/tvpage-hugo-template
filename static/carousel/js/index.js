@@ -69,7 +69,7 @@
 
                 render(body,{
                     id: name,
-                    title: settings.title || 'Recommended Videos'
+                    title: settings.title_text
                 });
 
                 if (Utils.isMobile) {

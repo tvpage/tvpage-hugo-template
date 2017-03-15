@@ -15,6 +15,7 @@
         },
         {
             "for": "player",
+
             "type": "text",
             "label": "Progress Color",
             "code": "progress_color",
@@ -124,9 +125,44 @@
         {
             "for": "carousel",
             "type": "text",
+            "label": "Title Text",
+            "code": "title_text",
+            "value": "Recommended Videos"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Content Background",
+            "code": "content_background",
+            "value": "white"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Content Border",
+            "code": "content_border",
+            "value": "none"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Title Text Align",
+            "code": "title_text_align",
+            "value": "left"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
             "label": "Title Padding",
             "code": "title_padding",
             "value": "15px 10px 15px 5px"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Title Background",
+            "code": "title_background",
+            "value": "none"
         },
         {
             "for": "carousel",
@@ -147,21 +183,21 @@
             "type": "text",
             "label": "Arrow Top",
             "code": "arrow_top",
-            "value": "5%"
+            "value": "0"
         },
         {
             "for": "carousel",
             "type": "text",
-            "label": "Arrow Width",
-            "code": "arrow_width",
-            "value": "45px"
+            "label": "Arrow Size",
+            "code": "arrow_size",
+            "value": "16%"
         },
         {
             "for": "carousel",
             "type": "text",
-            "label": "Arrow Height",
-            "code": "arrow_height",
-            "value": "45px"
+            "label": "Arrow Size 480",
+            "code": "arrow_size_480",
+            "value": "16%"
         },
         {
             "for": "carousel",
@@ -194,9 +230,23 @@
         {
             "for": "carousel",
             "type": "text",
+            "label": "Arrow Background Color Hover",
+            "code": "arrow_background_color_hover",
+            "value": "whitesmoke"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
             "label": "Arrow Icon Color",
             "code": "arrow_icon_color",
             "value": "#333"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Arrow Icon Color Hover",
+            "code": "arrow_icon_color_hover",
+            "value": "#000"
         },
         {
             "for": "carousel",
@@ -229,9 +279,16 @@
         {
             "for": "carousel",
             "type": "text",
-            "label": "Item Padding",
-            "code": "item_padding",
-            "value": "0 5px"
+            "label": "Item Padding Left",
+            "code": "item_padding_left",
+            "value": "5px"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Padding Right",
+            "code": "item_padding_right",
+            "value": "5px"
         },
         {
             "for": "carousel",
@@ -336,14 +393,14 @@
             "type": "text",
             "label": "Item Metadata Padding",
             "code": "item_metadata_padding",
-            "value": "5px 0 0 0"
+            "value": "7px 7px 0 7px"
         },
         {
             "for": "carousel",
             "type": "boolean",
             "label": "Item Meta Data",
             "code": "item_meta_data",
-            "value": true
+            "value": false
         },
         {
             "for": "modal",
