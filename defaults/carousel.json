@@ -197,7 +197,7 @@
             "type": "text",
             "label": "Arrow Size 480",
             "code": "arrow_size_480",
-            "value": "16%"
+            "value": "6%"
         },
         {
             "for": "carousel",
