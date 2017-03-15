@@ -34,7 +34,7 @@
         for (var i = 0; i < playlist.length; i++) {
             var menuItem = playlist[i];
             that.allVideos.push(menuItem);
-            menuItem.title = Utils.trimText(menuItem.title, 50);
+            menuItem.title = Utils.trimText(menuItem.title, 100);
 
             var menuItemElFrag = document.createDocumentFragment(),
                 menuItemEl = document.createElement('div');
@@ -54,6 +54,7 @@
       for (var i = toggles.length - 1; i >= 0; i--) {
         toggles[i].onclick = function() {
             that.toggleMenu();
+            that.hideMenuEvents();
         };
       }
     };
@@ -69,6 +70,23 @@
     this.toggleMenu = function() {
         that.hamburguer.classList.contains('active') ? that.hamburguer.classList.remove('active') : that.hamburguer.classList.add('active');
         that.hiddenMenu.classList.contains('active') ? that.hiddenMenu.classList.remove('active') : that.hiddenMenu.classList.add('active');
+    };
+
+    this.hideMenu = function(){
+        that.hamburguer.classList.contains('active') ? that.hamburguer.classList.remove('active') : '';
+        that.hiddenMenu.classList.contains('active') ? that.hiddenMenu.classList.remove('active') : '';
+    };
+
+    this.hideMenuEvents = function(){
+        var overlay = document.getElementsByClassName('tvp-overlay')[0];
+        if (overlay) {
+            overlay.onclick = function(){
+                that.toggleMenu();
+            };
+        }
+        BigScreen.onchange = function(){
+            that.hideMenu();
+        }; 
     };
 
     this.update = function(videos,scrollMenu) {
@@ -96,10 +114,17 @@
             this.classList.add('active');
             var id = this.id.split('-').pop(),
                 selected = that.allVideos.filter(function(v){return v.id === id});
-            player.play( player.createAsset(selected[0]) );
+            player.play(player.createAsset(selected[0]));
             that.toggleMenu();
         };
     };
+
+    player.onStateChange = function(e){
+        if ('tvp:media:videoplaying' === e){
+            that.hideMenu();
+        }
+    };
+
     that.render();
   }
 

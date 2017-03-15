@@ -250,7 +250,8 @@ body {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-pack: distribute;
-      justify-content: space-around;
+      -webkit-box-pack: center;
+          justify-content: center;
   height: 20vh;
 }
 
@@ -309,18 +310,19 @@ body {
 
 .tvp-video-title,
 .tvp-video-duration {
-  width: 100%;
   font-size: 12px;
   color: #FFF;
-  margin: auto 0;
-  line-height: 20px;
   text-align: -webkit-auto;
   font-family: Arial;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  margin: 0;
 }
 
 .tvp-video-details {
   width: 60%;
-  margin: auto 0; 
+  margin: auto 10px; 
 }
 
 .tvp-video-image {
@@ -350,8 +352,8 @@ body {
 .tvp-video-play {
   background-color: #fff;
   box-sizing: border-box;
-  width: 35px;
-  height: 35px;
+  width: 33%;
+  height: 58%;
   padding: 0;
   position: absolute;
   top: 0;
@@ -414,6 +416,10 @@ body {
   right: 0;
   overflow: auto;
   box-sizing: border-box;
+}
+
+.ss-content::-webkit-scrollbar {
+    width: 0;
 }
 
 .ss-scroll {
