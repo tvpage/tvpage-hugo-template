@@ -4,12 +4,6 @@
     var $videoSliderDesktop = null;
     var productData = [];
 
-    var itemTemplate = '<div data-id="{id}" class="tvp-video{className}">' +
-        '<div class="tvp-video-image" style="background-image:url({asset.thumbnailUrl})">'+
-        '<svg class="tvp-video-play" viewBox="0 0 200 200" alt="Play video"><polygon points="70, 55 70, 145 145, 100"></polygon></svg>'+
-        '<div class="tvp-video-image-overlay"></div>'+
-        '</div><p class="tvp-video-title">{title}</p></div>';
-
     var productTemplate = '<div class="tvp-product-image" style="background-image: url({imageUrl})"></div>';
 
     // var productFeatureTemplate = '<span class="tvp-featured-image"> <img src="{imageUrl}"> </span> <span class="tvp-featured-info"> <strong>{title}</strong> <small>{gender}</small> <span class="tvp-featured-price">${price}</span> <span class="tvp-featured-rating">{formattedRating}</span> <span class="clear"></span> </span> ';
@@ -20,6 +14,12 @@
         +'<span class="tvp-featured-info-rating">{formattedRating}</span>'
         +'<span class="clear"></span>'
         +'</span>';
+
+    var videoTemplate = '<div class="tvp-video-image" style="background-image: url({asset.thumbnailUrl});">'
+        + '<svg class="tvp-video-play" viewBox="0 0 200 200" alt="Play video"><polygon points="70, 55 70, 145 145, 100"></polygon></svg>'
+        + '<div class="tvp-video-image-overlay"></div>'
+        + '</div>'
+        + '<p>{title}</p>';
 
     var hasClass = function(obj,c) {
         if (!obj || !c) return;
@@ -66,7 +66,7 @@
     }
 
     var renderProducts = function (vid, lid) {
-        var products =  document.getElementById('tvpProductsView'); //Utils.getByClass('tvp-products-scroller');
+        var products =  document.getElementById('tvpProductsView');
         
         loadProducts(vid, lid, 
             function (data) {
@@ -134,7 +134,7 @@
                 var item = all[i];
                 var rowEl = document.createElement('div');
                 var className = '';
-                rowEl.className = 'tvp-video-container';
+                rowEl.className = 'tvp-video';
                 rowEl.setAttribute('data-id', item.id);
                 
                 item.title = Utils.trimText(item.title,50);
@@ -145,12 +145,12 @@
                 item.className = className;
 
                 var templateScript = document.getElementById('videoItemTemplate');                
-                var template = itemTemplate;
+                var template;
                 if (templateScript) {
                     template = templateScript.innerHTML;
                 }
 
-                rowEl.innerHTML = Utils.tmpl(template, item);
+                rowEl.innerHTML = Utils.tmpl(videoTemplate, item);
                 
                 this.container.appendChild(rowEl);
             }
@@ -261,39 +261,30 @@
 
         this.el.onclick = function(e) {
             var target = e.target;
-            if (hasClass(target,'tvp-video-container')) {
-                var id = target.getAttribute('data-id'),
-                    selected = {};
-                var data = that.data;
+            var getSelectedData = function (_data, id) {
+                var selected = {};
+                var data = _data;
                 for (var i = 0; i < data.length; i++) {
                     if (data[i].id === id) {
                         selected = data[i];
                     }
                 }
+                return selected;
+            };
+
+            if (hasClass(target,'tvp-video')) {
+                var selected = getSelectedData(that.data, target.getAttribute('data-id'));
+
                 that.player.load(selected.id);
                 renderProducts(selected.id, selected.loginId);
                 $(that.el).find('#videoTitle').html(selected.title);
 
             } else if (hasClass(target,'tvp-product-item')) {
-                var id = target.getAttribute('data-id'),
-                    selected = {};
-                var data = productData;
-                for (var i = 0; i < data.length; i++) {
-                    if (data[i].id === id) {
-                        selected = data[i];
-                    }
-                }
+                var selected = getSelectedData(productData, target.getAttribute('data-id'));
                 renderFeaturedProduct(selected);
             }
             else if (hasClass(target,'tvp-product-image')) {
-                var id = target.parentNode.getAttribute('data-id'),
-                                    selected = {};
-                var data = productData;
-                for (var i = 0; i < data.length; i++) {
-                    if (data[i].id === id) {
-                        selected = data[i];
-                    }
-                }
+                var selected = getSelectedData(productData, target.parentNode.getAttribute('data-id'));
                 renderFeaturedProduct(selected);
             }
         };

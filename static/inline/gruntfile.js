@@ -2,9 +2,13 @@ module.exports = function(grunt) {
 
     grunt.initConfig({
       watch: {
-        css: {
-          files: ['css/**/*.css'],
-          tasks: ['autoprefixer']
+        // css: {
+        //   files: ['css/**/*.css'],
+        //   tasks: ['autoprefixer']
+        // },
+        sass:{
+          files: ['scss/**/*.scss'],
+          tasks: ['sass']
         }
       },
       sass: {
@@ -83,5 +87,5 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-sass');
 
     // grunt.registerTask('default', ['uglify', 'autoprefixer', 'cssmin']);
-    grunt.registerTask('default', ['sass']);
+    grunt.registerTask('default', ['watch']);
 };
