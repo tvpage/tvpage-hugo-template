@@ -15,11 +15,13 @@
         +'<span class="clear"></span>'
         +'</span>';
 
-    var videoTemplate = '<div class="tvp-video-image" style="background-image: url({asset.thumbnailUrl});">'
+    var videoTemplate = '<div class="tvp-video" data-id="{id}">'
+        + '<div class="tvp-video-image" style="background-image: url({asset.thumbnailUrl});">'
         + '<svg class="tvp-video-play" viewBox="0 0 200 200" alt="Play video"><polygon points="70, 55 70, 145 145, 100"></polygon></svg>'
         + '<div class="tvp-video-image-overlay"></div>'
         + '</div>'
-        + '<p>{title}</p>';
+        + '<p>{title}</p>'
+        + '</div>';
 
     var hasClass = function(obj,c) {
         if (!obj || !c) return;
@@ -125,7 +127,6 @@
         this.onClick = Utils.isset(options.onClick) && Utils.isFunction(options.onClick) ? options.onClick : null;
         var that = this;
         this.onNext = function (e) {
-            console.log(e);
             renderProducts(e.assetId, e.loginId); 
             $(that.el).find('#videoTitle').html(e.assetTitle);
         };
@@ -139,8 +140,8 @@
                 var item = all[i];
                 var rowEl = document.createElement('div');
                 var className = '';
-                rowEl.className = 'tvp-video';
-                rowEl.setAttribute('data-id', item.id);
+                // rowEl.className = 'tvp-video';
+                // rowEl.setAttribute('data-id', item.id);
                 
                 item.title = Utils.trimText(item.title,50);
                 if ('undefined' !== typeof item.entity) {
@@ -266,7 +267,7 @@
         };
 
         this.el.onclick = function(e) {
-            var target = e.target;
+            var target;
             var getSelectedData = function (_data, id) {
                 var selected = {};
                 var data = _data;
@@ -278,21 +279,49 @@
                 return selected;
             };
 
-            if (hasClass(target,'tvp-video')) {
+            var getTarget = function (name) {                
+                for (var i = 0; i < e.path.length; i++) {
+                    try{
+                        if(hasClass(e.path[i], name)) {
+                            target = e.path[i];
+                            return true;
+                        }
+                    }
+                    catch(err){
+                        return false;
+                    }
+                }
+            }
+
+            if (getTarget('tvp-video')) {
                 var selected = getSelectedData(that.data, target.getAttribute('data-id'));
 
                 that.player.load(selected.id);
                 renderProducts(selected.id, selected.loginId);
-                $(that.el).find('#videoTitle').html(selected.title);
-
-            } else if (hasClass(target,'tvp-product-item')) {
+                $(that.el).find('#videoTitle').html(selected.title);                
+            }
+            else if (getTarget('tvp-product-item')){
                 var selected = getSelectedData(productData, target.getAttribute('data-id'));
                 renderFeaturedProduct(selected);
             }
-            else if (hasClass(target,'tvp-product-image')) {
-                var selected = getSelectedData(productData, target.parentNode.getAttribute('data-id'));
-                renderFeaturedProduct(selected);
-            }
+
+            // var target = e.target;            
+            
+            // if (hasClass(target,'tvp-video')) {
+            //     var selected = getSelectedData(that.data, target.getAttribute('data-id'));
+
+            //     that.player.load(selected.id);
+            //     renderProducts(selected.id, selected.loginId);
+            //     $(that.el).find('#videoTitle').html(selected.title);
+            // } 
+            // else if (hasClass(target,'tvp-product-item')) {
+            //     var selected = getSelectedData(productData, target.getAttribute('data-id'));
+            //     renderFeaturedProduct(selected);
+            // }
+            // else if (hasClass(target,'tvp-product-image')) {
+            //     var selected = getSelectedData(productData, target.parentNode.getAttribute('data-id'));
+            //     renderFeaturedProduct(selected);
+            // }
         };
 
         this.load(function(data){
