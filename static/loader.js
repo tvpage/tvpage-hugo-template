@@ -431,8 +431,8 @@
     }
 
     function load () {
-        var spots = document.querySelectorAll('.tvp-sidebar, .tvp-carousel, .tvp-solo, .tvp-solo-cta, .tvp-solo-append');
-        for (var i = 0; i < spots.length; i++) {
+        var spots = document.querySelectorAll('.tvp-sidebar, .tvp-carousel, .tvp-solo, .tvp-solo-cta, .tvp-solo-append, .tvp-inline');
+        for (var i = 0; i < spots.length; i++) {            
             var widget  = Widget(spots[i]);
             widget.initialize();
         }

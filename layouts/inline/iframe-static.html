@@ -7,8 +7,7 @@
   <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
   {{ if (getenv "HUGO_DEBUG") }}
-    <link rel="stylesheet" type="text/css" href="{{ (printf "%s/css/styles.css" .Type ) | absURL }}">
-    <link rel="stylesheet" type="text/css" href="{{ (printf "%s/css/vendor/slick.css" .Type ) | absURL }}">
+    <link rel="stylesheet" type="text/css" href="{{ (printf "%s/css/inline.css" .Type ) | absURL }}">    
   {{ else }}
     <link rel="stylesheet" type="text/css" href="{{ (printf "%s/dist/css/inline.min.css" .Type ) | absURL }}">
   {{ end }}

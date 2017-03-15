@@ -269,7 +269,7 @@ body {
   width: 100%;
 }
 .tvp-rb .tvp-row-titles h1, .tvp-rb .tvp-row-titles h2 {
-  font-size: 32px;
+  font-size: 150%;
   line-height: 43px;
   padding: 0;
   margin: 0;
@@ -430,7 +430,7 @@ body {
   background-color: #DDDDDD;
   border: 0;
   padding: 9px;
-  font-size: 26px;
+  font-size: 100%;
   line-height: 36px;
   margin-top: 16px;
 }
