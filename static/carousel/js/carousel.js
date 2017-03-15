@@ -27,6 +27,7 @@
         this.el = 'string' === typeof el ? document.getElementById(el) : el;
         this.container = this.el.getElementsByClassName('tvp-carousel-content')[0];
 
+        this.itemMetaData = Utils.isset(options.item_meta_data) ? options.item_meta_data : null;
         this.onClick = Utils.isset(options.onClick) && Utils.isFunction(options.onClick) ? options.onClick : null;
 
         this.render = function(){
@@ -52,6 +53,11 @@
                 if (templateScript) {
                     template = templateScript.innerHTML;
                 }
+
+                console.log(template);
+
+                //this.itemMetaData
+
                 rowEl.innerHTML += Utils.tmpl(template, item);
 
                 carouselFrag.appendChild(rowEl);
@@ -79,8 +85,6 @@
                             breakpoint: 768,
                             settings: {
                                 arrows: false,
-                                centerMode: true,
-                                centerPadding: '40px',
                                 slidesToShow: 3
                             }
                         },
@@ -88,8 +92,6 @@
                             breakpoint: 480,
                             settings: {
                                 arrows: false,
-                                centerMode: true,
-                                centerPadding: '40px',
                                 slidesToShow: 1
                             }
                         }

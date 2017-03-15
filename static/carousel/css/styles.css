@@ -155,7 +155,6 @@ body  {
 }
 
 .tvp-carousel-arrow {
-  display: none;
   position: absolute;
   top: 4%;
   bottom: 0;
@@ -186,14 +185,4 @@ body  {
 
 .tvp-carousel-arrow:hover {
   fill:#000;
-}
-
-.mobile .tvp-carousel-arrow {
-  display: none !important;
-}
-
-@media screen and (min-width: 768px) {
-  .tvp-carousel-arrow {
-    display: block;
-  }
 }

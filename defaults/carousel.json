@@ -311,6 +311,13 @@
             "value": "10px 0"
         },
         {
+            "for": "carousel",
+            "type": "boolean",
+            "label": "Item Meta Data",
+            "code": "item_meta_data",
+            "value": true
+        },
+        {
             "for": "modal",
             "type": "text",
             "label": "Modal Background",
