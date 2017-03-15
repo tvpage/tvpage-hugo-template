@@ -57,7 +57,6 @@
       }(),
       cbName: cbName
     },callback);
-    channelVideosPage++;
   },
   render = function(idEl,target){
     if (!idEl || !target) return;
@@ -67,30 +66,6 @@
     main.innerHTML =  '<div id="tvp-player-el-'+idEl+'" class="tvp-player-el"></div></div>';
     frag.appendChild(main);
     target.appendChild(frag);
-  },
-  bindLoadMoreEvent = function(menu){
-    var scrollMenu = document.querySelectorAll('.ss-content')[0];
-    scrollMenu.addEventListener("scroll", Utils.debounce(function() {
-      var menuTop = scrollMenu.scrollTop,
-          newHeight = document.body.clientHeight - scrollMenu.scrollHeight,
-          percentDocument = (menuTop*100)/newHeight;
-      percentDocument = Math.round(percentDocument);
-      percentDocument = Math.abs(percentDocument);
-      if (percentDocument >= 55 && percentDocument <= 100) {
-        (function(unique,settings){
-          var menuSettings = JSON.parse(JSON.stringify(settings));
-          if (!lastPage && !isFetching) {
-            isFetching = true;
-            loadData(settings,unique,function(data){
-              isFetching = false;
-              lastPage = (!data.length || data.length <= itemsPerPage) ? true : false;
-              menuSettings.data = data || [];
-              menu.update(menuSettings,scrollMenu);
-            });
-          }
-        }(Utils.random(),getSettings('dynamic')));
-      }
-    },30));
   };
   
   //We need to know a few things before we can start a player. We need to know if we will render
@@ -101,7 +76,8 @@
       (function(unique,settings){
         var playerSettings = JSON.parse(JSON.stringify(settings)),
             menuSettings = JSON.parse(JSON.stringify(settings)),
-            playlistOption = Utils.isset(settings,'playlist') ? settings.playlist: 'hide';
+            playlistOption = Utils.isset(settings,'playlist') ? settings.playlist: 'hide',
+            menu = null;
 
         render(unique,document.body);
 
@@ -111,10 +87,20 @@
 
           if (playlistOption === 'show') {
             menuSettings.data = data || [];
-            var menu = new Menu(player,menuSettings);
-            bindLoadMoreEvent(menu,menuSettings);
+            menu = new Menu(player,menuSettings);        
           }
         });
+        Menu.prototype.loadMore = function(){
+          if (!lastPage && !isFetching) {
+            channelVideosPage++;
+            isFetching = true;
+            loadData(settings,unique,function(newData){
+              isFetching = false;
+              lastPage = (!newData.length || newData.length <= itemsPerPage) ? true : false;
+              menu.update(newData);
+            });
+          }
+        };    
       }(Utils.random(),getSettings('dynamic')));
     }
   };
