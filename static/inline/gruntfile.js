@@ -8,7 +8,7 @@ module.exports = function(grunt) {
         // },
         sass:{
           files: ['scss/**/*.scss'],
-          tasks: ['sass']
+          tasks: ['sass', 'autoprefixer', 'cssmin']
         }
       },
       sass: {
@@ -18,15 +18,16 @@ module.exports = function(grunt) {
           },
           files: {
             'css/inline.css' : 'scss/styles.scss',
-            'css/host.css' : 'scss/host.scss'
+            'css/host.css' : 'scss/host.scss',
+            'css/mobile/host.css' : 'scss/mobile/host.scss'
           }
         }
       },
       autoprefixer: {
         css: {
           files: {
-            // 'css/host.css': 'css/host.css',
-            // 'css/mobile/host.css': 'css/mobile/host.css',
+            'css/host.css': 'css/host.css',
+            'css/mobile/host.css': 'css/mobile/host.css',
             // 'css/styles.css': 'css/styles.css',
             // 'css/modal/styles.css': 'css/modal/styles.css',
             // 'css/mobile/modal/styles.css': 'css/mobile/modal/styles.css'
@@ -39,22 +40,15 @@ module.exports = function(grunt) {
           mergeIntoShorthands: false,
           roundingPrecision: -1
         },
-        dist: {
+        desktop: {
           files: {
             'dist/css/inline.min.css' : ['css/inline.css'],
             'dist/css/host.min.css' : ['css/host.css'],
           }
         },
-        desktop: {
-          files: {
-            'dist/css/styles.min.css': ['css/vendor/slick.css','css/styles.css'],
-            'dist/css/host.min.css': ['css/host.css'],
-            'dist/css/modal/styles.min.css': ['css/vendor/simple-scrollbar.css','css/modal/styles.css']
-          }
-        },
         mobile: {
           files: {
-            'dist/css/mobile/modal/styles.min.css': ['css/vendor/slick.css', 'css/mobile/modal/styles.css'],
+            // 'dist/css/mobile/modal/styles.min.css': ['css/vendor/slick.css', 'css/mobile/modal/styles.css'],
             'dist/css/mobile/host.min.css': ['css/mobile/host.css']
           }
         }
@@ -103,6 +97,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-sass');
     
-    grunt.registerTask('default', ['watch']);
-    grunt.registerTask('release', ['uglify', 'sass', 'autoprefixer', 'cssmin:dist']);
+    grunt.registerTask('default', ['sass', 'autoprefixer', 'cssmin', 'watch']);
+    grunt.registerTask('release', ['uglify', 'sass', 'autoprefixer', 'cssmin']);
 };

@@ -1,0 +1,132 @@
+div[class^="tvp-"] {
+  box-sizing: border-box;
+}
+
+.tvp-modal-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1040;
+  background-color: black;
+  opacity: 0.5;
+}
+
+.tvp-modal-open {
+  overflow: hidden;
+}
+
+.tvp-modal {
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1050;
+  -webkit-overflow-scrolling: touch;
+  outline: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.tvp-modal-wrapper {
+  position: relative;
+  width: auto;
+  margin: 10px;
+}
+
+.tvp-modal-content {
+  position: relative;
+  /*border: 1px solid #999;*/
+  /*border: 1px solid rgba(0, 0, 0, 0.2);*/
+  /*box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);*/
+  background-clip: padding-box;
+  outline: 0;
+}
+
+.tvp-modal-header {
+  padding: 10px;
+  border-bottom: 1px solid #e5e5e5;
+  background: #fff;
+}
+
+.tvp-modal-title {
+  margin: 0;
+  line-height: 1.4285;
+}
+
+.tvp-title p {
+  display: none;
+}
+
+.tvp-modal-body {
+  position: relative;
+}
+
+.tvp-modal-iframe-holder {
+  position: relative;
+  height: 0;
+  overflow: hidden;
+  padding-bottom: 56.25%;
+  background-color: black;
+}
+
+.tvp-modal-iframe-holder.products {
+  height: auto;
+  padding-bottom: 0;
+  background-color: transparent;
+}
+
+.tvp-iframe-holder {
+  height: 0;
+  position: relative;
+  -webkit-transition: height ease-out 0.0001s;
+  transition: height ease-out 0.0001s;
+}
+
+/*This is the gallery iframe*/
+.tvp-iframe {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+
+/*This is the modal iframe*/
+.tvp-iframe-modal {
+  top:0;
+  left: 0;
+  width: 100%;
+  height: 450px;
+}
+
+@media screen and (min-width: 500px){
+  .tvp-iframe-modal {
+    height: 650px;
+  }
+}
+
+.tvp-modal-close {
+  width: 27px;
+  height: 27px;
+  padding: 3px;
+  cursor: pointer;
+  background: rgba(0, 0, 0, 0.75);
+  border: 0;
+  -webkit-appearance: none;
+  right: -6px;
+  position: absolute;
+  top: -6px;
+  border-radius: 50%;
+}
+
+.tvp-modal-close > path:nth-child(1) {
+  fill: #fff;
+}
+
+.tvp-modal-close > path:nth-child(2){
+  fill: none;
+}

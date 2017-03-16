@@ -109,6 +109,7 @@
     };
 
     function Inline(el, options) {
+        var that = this;
         this.xchg = options.xchg || false;
         this.windowSize = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) <= 200 ? 'small' : 'medium';
         this.initialResize = true;
@@ -125,12 +126,10 @@
         this.container = this.el.getElementsByClassName('tvp-videos-scroller')[1];
 
         this.onClick = Utils.isset(options.onClick) && Utils.isFunction(options.onClick) ? options.onClick : null;
-        var that = this;
         this.onNext = function (e) {
             renderProducts(e.assetId, e.loginId); 
             $(that.el).find('#videoTitle').html(e.assetTitle);
         };
-        var that = this;
         this.onResize = function (e, d) {
             $(that.el).find('#tvpProductsView').height(d[1]);
         };
@@ -161,7 +160,7 @@
                 
                 this.container.appendChild(rowEl);
             }
-            
+
             $videoSliderDesktop = $(this.el.querySelector('#tvpVideoScroller'));
             $videoSliderDesktop.slick({
                 arrows: true,
@@ -179,9 +178,18 @@
             $(this.el).find('#videoTitle').html(this.selectedVideo.title);
             //render products
             renderProducts(this.selectedVideo.id, options.loginId);
+
+            var $inline = $(this.el.querySelector('.tvp-content'));
+            $inline.on('setPosition', function() {
+                if (window.parent) {
+                    window.parent.postMessage({
+                        event: 'tvp_inline:resize',
+                        height: that.el.offsetHeight + 'px'
+                    }, '*');
+                }
+            });
         };
 
-        var that = this;
         this.load = function(callback){
             that.loading = true;
             if (this.onLoad) {

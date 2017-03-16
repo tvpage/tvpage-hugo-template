@@ -194,7 +194,7 @@ body {
   /* // TVP Icons // */
 }
 .tvp-rb .tvp-content {
-  padding: 0 62px 0;
+  padding: 0 0;
 }
 .tvp-rb .tvp-clear {
   clear: both;
@@ -278,16 +278,16 @@ body {
 .tvp-rb .tvp-row-titles .tvp-row-player-title {
   display: inline-block;
   height: 100%;
-  width: 57.8165%;
+  width: 57.73%;
   white-space: nowrap;
 }
 .tvp-rb .tvp-row-titles .tvp-row-featured-title {
   display: inline-block;
   height: 100%;
-  margin-left: 1.2195%;
+  margin-left: 2.43%;
 }
 .tvp-rb .tvp-row {
-  margin-bottom: 32px;
+  margin-bottom: 2.70%;
 }
 .tvp-rb .tvp-row .tvp-content {
   padding: 0;
@@ -296,7 +296,7 @@ body {
   position: relative;
   float: left;
   overflow: hidden;
-  width: 57.8165%;
+  width: 57.73%;
 }
 .tvp-rb .tvp-player:before {
   display: block;
@@ -359,8 +359,8 @@ body {
 .tvp-rb .tvp-featured {
   height: 100%;
   float: left;
-  margin-left: 1.2195%;
-  width: 22.2222%;
+  margin-left: 2.73%;
+  width: 24.82%;
   display: inline-block;
 }
 .tvp-rb .tvp-featured .tvp-featured-product {
@@ -431,16 +431,14 @@ body {
   border: 0;
   padding: 9px;
   font-size: 100%;
-  line-height: 36px;
   margin-top: 16px;
 }
 .tvp-rb .tvp-products-scroller {
   box-sizing: border-box;
   height: 100%;
   float: right;
-  margin-left: 17px;
   position: relative;
-  width: 16%;
+  width: 13.64%;
 }
 .tvp-rb .tvp-products-scroller .tvp-product-item {
   display: block;
