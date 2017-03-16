@@ -1,8 +1,5 @@
 ;(function(w, d) {
-    var menuTemplate = '<nav id="tvp-hidden-menu" ss-container>'+
-                            '<div id="tvp-clearfix"></div>'+
-                            '<div id="tvp-no-videos"></div>'+
-                       '</nav>'+
+    var menuTemplate = '<nav id="tvp-hidden-menu" ss-container></nav>'+
                         '<div id="tvp-hamburger-container">'+
                             '<div class="tvp-hamburger tvp-hamburger-x">'+
                                 '<span></span>'+
@@ -59,8 +56,14 @@
         menuFrag.appendChild(slideMenu);
         d.body.appendChild(menuFrag);
         var menuHiden = d.getElementById('tvp-hidden-menu'),
-            menuItemEl = d.getElementById('tvp-clearfix'),
-            noVidDiv = d.getElementById('tvp-no-videos');
+            menuItemEl = d.createElement('div'),
+            noVidDiv = d.createElement('div');
+
+        menuItemEl.setAttribute('id', 'tvp-clearfix'),    
+        noVidDiv.setAttribute('id', 'tvp-no-videos');
+
+        menuHiden.appendChild(noVidDiv);
+        menuHiden.insertBefore(menuItemEl,noVidDiv);
 
         that.vidCount = 0;
         for (var i = 0; i < playlist.length; i++) {
@@ -68,16 +71,15 @@
             var menuItem = playlist[i];
             that.allVideos.push(menuItem);
             menuItem.title = Utils.trimText(menuItem.title, 100);
-            var menuItemElFrag = d.createDocumentFragment();
             menuItemEl.innerHTML += Utils.tmpl(itemTemplate, menuItem);
-            menuItemElFrag.appendChild(menuItemEl);
-            menuHiden.appendChild(menuItemElFrag);
-            
-            var noVidFrag = d.createDocumentFragment(),
-                noVideos = d.createElement('div');
-            noVideos.classList.add('tvp-novids')
-            noVidFrag.appendChild(noVideos);
-            noVidDiv.appendChild(noVidFrag);
+
+            if (that.dataMethod !== 'static') {
+                var noVidFrag = d.createDocumentFragment(),
+                    noVideos = d.createElement('div');
+                noVideos.classList.add('tvp-novids');
+                noVidFrag.appendChild(noVideos);
+                noVidDiv.appendChild(noVidFrag);
+            }
         }
         if (that.dataMethod === 'static') {
             that.videoCountP = d.createTextNode(that.vidCount + ' ' + (that.vidCount > 2 ? 'videos' : 'video'));

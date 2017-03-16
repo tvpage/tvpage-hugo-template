@@ -409,6 +409,15 @@ body {
 }
 
 
+.tvp-noVids{
+  height: 20vh;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWMAAABQAgMAAACxNfzFAAAACVBMVEUAAADs7Ozu7u63WwrQAAAAA3RSTlMAs7Nn9tuTAAAAT0lEQVRYw+3WoQ3AIABE0TMdgc3ojoQpkShC09Ck4n135ulL39eScj8oueaoIZPJZPL38pvIZDKZTCaTyWTyaXn1+SuZTCaTyWQymfw/eQBpdm0cseOcAgAAAABJRU5ErkJggg==);
+  background-repeat: no-repeat;
+  background-size: 90%;
+  margin: 15px;
+}
+
+
 /*  SimpleScrollBar  */
 
 .ss-wrapper {
