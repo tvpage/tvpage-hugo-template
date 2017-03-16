@@ -441,7 +441,7 @@ body {
   top: 0;
   z-index: 2;
   cursor: pointer;
-  opacity: 0;
+  opacity: 0.7;
   -webkit-transition: opacity 0.25s linear;
   transition: opacity 0.25s linear;
 }
@@ -478,8 +478,5 @@ body {
   }
   .tvp-video-duration {
     font-size: 10px;
-  }
-  .ss-scroll {
-    opacity: 1;
   }
 }
