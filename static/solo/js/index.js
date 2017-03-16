@@ -1,7 +1,7 @@
 ;(function(document) {
 
   var channelVideosPage = 0,
-      itemsPerPage = 6,
+      itemsPerPage = 4,
       lastPage = false,
       isFetching = false,
 
@@ -96,7 +96,7 @@
             isFetching = true;
             loadData(settings,unique,function(newData){
               isFetching = false;
-              lastPage = (!newData.length || newData.length <= itemsPerPage) ? true : false;
+              lastPage = (!newData.length || newData.length < itemsPerPage) ? true : false;
               menu.update(newData);
             });
           }
