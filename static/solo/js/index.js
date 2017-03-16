@@ -86,6 +86,19 @@
     }
   };
 
-  initialize();
+  if (!isset(window.Player)) {
+      var libsCheck = 0;
+      (function libsReady() {
+          setTimeout(function(){
+              if (!isset(window.Player) && (++libsCheck < 50)) {
+                  libsReady();
+              } else {
+                  initialize();
+              }
+          },150);
+      })();
+  } else {
+      initialize();
+  }
 
 }(document));

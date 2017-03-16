@@ -433,6 +433,20 @@
         {
             "for": "modal",
             "type": "text",
+            "label": "Product Thumbnail Background Image Size",
+            "code": "product_thumbnail_background_image_size",
+            "value": "cover"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Thumbnail Image Overlay Color",
+            "code": "product_thumbnail_image_overlay_color",
+            "value": "rgba(0, 0, 0, 0.2)"
+        },
+        {
+            "for": "modal",
+            "type": "text",
             "label": "Modal Header Border Bottom",
             "code": "modal_header_border_bottom",
             "value": "1px solid #e5e5e5"
@@ -506,6 +520,13 @@
             "label": "Modal Close Button Background Hover",
             "code": "modal_close_button_background_hover",
             "value": "#000"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Modal Close Button Box Shadow",
+            "code": "modal_close_button_box_shadow",
+            "value": "none"
         },
         {
             "for": "modal",
@@ -594,9 +615,30 @@
         {
             "for": "modal",
             "type": "text",
+            "label": "Product Title Text Decoration",
+            "code": "product_title_text_decoration",
+            "value": "none"
+        },
+        {
+            "for": "modal",
+            "type": "text",
             "label": "Products Background",
             "code": "products_background",
             "value": "#fff"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Products Headline Top",
+            "code": "products_headline_top",
+            "value": "0"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Products Headline Right",
+            "code": "products_headline_right",
+            "value": "0"
         },
         {
             "for": "modal",
@@ -660,6 +702,13 @@
             "label": "Product Popup CTA Border",
             "code": "product_popup_cta_border",
             "value": "none"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Popup Arrow Indicator Border Color",
+            "code": "product_popup_arrow_indicator_border_color",
+            "value": "#000"
         },
         {
             "for": "modal",
