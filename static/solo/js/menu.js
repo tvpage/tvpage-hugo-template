@@ -1,5 +1,5 @@
 ;(function(window, document) {
-    var menuTemplate = '<nav id="tvp-hidden-menu"></nav><div id="tvp-hamburger-container"><div class="tvp-hamburger tvp-hamburger-x"><span></span></div><p class="tvp-video-count"></p></div>',
+    var menuTemplate = '<nav id="tvp-hidden-menu" ss-container></nav><div id="tvp-hamburger-container"><div class="tvp-hamburger tvp-hamburger-x"><span></span></div><p class="tvp-video-count"></p></div>',
 
         itemTemplate = '<div id="tvp-video-{id}" class="tvp-video{className}">' +
                             '<div class="tvp-video-image" style="background-image:url({asset.thumbnailUrl})">' +
@@ -10,57 +10,66 @@
                             '</div>' +
                             '<div class="tvp-video-details">' +
                                 '<p class="tvp-video-title">{title}</p>' +
-                                '<p class="tvp-video-duration">-{asset.prettyDuration}</p>' +
+                                '<p class="tvp-video-duration">- {asset.prettyDuration}</p>' +
                             '</div>' +
                         '</div>';
 
   function Menu(player, settings) {
 
     var that = this;
+    this.dataMethod = (document.body.classList.contains('dynamic')) ? 'dynamic' : 'static';
     this.allVideos = [];
+
+    this.init = function(){
+        that.render();
+        that.cacheDOM();
+        that.bindMenuEvent();
+        that.bindClickEvent();
+        that.bindLoadMoreEvent();
+    };
+
+    this.cacheDOM =function(){
+        that.hiddenMenu = document.getElementById('tvp-hidden-menu');
+        that.scrollMenu = document.querySelectorAll('.ss-content')[0];
+        that.tvpVid = document.querySelectorAll('.tvp-video');
+        that.hamburguer = document.getElementById('tvp-hamburger-container');
+        that.toggles = document.querySelectorAll('.tvp-hamburger');
+    };
 
     this.render = function() {
         var playlist = settings.data || [];
         if (playlist.length < 1) return;
-
-        that.menuFrag = document.createDocumentFragment();
-        that.slideMenu = document.createElement('div');
-        that.slideMenu.setAttribute('id', 'tvp-slide-menu');
-        that.slideMenu.innerHTML = menuTemplate;
-        that.menuFrag.appendChild(that.slideMenu);
-        document.body.appendChild(that.menuFrag);
-        that.hiddenMenu = document.getElementById('tvp-hidden-menu');
-        that.hamburguer = document.getElementById('tvp-hamburger-container');
+        var menuFrag = document.createDocumentFragment(),
+            slideMenu = document.createElement('div');
+        slideMenu.setAttribute('id', 'tvp-slide-menu');
+        slideMenu.innerHTML = menuTemplate;
+        menuFrag.appendChild(slideMenu);
+        document.body.appendChild(menuFrag);
+        var menuHiden = document.getElementById('tvp-hidden-menu');
         that.vidCount = 0;
         for (var i = 0; i < playlist.length; i++) {
             that.vidCount++;
             var menuItem = playlist[i];
             that.allVideos.push(menuItem);
             menuItem.title = Utils.trimText(menuItem.title, 100);
-
             var menuItemElFrag = document.createDocumentFragment(),
                 menuItemEl = document.createElement('div');
-
             menuItemEl.classList.add('tvp-slide-menu-video');
             menuItemEl.innerHTML = Utils.tmpl(itemTemplate, menuItem);
             menuItemElFrag.appendChild(menuItemEl);
-            that.hiddenMenu.appendChild(menuItemElFrag);
+            menuHiden.appendChild(menuItemElFrag);
         }
-        if (!document.body.classList.contains('dynamic')) {
+        if (that.dataMethod === 'static') {
             that.videoCountP = document.createTextNode(that.vidCount + ' ' + (that.vidCount > 2 ? 'videos' : 'video'));
-            that.tvpVideoCount = that.slideMenu.querySelectorAll('.tvp-video-count')[0];
+            that.tvpVideoCount = slideMenu.querySelectorAll('.tvp-video-count')[0];
             that.tvpVideoCount.appendChild(that.videoCountP);
         }
-        SimpleScrollbar.initEl(that.hiddenMenu);
-        that.bindMenuEvent();
-        that.bindClickEvent();
-        that.bindLoadMoreEvent();
+        SimpleScrollbar.initAll();
     };
 
     this.bindMenuEvent = function() {
-      var toggles = document.querySelectorAll('.tvp-hamburger');
-      for (var i = toggles.length - 1; i >= 0; i--) {
-        toggles[i].onclick = function() {
+      for (var i = that.toggles.length - 1; i >= 0; i--) {
+        that.toggles[i].onclick = function() {
             that.toggleMenu();
             that.hideMenuEvents();
         };
@@ -68,24 +77,21 @@
     };
 
     this.bindLoadMoreEvent = function(e){
-        var scrollMenu = document.querySelectorAll('.ss-content')[0];
-        scrollMenu.addEventListener("scroll", Utils.debounce(function() {
-          var menuTop = scrollMenu.scrollTop,
-              newHeight = document.body.clientHeight - scrollMenu.scrollHeight,
+        that.scrollMenu.addEventListener("scroll", Utils.debounce(function() {
+          var menuTop = that.scrollMenu.scrollTop,
+              newHeight = document.body.clientHeight - that.scrollMenu.scrollHeight,
               percentDocument = (menuTop*100)/newHeight;
           percentDocument = Math.round(percentDocument);
           percentDocument = Math.abs(percentDocument);
-          if (percentDocument >= 55 && percentDocument <= 100) {
-            that.loadMore();
+          if (percentDocument >= 50 && percentDocument <= 100) {
+            that.dataMethod == 'dynamic' ? that.loadMore() : console.log('.');
           }
         },30));
     };
 
     this.bindClickEvent = function(){
-      var tvpVid = document.querySelectorAll('.tvp-video');
-      tvpVid[0].classList.add('active');
-      for (var i = tvpVid.length - 1; i >= 0; i--) {
-        that.videoClick(tvpVid[i]);
+      for (var i = that.tvpVid.length - 1; i >= 0; i--) {
+        that.videoClick(that.tvpVid[i]);
       }
     };
 
@@ -113,26 +119,24 @@
 
     this.update = function(newData) {
       var videoData = newData || [];
-      var scrollMenu = document.querySelectorAll('.ss-content')[0];
       for (var i = 0; i < videoData.length; i++) {
         that.allVideos.push(videoData[i]);
         settings.data.push(videoData[i]);
         var newItemEl = document.createElement('div');
         newItemEl.classList.add('tvp-slide-menu-video');
         newItemEl.innerHTML += Utils.tmpl(itemTemplate, videoData[i]);
-        scrollMenu.appendChild(newItemEl);
-      } 
+        that.scrollMenu.appendChild(newItemEl);
+      }
+      that.cacheDOM();
       that.bindClickEvent();
     };
 
     this.videoClick = function(vids){
         vids.onclick = function() {
-            console.log(player)
             if (!this.classList.contains('tvp-video')) return;
-            var tvpV = document.querySelectorAll('.tvp-video');
-            for (var i = tvpV.length - 1; i >= 0; i--) {
-                if(tvpV[i].classList.contains('active')){
-                    tvpV[i].classList.remove('active');
+            for (var i = that.tvpVid.length - 1; i >= 0; i--) {
+                if(that.tvpVid[i].classList.contains('active')){
+                    that.tvpVid[i].classList.remove('active');
                 }
             }
             this.classList.add('active');
@@ -149,7 +153,7 @@
         }
     };
 
-    that.render();
+    that.init();
   }
 
   window.Menu = Menu;
