@@ -27,7 +27,7 @@
 
   //The player singleton. We basically create an instance from the tvpage
   //player and expose most utilities, helping to encapsualte what is required for a few players to co-exist.
-  function Player(el, options, startWith) {
+  function Player(el, options) {
     if (!el || !isset(options) || !isset(options.data) || options.data.length <= 0) return;
 
     this.isFullScreen = false;
@@ -173,6 +173,16 @@
       that.initialResize = false;
     };
 
+    this.getCurrent = function(a){
+      var current = 0;
+      for (var i = 0; i < that.assets.length; i++) {
+        if (that.assets[i].assetId === (a || '') ) {
+          current = i;
+        }
+      }
+      return current;
+    };
+
     this.onReady = function(e, pl){
         that.instance = pl;
         that.resize();
@@ -202,13 +212,7 @@
 
         that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progressColor;
 
-        var current = 0;
-        for (var i = 0; i < that.assets.length; i++) {
-            if (that.assets[i].assetId === (startWith || '') ) {
-                current = i;
-            }
-        }
-        that.current = current;
+        that.current = that.getCurrent(that.assets.assetId);
 
         that.play(that.assets[that.current]);
     };

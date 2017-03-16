@@ -1,7 +1,7 @@
 ;(function(document) {
 
   var channelVideosPage = 0,
-      itemsPerPage = 4,
+      itemsPerPage = 6,
       lastPage = false,
       isFetching = false,
 
