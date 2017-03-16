@@ -81,10 +81,12 @@
         }
         if (that.dataMethod === 'static') {
             that.videoCountP = d.createTextNode(that.vidCount + ' ' + (that.vidCount > 2 ? 'videos' : 'video'));
-            that.tvpVideoCount = slideMenu.querySelector('.tvp-video-count')[0];
+            that.tvpVideoCount = d.querySelectorAll('.tvp-video-count')[0];
             that.tvpVideoCount.appendChild(that.videoCountP);
         }
+        menuHiden.style.cssText = 'height:'+(d.querySelectorAll('.tvp-player')[0].offsetHeight - 40)+'px;';
         SimpleScrollbar.initAll();
+
     };
 
     this.bindMenuEvent = function() {
