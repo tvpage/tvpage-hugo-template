@@ -101,7 +101,7 @@
           var menuTop = that.scrollMenu.scrollTop,
               newHeight = that.hiddenMenu.clientHeight - that.scrollMenu.scrollHeight,
               percentDocument = (menuTop*100)/newHeight;
-          percentd = Math.round(percentDocument);
+          percentDocument = Math.round(percentDocument);
           percentDocument = Math.abs(percentDocument);
           if (percentDocument >= 50 && percentDocument <= 100) {
             that.dataMethod == 'dynamic' ? that.loadMore() : null;
