@@ -82,7 +82,8 @@
                         var arrows = document.querySelectorAll(".tvp-carousel-arrow");
                         for (var i = 0; i < arrows.length; i++) {
                             var arrow = arrows[i];
-                            arrow.style.top = Math.floor( playButtonCenter - (arrow.querySelector("svg").clientHeight / 2) ) + "px";
+                            var arrowSvg = arrow.querySelector("svg");
+                            arrow.style.top = Math.floor( playButtonCenter - ( (arrowSvg.clientHeight || arrowSvg.getBoundingClientRect().height) / 2) ) + "px";
                         }
                     },10);
 

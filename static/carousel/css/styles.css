@@ -153,6 +153,10 @@ body  {
   visibility: visible;
 }
 
+.mobile .tvp-carousel-arrow {
+  display: none;
+}
+
 .tvp-carousel-arrow {
   -webkit-transition: top .05s ease-in-out;
   transition: top .05s ease-in-out;
