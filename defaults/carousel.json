@@ -19,7 +19,7 @@
             "type": "text",
             "label": "Progress Color",
             "code": "progress_color",
-            "value": "#787878"
+            "value": "#e57211"
         },
         {
             "for": "player",
@@ -366,6 +366,13 @@
             "label": "Item Title Margin",
             "code": "item_title_margin",
             "value": "10px 0"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Title Padding",
+            "code": "item_title_padding",
+            "value": "0 7px"
         },
         {
             "for": "carousel",

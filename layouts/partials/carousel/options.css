@@ -27,6 +27,7 @@
     text-align: {{ ($.Scratch.Get "settings").item_title_text_align }};
     color: {{ ($.Scratch.Get "settings").item_title_font_color }};
     margin: {{ ($.Scratch.Get "settings").item_title_margin }};
+    padding: {{ ($.Scratch.Get "settings").item_title_padding }};
 }
 
 .tvp-video-metadata {

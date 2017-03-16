@@ -139,7 +139,7 @@
                     setTimeout(function() {
                         if (window.parent) {
                             window.parent.postMessage({
-                                event: eventPrefix + ':modal_resized',
+                                event: eventPrefix + ':modal_resize',
                                 height: el.offsetHeight + 'px'
                             }, '*');
                         }
@@ -173,7 +173,7 @@
                 setTimeout(function() {
                     if (window.parent) {
                         window.parent.postMessage({
-                            event: eventPrefix + ':modal_resized',
+                            event: eventPrefix + ':modal_resize',
                             height: el.offsetHeight + 'px'
                         }, '*');
                     }
@@ -221,7 +221,7 @@
 
                 analytics = new Analytics();
                 analytics.initConfig({
-                    logUrl: '\/\/api.tvpage.com\/v1\/__tvpa.gif',
+                    logUrl: '//api.tvpage.com/v1/__tvpa.gif',
                     domain: Utils.isset(location, 'hostname') ? location.hostname : '',
                     loginId: loginId
                 });

@@ -246,7 +246,8 @@
                 js: [
                     "//a.tvpage.com/tvpa.min.js",
                     "https://cdnjs.tvpage.com/tvplayer/tvp-1.8.6.min.js",
-                    config.debug ? config.jsPath + "/vendor/simple-scrollbar.min.js" : "",
+                    config.debug && config.isMobile ? config.jsPath + "/vendor/jquery.js" : "",
+                    config.debug && config.isDesktop ? config.jsPath + "/vendor/simple-scrollbar.min.js" : "",
                     config.debug ? config.jsPath + "/libs/utils.js" : "",
                     config.debug ? config.jsPath + "/libs/analytics.js" : "",
                     config.debug ? config.jsPath + "/libs/player.js" : "",
@@ -309,6 +310,11 @@
 
             removeClass(iframeModalHolder,'products');
             addClass(iframeModalHolder,'no-products');
+        });
+
+        window.addEventListener("message", function(e){
+            if (!isEvent(e, ":modal_resize")) return;
+            iframeModal.style.height = e.data.height;
         });
 
         window.addEventListener("message", function(e) {
