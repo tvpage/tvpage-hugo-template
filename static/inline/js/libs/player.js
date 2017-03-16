@@ -213,6 +213,7 @@
                         analytics: { tvpa: that.analytics },
                         apiBaseUrl: '//api.tvpage.com/v1',
                         swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+that.version+'-flash.swf',
+                        poster: true, 
                         onReady: function(e, pl){
                             that.instance = pl;
                             that.resize();

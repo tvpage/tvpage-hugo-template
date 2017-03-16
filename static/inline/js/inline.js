@@ -123,7 +123,7 @@
         this.page = 0;
 
         this.el = 'string' === typeof el ? document.getElementById(el) : el;
-        this.container = this.el.getElementsByClassName('tvp-videos-scroller')[1];
+        this.container = this.el.getElementsByClassName('tvp-videos-scroller')[0];
 
         this.onClick = Utils.isset(options.onClick) && Utils.isFunction(options.onClick) ? options.onClick : null;
         this.onNext = function (e) {
@@ -165,9 +165,22 @@
             $videoSliderDesktop.slick({
                 arrows: true,
                 slidesToShow: 4,
-                slidesToScroll: 4,                
+                slidesToScroll: 4,
                 nextArrow: '<div class="tvp-videos-arrows tvp-videos-arrow-next" data-dir="prev"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"/><path d="M0-.25h24v24H0z" fill="none"/></svg></div>',
-                prevArrow: '<div class="tvp-videos-arrows tvp-videos-arrow-prev" data-dir="next"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z"/><path d="M0-.5h24v24H0z" fill="none"/></svg></div>'
+                prevArrow: '<div class="tvp-videos-arrows tvp-videos-arrow-prev" data-dir="next"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z"/><path d="M0-.5h24v24H0z" fill="none"/></svg></div>',
+                responsive:[
+                    {
+                        breakpoint: 769,
+                        settings: {
+                            arrows: false,
+                            // centerMode: true,
+                            centerPadding: '0px',
+                            slidesToShow: 2,
+                            slidesToScroll: 2,
+                            dots: true
+                        }
+                    }
+                ]
             });
 
             //init player            
