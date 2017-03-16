@@ -1,6 +1,4 @@
 ;(function(window, document) {
-
-    var $carousel = null;
     var $videoSliderDesktop = null;
     var productData = [];
 
@@ -157,8 +155,7 @@
             this.container.innerHTML = '';
 
             var all = this.data.slice(0);
-            var inlineFrag = document.createDocumentFragment();
-
+            
             for (var i = 0; i < all.length; i++) {
                 var item = all[i];
                 var rowEl = document.createElement('div');
@@ -169,12 +166,6 @@
                 }
 
                 item.className = className;
-
-                var templateScript = document.getElementById('videoItemTemplate');                
-                var template;
-                if (templateScript) {
-                    template = templateScript.innerHTML;
-                }
 
                 rowEl.innerHTML = Utils.tmpl(videoTemplate, item);
                 
@@ -255,8 +246,8 @@
                                 xchg = xhr.responseText;
                                 var xchgCount = xchg.length;
                                 while(xchgCount > 0) {
-                                    var xchgVideo = xchg[xchgCount-1];
-                                    xchgVideo = $.extend(xchgVideo, xchgVideo.entity);
+                                    // var xchgVideo = xchg[xchgCount-1];
+                                    // xchgVideo = $.extend(xchgVideo, xchgVideo.entity);
                                     xchgCount--;
                                 }
                             }

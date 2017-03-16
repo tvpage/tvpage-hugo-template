@@ -191,7 +191,6 @@
         }
 
         this.load = function (videoId) {
-            var assetIdx = 0;
             for (var i = 0; i < this.assets.length; i++) {
                 if(this.assets[i].assetId === videoId){
                     this.current = i;
