@@ -498,6 +498,9 @@ body {
   width: 24.82%;
   display: inline-block;
 }
+.tvp-rb .tvp-featured h2 {
+  display: none;
+}
 .tvp-rb .tvp-featured .tvp-featured-product {
   background-color: #EBEBEB;
   box-sizing: border-box;
@@ -722,16 +725,102 @@ body {
 }
 
 @media only screen and (max-device-width: 768px) {
+  .tvp-rb .tvp-row-titles {
+    height: initial;
+    margin-bottom: 10px;
+  }
+  .tvp-rb .tvp-row-titles .tvp-row-featured-title {
+    display: none;
+  }
+  .tvp-rb .tvp-row-titles .tvp-row-player-title {
+    width: 100%;
+  }
+  .tvp-rb .tvp-row-titles .tvp-row-player-title h1 {
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 16px;
+  }
   .tvp-rb .tvp-player {
     width: 100%;
   }
   .tvp-rb .tvp-featured {
-    display: none;
+    width: 100%;
+    margin: 0;
   }
-  .tvp-rb .tvp-products-scroller {
-    display: none;
+  .tvp-rb .tvp-featured h2 {
+    display: initial;
+    font-size: 12px;
+    line-height: 14px;
+    margin: 5px 0;
+    font-weight: normal;
   }
   .tvp-rb .slick-list {
     margin: 0;
+  }
+  .tvp-rb .tvp-products-scroller {
+    display: block;
+    width: 100%;
+  }
+  .tvp-rb .tvp-products-scroller .tvp-product-item {
+    border: 1px solid #DDDDDD;
+    padding: 5px 0 0 5px;
+    background-color: transparent;
+    min-height: 75px;
+    margin-right: 10px;
+    position: relative;
+  }
+  .tvp-rb .tvp-products-scroller .tvp-product-item:last-child {
+    margin: 0;
+  }
+  .tvp-rb .tvp-products-scroller .tvp-product-item .tvp-featured-image {
+    position: relative;
+    display: inline-block;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 18.6%;
+  }
+  .tvp-rb .tvp-products-scroller .tvp-product-item .tvp-featured-image:before {
+    display: block;
+    content: "";
+    width: 100%;
+    padding-top: 100%;
+  }
+  .tvp-rb .tvp-products-scroller .tvp-product-item .tvp-featured-image > .tvp-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  .tvp-rb .tvp-products-scroller .tvp-product-item .tvp-featured-info {
+    display: inline-block;
+    width: 79%;
+    float: right;
+    font-size: 12px;
+    height: 100%;
+  }
+  .tvp-rb .tvp-products-scroller .tvp-product-item .tvp-featured-info-title {
+    display: block;
+    line-height: 14px;
+    max-height: 28px;
+    overflow: hidden;
+    margin-right: 5px;
+  }
+  .tvp-rb .tvp-products-scroller .tvp-product-item .tvp-featured-info-rating {
+    display: none;
+  }
+  .tvp-rb .tvp-products-scroller .tvp-product-item .tvp-featured-info-price {
+    display: block;
+    color: #2557AC;
+  }
+  .tvp-rb .tvp-products-scroller .tvp-product-item .tvp-featured-info-view-details {
+    border: 1px solid #DDDDDD;
+    border-bottom: 0;
+    border-right: 0;
+    background-color: transparent;
+    position: absolute;
+    bottom: 0;
+    right: 0;
   }
 }

@@ -46,6 +46,7 @@
     };
 
     var renderFeaturedProduct = function (product) {
+        if (Utils.isMobile) return;
         var getRating = function() {
           var rating = 0;
           
@@ -75,6 +76,7 @@
                 var $sscontent = $(products).find('.ss-content');
                 if (data.length) {
                     var _container;
+                    var itemTemplate = Utils.isMobile ? productFeatureTemplate : productTemplate;
                     productData = data;
                     if($sscontent.length){
                         $sscontent.children().remove();
@@ -88,12 +90,29 @@
                         var row = document.createElement('a');                    
                         row.setAttribute('data-id', data[i].id);
                         row.className = 'tvp-product-item';
-                        row.innerHTML = Utils.tmpl(productTemplate, data[i]);
-                        row.href = '#';
+                        row.innerHTML = Utils.tmpl(itemTemplate, data[i]);
+                        if (Utils.isMobile) {
+                            row.href = data[i].linkUrl;
+                            row.setAttribute('target', '_blank');
+                        }
+                        else{
+                            row.href = '#';
+                        }
+                        
                         $(row).appendTo(_container);                        
                     }
-                    SimpleScrollbar.initEl(products);
-                    renderFeaturedProduct(data[0]);
+                    if (!Utils.isMobile) {
+                        SimpleScrollbar.initEl(products);
+                        renderFeaturedProduct(data[0]);
+                    }
+                    else{
+                        // apply slick carousel
+                        $(products).slick({
+                            arrow: false,
+                            slidesToShow: 1,
+                            slidesToScroll: 1
+                        });
+                    }
                 }
                 else{
                     if($sscontent.children().length) {
@@ -104,7 +123,6 @@
                         productData.pop();
                     }
                 }
-
         });
     };
 
@@ -131,7 +149,9 @@
             $(that.el).find('#videoTitle').html(e.assetTitle);
         };
         this.onResize = function (e, d) {
-            $(that.el).find('#tvpProductsView').height(d[1]);
+            if (!Utils.isMobile) {
+                $(that.el).find('#tvpProductsView').height(d[1]);
+            }
         };
         this.render = function(){
             this.container.innerHTML = '';
