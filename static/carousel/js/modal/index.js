@@ -212,7 +212,7 @@
                 } else {
                     loadProducts(
                         next.assetId,
-                        data.runTime.loginid,
+                        data.runTime.loginId,
                         function(data){
                             setTimeout(function(){
                                 render(data);
