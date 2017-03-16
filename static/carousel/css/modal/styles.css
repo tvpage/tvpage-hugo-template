@@ -153,18 +153,12 @@ body  {
 }
 
 .tvp-product-title {
-  height: 35px;
-  overflow: hidden;
-  font-size: 14px;
-  text-decoration: none;
   margin: 10px 0;
-  color: #1F1D26;
 }
 
 .tvp-product-price {
-  margin: 0;
   float: left;
-  font-size: 14px;
+  margin: 0;
 }
 
 .tvp-product-rating {
@@ -199,7 +193,6 @@ body  {
   height: 0;
   border-top: 15px solid transparent;
   border-bottom: 15px solid transparent;
-  border-left: 13px solid black;
   position: absolute;
   top: 0;
   left: 1px;
@@ -237,7 +230,6 @@ body  {
 
 .tvp-product-image {
   display: block;
-  background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   position: absolute;
@@ -250,7 +242,6 @@ body  {
 
 .tvp-product-popup-image {
   display: block;
-  background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   padding-top: 100%;
@@ -260,7 +251,7 @@ body  {
   .tvp-product-popup{
     display: none!important;
   }
-  .tvp-arrow-indicator{
+  .tvp-arrow-indicator {
     display: none!important;
   }
 }

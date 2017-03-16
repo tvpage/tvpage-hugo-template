@@ -19,6 +19,8 @@
     .tvp-products-headline {
         color: {{ ($.Scratch.Get "settings").products_headline_font_color }};
         font-size: {{ ($.Scratch.Get "settings").products_headline_font_size }};
+        top: {{ ($.Scratch.Get "settings").products_headline_top }};
+        right: {{ ($.Scratch.Get "settings").products_headline_right }};
     }
 
     .tvp-modal-close {
@@ -28,6 +30,7 @@
         background: {{ ($.Scratch.Get "settings").modal_close_button_background }};
         border: {{ ($.Scratch.Get "settings").modal_close_button_border }};
         border-radius: {{ ($.Scratch.Get "settings").modal_close_button_border_radius }};
+        box-shadow: {{ ($.Scratch.Get "settings").modal_close_button_box_shadow }};
     }
 
     .tvp-modal-close:hover {
