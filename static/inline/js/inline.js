@@ -2,6 +2,7 @@
     var $videoSliderDesktop = null;
     var productData = [];
     var isProductsInitialized = true;
+    var analytics = null;
 
     var productTemplate = '<div class="tvp-product-image" style="background-image: url({imageUrl})"></div>';
 
@@ -21,6 +22,15 @@
         + '</div>'
         + '<p class="tvp-video-title">{title}</p>'
         + '</div>';
+    var that = this;
+
+    var pkTrack = function(){
+        analytics.track('pk',{
+            vd: that.player.assets[that.player.current].assetId,
+            ct: this.getAttribute('data-id'),
+            pg: that.channel.id
+        });
+    };
 
     var hasClass = function(obj,c) {
         if (!obj || !c) return;
@@ -58,13 +68,17 @@
 
         var featuredProductContainer = document.getElementById('tvpFeaturedProduct');
 
-        var featuredProduct = document.createElement('a');
+        var featuredProduct = document.createElement('a');        
         product.formattedRating = getRating();
         featuredProduct.className = 'tvp-featured-product';
         featuredProduct.href = product.linkUrl;
+        featuredProduct.setAttribute('target', '_blank');
+        featuredProduct.setAttribute('data-id', product.id);
         featuredProduct.innerHTML = Utils.tmpl(productFeatureTemplate, product);
         $(featuredProductContainer).children().remove();
         $(featuredProduct).appendTo(featuredProductContainer);
+
+        featuredProduct.addEventListener('click', pkTrack, false);
     }
 
     var renderProducts = function (vid, lid) {
@@ -100,7 +114,14 @@
                                 row.href = '#';
                             }
                             
-                            $(row).appendTo(_container);                        
+                            $(row).appendTo(_container);
+                            
+                            analytics.track('pi',{
+                                vd: data[i].entityIdParent,
+                                ct: data[i].id,
+                                pg: this.channel.id
+                            });
+                            row.addEventListener('click', pkTrack, false);
                         }
                         if (isProductsInitialized) {
                             SimpleScrollbar.initEl(products);
@@ -123,7 +144,13 @@
                                     row.href = '#';
                                 }
                                 
-                                $(row).appendTo($(products));                        
+                                $(row).appendTo($(products));
+                                analytics.track('pi',{
+                                    vd: data[i].entityIdParent,
+                                    ct: data[i].id,
+                                    pg: this.channel.id
+                                });
+                                row.addEventListener('click', pkTrack, false);
                             }
                             $(products).slick({
                                 arrow: false,
@@ -153,7 +180,6 @@
     };
 
     function Inline(el, options) {
-        var that = this;
         this.xchg = options.xchg || false;
         this.windowSize = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) <= 200 ? 'small' : 'medium';
         this.initialResize = true;
@@ -178,7 +204,7 @@
             if (!Utils.isMobile) {
                 $(that.el).find('#tvpProductsView').height(d[1]);
             }
-        };
+        };        
         this.render = function(){
             this.container.innerHTML = '';
 
@@ -225,7 +251,7 @@
             //init player            
             var s = this;
             this.selectedVideo = this.data[0];
-            s.data = data;            
+            s.data = data;
             this.player = new Player('tvp-player', s, this.selectedVideo.id);
             $(this.el).find('#videoTitle').html(this.selectedVideo.title);
             //render products
@@ -239,6 +265,12 @@
                         height: that.el.offsetHeight + 'px'
                     }, '*');
                 }
+            });
+            analytics =  new Analytics();
+            analytics.initConfig({
+                logUrl: '\/\/api.tvpage.com\/v1\/__tvpa.gif',
+                domain: Utils.isset(location,'hostname') ?  location.hostname : '',
+                loginId: this.loginId
             });
         };
 
