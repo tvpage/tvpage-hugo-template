@@ -74,22 +74,29 @@
     if (document.body.classList.contains('dynamic')) {
       //We deal diff with some stuff on iframe.
       (function(unique,settings){
-        var playerSettings = JSON.parse(JSON.stringify(settings)),
+        var player = null,
+            playerSettings = JSON.parse(JSON.stringify(settings)),
             menuSettings = JSON.parse(JSON.stringify(settings)),
             playlistOption = Utils.isset(settings,'playlist') ? settings.playlist: 'hide',
             menu = null;
 
         render(unique,document.body);
 
+        playerSettings.onPlay = function (asset) {
+            menu.hideMenu();
+            menu.setActiveItem(asset.assetId);
+        };
+
         loadData(settings,unique,function(data){
           playerSettings.data = data || [];
-          var player = new Player('tvp-player-el-'+unique,playerSettings);
+          player = new Player('tvp-player-el-'+unique,playerSettings);
 
           if (playlistOption === 'show') {
             menuSettings.data = data || [];
             menu = new Menu(player,menuSettings);        
           }
         });
+
         Menu.prototype.loadMore = function(){
           if (!lastPage && !isFetching) {
             channelVideosPage++;
@@ -97,10 +104,12 @@
             loadData(settings,unique,function(newData){
               isFetching = false;
               lastPage = (!newData.length || newData.length < itemsPerPage) ? true : false;
+              player.addData(newData);
               menu.update(newData);
             });
           }
-        };    
+        };
+
       }(Utils.random(),getSettings('dynamic')));
     }
   };

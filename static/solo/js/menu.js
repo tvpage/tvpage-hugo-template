@@ -125,8 +125,8 @@
     };
 
     this.hideMenu = function(){
-        that.hamburguer.classList.contains('active') ? that.hamburguer.classList.remove('active') : '';
-        that.hiddenMenu.classList.contains('active') ? that.hiddenMenu.classList.remove('active') : '';
+        that.hamburguer.classList.remove('active');
+        that.hiddenMenu.classList.remove('active');
     };
 
     this.hideMenuEvents = function(){
@@ -185,26 +185,36 @@
         }
     };
 
+    this.clearActiveItems = function () {
+        for (var i = that.tvpVid.length - 1; i >= 0; i--) {
+            if(that.tvpVid[i].classList.contains('active')){
+                that.tvpVid[i].classList.remove('active');
+            }
+        }
+    };
+
+    this.setActiveItem = function (id) {
+        for (var i = that.tvpVid.length - 1; i >= 0; i--) {
+            var item = that.tvpVid[i];
+            if (item.id === id && !item.classList.contains('active')){
+                this.clearActiveItems();
+                item.classList.add('active');
+            }
+        }
+    };
+
     this.videoClick = function(vids){
         vids.onclick = function() {
             if (!this.classList.contains('tvp-video')) return;
-            for (var i = that.tvpVid.length - 1; i >= 0; i--) {
-                if(that.tvpVid[i].classList.contains('active')){
-                    that.tvpVid[i].classList.remove('active');
-                }
-            }
+
+            that.clearActiveItems();
             this.classList.add('active');
+
             var id = this.id.split('-').pop(),
                 selected = that.allVideos.filter(function(v){return v.id === id});
             player.play(player.createAsset(selected[0]));
             that.toggleMenu();
         };
-    };
-
-    player.onStateChange = function(e){
-        if ('tvp:media:videoplaying' === e){
-            that.hideMenu();
-        }
     };
 
     that.init();

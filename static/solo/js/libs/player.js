@@ -42,6 +42,7 @@
     this.overlay = isset(options.overlay) ? options.overlay : null;
     this.instance = null;
     this.el = 'string' === typeof el ? document.getElementById(el) : el;
+    this.onPlay = isset(options.onPlay) && "function" === typeof options.onPlay ? options.onPlay : null;
 
     //Context reference for Methods.
     var that = this;
@@ -101,12 +102,18 @@
             }
         };
 
+        var existing = this.el.querySelector('.tvp-overlay');
+        if (existing) {
+            existing.removeEventListener('click', click, false);
+            existing.parentNode.removeChild(existing);
+        }
+
         overlay.removeEventListener('click', click, false);
         overlay.addEventListener('click', click, false);
         this.el.appendChild(overlay);
     };
 
-    this.play = function(asset,ongoing){
+    this.play = function(asset,ongoing,initial){
       if (!asset) return;
       var willCue = false,
           isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -136,7 +143,11 @@
         config.logUrl = '//api.tvpage.com/v1/__tvpa.gif';
         analytics.initConfig(config);
       }
-      
+
+      if (!initial) {
+        this.current = this.getCurrentIndex(asset.assetId);
+      }
+
       if (willCue) {
         this.instance.cueVideo(asset);
         if ('mp4' === asset.type || this.overlay) {
@@ -145,6 +156,16 @@
       } else {
        this.instance.loadVideo(asset);
       }
+    };
+
+    this.addData = function(data){
+        if (!data || !data.length) return;
+        var newAssets = [];
+        for (var i = 0; i < data.length; i++) {
+            newAssets.push(this.createAsset(data[i]));
+        }
+
+        this.assets = this.assets.concat(newAssets);
     };
 
     this.resize = function(){
@@ -168,10 +189,10 @@
       that.initialResize = false;
     };
 
-    this.getCurrent = function(a){
+    this.getCurrentIndex = function(id){
       var current = 0;
-      for (var i = 0; i < that.assets.length; i++) {
-        if (that.assets[i].assetId === (a || '') ) {
+      for (var i = 0; i < this.assets.length; i++) {
+        if (this.assets[i].assetId === (id || '') ) {
           current = i;
         }
       }
@@ -207,19 +228,23 @@
 
         that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progressColor;
 
-        that.current = that.getCurrent(that.assets.assetId);
-        that.play(that.assets[that.current]);
+        that.current = that.getCurrentIndex(startWith);
+        that.play(that.assets[that.current],null,true);
     };
 
     that.onStateChange = function(e){
-        if ('tvp:media:videoended' !== e) return;
+        if ('tvp:media:videoended' === e) {
+            that.current++;
+            if (!that.assets[that.current]) {
+                that.current = 0;
+            }
 
-        that.current++;
-        if (!that.assets[that.current]) {
-            that.current = 0;
+            that.play(that.assets[that.current], true);
         }
 
-        that.play(that.assets[that.current], true);
+        if ('tvp:media:videoplaying' === e && that.onPlay){
+            that.onPlay(that.assets[that.current]);
+        }
     };
 
     var checks = 0;
