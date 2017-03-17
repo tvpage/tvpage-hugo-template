@@ -27,7 +27,7 @@
 
   //The player singleton. We basically create an instance from the tvpage
   //player and expose most utilities, helping to encapsualte what is required for a few players to co-exist.
-  function Player(el, options) {
+  function Player(el, options, startWith) {
     if (!el || !isset(options) || !isset(options.data) || options.data.length <= 0) return;
 
     this.isFullScreen = false;
@@ -84,6 +84,12 @@
     //Sometimes we want/need to show an intearctive overlay on top of the player. We need this for MP4 videos that will
     //cue (mobile or autoplay:off) to actual play the video on demand.
     this.addOverlay = function(asset){
+        var overlay = document.createElement('div');
+        overlay.className = 'tvp-overlay';
+        overlay.style.backgroundImage = 'url("' + asset.thumbnailUrl + '")';
+        overlay.innerHTML = '<div class="tvp-overlay-cover"></div><svg class="tvp-play" viewBox="0 0 200 200">' +
+        '<polygon points="70, 55 70, 145 145, 100"></polygon></svg>';
+
         var click = function(){
             var clear = function () {
                 this.removeEventListener('click',click,false);
@@ -95,18 +101,7 @@
             }
         };
 
-        var existing = this.el.querySelector('.tvp-overlay');
-        if (existing) {
-            existing.removeEventListener('click', click, false);
-            existing.parentNode.removeChild(existing);
-        }
-
-        var overlay = document.createElement('div');
-        overlay.className = 'tvp-overlay';
-        overlay.style.backgroundImage = 'url("' + asset.thumbnailUrl + '")';
-        overlay.innerHTML = '<div class="tvp-overlay-cover"></div><svg class="tvp-play" viewBox="0 0 200 200">' +
-        '<polygon points="70, 55 70, 145 145, 100"></polygon></svg>';
-
+        overlay.removeEventListener('click', click, false);
         overlay.addEventListener('click', click, false);
         this.el.appendChild(overlay);
     };
@@ -213,7 +208,6 @@
         that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progressColor;
 
         that.current = that.getCurrent(that.assets.assetId);
-
         that.play(that.assets[that.current]);
     };
 

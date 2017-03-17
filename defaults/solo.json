@@ -52,26 +52,6 @@
       "value": true
     },
     {
-      "type": "boolean",
-      "label": "Analytics",
-      "code": "analytics",
-      "value": true
-    },
-    {
-      "for": "player",
-      "type": "text",
-      "label": "Playlist",
-      "code": "playlist",
-      "value": "hide"
-    },
-    {
-        "for": "styles",
-        "type": "text",
-        "label": "Items Per Page",
-        "code": "items_per_page",
-        "value": "3"
-    },
-    {
       "for": "player",
       "type": "text",
       "label": "Play Button Height",
