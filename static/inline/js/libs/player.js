@@ -163,7 +163,12 @@
                 if ('mp4' === asset.type || this.overlay) {
                     this.addOverlay(asset);
                 }
-                else{ return; }
+                else{ 
+                    var tvp_overlay = this.el.querySelector('.tvp-overlay');
+                    if(Boolean(tvp_overlay)){
+                        this.el.removeChild(tvp_overlay);
+                    }
+                }
             } else {
                 this.instance.loadVideo(asset);
             }
