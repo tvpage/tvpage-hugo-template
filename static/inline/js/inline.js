@@ -1,6 +1,7 @@
 ;(function(window, document) {
     var $videoSliderDesktop = null;
     var productData = [];
+    var isProductsInitialized = true;
 
     var productTemplate = '<div class="tvp-product-image" style="background-image: url({imageUrl})"></div>';
 
@@ -73,52 +74,79 @@
             function (data) {
                 var $sscontent = $(products).find('.ss-content');
                 if (data.length) {
-                    var _container;
                     var itemTemplate = Utils.isMobile ? productFeatureTemplate : productTemplate;
                     productData = data;
-                    if($sscontent.length){
-                        $sscontent.children().remove();
-                        _container = $sscontent;
-                    }
-                    else{
-                        _container = products;
-                    }
 
-                    for (var i = 0; i < data.length; i++) {
-                        var row = document.createElement('a');                    
-                        row.setAttribute('data-id', data[i].id);
-                        row.className = 'tvp-product-item';
-                        row.innerHTML = Utils.tmpl(itemTemplate, data[i]);
-                        if (Utils.isMobile) {
-                            row.href = data[i].linkUrl;
-                            row.setAttribute('target', '_blank');
+                    if (!Utils.isMobile) {
+                        var _container;
+                        if($sscontent.length){
+                            $sscontent.children().remove();
+                            _container = $sscontent;
                         }
                         else{
-                            row.href = '#';
+                            _container = products;
                         }
-                        
-                        $(row).appendTo(_container);                        
-                    }
-                    if (!Utils.isMobile) {
-                        SimpleScrollbar.initEl(products);
+
+                        for (var i = 0; i < data.length; i++) {
+                            var row = document.createElement('a');                    
+                            row.setAttribute('data-id', data[i].id);
+                            row.className = 'tvp-product-item';
+                            row.innerHTML = Utils.tmpl(itemTemplate, data[i]);
+                            if (Utils.isMobile) {
+                                row.href = data[i].linkUrl;
+                                row.setAttribute('target', '_blank');
+                            }
+                            else{
+                                row.href = '#';
+                            }
+                            
+                            $(row).appendTo(_container);                        
+                        }
+                        if (isProductsInitialized) {
+                            SimpleScrollbar.initEl(products);
+                        }
                         renderFeaturedProduct(data[0]);
                     }
                     else{
                         // apply slick carousel
-                        $(products).slick({
-                            arrow: false,
-                            slidesToShow: 1,
-                            slidesToScroll: 1
-                        });
+                        if (!isProductsInitialized) {$(products).slick('unslick').children().remove();}
+                            for (var i = 0; i < data.length; i++) {
+                                var row = document.createElement('a');                    
+                                row.setAttribute('data-id', data[i].id);
+                                row.className = 'tvp-product-item';
+                                row.innerHTML = Utils.tmpl(itemTemplate, data[i]);
+                                if (Utils.isMobile) {
+                                    row.href = data[i].linkUrl;
+                                    row.setAttribute('target', '_blank');
+                                }
+                                else{
+                                    row.href = '#';
+                                }
+                                
+                                $(row).appendTo($(products));                        
+                            }
+                            $(products).slick({
+                                arrow: false,
+                                slidesToShow: 1,
+                                slidesToScroll: 1
+                            });
                     }
+                    isProductsInitialized = false;
                 }
                 else{
-                    if($sscontent.children().length) {
-                        $sscontent.children().remove();
-                        $('#tvpFeaturedProduct').children().remove();
-                    }
-                    while(productData.length > 0){
-                        productData.pop();
+                    if (!isProductsInitialized) {
+                        if (!Utils.isMobile) {
+                            if($sscontent.children().length) {
+                                $sscontent.children().remove();
+                                $('#tvpFeaturedProduct').children().remove();
+                            }
+                            while(productData.length > 0){
+                                productData.pop();
+                            }
+                        }
+                        else{
+                            $(products).slick('unslick').children().remove();
+                        }                       
                     }
                 }
         });
@@ -332,7 +360,7 @@
         };
 
         this.load(function(data){
-            that.render(data);
+            that.render(data);                        
         });        
     }
 

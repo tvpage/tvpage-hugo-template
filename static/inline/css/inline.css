@@ -427,6 +427,25 @@ body {
 .tvp-rb .tvp-row .tvp-content {
   padding: 0;
 }
+.tvp-rb .tvp-video-play {
+  background-color: #fff;
+  box-sizing: border-box;
+  width: 45px;
+  height: 45px;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+  cursor: pointer;
+  border-radius: 50%;
+  border: 0;
+  z-index: 1000;
+  -webkit-transition: all .05s ease-in-out;
+  transition: all .05s ease-in-out;
+}
 .tvp-rb .tvp-player {
   position: relative;
   float: left;
@@ -452,6 +471,17 @@ body {
 .tvp-rb .tvp-player #tvp-player {
   height: 100%;
   width: 100%;
+}
+.tvp-rb .tvp-player #tvp-player .tvp-overlay {
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  top: 0;
+  left: 0;
+  position: absolute;
 }
 .tvp-rb .tvp-player #tvp-controls {
   bottom: 0;
@@ -675,25 +705,6 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-}
-.tvp-rb .tvp-videos-scroller .tvp-video .tvp-video-image .tvp-video-play {
-  background-color: #fff;
-  box-sizing: border-box;
-  width: 45px;
-  height: 45px;
-  padding: 0;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  margin: auto;
-  cursor: pointer;
-  border-radius: 50%;
-  border: 0;
-  z-index: 1000;
-  -webkit-transition: all .05s ease-in-out;
-  transition: all .05s ease-in-out;
 }
 .tvp-rb .tvp-videos-scroller .tvp-video .tvp-video-title {
   overflow: hidden;

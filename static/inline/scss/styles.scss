@@ -139,17 +139,47 @@ body {
             padding: 0;
         }
     }
+    .tvp-video-play {
+        background-color: #fff;
+        box-sizing: border-box;
+        width: 45px;
+        height: 45px;
+        padding: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        margin: auto;
+        cursor: pointer;
+        border-radius: 50%;
+        border: 0;
+        z-index: 1000;
+        -webkit-transition: all .05s ease-in-out;
+        transition: all .05s ease-in-out;
+    }
     .tvp-player {
         @include aspect-ratio(16, 9);
         float: left;
         overflow: hidden;
-        width: 57.73%;
+        width: 57.73%;        
         .tvp-content {
             padding: 0;
         }
         #tvp-player {
             height: 100%;
             width: 100%;
+            .tvp-overlay{
+                cursor: pointer;
+                width: 100%;
+                height: 100%;
+                background-size: cover;
+                background-position: center center;
+                background-repeat: no-repeat;
+                top: 0;
+                left: 0;
+                position: absolute;
+            }
         }
         #tvp-controls {
             bottom: 0;
@@ -336,28 +366,7 @@ body {
                 background-size: cover;
                 background-repeat: no-repeat;
                 background-position: center;
-                .tvp-video-play {
-                    background-color: #fff;
-                    box-sizing: border-box;
-                    width: 45px;
-                    height: 45px;
-                    padding: 0;
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    bottom: 0;
-                    right: 0;
-                    margin: auto;
-                    cursor: pointer;
-                    border-radius: 50%;
-                    border: 0;
-                    z-index: 1000;
-                    -webkit-transition: all .05s ease-in-out;
-                    transition: all .05s ease-in-out;
-                    // &:hover{
-                    //   background-color: #e57211;
-                    // }
-                }
+
             }
             .tvp-video-title {
                 overflow: hidden;
@@ -408,7 +417,7 @@ body {
         }
     }
     .tvp-player{
-      width: 100%;
+      width: 100%;      
     }
     .tvp-featured{
         width: 100%;

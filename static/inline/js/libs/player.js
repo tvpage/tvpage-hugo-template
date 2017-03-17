@@ -13,7 +13,7 @@
             return 'undefined' !== typeof obj;
         },
         debounce = function(func,wait,immediate) {
-            var timeout;
+            var timeout = null;
             return function() {
                 var context = this, args = arguments;
                 var later = function() {
@@ -103,7 +103,7 @@
             var overlayHtml = '<div class="tvp-overlay-cover" style="opacity:' + this.overlayOpacity + ';' +
                 'background-image:linear-gradient(to bottom right,' + overlayColor + ',' + overlayColor + ');"></div>' +
                 '<div class="tvp-play-holder" style="height:' + this.playButtonHeight + ';">'+
-                '<svg class="tvp-play" style="width:' + this.playButtonWidth + ';height:' + this.playButtonHeight + ';' +
+                '<svg class="tvp-video-play" style="width:' + this.playButtonWidth + ';height:' + this.playButtonHeight + ';' +
                 'background-color:#' + this.playButtonBackgroundColor + ';border:' + this.playButtonBorderWidth + ' solid #' +
                 this.playButtonBorderColor + ';border-radius:' + this.playButtonBorderRadius + ';" viewBox="0 0 200 200">' +
                 '<polygon fill="#'+this.playButtonIconColor+'" points="70, 55 70, 145 145, 100"></polygon></svg>';
@@ -158,7 +158,6 @@
                 config.logUrl = '\/\/api.tvpage.com\/v1\/__tvpa.gif';
                 analytics.initConfig(config);
             }
-
             if (willCue) {
                 this.instance.cueVideo(asset);
                 if ('mp4' === asset.type || this.overlay) {
@@ -212,7 +211,6 @@
                         analytics: { tvpa: that.analytics },
                         apiBaseUrl: '//api.tvpage.com/v1',
                         swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+that.version+'-flash.swf',
-                        poster: true, 
                         onReady: function(e, pl){
                             that.instance = pl;
                             that.resize();
