@@ -109,7 +109,6 @@
                         }, '*');
                     }
                 };
-                console.log(settings, carouselSettings);
                 Carousel(name, carouselSettings);
 
             }(getSettings('static')));

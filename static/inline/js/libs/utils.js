@@ -25,7 +25,7 @@
     };
 
     this.debounce = function(func,wait,immediate){
-      var timeout;  
+      var timeout = null;  
       return function() {
         var context = this, args = arguments;
         var later = function() {
@@ -65,6 +65,7 @@
           return (typeof v !== "undefined" && v !== null) ? v : "";
         });
       }
+      else{return "";}
     };
     
   }
