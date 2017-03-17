@@ -227,6 +227,7 @@
             }
 
             $videoSliderDesktop = $(this.el.querySelector('#tvpVideoScroller'));
+            console.log($videoSliderDesktop);
             $videoSliderDesktop.slick({
                 arrows: true,
                 slidesToShow: 4,

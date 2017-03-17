@@ -199,6 +199,23 @@
                         self.static + '/dist/js/' + mobilePath + 'modal/scripts.min.js'
                     ]
                 }
+            },
+            inline : {
+                prod: [
+                    self.static + '/js/vendor/jquery.js',
+                    self.static + '/js/vendor/slick-min.js',
+                    self.static + '/js/vendor/simple-scrollbar.min.js',
+                    self.static + '/js/libs/analytics.js',
+                    self.static + '/js/libs/utils.js',
+                    self.static + '/js/libs/player.js',
+                    self.static + '/js/inline.js',
+                    self.static + '/js/index.js'
+                ],
+                dev: [
+                    '//a.tvpage.com/tvpa.min.js',
+                    playerLib,
+                    self.static + '/dist/js/scripts.min.js'
+                ]
             }
         };
 
@@ -394,13 +411,13 @@
                 var iframeDoc = iframe.contentWindow.document;
 
                 iframeDoc.open().write(getIframeHtml({
-                    js: function () {
+                    js: function () {                        
                         var jsFiles = self.paths[self.type];
                         if ('sidebar' === self.type || 'carousel' === self.type) {
                             jsFiles = jsFiles.gallery;
                         } else if ('solo-cta' === self.type) {
                             jsFiles = jsFiles.player;
-                        }
+                        }                        
                         return jsFiles[env];
                     }(),
                     css: function () {
