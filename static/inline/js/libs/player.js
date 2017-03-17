@@ -163,6 +163,7 @@
                 if ('mp4' === asset.type || this.overlay) {
                     this.addOverlay(asset);
                 }
+                else{ return; }
             } else {
                 this.instance.loadVideo(asset);
             }
