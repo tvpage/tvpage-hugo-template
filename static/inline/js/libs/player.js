@@ -168,6 +168,9 @@
                     if(Boolean(tvp_overlay)){
                         this.el.removeChild(tvp_overlay);
                     }
+                    else{
+                        return undefined;
+                    }
                 }
             } else {
                 this.instance.loadVideo(asset);
