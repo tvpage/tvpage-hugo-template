@@ -124,6 +124,104 @@
         },
         {
             "for": "carousel",
+            "type": "boolean",
+            "label": "infinite",
+            "code": "infinite",
+            "value": true
+        },
+        {
+            "for": "carousel",
+            "type": "boolean",
+            "label": "Navigation Bullets",
+            "code": "navigation_bullets",
+            "value": false
+        },
+        {
+            "for": "carousel",
+            "type": "boolean",
+            "label": "Navigation Bullets Margin Bottom",
+            "code": "navigation_bullets_margin_bottom",
+            "value": "30px"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Iframe Width",
+            "code": "iframe_width",
+            "value": "100%"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Navigation Bullet Size",
+            "code": "navigation_bullet_background_image_url",
+            "value": ""
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Navigation Bullet Size",
+            "code": "navigation_bullet_background_position",
+            "value": "0px 0px"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Navigation Bullet Size",
+            "code": "navigation_active_bullet_background_position",
+            "value": "0px 0px"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Navigation Bullet Size",
+            "code": "navigation_bullet_size",
+            "value": "20px"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Navigation Bullet Padding",
+            "code": "navigation_bullet_padding",
+            "value": "0"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Navigation Bullet Font Size",
+            "code": "navigation_bullet_font_size",
+            "value": "6px"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Navigation Bullet Font Color",
+            "code": "navigation_bullet_font_color",
+            "value": "black"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Items Per Page",
+            "code": "items_per_page",
+            "value": "25"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Height Offset",
+            "code": "height_offset",
+            "value": "0"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Background",
+            "code": "background",
+            "value": "white"
+        },
+        {
+            "for": "carousel",
             "type": "text",
             "label": "Title Text",
             "code": "title_text",
@@ -475,6 +573,13 @@
         {
             "for": "modal",
             "type": "text",
+            "label": "Modal Title Position",
+            "code": "modal_title_position",
+            "value": "top"
+        },
+        {
+            "for": "modal",
+            "type": "text",
             "label": "Modal Close Button Width",
             "code": "modal_close_button_width",
             "value": "27px"
@@ -601,8 +706,71 @@
         {
             "for": "modal",
             "type": "text",
+            "label": "Product Price Text Align",
+            "code": "product_price_text_align",
+            "value": "left"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Rating Background Image Url",
+            "code": "product_rating_background_image_url",
+            "value": ""
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Reviews Font Color",
+            "code": "product_reviews_font_color",
+            "value": "#333"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Reviews Font Size",
+            "code": "product_reviews_font_size",
+            "value": "12px"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Reviews Margin Left",
+            "code": "product_reviews_margin_left",
+            "value": "10px"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Reviews Top",
+            "code": "product_reviews_top",
+            "value": "-5px"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Rate Height",
+            "code": "product_rate_height",
+            "value": "20px"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Rate Width",
+            "code": "product_rate_width",
+            "value": "20px"
+        },
+        {
+            "for": "modal",
+            "type": "text",
             "label": "Product Title Font Size",
             "code": "product_title_font_size",
+            "value": "14px"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Title Font Size",
+            "code": "product_title_font_ali",
             "value": "14px"
         },
         {
@@ -625,6 +793,13 @@
             "label": "Products Background",
             "code": "products_background",
             "value": "#fff"
+        },
+        {
+            "for": "modal",
+            "type": "boolean",
+            "label": "Products Headline Display",
+            "code": "products_headline_display",
+            "value": "block"
         },
         {
             "for": "modal",
@@ -659,7 +834,7 @@
             "type": "text",
             "label": "Product Popup Width",
             "code": "product_popup_width",
-            "value": "215px"
+            "value": "235px"
         },
         {
             "for": "modal",
@@ -701,6 +876,13 @@
             "type": "text",
             "label": "Product Popup CTA Border",
             "code": "product_popup_cta_border",
+            "value": "none"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Border Bottom",
+            "code": "product_popup_cta_border_bottom",
             "value": "none"
         },
         {

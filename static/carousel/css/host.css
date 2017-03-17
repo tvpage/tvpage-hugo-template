@@ -45,7 +45,7 @@
 
 @media (min-width : 768px) {
   .tvp-modal-wrapper {
-    width: 810px;
+    width: 890px;
     margin: 30px auto;
   }
 }
@@ -97,6 +97,11 @@
   float: left;
 }
 
+.tvp-modal-title.bottom {
+  float: none;
+  padding: 5px 0 20px 10px;
+}
+
 .tvp-products-headline{
   float: right;
   margin: 0;
@@ -137,7 +142,8 @@
 .tvp-iframe {
   top: 0;
   left: 0;
-  width: 100%;
+  right: 0;
+  margin: auto;
   height: 100%;
   position: absolute;
 }

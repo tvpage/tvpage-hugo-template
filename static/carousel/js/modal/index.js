@@ -87,8 +87,56 @@
             prodPopupNode.id = 'tvp-product-popup-' + productId;
             prodPopupNode.setAttribute('data-vd', productVideoId);
             prodPopupNode.href = productLink;
+
+            var productRating = 0;
+            if (Utils.isset(product.rating) && null !== product.rating) {
+                productRating = Number(product.rating);
+            }
+
+            var ratingReviewsHtml = "";
+            if (productRating > 0){
+                var fulls = 0;
+                var half = false;
+                if(productRating % 1 != 0){
+                    half = true;
+                    fulls = Math.floor(productRating);
+                } else {
+                    fulls = productRating;
+                }
+
+                var empties = 0;
+                if (4 === fulls && half) {
+                    empties = 0;
+                } else if (1 === fulls && half) {
+                    empties = 3;
+                } else if (half) {
+                    empties = (5 - fulls) - 1;
+                } else {
+                    empties = 5 - fulls;
+                }
+
+                ratingReviewsHtml = '<ul class="tvp-product-rating">';
+                for (var j = 0; j < fulls; j++) {
+                    ratingReviewsHtml += '<li class="tvp-rate full"></li>';
+                }
+
+                if (half){
+                    ratingReviewsHtml += '<li class="tvp-rate half"></li>';
+                }
+
+                for (var k = 0; k < empties; k++) {
+                    ratingReviewsHtml += '<li class="tvp-rate empty"></li>';
+                }
+
+                if (Utils.isset(product.review_count) && null !== product.review_count) {
+                    ratingReviewsHtml += '<li class="tvp-reviews">' + product.review_count + ' Reviews </li>';
+                }
+
+                ratingReviewsHtml += '</ul>';
+            }
+
             prodPopupNode.innerHTML = '<div class="tvp-product-popup-image" '+productImgStyle+'></div>'+
-                '<p class="tvp-product-title">'+prodTitle+'</p><div class="tvp-clearfix"><p class="tvp-product-price">'+fixedPrice+'</p></div>'+
+                '<p class="tvp-product-title">' + prodTitle + '</p><p class="tvp-product-price">'+fixedPrice+'</p>'+ ratingReviewsHtml +
                 '<button class="tvp-product-cta">View Details</button>';
             popupsFrag.appendChild(prodPopupNode);
 

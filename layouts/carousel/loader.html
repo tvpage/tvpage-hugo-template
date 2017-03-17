@@ -1,8 +1,16 @@
 {{- partial "settings.html" . -}}
 {{- $id := ($.Scratch.Get "settings").name -}}
 <style>
+    .tvp-iframe {
+        width: {{ ($.Scratch.Get "settings").iframe_width }};
+    }
+
+    .tvp-iframe-holder {
+        background: {{ ($.Scratch.Get "settings").background }};
+    }
+
     .tvp-modal-header {
-        padding:{{ ($.Scratch.Get "settings").modal_header_padding }};
+        padding: {{ ($.Scratch.Get "settings").modal_header_padding }};
         border-bottom:{{ ($.Scratch.Get "settings").modal_header_border_bottom }};
     }
 
@@ -17,6 +25,7 @@
     }
 
     .tvp-products-headline {
+        display: {{ ($.Scratch.Get "settings").products_headline_display }};
         color: {{ ($.Scratch.Get "settings").products_headline_font_color }};
         font-size: {{ ($.Scratch.Get "settings").products_headline_font_size }};
         top: {{ ($.Scratch.Get "settings").products_headline_top }};
@@ -46,9 +55,15 @@
                     <path fill="#ffffff" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
                     <path d="M0 0h24v24H0z" fill="none"></path>
                 </svg>
-                <h4 id="tvp-modal-title-{{ $id }}" class="tvp-modal-title"></h4></div>
+                {{ if eq ($.Scratch.Get "settings").modal_title_position "top" }}
+                    <h4 id="tvp-modal-title-{{ $id }}" class="tvp-modal-title"></h4>
+                {{ end }}
+            </div>
             <div class="tvp-modal-body">
                 <div id="tvp-modal-iframe-holder-{{ $id }}" class="tvp-modal-iframe-holder"></div>
+                {{ if eq ($.Scratch.Get "settings").modal_title_position "bottom" }}
+                     <h4 id="tvp-modal-title-{{ $id }}" class="tvp-modal-title bottom"></h4>
+                {{ end }}
             </div>
         </div>
     </div>
@@ -193,8 +208,8 @@
                     config.debug ? "" : config.jsPath + "/scripts.min.js"
                 ],
                 css: [
-                    config.debug ? config.cssPath + "/styles.css" : "",
                     config.debug ? config.cssPath + "/vendor/slick.css" : "",
+                    config.debug ? config.cssPath + "/styles.css" : "",
                     config.debug ? "" : config.cssPath + "/styles.min.css"
                 ]
             }));
