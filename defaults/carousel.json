@@ -524,6 +524,20 @@
         {
             "for": "modal",
             "type": "text",
+            "label": "Product Thumbnail Margin Right",
+            "code": "product_thumbnail_margin_right",
+            "value": "10px"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Thumbnail Margin Bottom",
+            "code": "product_thumbnail_margin_bottom",
+            "value": "10px"
+        },
+        {
+            "for": "modal",
+            "type": "text",
             "label": "Product Thumbnail Border",
             "code": "product_thumbnail_border",
             "value": "1px solid black"

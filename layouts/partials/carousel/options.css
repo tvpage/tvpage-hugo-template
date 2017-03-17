@@ -107,6 +107,8 @@
 
 .tvp-product {
     border: {{ ($.Scratch.Get "settings").product_thumbnail_border }};
+    margin-right: {{ ($.Scratch.Get "settings").product_thumbnail_margin_right }};
+    margin-bottom: {{ ($.Scratch.Get "settings").product_thumbnail_margin_bottom }};
 }
 
 .tvp-product-title {
