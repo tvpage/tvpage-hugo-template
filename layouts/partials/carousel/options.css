@@ -205,7 +205,7 @@
     height: {{ ($.Scratch.Get "settings").navigation_bullet_size }};
     padding: {{ ($.Scratch.Get "settings").navigation_bullet_padding }};
     {{ with ($.Scratch.Get "settings").navigation_bullet_background_image_url }}
-        background-image: url("carousel/{{ . }}");
+        background-image: url("{{ $.Site.BaseURL }}carousel/{{ . }}");
     {{ end }}
     background-position: {{ ($.Scratch.Get "settings").navigation_bullet_background_position }};
 }
