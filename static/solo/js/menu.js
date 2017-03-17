@@ -43,7 +43,7 @@
         that.toggles = d.querySelectorAll('.tvp-hamburger');
         that.payerCont = d.querySelectorAll('.tvp-player')[0];
         that.noVidDiv = d.getElementById('tvp-no-videos');
-        that.tvpNoVids = d.querySelectorAll('.tvp-novids');
+        that.tvpNoVids = d.getElementsByClassName('tvp-novids');
     };
 
     this.render = function() {
@@ -195,8 +195,9 @@
 
     this.setActiveItem = function (id) {
         for (var i = that.tvpVid.length - 1; i >= 0; i--) {
-            var item = that.tvpVid[i];
-            if (item.id === id && !item.classList.contains('active')){
+            var item = that.tvpVid[i],
+                itemId = item.id.split('-').pop();
+            if (itemId === id && !item.classList.contains('active')){
                 this.clearActiveItems();
                 item.classList.add('active');
             }

@@ -230,6 +230,7 @@
 
         that.current = that.getCurrentIndex(startWith);
         that.play(that.assets[that.current],null,true);
+        that.onPlay(that.assets[that.current]);
     };
 
     that.onStateChange = function(e){
