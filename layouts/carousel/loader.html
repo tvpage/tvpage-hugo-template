@@ -145,7 +145,6 @@
             document.body.innerHTML += modalOverlay;
             document.body.innerHTML += modal;
 
-
             var modalTitleElement = document.createElement('h4');
             modalTitleElement.setAttribute('id', 'tvp-modal-title-{{ $id }}');
             modalTitleElement.setAttribute('class', 'tvp-modal-title');
@@ -153,6 +152,7 @@
             if ({{ $.Scratch.Get "settings" }}.modal_title_position === 'top') {
                 document.getElementsByClassName('tvp-modal-title-top')[0].appendChild(modalTitleElement)
             } else if ({{ $.Scratch.Get "settings" }}.modal_title_position === 'bottom') {
+                modalTitleElement.setAttribute('class', 'tvp-modal-title bottom');
                 document.getElementsByClassName('tvp-modal-body')[0].appendChild(modalTitleElement)
             }
         };
