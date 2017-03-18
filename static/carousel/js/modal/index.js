@@ -135,9 +135,11 @@
                 ratingReviewsHtml += '</ul>';
             }
 
+            var buttonText = product.actionText.length > 0? product.actionText : 'View Details';
+
             prodPopupNode.innerHTML = '<div class="tvp-product-popup-image" '+productImgStyle+'></div>'+
                 '<p class="tvp-product-title">' + prodTitle + '</p><p class="tvp-product-price">'+fixedPrice+'</p>'+ ratingReviewsHtml +
-                '<button class="tvp-product-cta">View Details</button>';
+                '<button class="tvp-product-cta">' + buttonText + '</button>';
             popupsFrag.appendChild(prodPopupNode);
 
             analytics.track('pi',{

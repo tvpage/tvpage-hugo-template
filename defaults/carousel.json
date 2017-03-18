@@ -966,6 +966,13 @@
         {
             "for": "modal",
             "type": "text",
+            "label": "Product Popup CTA Text",
+            "code": "product_popup_cta_text",
+            "value": "View Details"
+        },
+        {
+            "for": "modal",
+            "type": "text",
             "label": "Product Popup CTA Background",
             "code": "product_popup_cta_background",
             "value": "#333"
