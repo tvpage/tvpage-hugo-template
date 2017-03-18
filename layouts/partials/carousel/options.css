@@ -81,8 +81,14 @@
 }
 
 .tvp-carousel-arrow.inactive > svg {
-    background: {{ ($.Scratch.Get "settings").arrow_background_color }};
-    fill: {{ ($.Scratch.Get "settings").arrow_icon_color }};
+    background: {{ ($.Scratch.Get "settings").arrow_inactive_background_color }};
+    fill: {{ ($.Scratch.Get "settings").arrow_inactive_icon_color }};
+}
+
+.tvp-carousel-arrow.inactive:hover > svg {
+    pointer-events: none;
+    background: {{ ($.Scratch.Get "settings").arrow_inactive_background_color }};
+    fill: {{ ($.Scratch.Get "settings").arrow_inactive_icon_color }};
 }
 
 .tvp-carousel-arrow:hover > svg {
@@ -208,8 +214,15 @@
     border-left: 13px solid {{ ($.Scratch.Get "settings").product_popup_arrow_indicator_border_color }};
 }
 
+.tvp-modal-title {
+    color: {{ ($.Scratch.Get "settings").modal_title_font_color }};
+    font-family: {{ ($.Scratch.Get "settings").modal_title_font_family }};
+    font-weight: {{ ($.Scratch.Get "settings").modal_title_font_weight }};
+    font-size: {{ ($.Scratch.Get "settings").modal_title_font_size }};
+}
+
 .slick-dotted.slick-slider {
-    margin-bottom: {{ ($.Scratch.Get "settings").navigation_bullets_margin_bottom }};
+    margin-bottom: {{ ($.Scratch.Get "settings").modal_title_font_color }};
 }
 
 .slick-dots li {

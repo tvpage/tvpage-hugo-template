@@ -9,6 +9,11 @@
         background: {{ ($.Scratch.Get "settings").background }};
     }
 
+    .tvp-carousel-title {
+        font-size: {{ ($.Scratch.Get "settings").modal_title_font_size }};
+        font-family: {{ ($.Scratch.Get "settings").modal_title_font_family }};
+    }
+
     .tvp-modal-header {
         padding: {{ ($.Scratch.Get "settings").modal_header_padding }};
         border-bottom:{{ ($.Scratch.Get "settings").modal_header_border_bottom }};
