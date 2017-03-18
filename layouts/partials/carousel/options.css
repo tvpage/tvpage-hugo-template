@@ -4,6 +4,8 @@
     font-size: {{ ($.Scratch.Get "settings").title_font_size }};
     background: {{ ($.Scratch.Get "settings").title_background }};
     text-align: {{ ($.Scratch.Get "settings").title_text_align }};
+    font-family: {{ ($.Scratch.Get "settings").title_text_font_family }};
+    font-weight: {{ ($.Scratch.Get "settings").title_text_font_weight }};
 }
 
 .tvp-video {
@@ -25,6 +27,8 @@
 
 .tvp-video-title {
     font-size: {{ ($.Scratch.Get "settings").item_title_font_size }};
+    font-family: {{ ($.Scratch.Get "settings").item_title_font_family }};
+    font-weight: {{ ($.Scratch.Get "settings").item_title_font_weight }};
     text-align: {{ ($.Scratch.Get "settings").item_title_text_align }};
     color: {{ ($.Scratch.Get "settings").item_title_font_color }};
     margin: {{ ($.Scratch.Get "settings").item_title_margin }};
@@ -112,6 +116,8 @@
 }
 
 .tvp-product-title {
+    font-family: {{ ($.Scratch.Get "settings").product_title_font_family }};
+    font-weight: {{ ($.Scratch.Get "settings").product_title_font_weight }};
     font-size: {{ ($.Scratch.Get "settings").product_title_font_size }};
     color: {{ ($.Scratch.Get "settings").product_title_font_color }};
     text-decoration: {{ ($.Scratch.Get "settings").product_title_text_decoration }};
@@ -125,12 +131,16 @@
 .tvp-product-price {
     color: {{ ($.Scratch.Get "settings").product_price_font_color }};
     font-size: {{ ($.Scratch.Get "settings").product_price_font_size }};
+    font-family: {{ ($.Scratch.Get "settings").product_price_font_family }};
+    font-weight: {{ ($.Scratch.Get "settings").product_price_font_weight }};
     text-align: {{ ($.Scratch.Get "settings").product_price_text_align }};
 }
 
 .tvp-reviews {
     color: {{ ($.Scratch.Get "settings").product_reviews_font_color }};
     font-size: {{ ($.Scratch.Get "settings").product_reviews_font_size }};
+    font-family: {{ ($.Scratch.Get "settings").product_reviews_font_family }};
+    font-weight: {{ ($.Scratch.Get "settings").product_reviews_font_weight }};
     margin-left: {{ ($.Scratch.Get "settings").product_reviews_margin_left }};
     top: {{ ($.Scratch.Get "settings").product_reviews_top }};
 }
@@ -180,6 +190,8 @@
     color: {{ ($.Scratch.Get "settings").product_popup_cta_font_color }};
     text-transform: {{ ($.Scratch.Get "settings").product_popup_cta_text_transform }};
     font-size: {{ ($.Scratch.Get "settings").product_popup_cta_font_size }};
+    font-family: {{ ($.Scratch.Get "settings").product_popup_cta_font_family }};
+    font-weight: {{ ($.Scratch.Get "settings").product_popup_cta_font_weight }};
     padding: {{ ($.Scratch.Get "settings").product_popup_cta_padding }};
 }
 

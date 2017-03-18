@@ -230,6 +230,20 @@
         {
             "for": "carousel",
             "type": "text",
+            "label": "Title Text Font Family",
+            "code": "title_text_font_family",
+            "value": "Helvetica"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Title Text Font Weight",
+            "code": "title_text_font_weight",
+            "value": "initial"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
             "label": "Content Background",
             "code": "content_background",
             "value": "white"
@@ -454,6 +468,20 @@
         {
             "for": "carousel",
             "type": "text",
+            "label": "Item Title Font Family",
+            "code": "item_title_font_family",
+            "value": "Helvetica"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Title Font Weight",
+            "code": "item_title_font_weight",
+            "value": "initial"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
             "label": "Item Title Font Color",
             "code": "item_title_font_color",
             "value": "#333"
@@ -587,9 +615,30 @@
         {
             "for": "modal",
             "type": "text",
+            "label": "Modal Title Font Family",
+            "code": "modal_title_font_family",
+            "value": "Helvetica"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Modal Title Font Weight",
+            "code": "modal_title_font_weight",
+            "value": "initial"
+        },
+        {
+            "for": "modal",
+            "type": "text",
             "label": "Modal Title Position",
             "code": "modal_title_position",
             "value": "top"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Modal Close Button Background Image Url",
+            "code": "modal_close_button_background_image_url",
+            "value": ""
         },
         {
             "for": "modal",
@@ -630,7 +679,7 @@
             "for": "modal",
             "type": "text",
             "label": "Modal Close Button Background",
-            "code": "modal_close_button_background",
+            "code": "modal_close_button_background_color",
             "value": "#333"
         },
         {
@@ -650,58 +699,44 @@
         {
             "for": "modal",
             "type": "text",
+            "label": "Modal Close Button Top",
+            "code": "modal_close_button_top",
+            "value": "-6px"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Modal Close Button Right",
+            "code": "modal_close_button_right",
+            "value": "-6px"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Modal Close Button SVG Display",
+            "code": "modal_close_button_svg_display",
+            "value": "block"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Modal Close Button Opacity",
+            "code": "modal_close_button_opacity",
+            "value": "1"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Modal Close Button Opacity Hover",
+            "code": "modal_close_button_opacity_hover",
+            "value": "1"
+        },
+        {
+            "for": "modal",
+            "type": "text",
             "label": "Product Border",
             "code": "product_border",
             "value": "1px solid black"
-        },
-        {
-            "for": "modal",
-            "type": "text",
-            "label": "Product CTA Background",
-            "code": "product_cta_background",
-            "value": "#333"
-        },
-        {
-            "for": "modal",
-            "type": "text",
-            "label": "Product CTA Background Hover",
-            "code": "product_cta_background_hover",
-            "value": "#000"
-        },
-        {
-            "for": "modal",
-            "type": "text",
-            "label": "Product CTA Border",
-            "code": "product_cta_border",
-            "value": "none"
-        },
-        {
-            "for": "modal",
-            "type": "text",
-            "label": "Product CTA Font Color",
-            "code": "product_cta_font_color",
-            "value": "#fff"
-        },
-        {
-            "for": "modal",
-            "type": "text",
-            "label": "Product CTA Text Transform",
-            "code": "product_cta_text_transform",
-            "value": "uppercase"
-        },
-        {
-            "for": "modal",
-            "type": "text",
-            "label": "Product CTA Font Size",
-            "code": "product_cta_font_size",
-            "value": "14px"
-        },
-        {
-            "for": "modal",
-            "type": "text",
-            "label": "Product CTA Padding",
-            "code": "product_cta_padding",
-            "value": "10px 0"
         },
         {
             "for": "modal",
@@ -710,6 +745,21 @@
             "code": "product_price_font_color",
             "value": "#333"
         },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Price Font Family",
+            "code": "product_price_font_family",
+            "value": "Helvetica"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Price Font Weight",
+            "code": "product_price_font_weight",
+            "value": "initial"
+        },
+
         {
             "for": "modal",
             "type": "text",
@@ -737,6 +787,20 @@
             "label": "Product Reviews Font Color",
             "code": "product_reviews_font_color",
             "value": "#333"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Reviews Font Family",
+            "code": "product_reviews_font_family",
+            "value": "Helvetica"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Reviews Font Weight",
+            "code": "product_reviews_font_weight",
+            "value": "initial"
         },
         {
             "for": "modal",
@@ -772,6 +836,20 @@
             "label": "Product Rate Width",
             "code": "product_rate_width",
             "value": "20px"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Title Font Family",
+            "code": "product_title_font_family",
+            "value": "Helvetica"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Title Font Weight",
+            "code": "product_title_font_weight",
+            "value": "initial"
         },
         {
             "for": "modal",
@@ -877,6 +955,20 @@
             "label": "Product Popup CTA Background",
             "code": "product_popup_cta_background",
             "value": "#333"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Font Family",
+            "code": "product_popup_cta_font_family",
+            "value": "Helvetica"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Font Weight",
+            "code": "product_popup_cta_font_weight",
+            "value": "initial"
         },
         {
             "for": "modal",

@@ -22,6 +22,8 @@
     .tvp-modal-title {
         color: {{ ($.Scratch.Get "settings").modal_title_font_color }};
         font-size: {{ ($.Scratch.Get "settings").modal_title_font_size }};
+        font-family: {{ ($.Scratch.Get "settings").modal_title_font_family }};
+        font-weight: {{ ($.Scratch.Get "settings").modal_title_font_weight }};
     }
 
     .tvp-products-headline {
@@ -36,14 +38,23 @@
         width: {{ ($.Scratch.Get "settings").modal_close_button_width }};
         height: {{ ($.Scratch.Get "settings").modal_close_button_height }};
         padding: {{ ($.Scratch.Get "settings").modal_close_button_padding }};
-        background: {{ ($.Scratch.Get "settings").modal_close_button_background }};
+        background-color: {{ ($.Scratch.Get "settings").modal_close_button_background_color }};
+        background-image: url("{{ $.Site.BaseURL }}carousel/{{ ($.Scratch.Get "settings").modal_close_button_background_image_url }}");
         border: {{ ($.Scratch.Get "settings").modal_close_button_border }};
         border-radius: {{ ($.Scratch.Get "settings").modal_close_button_border_radius }};
         box-shadow: {{ ($.Scratch.Get "settings").modal_close_button_box_shadow }};
+        right: {{ ($.Scratch.Get "settings").modal_close_button_right }};
+        top: {{ ($.Scratch.Get "settings").modal_close_button_top }};
+        opacity: {{ ($.Scratch.Get "settings").modal_close_button_opacity }};
+    }
+
+    .tvp-modal-close > svg {
+      display: {{ ($.Scratch.Get "settings").modal_close_button_svg_display }};
     }
 
     .tvp-modal-close:hover {
-        background: {{ ($.Scratch.Get "settings").modal_close_button_background_hover }};
+        background-color: {{ ($.Scratch.Get "settings").modal_close_button_background_hover }};
+        opacity: {{ ($.Scratch.Get "settings").modal_close_button_opacity_hover }};
     }
 </style>
 <div id="tvp-modal-overlay-{{ $id }}" class="tvp-modal-overlay tvp-hidden"></div>
@@ -51,10 +62,12 @@
     <div class="tvp-modal-wrapper">
         <div class="tvp-modal-content">
             <div id="tvp-modal-header-{{ $id }}" class="tvp-modal-header">
-                <svg id="tvp-modal-close-{{ $id }}" class="tvp-modal-close" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path fill="#ffffff" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
-                    <path d="M0 0h24v24H0z" fill="none"></path>
-                </svg>
+                <div id="tvp-modal-close-{{ $id }}" class="tvp-modal-close">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path fill="#ffffff" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+                        <path d="M0 0h24v24H0z" fill="none"></path>
+                    </svg>
+                </div>
                 {{ if eq ($.Scratch.Get "settings").modal_title_position "top" }}
                     <h4 id="tvp-modal-title-{{ $id }}" class="tvp-modal-title"></h4>
                 {{ end }}

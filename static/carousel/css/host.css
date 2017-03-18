@@ -151,9 +151,10 @@
 .tvp-modal-close {
   cursor: pointer;
   -webkit-appearance: none;
-  right: -6px;
+  background-position: 0 0;
+  background-repeat: no-repeat;
+  background-size: contain;
   position: absolute;
-  top: -6px;
   -webkit-transition: all .05s ease-in-out;
   transition: all .05s ease-in-out;
 }
