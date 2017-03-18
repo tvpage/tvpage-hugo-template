@@ -62,30 +62,36 @@
         opacity: {{ ($.Scratch.Get "settings").modal_close_button_opacity_hover }};
     }
 </style>
-<div id="tvp-modal-overlay-{{ $id }}" class="tvp-modal-overlay tvp-hidden"></div>
-<div id="tvp-modal-{{ $id }}" class="tvp-modal tvp-hidden">
-    <div class="tvp-modal-wrapper">
-        <div class="tvp-modal-content">
-            <div id="tvp-modal-header-{{ $id }}" class="tvp-modal-header">
-                <div id="tvp-modal-close-{{ $id }}" class="tvp-modal-close">
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path fill="#ffffff" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
-                        <path d="M0 0h24v24H0z" fill="none"></path>
-                    </svg>
+
+<script id="tvp-modal-overlay-template" type="text/template">
+    <div id="tvp-modal-overlay-{{ $id }}" class="tvp-modal-overlay tvp-hidden"></div>
+</script>
+
+<script id="tvp-modal-template" type="text/template">
+
+    <div id="tvp-modal-{{ $id }}" class="tvp-modal tvp-hidden">
+        <div class="tvp-modal-wrapper">
+            <div class="tvp-modal-content">
+                <div id="tvp-modal-header-{{ $id }}" class="tvp-modal-header">
+                    <div id="tvp-modal-close-{{ $id }}" class="tvp-modal-close">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="#ffffff" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+                            <path d="M0 0h24v24H0z" fill="none"></path>
+                        </svg>
+                    </div>
+                    <div id="tvp-modal-title-top-{{ $id }}" class="tvp-modal-title-top"></div>
                 </div>
-                {{ if eq ($.Scratch.Get "settings").modal_title_position "top" }}
-                    <h4 id="tvp-modal-title-{{ $id }}" class="tvp-modal-title"></h4>
-                {{ end }}
-            </div>
-            <div class="tvp-modal-body">
-                <div id="tvp-modal-iframe-holder-{{ $id }}" class="tvp-modal-iframe-holder"></div>
-                {{ if eq ($.Scratch.Get "settings").modal_title_position "bottom" }}
-                     <h4 id="tvp-modal-title-{{ $id }}" class="tvp-modal-title bottom"></h4>
-                {{ end }}
+                <div class="tvp-modal-body">
+                    <div id="tvp-modal-iframe-holder-{{ $id }}" class="tvp-modal-iframe-holder">
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</script>
+
+
 <script id="tvp-iframe-modal-template" type="text/template">
     <div id="{{ $id }}" class="tvp-clearfix iframe-content">
         <div class="tvp-player-holder">
@@ -108,6 +114,7 @@
         </div>
     </div>
 </script>
+
 <div id='{{ $id }}-holder' class="tvp-iframe-holder carousel">
     <iframe class="tvp-iframe" src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe>
     <script id="{{ $id }}-script">
@@ -130,6 +137,28 @@
             }
             return o;
         };
+
+        var createModal = function() {
+            var modalOverlay = document.getElementById('tvp-modal-overlay-template').innerHTML;
+            var modal = document.getElementById('tvp-modal-template').innerHTML;
+
+            document.body.innerHTML += modalOverlay;
+            document.body.innerHTML += modal;
+
+
+            var modalTitleElement = document.createElement('h4');
+            modalTitleElement.setAttribute('id', 'tvp-modal-title-{{ $id }}');
+            modalTitleElement.setAttribute('class', 'tvp-modal-title');
+
+            if ({{ $.Scratch.Get "settings" }}.modal_title_position === 'top') {
+                document.getElementsByClassName('tvp-modal-title-top')[0].appendChild(modalTitleElement)
+            } else if ({{ $.Scratch.Get "settings" }}.modal_title_position === 'bottom') {
+                document.getElementsByClassName('tvp-modal-body')[0].appendChild(modalTitleElement)
+            }
+        };
+
+        createModal();
+
         var getIframeHtml = function(options) {
             var html = '<head><base target="_blank" /></head><body class="' + (options.className || '') + '" data-domain="' +
                 (options.domain || '') + '" data-id="' + (options.id || '') + '" onload="' +
