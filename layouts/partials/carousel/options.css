@@ -80,6 +80,11 @@
     fill: {{ ($.Scratch.Get "settings").arrow_icon_color }};
 }
 
+.tvp-carousel-arrow.inactive > svg {
+    background: {{ ($.Scratch.Get "settings").arrow_background_color }};
+    fill: {{ ($.Scratch.Get "settings").arrow_icon_color }};
+}
+
 .tvp-carousel-arrow:hover > svg {
     background: {{ ($.Scratch.Get "settings").arrow_background_color_hover }};
     fill: {{ ($.Scratch.Get "settings").arrow_icon_color_hover }};
@@ -157,11 +162,11 @@
 }
 
 .tvp-rate.half {
-    background-position: 0 -20px;
+    background-position: 0 -41px;
 }
 
 .tvp-rate.empty {
-    background-position: 0 -41px;
+    background-position: 0 -20px;
 }
 
 .tvp-product-image {

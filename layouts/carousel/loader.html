@@ -243,6 +243,7 @@
         window.addEventListener("message", function(e){
             if (!isEvent(e, ":resize")) return;
             holder.style.height = e.data.height;
+            holder.classList.add('enabled');
         });
 
         var clickData = {};

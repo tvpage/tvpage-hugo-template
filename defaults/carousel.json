@@ -356,6 +356,20 @@
         {
             "for": "carousel",
             "type": "text",
+            "label": "Arrow Inactive Background Color",
+            "code": "arrow_inactive_background_color",
+            "value": "whitesmoke"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Arrow Inactive Icon Color",
+            "code": "arrow_inactive_icon_color",
+            "value": "#333"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
             "label": "Arrow Icon Color Hover",
             "code": "arrow_icon_color_hover",
             "value": "#000"

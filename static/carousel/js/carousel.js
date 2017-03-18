@@ -236,7 +236,9 @@
         };
 
         this.load(function(data){
-            that.render(data);
+            if (data.length) {
+                that.render(data);
+            }
         });
     }
 

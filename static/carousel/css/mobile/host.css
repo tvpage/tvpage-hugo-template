@@ -81,10 +81,17 @@
 }
 
 .tvp-iframe-holder {
-  height: 0;
+  -webkit-transition: all 50ms cubic-bezier(0.22, 0.3, 0.37, 0.92);
+  transition: all 50ms cubic-bezier(0.22, 0.3, 0.37, 0.92);
   position: relative;
-  -webkit-transition: height ease-out 0.0001s;
-  transition: height ease-out 0.0001s;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.tvp-iframe-holder.enabled {
+  height: auto;
+  opacity: 1;
+  visibility: visible;
 }
 
 /*This is the gallery iframe*/
