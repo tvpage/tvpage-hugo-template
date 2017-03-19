@@ -4,14 +4,14 @@
 
 @font-face {
   font-family: 'FuturaStdBook';
-  src: url('../../css/fonts/FuturaStd-Book.woff');
+  src: url('../../../css/fonts/FuturaStd-Book.woff');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'FuturaStdHeavy';
-  src: url('../../css/fonts/futurastd_heavy_bbb.woff');
+  src: url('../../../css/fonts/futurastd_heavy_bbb.woff');
   font-weight: normal;
   font-style: normal;
 }
