@@ -6,6 +6,13 @@
   box-sizing: border-box;
 }
 
+@font-face {
+  font-family: 'FuturaStdMedium';
+  src: url('../fonts/futurastd_medium_bbb.woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 html {
   margin: 0;
   height: 100%;

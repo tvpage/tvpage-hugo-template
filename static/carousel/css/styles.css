@@ -2,6 +2,20 @@
   box-sizing: border-box;
 }
 
+@font-face {
+  font-family: 'FuturaStdBook';
+  src: url('fonts/FuturaStd-Book.woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'FuturaStdHeavy';
+  src: url('fonts/futurastd_heavy_bbb.woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 html,
 body {
   margin: 0;
@@ -9,7 +23,8 @@ body {
 }
 
 body  {
-  font-family: Helvetica;
+  /*font-family: Helvetica;*/
+  font-family: 'futurastd_heavy_bbb';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
