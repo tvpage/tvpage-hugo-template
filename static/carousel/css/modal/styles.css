@@ -8,7 +8,7 @@
 
 @font-face {
   font-family: 'FuturaStdMedium';
-  src: url('../../../css/fonts/futurastd_medium_bbb.woff');
+  src: url('../../../../css/fonts/futurastd_medium_bbb.woff');
   font-weight: normal;
   font-style: normal;
 }
