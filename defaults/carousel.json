@@ -244,6 +244,20 @@
         {
             "for": "carousel",
             "type": "text",
+            "label": "Title Category Text Font Family",
+            "code": "title_category_text_font_family",
+            "value": "Helvetica"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Title Category Text Font Family",
+            "code": "title_category_text_transform",
+            "value": "initial"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
             "label": "Content Background",
             "code": "content_background",
             "value": "white"
@@ -1043,9 +1057,16 @@
         {
             "for": "modal",
             "type": "text",
-            "label": "Product Popup CTA Padding",
-            "code": "product_popup_cta_padding",
-            "value": "10px 0"
+            "label": "Product Popup CTA Height",
+            "code": "product_popup_cta_height",
+            "value": "40px"
+        },
+        {
+            "for": "modal",
+            "type": "boolean",
+            "label": "Fix Page Scroll",
+            "code": "fix_page_scroll",
+            "value": true
         }
     ]
 }

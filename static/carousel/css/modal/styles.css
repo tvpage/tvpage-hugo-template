@@ -180,6 +180,7 @@ body  {
   cursor: pointer;
   -webkit-transition: all .05s ease-in-out;
   transition: all .05s ease-in-out;
+  padding: 0;
 }
 
 .tvp-arrow-indicator {

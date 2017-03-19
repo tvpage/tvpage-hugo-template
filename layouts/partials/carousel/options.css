@@ -8,6 +8,11 @@
     font-weight: {{ ($.Scratch.Get "settings").title_text_font_weight }};
 }
 
+.tvp-carousel-title > span {
+    text-transform: {{ ($.Scratch.Get "settings").title_category_text_transform }};
+    font-family: {{ ($.Scratch.Get "settings").title_category_text_font_family }};
+}
+
 .tvp-video {
     padding-left: {{ ($.Scratch.Get "settings").item_padding_left }};
     padding-right: {{ ($.Scratch.Get "settings").item_padding_right }};
@@ -203,7 +208,7 @@
     font-size: {{ ($.Scratch.Get "settings").product_popup_cta_font_size }};
     font-family: {{ ($.Scratch.Get "settings").product_popup_cta_font_family }};
     font-weight: {{ ($.Scratch.Get "settings").product_popup_cta_font_weight }};
-    padding: {{ ($.Scratch.Get "settings").product_popup_cta_padding }};
+    height: {{ ($.Scratch.Get "settings").product_popup_cta_height }};
 }
 
 .tvp-product-cta:hover {

@@ -299,7 +299,10 @@
             updateModalTitle(eventData.selectedVideo.title);
             removeClass('tvp-modal-' + widgetId,'tvp-hidden');
             removeClass('tvp-modal-overlay-' + widgetId,'tvp-hidden');
-            addClass(document.body, 'tvp-modal-open');
+
+            if (config.fix_page_scroll) {
+              addClass(document.body, 'tvp-modal-open');
+            }
 
             iframeModalHolder.innerHTML =  '<iframe class="tvp-iframe-modal" src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe>';
             iframeModal = iframeModalHolder.querySelector('.tvp-iframe-modal');
@@ -400,7 +403,11 @@
         var closeModal = function () {
             addClass('tvp-modal-' + widgetId,'tvp-hidden');
             addClass('tvp-modal-overlay-' + widgetId,'tvp-hidden');
-            removeClass(document.body,'tvp-modal-open');
+
+            if (config.fix_page_scroll) {
+              removeClass(document.body,'tvp-modal-open');
+            }
+
             removeClass(iframeModalHolder,'products');
             removeClass(iframeModalHolder,'no-products');
             iframeModal.parentNode.removeChild(iframeModal);
