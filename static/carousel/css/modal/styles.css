@@ -118,6 +118,10 @@ body  {
   position: relative;
 }
 
+.tvp-products-holder.no-overflow {
+  height: auto !important;
+}
+
 .tvp-product {
   display: block;
   position: relative;

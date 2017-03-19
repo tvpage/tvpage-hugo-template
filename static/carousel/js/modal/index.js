@@ -52,7 +52,13 @@
     };
 
     var render = function(data){
-        var container = Utils.getByClass('tvp-products');
+        var holder = Utils.getByClass('tvp-products-holder');
+        holder.innerHTML = "";
+
+        var container = document.createElement("div");
+        container.className = "tvp-products";
+        holder.appendChild(container);
+
         var thumbsFrag = document.createDocumentFragment();
         var popupsFrag = document.createDocumentFragment();
 
@@ -157,18 +163,27 @@
             }
         }
 
-        container.innerHTML = '';
-
         var arrow = document.createElement('div');
         arrow.classList.add('tvp-arrow-indicator');
+
+        var willScroll = data.length > 2;
+        if (willScroll) {
+            holder.classList.remove("no-overflow");
+            container.setAttribute('ss-container', true);
+        } else {
+            holder.classList.add("no-overflow");
+        }
+
         container.appendChild(thumbsFrag);
         container.parentNode.appendChild(popupsFrag);
         container.parentNode.insertBefore(arrow, container.nextSibling);
-        SimpleScrollbar.initEl(container);
+
+        if (willScroll) {
+            SimpleScrollbar.initAll();
+        }
 
         setTimeout(function(){
 
-            var holder = Utils.getByClass('tvp-products-holder');
             var classNames = ['tvp-product', 'tvp-product-popup'];
             for (var i = 0; i < classNames.length; i++) {
                 var elements = holder.getElementsByClassName(classNames[i]);
