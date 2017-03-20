@@ -121,7 +121,7 @@ body {
         }
         .tvp-row-player-title {
             display: inline-block;
-            height: 100%;
+            // height: 100%;
             width: 57.73%;
             white-space: nowrap;
         }
@@ -227,9 +227,9 @@ body {
         margin-left: 2.73%;
         width: 24.82%;
         display: inline-block;
-        h2{
-            display: none;
-        }
+        // h2{
+        //     display: none;
+        // }
         .tvp-featured-product {
             background-color: #EBEBEB;
             box-sizing: border-box;
@@ -422,8 +422,7 @@ body {
     .tvp-featured{
         width: 100%;
         margin: 0;
-        h2{
-            display: initial;
+        h2{            
             font-size: 12px;
             line-height: 14px;
             margin: 5px 0;
@@ -461,7 +460,6 @@ body {
                 width: 79%;
                 float: right;
                 font-size: 12px;
-                height: 100%;
                 &-title{                    
                     display: block;
                     line-height: 14px;

@@ -145,6 +145,7 @@
                                 });
                                 row.addEventListener('click', pkTrack, false);
                             }
+
                             $(products).slick({
                                 arrow: false,
                                 slidesToShow: 1,
@@ -194,7 +195,7 @@
             $(that.el).find('#videoTitle').html(e.assetTitle);
         };
         this.onResize = function (e, d) {
-            if (!Utils.isMobile) {
+            if (!Utils.isMobile) {                
                 $(that.el).find('#tvpProductsView').height(d[1]);
             }
         };    
@@ -254,7 +255,7 @@
             renderProducts(this.selectedVideo.id, options.loginId);
             
             setTimeout(function () {
-                if (window.parent) {
+                if (window.parent) {                    
                     window.parent.postMessage({
                         event: 'tvp_inline:resize',
                         height: that.el.offsetHeight + 'px'

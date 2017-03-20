@@ -409,7 +409,6 @@ body {
 }
 .iframe-content .tvp-row-titles .tvp-row-player-title {
   display: inline-block;
-  height: 100%;
   width: 57.73%;
   white-space: nowrap;
 }
@@ -523,9 +522,6 @@ body {
   margin-left: 2.73%;
   width: 24.82%;
   display: inline-block;
-}
-.iframe-content .tvp-featured h2 {
-  display: none;
 }
 .iframe-content .tvp-featured .tvp-featured-product {
   background-color: #EBEBEB;
@@ -753,7 +749,6 @@ body {
     margin: 0;
   }
   .iframe-content .tvp-featured h2 {
-    display: initial;
     font-size: 12px;
     line-height: 14px;
     margin: 5px 0;
@@ -803,7 +798,6 @@ body {
     width: 79%;
     float: right;
     font-size: 12px;
-    height: 100%;
   }
   .iframe-content .tvp-products-scroller .tvp-product-item .tvp-featured-info-title {
     display: block;
