@@ -106,13 +106,13 @@
                             row.setAttribute('data-id', data[i].id);
                             row.className = 'tvp-product-item';
                             row.innerHTML = Utils.tmpl(itemTemplate, data[i]);
-                            if (Utils.isMobile) {
-                                row.href = data[i].linkUrl;
-                                row.setAttribute('target', '_blank');
-                            }
-                            else{
-                                row.href = '#';
-                            }
+                            // // if (Utils.isMobile) {
+                            // //     row.href = data[i].linkUrl;
+                            // //     row.setAttribute('target', '_blank');
+                            // // }
+                            // else{
+                                // row.href = '#';
+                            // }
                             
                             $(row).appendTo(_container);
                             
@@ -204,7 +204,7 @@
             if (!Utils.isMobile) {
                 $(that.el).find('#tvpProductsView').height(d[1]);
             }
-        };        
+        };    
         this.render = function(){
             this.container.innerHTML = '';
 
@@ -227,7 +227,7 @@
             }
 
             $videoSliderDesktop = $(this.el.querySelector('#tvpVideoScroller'));
-            console.log($videoSliderDesktop);
+
             $videoSliderDesktop.slick({
                 arrows: true,
                 slidesToShow: 4,
@@ -247,7 +247,8 @@
                         }
                     }
                 ]
-            });
+            });   
+
 
             //init player            
             var s = this;
@@ -255,18 +256,21 @@
             s.data = data;
             this.player = new Player('tvp-player', s, this.selectedVideo.id);
             $(this.el).find('#videoTitle').html(this.selectedVideo.title);
-            //render products
+            
+            //render products            
             renderProducts(this.selectedVideo.id, options.loginId);
-
-            var $inline = $(this.el.querySelector('.tvp-content'));
-            $inline.on('setPosition', function() {
+            
+            setTimeout(function () {
                 if (window.parent) {
                     window.parent.postMessage({
                         event: 'tvp_inline:resize',
                         height: that.el.offsetHeight + 'px'
                     }, '*');
                 }
-            });
+            }, 1000);
+
+            
+            
             analytics =  new Analytics();
             analytics.initConfig({
                 logUrl: '\/\/api.tvpage.com\/v1\/__tvpa.gif',
@@ -352,7 +356,9 @@
             }
         };
 
+        
         this.el.onclick = function(e) {
+
             var target;
             var getSelectedData = function (_data, id) {
                 var selected = {};
@@ -393,7 +399,8 @@
         };
 
         this.load(function(data){
-            that.render(data);                        
+            that.render(data);
+            console.log(this.el.offsetHeight);
         });        
     }
 

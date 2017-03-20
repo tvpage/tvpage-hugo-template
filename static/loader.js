@@ -202,14 +202,16 @@
             },
             inline : {
                 prod: [
+                    '//a.tvpage.com/tvpa.min.js',
+                    playerLib,
                     self.static + '/js/vendor/jquery.js',
+                    self.static + '/js/libs/analytics.js',
                     self.static + '/js/vendor/slick-min.js',
                     self.static + '/js/vendor/simple-scrollbar.min.js',
-                    self.static + '/js/libs/analytics.js',
                     self.static + '/js/libs/utils.js',
                     self.static + '/js/libs/player.js',
-                    self.static + '/js/inline.js',
-                    self.static + '/js/index.js'
+                    self.static + '/js/index.js',
+                    self.static + '/js/inline.js'                    
                 ],
                 dev: [
                     '//a.tvpage.com/tvpa.min.js',
@@ -231,7 +233,6 @@
         }
 
         self.initialize = function() {
-
             //Add target/host page css for our self
             var link = document.createElement('link');
             link.rel = 'stylesheet';
@@ -248,9 +249,8 @@
             }, 50));
 
             //Central point for cross-domain messaging between iframes, we always us the host page window.
-            window.addEventListener('message', function(e) {
+            window.addEventListener('message', function(e) {  
                 if (!e || !isset(e, 'data') || !isset(e.data, 'event')) return;
-
                 var eventName = e.data.event;
                 var data = e.data;
                 var id = self.id;
@@ -260,7 +260,7 @@
                 if (self.senderId + ':render' === eventName || self.senderId + ':resize' === eventName) {
                     self.holder.style.height = e.data.height;
                 }
-
+                
                 if (self.senderId + ':video_click' === eventName) {
                     var runTime = (data.runTime || (isset(window, '__TVPage__') ? __TVPage__ : {}) ).config[id];
                     var selectedVideo = data.selectedVideo || {};

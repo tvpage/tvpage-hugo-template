@@ -17,6 +17,7 @@ module.exports = function(grunt) {
             style : 'expanded'
           },
           files: {
+            'css/styles.css' : 'scss/styles.scss',
             'css/inline.css' : 'scss/styles.scss',
             'css/host.css' : 'scss/host.scss',
             'css/mobile/host.css' : 'scss/mobile/host.scss'
@@ -31,7 +32,8 @@ module.exports = function(grunt) {
             // 'css/styles.css': 'css/styles.css',
             // 'css/modal/styles.css': 'css/modal/styles.css',
             // 'css/mobile/modal/styles.css': 'css/mobile/modal/styles.css'
-            'css/inline.css' : 'css/inline.css'
+            'css/inline.css' : 'css/inline.css',
+            'css/styles.css' : 'css/styles.css'
           }
         }
       },
@@ -43,6 +45,7 @@ module.exports = function(grunt) {
         desktop: {
           files: {
             'dist/css/inline.min.css' : ['css/inline.css'],
+            'dist/css/styles.min.css' : ['css/styles.css'],
             'dist/css/host.min.css' : ['css/host.css'],
           }
         },
