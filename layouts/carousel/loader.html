@@ -113,7 +113,6 @@
 <div id='{{ $id }}-holder' class="tvp-iframe-holder carousel">
     <iframe class="tvp-iframe" src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe>
     <script id="{{ $id }}-script">
-        var loaded = false;
         var widgetId = "{{ $id }}";
         var isIOS = /iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream;
         var isset = function(o,p){
@@ -151,16 +150,9 @@
                 modalTitleElement.setAttribute('class', 'tvp-modal-title bottom');
                 document.getElementsByClassName('tvp-modal-body')[0].appendChild(modalTitleElement)
             }
-
-            document.getElementById("tvp-modal-close-" + widgetId).addEventListener('click', closeModal, false);
-
-            var modalEl = document.getElementById("tvp-modal-" + widgetId);
-            modalEl.addEventListener('click', function(e){
-                if (e.target === modalEl || !modalEl.contains(e.target)) {
-                    closeModal();
-                }
-            }, false);
         };
+
+        createModal();
 
         var getIframeHtml = function(options) {
             var html = '<head><base target="_blank" /></head><body class="' + (options.className || '') + '" data-domain="' +
@@ -281,10 +273,7 @@
             if (!isEvent(e, ":resize")) return;
             holder.style.height = e.data.height;
             holder.classList.add('enabled');
-            if (!loaded) {
-                createModal();
-            }
-            loaded = true;
+            createModal();
         });
 
         var clickData = {};
@@ -420,6 +409,13 @@
             iframeModal.parentNode.removeChild(iframeModal);
         };
 
-        
+        document.getElementById("tvp-modal-close-" + widgetId).addEventListener('click', closeModal, false);
+
+        var modalEl = document.getElementById("tvp-modal-" + widgetId);
+        modalEl.addEventListener('click', function(e){
+            if (e.target === modalEl || !modalEl.contains(e.target)) {
+                closeModal();
+            }
+        }, false);
     </script>
 </div>
