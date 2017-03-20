@@ -6,7 +6,19 @@
     }
 
     .tvp-iframe-holder {
-        background: {{ ($.Scratch.Get "settings").background }};
+      -webkit-transition: all .05s ease-in-out;
+      transition: all .05s ease-in-out;
+      background: {{ ($.Scratch.Get "settings").background }};
+      position: relative;
+      opacity: 0;
+      height: 0;
+      visibility: hidden;
+    }
+
+    .tvp-iframe-holder.enabled {
+      height: auto;
+      opacity: 1;
+      visibility: visible;
     }
 
     .tvp-carousel-title {
@@ -62,11 +74,9 @@
         opacity: {{ ($.Scratch.Get "settings").modal_close_button_opacity_hover }};
     }
 </style>
-
 <script id="tvp-modal-overlay-template" type="text/template">
     <div id="tvp-modal-overlay-{{ $id }}" class="tvp-modal-overlay tvp-hidden"></div>
 </script>
-
 <script id="tvp-modal-template" type="text/template">
     <div id="tvp-modal-{{ $id }}" class="tvp-modal tvp-hidden">
         <div class="tvp-modal-wrapper">
@@ -88,7 +98,6 @@
         </div>
     </div>
 </script>
-
 <script id="tvp-iframe-modal-template" type="text/template">
     <div id="{{ $id }}" class="tvp-clearfix iframe-content">
         <div class="tvp-player-holder">
@@ -109,8 +118,7 @@
         </div>
     </div>
 </script>
-
-<div id='{{ $id }}-holder' class="tvp-iframe-holder carousel">
+<div id='{{ $id }}-holder' class="tvp-iframe-holder">
     <iframe class="tvp-iframe" src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe>
     <script id="{{ $id }}-script">
         var widgetId = "{{ $id }}";
