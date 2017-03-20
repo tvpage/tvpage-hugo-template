@@ -201,7 +201,7 @@
                 }
             },
             inline : {
-                prod: [
+                dev: [
                     '//a.tvpage.com/tvpa.min.js',
                     playerLib,
                     self.static + '/js/vendor/jquery.js',
@@ -213,7 +213,7 @@
                     self.static + '/js/index.js',
                     self.static + '/js/inline.js'                    
                 ],
-                dev: [
+                prod: [
                     '//a.tvpage.com/tvpa.min.js',
                     playerLib,
                     self.static + '/dist/js/scripts.min.js'

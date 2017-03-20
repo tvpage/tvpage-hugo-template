@@ -106,13 +106,6 @@
                             row.setAttribute('data-id', data[i].id);
                             row.className = 'tvp-product-item';
                             row.innerHTML = Utils.tmpl(itemTemplate, data[i]);
-                            // // if (Utils.isMobile) {
-                            // //     row.href = data[i].linkUrl;
-                            // //     row.setAttribute('target', '_blank');
-                            // // }
-                            // else{
-                                // row.href = '#';
-                            // }
                             
                             $(row).appendTo(_container);
                             
@@ -400,7 +393,6 @@
 
         this.load(function(data){
             that.render(data);
-            console.log(this.el.offsetHeight);
         });        
     }
 
