@@ -151,6 +151,15 @@
                 modalTitleElement.setAttribute('class', 'tvp-modal-title bottom');
                 document.getElementsByClassName('tvp-modal-body')[0].appendChild(modalTitleElement)
             }
+
+            document.getElementById("tvp-modal-close-" + widgetId).addEventListener('click', closeModal, false);
+
+            var modalEl = document.getElementById("tvp-modal-" + widgetId);
+            modalEl.addEventListener('click', function(e){
+                if (e.target === modalEl || !modalEl.contains(e.target)) {
+                    closeModal();
+                }
+            }, false);
         };
 
         var getIframeHtml = function(options) {
@@ -411,13 +420,6 @@
             iframeModal.parentNode.removeChild(iframeModal);
         };
 
-        document.getElementById("tvp-modal-close-" + widgetId).addEventListener('click', closeModal, false);
-
-        var modalEl = document.getElementById("tvp-modal-" + widgetId);
-        modalEl.addEventListener('click', function(e){
-            if (e.target === modalEl || !modalEl.contains(e.target)) {
-                closeModal();
-            }
-        }, false);
+        
     </script>
 </div>
