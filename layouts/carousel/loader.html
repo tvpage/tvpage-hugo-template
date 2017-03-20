@@ -68,7 +68,6 @@
 </script>
 
 <script id="tvp-modal-template" type="text/template">
-
     <div id="tvp-modal-{{ $id }}" class="tvp-modal tvp-hidden">
         <div class="tvp-modal-wrapper">
             <div class="tvp-modal-content">
@@ -83,14 +82,12 @@
                 </div>
                 <div class="tvp-modal-body">
                     <div id="tvp-modal-iframe-holder-{{ $id }}" class="tvp-modal-iframe-holder">
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </script>
-
 
 <script id="tvp-iframe-modal-template" type="text/template">
     <div id="{{ $id }}" class="tvp-clearfix iframe-content">
@@ -116,6 +113,7 @@
 <div id='{{ $id }}-holder' class="tvp-iframe-holder carousel">
     <iframe class="tvp-iframe" src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe>
     <script id="{{ $id }}-script">
+        var loaded = false;
         var widgetId = "{{ $id }}";
         var isIOS = /iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream;
         var isset = function(o,p){
@@ -154,8 +152,6 @@
                 document.getElementsByClassName('tvp-modal-body')[0].appendChild(modalTitleElement)
             }
         };
-
-        createModal();
 
         var getIframeHtml = function(options) {
             var html = '<head><base target="_blank" /></head><body class="' + (options.className || '') + '" data-domain="' +
@@ -276,6 +272,10 @@
             if (!isEvent(e, ":resize")) return;
             holder.style.height = e.data.height;
             holder.classList.add('enabled');
+            if (!loaded) {
+                createModal();
+            }
+            loaded = true;
         });
 
         var clickData = {};
