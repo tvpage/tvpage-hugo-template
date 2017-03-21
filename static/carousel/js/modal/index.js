@@ -184,14 +184,7 @@
 
         setTimeout(function(){
 
-            var classNames = ['tvp-product', 'tvp-product-popup'];
-            for (var i = 0; i < classNames.length; i++) {
-                var elements = holder.getElementsByClassName(classNames[i]);
-                for (var j = 0; j < elements.length; j++) {
-                    elements[j].addEventListener('click', pkTrack, false);
-                }
-            }
-            holder.onmouseover = function(e){
+            var showPopup = function(e){
                 var productEl = closestByClass(e.target,'tvp-product');
                 if (!productEl) return;
 
@@ -227,17 +220,33 @@
                 arrow.style.top = (productEl.getBoundingClientRect().top + 20) + 'px';
             };
 
-            holder.onmouseleave = function(e){
-                var activeThumbs = document.querySelectorAll('.tvp-product.active');
-                for (var i = activeThumbs.length - 1; i >= 0; i--) {
-                    activeThumbs[i].classList.remove('active');
-                }
+            var classNames = ['tvp-product', 'tvp-product-popup'];
+            var timeOut = null;
+            for (var i = 0; i < classNames.length; i++) {
+                var elements = holder.getElementsByClassName(classNames[i]);
+                for (var j = 0; j < elements.length; j++) {
+                    var element = elements[j];
+                    element.addEventListener('click', pkTrack, false);
+                    element.onmouseover = function (e) {
+                        clearTimeout(timeOut);
+                        showPopup(e);
+                    };
+                    element.onmouseleave = function () {
+                        timeOut = setTimeout(function(){
+                            var activeThumbs = document.querySelectorAll('.tvp-product.active');
+                            for (var i = activeThumbs.length - 1; i >= 0; i--) {
+                                activeThumbs[i].classList.remove('active');
+                            }
 
-                arrow.classList.remove('active');
+                            arrow.classList.remove('active');
 
-                var activePopups = document.querySelectorAll('.tvp-product-popup.active');
-                for (var i = activePopups.length - 1; i >= 0; i--) {
-                    activePopups[i].classList.remove('active');
+                            var activePopups = document.querySelectorAll('.tvp-product-popup.active');
+                            for (var i = activePopups.length - 1; i >= 0; i--) {
+                                activePopups[i].classList.remove('active');
+                            }
+                        },100);
+                    };
+
                 }
             }
         },0);
