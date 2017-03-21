@@ -19,9 +19,9 @@
 
 .ss-scroll {
   position: relative;
-  opacity: 0.2;
-  background: #000000 ;
-  border-radius: 100px;
+  background: #c7c7c7;
+  opacity: 0.8;
+  border-radius: 0;
   width: 5px;
   top: 0;
   z-index: 2;
@@ -35,7 +35,7 @@
 }
 
 .ss-container:hover .ss-scroll {
-  opacity: 0.3;
+  opacity: 1;
 }
 
 .ss-grabbed {

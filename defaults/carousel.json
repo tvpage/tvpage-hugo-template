@@ -15,7 +15,6 @@
         },
         {
             "for": "player",
-
             "type": "text",
             "label": "Progress Color",
             "code": "progress_color",
@@ -124,8 +123,15 @@
         },
         {
             "for": "carousel",
+            "type": "text",
+            "label": "Margin",
+            "code": "margin",
+            "value": "0"
+        },
+        {
+            "for": "carousel",
             "type": "boolean",
-            "label": "infinite",
+            "label": "Infinite",
             "code": "infinite",
             "value": true
         },
@@ -219,6 +225,13 @@
             "label": "Background",
             "code": "background",
             "value": "white"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Iframe Carousel Body Padding",
+            "code": "iframe_carousel_body_padding",
+            "value": "0"
         },
         {
             "for": "carousel",
@@ -433,6 +446,13 @@
         {
             "for": "carousel",
             "type": "text",
+            "label": "Item Background Image Size",
+            "code": "item_background_image_size",
+            "value": "cover"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
             "label": "Item Play Button Border",
             "code": "item_play_button_border",
             "value": "0"
@@ -562,6 +582,13 @@
             "label": "Item Meta Data",
             "code": "item_meta_data",
             "value": false
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Iframe Modal Body Padding",
+            "code": "iframe_modal_body_padding",
+            "value": "10px"
         },
         {
             "for": "modal",
@@ -948,6 +975,13 @@
             "label": "Products Headline Font Size",
             "code": "products_headline_font_size",
             "value": "16px"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Popup Box Shadow",
+            "code": "product_popup_box_shadow",
+            "value": "none"
         },
         {
             "for": "modal",

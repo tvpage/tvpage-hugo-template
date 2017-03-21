@@ -8,7 +8,6 @@
     .tvp-iframe-holder {
       -webkit-transition: all .05s ease-in-out;
       transition: all .05s ease-in-out;
-      background: {{ ($.Scratch.Get "settings").background }};
       position: relative;
       opacity: 0;
       height: 0;
@@ -19,6 +18,8 @@
       height: auto;
       opacity: 1;
       visibility: visible;
+      background: {{ ($.Scratch.Get "settings").background }};
+      margin: {{ ($.Scratch.Get "settings").margin }};
     }
 
     .tvp-carousel-title {
@@ -244,10 +245,11 @@
         var iframe = holder.querySelector(".tvp-iframe");
 
         if ("dynamic" === config.dataMethod) {
+
             var iframeDocument = iframe.contentWindow.document;
             iframeDocument.open().write(getIframeHtml({
                 id: widgetId,
-                className: config.dataMethod,
+                className: "dynamic carousel",
                 domain: config.baseUrl,
                 style: '{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/options.css" .Type ) .)) | safeCSS }}',
                 js: [
@@ -312,6 +314,7 @@
             iframeModalDocument = iframeModal.contentWindow.document;
             iframeModalDocument.open().write(getIframeHtml({
                 id: widgetId,
+                className: "modal",
                 domain: config.baseUrl,
                 style: '{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/options.css" .Type ) .)) | safeCSS }}',
                 html: document.getElementById('tvp-iframe-modal-' + (config.isMobile ? 'mobile-' : '') + 'template').innerHTML,

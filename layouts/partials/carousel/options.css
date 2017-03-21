@@ -1,3 +1,11 @@
+body.carousel {
+    padding: {{ ($.Scratch.Get "settings").iframe_carousel_body_padding }};
+}
+
+body.modal {
+    padding: {{ ($.Scratch.Get "settings").iframe_modal_body_padding }};
+}
+
 .tvp-carousel-title {
     padding: {{ ($.Scratch.Get "settings").title_padding }};
     color: {{ ($.Scratch.Get "settings").title_color }};
@@ -47,6 +55,10 @@
 
 .tvp-video-metadata > div {
     padding: {{ ($.Scratch.Get "settings").item_metadata_padding }};
+}
+
+.tvp-video-image {
+    background-size: {{ ($.Scratch.Get "settings").item_background_image_size }};
 }
 
 .tvp-video-image-overlay {
@@ -125,6 +137,10 @@
     fill: {{ ($.Scratch.Get "settings").play_button_icon_color }};
 }
 
+.tvp-products-holder {
+    padding-left: 1.8%;
+}
+
 .tvp-product {
     border: {{ ($.Scratch.Get "settings").product_thumbnail_border }};
     margin-right: {{ ($.Scratch.Get "settings").product_thumbnail_margin_right }};
@@ -193,6 +209,7 @@
     background: {{ ($.Scratch.Get "settings").product_popup_background }};
     padding: {{ ($.Scratch.Get "settings").product_popup_padding }};
     border: {{ ($.Scratch.Get "settings").product_popup_border }};
+    box-shadow: {{ ($.Scratch.Get "settings").product_popup_box_shadow }};
 }
 
 .tvp-product-popup-image {
