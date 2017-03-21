@@ -6,10 +6,6 @@
   overflow: hidden;
 }
 
-.tvp-hidden {
-  display: none;
-}
-
 .tvp-modal-overlay {
   position: fixed;
   top: 0;

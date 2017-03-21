@@ -1,6 +1,10 @@
 {{- partial "settings.html" . -}}
 {{- $id := ($.Scratch.Get "settings").name -}}
 <style>
+    .tvp-hidden {
+        display: none;
+    }
+
     .tvp-iframe {
         width: {{ ($.Scratch.Get "settings").iframe_width }};
     }
