@@ -8,8 +8,7 @@
         console.debug("startTime = " + performance.now());
     }
 
-    var env = window.DEBUG ? 'dev' : 'prod',
-        playerLib = '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
+    var playerLib = '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
         cssExt = !window.DEBUG ? '.css' : '.min.css',
         isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
         mobilePath = isMobile  ? 'mobile/' : '',
@@ -17,21 +16,6 @@
             var val = o;
             if (p) val = o[p];
             return 'undefined' !== typeof val;
-        },
-        debounce = function(func, wait, immediate) {
-            var timeout = null;
-            return function() {
-                var context = this,
-                    args = arguments;
-                var later = function() {
-                    timeout = null;
-                    if (!immediate) func.apply(context, args);
-                };
-                var callNow = immediate && !timeout;
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-                if (callNow) func.apply(context, args);
-            };
         };
 
     //Dynamically creates an iframe & appends it's required CSS & JS libraries.
@@ -119,8 +103,7 @@
                 if (!e || !isset(e, 'data') || !isset(e.data, 'event')) return;
                 var eventName = e.data.event;
                 var data = e.data;
-                var id = self.id;
-
+                
                 if (self.senderId + ':render' === eventName || self.senderId + ':resize' === eventName) {
                     self.holder.style.height = e.data.height;
                 }
