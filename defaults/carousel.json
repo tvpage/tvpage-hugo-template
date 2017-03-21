@@ -336,7 +336,7 @@
             "type": "text",
             "label": "Arrow Size 480",
             "code": "arrow_size_480",
-            "value": "6%"
+            "value": "4.5%"
         },
         {
             "for": "carousel",
@@ -467,16 +467,9 @@
         {
             "for": "carousel",
             "type": "text",
-            "label": "Item Play Button Width",
-            "code": "item_play_button_width",
-            "value": "45px"
-        },
-        {
-            "for": "carousel",
-            "type": "text",
-            "label": "Item Play Button Height",
-            "code": "item_play_button_height",
-            "value": "45px"
+            "label": "Item Play Button Size",
+            "code": "item_play_button_size",
+            "value": "15%"
         },
         {
             "for": "carousel",

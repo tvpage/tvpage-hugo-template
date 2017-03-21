@@ -33,9 +33,11 @@
 <script id="gridItemTemplate" type="text/template">
   <div class="tvp-video{className}"  data-id="{id}">
     <div class="tvp-video-image" style="background-image:url({asset.thumbnailUrl})">
-      <svg class="tvp-video-play" viewBox="0 0 200 200" alt="Play video">
-        <polygon points="70, 55 70, 145 145, 100"></polygon>
-      </svg>
+      <div class="tvp-video-play">
+        <svg class="tvp-video-play-icon" viewBox="0 0 200 200">
+          <polygon points="70, 55 70, 145 145, 100"></polygon>
+        </svg>
+      </div>
       <div class="tvp-video-image-overlay"></div>
     </div>
     <div class="tvp-video-metadata tvp-clearfix">

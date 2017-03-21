@@ -28,8 +28,7 @@ body.modal {
 
 .tvp-video-play {
     background-color: {{ ($.Scratch.Get "settings").item_play_button_background_color }};
-    width: {{ ($.Scratch.Get "settings").item_play_button_width }};
-    height: {{ ($.Scratch.Get "settings").item_play_button_height }};
+    width: {{ ($.Scratch.Get "settings").item_play_button_size }};
     border: {{ ($.Scratch.Get "settings").item_play_button_border }};
     border-radius: {{ ($.Scratch.Get "settings").item_play_button_border_radius }};
 }

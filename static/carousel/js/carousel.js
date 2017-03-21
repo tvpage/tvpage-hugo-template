@@ -4,7 +4,7 @@
 
     var itemTemplate = '<div data-id="{id}" class="tvp-video{className}">' +
         '<div class="tvp-video-image" style="background-image:url({asset.thumbnailUrl})">' +
-        '<svg class="tvp-video-play" viewBox="0 0 200 200" alt="Play video"><polygon points="70, 55 70, 145 145, 100"></polygon></svg>' +
+        '<div class="tvp-video-play"><svg class="tvp-video-play-icon" viewBox="0 0 200 200"><polygon points="70, 55 70, 145 145, 100"></polygon></svg></div>' +
         '<div class="tvp-video-image-overlay"></div></div>' +
         '<div class="tvp-video-metadata tvp-clearfix"><div>Length: {mediaDuration}</div><div>Published: {publishedDate}</div></div>' +
         '<p class="tvp-video-title">{title}</p></div>'
@@ -74,7 +74,7 @@
             var startSlick = function () {
                 $carousel = $(that.el.querySelector('.tvp-carousel-content'));
 
-                $carousel.on('setPosition', Utils.debounce(function (event, slick, currentSlide, nextSlide) {
+                $carousel.on('setPosition', Utils.debounce(function (event, slick) {
 
                     //Center the arrows using the icon as reference
                     setTimeout(function () {
