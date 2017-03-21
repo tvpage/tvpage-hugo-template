@@ -593,7 +593,6 @@ body {
 }
 .iframe-content .tvp-products-scroller {
   box-sizing: border-box;
-  height: 100%;
   float: right;
   position: relative;
   width: 13.64%;
