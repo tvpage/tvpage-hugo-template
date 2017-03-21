@@ -243,11 +243,11 @@
 
         var holder = document.getElementById(widgetId + "-holder");
         var iframe = holder.querySelector(".tvp-iframe");
+        var isFirefox = /Firefox/i.test(navigator.userAgent);
 
         if ("dynamic" === config.dataMethod) {
 
-            var iframeDocument = iframe.contentWindow.document;
-            iframeDocument.open().write(getIframeHtml({
+            var iframeContent = getIframeHtml({
                 id: widgetId,
                 className: "dynamic carousel",
                 domain: config.baseUrl,
@@ -264,8 +264,19 @@
                     config.debug ? config.cssPath + "/styles.css" : "",
                     config.debug ? "" : config.cssPath + "/styles.min.css"
                 ]
-            }));
-            iframeDocument.close();
+            });
+
+            //Firefox does not add the iframe content using the onload method.
+            //https://bugzilla.mozilla.org/show_bug.cgi?id=728151
+            if (isFirefox) {
+                iframe.contentWindow.contents = iframeContent;
+                iframe.src = 'javascript:window["contents"]';
+            } else {
+                var iframeDocument = iframe.contentWindow.document;
+                iframeDocument.open().write(iframeContent);
+                iframeDocument.close();
+            }
+
         } else {
             var url = config.baseUrl + "/tvpwidget/" + widgetId + "/";
             (-1 === navigator.userAgent.indexOf("MSIE")) ? iframe.src = url: iframe.location = url;
