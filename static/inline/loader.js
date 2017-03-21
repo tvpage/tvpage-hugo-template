@@ -122,14 +122,7 @@
                             return [
                                 '//a.tvpage.com/tvpa.min.js',
                                 playerLib,
-                                self.static + '/js/vendor/jquery.js',
-                                self.static + '/js/libs/analytics.js',
-                                self.static + '/js/vendor/slick-min.js',
-                                self.static + '/js/vendor/simple-scrollbar.min.js',
-                                self.static + '/js/libs/utils.js',
-                                self.static + '/js/libs/player.js',
-                                self.static + '/js/index.js',
-                                self.static + '/js/inline.js'                              
+                                self.static + '/dist/js/scripts.js'
                             ]
                         }
                         else{
@@ -141,7 +134,7 @@
                         }
                     }(),
                     css: function () {
-                        if (!window.DEBUG) {
+                        if (window.DEBUG) {
                             return [
                                 self.static + '/css/styles.css'
                             ]

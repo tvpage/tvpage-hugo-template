@@ -198,6 +198,14 @@
             if (!Utils.isMobile) {                
                 $(that.el).find('#tvpProductsView').height(d[1]);
             }
+            // else{
+                if (window.parent) {
+                    window.parent.postMessage({
+                        event: 'tvp_inline:resize',
+                        height: that.el.offsetHeight + 'px'
+                    }, '*');
+                }
+            // }
         };    
         this.render = function(){
             this.container.innerHTML = '';
@@ -253,17 +261,10 @@
             
             //render products            
             renderProducts(this.selectedVideo.id, options.loginId);
-            
-            setTimeout(function () {
-                if (window.parent) {                    
-                    window.parent.postMessage({
-                        event: 'tvp_inline:resize',
-                        height: that.el.offsetHeight + 'px'
-                    }, '*');
-                }
-            }, 1000);
 
-            
+            window.addEventListener('resize', Utils.debounce(function(){
+                this.player.resize();
+            }, 85));
             
             analytics =  new Analytics();
             analytics.initConfig({

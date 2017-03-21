@@ -29,9 +29,6 @@ module.exports = function(grunt) {
           files: {
             'css/host.css': 'css/host.css',
             'css/mobile/host.css': 'css/mobile/host.css',
-            // 'css/styles.css': 'css/styles.css',
-            // 'css/modal/styles.css': 'css/modal/styles.css',
-            // 'css/mobile/modal/styles.css': 'css/mobile/modal/styles.css'
             'css/inline.css' : 'css/inline.css',
             'css/styles.css' : 'css/styles.css'
           }
@@ -86,6 +83,19 @@ module.exports = function(grunt) {
           src: ['src/intro.js', 'src/project.js', 'src/outro.js'],
           dest: 'dist/built.js',
         },
+        dev: {
+          src: [
+             'js/vendor/jquery.js'
+            ,'js/vendor/slick-min.js'
+            ,'js/vendor/simple-scrollbar.min.js'
+            ,'js/carousel.js'
+            ,'js/libs/analytics.js'
+            ,'js/libs/utils.js'
+            ,'js/libs/player.js'
+            , 'js/inline.js'
+            , 'js/index.js'],
+          dest: 'dist/js/scripts.js'
+        }
       }
     });
 
@@ -94,6 +104,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-autoprefixer');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-sass');
+    grunt.loadNpmTasks('grunt-contrib-concat');
     
     grunt.registerTask('default', ['sass', 'autoprefixer', 'cssmin', 'watch']);
     grunt.registerTask('release', ['uglify', 'sass', 'autoprefixer', 'cssmin']);
