@@ -327,7 +327,7 @@
             iframeModalDocument = iframeModal.contentWindow.document;
             iframeModalDocument.open().write(getIframeHtml({
                 id: widgetId,
-                className: "modal",
+                className: "modal" + (config.isMobile ? " mobile" : ""),
                 domain: config.baseUrl,
                 style: '{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/options.css" .Type ) .)) | safeCSS }}',
                 html: document.getElementById('tvp-iframe-modal-' + (config.isMobile ? 'mobile-' : '') + 'template').innerHTML,

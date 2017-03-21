@@ -185,7 +185,6 @@ body {
   font-size: 10px;
   text-align: center;
   width: 95px;
-  border-radius: 2px;
   text-transform: uppercase;
   height: 25px;
   background: black;
@@ -194,6 +193,5 @@ body {
   text-transform: uppercase;
   display: block;
   cursor: pointer;
-  position: absolute;
-  bottom: 5px;
+  padding: 0;
 }

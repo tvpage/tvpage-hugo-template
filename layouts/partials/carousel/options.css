@@ -2,7 +2,7 @@ body.carousel {
     padding: {{ ($.Scratch.Get "settings").iframe_carousel_body_padding }};
 }
 
-body.modal {
+body.modal:not(.mobile) {
     padding: {{ ($.Scratch.Get "settings").iframe_modal_body_padding }};
 }
 
