@@ -1,11 +1,11 @@
-;(function(w, d) {
+;(function(window, document) {
     var menuTemplate = '<nav id="tvp-hidden-menu" ss-container></nav><div id="tvp-hamburger-container"><div class="tvp-hamburger tvp-hamburger-x"><span></span></div><p class="tvp-video-count"></p></div>',
         itemTemplate = '<div id="tvp-video-{id}" class="tvp-video{className}"><div class="tvp-video-image" style="background-image:url({asset.thumbnailUrl})"><div class="tvp-active-overlay"><p>Now Playing</p></div><svg class="tvp-video-play" viewBox="0 0 200 200" alt="Play video"><polygon points="70, 55 70, 145 145, 100"></polygon></svg></div><div class="tvp-video-details"><p class="tvp-video-title">{title}</p><p class="tvp-video-duration">- {asset.prettyDuration}</p></div></div>';
   
   function Menu(player, settings) {
 
     var that = this;
-    this.dataMethod = (d.body.classList.contains('dynamic')) ? 'dynamic' : 'static';
+    this.dataMethod = (document.body.classList.contains('dynamic')) ? 'dynamic' : 'static';
     this.allVideos = [];
 
     this.init = function(){
@@ -14,27 +14,28 @@
         that.bindMenuEvent();
         that.bindClickEvent();
         that.bindLoadMoreEvent();
+        that.hideMenuEvents();
         that.listenToResize();
     };
 
     this.cacheDOM =function(){
-        that.hiddenMenu = d.getElementById('tvp-hidden-menu');
-        that.scrollMenu = d.querySelectorAll('.ss-content')[0];
-        that.tvpVid = d.querySelectorAll('.tvp-video');
-        that.hamburguer = d.getElementById('tvp-hamburger-container');
-        that.toggles = d.querySelectorAll('.tvp-hamburger');
-        that.payerCont = d.querySelectorAll('.tvp-player')[0];
-        that.noVidDiv = d.getElementById('tvp-no-videos');
-        that.tvpNoVids = d.getElementsByClassName('tvp-novids');
+        that.hiddenMenu = document.getElementById('tvp-hidden-menu');
+        that.scrollMenu = document.querySelectorAll('.ss-content')[0];
+        that.tvpVid = document.querySelectorAll('.tvp-video');
+        that.hamburguer = document.getElementById('tvp-hamburger-container');
+        that.toggles = document.querySelectorAll('.tvp-hamburger');
+        that.payerCont = document.querySelectorAll('.tvp-player')[0];
+        that.noVidDiv = document.getElementById('tvp-no-videos');
+        that.tvpNoVids = document.getElementsByClassName('tvp-novids');
     };
 
     this.render = function() {
         var playlist = settings.data || [];
         if (playlist.length < 1) return;
         that.fullScreenMenu();
-        var menuHiden = d.getElementById('tvp-hidden-menu'),
-            menuItemEl = d.createElement('div'),
-            noVidDiv = d.createElement('div');
+        var menuHiden = document.getElementById('tvp-hidden-menu'),
+            menuItemEl = document.createElement('div'),
+            noVidDiv = document.createElement('div');
 
         menuItemEl.setAttribute('id', 'tvp-clearfix'),    
         noVidDiv.setAttribute('id', 'tvp-no-videos');
@@ -51,19 +52,19 @@
             menuItemEl.innerHTML += Utils.tmpl(itemTemplate, menuItem);
 
             if (that.dataMethod !== 'static') {
-                var noVidFrag = d.createDocumentFragment(),
-                    noVideos = d.createElement('div');
+                var noVidFrag = document.createDocumentFragment(),
+                    noVideos = document.createElement('div');
                 noVideos.classList.add('tvp-novids');
                 noVidFrag.appendChild(noVideos);
                 noVidDiv.appendChild(noVidFrag);
             }
         }
         if (that.dataMethod === 'static') {
-            that.videoCountP = d.createTextNode(that.vidCount + ' ' + (that.vidCount > 2 ? 'videos' : 'video'));
-            that.tvpVideoCount = d.querySelectorAll('.tvp-video-count')[0];
+            that.videoCountP = document.createTextNode(that.vidCount + ' ' + (that.vidCount > 2 ? 'videos' : 'video'));
+            that.tvpVideoCount = document.querySelectorAll('.tvp-video-count')[0];
             that.tvpVideoCount.appendChild(that.videoCountP);
         }
-        menuHiden.style.cssText = 'height:'+(d.querySelectorAll('.tvp-player')[0].offsetHeight - 40)+'px;';
+        menuHiden.style.cssText = 'height:'+(document.querySelectorAll('.tvp-player')[0].offsetHeight - 40)+'px;';
         SimpleScrollbar.initAll();
 
     };
@@ -74,7 +75,6 @@
             var playerAsset = player.assets[player.current];
             that.setActiveItem(playerAsset.assetId);
             that.toggleMenu();
-            that.hideMenuEvents();
         };
       }
     };
@@ -109,25 +109,20 @@
     };
 
     this.hideMenuEvents = function(){
-        var overlay = d.getElementsByClassName('tvp-overlay')[0];
+        var overlay = document.getElementsByClassName('tvp-overlay')[0];
         if (overlay) {
             overlay.onclick = function(){
                 that.hideMenu();
             };
         }
-        BigScreen.onchange = function(){
-            that.hideMenu();
-            that.hiddenMenu.style.cssText = (w.innerHeight - 40) +'px;';
-            player.isFullScreen = !player.isFullScreen;
-        }; 
     };
 
     this.fullScreenMenu = function(){
-        var tvpPlayerEl = that.dataMethod === 'static'? d.getElementById('tvp-player-el') : d.getElementsByClassName('tvp-player-el')[0];
+        var tvpPlayerEl = that.dataMethod === 'static'? document.getElementById('tvp-player-el') : document.getElementsByClassName('tvp-player-el')[0];
         var _frame = tvpPlayerEl.getElementsByTagName('iframe');
         if(_frame.length){
-            var menuFrag = d.createDocumentFragment(),
-            slideMenu = d.createElement('div');
+            var menuFrag = document.createDocumentFragment(),
+            slideMenu = document.createElement('div');
             slideMenu.setAttribute('id', 'tvp-slide-menu');
             slideMenu.innerHTML = menuTemplate;
             menuFrag.appendChild(slideMenu);
@@ -136,7 +131,7 @@
     };
 
     this.listenToResize = function(argument) {
-        w.addEventListener('resize',function(){
+        window.addEventListener('resize',function(){
             setTimeout(function(){
                 var newSize = (that.payerCont.clientHeight - 40) +'px;';
                 that.hiddenMenu.style.cssText = 'height:'+newSize;
@@ -156,8 +151,8 @@
             that.scrollMenu.appendChild(that.noVidDiv);
         }
       }else{
-        var newVivFrag = d.createDocumentFragment(),
-            newDiv = d.createElement('div');
+        var newVivFrag = document.createDocumentFragment(),
+            newDiv = document.createElement('div');
         for (var i = 0; i < newData.length; i++) {
             that.allVideos.push(newData[i]);
             settings.data.push(newData[i]);
@@ -210,16 +205,8 @@
             that.toggleMenu();
         };
     };
-    player.onNext = function(){
-        var playerAsset = player.assets[player.current];
-        that.setActiveItem(playerAsset.assetId);
-        that.hideMenu();
-    };
-    player.isReady = function(){
-        that.init();
-    };
   }
 
-  w.Menu = Menu;
+  window.Menu = Menu;
 
 }(window, document));

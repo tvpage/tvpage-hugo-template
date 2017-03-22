@@ -75,10 +75,10 @@
       //We deal diff with some stuff on iframe.
       (function(unique,settings){
         var player = null,
+            menu = null,
             playerSettings = JSON.parse(JSON.stringify(settings)),
             menuSettings = JSON.parse(JSON.stringify(settings)),
-            playlistOption = Utils.isset(settings,'playlist') ? settings.playlist: 'hide',
-            menu = null;
+            playlistOption = Utils.isset(settings,'playlist') ? settings.playlist: 'hide';
 
         render(unique,document.body);
 
@@ -91,6 +91,20 @@
             menu = new Menu(player,menuSettings);        
           }
         });
+
+        playerSettings.onPlayerReady = function(){
+          menu.init();
+        };
+
+        playerSettings.onNext = function(){
+          var playerAsset = player.assets[player.current];
+          menu.setActiveItem(playerAsset.assetId);
+          menu.hideMenu();
+        };
+
+        playerSettings.onFullscreenChange = function(){
+          menu.hideMenu();
+        };
 
         Menu.prototype.loadMore = function(){
           if (!lastPage && !isFetching) {

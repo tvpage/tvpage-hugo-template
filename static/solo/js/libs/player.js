@@ -43,7 +43,8 @@
     this.instance = null;
     this.el = 'string' === typeof el ? document.getElementById(el) : el;
     this.onNext = isset(options.onNext) && "function" === typeof options.onNext ? options.onNext : null;
-    this.isReady = isset(options.isReady) && "function" === typeof options.isReady ? options.isReady : null;
+    this.onPlayerReady = isset(options.onPlayerReady) && "function" === typeof options.onPlayerReady ? options.onPlayerReady : null;
+    this.onFullscreenChange = isset(options.onFullscreenChange) && "function" === typeof options.onFullscreenChange ? options.onFullscreenChange : null;
 
 
     //Context reference for Methods.
@@ -209,6 +210,9 @@
         if (isset(window,'BigScreen')) {
             BigScreen.onchange = function(){
                 that.isFullScreen = !that.isFullScreen;
+                if (that.onFullscreenChange()) {
+                  that.onFullscreenChange();
+                }
             };
         }
 
@@ -232,7 +236,7 @@
 
         that.current = that.getCurrentIndex(startWith);
         that.play(that.assets[that.current],null,true);
-        that.isReady();
+        that.onPlayerReady();
     };
 
     that.onStateChange = function(e){
@@ -248,6 +252,7 @@
         if ('tvp:media:videoplaying' === e && that.onNext){
             that.onNext(that.assets[that.current]);
         }
+
         if ('tvp:media:videoplaying' === e) {
           var existing = that.el.querySelector('.tvp-overlay');
           if (existing) {
