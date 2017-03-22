@@ -4,36 +4,43 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-  {{ if (getenv "HUGO_DEBUG") }}
+
+  {{- if (getenv "HUGO_DEBUG") -}}
   <link rel="stylesheet" type="text/css" href="{{ (printf "%s/css/styles.css" .Type ) | absURL }}">
-  {{ else }}
+  {{- else -}}
   <link rel="stylesheet" type="text/css" href="{{ (printf "%s/dist/css/styles.min.css" .Type ) | absURL }}">
-  {{ end }}
+  {{- end -}}
+
+  <style>{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/options.css" .Type ) .)) | safeCSS }}</style>
 </head>
 <body>
+
+  <h1>{{ (printf "%s/css/styles.css" .Type "hola" ) | absURL }}</h1>
+
   <div class="tvp-player">
     <div id="tvp-player-el"></div>
   </div>
   <script async src="//a.tvpage.com/tvpa.min.js"></script>
-  <script async src='//cdnjs.tvpage.com/tvplayer/tvp-{{ ($.Scratch.Get "settings").version }}.min.js'></script>
-  {{ if (getenv "HUGO_DEBUG") }}
+  <script async src='//cdnjs.tvpage.com/tvplayer/tvp-{{ ($.Scratch.Get "settings").player_version }}.min.js'></script>
+
+  {{- if (getenv "HUGO_DEBUG") -}}
   <script src="{{ (printf "%s/js/libs/analytics.js" .Type ) | absURL }}"></script>
   <script src="{{ (printf "%s/js/libs/player.js" .Type ) | absURL }}"></script>
-  {{ else }}
+  {{- else -}}
   <script src="{{ (printf "%s/dist/js/scripts.min.js" .Type ) | absURL }}"></script>
-  {{ end }}
+  {{- end -}}
+
   <script>;(function(doc,settings,videoId,channelId){
 
     var getUrlParams = function(){
-      if (window.location) {
-        var o = {},kv = location.search.substr(1).split('&'), params = [];
-        for (var i = 0; i < kv.length; i++) { params.push(kv[i]); }
-        for (var i = 0; i < params.length; i++) {
+      if (!window.location) return;
+      var o = {},kv = location.search.substr(1).split('&'), params = [];
+      for (var i = 0; i < kv.length; i++) { params.push(kv[i]); }
+      for (var i = 0; i < params.length; i++) {
           var param = params[i].split('=');
           if(param[1]) o[param[0]] = param[1];
-        }
-        return o;
       }
+      return o;
     };
 
     var extend = function(out) {
@@ -62,20 +69,18 @@
     
     new Player('tvp-player-el', function(){
       var videos = [];
-      
+
       if (videoId) {
         videos.push(video);
       } else if (channelId && 'undefined' !== typeof channelVideos.data) {
         videos = channelVideos.data;
       } else if (!videos.length) {
-        return console.debug("No content found on data/");
+        return console.debug("No data");
       }
 
       settings.data = videos;
       settings.widgetId = settings.name;
-
       settings = extend(settings, getUrlParams());
-
       return settings;
     }());
 
