@@ -125,7 +125,6 @@
         var tvpPlayerEl = that.dataMethod === 'static'? d.getElementById('tvp-player-el') : d.getElementsByClassName('tvp-player-el')[0];
         var _frame = tvpPlayerEl.getElementsByTagName('iframe');
         if(_frame.length){
-            _frame[0].id
             var menuFrag = d.createDocumentFragment(),
             slideMenu = d.createElement('div');
             slideMenu.setAttribute('id', 'tvp-slide-menu');
