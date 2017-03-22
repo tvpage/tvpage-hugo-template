@@ -89,7 +89,7 @@
                 var $sscontent = $(products).find('.ss-content');
                 if (data.length) {
                     var itemTemplate = Utils.isMobile ? productFeatureTemplate : productTemplate;
-                    var _container;
+                    var _container = null;
 
                     productData = data;
 
