@@ -84,7 +84,21 @@
     }());
     var playlist = settings.playlist || null;
     if (playlist && "show" === playlist) {
-      new Menu(player, channelVideos);
+      var menu = new Menu(player, channelVideos);
+
+      player.onPlayerReady = function(){
+        menu.init();
+      };
+
+      player.onNext = function(){
+        var playerAsset = player.assets[player.current];
+        menu.setActiveItem(playerAsset.assetId);
+        menu.hideMenu();
+      };
+
+      player.onFullscreenChange = function(){
+        menu.hideMenu();
+      };
     }
 }(document,
 {{ $.Scratch.Get "settings" }},
