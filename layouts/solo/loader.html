@@ -1,12 +1,5 @@
 {{- partial "settings.html" . -}}
 {{ $id := ($.Scratch.Get "settings").name }}
-
-{{ if (getenv "HUGO_DEBUG") }}
-<link rel="stylesheet" property="stylesheet" href="{{ (printf "%s/css/host.css" .Type ) | absURL }}">
-{{ else }}
-<link rel="stylesheet" property="stylesheet" href="{{ (printf "%s/dist/css/host.min.css" .Type ) | absURL }}">
-{{ end }}
-
 <div id='{{ $id }}-holder' class="tvp-iframe-holder {{ .Type }}">
     <iframe class="tvp-iframe" src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe>
     <script id="{{ $id }}-script">
@@ -96,6 +89,15 @@
         var iframe = holder.querySelector(".tvp-iframe");
         var config = __TVPage__.config["{{ $id }}"];
         var staticPath = "{{ .Type | absURL }}";
+
+        var linkId = "tvp-solo-host-css";
+        if (!document.getElementById(linkId)) {
+            var link = document.createElement("link");
+            link.rel = "stylesheet";
+            link.id = linkId;
+            link.href = config.cssPath + config.mobilePath + "host" + (config.debug ? ".css" : ".min.css");
+            document.getElementsByTagName("head")[0].appendChild(link);
+        }
 
         var dataMethod = "static";
         if (isset(config, "channel") && isset(config.channel, "id")) {

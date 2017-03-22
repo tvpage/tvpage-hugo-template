@@ -1,4 +1,4 @@
-div[class^="tvp-"] {
+*[class^="tvp-"] {
   box-sizing: border-box;
 }
 

@@ -170,10 +170,14 @@
         config.eventPrefix = ("tvp_{{ .Type }}").replace(/-/g,'_');
         config.dataMethod = isset(config, "channel") && isset(config.channel, "id") ? "dynamic" : "static";
 
-        var link = document.createElement("link");
-        link.rel = "stylesheet";
-        link.href = config.cssPath + config.mobilePath + "host" + (config.debug ? ".css" : ".min.css");
-        document.getElementsByTagName("head")[0].appendChild(link);
+        var linkId = "tvp-carousel-host-css";
+        if (!document.getElementById(linkId)) {
+            var link = document.createElement("link");
+            link.rel = "stylesheet";
+            link.id = linkId;
+            link.href = config.cssPath + config.mobilePath + "host" + (config.debug ? ".css" : ".min.css");
+            document.getElementsByTagName("head")[0].appendChild(link);
+        }
 
         var holder = document.getElementById(widgetId + "-holder");
         var iframe = holder.querySelector(".tvp-iframe");
