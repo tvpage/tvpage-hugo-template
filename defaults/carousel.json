@@ -155,7 +155,7 @@
             "type": "text",
             "label": "Title Padding",
             "code": "title_padding",
-            "value": "15px 10px 15px 5px"
+            "value": "15px 0"
         },
         {
             "for": "carousel",

@@ -3,6 +3,8 @@
     var analytics,
         channelId;
 
+    var eventPrefix = "tvp_" + (document.body.getAttribute("data-id") || "").replace(/-/g,'_');
+
     var pkTrack = function(){
         analytics.track('pk',{
             vd: this.getAttribute('data-vd'),
@@ -21,10 +23,10 @@
 
         if (!data || !data.length) {
             el.classList.add('tvp-no-products');
-            eventName = 'tvp_carousel:modal_no_products';
+            eventName = eventPrefix + ':modal_no_products';
         }else{
             el.classList.remove('tvp-no-products');
-            eventName = 'tvp_carousel:modal_products';
+            eventName = eventPrefix + ':modal_products';
         }
 
         setTimeout(function(){
@@ -199,7 +201,7 @@
                 resizeProducts(size[1]);
                 if (window.parent) {
                     window.parent.postMessage({
-                        event: 'tvp_carousel:modal_resized',
+                        event: eventPrefix + ':modal_resized',
                         height: (el.offsetHeight + 20) + 'px'
                     }, '*');
                 }
@@ -240,7 +242,7 @@
             if (!e || !Utils.isset(e, 'data') || !Utils.isset(e.data, 'event')) return;
             var data = e.data;
 
-            if ('tvp_carousel:modal_data' === data.event) {
+            if (eventPrefix + ':modal_data' === data.event) {
 
                 initPlayer(data);
 
@@ -249,7 +251,7 @@
 
                 analytics =  new Analytics();
                 analytics.initConfig({
-                    logUrl: '\/\/api.tvpage.com\/v1\/__tvpa.gif',
+                    logUrl: '//api.tvpage.com/v1/__tvpa.gif',
                     domain: Utils.isset(location,'hostname') ?  location.hostname : '',
                     loginId: loginId
                 });
@@ -274,7 +276,7 @@
         setTimeout(function(){
             if (window.parent) {
                 window.parent.postMessage({
-                    event: 'tvp_carousel:modal_initialized',
+                    event: eventPrefix + ':modal_initialized',
                     height: (el.offsetHeight + 20) + 'px'
                 }, '*');
             }

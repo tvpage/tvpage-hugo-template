@@ -75,9 +75,9 @@
         </div>
     </div>
 </script>
-<div id='{{ $id }}-holder' class="tvp-iframe-holder carousel">
+<div id='{{ $id }}-holder' class="tvp-carousel-holder">
     <iframe class="tvp-iframe" src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe>
-    <script id="{{ $id }}-script">
+    <script id="{{ $id }}-script">(function(){
         var widgetId = "{{ $id }}";
         var isIOS = /iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream;
         var isset = function(o,p){
@@ -159,6 +159,7 @@
         __TVPage__.config[widgetId] = extend({{ $.Scratch.Get "settings" }}, __TVPage__.config[widgetId]);
 
         var config = __TVPage__.config[widgetId];
+        config.widgetId = widgetId;
         config.baseUrl = "{{ .Site.BaseURL }}";
         config.debug = Number('{{ getenv "HUGO_DEBUG" }}') || 0;
         config.staticPath = "{{ .Type | absURL }}";
@@ -167,7 +168,7 @@
         config.mobilePath = config.isMobile ? 'mobile/' : '';
         config.cssPath = config.staticPath + (config.debug ? '/' : '/dist/') + 'css/';
         config.jsPath = config.staticPath + (config.debug ? '/' : '/dist/') + 'js/';
-        config.eventPrefix = ("tvp_{{ .Type }}").replace(/-/g,'_');
+        config.eventPrefix = ("tvp_" + widgetId).replace(/-/g,'_');
         config.dataMethod = isset(config, "channel") && isset(config.channel, "id") ? "dynamic" : "static";
 
         var linkId = "tvp-carousel-host-css";
@@ -355,5 +356,5 @@
                 closeModal();
             }
         }, false);
-    </script>
+    }())</script>
 </div>

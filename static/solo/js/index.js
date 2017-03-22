@@ -80,7 +80,7 @@
         render(unique,document.body);
         loadData(settings,unique,function(data){
           settings.data = data || [];
-          new Player('tvp-player-el-'+unique,settings);
+          var player = new Player('tvp-player-el-'+unique,settings);
         });
       }(random(),getSettings('dynamic')));
     }

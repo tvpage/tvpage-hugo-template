@@ -58,12 +58,16 @@
         target.appendChild(frag);
     };
 
+    var getEventPefix = function(id){
+        return "tvp_" + (id || "").replace(/-/g,'_');
+    };
+
     var body = document.body;
 
     var initialize = function(){
-
         if (body.classList.contains('dynamic')) {
             (function(settings){
+
                 var carouselSettings = JSON.parse(JSON.stringify(settings));
                 var name = settings.name;
 
@@ -80,7 +84,7 @@
                     if (window.parent) {
                         window.parent.postMessage({
                             runTime: 'undefined' !== typeof window.__TVPage__ ? __TVPage__ : null,
-                            event: 'tvp_carousel:video_click',
+                            event: getEventPefix(settings.widgetId) +':video_click',
                             selectedVideo: clicked,
                             videos: videos
                         }, '*');
@@ -103,7 +107,7 @@
                     if (window.parent) {
                         window.parent.postMessage({
                             runTime: 'undefined' !== typeof window.__TVPage__ ? __TVPage__ : null,
-                            event: 'tvp_carousel:video_click',
+                            event: getEventPefix(settings.widgetId) + ':video_click',
                             selectedVideo: clicked,
                             videos: videos
                         }, '*');

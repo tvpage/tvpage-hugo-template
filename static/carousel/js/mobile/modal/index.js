@@ -2,7 +2,7 @@
 
     var analytics = null;
     var channelId = null;
-    var eventPrefix = "tvp_carousel";
+    var eventPrefix = "tvp_" + (document.body.getAttribute("data-id") || "").replace(/-/g,'_');
 
     var pkTrack = function() {
         analytics.track('pk', {

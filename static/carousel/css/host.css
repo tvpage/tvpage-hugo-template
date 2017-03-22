@@ -128,13 +128,12 @@
   padding: 0;
 }
 
-.tvp-iframe-holder {
+.tvp-carousel-holder {
   height: 500px;
   position: relative;
 }
 
-/*This is the gallery iframe*/
-.tvp-iframe {
+.tvp-carousel-holder > iframe {
   top: 0;
   left: 0;
   width: 100%;

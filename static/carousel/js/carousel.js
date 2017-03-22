@@ -91,7 +91,7 @@
 
                     if (window.parent) {
                         window.parent.postMessage({
-                            event: 'tvp_carousel:resize',
+                            event: 'tvp_' + options.widgetId.replace(/-/g,'_') + ':resize',
                             height: that.el.offsetHeight + 'px'
                         }, '*');
                     }

@@ -49,6 +49,7 @@
     window.__TVPage__ = window.__TVPage__ || {};
     __TVPage__.config = __TVPage__.config || {};
     __TVPage__.config[{{ $id }}] = {{ $.Scratch.Get "settings" }};
+    __TVPage__.config[{{ $id }}].widgetId = {{ $id }};
     __TVPage__.config[{{ $id }}].channel = {
         id: '{{ ($.Scratch.Get "settings").channelid }}'
     };

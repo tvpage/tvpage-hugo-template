@@ -1,30 +1,15 @@
 {{- partial "settings.html" . -}}
 {{ $id := ($.Scratch.Get "settings").name }}
-<div id='{{ $id }}-holder' class="tvp-iframe-holder {{ .Type }}">
+<div id='{{ $id }}-holder' class="tvp-solo-holder">
     <iframe class="tvp-iframe" src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe>
-    <script id="{{ $id }}-script">
-        var TVP_DEBUG = Number('{{ getenv "HUGO_DEBUG" }}') || 0;
+    <script id="{{ $id }}-script">(function(){
+
+        var widgetId = "{{ $id }}";
 
         var isset = function(o,p){
             var val = o;
             if (p) val = o[p];
             return 'undefined' !== typeof val;
-        };
-
-        var debounce = function(func, wait, immediate) {
-            var timeout = null;
-            return function() {
-                var context = this,
-                    args = arguments;
-                var later = function() {
-                    timeout = null;
-                    if (!immediate) func.apply(context, args);
-                };
-                var callNow = immediate && !timeout;
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-                if (callNow) func.apply(context, args);
-            };
         };
 
         var extend = function(o) {
@@ -47,7 +32,7 @@
                 'var d = document, head = d.getElementsByTagName(\'head\')[0],' +
                 'addJS = function(u){ var s = d.createElement(\'script\');s.src=u;d.body.appendChild(s);},' +
                 'addCSS = function(h){ var l = d.createElement(\'link\');l.type=\'text/css\';l.rel=\'stylesheet\';l.href=h;head.appendChild(l);};' +
-                'window.TVP_DEBUG=' + TVP_DEBUG + ';';
+                'window.TVP_DEBUG=' + config.debug + ';';
 
             var js = options.js || [];
             if ('function' === typeof js) {
@@ -83,19 +68,23 @@
 
         window.__TVPage__ = window.__TVPage__ || {};
         __TVPage__.config = __TVPage__.config || {};
-        __TVPage__.config["{{ $id }}"] = extend({{ $.Scratch.Get "settings" }}, __TVPage__.config["{{ $id }}"]);
+        __TVPage__.config[widgetId] = extend({{ $.Scratch.Get "settings" }}, __TVPage__.config[widgetId]);
 
-        var holder = document.getElementById("{{ $id }}-holder");
+        var holder = document.getElementById(widgetId + "-holder");
         var iframe = holder.querySelector(".tvp-iframe");
-        var config = __TVPage__.config["{{ $id }}"];
-        var staticPath = "{{ .Type | absURL }}";
+
+        var config = __TVPage__.config[widgetId];
+        config.widgetId = widgetId;
+        config.debug = Number('{{ getenv "HUGO_DEBUG" }}') || 0;
+        config.staticPath = "{{ .Type | absURL }}";
+        config.cssPath = config.staticPath + (config.debug ? '/' : '/dist/') + 'css/';
 
         var linkId = "tvp-solo-host-css";
         if (!document.getElementById(linkId)) {
             var link = document.createElement("link");
             link.rel = "stylesheet";
             link.id = linkId;
-            link.href = config.cssPath + config.mobilePath + "host" + (config.debug ? ".css" : ".min.css");
+            link.href = config.cssPath + "host" + (config.debug ? ".css" : ".min.css");
             document.getElementsByTagName("head")[0].appendChild(link);
         }
 
@@ -105,12 +94,12 @@
         }
 
         if (/iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream) {
-            var onOrientationChange = debounce(function () {
+            var onOrientationChange = function () {
                 iframe.contentWindow.window.postMessage({
-                    event: 'tvp_{{ .Type }}:holder_resize',
+                    event: 'tvp_' + widgetId + ':holder_resize',
                     size: [holder.offsetWidth, Math.floor(holder.offsetWidth * (9 / 16))]
                 },'*');
-            },30);
+            };
             var orientationChangeEvent = 'onorientationchange' in window ? 'orientationchange' : 'resize';
             window.removeEventListener(orientationChangeEvent,onOrientationChange, false);
             window.addEventListener(orientationChangeEvent,onOrientationChange, false);
@@ -123,24 +112,24 @@
                 js: [
                     '//a.tvpage.com/tvpa.min.js',
                     'https://cdnjs.tvpage.com/tvplayer/tvp-1.8.6.min.js',
-                    TVP_DEBUG ? staticPath + '/js/libs/analytics.js' : '',
-                    TVP_DEBUG ? staticPath + '/js/libs/player.js' : '',
-                    TVP_DEBUG ? staticPath + '/js/index.js' : '',
-                    TVP_DEBUG ? '' : staticPath + '/dist/js/scripts.min.js'
+                    config.debug ? config.staticPath + '/js/libs/analytics.js' : '',
+                    config.debug ? config.staticPath + '/js/libs/player.js' : '',
+                    config.debug ? config.staticPath + '/js/index.js' : '',
+                    config.debug ? '' : config.staticPath + '/dist/js/scripts.min.js'
                 ],
                 css: [
-                    staticPath + '/css/styles.css'
+                    config.staticPath + '/css/styles.css'
                 ],
-                id: "{{ $id }}",
+                id: widgetId,
                 className: dataMethod,
                 domain: "{{ .Site.BaseURL }}"
             }));
             iframeDoc.close();
         } else {
-            var spot = document.getElementById("{{ $id }}");
+            var spot = document.getElementById(widgetId);
             var url = spot ? spot.href : "";
             (-1 === navigator.userAgent.indexOf("MSIE")) ? iframe.src = url: iframe.location = url;
         }
 
-    </script>
+}());</script>
 </div>

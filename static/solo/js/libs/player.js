@@ -9,20 +9,6 @@
       isEmpty = function(obj) {
         for(var key in obj) { if (obj.hasOwnProperty(key)) return false;}
         return true;
-      },
-      debounce = function(func,wait,immediate) {
-        var timeout;  
-        return function() {
-          var context = this, args = arguments;
-          var later = function() {
-            timeout = null;
-            if (!immediate) func.apply(context, args);
-          };
-          var callNow = immediate && !timeout;
-          clearTimeout(timeout);
-          timeout = setTimeout(later, wait);
-          if (callNow) func.apply(context, args);
-        };
       };
 
   //The player singleton. We basically create an instance from the tvpage
@@ -158,8 +144,9 @@
 
       that.instance.resize(width, height);
       
-      if(!this.onResize) return;
-      this.onResize(that.initialResize, [width, height]);
+      if (this.onResize) {
+        this.onResize(that.initialResize, [width, height]);
+      }
       
       that.initialResize = false;
     };
@@ -179,16 +166,16 @@
         //Alternative is to receive external size from host.
         if (window.location !== window.parent.location && isIOS){
             var onHolderResize = function (e) {
-                if (!e || !isset(e, 'data') || 'tvp_solo:holder_resize' !== (e.data.event || '')) return;
+                if (!e || !isset(e, 'data') || 'tvp_' + options.widgetId + ':holder_resize' !== (e.data.event || '')) return;
                 var size = e.data.size || [];
                 that.resize(size[0], size[1]);
             };
+
             window.removeEventListener('message', onHolderResize, false);
             window.addEventListener('message', onHolderResize, false);
         } else {
-            var onWindowResize = debounce(that.resize,50);
-            window.removeEventListener('resize', onWindowResize, false);
-            window.addEventListener('resize', onWindowResize);
+            window.removeEventListener('resize', that.resize, false);
+            window.addEventListener('resize', that.resize,false);
         }
 
         that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progressColor;

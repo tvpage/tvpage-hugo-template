@@ -26,15 +26,14 @@
   <script>;(function(doc,settings,videoId,channelId){
 
     var getUrlParams = function(){
-      if (window.location) {
-        var o = {},kv = location.search.substr(1).split('&'), params = [];
-        for (var i = 0; i < kv.length; i++) { params.push(kv[i]); }
-        for (var i = 0; i < params.length; i++) {
+      if (!window.location) return;
+      var o = {},kv = location.search.substr(1).split('&'), params = [];
+      for (var i = 0; i < kv.length; i++) { params.push(kv[i]); }
+      for (var i = 0; i < params.length; i++) {
           var param = params[i].split('=');
           if(param[1]) o[param[0]] = param[1];
-        }
-        return o;
       }
+      return o;
     };
 
     var extend = function(out) {
@@ -60,8 +59,8 @@
     {{ if (isset .Params "channelid") }}
       channelVideos = {{ index $.Site.Data.channelVideos (printf "x%s_page_0" .Params.channelid) }};
     {{ end }}
-    
-    new Player('tvp-player-el', function(){
+
+    var player = new Player('tvp-player-el', function(){
       var videos = [];
       
       if (videoId) {
@@ -69,7 +68,7 @@
       } else if (channelId && 'undefined' !== typeof channelVideos.data) {
         videos = channelVideos.data;
       } else if (!videos.length) {
-        return console.debug("No content found on data/");
+        return console.debug("No content found on data");
       }
 
       settings.data = videos;
