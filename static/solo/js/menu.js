@@ -215,7 +215,9 @@
         that.setActiveItem(playerAsset.assetId);
         that.hideMenu();
     };
-    setTimeout(function(){that.init();},1500);
+    player.isReady = function(){
+        that.init();
+    };
   }
 
   w.Menu = Menu;
