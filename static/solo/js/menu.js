@@ -118,6 +118,7 @@
         BigScreen.onchange = function(){
             that.hideMenu();
             that.hiddenMenu.style.cssText = (w.innerHeight - 40) +'px;';
+            player.isFullScreen = !player.isFullScreen;
         }; 
     };
 
