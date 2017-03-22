@@ -1,25 +1,7 @@
 ;(function(w, d) {
-    var menuTemplate = '<nav id="tvp-hidden-menu" ss-container></nav>'+
-                        '<div id="tvp-hamburger-container">'+
-                            '<div class="tvp-hamburger tvp-hamburger-x">'+
-                                '<span></span>'+
-                            '</div>'+
-                            '<p class="tvp-video-count"></p>'+
-                        '</div>',
-
-        itemTemplate = '<div id="tvp-video-{id}" class="tvp-video{className}">' +
-                            '<div class="tvp-video-image" style="background-image:url({asset.thumbnailUrl})">' +
-                                '<div class="tvp-active-overlay"><p>Now Playing</p></div>' +
-                                '<svg class="tvp-video-play" viewBox="0 0 200 200" alt="Play video">' +
-                                    '<polygon points="70, 55 70, 145 145, 100"></polygon>' +
-                                '</svg>' +
-                            '</div>' +
-                            '<div class="tvp-video-details">' +
-                                '<p class="tvp-video-title">{title}</p>' +
-                                '<p class="tvp-video-duration">- {asset.prettyDuration}</p>' +
-                            '</div>' +
-                        '</div>';
-
+    var menuTemplate = '<nav id="tvp-hidden-menu" ss-container></nav><div id="tvp-hamburger-container"><div class="tvp-hamburger tvp-hamburger-x"><span></span></div><p class="tvp-video-count"></p></div>',
+        itemTemplate = '<div id="tvp-video-{id}" class="tvp-video{className}"><div class="tvp-video-image" style="background-image:url({asset.thumbnailUrl})"><div class="tvp-active-overlay"><p>Now Playing</p></div><svg class="tvp-video-play" viewBox="0 0 200 200" alt="Play video"><polygon points="70, 55 70, 145 145, 100"></polygon></svg></div><div class="tvp-video-details"><p class="tvp-video-title">{title}</p><p class="tvp-video-duration">- {asset.prettyDuration}</p></div></div>';
+  
   function Menu(player, settings) {
 
     var that = this;
@@ -49,12 +31,7 @@
     this.render = function() {
         var playlist = settings.data || [];
         if (playlist.length < 1) return;
-        var menuFrag = d.createDocumentFragment(),
-            slideMenu = d.createElement('div');
-        slideMenu.setAttribute('id', 'tvp-slide-menu');
-        slideMenu.innerHTML = menuTemplate;
-        menuFrag.appendChild(slideMenu);
-        d.body.appendChild(menuFrag);
+        that.fullScreenMenu();
         var menuHiden = d.getElementById('tvp-hidden-menu'),
             menuItemEl = d.createElement('div'),
             noVidDiv = d.createElement('div');
@@ -94,6 +71,8 @@
     this.bindMenuEvent = function() {
       for (var i = that.toggles.length - 1; i >= 0; i--) {
         that.toggles[i].onclick = function() {
+            var playerAsset = player.assets[player.current];
+            that.setActiveItem(playerAsset.assetId);
             that.toggleMenu();
             that.hideMenuEvents();
         };
@@ -133,13 +112,27 @@
         var overlay = d.getElementsByClassName('tvp-overlay')[0];
         if (overlay) {
             overlay.onclick = function(){
-                that.toggleMenu();
+                that.hideMenu();
             };
         }
         BigScreen.onchange = function(){
             that.hideMenu();
             that.hiddenMenu.style.cssText = (w.innerHeight - 40) +'px;';
         }; 
+    };
+
+    this.fullScreenMenu = function(){
+        var tvpPlayerEl = that.dataMethod === 'static'? d.getElementById('tvp-player-el') : d.getElementsByClassName('tvp-player-el')[0];
+        var _frame = tvpPlayerEl.getElementsByTagName('iframe');
+        if(_frame.length){
+            _frame[0].id
+            var menuFrag = d.createDocumentFragment(),
+            slideMenu = d.createElement('div');
+            slideMenu.setAttribute('id', 'tvp-slide-menu');
+            slideMenu.innerHTML = menuTemplate;
+            menuFrag.appendChild(slideMenu);
+            _frame[0].parentNode.insertBefore(menuFrag, _frame[0].nextSibling);
+        }
     };
 
     this.listenToResize = function(argument) {
@@ -217,8 +210,12 @@
             that.toggleMenu();
         };
     };
-
-    that.init();
+    player.onNext = function(){
+        var playerAsset = player.assets[player.current];
+        that.setActiveItem(playerAsset.assetId);
+        that.hideMenu();
+    };
+    setTimeout(function(){that.init();},1500);
   }
 
   w.Menu = Menu;

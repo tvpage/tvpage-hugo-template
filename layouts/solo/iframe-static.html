@@ -82,10 +82,15 @@
 
       return settings;
     }());
-    var playlist = settings.playlist || null;
+    var playlist = settings.playlist || null,
+        menu = null;
     if (playlist && "show" === playlist) {
-      new Menu(player, channelVideos);
+      menu = new Menu(player, channelVideos);
     }
+    player.onPlay = function (asset) {
+      menu.hideMenu();
+      menu.setActiveItem(asset.assetId);
+    };
 }(document,
 {{ $.Scratch.Get "settings" }},
 {{ with .Params.videoid }}{{ . }}{{ else }}''{{ end }},

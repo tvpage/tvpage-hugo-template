@@ -82,11 +82,6 @@
 
         render(unique,document.body);
 
-        playerSettings.onPlay = function (asset) {
-            menu.hideMenu();
-            menu.setActiveItem(asset.assetId);
-        };
-
         loadData(settings,unique,function(data){
           playerSettings.data = data || [];
           player = new Player('tvp-player-el-'+unique,playerSettings);

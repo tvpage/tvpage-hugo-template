@@ -42,7 +42,7 @@
     this.overlay = isset(options.overlay) ? options.overlay : null;
     this.instance = null;
     this.el = 'string' === typeof el ? document.getElementById(el) : el;
-    this.onPlay = isset(options.onPlay) && "function" === typeof options.onPlay ? options.onPlay : null;
+    this.onNext = isset(options.onNext) && "function" === typeof options.onNext ? options.onNext : null;
 
     //Context reference for Methods.
     var that = this;
@@ -230,7 +230,6 @@
 
         that.current = that.getCurrentIndex(startWith);
         that.play(that.assets[that.current],null,true);
-        that.onPlay(that.assets[that.current]);
     };
 
     that.onStateChange = function(e){
@@ -243,8 +242,8 @@
             that.play(that.assets[that.current], true);
         }
 
-        if ('tvp:media:videoplaying' === e && that.onPlay){
-            that.onPlay(that.assets[that.current]);
+        if ('tvp:media:videoplaying' === e && that.onNext){
+            that.onNext(that.assets[that.current]);
         }
     };
 
