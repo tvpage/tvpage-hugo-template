@@ -56,8 +56,6 @@
         id: '{{ ($.Scratch.Get "settings").channelid }}'
     };
 </script>
-<script async src="//a.tvpage.com/tvpa.min.js"></script>
-<script async src='//appcdn.tvpage.com/player/assets/tvp/tvp-{{ ($.Scratch.Get "settings").player_version }}-min.js'></script>
 {{ if (getenv "HUGO_DEBUG") }}
 <script>window.DEBUG = Number({{getenv "HUGO_DEBUG"}}) || 0;</script>
 <script src="{{ (printf "%s/js/libs/analytics.js" .Type ) | absURL }}"></script>

@@ -332,88 +332,77 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             }
             this.play(this.assets[this.current], true);
         }
+        this.initialize = function () {
+            this.player = new TVPage.player({
+                techOrder: 'html5,flash',
+                analytics: { tvpa: this.analytics },
+                apiBaseUrl: '//api.tvpage.com/v1',
+                swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+this.version+'-flash.swf',
+                onReady: function(e, pl){
+                    that.instance = pl;
+                    that.resize();
 
-        var checks = 0;
-        (function libsReady() {
-            setTimeout(function() {
-                if ( !isset(window,'TVPage') || !isset(window,'_tvpa') ) {
-                    (++checks < 50) ? libsReady() : console.log('limit reached');
-                } else {
+                    //We don't want to resize the player here on fullscreen... we need the player be.
+                    if (isset(window,'BigScreen')) {
+                        BigScreen.onchange = function(){
+                            that.isFullScreen = !that.isFullScreen;
+                        };
+                    }
 
-                    //We create insntances on the tvpage player.
-                    that.player = new TVPage.player({
-                        techOrder: 'html5,flash',
-                        analytics: { tvpa: that.analytics },
-                        apiBaseUrl: '//api.tvpage.com/v1',
-                        swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+that.version+'-flash.swf',
-                        onReady: function(e, pl){
-                            that.instance = pl;
-                            that.resize();
+                    //We can't resize using local references when we are inside an iframe. Alternative is to receive external
+                    //size from host.
+                    // if (window.location !== window.parent.location && (/iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream)){
+                    //     var onHolderResize = function (e) {
+                    //         if (!e || !isset(e, 'data') || !isset(e.data, 'event') || 'tvp_carousel:modal_holder_resize' !== e.data.event) return;
+                    //         var size = e.data.size || [];
+                    //         that.resize(size[0], size[1]);
+                    //     };
+                    //     window.removeEventListener('message', onHolderResize, false);
+                    //     window.addEventListener('message', onHolderResize, false);
+                    // } else {
+                    //     var onWindowResize = Utils.debounce(that.resize,50);
+                    //     window.removeEventListener('message', onWindowResize, false);
+                    //     window.addEventListener('resize', onWindowResize);
+                    // }
 
-                            //We don't want to resize the player here on fullscreen... we need the player be.
-                            if (isset(window,'BigScreen')) {
-                                BigScreen.onchange = function(){
-                                    that.isFullScreen = !that.isFullScreen;
-                                };
-                            }
-
-                            //We can't resize using local references when we are inside an iframe. Alternative is to receive external
-                            //size from host.
-                            if (window.location !== window.parent.location && (/iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream)){
-                                var onHolderResize = function (e) {
-                                    if (!e || !isset(e, 'data') || !isset(e.data, 'event') || 'tvp_carousel:modal_holder_resize' !== e.data.event) return;
-                                    var size = e.data.size || [];
-                                    that.resize(size[0], size[1]);
-                                };
-                                window.removeEventListener('message', onHolderResize, false);
-                                window.addEventListener('message', onHolderResize, false);
-                            } else {
-                                var onWindowResize = Utils.debounce(that.resize,50);
-                                window.removeEventListener('message', onWindowResize, false);
-                                window.addEventListener('resize', onWindowResize);
-                            }
-
-                            that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progressColor;
-                            var current = 0;
-                            if (startWith && startWith.length) {
-                                for (var i = 0; i < that.assets.length; i++) {
-                                    if (that.assets[i].assetId === startWith) current = i;
-                                }
-                            }
-
-                            that.current = current;                            
-                            that.play(that.assets[that.current]);
-                            if (window.DEBUG) {
-                                console.debug("endTime = " + performance.now());
-                            }
-                        },
-                        onStateChange: function(e){
-                            if ('tvp:media:videoended' !== e) return;
-                            that.current++;
-                            if (!that.assets[that.current]) {
-                                that.current = 0;
-                            }
-
-                            var next = that.assets[that.current];
-                            that.play(next, true);
-                            if(that.onNext) {
-                                that.onNext(next);
-                            }
-                        },
-                        divId: that.el.id,
-                        controls: {
-                            active: true,
-                            floater: {
-                                removeControls: that.removeControls,
-                                transcript: that.transcript
-                            }
+                    that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progressColor;
+                    var current = 0;
+                    if (startWith && startWith.length) {
+                        for (var i = 0; i < that.assets.length; i++) {
+                            if (that.assets[i].assetId === startWith) current = i;
                         }
-                    });
+                    }
 
+                    that.current = current;                            
+                    that.play(that.assets[that.current]);
+                    if (window.DEBUG) {
+                        console.debug("endTime = " + performance.now());
+                    }
+                },
+                onStateChange: function(e){
+                    if ('tvp:media:videoended' !== e) return;
+                    that.current++;
+                    if (!that.assets[that.current]) {
+                        that.current = 0;
+                    }
+
+                    var next = that.assets[that.current];
+                    that.play(next, true);
+                    if(that.onNext) {
+                        that.onNext(next);
+                    }
+                },
+                divId: that.el.id,
+                controls: {
+                    active: true,
+                    floater: {
+                        removeControls: that.removeControls,
+                        transcript: that.transcript
+                    }
                 }
-            },150);
-        })();
-
+            });            
+        }
+        this.initialize();
     }
 
     window.Player = Player;
@@ -902,7 +891,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             (function(settings){
                 var inlineSettings = JSON.parse(JSON.stringify(settings));
                 var name = settings.name;
-
+                
                 render(body,{
                     id: name,
                     title: settings.title || 'Recommended Videos'
@@ -922,8 +911,12 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                     }
 
                     inlineSettings = extend(inlineSettings, opts);
-
-                    Inline(name, inlineSettings);
+                    $.when(
+                        $.getScript('https://cdnjs.tvpage.com/tvplayer/tvp-'+opts.player_version+'.min.js'),
+                        $.getScript('//a.tvpage.com/tvpa.min.js')
+                    ).done(function (a, b) {
+                        Inline(name, inlineSettings);
+                    });
                 });
 
             }(getSettings('dynamic')));
@@ -942,20 +935,21 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
         }
     };
 
-    var not = function(obj){return 'undefined' === typeof obj};
-    if (not(window.jQuery) || not(window.Inline) || not(window.Utils)) {
-        var libsCheck = 0;
-        (function libsReady() {
-            setTimeout(function(){
-                if (not(window.jQuery) || not(window.Inline) || not(window.Utils) || not(window.Player)) {
-                    (++libsCheck < 50) ? libsReady() : console.log('limit reached');
-                } else {
-                    initialize();
-                }
-            },150);
-        })();
-    } else {
-        initialize();
-    }
+    // var not = function(obj){return 'undefined' === typeof obj};
+    // if (not(window.jQuery) || not(window.Inline) || not(window.Utils)) {
+    //     var libsCheck = 0;
+    //     (function libsReady() {
+    //         setTimeout(function(){
+    //             if (not(window.jQuery) || not(window.Inline) || not(window.Utils) || not(window.Player)) {
+    //                 (++libsCheck < 50) ? libsReady() : console.log('limit reached');
+    //             } else {
+    //                 initialize();
+    //             }
+    //         },150);
+    //     })();
+    // } else {
+    //     initialize();
+    // }
 
+    initialize();
 }(window, document));

@@ -8,8 +8,7 @@
         console.debug("startTime = " + performance.now());
     }
 
-    var playerLib = '//appcdn.tvpage.com/player/assets/tvp/tvp-1.8.5-min.js',
-        cssExt = !window.DEBUG ? '.css' : '.min.css',
+    var cssExt = !window.DEBUG ? '.css' : '.min.css',
         isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
         mobilePath = isMobile  ? 'mobile/' : '',
         isset = function(o, p) {
@@ -89,6 +88,7 @@
         }
 
         self.initialize = function() {
+
             //Add target/host page css for our self
             var link = document.createElement('link');
             link.rel = 'stylesheet';
@@ -120,15 +120,11 @@
                     js: function () {
                         if (window.DEBUG) {
                             return [
-                                '//a.tvpage.com/tvpa.min.js',
-                                playerLib,
                                 self.static + '/dist/js/scripts.js'
                             ]
                         }
                         else{
                             return [
-                                '//a.tvpage.com/tvpa.min.js',
-                                playerLib,
                                 self.static + '/dist/js/scripts.min.js'
                             ]
                         }

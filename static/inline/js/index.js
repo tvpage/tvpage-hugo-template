@@ -80,7 +80,7 @@
             (function(settings){
                 var inlineSettings = JSON.parse(JSON.stringify(settings));
                 var name = settings.name;
-
+                
                 render(body,{
                     id: name,
                     title: settings.title || 'Recommended Videos'
@@ -100,8 +100,12 @@
                     }
 
                     inlineSettings = extend(inlineSettings, opts);
-
-                    Inline(name, inlineSettings);
+                    $.when(
+                        $.getScript('//a.tvpage.com/tvpa.min.js'),
+                        $.getScript('https://cdnjs.tvpage.com/tvplayer/tvp-'+opts.player_version+'.min.js')
+                    ).done(function (a, b) {
+                        Inline(name, inlineSettings);
+                    });
                 });
 
             }(getSettings('dynamic')));
@@ -113,27 +117,17 @@
                 if(Utils.isMobile) {
                     document.getElementById(name).classList.add('mobile');
                 }
-                
-                Inline(name, inlineSettings);
+
+                $.when(
+                    $.getScript('//a.tvpage.com/tvpa.min.js'),
+                    $.getScript('https://cdnjs.tvpage.com/tvplayer/tvp-'+inlineSettings.player_version+'.min.js')
+                ).done(function (a, b) {
+                    Inline(name, inlineSettings);
+                });
 
             }(getSettings('static')));
         }
     };
 
-    var not = function(obj){return 'undefined' === typeof obj};
-    if (not(window.jQuery) || not(window.Inline) || not(window.Utils)) {
-        var libsCheck = 0;
-        (function libsReady() {
-            setTimeout(function(){
-                if (not(window.jQuery) || not(window.Inline) || not(window.Utils) || not(window.Player)) {
-                    (++libsCheck < 50) ? libsReady() : console.log('limit reached');
-                } else {
-                    initialize();
-                }
-            },150);
-        })();
-    } else {
-        initialize();
-    }
-
+    initialize();
 }(window, document));

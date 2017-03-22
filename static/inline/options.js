@@ -11,7 +11,7 @@ tvpcallback({
             "type": "text",
             "label": "Player Version",
             "code": "player_version",
-            "value": "1.8.5"
+            "value": "1.8.6"
         },
         {
             "for": "player",
