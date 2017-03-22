@@ -14,9 +14,6 @@
   <style>{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/options.css" .Type ) .)) | safeCSS }}</style>
 </head>
 <body>
-
-  <h1>{{ (printf "%s/css/styles.css" .Type "hola" ) | absURL }}</h1>
-
   <div class="tvp-player">
     <div id="tvp-player-el"></div>
   </div>
