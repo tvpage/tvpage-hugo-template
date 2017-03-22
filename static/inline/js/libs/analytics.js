@@ -10,7 +10,7 @@
 
     this.initConfig = function(options){
       if (!isset(options) || !isset(options.loginId) || !isset(options.domain) || !isset(options.logUrl)) {
-        return console.log('need config');
+        return; //console.log('need config');
       }
       
       _tvpa.push(['config', {
@@ -21,7 +21,7 @@
     };
 
     this.track = function(e,data){
-      if (!e || !data || typeof _tvpa === "undefined") return console.log('no data');
+      if (!e || !data || typeof _tvpa === "undefined") return; // console.log('no data');
       _tvpa.push(['track', e, data]);
     };
     

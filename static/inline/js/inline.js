@@ -282,7 +282,7 @@
 
             var getChannelVideos = function(callback){
                 var channel = that.channel || {};
-                if (Utils.isEmpty(channel) || !channel.id) return console.log('bad channel');
+                if (Utils.isEmpty(channel) || !channel.id) return; //console.log('bad channel');
                 var params = channel.parameters || {};
                 var src = '//api.tvpage.com/v1/channels/' + channel.id + '/videos?X-login-id=' + that.loginId;
                 for (var p in params) { src += '&' + p + '=' + params[p];}

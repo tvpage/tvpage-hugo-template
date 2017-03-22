@@ -11,26 +11,12 @@
         },
         isFunction = function(obj){
             return 'undefined' !== typeof obj;
-        },
-        debounce = function(func,wait,immediate) {
-            var timeout = null;
-            return function() {
-                var context = this, args = arguments;
-                var later = function() {
-                    timeout = null;
-                    if (!immediate) func.apply(context, args);
-                };
-                var callNow = immediate && !timeout;
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-                if (callNow) func.apply(context, args);
-            };
         };
 
     //The player singleton. We basically create an instance from the tvpage
     //player and expose most utilities, helping to encapsualte what is required for a few players to co-exist.
     function Player(el, options, startWith) {
-        if (!el || !isset(options) || !isset(options.data) || options.data.length <= 0) return console.log('bad args');
+        if (!el || !isset(options) || !isset(options.data) || options.data.length <= 0) return; // console.log('bad args');
 
         this.isFullScreen = false;
         this.initialResize = true;
@@ -129,7 +115,7 @@
         };
 
         this.play = function(asset,ongoing){
-            if (!asset) return console.log('need asset');
+            if (!asset) return; // console.log('need asset');
             var willCue = false,
                 isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
