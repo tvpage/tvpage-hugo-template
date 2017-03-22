@@ -1,0 +1,27 @@
+<a class="tvp-solo" id="{{ name }}" href="{{ url }}"></a>
+<script>
+  {% if channel.entityType == entities.TYPE_DYNAMIC_CHANNEL %}
+    window.__TVPage__ = window.__TVPage__ || {};
+    __TVPage__.config = __TVPage__.config || {};
+    __TVPage__.config["{{ name }}"] = {
+      loginid: "{{ channel.loginId }}",
+      channel: {{ channel.config }}
+    };
+  {% endif %}
+
+  (function(w,d,id) {
+    w.addEventListener("load",function(){
+        var x = new XMLHttpRequest();
+        x.open("GET", "{{ baseUrl }}/tvpwidget/{{ name }}-loader/");
+        x.onload = function (r) {
+          var a = d.getElementById(id);
+          a.insertAdjacentHTML("beforebegin", r.currentTarget.response || r.target.responseText);
+          var s = d.createElement("script");
+          s.appendChild(d.createTextNode(d.getElementById(id + "-script").innerHTML));
+          d.getElementsByTagName("head")[0].appendChild(s);
+          a.parentNode.removeChild(a);
+        };
+        x.send();
+    });
+  })(window,document,"{{ name }}");
+</script>
