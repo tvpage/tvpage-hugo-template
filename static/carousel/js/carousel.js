@@ -15,14 +15,13 @@
     };
 
     function Carousel(el, options) {
-        this.xchg = options.xchg || false;
         this.windowSize = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) <= 200 ? 'small' : 'medium';
         this.initialResize = true;
         this.itemsPerPage = 1000;
         this.loginId = (options.loginId || options.loginid) || 0;
         this.channel = options.channel || {};
+        this.channelId = options.channelId || null;
         this.loading = false;
-        this.isLastPage = false;
         this.page = 0;
 
         this.el = 'string' === typeof el ? document.getElementById(el) : el;
@@ -88,10 +87,10 @@
                     },10);
 
                     that.el.querySelector('.slick-list').style.margin = "0 -" + ( parseInt(options.item_padding_right) + 1 ) + "px";
-
+                    
                     if (window.parent) {
                         window.parent.postMessage({
-                            event: 'tvp_' + options.widgetId.replace(/-/g,'_') + ':resize',
+                            event: 'tvp_' + options.id.replace(/-/g,'_') + ':resize',
                             height: that.el.offsetHeight + 'px'
                         }, '*');
                     }
@@ -131,75 +130,23 @@
                 this.onLoad();
             }
 
-            var getChannelVideos = function(callback){
-                var channel = that.channel || {};
-                if (Utils.isEmpty(channel) || !channel.id) return console.log('bad channel');
-                var params = channel.parameters || {};
-                var src = '//api.tvpage.com/v1/channels/' + channel.id + '/videos?X-login-id=' + that.loginId;
-                for (var p in params) { src += '&' + p + '=' + params[p];}
-                var cbName = options.callbackName || 'tvp_' + Math.floor(Math.random() * 555);
-                src += '&p=' + that.page + '&n=' + that.itemsPerPage + '&callback='+cbName;
-                var script = document.createElement('script');
-                script.src = src;
-                window[cbName || 'callback'] = callback;
-                document.body.appendChild(script);
+            var channel = that.channel || {};
+            var params = channel.parameters || {};
+            var src = '//api.tvpage.com/v1/channels/' + (channel.id || that.channelId) + '/videos?X-login-id=' + that.loginId;
+            for (var p in params) { src += '&' + p + '=' + params[p];}
+            var cbName = options.callbackName || 'tvp_' + Math.floor(Math.random() * 555);
+            src += '&p=' + that.page + '&n=' + that.itemsPerPage + '&callback='+cbName;
+            var script = document.createElement('script');
+            script.src = src;
+            window[cbName || 'callback'] = function(data){
+                that.data = data;
+                callback(data);
+                that.loading = false;
+                if (that.onLoadEnd) {
+                    that.onLoadEnd();
+                }
             };
-
-            if (this.xchg) {
-                var xhr = new XMLHttpRequest();
-                xhr.open('GET', '//api2.tvpage.com/prod/channels?X-login-id=1', true);
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState == XMLHttpRequest.DONE) {
-                        getChannelVideos(function(data){
-                            var xchg = [];
-
-                            if (xhr.status === 200) {
-                                xchg = xhr.responseText;
-                                var xchgCount = xchg.length;
-                                while(xchgCount > 0) {
-                                    var xchgVideo = xchg[xchgCount-1];
-                                    xchgVideo = $.extend(xchgVideo, xchgVideo.entity);
-                                    xchgCount--;
-                                }
-                            }
-
-                            if (!data.length) {
-                                that.isLastPage = true;
-                            }
-
-                            that.data = data;
-                            callback(data.concat(xchg));
-                            that.loading = false;
-                            if (that.onLoadEnd) {
-                                that.onLoadEnd();
-                            }
-                        });
-                    }
-                };
-                xhr.send({p: 0,n: 1000,si: 1,li: 1,'X-login-id': 1});
-            } else {
-                getChannelVideos(function(data){
-                    if ( !data.length || (data.length < that.itemsPerPage) ) {
-                        that.isLastPage = true;
-                    }
-
-                    that.data = data;
-                    callback(data);
-                    that.loading = false;
-                    if (that.onLoadEnd) {
-                        that.onLoadEnd();
-                    }
-                });
-            }
-        };
-
-        this.next = function(){
-            if (this.isLastPage) {
-                this.page = 0;
-                this.isLastPage = false;
-            } else {
-                this.page++;
-            }
+            document.body.appendChild(script);
         };
 
         this.el.onclick = function(e) {
@@ -213,7 +160,6 @@
                     if (data[i].id === id) {
                         selected = data[i];
                     }
-
                 }
 
                 if (that.onClick) {
@@ -232,7 +178,9 @@
         };
 
         this.load(function(data){
-            that.render(data);
+            if (data.length) {
+                that.render(data);
+            }
         });
     }
 

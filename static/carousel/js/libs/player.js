@@ -198,7 +198,7 @@
                             //size from host.
                             if (window.location !== window.parent.location && (/iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream)){
                                 var onHolderResize = function (e) {
-                                    if (!e || !isset(e, 'data') || !isset(e.data, 'event') || 'tvp_carousel:modal_holder_resize' !== e.data.event) return;
+                                    if (!e || !isset(e, 'data') || !isset(e.data, 'event') || 'tvp_' + options.id.replace(/-/g,'_') + ':modal_holder_resize' !== e.data.event) return;
                                     var size = e.data.size || [];
                                     that.resize(size[0], size[1]);
                                 };

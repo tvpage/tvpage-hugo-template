@@ -246,10 +246,12 @@
 
                 initPlayer(data);
 
-                var loginId = data.runTime.loginid || data.runTime.loginId;
-                channelId = data.runTime.channel.id || data.runTime.channelid;
+                var settings = data.runTime;
+                var loginId = settings.loginid || settings.loginId;
 
+                channelId = Utils.isset(settings.channel) && Utils.isset(settings.channel.id) ? settings.channel.id : settings.channelId;
                 analytics =  new Analytics();
+
                 analytics.initConfig({
                     logUrl: '//api.tvpage.com/v1/__tvpa.gif',
                     domain: Utils.isset(location,'hostname') ?  location.hostname : '',

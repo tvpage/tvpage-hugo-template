@@ -410,6 +410,13 @@
             "value": false
         },
         {
+            "for": "carousel",
+            "type": "text",
+            "label": "Component",
+            "code": "component",
+            "value": "modal"
+        },
+        {
             "for": "modal",
             "type": "text",
             "label": "Modal Background",
