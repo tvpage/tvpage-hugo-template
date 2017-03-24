@@ -103,7 +103,6 @@
     '<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe></div>');
 
     config.id = id;
-    config.baseUrl = spot.href;
     config.staticPath = config.baseUrl + "/carousel";
     config.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     config.isDesktop = !config.isMobile;

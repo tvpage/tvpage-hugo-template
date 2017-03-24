@@ -1,93 +1,93 @@
 .tvp-carousel-title{
-    padding:{{ title_padding }};
-    color:{{ title_color }};
-    font-size:{{ title_font_size }};
-    background:{{ title_background }};
-    text-align:{{ title_text_align }}
+    padding: <%= title_padding %>;
+    color:<%= title_color %>;
+    font-size:<%= title_font_size %>;
+    background:<%= title_background %>;
+    text-align:<%= title_text_align %>;
 }
 
 .tvp-video{
-    padding-left:{{ item_padding_left }};
-    padding-right:{{ item_padding_right }}
+    padding-left:<%= item_padding_left %>;
+    padding-right:<%= item_padding_right %>;
 }
 
 .tvp-video-play{
-    background-color:{{ item_play_button_background_color }};
-    width:{{ item_play_button_width }};
-    height:{{ item_play_button_height }};
-    border-radius:{{ item_play_button_border_radius }}
+    background-color:<%= item_play_button_background_color %>;
+    width:<%= item_play_button_width %>;
+    height:<%= item_play_button_height %>;
+    border-radius:<%= item_play_button_border_radius %>;
 }
 
 .tvp-video-play > polygon{
-    fill:{{ item_play_button_icon_color }}
+    fill:<%= item_play_button_icon_color %>;
 }
 
 .tvp-video-title {
-    font-size:{{ item_title_font_size }};
-    text-align:{{ item_title_text_align }};
-    color:{{ item_title_font_color }};
-    margin:{{ item_title_margin }};
-    padding:{{ item_title_padding }}
+    font-size:<%= item_title_font_size %>;
+    text-align:<%= item_title_text_align %>;
+    color:<%= item_title_font_color %>;
+    margin:<%= item_title_margin %>;
+    padding:<%= item_title_padding %>;
 }
 
 .tvp-video-metadata{
-    font-size:{{ item_metadata_font_size }};
-    color:{{ item_metadata_font_color }}
+    font-size:<%= item_metadata_font_size %>;
+    color:<%= item_metadata_font_color %>;
 }
 
 .tvp-video-metadata > div {
-    padding:{{ item_metadata_padding }}
+    padding:<%= item_metadata_padding %>;
 }
 
 .tvp-video-image-overlay {
-    background:{{ item_image_overlay_color }}
+    background:<%= item_image_overlay_color %>;
 }
 
 .tvp-carousel-content {
-    background:{{ content_background }};
-    border:{{ content_border }}
+    background:<%= content_background %>;
+    border:<%= content_border %>;
 }
 
 .tvp-carousel-arrow {
-    top:{{ arrow_top }};
-    width:{{ arrow_size }};
-    border:{{ arrow_border }}
+    top:<%= arrow_top %>;
+    width:<%= arrow_size %>;
+    border:<%= arrow_border %>;
 }
 
 .tvp-carousel-arrow > svg {
-    background:{{ arrow_background_color }};
-    fill:{{ arrow_icon_color }}
+    background:<%= arrow_background_color %>;
+    fill:<%= arrow_icon_color %>;
 }
 
 .tvp-carousel-arrow:hover > svg {
-    background:{{ arrow_background_color_hover }};
-    fill:{{ arrow_icon_color_hover }}
+    background:<%= arrow_background_color_hover %>;
+    fill:<%= arrow_icon_color_hover %>;
 }
 
 .tvp-carousel-arrow.prev {
-    fill: {{ arrow_icon_color }}
+    fill: <%= arrow_icon_color %>;
 }
 
 .tvp-carousel-arrow.prev {
-    left:{{ arrow_prev_left }}
+    left:<%= arrow_prev_left %>;
 }
 
 .tvp-carousel-arrow.next {
-    right:{{ arrow_next_right }}
+    right:<%= arrow_next_right %>;
 }
 
 @media (min-width:480px){
     .tvp-carousel-arrow {
-        width:{{ arrow_size_480 }}
+        width:<%= arrow_size_480 %>;
     }
 }
 
 @media (min-width:768px){
     .tvp-video:hover .tvp-video-play {
-        background-color:{{ item_play_button_hover_color }}
+        background-color:<%= item_play_button_hover_color %>;
     }
 
     .tvp-video:hover .tvp-video-play > polygon {
-        fill:{{ item_play_button_icon_hover_color }};
+        fill:<%= item_play_button_icon_hover_color %>;
     }
 }
