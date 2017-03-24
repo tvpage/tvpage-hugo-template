@@ -6,10 +6,6 @@
   overflow: hidden;
 }
 
-.tvp-hidden {
-  display: none;
-}
-
 .tvp-modal-overlay {
   position: fixed;
   top: 0;
@@ -45,7 +41,7 @@
 
 @media (min-width : 768px) {
   .tvp-modal-wrapper {
-    width: 810px;
+    width: 890px;
     margin: 30px auto;
   }
 }
@@ -97,6 +93,11 @@
   float: left;
 }
 
+.tvp-modal-title.bottom {
+  float: none;
+  padding: 0 0 30px 10px;
+}
+
 .tvp-products-headline{
   float: right;
   margin: 0;
@@ -128,16 +129,12 @@
   padding: 0;
 }
 
-.tvp-iframe-holder {
-  height: 500px;
-  position: relative;
-}
-
 /*This is the gallery iframe*/
 .tvp-iframe {
   top: 0;
   left: 0;
-  width: 100%;
+  right: 0;
+  margin: auto;
   height: 100%;
   position: absolute;
 }
@@ -145,9 +142,10 @@
 .tvp-modal-close {
   cursor: pointer;
   -webkit-appearance: none;
-  right: -6px;
+  background-position: 0 0;
+  background-repeat: no-repeat;
+  background-size: contain;
   position: absolute;
-  top: -6px;
   -webkit-transition: all .05s ease-in-out;
   transition: all .05s ease-in-out;
 }

@@ -6,6 +6,13 @@
   box-sizing: border-box;
 }
 
+@font-face {
+  font-family: 'FuturaStdMedium';
+  src: url('../../../../css/fonts/futurastd_medium_bbb.woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 html {
   margin: 0;
   height: 100%;
@@ -118,10 +125,12 @@ body  {
   position: relative;
 }
 
+.tvp-products-holder.no-overflow {
+  height: auto !important;
+}
+
 .tvp-product {
   display: block;
-  margin-bottom: 10px;
-  margin-right: 10px;
   position: relative;
 }
 
@@ -157,12 +166,22 @@ body  {
 }
 
 .tvp-product-price {
-  float: left;
-  margin: 0;
+  margin: 0 0 10px 0;
 }
 
 .tvp-product-rating {
-  float: right;
+  list-style-type: none;
+  margin: 0 0 10px;
+  padding: 0;
+  text-align: center;
+}
+
+.tvp-product-rating > li {
+  display: inline-block;
+}
+
+.tvp-reviews {
+  position: relative;
 }
 
 .tvp-product-cta {
@@ -172,6 +191,7 @@ body  {
   cursor: pointer;
   -webkit-transition: all .05s ease-in-out;
   transition: all .05s ease-in-out;
+  padding: 0;
 }
 
 .tvp-arrow-indicator {

@@ -4,7 +4,7 @@
 
     var itemTemplate = '<div data-id="{id}" class="tvp-video{className}">' +
         '<div class="tvp-video-image" style="background-image:url({asset.thumbnailUrl})">' +
-        '<svg class="tvp-video-play" viewBox="0 0 200 200" alt="Play video"><polygon points="70, 55 70, 145 145, 100"></polygon></svg>' +
+        '<div class="tvp-video-play"><svg class="tvp-video-play-icon" viewBox="0 0 200 200"><polygon points="70, 55 70, 145 145, 100"></polygon></svg></div>' +
         '<div class="tvp-video-image-overlay"></div></div>' +
         '<div class="tvp-video-metadata tvp-clearfix"><div>Length: {mediaDuration}</div><div>Published: {publishedDate}</div></div>' +
         '<p class="tvp-video-title">{title}</p></div>'
@@ -18,7 +18,8 @@
         this.xchg = options.xchg || false;
         this.windowSize = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) <= 200 ? 'small' : 'medium';
         this.initialResize = true;
-        this.itemsPerPage = 1000;
+        this.itemsPerPage = Utils.isset(options.items_per_page) ? options.items_per_page : null;
+
         this.loginId = (options.loginId || options.loginid) || 0;
         this.channel = options.channel || {};
         this.loading = false;
@@ -73,7 +74,7 @@
             var startSlick = function () {
                 $carousel = $(that.el.querySelector('.tvp-carousel-content'));
 
-                $carousel.on('setPosition', Utils.debounce(function () {
+                $carousel.on('setPosition', Utils.debounce(function (event, slick) {
 
                     //Center the arrows using the icon as reference
                     setTimeout(function () {
@@ -82,6 +83,21 @@
                         var arrows = document.querySelectorAll(".tvp-carousel-arrow");
                         for (var i = 0; i < arrows.length; i++) {
                             var arrow = arrows[i];
+                            if (i === 0) {
+                                if (slick.currentSlide === 0) {
+                                    arrow.classList.add('inactive');
+                                } else {
+                                    arrow.classList.remove('inactive');
+                                }
+
+                            } else if (i === 1) {
+                                if ((Number(slick.currentSlide) + Number(options.items_to_scroll)) - (Number(options.items_to_scroll) - 1) === Number(that.itemsPerPage)) {
+                                    arrow.classList.add('inactive');
+                                } else {
+                                    arrow.classList.remove('inactive');
+                                }
+                            }
+
                             var arrowSvg = arrow.querySelector("svg");
                             arrow.style.top = Math.floor( playButtonCenter - ( (arrowSvg.clientHeight || arrowSvg.getBoundingClientRect().height) / 2) ) + "px";
                         }
@@ -92,13 +108,16 @@
                     if (window.parent) {
                         window.parent.postMessage({
                             event: 'tvp_carousel:resize',
-                            height: that.el.offsetHeight + 'px'
+                            height: (that.el.offsetHeight + parseInt(options.navigation_bullets_margin_bottom) + parseInt(options.height_offset)) + 'px'
                         }, '*');
                     }
                 },100));
 
                 $carousel.slick({
-                    slidesToShow: options.items_to_show,
+                    slidesToShow: Number(options.items_to_show),
+                    slidesToScroll: Number(options.items_to_scroll),
+                    dots: options.navigation_bullets,
+                    infinite: options.infinite,
                     arrows: false,
                     responsive: [
                         {
@@ -215,13 +234,11 @@
                     }
 
                 }
-
                 if (that.onClick) {
                     that.onClick(selected,data);
                 }
 
             } else if (hasClass(target,'tvp-carousel-arrow')) {
-
                 if (hasClass(target,'next')) {
                     $carousel.slick('slickNext');
                 } else {
@@ -232,7 +249,10 @@
         };
 
         this.load(function(data){
-            that.render(data);
+            var that = this;
+            if (data.length) {
+                that.render(data);
+            }
         });
     }
 

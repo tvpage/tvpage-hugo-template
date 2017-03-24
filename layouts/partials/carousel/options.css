@@ -1,9 +1,24 @@
+body.carousel {
+    padding: {{ ($.Scratch.Get "settings").iframe_carousel_body_padding }};
+}
+
+body.modal:not(.mobile) {
+    padding: {{ ($.Scratch.Get "settings").iframe_modal_body_padding }};
+}
+
 .tvp-carousel-title {
     padding: {{ ($.Scratch.Get "settings").title_padding }};
     color: {{ ($.Scratch.Get "settings").title_color }};
     font-size: {{ ($.Scratch.Get "settings").title_font_size }};
     background: {{ ($.Scratch.Get "settings").title_background }};
     text-align: {{ ($.Scratch.Get "settings").title_text_align }};
+    font-family: {{ ($.Scratch.Get "settings").title_text_font_family }};
+    font-weight: {{ ($.Scratch.Get "settings").title_text_font_weight }};
+}
+
+.tvp-carousel-title > span {
+    text-transform: {{ ($.Scratch.Get "settings").title_category_text_transform }};
+    font-family: {{ ($.Scratch.Get "settings").title_category_text_font_family }};
 }
 
 .tvp-video {
@@ -13,8 +28,8 @@
 
 .tvp-video-play {
     background-color: {{ ($.Scratch.Get "settings").item_play_button_background_color }};
-    width: {{ ($.Scratch.Get "settings").item_play_button_width }};
-    height: {{ ($.Scratch.Get "settings").item_play_button_height }};
+    width: {{ ($.Scratch.Get "settings").item_play_button_size }};
+    border: {{ ($.Scratch.Get "settings").item_play_button_border }};
     border-radius: {{ ($.Scratch.Get "settings").item_play_button_border_radius }};
 }
 
@@ -24,6 +39,8 @@
 
 .tvp-video-title {
     font-size: {{ ($.Scratch.Get "settings").item_title_font_size }};
+    font-family: {{ ($.Scratch.Get "settings").item_title_font_family }};
+    font-weight: {{ ($.Scratch.Get "settings").item_title_font_weight }};
     text-align: {{ ($.Scratch.Get "settings").item_title_text_align }};
     color: {{ ($.Scratch.Get "settings").item_title_font_color }};
     margin: {{ ($.Scratch.Get "settings").item_title_margin }};
@@ -37,6 +54,10 @@
 
 .tvp-video-metadata > div {
     padding: {{ ($.Scratch.Get "settings").item_metadata_padding }};
+}
+
+.tvp-video-image {
+    background-size: {{ ($.Scratch.Get "settings").item_background_image_size }};
 }
 
 .tvp-video-image-overlay {
@@ -75,6 +96,17 @@
     fill: {{ ($.Scratch.Get "settings").arrow_icon_color }};
 }
 
+.tvp-carousel-arrow.inactive > svg {
+    background: {{ ($.Scratch.Get "settings").arrow_inactive_background_color }};
+    fill: {{ ($.Scratch.Get "settings").arrow_inactive_icon_color }};
+}
+
+.tvp-carousel-arrow.inactive:hover > svg {
+    pointer-events: none;
+    background: {{ ($.Scratch.Get "settings").arrow_inactive_background_color }};
+    fill: {{ ($.Scratch.Get "settings").arrow_inactive_icon_color }};
+}
+
 .tvp-carousel-arrow:hover > svg {
     background: {{ ($.Scratch.Get "settings").arrow_background_color_hover }};
     fill: {{ ($.Scratch.Get "settings").arrow_icon_color_hover }};
@@ -104,19 +136,63 @@
     fill: {{ ($.Scratch.Get "settings").play_button_icon_color }};
 }
 
+.tvp-products-holder {
+    padding-left: 1.8%;
+}
+
 .tvp-product {
     border: {{ ($.Scratch.Get "settings").product_thumbnail_border }};
+    margin-right: {{ ($.Scratch.Get "settings").product_thumbnail_margin_right }};
+    margin-bottom: {{ ($.Scratch.Get "settings").product_thumbnail_margin_bottom }};
 }
 
 .tvp-product-title {
+    font-family: {{ ($.Scratch.Get "settings").product_title_font_family }};
+    font-weight: {{ ($.Scratch.Get "settings").product_title_font_weight }};
     font-size: {{ ($.Scratch.Get "settings").product_title_font_size }};
     color: {{ ($.Scratch.Get "settings").product_title_font_color }};
     text-decoration: {{ ($.Scratch.Get "settings").product_title_text_decoration }};
+    text-align: {{ ($.Scratch.Get "settings").product_title_text_align }};
+}
+
+.tvp-product-title:hover {
+    text-decoration: underline;
 }
 
 .tvp-product-price {
     color: {{ ($.Scratch.Get "settings").product_price_font_color }};
     font-size: {{ ($.Scratch.Get "settings").product_price_font_size }};
+    font-family: {{ ($.Scratch.Get "settings").product_price_font_family }};
+    font-weight: {{ ($.Scratch.Get "settings").product_price_font_weight }};
+    text-align: {{ ($.Scratch.Get "settings").product_price_text_align }};
+}
+
+.tvp-reviews {
+    color: {{ ($.Scratch.Get "settings").product_reviews_font_color }};
+    font-size: {{ ($.Scratch.Get "settings").product_reviews_font_size }};
+    font-family: {{ ($.Scratch.Get "settings").product_reviews_font_family }};
+    font-weight: {{ ($.Scratch.Get "settings").product_reviews_font_weight }};
+    margin-left: {{ ($.Scratch.Get "settings").product_reviews_margin_left }};
+    top: {{ ($.Scratch.Get "settings").product_reviews_top }};
+}
+
+.tvp-rate {
+    width: {{ ($.Scratch.Get "settings").product_rate_width }};
+    height: {{ ($.Scratch.Get "settings").product_rate_height }};
+    background-image: url("{{ $.Site.BaseURL }}carousel/{{ ($.Scratch.Get "settings").product_rating_background_image_url }}");
+    background-size: cover;
+}
+
+.tvp-rate.full {
+    background-position: 0 0;
+}
+
+.tvp-rate.half {
+    background-position: 0 -41px;
+}
+
+.tvp-rate.empty {
+    background-position: 0 -20px;
 }
 
 .tvp-product-image {
@@ -132,6 +208,7 @@
     background: {{ ($.Scratch.Get "settings").product_popup_background }};
     padding: {{ ($.Scratch.Get "settings").product_popup_padding }};
     border: {{ ($.Scratch.Get "settings").product_popup_border }};
+    box-shadow: {{ ($.Scratch.Get "settings").product_popup_box_shadow }};
 }
 
 .tvp-product-popup-image {
@@ -141,10 +218,13 @@
 .tvp-product-cta {
     background: {{ ($.Scratch.Get "settings").product_popup_cta_background }};
     border: {{ ($.Scratch.Get "settings").product_popup_cta_border }};
+    border-bottom: {{ ($.Scratch.Get "settings").product_popup_cta_border_bottom }};
     color: {{ ($.Scratch.Get "settings").product_popup_cta_font_color }};
     text-transform: {{ ($.Scratch.Get "settings").product_popup_cta_text_transform }};
     font-size: {{ ($.Scratch.Get "settings").product_popup_cta_font_size }};
-    padding: {{ ($.Scratch.Get "settings").product_popup_cta_padding }};
+    font-family: {{ ($.Scratch.Get "settings").product_popup_cta_font_family }};
+    font-weight: {{ ($.Scratch.Get "settings").product_popup_cta_font_weight }};
+    height: {{ ($.Scratch.Get "settings").product_popup_cta_height }};
 }
 
 .tvp-product-cta:hover {
@@ -153,4 +233,51 @@
 
 .tvp-arrow-indicator:before {
     border-left: 13px solid {{ ($.Scratch.Get "settings").product_popup_arrow_indicator_border_color }};
+}
+
+.tvp-modal-title {
+    color: {{ ($.Scratch.Get "settings").modal_title_font_color }};
+    font-family: {{ ($.Scratch.Get "settings").modal_title_font_family }};
+    font-weight: {{ ($.Scratch.Get "settings").modal_title_font_weight }};
+    font-size: {{ ($.Scratch.Get "settings").modal_title_font_size }};
+}
+
+.slick-dotted.slick-slider {
+    margin-bottom: {{ ($.Scratch.Get "settings").modal_title_font_color }};
+}
+
+.slick-dots li {
+    width: {{ ($.Scratch.Get "settings").navigation_bullet_size }};
+    height: {{ ($.Scratch.Get "settings").navigation_bullet_size }};
+}
+
+.slick-dots li button {
+    width: {{ ($.Scratch.Get "settings").navigation_bullet_size }};
+    height: {{ ($.Scratch.Get "settings").navigation_bullet_size }};
+    padding: {{ ($.Scratch.Get "settings").navigation_bullet_padding }};
+    {{ with ($.Scratch.Get "settings").navigation_bullet_background_image_url }}
+        background-image: url("{{ $.Site.BaseURL }}carousel/{{ . }}");
+    {{ end }}
+    background-position: {{ ($.Scratch.Get "settings").navigation_bullet_background_position }};
+}
+
+.slick-dots li button:hover {
+    background-position: {{ ($.Scratch.Get "settings").navigation_active_bullet_background_position }};
+}
+
+.slick-dots li.slick-active button {
+    background-position: {{ ($.Scratch.Get "settings").navigation_active_bullet_background_position }};
+}
+
+.slick-dots li button:before
+{
+    width: {{ ($.Scratch.Get "settings").navigation_bullet_size }};
+    height: {{ ($.Scratch.Get "settings").navigation_bullet_size }};
+    font-size: {{ ($.Scratch.Get "settings").navigation_bullet_font_size }};
+    color: {{ ($.Scratch.Get "settings").navigation_bullet_font_color }};
+}
+
+.slick-dots li.slick-active button:before
+{
+    color: {{ ($.Scratch.Get "settings").navigation_active_bullet_font_color }};
 }

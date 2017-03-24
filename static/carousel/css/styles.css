@@ -2,6 +2,20 @@
   box-sizing: border-box;
 }
 
+@font-face {
+  font-family: 'FuturaStdBook';
+  src: url('../../../css/fonts/FuturaStd-Book.woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'FuturaStdHeavy';
+  src: url('../../../css/fonts/futurastd_heavy_bbb.woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 html,
 body {
   margin: 0;
@@ -25,6 +39,8 @@ body  {
 .tvp-video {
   cursor: pointer;
   margin: 0 auto;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .tvp-video:focus {
@@ -34,21 +50,22 @@ body  {
 .tvp-video-image {
   background-repeat: no-repeat;
   background-position: center;
-  background-size: cover;
   position: relative;
   pointer-events: none;
 }
 
 .tvp-video-image-overlay {
-  display: none;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
   position: absolute;
   margin: auto;
-  -webkit-transition: all .05s ease-in-out;
-  transition: all .05s ease-in-out;
+  -webkit-transition: all .2s ease;
+  transition: all .2s ease;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
 }
 
 .tvp-video-image:focus {
@@ -65,28 +82,40 @@ body  {
 .tvp-video-play {
   padding: 0;
   position: absolute;
-  top: 0;
+  top: 50%;
   left: 0;
-  bottom: 0;
   right: 0;
   margin: auto;
   cursor: pointer;
-  border: 0;
   z-index: 1000;
   -webkit-transition: all .05s ease-in-out;
   transition: all .05s ease-in-out;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
 }
 
-.tvp-video-play > polygon {
+.tvp-video-play:before {
+  display: block;
+  content: "";
+  width: 100%;
+  padding-top: 100%;
+}
+
+.tvp-video-play-icon {
+  position: absolute;
+  top:0;
+  left:0;
+}
+
+.tvp-video-play-icon > polygon {
   pointer-events: none;
   -webkit-transition: all .05s ease-in-out;
   transition: all .05s ease-in-out;
 }
 
-@media (min-width: 768px) {
-  .tvp-video:hover .tvp-video-image-overlay {
-    display: block;
-  }
+.tvp-video:hover .tvp-video-image-overlay {
+  opacity: 1;
+  visibility: visible;
 }
 
 .tvp-play {
