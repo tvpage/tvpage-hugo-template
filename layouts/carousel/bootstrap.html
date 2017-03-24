@@ -2,8 +2,12 @@
 
 var bootstrap = {{ $.Scratch.Get "settings" | jsonify }};
 bootstrap.baseUrl = "{{ $.Site.BaseURL }}";
-bootstrap.templates = '{{- (partial (printf "%s/templates.html" .Type) .) -}}';
-bootstrap.widgetCss = '{{- (partial (printf "%s/carousel.css" .Type) .) -}}';
-bootstrap.modalCss = '{{- (partial (printf "%s/modal.css" .Type) .) -}}';
+bootstrap.templates = '{{- (partial (printf "%s/templates_.html" .Type) .) -}}';
+bootstrap.css = {
+	host: '{{- (partial (printf "%s/host_.css" .Type) .) -}}',
+	hostCustom: '{{- (partial (printf "%s/host-custom_.css" .Type) .) -}}',
+	widget: '{{- (partial (printf "%s/carousel_.css" .Type) .) -}}',
+	modal: '{{- (partial (printf "%s/modal_.css" .Type) .) -}}'
+};
 
 {{- (readFile "/themes/tvpage/static/carousel/index.js") | htmlUnescape | safeHTML -}}

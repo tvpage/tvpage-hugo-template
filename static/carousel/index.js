@@ -94,12 +94,13 @@
 
     var hostCssTagId = "tvp-carousel-host-css";
     var hostCssTag = "";
+
     if (!document.getElementById(hostCssTagId)) {
-      hostCssTag = '<style id="' + hostCssTagId + '">' + config.hostCss + '</style>';
+      hostCssTag = '<style id="' + hostCssTagId + '">' + config.css.host + '</style>';
     }
 
     //We add the widget holder.
-    spot.insertAdjacentHTML('beforebegin', "<style>" + config.hostCustomCss + "</style>" + hostCssTag + '<div id="' + id + '-holder" class="tvp-carousel-holder">'+
+    spot.insertAdjacentHTML('beforebegin', "<style>" + config.css.hostCustom + "</style>" + hostCssTag + '<div id="' + id + '-holder" class="tvp-carousel-holder">'+
     '<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe></div>');
 
     config.id = id;
@@ -134,7 +135,7 @@
         id: config.id,
         className: "dynamic",
         domain: config.baseUrl,
-        style: config.widgetCss,
+        style: config.css.widget,
         js: [
             config.debug ? config.jsPath + "vendor/jquery.js" : "",
             config.debug ? config.jsPath + "libs/utils.js" : "",
@@ -191,7 +192,7 @@
         iframeModalDocument.open().write(utils.getIframeHtml({
             id: config.id,
             domain: config.baseUrl,
-            style: config.modalCss,
+            style: config.css.modal,
             html: tmplFrag.querySelector("#tvp-modal-" + (config.isMobile ? 'mobile-' : '') + "iframe-content-template-" + config.id ).innerHTML,
             js: [
                 "//a.tvpage.com/tvpa.min.js",
