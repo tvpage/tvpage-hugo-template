@@ -1,10 +1,21 @@
+"body {" +
+    "padding: {{ ($.Scratch.Get "settings").iframe_carousel_body_padding }};" +
+"}" +
+
 ".tvp-carousel-title{" +
+    "font-family: {{ ($.Scratch.Get "settings").title_text_font_family }};" +
+    "font-weight: {{ ($.Scratch.Get "settings").title_text_font_weight }};" +
     "padding: {{ ($.Scratch.Get "settings").title_padding }};" +
     "color:{{ ($.Scratch.Get "settings").title_color }};" +
     "font-size:{{ ($.Scratch.Get "settings").title_font_size }};" +
     "background:{{ ($.Scratch.Get "settings").title_background }};" +
     "text-align:{{ ($.Scratch.Get "settings").title_text_align }};" +
 "}" +
+
+".tvp-carousel-title > span {" +
+    "text-transform: {{ ($.Scratch.Get "settings").title_category_text_transform }};" +
+    "font-family: {{ ($.Scratch.Get "settings").title_category_text_font_family }};" +
+"}"
 
 ".tvp-video {" +
     "padding-left:{{ ($.Scratch.Get "settings").item_padding_left }};" +
@@ -15,6 +26,7 @@
     "background-color:{{ ($.Scratch.Get "settings").item_play_button_background_color }};" +
     "width:{{ ($.Scratch.Get "settings").item_play_button_width }};" +
     "height:{{ ($.Scratch.Get "settings").item_play_button_height }};" +
+    "border: {{ ($.Scratch.Get "settings").item_play_button_border }};" +
     "border-radius:{{ ($.Scratch.Get "settings").item_play_button_border_radius }};" +
 "}" +
 
@@ -23,11 +35,17 @@
 "}" +
 
 ".tvp-video-title {" +
+    "font-family: {{ ($.Scratch.Get "settings").item_title_font_family }};" +
+    "font-weight: {{ ($.Scratch.Get "settings").item_title_font_weight }};" +
     "font-size:{{ ($.Scratch.Get "settings").item_title_font_size }};" +
     "text-align:{{ ($.Scratch.Get "settings").item_title_text_align }};" +
     "color:{{ ($.Scratch.Get "settings").item_title_font_color }};" +
     "margin:{{ ($.Scratch.Get "settings").item_title_margin }};" +
     "padding:{{ ($.Scratch.Get "settings").item_title_padding }};" +
+"}" +
+
+".tvp-video-image {" +
+    "background-size: {{ ($.Scratch.Get "settings").item_background_image_size }};" +
 "}" +
 
 ".tvp-video-metadata {" +
@@ -57,6 +75,17 @@
 ".tvp-carousel-arrow > svg {" +
     "background:{{ ($.Scratch.Get "settings").arrow_background_color }};" +
     "fill:{{ ($.Scratch.Get "settings").arrow_icon_color }};" +
+"}" +
+
+".tvp-carousel-arrow.inactive > svg {" +
+    "background: {{ ($.Scratch.Get "settings").arrow_inactive_background_color }};" +
+    "fill: {{ ($.Scratch.Get "settings").arrow_inactive_icon_color }};" +
+"}" +
+
+".tvp-carousel-arrow.inactive:hover > svg {" +
+    "pointer-events: none;" +
+    "background: {{ ($.Scratch.Get "settings").arrow_inactive_background_color }};" +
+    "fill: {{ ($.Scratch.Get "settings").arrow_inactive_icon_color }};" +
 "}" +
 
 ".tvp-carousel-arrow:hover > svg {" +

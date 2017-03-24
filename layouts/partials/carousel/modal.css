@@ -10,19 +10,63 @@
     "fill: {{ ($.Scratch.Get "settings").play_button_icon_color }};" +
 "}" +
 
+".tvp-products-holder {" +
+    "padding-left: 1.8%;" +
+"}" +
+
 ".tvp-product {" +
     "border: {{ ($.Scratch.Get "settings").product_thumbnail_border }};" +
+    "margin-right: {{ ($.Scratch.Get "settings").product_thumbnail_margin_right }};" +
+    "margin-bottom: {{ ($.Scratch.Get "settings").product_thumbnail_margin_bottom }};" +
 "}" +
 
 ".tvp-product-title {" +
+    "font-family: {{ ($.Scratch.Get "settings").product_title_font_family }};" +
+    "font-weight: {{ ($.Scratch.Get "settings").product_title_font_weight }};" +
     "font-size: {{ ($.Scratch.Get "settings").product_title_font_size }};" +
     "color: {{ ($.Scratch.Get "settings").product_title_font_color }};" +
     "text-decoration: {{ ($.Scratch.Get "settings").product_title_text_decoration }};" +
+    "text-align: {{ ($.Scratch.Get "settings").product_title_text_align }};" +
+"}" +
+
+".tvp-product-title:hover {" +
+    "text-decoration: underline;" +
 "}" +
 
 ".tvp-product-price {" +
     "color: {{ ($.Scratch.Get "settings").product_price_font_color }};" +
     "font-size: {{ ($.Scratch.Get "settings").product_price_font_size }};" +
+    "font-family: {{ ($.Scratch.Get "settings").product_price_font_family }};" +
+    "font-weight: {{ ($.Scratch.Get "settings").product_price_font_weight }};" +
+    "text-align: {{ ($.Scratch.Get "settings").product_price_text_align }};" +
+"}" +
+
+".tvp-reviews {" +
+    "color: {{ ($.Scratch.Get "settings").product_reviews_font_color }};" +
+    "font-size: {{ ($.Scratch.Get "settings").product_reviews_font_size }};" +
+    "font-family: {{ ($.Scratch.Get "settings").product_reviews_font_family }};" +
+    "font-weight: {{ ($.Scratch.Get "settings").product_reviews_font_weight }};" +
+    "margin-left: {{ ($.Scratch.Get "settings").product_reviews_margin_left }};" +
+    "top: {{ ($.Scratch.Get "settings").product_reviews_top }};" +
+"}" +
+
+".tvp-rate {" +
+    "width: {{ ($.Scratch.Get "settings").product_rate_width }};" +
+    "height: {{ ($.Scratch.Get "settings").product_rate_height }};" +
+    "background-image: url("{{ $.Site.BaseURL }}carousel/{{ ($.Scratch.Get "settings").product_rating_background_image_url }}");" +
+    "background-size: cover;" +
+"}" +
+
+".tvp-rate.full {" +
+    "background-position: 0 0;" +
+"}" +
+
+".tvp-rate.half {" +
+    "background-position: 0 -41px;" +
+"}" +
+
+".tvp-rate.empty {" +
+    "background-position: 0 -20px;" +
 "}" +
 
 ".tvp-product-image {" +
