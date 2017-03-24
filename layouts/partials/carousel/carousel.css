@@ -15,7 +15,7 @@
 ".tvp-carousel-title > span {" +
     "text-transform: {{ ($.Scratch.Get "settings").title_category_text_transform }};" +
     "font-family: {{ ($.Scratch.Get "settings").title_category_text_font_family }};" +
-"}"
+"}" +
 
 ".tvp-video {" +
     "padding-left:{{ ($.Scratch.Get "settings").item_padding_left }};" +

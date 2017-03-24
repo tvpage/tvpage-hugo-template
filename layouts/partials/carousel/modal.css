@@ -53,7 +53,7 @@
 ".tvp-rate {" +
     "width: {{ ($.Scratch.Get "settings").product_rate_width }};" +
     "height: {{ ($.Scratch.Get "settings").product_rate_height }};" +
-    "background-image: url("{{ $.Site.BaseURL }}carousel/{{ ($.Scratch.Get "settings").product_rating_background_image_url }}");" +
+    "background-image: url('{{ $.Site.BaseURL }}carousel/{{ ($.Scratch.Get "settings").product_rating_background_image_url }}');" +
     "background-size: cover;" +
 "}" +
 
