@@ -57,7 +57,7 @@
 
 "@media (min-width :768px) {" +
     ".tvp-modal-wrapper {" +
-        "width: 810px;" +
+        "width: 890px;" +
         "margin: 30px auto;" +
     "}" +
 "}" +
@@ -92,10 +92,6 @@
     "clear: both;" +
 "}" +
 
-".tvp-modal-title {" +
-    "margin: 0;" +
-"}" +
-
 ".tvp-title > p {" +
     "margin: 0;" +
     "line-height: 1.4285;" +
@@ -107,6 +103,11 @@
 ".tvp-modal-title {" +
     "margin: 0;" +
     "float: left;" +
+"}" +
+
+".tvp-modal-title.bottom {" +
+  "float: none;" +
+  "padding: 0 0 30px 10px;" +
 "}" +
 
 ".tvp-products-headline {" +
@@ -143,9 +144,10 @@
 ".tvp-modal-close {" +
     "cursor: pointer;" +
     "-webkit-appearance: none;" +
-    "right: -6px;" +
     "position: absolute;" +
-    "top: -6px;" +
     "-webkit-transition: all .05s ease-in-out;" +
     "transition: all .05s ease-in-out;" +
+    "background-position: 0 0;" +
+    "background-repeat: no-repeat;" +
+    "background-size: contain;" +
 "}"

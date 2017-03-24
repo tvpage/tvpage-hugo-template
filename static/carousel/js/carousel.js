@@ -2,19 +2,28 @@
 
     var $carousel = null;
 
+    var itemTemplate = '<div data-id="{id}" class="tvp-video{className}">' +
+        '<div class="tvp-video-image" style="background-image:url({asset.thumbnailUrl})">' +
+        '<div class="tvp-video-play"><svg class="tvp-video-play-icon" viewBox="0 0 200 200"><polygon points="70, 55 70, 145 145, 100"></polygon></svg></div>' +
+        '<div class="tvp-video-image-overlay"></div></div>' +
+        '<div class="tvp-video-metadata tvp-clearfix"><div>Length: {mediaDuration}</div><div>Published: {publishedDate}</div></div>' +
+        '<p class="tvp-video-title">{title}</p></div>'
+
     var hasClass = function(obj,c) {
         if (!obj || !c) return;
         return obj.classList.contains(c);
     };
 
     function Carousel(el, options) {
+        this.xchg = options.xchg || false;
         this.windowSize = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) <= 200 ? 'small' : 'medium';
         this.initialResize = true;
-        this.itemsPerPage = 1000;
+        this.itemsPerPage = Utils.isset(options.items_per_page) ? options.items_per_page : null;
+
         this.loginId = (options.loginId || options.loginid) || 0;
         this.channel = options.channel || {};
-        this.channelId = options.channelid || null;
         this.loading = false;
+        this.isLastPage = false;
         this.page = 0;
 
         this.el = 'string' === typeof el ? document.getElementById(el) : el;
@@ -47,7 +56,7 @@
                 item.className = className;
 
                 var templateScript = document.getElementById('gridItemTemplate');
-                var template = options.templates["carousel-item"];
+                var template = itemTemplate;
                 if (templateScript) {
                     template = templateScript.innerHTML;
                 }
@@ -65,7 +74,7 @@
             var startSlick = function () {
                 $carousel = $(that.el.querySelector('.tvp-carousel-content'));
 
-                $carousel.on('setPosition', Utils.debounce(function () {
+                $carousel.on('setPosition', Utils.debounce(function (event, slick) {
 
                     //Center the arrows using the icon as reference
                     setTimeout(function () {
@@ -74,23 +83,41 @@
                         var arrows = document.querySelectorAll(".tvp-carousel-arrow");
                         for (var i = 0; i < arrows.length; i++) {
                             var arrow = arrows[i];
+                            if (i === 0) {
+                                if (slick.currentSlide === 0) {
+                                    arrow.classList.add('inactive');
+                                } else {
+                                    arrow.classList.remove('inactive');
+                                }
+
+                            } else if (i === 1) {
+                                if ((Number(slick.currentSlide) + Number(options.items_to_scroll)) - (Number(options.items_to_scroll) - 1) === Number(that.itemsPerPage)) {
+                                    arrow.classList.add('inactive');
+                                } else {
+                                    arrow.classList.remove('inactive');
+                                }
+                            }
+
                             var arrowSvg = arrow.querySelector("svg");
                             arrow.style.top = Math.floor( playButtonCenter - ( (arrowSvg.clientHeight || arrowSvg.getBoundingClientRect().height) / 2) ) + "px";
                         }
                     },10);
 
                     that.el.querySelector('.slick-list').style.margin = "0 -" + ( parseInt(options.item_padding_right) + 1 ) + "px";
-                    
+
                     if (window.parent) {
                         window.parent.postMessage({
-                            event: 'tvp_' + options.id.replace(/-/g,'_') + ':resize',
-                            height: that.el.offsetHeight + 'px'
+                            event: 'tvp_carousel:resize',
+                            height: (that.el.offsetHeight + parseInt(options.navigation_bullets_margin_bottom) + parseInt(options.height_offset)) + 'px'
                         }, '*');
                     }
                 },100));
 
                 $carousel.slick({
-                    slidesToShow: options.items_to_show,
+                    slidesToShow: Number(options.items_to_show),
+                    slidesToScroll: Number(options.items_to_scroll),
+                    dots: options.navigation_bullets,
+                    infinite: options.infinite,
                     arrows: false,
                     responsive: [
                         {
@@ -123,23 +150,75 @@
                 this.onLoad();
             }
 
-            var channel = that.channel || {};
-            var params = channel.parameters || {};
-            var src = '//api.tvpage.com/v1/channels/' + (channel.id || that.channelId) + '/videos?X-login-id=' + that.loginId;
-            for (var p in params) { src += '&' + p + '=' + params[p];}
-            var cbName = options.callbackName || 'tvp_' + Math.floor(Math.random() * 555);
-            src += '&p=' + that.page + '&n=' + that.itemsPerPage + '&callback='+cbName;
-            var script = document.createElement('script');
-            script.src = src;
-            window[cbName || 'callback'] = function(data){
-                that.data = data;
-                callback(data);
-                that.loading = false;
-                if (that.onLoadEnd) {
-                    that.onLoadEnd();
-                }
+            var getChannelVideos = function(callback){
+                var channel = that.channel || {};
+                if (Utils.isEmpty(channel) || !channel.id) return console.log('bad channel');
+                var params = channel.parameters || {};
+                var src = '//api.tvpage.com/v1/channels/' + channel.id + '/videos?X-login-id=' + that.loginId;
+                for (var p in params) { src += '&' + p + '=' + params[p];}
+                var cbName = options.callbackName || 'tvp_' + Math.floor(Math.random() * 555);
+                src += '&p=' + that.page + '&n=' + that.itemsPerPage + '&callback='+cbName;
+                var script = document.createElement('script');
+                script.src = src;
+                window[cbName || 'callback'] = callback;
+                document.body.appendChild(script);
             };
-            document.body.appendChild(script);
+
+            if (this.xchg) {
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', '//api2.tvpage.com/prod/channels?X-login-id=1', true);
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == XMLHttpRequest.DONE) {
+                        getChannelVideos(function(data){
+                            var xchg = [];
+
+                            if (xhr.status === 200) {
+                                xchg = xhr.responseText;
+                                var xchgCount = xchg.length;
+                                while(xchgCount > 0) {
+                                    var xchgVideo = xchg[xchgCount-1];
+                                    xchgVideo = $.extend(xchgVideo, xchgVideo.entity);
+                                    xchgCount--;
+                                }
+                            }
+
+                            if (!data.length) {
+                                that.isLastPage = true;
+                            }
+
+                            that.data = data;
+                            callback(data.concat(xchg));
+                            that.loading = false;
+                            if (that.onLoadEnd) {
+                                that.onLoadEnd();
+                            }
+                        });
+                    }
+                };
+                xhr.send({p: 0,n: 1000,si: 1,li: 1,'X-login-id': 1});
+            } else {
+                getChannelVideos(function(data){
+                    if ( !data.length || (data.length < that.itemsPerPage) ) {
+                        that.isLastPage = true;
+                    }
+
+                    that.data = data;
+                    callback(data);
+                    that.loading = false;
+                    if (that.onLoadEnd) {
+                        that.onLoadEnd();
+                    }
+                });
+            }
+        };
+
+        this.next = function(){
+            if (this.isLastPage) {
+                this.page = 0;
+                this.isLastPage = false;
+            } else {
+                this.page++;
+            }
         };
 
         this.el.onclick = function(e) {
@@ -153,14 +232,13 @@
                     if (data[i].id === id) {
                         selected = data[i];
                     }
-                }
 
+                }
                 if (that.onClick) {
                     that.onClick(selected,data);
                 }
 
             } else if (hasClass(target,'tvp-carousel-arrow')) {
-
                 if (hasClass(target,'next')) {
                     $carousel.slick('slickNext');
                 } else {

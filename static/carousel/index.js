@@ -1,10 +1,12 @@
 var utils = {
+    isFirefox: /Firefox/i.test(navigator.userAgent),
+    isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
+    isIOS: /iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream,
     isset: function(o,p){
         var val = o;
         if (p) val = o[p];
         return "undefined" !== typeof val;
     },
-    isIOS: /iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream,
     getIframeHtml: function(options) {
         var html = '<head><base target="_blank" /></head><body class="' + (options.className || '') + '" data-domain="' +
             (options.domain || '') + '" data-id="' + (options.id || '') + '" onload="' +
@@ -111,9 +113,7 @@ targetElement.parentNode.removeChild(targetElement);
 
 config.id = id;
 config.staticPath = config.baseUrl + "/carousel";
-config.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-config.isDesktop = !config.isMobile;
-config.mobilePath = config.isMobile ? 'mobile/' : '';
+config.mobilePath = utils.isMobile ? 'mobile/' : '';
 config.distPath = config.debug ? '/' : '/dist/';
 config.cssPath = config.staticPath + config.distPath + 'css/';
 config.jsPath = config.staticPath + config.distPath + 'js/';
@@ -127,8 +127,7 @@ document.body.appendChild(modalContainer);
 var holder = document.getElementById(config.id + "-holder");
 var iframe = holder.querySelector("iframe");
 var iframeDocument = iframe.contentWindow.document;
-
-iframeDocument.open().write(utils.getIframeHtml({
+var iframeContent = utils.getIframeHtml({
     id: config.id,
     className: "dynamic",
     domain: config.baseUrl,
@@ -145,9 +144,18 @@ iframeDocument.open().write(utils.getIframeHtml({
         config.debug ? config.cssPath + "vendor/slick.css" : "",
         config.debug ? "" : config.cssPath + "styles.min.css"
     ]
-}));
+});
 
-iframeDocument.close();
+//Firefox does not add the iframe content using the onload method.
+//https://bugzilla.mozilla.org/show_bug.cgi?id=728151
+if (utils.isFirefox) {
+    iframe.contentWindow.contents = iframeContent;
+    iframe.src = 'javascript:window["contents"]';
+} else {
+    var iframeDocument = iframe.contentWindow.document;
+    iframeDocument.open().write(iframeContent);
+    iframeDocument.close();
+}
 
 var isEvent = function (e, type) {
     return (e && utils.isset(e, "data") && utils.isset(e.data, "event") && config.eventPrefix + type === e.data.event);
@@ -181,7 +189,10 @@ window.addEventListener("message", function(e){
     updateModalTitle(eventData.selectedVideo.title);
     utils.removeClass('tvp-modal-' + config.id,'tvp-hidden');
     utils.removeClass('tvp-modal-overlay-' + config.id,'tvp-hidden');
-    utils.addClass(document.body, 'tvp-modal-open');
+    
+    if (config.fix_page_scroll) {
+        utils.addClass(document.body, 'tvp-modal-open');
+    }
 
     iframeModalHolder.innerHTML =  '<iframe class="tvp-iframe-modal" src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe>';
     iframeModal = iframeModalHolder.querySelector('.tvp-iframe-modal');
@@ -190,12 +201,13 @@ window.addEventListener("message", function(e){
         id: config.id,
         domain: config.baseUrl,
         style: config.css.modal,
-        html: config.templates["modal-content" + (config.isMobile ? "-mobile" : "")],
+        className: utils.isMobile ? " mobile" : "",
+        html: config.templates["modal-content" + (utils.isMobile ? "-mobile" : "")],
         js: [
             "//a.tvpage.com/tvpa.min.js",
             "https://cdnjs.tvpage.com/tvplayer/tvp-1.8.6.min.js",
-            config.debug && config.isMobile ? config.jsPath + "/vendor/jquery.js" : "",
-            config.debug && config.isDesktop ? config.jsPath + "/vendor/simple-scrollbar.min.js" : "",
+            config.debug && utils.isMobile ? config.jsPath + "/vendor/jquery.js" : "",
+            config.debug && !utils.isMobile ? config.jsPath + "/vendor/simple-scrollbar.min.js" : "",
             config.debug ? config.jsPath + "/libs/utils.js" : "",
             config.debug ? config.jsPath + "/libs/analytics.js" : "",
             config.debug ? config.jsPath + "/libs/player.js" : "",
@@ -204,8 +216,8 @@ window.addEventListener("message", function(e){
         ],
         css: [
             config.debug ? config.cssPath + "/" + config.mobilePath + "modal/styles.css" : "",
-            config.debug && config.isMobile ? config.cssPath + "/vendor/slick.css" : "",
-            config.debug && config.isDesktop ? config.cssPath + "/vendor/simple-scrollbar.css" : "",
+            config.debug && utils.isMobile ? config.cssPath + "/vendor/slick.css" : "",
+            config.debug && !utils.isMobile ? config.cssPath + "/vendor/simple-scrollbar.css" : "",
             config.debug ? "" : config.cssPath + "/" + config.mobilePath + "modal/styles.min.css"
         ]
     }));
@@ -249,7 +261,7 @@ window.addEventListener("message", function(e) {
 window.addEventListener("message", function(e) {
     if (!isEvent(e, ":modal_no_products")) return;
 
-    if (config.isDesktop) {
+    if (!utils.isMobile) {
         var label = document.getElementById('tvp-products-headline-' + config.id);
         if (label) {
             label.parentNode.removeChild(label);
@@ -267,7 +279,7 @@ window.addEventListener("message", function(e){
 
 window.addEventListener("message", function(e) {
     if (!isEvent(e, ":modal_products")) return;
-    if (config.isDesktop && !document.getElementById('tvp-products-headline-' + config.id)) {
+    if (!utils.isMobile && !document.getElementById('tvp-products-headline-' + config.id)) {
         var label = document.createElement('p');
         utils.addClass(label,'tvp-products-headline');
         label.id = 'tvp-products-headline-' + config.id;
@@ -282,7 +294,11 @@ window.addEventListener("message", function(e) {
 var closeModal = function () {
     utils.addClass('tvp-modal-' + config.id,'tvp-hidden');
     utils.addClass('tvp-modal-overlay-' + config.id,'tvp-hidden');
-    utils.removeClass(document.body,'tvp-modal-open');
+    
+    if (config.fix_page_scroll) {
+        utils.removeClass(document.body,'tvp-modal-open');
+    }
+
     utils.removeClass(iframeModalHolder,'products');
     utils.removeClass(iframeModalHolder,'no-products');
     iframeModal.parentNode.removeChild(iframeModal);

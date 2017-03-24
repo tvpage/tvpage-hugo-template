@@ -5,11 +5,11 @@
 ".tvp-carousel-title{" +
     "font-family: {{ ($.Scratch.Get "settings").title_text_font_family }};" +
     "font-weight: {{ ($.Scratch.Get "settings").title_text_font_weight }};" +
-    "padding: {{ ($.Scratch.Get "settings").title_padding }};" +
-    "color:{{ ($.Scratch.Get "settings").title_color }};" +
     "font-size:{{ ($.Scratch.Get "settings").title_font_size }};" +
-    "background:{{ ($.Scratch.Get "settings").title_background }};" +
     "text-align:{{ ($.Scratch.Get "settings").title_text_align }};" +
+    "color:{{ ($.Scratch.Get "settings").title_color }};" +
+    "padding: {{ ($.Scratch.Get "settings").title_padding }};" +
+    "background:{{ ($.Scratch.Get "settings").title_background }};" +
 "}" +
 
 ".tvp-carousel-title > span {" +
@@ -67,7 +67,6 @@
 "}" +
 
 ".tvp-carousel-arrow {" +
-    "top:{{ ($.Scratch.Get "settings").arrow_top }};" +
     "width:{{ ($.Scratch.Get "settings").arrow_size }};" +
     "border:{{ ($.Scratch.Get "settings").arrow_border }};" +
 "}" +

@@ -196,4 +196,5 @@ body {
   cursor: pointer;
   position: absolute;
   bottom: 5px;
+  padding: 0;
 }
