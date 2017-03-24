@@ -1,4 +1,4 @@
-<script id="tvp-carousel-template-{{ name }}" type="text/template">
+<script id="tvp-carousel-template-{{ ($.Scratch.Get "settings").name }}" type="text/template">
     <div class="tvp-carousel-title">{{ title_text }}</div>
     <div class="tvp-carousel-content"></div>
     <div class="tvp-carousel-arrow prev">
@@ -15,28 +15,28 @@
     </div>
 </script>
 
-<script id="tvp-modal-template-{{ name }}" type="text/template">
-    <div id="tvp-modal-overlay-{{ name }}" class="tvp-modal-overlay tvp-hidden"></div>
-    <div id="tvp-modal-{{ name }}" class="tvp-modal tvp-hidden">
+<script id="tvp-modal-template-{{ ($.Scratch.Get "settings").name }}" type="text/template">
+    <div id="tvp-modal-overlay-{{ ($.Scratch.Get "settings").name }}" class="tvp-modal-overlay tvp-hidden"></div>
+    <div id="tvp-modal-{{ ($.Scratch.Get "settings").name }}" class="tvp-modal tvp-hidden">
         <div class="tvp-modal-wrapper">
             <div class="tvp-modal-content">
-                <div id="tvp-modal-header-{{ name }}" class="tvp-modal-header">
-                    <svg id="tvp-modal-close-{{ name }}" class="tvp-modal-close" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <div id="tvp-modal-header-{{ ($.Scratch.Get "settings").name }}" class="tvp-modal-header">
+                    <svg id="tvp-modal-close-{{ ($.Scratch.Get "settings").name }}" class="tvp-modal-close" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path fill="#ffffff" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
                         <path d="M0 0h24v24H0z" fill="none"></path>
                     </svg>
-                    <h4 id="tvp-modal-title-{{ name }}" class="tvp-modal-title"></h4>
+                    <h4 id="tvp-modal-title-{{ ($.Scratch.Get "settings").name }}" class="tvp-modal-title"></h4>
                 </div>
                 <div class="tvp-modal-body">
-                    <div id="tvp-modal-iframe-holder-{{ name }}" class="tvp-modal-iframe-holder"></div>
+                    <div id="tvp-modal-iframe-holder-{{ ($.Scratch.Get "settings").name }}" class="tvp-modal-iframe-holder"></div>
                 </div>
             </div>
         </div>
     </div>
 </script>
 
-<script id="tvp-modal-iframe-content-template-{{ name }}" type="text/template">
-    <div id="{{ name }}" class="tvp-clearfix iframe-content">
+<script id="tvp-modal-iframe-content-template-{{ ($.Scratch.Get "settings").name }}" type="text/template">
+    <div id="{{ ($.Scratch.Get "settings").name }}" class="tvp-clearfix iframe-content">
         <div class="tvp-player-holder">
             <div class="tvp-player">
                 <div id="tvp-player-el"></div>
@@ -48,8 +48,8 @@
     </div>
 </script>
 
-<script id="tvp-modal-mobile-iframe-content-template-{{ name }}" type="text/template">
-    <div id="{{ name }}" class="tvp-clearfix iframe-content">
+<script id="tvp-modal-mobile-iframe-content-template-{{ ($.Scratch.Get "settings").name }}" type="text/template">
+    <div id="{{ ($.Scratch.Get "settings").name }}" class="tvp-clearfix iframe-content">
         <div class="tvp-player">
             <div id="tvp-player-el"></div>
         </div>
