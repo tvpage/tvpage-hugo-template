@@ -74,10 +74,11 @@ var utils = {
     }
 };
 
-var spot = document.querySelector(".tvp-carousel");
-var id = spot.id || "";
-if (!id) return;
+if (typeof bootstrap !== "object" || !bootstrap.hasOwnProperty('name') || bootstrap.name.length<=0 ) {
+  throw new Error('Must pass bootstrap and boostrap.name');
+}
 
+var id = bootstrap.name;
 //If there's config object for this specific widget, then we merged in... extend?
 window.__TVPage__ = window.__TVPage__ || {};
 __TVPage__.config = __TVPage__.config || {};
@@ -97,10 +98,16 @@ if (!document.getElementById(hostCssTagId)) {
   hostCssTag = '<style id="' + hostCssTagId + '">' + config.css.host + '</style>';
 }
 
+var targetElement;
+if ( !config.hasOwnProperty('targetEl') ||  !document.getElementById(config.targetEl) ) {
+  throw new Error ( "Must provide a targetEl");
+} 
+
+var targetElement = document.getElementById(config.targetEl);
 //We add the widget holder.
-spot.insertAdjacentHTML('beforebegin', "<style>" + config.css.hostCustom + "</style>" + hostCssTag + '<div id="' + id + '-holder" class="tvp-carousel-holder">'+
+targetElement.insertAdjacentHTML('beforebegin', "<style>" + config.css.hostCustom + "</style>" + hostCssTag + '<div id="' + id + '-holder" class="tvp-carousel-holder">'+
 '<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe></div>');
-spot.parentNode.removeChild(spot);
+targetElement.parentNode.removeChild(targetElement);
 
 config.id = id;
 config.staticPath = config.baseUrl + "/carousel";
