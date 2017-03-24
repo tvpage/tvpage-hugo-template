@@ -175,15 +175,50 @@ var iframeModalHolder = document.getElementById('tvp-modal-iframe-holder-' + con
 var iframeModal = null;
 var iframeModalDocument = null;
 
-window.addEventListener("message", function(e){
-    if (!isEvent(e, ":video_click")) return;
+var getEventType = function (e) {
+  var evt = null
+    if (e && utils.isset(e, "data") && utils.isset(e.data, "event") ) {
+      evt= e.data.event;
+    }
+    
+    if (evt.length && evt.substr(0, config.eventPrefix.length) === config.eventPrefix) {
+      return evt.substr(config.eventPrefix.length + 1);
+    }
+    
+    return null;
+};
 
+function handlePostMessages(e){
+  var eventType = getEventType(e);
+  switch (eventType) {
+    case 'video_click':
+      return handleVideoClick(e);
+    case 'modal_initialized':
+      return handleModalInitialized(e);
+    case 'modal_no_products': 
+      return handleModalNoProducts(e);
+    case 'modal_products':
+      return handleModalProducts(e);
+    case 'player_next':
+      return handlePlayerNext(e);
+    case 'modal_resize':
+      return handleModalResize(e);
+    default: 
+      // do nothing
+  }
+};
+
+window.addEventListener("message", function(e){
+  handlePostMessages(e);
+});
+
+function handleVideoClick(e){
     var eventData = e.data;
 
     clickData = {
-        data: eventData.videos,
-        selectedVideo: eventData.selectedVideo,
-        runTime: (eventData.runTime || (utils.isset(window, '__TVPage__') ? __TVPage__ : {}) ).config[config.id]
+      data: eventData.videos,
+      selectedVideo: eventData.selectedVideo,
+      runTime: (eventData.runTime || (utils.isset(window, '__TVPage__') ? __TVPage__ : {}) ).config[config.id]
     };
 
     updateModalTitle(eventData.selectedVideo.title);
@@ -198,117 +233,110 @@ window.addEventListener("message", function(e){
     iframeModal = iframeModalHolder.querySelector('.tvp-iframe-modal');
     iframeModalDocument = iframeModal.contentWindow.document;
     iframeModalDocument.open().write(utils.getIframeHtml({
-        id: config.id,
-        domain: config.baseUrl,
-        style: config.css.modal,
-        className: utils.isMobile ? " mobile" : "",
-        html: config.templates["modal-content" + (utils.isMobile ? "-mobile" : "")],
-        js: [
-            "//a.tvpage.com/tvpa.min.js",
-            "https://cdnjs.tvpage.com/tvplayer/tvp-1.8.6.min.js",
-            config.debug && utils.isMobile ? config.jsPath + "/vendor/jquery.js" : "",
-            config.debug && !utils.isMobile ? config.jsPath + "/vendor/simple-scrollbar.min.js" : "",
-            config.debug ? config.jsPath + "/libs/utils.js" : "",
-            config.debug ? config.jsPath + "/libs/analytics.js" : "",
-            config.debug ? config.jsPath + "/libs/player.js" : "",
-            config.debug ? config.jsPath + "/" + config.mobilePath + "modal/index.js" : "",
-            config.debug ? "" : config.jsPath + config.mobilePath + "modal/scripts.min.js"
-        ],
-        css: [
-            config.debug ? config.cssPath + "/" + config.mobilePath + "modal/styles.css" : "",
-            config.debug && utils.isMobile ? config.cssPath + "/vendor/slick.css" : "",
-            config.debug && !utils.isMobile ? config.cssPath + "/vendor/simple-scrollbar.css" : "",
-            config.debug ? "" : config.cssPath + "/" + config.mobilePath + "modal/styles.min.css"
-        ]
+      id: config.id,
+      domain: config.baseUrl,
+      style: config.css.modal,
+      className: utils.isMobile ? " mobile" : "",
+      html: config.templates["modal-content" + (utils.isMobile ? "-mobile" : "")],
+      js: [
+          "//a.tvpage.com/tvpa.min.js",
+          "https://cdnjs.tvpage.com/tvplayer/tvp-1.8.6.min.js",
+          config.debug && utils.isMobile ? config.jsPath + "/vendor/jquery.js" : "",
+          config.debug && !utils.isMobile ? config.jsPath + "/vendor/simple-scrollbar.min.js" : "",
+          config.debug ? config.jsPath + "/libs/utils.js" : "",
+          config.debug ? config.jsPath + "/libs/analytics.js" : "",
+          config.debug ? config.jsPath + "/libs/player.js" : "",
+          config.debug ? config.jsPath + "/" + config.mobilePath + "modal/index.js" : "",
+          config.debug ? "" : config.jsPath + config.mobilePath + "modal/scripts.min.js"
+      ],
+      css: [
+          config.debug ? config.cssPath + "/" + config.mobilePath + "modal/styles.css" : "",
+          config.debug && utils.isMobile ? config.cssPath + "/vendor/slick.css" : "",
+          config.debug && !utils.isMobile ? config.cssPath + "/vendor/simple-scrollbar.css" : "",
+          config.debug ? "" : config.cssPath + "/" + config.mobilePath + "modal/styles.min.css"
+      ]
     }));
 
     iframeModalDocument.close();
-});
+};
 
-window.addEventListener("message", function(e){
-    if (!isEvent(e, ":modal_initialized")) return;
+function handleModalInitialized(e){
+  if (iframeModal.contentWindow) {
+      iframeModal.contentWindow.postMessage({
+          event: config.eventPrefix + ':modal_data',
+          data: clickData.data,
+          selectedVideo: clickData.selectedVideo,            
+          runTime: clickData.runTime
+      }, '*');
+  }
 
-    if (iframeModal.contentWindow) {
-        iframeModal.contentWindow.postMessage({
-            event: config.eventPrefix + ':modal_data',
-            data: clickData.data,
-            selectedVideo: clickData.selectedVideo,
-            runTime: clickData.runTime
-        }, '*');
-    }
-
-    if (utils.isIOS) {
-        var onOrientationChange = function () {
-            if (iframeModal && iframeModal.contentWindow) {
-                var width = iframeModal.parentNode.offsetWidth;
-                iframeModal.contentWindow.window.postMessage({
-                    event: config.eventPrefix + ':modal_holder_resize',
-                    size: [width, Math.floor(width * (9 / 16))]
-                },'*');
-            }
-        };
-        var orientationChangeEvent = 'onorientationchange' in window ? 'orientationchange' : 'resize';
-        window.removeEventListener(orientationChangeEvent,onOrientationChange, false);
-        window.addEventListener(orientationChangeEvent,onOrientationChange, false);
-    }
-});
-
-window.addEventListener("message", function(e) {
-    if (!isEvent(e, ":player_next")) return;
-    updateModalTitle(e.data.next.assetTitle);
-});
-
-window.addEventListener("message", function(e) {
-    if (!isEvent(e, ":modal_no_products")) return;
-
-    if (!utils.isMobile) {
-        var label = document.getElementById('tvp-products-headline-' + config.id);
-        if (label) {
-            label.parentNode.removeChild(label);
+  if (utils.isIOS) {
+    var onOrientationChange = function () {
+        if (iframeModal && iframeModal.contentWindow) {
+            var width = iframeModal.parentNode.offsetWidth;
+            iframeModal.contentWindow.window.postMessage({
+                event: config.eventPrefix + ':modal_holder_resize',
+                size: [width, Math.floor(width * (9 / 16))]
+            },'*');
         }
-    }
+    };
+    var orientationChangeEvent = 'onorientationchange' in window ? 'orientationchange' : 'resize';
+    window.removeEventListener(orientationChangeEvent,onOrientationChange, false);
+    window.addEventListener(orientationChangeEvent,onOrientationChange, false);
+  }
+};
 
-    utils.removeClass(iframeModalHolder,'products');
-    utils.addClass(iframeModalHolder,'no-products');
-});
+function handlePlayerNext(e) {
+    updateModalTitle(e.data.next.assetTitle);
+};
 
-window.addEventListener("message", function(e){
-    if (!isEvent(e, ":modal_resize")) return;
-    iframeModal.style.height = e.data.height;
-});
+function handleModalNoProducts(e) {
+  if (config.isDesktop) {
+      var label = document.getElementById('tvp-products-headline-' + config.id);
+      if (label) {
+          label.parentNode.removeChild(label);
+      }
+  }
 
-window.addEventListener("message", function(e) {
-    if (!isEvent(e, ":modal_products")) return;
-    if (!utils.isMobile && !document.getElementById('tvp-products-headline-' + config.id)) {
-        var label = document.createElement('p');
-        utils.addClass(label,'tvp-products-headline');
-        label.id = 'tvp-products-headline-' + config.id;
-        label.innerHTML = 'Related Products';
-        document.getElementById('tvp-modal-header-' + config.id).appendChild(label);
-    }
+  utils.removeClass(iframeModalHolder,'products');
+  utils.addClass(iframeModalHolder,'no-products');
+};
 
-    utils.removeClass(iframeModalHolder,'no-products');
-    utils.addClass(iframeModalHolder,'products');
-});
+function handleModalResize(e){
+  iframeModal.style.height = e.data.height;
+};
+
+function handleModalProducts(e) {
+  if (config.isDesktop && !document.getElementById('tvp-products-headline-' + config.id)) {
+      var label = document.createElement('p');
+      utils.addClass(label,'tvp-products-headline');
+      label.id = 'tvp-products-headline-' + config.id;
+      label.innerHTML = 'Related Products';
+      document.getElementById('tvp-modal-header-' + config.id).appendChild(label);
+  }
+
+  utils.removeClass(iframeModalHolder,'no-products');
+  utils.addClass(iframeModalHolder,'products');
+};
 
 var closeModal = function () {
-    utils.addClass('tvp-modal-' + config.id,'tvp-hidden');
-    utils.addClass('tvp-modal-overlay-' + config.id,'tvp-hidden');
-    
-    if (config.fix_page_scroll) {
-        utils.removeClass(document.body,'tvp-modal-open');
-    }
+  utils.addClass('tvp-modal-' + config.id,'tvp-hidden');
+  utils.addClass('tvp-modal-overlay-' + config.id,'tvp-hidden');
 
-    utils.removeClass(iframeModalHolder,'products');
-    utils.removeClass(iframeModalHolder,'no-products');
-    iframeModal.parentNode.removeChild(iframeModal);
+  if (config.fix_page_scroll) {
+      utils.removeClass(document.body,'tvp-modal-open');
+  }
+
+  utils.removeClass(iframeModalHolder,'products');
+  utils.removeClass(iframeModalHolder,'no-products');
+  iframeModal.parentNode.removeChild(iframeModal);
 };
 
 document.getElementById("tvp-modal-close-" + config.id).addEventListener('click', closeModal, false);
 
 var modalEl = document.getElementById("tvp-modal-" + config.id);
 modalEl.addEventListener('click', function(e){
-    if (e.target === modalEl || !modalEl.contains(e.target)) {
-        closeModal();
-    }
+  if (e.target === modalEl || !modalEl.contains(e.target)) {
+      closeModal();
+  }
 }, false);
