@@ -14,7 +14,7 @@
 
         main.id = name;
         main.className = 'iframe-content' + (Utils.isMobile ? " mobile" : "");
-        main.innerHTML = carouselSettings.carouselTmpl;
+        main.innerHTML = carouselSettings.templates.carousel;
         body.appendChild(main);
 
         carouselSettings.onClick = function (clicked,videos) {

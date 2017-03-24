@@ -1,35 +1,35 @@
-.tvp-modal-header {
-    padding:{{ ($.Scratch.Get "settings").modal_header_padding }};
-    border-bottom:{{ ($.Scratch.Get "settings").modal_header_border_bottom }};
-}
+".tvp-modal-header {" +
+    "padding:{{ ($.Scratch.Get "settings").modal_header_padding }};" +
+    "border-bottom:{{ ($.Scratch.Get "settings").modal_header_border_bottom }};" +
+"}" +
 
-.tvp-modal-content {
-    background:{{ ($.Scratch.Get "settings").modal_background }};
-    border:{{ ($.Scratch.Get "settings").modal_border }};
-}
+".tvp-modal-content {" +
+    "background:{{ ($.Scratch.Get "settings").modal_background }};" +
+    "border:{{ ($.Scratch.Get "settings").modal_border }};" +
+"}" +
 
-.tvp-modal-title {
-    color: {{ ($.Scratch.Get "settings").modal_title_font_color }};
-    font-size: {{ ($.Scratch.Get "settings").modal_title_font_size }};
-}
+".tvp-modal-title {" +
+    "color: {{ ($.Scratch.Get "settings").modal_title_font_color }};" +
+    "font-size: {{ ($.Scratch.Get "settings").modal_title_font_size }};" +
+"}" +
 
-.tvp-products-headline {
-    color: {{ ($.Scratch.Get "settings").products_headline_font_color }};
-    font-size: {{ ($.Scratch.Get "settings").products_headline_font_size }};
-    top: {{ ($.Scratch.Get "settings").products_headline_top }};
-    right: {{ ($.Scratch.Get "settings").products_headline_right }};
-}
+".tvp-products-headline {" +
+    "color: {{ ($.Scratch.Get "settings").products_headline_font_color }};" +
+    "font-size: {{ ($.Scratch.Get "settings").products_headline_font_size }};" +
+    "top: {{ ($.Scratch.Get "settings").products_headline_top }};" +
+    "right: {{ ($.Scratch.Get "settings").products_headline_right }};" +
+"}" +
 
-.tvp-modal-close {
-    width: {{ ($.Scratch.Get "settings").modal_close_button_width }};
-    height: {{ ($.Scratch.Get "settings").modal_close_button_height }};
-    padding: {{ ($.Scratch.Get "settings").modal_close_button_padding }};
-    background: {{ ($.Scratch.Get "settings").modal_close_button_background }};
-    border: {{ ($.Scratch.Get "settings").modal_close_button_border }};
-    border-radius: {{ ($.Scratch.Get "settings").modal_close_button_border_radius }};
-    box-shadow: {{ ($.Scratch.Get "settings").modal_close_button_box_shadow }};
-}
+".tvp-modal-close {" +
+    "width: {{ ($.Scratch.Get "settings").modal_close_button_width }};" +
+    "height: {{ ($.Scratch.Get "settings").modal_close_button_height }};" +
+    "padding: {{ ($.Scratch.Get "settings").modal_close_button_padding }};" +
+    "background: {{ ($.Scratch.Get "settings").modal_close_button_background }};" +
+    "border: {{ ($.Scratch.Get "settings").modal_close_button_border }};" +
+    "border-radius: {{ ($.Scratch.Get "settings").modal_close_button_border_radius }};" +
+    "box-shadow: {{ ($.Scratch.Get "settings").modal_close_button_box_shadow }};" +
+"}" +
 
-.tvp-modal-close:hover {
-    background: {{ ($.Scratch.Get "settings").modal_close_button_background_hover }};
-}
+".tvp-modal-close:hover {" +
+    "background: {{ ($.Scratch.Get "settings").modal_close_button_background_hover }};" +
+"}"

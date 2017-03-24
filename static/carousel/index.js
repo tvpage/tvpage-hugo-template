@@ -79,6 +79,7 @@ if (typeof bootstrap !== "object" || !bootstrap.hasOwnProperty('name') || bootst
 }
 
 var id = bootstrap.name;
+
 //If there's config object for this specific widget, then we merged in... extend?
 window.__TVPage__ = window.__TVPage__ || {};
 __TVPage__.config = __TVPage__.config || {};
@@ -104,8 +105,7 @@ if ( !config.hasOwnProperty('targetEl') ||  !document.getElementById(config.targ
 } 
 
 var targetElement = document.getElementById(config.targetEl);
-//We add the widget holder.
-targetElement.insertAdjacentHTML('beforebegin', "<style>" + config.css.hostCustom + "</style>" + hostCssTag + '<div id="' + id + '-holder" class="tvp-carousel-holder">'+
+targetElement.insertAdjacentHTML('beforebegin', "<style>" + config.css["host-custom"] + "</style>" + hostCssTag + '<div id="' + id + '-holder" class="tvp-carousel-holder">'+
 '<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe></div>');
 targetElement.parentNode.removeChild(targetElement);
 
@@ -119,18 +119,9 @@ config.cssPath = config.staticPath + config.distPath + 'css/';
 config.jsPath = config.staticPath + config.distPath + 'js/';
 config.eventPrefix = ("tvp_" + config.id).replace(/-/g,'_');
 
-//Split templates per component/view
-var tmplContainer = document.createElement("div");
-tmplContainer.innerHTML = config.templates;
-
-var tmplFrag = document.createDocumentFragment();
-tmplFrag.appendChild(tmplContainer);
-
-config.carouselTmpl = tmplFrag.querySelector("#tvp-carousel-template-" + config.id).innerHTML.trim();
-
 //Append templates that live in the host page.
 var modalContainer = document.createElement("div");
-modalContainer.innerHTML = tmplFrag.querySelector("#tvp-modal-template-" + config.id).innerHTML;
+modalContainer.innerHTML = config.templates.modal;
 document.body.appendChild(modalContainer);
 
 var holder = document.getElementById(config.id + "-holder");
@@ -141,7 +132,7 @@ iframeDocument.open().write(utils.getIframeHtml({
     id: config.id,
     className: "dynamic",
     domain: config.baseUrl,
-    style: config.css.widget,
+    style: config.css.carousel,
     js: [
         config.debug ? config.jsPath + "vendor/jquery.js" : "",
         config.debug ? config.jsPath + "libs/utils.js" : "",
@@ -199,7 +190,7 @@ window.addEventListener("message", function(e){
         id: config.id,
         domain: config.baseUrl,
         style: config.css.modal,
-        html: tmplFrag.querySelector("#tvp-modal-" + (config.isMobile ? 'mobile-' : '') + "iframe-content-template-" + config.id ).innerHTML,
+        html: config.templates["modal-content" + (config.isMobile ? "-mobile" : "")],
         js: [
             "//a.tvpage.com/tvpa.min.js",
             "https://cdnjs.tvpage.com/tvplayer/tvp-1.8.6.min.js",
