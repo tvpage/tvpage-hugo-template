@@ -54,7 +54,13 @@
     };
 
     var render = function(data){
-        var container = Utils.getByClass('tvp-products');
+        var holder = Utils.getByClass('tvp-products-holder');
+        holder.innerHTML = "";
+
+        var container = document.createElement("div");
+        container.className = "tvp-products";
+        holder.appendChild(container);
+
         var thumbsFrag = document.createDocumentFragment();
         var popupsFrag = document.createDocumentFragment();
 
@@ -89,9 +95,59 @@
             prodPopupNode.id = 'tvp-product-popup-' + productId;
             prodPopupNode.setAttribute('data-vd', productVideoId);
             prodPopupNode.href = productLink;
+
+            var productRating = 0;
+            if (Utils.isset(product.rating) && null !== product.rating) {
+                productRating = Number(product.rating);
+            }
+
+            var ratingReviewsHtml = "";
+            if (productRating > 0){
+                var fulls = 0;
+                var half = false;
+                if(productRating % 1 != 0){
+                    half = true;
+                    fulls = Math.floor(productRating);
+                } else {
+                    fulls = productRating;
+                }
+
+                var empties = 0;
+                if (4 === fulls && half) {
+                    empties = 0;
+                } else if (1 === fulls && half) {
+                    empties = 3;
+                } else if (half) {
+                    empties = (5 - fulls) - 1;
+                } else {
+                    empties = 5 - fulls;
+                }
+
+                ratingReviewsHtml = '<ul class="tvp-product-rating">';
+                for (var j = 0; j < fulls; j++) {
+                    ratingReviewsHtml += '<li class="tvp-rate full"></li>';
+                }
+
+                if (half){
+                    ratingReviewsHtml += '<li class="tvp-rate half"></li>';
+                }
+
+                for (var k = 0; k < empties; k++) {
+                    ratingReviewsHtml += '<li class="tvp-rate empty"></li>';
+                }
+
+                if (Utils.isset(product.review_count) && null !== product.review_count) {
+                    ratingReviewsHtml += '<li class="tvp-reviews">' + product.review_count + ' Reviews </li>';
+                }
+
+                ratingReviewsHtml += '</ul>';
+            }
+
+            var buttonText = product.actionText.length > 0? product.actionText : 'View Details';
+
             prodPopupNode.innerHTML = '<div class="tvp-product-popup-image" '+productImgStyle+'></div>'+
-                '<p class="tvp-product-title">'+prodTitle+'</p><div class="tvp-clearfix"><p class="tvp-product-price">'+fixedPrice+'</p></div>'+
-                '<button class="tvp-product-cta">View Details</button>';
+                '<p class="tvp-product-title">' + prodTitle + '</p><p class="tvp-product-price">'+fixedPrice+'</p>'+ ratingReviewsHtml +
+                '<button class="tvp-product-cta">' + buttonText + '</button>';
             popupsFrag.appendChild(prodPopupNode);
 
             analytics.track('pi',{
@@ -109,26 +165,28 @@
             }
         }
 
-        container.innerHTML = '';
-
         var arrow = document.createElement('div');
         arrow.classList.add('tvp-arrow-indicator');
+
+        var willScroll = data.length > 2;
+        if (willScroll) {
+          holder.classList.remove("no-overflow");
+          container.setAttribute('ss-container', true);
+        } else {
+          holder.classList.add("no-overflow");
+        }
+
         container.appendChild(thumbsFrag);
         container.parentNode.appendChild(popupsFrag);
         container.parentNode.insertBefore(arrow, container.nextSibling);
-        SimpleScrollbar.initEl(container);
+        
+        if (willScroll) {
+           SimpleScrollbar.initAll();
+        }
 
         setTimeout(function(){
 
-            var holder = Utils.getByClass('tvp-products-holder');
-            var classNames = ['tvp-product', 'tvp-product-popup'];
-            for (var i = 0; i < classNames.length; i++) {
-                var elements = holder.getElementsByClassName(classNames[i]);
-                for (var j = 0; j < elements.length; j++) {
-                    elements[j].addEventListener('click', pkTrack, false);
-                }
-            }
-            holder.onmouseover = function(e){
+            var showPopup = function(e){
                 var productEl = closestByClass(e.target,'tvp-product');
                 if (!productEl) return;
 
@@ -164,17 +222,33 @@
                 arrow.style.top = (productEl.getBoundingClientRect().top + 20) + 'px';
             };
 
-            holder.onmouseleave = function(e){
-                var activeThumbs = document.querySelectorAll('.tvp-product.active');
-                for (var i = activeThumbs.length - 1; i >= 0; i--) {
-                    activeThumbs[i].classList.remove('active');
-                }
+            var classNames = ['tvp-product', 'tvp-product-popup'];
+            var timeOut = null;
+            for (var i = 0; i < classNames.length; i++) {
+                var elements = holder.getElementsByClassName(classNames[i]);
+                for (var j = 0; j < elements.length; j++) {
+                    var element = elements[j];
+                    element.addEventListener('click', pkTrack, false);
+                    element.onmouseover = function (e) {
+                        clearTimeout(timeOut);
+                        showPopup(e);
+                    };
+                    element.onmouseleave = function () {
+                        timeOut = setTimeout(function(){
+                            var activeThumbs = document.querySelectorAll('.tvp-product.active');
+                            for (var i = activeThumbs.length - 1; i >= 0; i--) {
+                                activeThumbs[i].classList.remove('active');
+                            }
 
-                arrow.classList.remove('active');
+                            arrow.classList.remove('active');
 
-                var activePopups = document.querySelectorAll('.tvp-product-popup.active');
-                for (var i = activePopups.length - 1; i >= 0; i--) {
-                    activePopups[i].classList.remove('active');
+                            var activePopups = document.querySelectorAll('.tvp-product-popup.active');
+                            for (var i = activePopups.length - 1; i >= 0; i--) {
+                                activePopups[i].classList.remove('active');
+                            }
+                        },100);
+                    };
+
                 }
             }
         },0);
