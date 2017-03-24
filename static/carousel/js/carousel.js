@@ -2,28 +2,20 @@
 
     var $carousel = null;
 
-    var itemTemplate = '<div data-id="{id}" class="tvp-video{className}">' +
-        '<div class="tvp-video-image" style="background-image:url({asset.thumbnailUrl})">' +
-        '<div class="tvp-video-play"><svg class="tvp-video-play-icon" viewBox="0 0 200 200"><polygon points="70, 55 70, 145 145, 100"></polygon></svg></div>' +
-        '<div class="tvp-video-image-overlay"></div></div>' +
-        '<div class="tvp-video-metadata tvp-clearfix"><div>Length: {mediaDuration}</div><div>Published: {publishedDate}</div></div>' +
-        '<p class="tvp-video-title">{title}</p></div>'
-
     var hasClass = function(obj,c) {
         if (!obj || !c) return;
         return obj.classList.contains(c);
     };
 
     function Carousel(el, options) {
-        this.xchg = options.xchg || false;
         this.windowSize = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) <= 200 ? 'small' : 'medium';
         this.initialResize = true;
         this.itemsPerPage = Utils.isset(options.items_per_page) ? options.items_per_page : null;
 
         this.loginId = (options.loginId || options.loginid) || 0;
         this.channel = options.channel || {};
+        this.channelId = options.channelid || null;
         this.loading = false;
-        this.isLastPage = false;
         this.page = 0;
 
         this.el = 'string' === typeof el ? document.getElementById(el) : el;
@@ -56,7 +48,7 @@
                 item.className = className;
 
                 var templateScript = document.getElementById('gridItemTemplate');
-                var template = itemTemplate;
+                var template = options.templates["carousel-item"];
                 if (templateScript) {
                     template = templateScript.innerHTML;
                 }
@@ -107,7 +99,7 @@
 
                     if (window.parent) {
                         window.parent.postMessage({
-                            event: 'tvp_carousel:resize',
+                            event: 'tvp_' + options.id.replace(/-/g,'_') + ':resize',
                             height: (that.el.offsetHeight + parseInt(options.navigation_bullets_margin_bottom) + parseInt(options.height_offset)) + 'px'
                         }, '*');
                     }
@@ -150,76 +142,25 @@
                 this.onLoad();
             }
 
-            var getChannelVideos = function(callback){
-                var channel = that.channel || {};
-                if (Utils.isEmpty(channel) || !channel.id) return console.log('bad channel');
-                var params = channel.parameters || {};
-                var src = '//api.tvpage.com/v1/channels/' + channel.id + '/videos?X-login-id=' + that.loginId;
-                for (var p in params) { src += '&' + p + '=' + params[p];}
-                var cbName = options.callbackName || 'tvp_' + Math.floor(Math.random() * 555);
-                src += '&p=' + that.page + '&n=' + that.itemsPerPage + '&callback='+cbName;
-                var script = document.createElement('script');
-                script.src = src;
-                window[cbName || 'callback'] = callback;
-                document.body.appendChild(script);
+            var channel = that.channel || {};
+            var params = channel.parameters || {};
+            var src = '//api.tvpage.com/v1/channels/' + (channel.id || that.channelId) + '/videos?X-login-id=' + that.loginId;
+            for (var p in params) { src += '&' + p + '=' + params[p];}
+            var cbName = options.callbackName || 'tvp_' + Math.floor(Math.random() * 555);
+            src += '&p=' + that.page + '&n=' + that.itemsPerPage + '&callback='+cbName;
+            var script = document.createElement('script');
+            script.src = src;
+            window[cbName || 'callback'] = function(data){
+                that.data = data;
+                callback(data);
+                that.loading = false;
+                if (that.onLoadEnd) {
+                    that.onLoadEnd();
+                }
             };
-
-            if (this.xchg) {
-                var xhr = new XMLHttpRequest();
-                xhr.open('GET', '//api2.tvpage.com/prod/channels?X-login-id=1', true);
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState == XMLHttpRequest.DONE) {
-                        getChannelVideos(function(data){
-                            var xchg = [];
-
-                            if (xhr.status === 200) {
-                                xchg = xhr.responseText;
-                                var xchgCount = xchg.length;
-                                while(xchgCount > 0) {
-                                    var xchgVideo = xchg[xchgCount-1];
-                                    xchgVideo = $.extend(xchgVideo, xchgVideo.entity);
-                                    xchgCount--;
-                                }
-                            }
-
-                            if (!data.length) {
-                                that.isLastPage = true;
-                            }
-
-                            that.data = data;
-                            callback(data.concat(xchg));
-                            that.loading = false;
-                            if (that.onLoadEnd) {
-                                that.onLoadEnd();
-                            }
-                        });
-                    }
-                };
-                xhr.send({p: 0,n: 1000,si: 1,li: 1,'X-login-id': 1});
-            } else {
-                getChannelVideos(function(data){
-                    if ( !data.length || (data.length < that.itemsPerPage) ) {
-                        that.isLastPage = true;
-                    }
-
-                    that.data = data;
-                    callback(data);
-                    that.loading = false;
-                    if (that.onLoadEnd) {
-                        that.onLoadEnd();
-                    }
-                });
-            }
+            document.body.appendChild(script);
         };
 
-        this.next = function(){
-            if (this.isLastPage) {
-                this.page = 0;
-                this.isLastPage = false;
-            } else {
-                this.page++;
-            }
-        };
 
         this.el.onclick = function(e) {
             var target = e.target;
