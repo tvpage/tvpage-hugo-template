@@ -86,7 +86,7 @@ var id = bootstrap.name;
 window.__TVPage__ = window.__TVPage__ || {};
 __TVPage__.config = __TVPage__.config || {};
 
-if ("object" !== typeof __TVPage__.config[id]) {
+if ("object" === typeof __TVPage__.config[id]) {
     __TVPage__.config[id] = utils.extend(bootstrap, __TVPage__.config[id]);
 } else {
     __TVPage__.config[id] = bootstrap;
