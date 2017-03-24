@@ -32,6 +32,7 @@
     function Player(el, options, startWith) {
         if (!el || !isset(options) || !isset(options.data) || options.data.length <= 0) return console.log('bad args');
 
+        this.options = options;
         this.isFullScreen = false;
         this.initialResize = true;
         this.autoplay = isset(options.autoplay) ? Number(options.autoplay) : false;
@@ -82,6 +83,11 @@
 
         //Context reference for Methods.
         var that = this;
+        this.getOption = function (name) {
+          if (this.options.hasOwnProperty(name))
+            return this.options.hasOwnProperty(name);
+          return null;
+        }
 
         //Sometimes we want/need to show an intearctive overlay on top of the player. We need this for MP4 videos that will
         //cue (mobile or autoplay:off) to actual play the video on demand.

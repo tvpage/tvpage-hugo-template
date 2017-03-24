@@ -23,8 +23,17 @@
 
         this.itemMetaData = Utils.isset(options.item_meta_data) ? options.item_meta_data : null;
         this.onClick = Utils.isset(options.onClick) && Utils.isFunction(options.onClick) ? options.onClick : null;
+        this.options = options;
 
         var that = this;
+
+        this.postMessage = function(evt, message) {
+          if ( window.parent ) {
+            message = message || {};
+            message.event = 'tvp_' + options.id.replace(/-/g,'_') + ":" + evt;
+            window.parent.postMessage(message, '*');
+          }
+        }
 
         this.render = function(){
             this.container.innerHTML = '';
@@ -96,13 +105,9 @@
                     },10);
 
                     that.el.querySelector('.slick-list').style.margin = "0 -" + ( parseInt(options.item_padding_right) + 1 ) + "px";
-
-                    if (window.parent) {
-                        window.parent.postMessage({
-                            event: 'tvp_' + options.id.replace(/-/g,'_') + ':resize',
-                            height: (that.el.offsetHeight + parseInt(options.navigation_bullets_margin_bottom) + parseInt(options.height_offset)) + 'px'
-                        }, '*');
-                    }
+                    that.postMessage('resize', {
+                      height: (that.el.offsetHeight + parseInt(options.navigation_bullets_margin_bottom) + parseInt(options.height_offset)) + 'px'
+                    });
                 },100));
 
                 $carousel.slick({
@@ -167,7 +172,7 @@
 
             if (hasClass(target,'tvp-video')) {
                 var id = target.getAttribute('data-id'),
-                    selected = {};
+                selected = {};
                 var data = that.data;
                 for (var i = 0; i < data.length; i++) {
                     if (data[i].id === id) {
@@ -190,9 +195,15 @@
         };
 
         this.load(function(data){
-            if (data.length) {
-                that.render(data);
-            }
+          var postEvent = '';
+          if (data.length) {
+            that.render(data);
+            postEvent = 'render';
+          } else {
+            postEvent = 'norender';
+          }
+          
+          that.postMessage(postEvent, {});
         });
     }
 

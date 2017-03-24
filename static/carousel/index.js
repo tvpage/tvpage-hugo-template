@@ -92,6 +92,12 @@ if ("object" === typeof __TVPage__.config[id]) {
     __TVPage__.config[id] = bootstrap;
 }
 
+var __windowCallbackFunc__ = null;
+if (   __TVPage__.config[id].hasOwnProperty('onChange') && typeof   __TVPage__.config[id].onChange == "function" ) {
+  __windowCallbackFunc__ = __TVPage__.config[id].onChange;
+  delete __TVPage__.config[id].onChange;
+}
+
 var config = utils.isset(window.__TVPage__) && utils.isset(__TVPage__,"config") && utils.isset(__TVPage__.config,id) ? __TVPage__.config[id] : {};
 
 var hostCssTagId = "tvp-carousel-host-css";
@@ -192,21 +198,34 @@ function handlePostMessages(e){
   var eventType = getEventType(e);
   switch (eventType) {
     case 'video_click':
-      return handleVideoClick(e);
+      handleVideoClick(e);
+      break;
     case 'modal_initialized':
-      return handleModalInitialized(e);
+      handleModalInitialized(e);
+      break;
     case 'modal_no_products': 
-      return handleModalNoProducts(e);
+      handleModalNoProducts(e);
+      break;
     case 'modal_products':
-      return handleModalProducts(e);
+      handleModalProducts(e);
+      break;
     case 'player_next':
-      return handlePlayerNext(e);
+      handlePlayerNext(e);
+      break;
     case 'modal_resize':
-      return handleModalResize(e);
+      handleModalResize(e);
+      break;
     default: 
       // do nothing
   }
+
+  handleCallback(e);
 };
+
+function handleCallback(e){
+  if (__windowCallbackFunc__) 
+    __windowCallbackFunc__(e);
+}
 
 window.addEventListener("message", function(e){
   handlePostMessages(e);
