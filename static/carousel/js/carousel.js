@@ -20,7 +20,7 @@
         this.itemsPerPage = 1000;
         this.loginId = (options.loginId || options.loginid) || 0;
         this.channel = options.channel || {};
-        this.channelId = options.channelId || null;
+        this.channelId = options.channelid || null;
         this.loading = false;
         this.page = 0;
 

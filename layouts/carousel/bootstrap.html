@@ -1,13 +1,16 @@
 {{- partial "settings.html" . -}}
+(function(){
 
-var bootstrap = {{ $.Scratch.Get "settings" | jsonify }};
-bootstrap.baseUrl = "{{ $.Site.BaseURL }}";
-bootstrap.templates = '{{- (partial (printf "%s/templates_.html" .Type) .) -}}';
-bootstrap.css = {
-	host: '{{- (partial (printf "%s/host_.css" .Type) .) -}}',
-	hostCustom: '{{- (partial (printf "%s/host-custom_.css" .Type) .) -}}',
-	widget: '{{- (partial (printf "%s/carousel_.css" .Type) .) -}}',
-	modal: '{{- (partial (printf "%s/modal_.css" .Type) .) -}}'
-};
+	var bootstrap = {{ $.Scratch.Get "settings" | jsonify }};
+	bootstrap.baseUrl = "{{ $.Site.BaseURL }}";
+	bootstrap.templates = '{{ (partial (printf "%s/templates_.html" .Type) .) }}';
+	bootstrap.css = {
+		widget: '{{- (partial (printf "%s/carousel_.css" .Type) .) -}}',
+		modal: '{{- (partial (printf "%s/modal_.css" .Type) .) -}}',
+		host: '{{- (partial (printf "%s/host_.css" .Type) .) -}}',
+		hostCustom: '{{- (partial (printf "%s/host-custom_.css" .Type) .) -}}'
+	};
 
-{{- (readFile "/themes/tvpage/static/carousel/index.js") | htmlUnescape | safeHTML -}}
+	{{- (readFile "/themes/tvpage/static/carousel/index.js") | htmlUnescape | safeHTML -}}
+
+}());

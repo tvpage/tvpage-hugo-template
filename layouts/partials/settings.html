@@ -6,9 +6,9 @@
 {{- end -}}
 {{- $isWidget := (eq .Section "tvpwidget") -}}
 {{- range $i, $param := .Site.Params -}}
-{{- if eq $i "tvppages"-}}
+{{- if eq $i "tvppages" -}}
 	{{- if not $isWidget -}}
-		{{- $.Scratch.SetInMap "settings" $i . -}}		
+		{{- $.Scratch.SetInMap "settings" $i . -}}
 	{{- end -}}
 {{- else -}}
 	{{- $.Scratch.SetInMap "settings" $i . -}}
