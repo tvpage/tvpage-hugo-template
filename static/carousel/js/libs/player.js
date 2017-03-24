@@ -177,9 +177,9 @@
                     (++checks < 50) ? libsReady() : console.log('limit reached');
                 } else {
 
-                    //We create insntances on the tvpage player.
-                    that.player = new TVPage.player({
+                var playerOptions = {
                         techOrder: 'html5,flash',
+                        mediaProviders: 'tvpage,youtube',
                         analytics: { tvpa: that.analytics },
                         apiBaseUrl: '//api.tvpage.com/v1',
                         swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+that.version+'-flash.swf',
@@ -243,8 +243,28 @@
                                 transcript: that.transcript
                             }
                         }
-                    });
+                    };
 
+                    // merge with options passed
+                    var i;
+                    var allowOverride = {
+                      techOrder: 1,
+                      analytics: 1,
+                      apiBaseUrl: 1,
+                      swf: 1,
+                      controls: 1,
+                      width: 1,
+                      height: 1,
+                      mediaProviders: 1,
+                      preload: 1
+                    };
+                    for (i in that.options) {
+                      if ( !playerOptions.hasOwnProperty(i) || allowOverride.hasOwnProperty(i) ) {
+                        playerOptions[i] = that.options[i];
+                      }
+                    }
+                    
+                    that.player = new TVPage.player(playerOptions);
                 }
             },150);
         })();
