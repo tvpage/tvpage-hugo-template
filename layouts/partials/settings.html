@@ -1,16 +1,16 @@
-{{ range $i, $def := (getJSON (printf "themes/tvpage/defaults/%s.json" .Type)).option }}
-{{ $.Scratch.SetInMap "settings" .code .value }}
-{{ end }}
-{{ range $i, $param := .Params }}
-{{ $.Scratch.SetInMap "settings" $i . }}
-{{ end }}
-{{ $isWidget := (eq .Section "tvpwidget") }}
-{{ range $i, $param := .Site.Params }}
-{{ if eq $i "tvppages"}}
-	{{ if not $isWidget }}
-		{{ $.Scratch.SetInMap "settings" $i . }}		
-	{{ end }}
-{{ else }}
-	{{ $.Scratch.SetInMap "settings" $i . }}
-{{ end }}
-{{ end }}
+{{- range $i, $def := (getJSON (printf "themes/tvpage/defaults/%s.json" .Type)).option -}}
+{{- $.Scratch.SetInMap "settings" .code .value -}}
+{{- end -}}
+{{- range $i, $param := .Params -}}
+{{- $.Scratch.SetInMap "settings" $i . -}}
+{{- end -}}
+{{- $isWidget := (eq .Section "tvpwidget") -}}
+{{- range $i, $param := .Site.Params -}}
+{{- if eq $i "tvppages"-}}
+	{{- if not $isWidget -}}
+		{{- $.Scratch.SetInMap "settings" $i . -}}		
+	{{- end -}}
+{{- else -}}
+	{{- $.Scratch.SetInMap "settings" $i . -}}
+{{- end -}}
+{{- end -}}
