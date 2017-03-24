@@ -1,5 +1,6 @@
 ;(function(window,document) {
 
+    var isIOS = (/iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream);
     var isset = function(o,p){
             var val = o;
             if (p) val = o[p];
@@ -246,7 +247,10 @@
                                 },60));
                             }
 
-                            that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progressColor;
+                            if (!isIOS) {
+                                that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progressColor;
+                            }
+
                             var current = 0;
                             if (startWith && startWith.length) {
                                 for (var i = 0; i < that.assets.length; i++) {
@@ -276,7 +280,7 @@
                         },
                         divId: that.el.id,
                         controls: {
-                            active: true,
+                            active: isIOS? false : true,
                             floater: {
                                 removeControls: that.removeControls,
                                 transcript: that.transcript

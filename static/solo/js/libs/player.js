@@ -11,7 +11,7 @@
         return true;
       },
       debounce = function(func,wait,immediate) {
-        var timeout;  
+        var timeout;
         return function() {
           var context = this, args = arguments;
           var later = function() {
@@ -47,7 +47,7 @@
       var assets = [];
       for (var i = 0; i < data.length; i++) {
         var video = data[i];
-        
+
         if (isEmpty(video)) break;
 
         var asset = video.asset;
@@ -61,22 +61,22 @@
         } else {
           asset.analyticsObj = {
             pg: isset(video,'parentId') ? video.parentId : ( isset(options,'channel') ? options.channel.id : 0 ),
-            vd: video.id, 
+            vd: video.id,
             li: video.loginId
           };
         }
 
         if (!asset.sources) asset.sources = [{ file: asset.videoId }];
         asset.type = asset.type || 'youtube';
-        assets.push(asset); 
+        assets.push(asset);
       }
       return assets;
     }(options.data));
-    
+
 
     //Context reference for Methods.
     var that = this;
-    
+
     //Sometimes we want/need to show an intearctive overlay on top of the player. We need this for MP4 videos that will
     //cue (mobile or autoplay:off) to actual play the video on demand.
     this.addOverlay = function(asset){
@@ -106,7 +106,7 @@
       if (!asset) return;
       var willCue = false,
           isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-      
+
       if (ongoing) {
         if (isMobile || (isset(this.autonext) && !this.autonext)) {
           willCue = true;
@@ -123,7 +123,7 @@
             loginId: asset.loginId
           };
 
-      //Update tvpa analytics configuration depending on the video type 
+      //Update tvpa analytics configuration depending on the video type
       //(exhange or standard)
       if (isset(asset,'analyticsLogUrl')) {
         config.logUrl = asset.analyticsLogUrl;
@@ -132,7 +132,7 @@
         config.logUrl = '//api.tvpage.com/v1/__tvpa.gif';
         analytics.initConfig(config);
       }
-      
+
       if (willCue) {
         this.instance.cueVideo(asset);
         if ('mp4' === asset.type || this.overlay) {
@@ -146,7 +146,7 @@
     this.resize = function(){
       if (!that.instance || that.isFullScreen) return;
       var width, height;
-      
+
       if (arguments.length && arguments[0] && arguments[1]) {
         width = arguments[0];
         height = arguments[1];
@@ -157,10 +157,10 @@
       }
 
       that.instance.resize(width, height);
-      
+
       if(!this.onResize) return;
       this.onResize(that.initialResize, [width, height]);
-      
+
       that.initialResize = false;
     };
 
@@ -191,7 +191,9 @@
             window.addEventListener('resize', onWindowResize);
         }
 
-        that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progressColor;
+        if (!isIOS) {
+            that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progressColor;
+        }
 
         var current = 0;
         for (var i = 0; i < that.assets.length; i++) {
@@ -230,7 +232,7 @@
             onStateChange: that.onStateChange,
             divId: that.el.id,
             controls: {
-              active: true,
+              active: isIOS? false : true,
               floater: {
                 removeControls: that.removeControls,
                 transcript: that.transcript
@@ -241,7 +243,7 @@
         }
       },150);
     })();
-    
+
   }
 
   window.Player = Player;

@@ -1,5 +1,6 @@
 ;(function(window,document) {
 
+  var isIOS = (/iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream);
   var isset = function(o,p){
         var val = o;
         if (p) val = o[p];
@@ -10,7 +11,7 @@
         return true;
       },
       debounce = function(func,wait,immediate) {
-        var timeout;  
+        var timeout;
         return function() {
           var context = this, args = arguments;
           var later = function() {
@@ -38,14 +39,14 @@
     this.transcript = isset(options.transcript) ? options.transcript : false;
     this.removeControls = isset(options.removeControls) ? options.removeControls : ["tvplogo","hd"];
     this.analytics = isset(options.analytics) ? options.analytics : true;
-    
+
     this.onResize = isset(options.onResize) && 'function' === typeof options.onResize ? options.onResize : null;
     this.onNext = isset(options.onNext) && 'function' === typeof options.onNext ? options.onNext : null;
-    
+
     this.overlay = isset(options.overlay) ? options.overlay : false;
     this.overlayColor = isset(options.overlayColor) ? options.overlayColor : null;
     this.overlayOpacity = isset(options.overlayOpacity) ? options.overlayOpacity : '0.5';
-    
+
     this.playButtonBackgroundColor = isset(options.playButtonBackgroundColor) ? options.playButtonBackgroundColor : 'fff';
     this.playButtonBorderRadius = isset(options.playButtonBorderRadius) ? options.playButtonBorderRadius : '0';
     this.playButtonBorderWidth = isset(options.playButtonBorderWidth) ? options.playButtonBorderWidth : '0';
@@ -53,12 +54,12 @@
     this.playButtonIconColor = isset(options.playButtonIconColor) ? options.playButtonIconColor : '000';
     this.playButtonWidth = isset(options.playButtonWidth) ? options.playButtonWidth : '55px';
     this.playButtonHeight = isset(options.playButtonHeight) ? options.playButtonHeight : '55px';
-    
+
     this.playText = isset(options.playText) ? options.playText : 'Watch Video';
     this.playTextSize = isset(options.playTextSize) ? options.playTextSize : '12px';
     this.playTextColor = isset(options.playTextColor) ? options.playTextColor : '000';
     this.playTextFontFamily = isset(options.playTextFontFamily) ? options.playTextFontFamily : 'Helvetica';
-    
+
     this.instance = null;
     this.el = 'string' === typeof el ? document.getElementById(el) : el;
 
@@ -66,7 +67,7 @@
       var assets = [];
       for (var i = 0; i < data.length; i++) {
         var video = data[i];
-        
+
         if (isEmpty(video)) break;
 
         var asset = video.asset;
@@ -80,22 +81,22 @@
         } else {
           asset.analyticsObj = {
             pg: isset(video,'parentId') ? video.parentId : ( isset(options,'channel') ? options.channel.id : 0 ),
-            vd: video.id, 
+            vd: video.id,
             li: video.loginId
           };
         }
 
         if (!asset.sources) asset.sources = [{ file: asset.videoId }];
         asset.type = asset.type || 'youtube';
-        assets.push(asset); 
+        assets.push(asset);
       }
       return assets;
     }(options.data));
-    
+
 
     //Context reference for Methods.
     var that = this;
-    
+
     //Sometimes we want/need to show an intearctive overlay on top of the player. We need this for MP4 videos that will
     //cue (mobile or autoplay:off) to actual play the video on demand.
     this.addOverlay = function(imgUrl){
@@ -122,7 +123,7 @@
       if (!asset) return console.log('need asset');
       var willCue = false,
           isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-      
+
       if (ongoing) {
         if (isMobile || (isset(this.autonext) && !this.autonext)) {
           willCue = true;
@@ -138,8 +139,8 @@
             domain: isset(location,'hostname') ?  location.hostname : '',
             loginId: asset.loginId
           };
-      
-      //Update tvpa analytics configuration depending on the video type 
+
+      //Update tvpa analytics configuration depending on the video type
       //(exhange or standard)
       if (isset(asset,'analyticsLogUrl')) {
         config.logUrl = asset.analyticsLogUrl;
@@ -148,7 +149,7 @@
         config.logUrl = '\/\/api.tvpage.com\/v1\/__tvpa.gif';
         analytics.initConfig(config);
       }
-      
+
       if (willCue) {
         this.instance.cueVideo(asset);
         if ('mp4' === asset.type || this.overlay) {
@@ -162,7 +163,7 @@
     this.resize = function(){
       if (!that.instance || that.isFullScreen) return;
       var width, height;
-      
+
       if (arguments.length && arguments[0] && arguments[1]) {
         width = arguments[0];
         height = arguments[1];
@@ -171,12 +172,12 @@
         width = parentEl.clientWidth;
         height = parentEl.clientHeight;
       }
-      
+
       that.instance.resize(width, height);
-      
+
       if(!this.onResize) return;
       this.onResize(that.initialResize, [width, height]);
-      
+
       that.initialResize = false;
     }
 
@@ -197,7 +198,7 @@
             onReady: function(e, pl){
               that.instance = pl;
               that.resize();
-              
+
               //We don't want to resize the player here on fullscreen... we need the player be.
               if (isset(window,'BigScreen')) {
                 BigScreen.onchange = function(){
@@ -215,8 +216,10 @@
               } else {
                 window.addEventListener('resize', resize);
               }
+              if (!isIOS) {
+                  that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progressColor;
+              }
 
-              that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progressColor;
               var current = 0;
               if (startWith && startWith.length) {
                 for (var i = 0; i < that.assets.length; i++) {
@@ -232,12 +235,12 @@
             },
             onStateChange: function(e){
               if ('tvp:media:videoended' !== e) return;
-              
+
               that.current++;
               if (!that.assets[that.current]) {
                 that.current = 0;
               }
-              
+
               var next = that.assets[that.current];
               that.play(next, true);
               if(that.onNext) {
@@ -246,7 +249,7 @@
             },
             divId: that.el.id,
             controls: {
-              active: true,
+              active: isIOS? false : true,
               floater: {
                 removeControls: that.removeControls,
                 transcript: that.transcript
@@ -257,7 +260,7 @@
         }
       },150);
     })();
-    
+
   }
 
   window.Player = Player;

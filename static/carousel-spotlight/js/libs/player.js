@@ -1,5 +1,6 @@
 ;(function(window,document) {
 
+    var isIOS = (/iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream);
     var isset = function(o,p){
             var val = o;
             if (p) val = o[p];
@@ -196,7 +197,7 @@
 
                             //We can't resize using local references when we are inside an iframe. Alternative is to receive external
                             //size from host.
-                            if (window.location !== window.parent.location && (/iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream)){
+                            if (window.location !== window.parent.location && isIOS){
                                 var onHolderResize = function (e) {
                                     if (!e || !isset(e, 'data') || !isset(e.data, 'event') || 'tvp_carousel_spotlight:modal_holder_resize' !== e.data.event) return;
                                     var size = e.data.size || [];
@@ -210,7 +211,10 @@
                                 window.addEventListener('resize', onWindowResize);
                             }
 
-                            that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progressColor;
+                            if (!isIOS) {
+                                that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progressColor;
+                            }
+
                             var current = 0;
                             if (startWith && startWith.length) {
                                 for (var i = 0; i < that.assets.length; i++) {
@@ -237,7 +241,7 @@
                         },
                         divId: that.el.id,
                         controls: {
-                            active: true,
+                            active: isIOS? false : true,
                             floater: {
                                 removeControls: that.removeControls,
                                 transcript: that.transcript
