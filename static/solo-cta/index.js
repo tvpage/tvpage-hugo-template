@@ -130,16 +130,15 @@ modalContainer.innerHTML = config.templates.modal;
 document.body.appendChild(modalContainer);
 
 var holder = document.getElementById(config.id + "-holder");
-
- //Loading the videos.
-var jsonpScript = document.createElement('script');
-var cbName = 'tvp_' + Math.floor(Math.random() * 50005);
-
-jsonpScript.src = '//api.tvpage.com/v1/channels/' + config.channel.id + '/videos?X-login-id=' + config.loginId + "&callback=" + cbName;
+var channel = config.channel || {};
+var channelId = channel.id ? channel.id : (config.channelid || 0);
+if (!channelId) {
+  holder.parentNode.removeChild(holder);
+}
 
 var clickData = {};
-var handleVideoClick = function(){
 
+var handleVideoClick = function(){
   updateModalTitle(clickData.selectedVideo.title);
   utils.removeClass('tvp-modal-' + config.id,'tvp-hidden');
   utils.removeClass('tvp-modal-overlay-' + config.id,'tvp-hidden');
@@ -175,29 +174,42 @@ var handleVideoClick = function(){
   iframeModalDocument.close();
 };
 
+//Loading the videos.
+var jsonpScript = document.createElement('script');
+var cbName = 'tvp_' + Math.floor(Math.random() * 50005);
+var jsonpScriptSrc = '//api.tvpage.com/v1/channels/' + channelId + '/videos?X-login-id=' + (config.loginId || config.loginid);
+
+var params = channel.parameters || {};
+for (var p in params) { jsonpScriptSrc += '&' + p + '=' + params[p];}
+
+jsonpScriptSrc += "&callback=" + cbName;
+jsonpScript.src = jsonpScriptSrc;
+
 window[cbName] = function (data) {
-    if (!data.length) return;
+    if (data.length) {
+      var overlayEl = document.createElement("div");
+      overlayEl.className = "tvp-cta-overlay";
+      var video = data[0];
+      overlayEl.style.backgroundImage = "url(" + video.asset.thumbnailUrl + ")";
+      var template = config.templates.cta;
+      if (utils.isset(video,'title')) {
+          template += "<div class='tvp-cta-text'>" + video.title + "</div>";
+      }
+      
+      overlayEl.innerHTML = template;
 
-    var overlayEl = document.createElement("div");
-    overlayEl.className = "tvp-cta-overlay";
-    var video = data[0];
-    overlayEl.style.backgroundImage = "url(" + video.asset.thumbnailUrl + ")";
-    var template = config.templates.cta;
-    if (utils.isset(video,'title')) {
-        template += "<div class='tvp-cta-text'>" + video.title + "</div>";
+      clickData = {
+        data: data,
+        selectedVideo: data[0],
+        runTime: config
+      };
+      
+      overlayEl.removeEventListener("click",handleVideoClick,false);
+      overlayEl.addEventListener("click",handleVideoClick,false);
+      holder.appendChild(overlayEl);
+    } else {
+      holder.parentNode.removeChild(holder);
     }
-    
-    overlayEl.innerHTML = template;
-
-    clickData = {
-      data: data,
-      selectedVideo: data[0],
-      runTime: config
-    };
-    
-    overlayEl.removeEventListener("click",handleVideoClick,false);
-    overlayEl.addEventListener("click",handleVideoClick,false);
-    holder.appendChild(overlayEl);
 };
 
 document.body.appendChild(jsonpScript);
