@@ -160,15 +160,15 @@ var handleVideoClick = function(){
     js: [
         "//a.tvpage.com/tvpa.min.js",
         "https://cdnjs.tvpage.com/tvplayer/tvp-1.8.6.min.js",
-        config.debug ? config.jsPath + "/libs/utils.js" : "",
-        config.debug ? config.jsPath + "/libs/analytics.js" : "",
-        config.debug ? config.jsPath + "/libs/player.js" : "",
-        config.debug ? config.jsPath + "/" + config.mobilePath + "modal/index.js" : "",
-        config.debug ? "" : config.jsPath + config.mobilePath + "modal/scripts.min.js"
+        config.debug ? config.jsPath + "libs/utils.js" : "",
+        config.debug ? config.jsPath + "libs/analytics.js" : "",
+        config.debug ? config.jsPath + "libs/player.js" : "",
+        config.debug ? config.jsPath + "modal/index.js" : "",
+        config.debug ? "" : config.jsPath + "modal/scripts.min.js"
     ],
     css: [
-        config.debug ? config.cssPath + "/" + config.mobilePath + "modal/styles.css" : "",
-        config.debug ? "" : config.cssPath + "/" + config.mobilePath + "modal/styles.min.css"
+        config.debug ? config.cssPath + config.mobilePath + "modal/styles.css" : "",
+        config.debug ? "" : config.cssPath + config.mobilePath + "modal/styles.min.css"
     ]
   }));
 
@@ -210,11 +210,6 @@ var updateModalTitle = function(title){
     document.getElementById('tvp-modal-title-' + config.id).innerHTML = title || "";
 };
 
-// window.addEventListener("message", function(e){
-//     if (!isEvent(e, ":resize")) return;
-//     holder.style.height = e.data.height;
-// });
-
 var iframeModalHolder = document.getElementById('tvp-modal-iframe-holder-' + config.id);
 var iframeModal = null;
 var iframeModalDocument = null;
@@ -240,9 +235,6 @@ function handlePostMessages(e){
       break;
     case 'player_next':
       handlePlayerNext(e);
-      break;
-    case 'modal_resize':
-      handleModalResize(e);
       break;
     default: 
       // do nothing
@@ -288,10 +280,6 @@ function handleModalInitialized(e){
 
 function handlePlayerNext(e) {
     updateModalTitle(e.data.next.assetTitle);
-};
-
-function handleModalResize(e){
-  //iframeModal.style.height = e.data.height;
 };
 
 var closeModal = function () {

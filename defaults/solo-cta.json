@@ -1,6 +1,83 @@
 {
   "option": [
     {
+      "for": "cta",
+      "type": "text",
+      "label": "CTA Overlay Opacity",
+      "code": "cta_overlay_opacity",
+      "value": "0.3"
+    },
+    {
+      "for": "cta",
+      "type": "text",
+      "label": "CTA Overlay Color",
+      "code": "cta_overlay_color",
+      "value": "transparent"
+    },
+    {
+      "for": "cta",
+      "type": "text",
+      "label": "CTA Play Button Width",
+      "code": "cta_play_button_width",
+      "value": "10%"
+    },
+    {
+      "for": "cta",
+      "type": "text",
+      "label": "CTA Play Button Background Color",
+      "code": "cta_play_button_background_color",
+      "value": "white"
+    },
+    {
+      "for": "cta",
+      "type": "text",
+      "label": "CTA Play Button Icon Color",
+      "code": "cta_play_button_icon_color",
+      "value": "black"
+    },
+    {
+      "for": "cta",
+      "type": "text",
+      "label": "CTA Play Button Icon Color",
+      "code": "cta_play_button_icon_stroke_width",
+      "value": "1px"
+    },
+    {
+      "for": "cta",
+      "type": "text",
+      "label": "CTA Text Align",
+      "code": "cta_text_align",
+      "value": "left"
+    },
+    {
+      "for": "cta",
+      "type": "text",
+      "label": "CTA Text Font Family",
+      "code": "cta_text_font_family",
+      "value": "Helvetica"
+    },
+    {
+      "for": "cta",
+      "type": "text",
+      "label": "CTA Text Font Size",
+      "code": "cta_text_font_size",
+      "value": "16px"
+    },
+    {
+      "for": "cta",
+      "type": "text",
+      "label": "CTA Text Font Weight",
+      "code": "cta_text_font_weight",
+      "value": "initial"
+    },
+    {
+      "for": "cta",
+      "type": "text",
+      "label": "CTA Text Font Color",
+      "code": "cta_text_font_color",
+      "value": "white"
+    },
+    {
       "for": "player",
       "type": "text",
       "label": "Play Text",
@@ -337,6 +414,20 @@
         "label": "Modal Close Button SVG Display",
         "code": "modal_close_button_svg_display",
         "value": "block"
+    },
+    {
+        "for": "modal",
+        "type": "text",
+        "label": "Modal Close Button SVG Icon Stroke Width",
+        "code": "modal_close_button_svg_icon_stroke_width",
+        "value": "1px"
+    },
+    {
+        "for": "modal",
+        "type": "text",
+        "label": "Modal Close Button SVG Icon Color",
+        "code": "modal_close_button_svg_icon_color",
+        "value": "white"
     },
     {
         "for": "modal",

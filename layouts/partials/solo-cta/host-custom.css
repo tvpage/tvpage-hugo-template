@@ -3,6 +3,30 @@
     "margin: {{ ($.Scratch.Get "settings").margin }};" +
 "}" +
 
+".tvp-cta-overlay-cover {" +
+  "opacity: {{ ($.Scratch.Get "settings").cta_overlay_opacity }};" +
+  "background-image: linear-gradient(to bottom right,{{ ($.Scratch.Get "settings").cta_overlay_color }},{{ ($.Scratch.Get "settings").cta_overlay_color }});" +
+"}" +
+
+".tvp-cta-play {" +
+    "width: {{ ($.Scratch.Get "settings").cta_play_button_width }};" +
+    "background-color: {{ ($.Scratch.Get "settings").cta_play_button_background_color }};" +
+"}" +
+
+".tvp-cta-play > polygon {" +
+    "fill: {{ ($.Scratch.Get "settings").cta_play_button_icon_color }};" +
+    "stroke: {{ ($.Scratch.Get "settings").cta_play_button_icon_color }};" +
+    "stroke-width: {{ ($.Scratch.Get "settings").cta_play_button_icon_stroke_width }};" +
+"}" +
+
+".tvp-cta-text {" +
+    "text-align: {{ ($.Scratch.Get "settings").cta_text_align }};" +
+    "font-family: {{ ($.Scratch.Get "settings").cta_text_font_family }};" +
+    "font-size: {{ ($.Scratch.Get "settings").cta_text_font_size }};" +
+    "font-weight: {{ ($.Scratch.Get "settings").cta_text_font_weight }};" +
+    "color: {{ ($.Scratch.Get "settings").cta_text_font_color }};" +
+"}" +
+
 ".tvp-modal-header {" +
     "padding:{{ ($.Scratch.Get "settings").modal_header_padding }};" +
     "border-bottom:{{ ($.Scratch.Get "settings").modal_header_border_bottom }};" +
@@ -42,8 +66,14 @@
     "opacity: {{ ($.Scratch.Get "settings").modal_close_button_opacity }};" +
 "}" +
 
-".tvp-modal-close > svg {" +
+".tvp-modal-close-svg {" +
     "display: {{ ($.Scratch.Get "settings").modal_close_button_svg_display }};" +
+"}" +
+
+".tvp-modal-close-svg > path:nth-child(1){ " +
+  "stroke-width: {{ ($.Scratch.Get "settings").modal_close_button_svg_icon_stroke_width }};" +
+  "stroke: {{ ($.Scratch.Get "settings").modal_close_button_svg_icon_color }};" +
+  "fill: {{ ($.Scratch.Get "settings").modal_close_button_svg_icon_color }};" +
 "}" +
 
 ".tvp-modal-close:hover {" +
