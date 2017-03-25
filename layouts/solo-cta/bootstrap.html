@@ -5,7 +5,7 @@
   bootstrap.baseUrl = "{{ $.Site.BaseURL }}";
   bootstrap.templates = {
     cta: '<div class="tvp-cta-overlay-cover"></div>' +
-    '<svg class="tvp-cta-play" viewBox="0 0 200 200">' +
+    '<svg class="tvp-cta-play" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">' +
         '<polygon points="70, 55 70, 145 145, 100"></polygon>' +
     '</svg>',
     modal: '<div id="tvp-modal-overlay-{{ ($.Scratch.Get "settings").name }}" class="tvp-modal-overlay tvp-hidden"></div>' +
