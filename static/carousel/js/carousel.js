@@ -19,6 +19,8 @@
         this.page = 0;
 
         this.el = 'string' === typeof el ? document.getElementById(el) : el;
+        this.el.querySelector(".tvp-carousel-title").innerHTML = options.title_text || "Watch Videos";
+
         this.container = this.el.getElementsByClassName('tvp-carousel-content')[0];
 
         this.itemMetaData = Utils.isset(options.item_meta_data) ? options.item_meta_data : null;

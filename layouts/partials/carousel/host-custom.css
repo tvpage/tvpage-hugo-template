@@ -32,7 +32,7 @@
     "padding: {{ ($.Scratch.Get "settings").modal_close_button_padding }};" +
     "background-color: {{ ($.Scratch.Get "settings").modal_close_button_background_color }};" +
     {{ with ($.Scratch.Get "settings").modal_close_button_background_image_url }}
-        "background-image: url('{{ $.Site.BaseURL }}carousel/{{ ($.Scratch.Get "settings").modal_close_button_background_image_url }}');" +
+        "background-image: url('{{ $.Site.BaseURL }}/carousel/{{ ($.Scratch.Get "settings").modal_close_button_background_image_url }}');" +
     {{ end }}
     "border: {{ ($.Scratch.Get "settings").modal_close_button_border }};" +
     "border-radius: {{ ($.Scratch.Get "settings").modal_close_button_border_radius }};" +
@@ -47,6 +47,6 @@
 "}" +
 
 ".tvp-modal-close:hover {" +
-    "background: {{ ($.Scratch.Get "settings").modal_close_button_background_color_hover }};" +
+    "background-color: {{ ($.Scratch.Get "settings").modal_close_button_background_color_hover }};" +
     "opacity: {{ ($.Scratch.Get "settings").modal_close_button_opacity_hover }};" +
 "}"

@@ -125,10 +125,14 @@ config.cssPath = config.staticPath + config.distPath + 'css/';
 config.jsPath = config.staticPath + config.distPath + 'js/';
 config.eventPrefix = ("tvp_" + config.id).replace(/-/g,'_');
 
-//Append templates that live in the host page.
 var modalContainer = document.createElement("div");
 modalContainer.innerHTML = config.templates.modal;
 document.body.appendChild(modalContainer);
+
+var modal = document.getElementById("tvp-modal-" + config.id);
+var modalTitle = modal.querySelector("#tvp-modal-title-" + config.id);
+modalTitle.classList.add("bottom");
+modal.querySelector(".tvp-modal-body").appendChild(modalTitle);
 
 var holder = document.getElementById(config.id + "-holder");
 var iframe = holder.querySelector("iframe");

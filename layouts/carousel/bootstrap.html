@@ -4,7 +4,7 @@
 	var bootstrap = {{ $.Scratch.Get "settings" | jsonify }};
 	bootstrap.baseUrl = "{{ $.Site.BaseURL }}";
 	bootstrap.templates = {
-		carousel: '<div class="tvp-carousel-title">{{ ($.Scratch.Get "settings").title_text }}</div>' +
+		carousel: '<div class="tvp-carousel-title"></div>' +
 		'<div class="tvp-carousel-content"></div>' + 
 		'<div class="tvp-carousel-arrow prev">' +
 			'<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">' +
@@ -30,10 +30,12 @@
 			'<div class="tvp-modal-wrapper">' +
 	            '<div class="tvp-modal-content">' +
 	                '<div id="tvp-modal-header-{{ ($.Scratch.Get "settings").name }}" class="tvp-modal-header">' +
-	                    '<svg id="tvp-modal-close-{{ ($.Scratch.Get "settings").name }}" class="tvp-modal-close" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">' +
-	                        '<path fill="#ffffff" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>' +
-	                        '<path d="M0 0h24v24H0z" fill="none"></path>' +
-	                    '</svg>' +
+	                	'<div id="tvp-modal-close-{{ ($.Scratch.Get "settings").name }}" class="tvp-modal-close">' +
+		                    '<svg id="tvp-modal-close-{{ ($.Scratch.Get "settings").name }}" class="tvp-modal-close" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">' +
+		                        '<path fill="#ffffff" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>' +
+		                        '<path d="M0 0h24v24H0z" fill="none"></path>' +
+		                    '</svg>' +
+	                    '</div>' +
 	                    '<h4 id="tvp-modal-title-{{ ($.Scratch.Get "settings").name }}" class="tvp-modal-title"></h4>' +
 	                '</div>' +
 	                '<div class="tvp-modal-body">' +
