@@ -24,6 +24,13 @@
     {
       "for": "cta",
       "type": "text",
+      "label": "CTA Play Button Height",
+      "code": "cta_play_button_height",
+      "value": "19.554%"
+    },
+    {
+      "for": "cta",
+      "type": "text",
       "label": "CTA Play Button Background Color",
       "code": "cta_play_button_background_color",
       "value": "white"

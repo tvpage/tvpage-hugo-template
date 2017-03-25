@@ -10,6 +10,7 @@
 
 ".tvp-cta-play {" +
     "width: {{ ($.Scratch.Get "settings").cta_play_button_width }};" +
+    "height: {{ ($.Scratch.Get "settings").cta_play_button_height }};" +
     "background-color: {{ ($.Scratch.Get "settings").cta_play_button_background_color }};" +
 "}" +
 
