@@ -136,6 +136,10 @@
     "padding: 0;" +
 "}" +
 
+".tvp-modal-close-svg > path:nth-child(2){ " +
+  "fill: none;" +
+"}" +
+
 ".tvp-modal-close {" +
     "cursor: pointer;" +
     "-webkit-appearance: none;" +

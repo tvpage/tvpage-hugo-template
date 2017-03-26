@@ -762,6 +762,20 @@
         {
             "for": "modal",
             "type": "text",
+            "label": "Modal Close Button SVG Icon Stroke Width",
+            "code": "modal_close_button_svg_icon_stroke_width",
+            "value": "1px"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Modal Close Button SVG Icon Color",
+            "code": "modal_close_button_svg_icon_color",
+            "value": "white"
+        },
+        {
+            "for": "modal",
+            "type": "text",
             "label": "Modal Close Button Opacity",
             "code": "modal_close_button_opacity",
             "value": "1"

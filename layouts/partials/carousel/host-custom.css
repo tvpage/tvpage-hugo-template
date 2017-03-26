@@ -34,7 +34,7 @@
     "padding: {{ ($.Scratch.Get "settings").modal_close_button_padding }};" +
     "background-color: {{ ($.Scratch.Get "settings").modal_close_button_background_color }};" +
     {{ with ($.Scratch.Get "settings").modal_close_button_background_image_url }}
-        "background-image: url('{{ $.Site.BaseURL }}/carousel/{{ ($.Scratch.Get "settings").modal_close_button_background_image_url }}');" +
+        "background-image: url('{{ $.Site.BaseURL }}carousel/{{ ($.Scratch.Get "settings").modal_close_button_background_image_url }}');" +
     {{ end }}
     "border: {{ ($.Scratch.Get "settings").modal_close_button_border }};" +
     "border-radius: {{ ($.Scratch.Get "settings").modal_close_button_border_radius }};" +
@@ -44,11 +44,17 @@
     "opacity: {{ ($.Scratch.Get "settings").modal_close_button_opacity }};" +
 "}" +
 
-".tvp-modal-close > svg {" +
+".tvp-modal-close-svg {" +
     "display: {{ ($.Scratch.Get "settings").modal_close_button_svg_display }};" +
 "}" +
 
+".tvp-modal-close-svg > path:nth-child(1){ " +
+  "stroke-width: {{ ($.Scratch.Get "settings").modal_close_button_svg_icon_stroke_width }};" +
+  "stroke: {{ ($.Scratch.Get "settings").modal_close_button_svg_icon_color }};" +
+  "fill: {{ ($.Scratch.Get "settings").modal_close_button_svg_icon_color }};" +
+"}" +
+
 ".tvp-modal-close:hover {" +
-    "background-color: {{ ($.Scratch.Get "settings").modal_close_button_background_color_hover }};" +
+    "background: {{ ($.Scratch.Get "settings").modal_close_button_background_color_hover }};" +
     "opacity: {{ ($.Scratch.Get "settings").modal_close_button_opacity_hover }};" +
 "}"
