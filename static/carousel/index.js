@@ -196,7 +196,7 @@ var getEventType = function (e) {
       evt= e.data.event;
     }
     
-    if (evt.length && evt.substr(0, config.eventPrefix.length) === config.eventPrefix) {
+    if (evt && evt.length && evt.substr(0, config.eventPrefix.length) === config.eventPrefix) {
       return evt.substr(config.eventPrefix.length + 1);
     }
     
