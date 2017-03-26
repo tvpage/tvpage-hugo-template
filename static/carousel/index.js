@@ -130,9 +130,11 @@ modalContainer.innerHTML = config.templates.modal;
 document.body.appendChild(modalContainer);
 
 var modal = document.getElementById("tvp-modal-" + config.id);
-var modalTitle = modal.querySelector("#tvp-modal-title-" + config.id);
-modalTitle.classList.add("bottom");
-modal.querySelector(".tvp-modal-body").appendChild(modalTitle);
+if (config.modal_title_position.trim().length && "bottom" === config.modal_title_position) {
+  var modalTitle = modal.querySelector("#tvp-modal-title-" + config.id);
+  modalTitle.classList.add("bottom");
+  modal.querySelector(".tvp-modal-body").appendChild(modalTitle);
+}
 
 var holder = document.getElementById(config.id + "-holder");
 var iframe = holder.querySelector("iframe");
