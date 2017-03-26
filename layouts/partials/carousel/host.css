@@ -92,14 +92,6 @@
     "clear: both;" +
 "}" +
 
-".tvp-title > p {" +
-    "margin: 0;" +
-    "line-height: 1.4285;" +
-    "color: #000;" +
-    "font-size: 16px;" +
-    "font-family: Helvetica;" +
-"}" +
-
 ".tvp-modal-title {" +
     "margin: 0;" +
     "float: left;" +
@@ -133,11 +125,6 @@
 
 ".mobile .tvp-modal-iframe-holder.products {" +
     "padding-bottom: 81.65%;" +
-"}" +
-
-".tvp-title > p {" +
-    "float: right;" +
-    "margin-right: 15px;" +
 "}" +
 
 ".tvp-title {" +

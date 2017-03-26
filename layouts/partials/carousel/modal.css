@@ -111,11 +111,4 @@
 
 ".tvp-arrow-indicator:before {" +
     "border-left: 13px solid {{ ($.Scratch.Get "settings").product_popup_arrow_indicator_border_color }};" +
-"}" +
-
-".tvp-modal-title {" +
-    "color: {{ ($.Scratch.Get "settings").modal_title_font_color }};" +
-    "font-family: {{ ($.Scratch.Get "settings").modal_title_font_family }};" +
-    "font-weight: {{ ($.Scratch.Get "settings").modal_title_font_weight }};" +
-    "font-size: {{ ($.Scratch.Get "settings").modal_title_font_size }};" +
 "}"

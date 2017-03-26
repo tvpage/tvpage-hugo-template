@@ -15,6 +15,8 @@
 
 ".tvp-modal-title {" +
     "color: {{ ($.Scratch.Get "settings").modal_title_font_color }};" +
+    "font-family: {{ ($.Scratch.Get "settings").modal_title_font_family }};" +
+    "font-weight: {{ ($.Scratch.Get "settings").modal_title_font_weight }};" +
     "font-size: {{ ($.Scratch.Get "settings").modal_title_font_size }};" +
 "}" +
 
