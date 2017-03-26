@@ -130,6 +130,9 @@ modalContainer.innerHTML = config.templates.modal;
 document.body.appendChild(modalContainer);
 
 var modal = document.getElementById("tvp-modal-" + config.id);
+
+modal.classList.add(utils.isMobile ? "mobile" : "desktop");
+
 if (config.modal_title_position.trim().length && "bottom" === config.modal_title_position) {
   var modalTitle = modal.querySelector("#tvp-modal-title-" + config.id);
   modalTitle.classList.add("bottom");
