@@ -127,6 +127,14 @@
     "padding-bottom: 57.4%;" +
 "}" +
 
+".mobile .tvp-modal-iframe-holder {" +
+    "padding-bottom: 57.1%;" +
+"}" +
+
+".mobile .tvp-modal-iframe-holder.products {" +
+    "padding-bottom: 76.95%;" +
+"}" +
+
 ".tvp-title > p {" +
     "float: right;" +
     "margin-right: 15px;" +
