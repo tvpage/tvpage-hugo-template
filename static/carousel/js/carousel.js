@@ -107,8 +107,14 @@
                     },10);
 
                     that.el.querySelector('.slick-list').style.margin = "0 -" + ( parseInt(options.item_padding_right) + 1 ) + "px";
+                    
+                    var navBulletsHeight = 0;
+                    if (options.navigation_bullets) {
+                        navBulletsHeight = parseInt(options.navigation_bullets_margin_bottom) + parseInt(options.height_offset);
+                    }
+
                     that.postMessage('resize', {
-                      height: (that.el.offsetHeight + parseInt(options.navigation_bullets_margin_bottom) + parseInt(options.height_offset)) + 'px'
+                      height: (that.el.offsetHeight + navBulletsHeight) + 'px'
                     });
                 },100));
 
