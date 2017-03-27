@@ -29,7 +29,7 @@
 
         var that = this;
 
-        this.postMessage = function(evt, message) {
+        this.emitMessage = function(evt, message) {
           if ( window.parent ) {
             message = message || {};
             message.event = 'tvp_' + options.id.replace(/-/g,'_') + ":" + evt;
@@ -115,7 +115,7 @@
                         navBulletsHeight = marginBottom + heightOffset;
                     }
 
-                    that.postMessage('resize', {
+                    that.emitMessage('resize', {
                       height: (that.el.offsetHeight + navBulletsHeight) + 'px'
                     });
                 },100));
@@ -213,7 +213,7 @@
             postEvent = 'norender';
           }
           
-          that.postMessage(postEvent, {});
+          that.emitMessage(postEvent, {});
         });
     }
 
