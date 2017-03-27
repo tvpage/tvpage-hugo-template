@@ -960,14 +960,14 @@
             "type": "text",
             "label": "Products Headline Top",
             "code": "products_headline_top",
-            "value": "0"
+            "value": "3px"
         },
         {
             "for": "modal",
             "type": "text",
             "label": "Products Headline Right",
             "code": "products_headline_right",
-            "value": "0"
+            "value": "3px"
         },
         {
             "for": "modal",

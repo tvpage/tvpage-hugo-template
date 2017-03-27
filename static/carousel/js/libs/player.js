@@ -170,7 +170,7 @@
 
             that.instance.resize(width, height);
 
-            if(!that.onResize) return;
+            if (!that.onResize) return;
             that.onResize(that.initialResize, [width, height]);
 
             that.initialResize = false;
@@ -211,9 +211,9 @@
                                 window.removeEventListener('message', onHolderResize, false);
                                 window.addEventListener('message', onHolderResize, false);
                             } else {
-                                var onWindowResize = Utils.debounce(that.resize,50);
+                                var onWindowResize = that.resize;
                                 window.removeEventListener('message', onWindowResize, false);
-                                window.addEventListener('resize', onWindowResize);
+                                window.addEventListener('resize', onWindowResize, false);
                             }
 
                             that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progressColor;

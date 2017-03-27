@@ -102,7 +102,6 @@ var config = utils.isset(window.__TVPage__) && utils.isset(__TVPage__,"config") 
 
 var hostCssTagId = "tvp-carousel-host-css";
 var hostCssTag = "";
-
 if (!document.getElementById(hostCssTagId)) {
   hostCssTag = '<style id="' + hostCssTagId + '">' + config.css.host + '</style>';
 }
@@ -319,7 +318,7 @@ function handlePlayerNext(e) {
 };
 
 function handleModalNoProducts(e) {
-  if (config.isDesktop) {
+  if (!utils.isMobile) {
       var label = document.getElementById('tvp-products-headline-' + config.id);
       if (label) {
           label.parentNode.removeChild(label);
@@ -335,12 +334,12 @@ function handleModalResize(e){
 };
 
 function handleModalProducts(e) {
-  if (config.isDesktop && !document.getElementById('tvp-products-headline-' + config.id)) {
-      var label = document.createElement('p');
-      utils.addClass(label,'tvp-products-headline');
-      label.id = 'tvp-products-headline-' + config.id;
-      label.innerHTML = 'Related Products';
-      document.getElementById('tvp-modal-header-' + config.id).appendChild(label);
+  if (!utils.isMobile && !document.getElementById('tvp-products-headline-' + config.id)) {
+    var label = document.createElement('p');
+    utils.addClass(label,'tvp-products-headline');
+    label.id = 'tvp-products-headline-' + config.id;
+    label.innerHTML = 'Related Products';
+    document.getElementById('tvp-modal-header-' + config.id).appendChild(label);
   }
 
   utils.removeClass(iframeModalHolder,'no-products');
