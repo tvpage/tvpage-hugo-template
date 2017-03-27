@@ -110,7 +110,9 @@
                     
                     var navBulletsHeight = 0;
                     if (options.navigation_bullets) {
-                        navBulletsHeight = parseInt(options.navigation_bullets_margin_bottom) + parseInt(options.height_offset);
+                        var marginBottom = parseInt(options.navigation_bullets_margin_bottom,10);
+                        var heightOffset = parseInt(options.height_offset,10);
+                        navBulletsHeight = marginBottom + heightOffset;
                     }
 
                     that.postMessage('resize', {
