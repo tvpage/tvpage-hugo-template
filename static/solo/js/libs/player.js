@@ -28,40 +28,48 @@
     this.overlay = isset(options.overlay) ? options.overlay : null;
     this.instance = null;
     this.el = 'string' === typeof el ? document.getElementById(el) : el;
+    this.onNext = isset(options.onNext) && "function" === typeof options.onNext ? options.onNext : null;
+    this.onPlayerReady = isset(options.onPlayerReady) && "function" === typeof options.onPlayerReady ? options.onPlayerReady : null;
+    this.onFullscreenChange = isset(options.onFullscreenChange) && "function" === typeof options.onFullscreenChange ? options.onFullscreenChange : null;
+
+
+    //Context reference for Methods.
+    var that = this;
+
+    this.createAsset = function(obj){
+        if (!obj || "object" !== typeof obj || isEmpty(obj) || !isset(obj,'asset')) return;
+
+        var asset = obj.asset;
+        asset.assetId = obj.id;
+        asset.assetTitle = obj.title;
+        asset.loginId = obj.loginId;
+
+        if (isset(obj,'events') && obj.events.length) {
+            asset.analyticsLogUrl = obj.analytics;
+            asset.analyticsObj = obj.events[1].data;
+        } else {
+            asset.analyticsObj = {
+                pg: isset(obj,'parentId') ? obj.parentId : ( isset(options,'channel') ? options.channel.id : 0 ),
+                vd: obj.id,
+                li: obj.loginId
+            };
+        }
+
+        if (!asset.sources) asset.sources = [{ file: asset.videoId }];
+        asset.type = asset.type || 'youtube';
+
+        return asset;
+    };
 
     this.assets = (function(data){
       var assets = [];
       for (var i = 0; i < data.length; i++) {
         var video = data[i];
-        
         if (isEmpty(video)) break;
-
-        var asset = video.asset;
-        asset.assetId = video.id;
-        asset.assetTitle = video.title;
-        asset.loginId = video.loginId;
-
-        if (isset(video,'events') && video.events.length) {
-          asset.analyticsLogUrl = video.analytics;
-          asset.analyticsObj = video.events[1].data;
-        } else {
-          asset.analyticsObj = {
-            pg: isset(video,'parentId') ? video.parentId : ( isset(options,'channel') ? options.channel.id : 0 ),
-            vd: video.id, 
-            li: video.loginId
-          };
-        }
-
-        if (!asset.sources) asset.sources = [{ file: asset.videoId }];
-        asset.type = asset.type || 'youtube';
-        assets.push(asset); 
+        assets.push(that.createAsset(video));
       }
       return assets;
     }(options.data));
-    
-
-    //Context reference for Methods.
-    var that = this;
     
     //Sometimes we want/need to show an intearctive overlay on top of the player. We need this for MP4 videos that will
     //cue (mobile or autoplay:off) to actual play the video on demand.
@@ -83,12 +91,18 @@
             }
         };
 
+        var existing = this.el.querySelector('.tvp-overlay');
+        if (existing) {
+            existing.removeEventListener('click', click, false);
+            existing.parentNode.removeChild(existing);
+        }
+
         overlay.removeEventListener('click', click, false);
         overlay.addEventListener('click', click, false);
         this.el.appendChild(overlay);
     };
 
-    this.play = function(asset,ongoing){
+    this.play = function(asset,ongoing,initial){
       if (!asset) return;
       var willCue = false,
           isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -118,7 +132,11 @@
         config.logUrl = '//api.tvpage.com/v1/__tvpa.gif';
         analytics.initConfig(config);
       }
-      
+
+      if (!initial) {
+        this.current = this.getCurrentIndex(asset.assetId);
+      }
+
       if (willCue) {
         this.instance.cueVideo(asset);
         if ('mp4' === asset.type || this.overlay) {
@@ -127,6 +145,16 @@
       } else {
        this.instance.loadVideo(asset);
       }
+    };
+
+    this.addData = function(data){
+        if (!data || !data.length) return;
+        var newAssets = [];
+        for (var i = 0; i < data.length; i++) {
+            newAssets.push(this.createAsset(data[i]));
+        }
+
+        this.assets = this.assets.concat(newAssets);
     };
 
     this.resize = function(){
@@ -151,6 +179,16 @@
       that.initialResize = false;
     };
 
+    this.getCurrentIndex = function(id){
+      var current = 0;
+      for (var i = 0; i < this.assets.length; i++) {
+        if (this.assets[i].assetId === (id || '') ) {
+          current = i;
+        }
+      }
+      return current;
+    };
+
     this.onReady = function(e, pl){
         that.instance = pl;
         that.resize();
@@ -159,6 +197,9 @@
         if (isset(window,'BigScreen')) {
             BigScreen.onchange = function(){
                 that.isFullScreen = !that.isFullScreen;
+                if (that.onFullscreenChange()) {
+                  that.onFullscreenChange();
+                }
             };
         }
 
@@ -180,26 +221,31 @@
 
         that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progressColor;
 
-        var current = 0;
-        for (var i = 0; i < that.assets.length; i++) {
-            if (that.assets[i].assetId === (startWith || '') ) {
-                current = i;
-            }
-        }
-        that.current = current;
-
-        that.play(that.assets[that.current]);
+        that.current = that.getCurrentIndex(startWith);
+        that.play(that.assets[that.current],null,true);
+        that.onPlayerReady();
     };
 
     that.onStateChange = function(e){
-        if ('tvp:media:videoended' !== e) return;
+        if ('tvp:media:videoended' === e) {
+            that.current++;
+            if (!that.assets[that.current]) {
+                that.current = 0;
+            }
 
-        that.current++;
-        if (!that.assets[that.current]) {
-            that.current = 0;
+            that.play(that.assets[that.current], true);
         }
 
-        that.play(that.assets[that.current], true);
+        if ('tvp:media:videoplaying' === e && that.onNext){
+            that.onNext(that.assets[that.current]);
+        }
+
+        if ('tvp:media:videoplaying' === e) {
+          var existing = that.el.querySelector('.tvp-overlay');
+          if (existing) {
+            existing.parentNode.removeChild(existing);
+          }
+        }
     };
 
     var checks = 0;

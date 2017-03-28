@@ -111,11 +111,14 @@
                 style: '{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/options.css" .Type ) .)) | safeCSS }}',
                 js: [
                     '//a.tvpage.com/tvpa.min.js',
-                    'https://cdnjs.tvpage.com/tvplayer/tvp-1.8.6.min.js',
-                    config.debug ? config.staticPath + '/js/libs/analytics.js' : '',
-                    config.debug ? config.staticPath + '/js/libs/player.js' : '',
-                    config.debug ? config.staticPath + '/js/index.js' : '',
-                    config.debug ? '' : config.staticPath + '/dist/js/scripts.min.js'
+                    'https://cdnjs.tvpage.com/tvplayer/tvp-'+config.player_version+'.min.js',
+                    TVP_DEBUG ? staticPath + '/js/vendor/simple-scrollbar.min.js' : '',
+                    TVP_DEBUG ? staticPath + '/js/libs/utils.js' : '',
+                    TVP_DEBUG ? staticPath + '/js/libs/analytics.js' : '',
+                    TVP_DEBUG ? staticPath + '/js/libs/player.js' : '',
+                    TVP_DEBUG ? staticPath + '/js/menu.js' : '',
+                    TVP_DEBUG ? staticPath + '/js/index.js' : '',
+                    TVP_DEBUG ? '' : staticPath + '/dist/js/scripts.min.js'
                 ],
                 css: [
                     config.staticPath + '/css/styles.css'

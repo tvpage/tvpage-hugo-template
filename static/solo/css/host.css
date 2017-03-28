@@ -5,6 +5,8 @@
 .tvp-solo-holder {
   height: 0;
   position: relative;
+  -webkit-transition: height ease-out 0.0001s;
+  transition: height ease-out 0.0001s;
   padding-top: 56.25%;
   background-color: black;
 }
