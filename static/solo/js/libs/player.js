@@ -35,6 +35,12 @@
 
     //Context reference for Methods.
     var that = this;
+    
+    this.getOption = function (name) {
+      if (this.options.hasOwnProperty(name))
+        return this.options.hasOwnProperty(name);
+      return null;
+    };
 
     this.createAsset = function(obj){
         if (!obj || "object" !== typeof obj || isEmpty(obj) || !isset(obj,'asset')) return;
@@ -207,7 +213,7 @@
         //Alternative is to receive external size from host.
         if (window.location !== window.parent.location && isIOS){
             var onHolderResize = function (e) {
-                if (!e || !isset(e, 'data') || 'tvp_' + options.widgetId + ':holder_resize' !== (e.data.event || '')) return;
+                if (!e || !isset(e, 'data') || (("tvp_" + options.id).replace(/-/g,'_') + ':holder_resize') !== (e.data.event || '')) return;
                 var size = e.data.size || [];
                 that.resize(size[0], size[1]);
             };
@@ -254,7 +260,8 @@
         if ( (!isset(window,'TVPage') || !isset(window,'_tvpa')) && (++checks < 50) ) {
           libsReady();
         } else {
-          that.player = new TVPage.player({
+          
+          var playerOptions = {
             techOrder: 'html5,flash',
             analytics: { tvpa: that.analytics },
             apiBaseUrl: '//api.tvpage.com/v1',
@@ -269,7 +276,27 @@
                 transcript: that.transcript
               }
             }
-          });
+          };
+
+          var i;
+          var allowOverride = {
+            techOrder: 1,
+            analytics: 1,
+            apiBaseUrl: 1,
+            swf: 1,
+            controls: 1,
+            width: 1,
+            height: 1,
+            mediaProviders: 1,
+            preload: 1
+          };
+          for (i in that.options) {
+            if ( !playerOptions.hasOwnProperty(i) || allowOverride.hasOwnProperty(i) ) {
+              playerOptions[i] = that.options[i];
+            }
+          }
+
+          that.player = new TVPage.player(playerOptions);
 
         }
       },150);

@@ -1,6 +1,4 @@
 ;(function(window, document) {
-    var menuTemplate = '<nav id="tvp-hidden-menu" ss-container></nav><div id="tvp-hamburger-container"><div class="tvp-hamburger tvp-hamburger-x"><span></span></div><p class="tvp-video-count"></p></div>',
-        itemTemplate = '<div id="tvp-video-{id}" class="tvp-video{className}"><div class="tvp-video-image" style="background-image:url({asset.thumbnailUrl})"><div class="tvp-active-overlay"><p>Now Playing</p></div><svg class="tvp-video-play" viewBox="0 0 200 200" alt="Play video"><polygon points="70, 55 70, 145 145, 100"></polygon></svg></div><div class="tvp-video-details"><p class="tvp-video-title">{title}</p><p class="tvp-video-duration">- {asset.prettyDuration}</p></div></div>';
   
   function Menu(player, settings) {
 
@@ -25,8 +23,8 @@
         that.hamburguer = document.getElementById('tvp-hamburger-container');
         that.toggles = document.querySelectorAll('.tvp-hamburger');
         that.payerCont = document.querySelectorAll('.tvp-player')[0];
-        that.noVidDiv = document.getElementById('tvp-no-videos');
-        that.tvpNoVids = document.getElementsByClassName('tvp-novids');
+        that.noVideosContainer = document.getElementById('tvp-no-videos-container');
+        that.tvpNoVideos = document.getElementsByClassName('tvp-no-videos');
     };
 
     this.render = function() {
@@ -35,13 +33,13 @@
         that.fullScreenMenu();
         var menuHiden = document.getElementById('tvp-hidden-menu'),
             menuItemEl = document.createElement('div'),
-            noVidDiv = document.createElement('div');
+            noVideosContainer = document.createElement('div');
 
         menuItemEl.setAttribute('id', 'tvp-clearfix'),    
-        noVidDiv.setAttribute('id', 'tvp-no-videos');
+        noVideosContainer.setAttribute('id', 'tvp-no-videos-container');
 
-        menuHiden.appendChild(noVidDiv);
-        menuHiden.insertBefore(menuItemEl,noVidDiv);
+        menuHiden.appendChild(noVideosContainer);
+        menuHiden.insertBefore(menuItemEl,noVideosContainer);
 
         that.vidCount = 0;
         for (var i = 0; i < playlist.length; i++) {
@@ -49,14 +47,15 @@
             var menuItem = playlist[i];
             that.allVideos.push(menuItem);
             menuItem.title = Utils.trimText(menuItem.title, 100);
-            menuItemEl.innerHTML += Utils.tmpl(itemTemplate, menuItem);
+            menuItem.duration = Utils.formatDuration(menuItem.duration);
+            menuItemEl.innerHTML += Utils.tmpl(settings.templates['menu-item'], menuItem);
 
             if (that.dataMethod !== 'static') {
                 var noVidFrag = document.createDocumentFragment(),
                     noVideos = document.createElement('div');
-                noVideos.classList.add('tvp-novids');
+                noVideos.classList.add('tvp-no-videos');
                 noVidFrag.appendChild(noVideos);
-                noVidDiv.appendChild(noVidFrag);
+                noVideosContainer.appendChild(noVidFrag);
             }
         }
         if (that.dataMethod === 'static') {
@@ -124,7 +123,7 @@
             var menuFrag = document.createDocumentFragment(),
             slideMenu = document.createElement('div');
             slideMenu.setAttribute('id', 'tvp-slide-menu');
-            slideMenu.innerHTML = menuTemplate;
+            slideMenu.innerHTML = settings.templates.menu;
             menuFrag.appendChild(slideMenu);
             _frame[0].parentNode.insertBefore(menuFrag, _frame[0].nextSibling);
         }
@@ -141,14 +140,15 @@
 
     this.update = function(newData) {
 
-      if (that.noVidDiv) {
+      if (that.noVideosContainer) {
         that.deleteDivs();
         for (var i = 0; i < newData.length; i++) {
             that.allVideos.push(newData[i]);
             settings.data.push(newData[i]);
-            that.noVidDiv.setAttribute('id', 'tvp-clearfix');
-            that.noVidDiv.innerHTML += Utils.tmpl(itemTemplate, newData[i]);
-            that.scrollMenu.appendChild(that.noVidDiv);
+            that.noVideosContainer.setAttribute('id', 'tvp-clearfix');
+            newData[i].duration = Utils.formatDuration(newData[i].duration);
+            that.noVideosContainer.innerHTML += Utils.tmpl(settings.templates['menu-item'], newData[i]);
+            that.scrollMenu.appendChild(that.noVideosContainer);
         }
       }else{
         var newVivFrag = document.createDocumentFragment(),
@@ -157,7 +157,8 @@
             that.allVideos.push(newData[i]);
             settings.data.push(newData[i]);
             newDiv.setAttribute('id', 'tvp-clearfix');
-            newDiv.innerHTML += Utils.tmpl(itemTemplate, newData[i]);
+            newData[i].duration = Utils.formatDuration(newData[i].duration);
+            newDiv.innerHTML += Utils.tmpl(settings.templates['menu-item'], newData[i]);
             newVivFrag.appendChild(newDiv);
 
             that.scrollMenu.appendChild(newDiv);
@@ -168,8 +169,8 @@
     };
 
     this.deleteDivs = function(){
-        for (var i = that.tvpNoVids.length - 1; i >= 0; i--){
-            that.noVidDiv.removeChild(that.tvpNoVids[i]);
+        for (var i = that.tvpNoVideos.length - 1; i >= 0; i--){
+            that.noVideosContainer.removeChild(that.tvpNoVideos[i]);
         }
     };
 
