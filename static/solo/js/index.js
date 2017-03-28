@@ -44,7 +44,7 @@
     return s;
   },
   loadData = function(s,cbName,callback){
-    jsonpCall({
+   return jsonpCall({
       src: function(){
         var channel = s.channel,
             params = channel.parameters,
@@ -78,47 +78,48 @@
             menu = null,
             playerSettings = JSON.parse(JSON.stringify(settings)),
             menuSettings = JSON.parse(JSON.stringify(settings)),
-            playlistOption = Utils.isset(settings,'playlist') ? settings.playlist: 'hide';
+            playlistOption = Utils.isset(settings,'playlist') ? settings.playlist: null;
 
         render(unique,document.body);
-
         loadData(settings,unique,function(data){
           playerSettings.data = data || [];
           player = new Player('tvp-player-el-'+unique,playerSettings);
 
-          if (playlistOption === 'show') {
+          if (playlistOption === 'show' && playlistOption) {
             menuSettings.data = data || [];
             menu = new Menu(player,menuSettings);        
           }
         });
 
-        playerSettings.onPlayerReady = function(){
-          menu.init();
-        };
+        if (playlistOption === 'show' && playlistOption) {
 
-        playerSettings.onNext = function(){
-          var playerAsset = player.assets[player.current];
-          menu.setActiveItem(playerAsset.assetId);
-          menu.hideMenu();
-        };
+          playerSettings.onPlayerReady = function(){
+            menu.init();
+          };
 
-        playerSettings.onFullscreenChange = function(){
-          menu.hideMenu();
-        };
+          playerSettings.onNext = function(){
+            var playerAsset = player.assets[player.current];
+            menu.setActiveItem(playerAsset.assetId);
+            menu.hideMenu();
+          };
 
-        Menu.prototype.loadMore = function(){
-          if (!lastPage && !isFetching) {
-            channelVideosPage++;
-            isFetching = true;
-            loadData(settings,unique,function(newData){
-              isFetching = false;
-              lastPage = (!newData.length || newData.length < itemsPerPage) ? true : false;
-              player.addData(newData);
-              menu.update(newData);
-            });
-          }
-        };
+          playerSettings.onFullscreenChange = function(){
+            menu.hideMenu();
+          };
 
+          Menu.prototype.loadMore = function(){
+            if (!lastPage && !isFetching) {
+              channelVideosPage++;
+              isFetching = true;
+              loadData(settings,unique,function(newData){
+                isFetching = false;
+                lastPage = (!newData.length || newData.length < itemsPerPage) ? true : false;
+                player.addData(newData);
+                menu.update(newData);
+              });
+            }
+          };
+        }
       }(Utils.random(),getSettings('dynamic')));
     }
   };

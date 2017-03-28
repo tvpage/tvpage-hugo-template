@@ -54,6 +54,13 @@
     {
       "for": "player",
       "type": "text",
+      "label": "Playlist",
+      "code": "playlist",
+      "value": "hide"
+    },
+    {
+      "for": "player",
+      "type": "text",
       "label": "Play Button Height",
       "code": "play_button_height",
       "value": "65px"
