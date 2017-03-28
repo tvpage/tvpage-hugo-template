@@ -33,7 +33,7 @@ body.modal:not(.mobile) {
     border-radius: {{ ($.Scratch.Get "settings").item_play_button_border_radius }};
 }
 
-.tvp-video-play > polygon {
+.tvp-video-play-icon > polygon {
     fill: {{ ($.Scratch.Get "settings").item_play_button_icon_color }};
 }
 
