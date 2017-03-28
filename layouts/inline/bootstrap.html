@@ -1,0 +1,13 @@
+{{- partial "settings.html" . -}}
+(function(){
+
+	var bootstrap = {{ $.Scratch.Get "settings" | jsonify }};
+	bootstrap.baseUrl = "{{ $.Site.BaseURL }}";
+
+	bootstrap.css = {
+		host: {{- (partial (printf "%s/host.css" .Type) .) -}}		
+	};
+	
+	{{- (readFile "/themes/tvpage/static/inline/index.js") | htmlUnescape | safeHTML -}}
+
+}());

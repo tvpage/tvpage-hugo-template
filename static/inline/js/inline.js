@@ -161,6 +161,7 @@
     };
 
     function Inline(el, options) {
+        console.log(options);
         this.xchg = options.xchg || false;
         this.windowSize = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) <= 200 ? 'small' : 'medium';
         this.initialResize = true;
@@ -169,6 +170,7 @@
 
         this.loginId = (options.loginId || options.loginid) || 0;
         this.channel = options.channel || {};
+        this.channelid = options.channelid || {};
         this.loading = false;
         this.isLastPage = false;
         this.page = 0;
@@ -268,10 +270,10 @@
             }
 
             var getChannelVideos = function(callback){
-                var channel = that.channel || {};
-                if (Utils.isEmpty(channel) || !channel.id) return; //console.log('bad channel');
+                // var channel = that.channel || {};
+                // if (Utils.isEmpty(channel) || !channel.id) return console.log('bad channel');
                 var params = channel.parameters || {};
-                var src = '//api.tvpage.com/v1/channels/' + channel.id + '/videos?X-login-id=' + that.loginId;
+                var src = '//api.tvpage.com/v1/channels/' + that.channelid + '/videos?X-login-id=' + that.loginId;
                 for (var p in params) { src += '&' + p + '=' + params[p];}
                 var cbName = options.callbackName || 'tvp_' + Math.floor(Math.random() * 555);
                 src += '&p=' + that.page + '&n=' + that.itemsPerPage + '&callback='+cbName;

@@ -110,7 +110,7 @@
 
             }(getSettings('dynamic')));
         } else {
-            (function(settings){
+            (function(settings){                
                 var inlineSettings = JSON.parse(JSON.stringify(settings));
                 var name = settings.name;
 

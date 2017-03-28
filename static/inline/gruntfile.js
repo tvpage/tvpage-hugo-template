@@ -9,6 +9,10 @@ module.exports = function(grunt) {
         sass:{
           files: ['scss/**/*.scss'],
           tasks: ['sass', 'autoprefixer', 'cssmin']
+        },
+        scripts:{
+          files : ['js/**/*.js'],
+          tasks : ['concat:dev']
         }
       },
       sass: {
@@ -106,6 +110,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-contrib-concat');
     
-    grunt.registerTask('default', ['sass', 'autoprefixer', 'cssmin', 'watch']);
+    grunt.registerTask('default', ['sass', 'autoprefixer', 'cssmin', 'concat:dev', 'watch']);
     grunt.registerTask('release', ['uglify', 'sass', 'autoprefixer', 'cssmin']);
 };
