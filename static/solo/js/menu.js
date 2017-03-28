@@ -25,6 +25,7 @@
         that.payerCont = document.querySelectorAll('.tvp-player')[0];
         that.noVideosContainer = document.getElementById('tvp-no-videos-container');
         that.tvpNoVideos = document.getElementsByClassName('tvp-no-videos');
+        that.scrollBar = document.getElementsByClassName('ss-scroll')[0];
     };
 
     this.render = function() {
@@ -129,13 +130,17 @@
         }
     };
 
-    this.listenToResize = function(argument) {
-        window.addEventListener('resize',function(){
-            setTimeout(function(){
+    this.listenToResize = function() {
+        window.removeEventListener('resize',resizingEvetns,false);
+        window.addEventListener('resize',resizingEvetns,false);
+        function resizingEvetns(){
                 var newSize = (that.payerCont.clientHeight - 40) +'px;';
                 that.hiddenMenu.style.cssText = 'height:'+newSize;
-            },50)
-        },false);
+                var totalHeight = that.scrollMenu.scrollHeight,
+                    ownHeight = that.scrollMenu.clientHeight,
+                    scrollRatio = ownHeight / totalHeight;
+                that.scrollBar.style.cssText += 'height:' + Math.floor((scrollRatio) * 100) + '%;top:' + (that.scrollMenu.scrollTop / totalHeight) * 100 + '%;right:-'+(that.hiddenMenu.clientWidth - 9)+'px;';
+        };
     };
 
     this.update = function(newData) {
