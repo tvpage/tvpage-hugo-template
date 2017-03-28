@@ -2,6 +2,7 @@
 
     var analytics = null;
     var channelId = null;
+    var hasData = false;
     var eventPrefix = "tvp_" + (document.body.getAttribute("data-id") || "").replace(/-/g,'_');
 
     var pkTrack = function() {
@@ -32,7 +33,6 @@
     var render = function(data,config) {
         var container = Utils.getByClass('tvp-products');
         var el = Utils.getByClass('iframe-content');
-        var hasData = false;
 
         if (data && data.length) {
             hasData = true;
@@ -99,7 +99,7 @@
 
         container.innerHTML = '';
 
-        if (data.length) {
+        if (hasData) {
             var productsLabel = document.createElement('p');
             productsLabel.classList.add('tvp-products-headline');
             productsLabel.innerHTML = 'Related Products';
@@ -172,7 +172,7 @@
 
             s.onResize = function() {
                 setTimeout(function() {
-                    if (window.parent) {
+                    if (window.parent && !hasData) {
                         window.parent.postMessage({
                             event: eventPrefix + ':modal_resize',
                             height: (el.offsetHeight + parseInt(data.runTime.iframe_modal_body_padding || '0')) + 'px'

@@ -298,7 +298,6 @@ function handleModalInitialized(e){
   }
 
   var onOrientationChange = function () {
-    iframeModal.classList.remove("resized");
     if (utils.isIOS && iframeModal && iframeModal.contentWindow) {
       var width = iframeModal.parentNode.offsetWidth;
       iframeModal.contentWindow.window.postMessage({
@@ -314,7 +313,6 @@ function handleModalInitialized(e){
 
 function handlePlayerNext(e) {
     updateModalTitle(e.data.next.assetTitle);
-    iframeModal.classList.remove("resized");
 };
 
 function handleModalNoProducts(e) {
@@ -330,10 +328,7 @@ function handleModalNoProducts(e) {
 };
 
 function handleModalResize(e){
-  if (!iframeModal.classList.contains("resized")) {
-    iframeModal.style.height = e.data.height;
-    iframeModal.classList.add("resized");
-  }
+  iframeModal.style.height = e.data.height;
 };
 
 function handleModalProducts(e) {
