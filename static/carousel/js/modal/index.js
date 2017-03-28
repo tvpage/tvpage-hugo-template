@@ -275,7 +275,7 @@
                 resizeProducts(size[1]);
                 if (window.parent) {
                     window.parent.postMessage({
-                        event: eventPrefix + ':modal_resized',
+                        event: eventPrefix + ':modal_resize',
                         height: (el.offsetHeight + 20) + 'px'
                     }, '*');
                 }

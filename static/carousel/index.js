@@ -297,24 +297,24 @@ function handleModalInitialized(e){
       }, '*');
   }
 
-  if (utils.isIOS) {
-    var onOrientationChange = function () {
-        if (iframeModal && iframeModal.contentWindow) {
-            var width = iframeModal.parentNode.offsetWidth;
-            iframeModal.contentWindow.window.postMessage({
-                event: config.eventPrefix + ':modal_holder_resize',
-                size: [width, Math.floor(width * (9 / 16))]
-            },'*');
-        }
-    };
-    var orientationChangeEvent = 'onorientationchange' in window ? 'orientationchange' : 'resize';
-    window.removeEventListener(orientationChangeEvent,onOrientationChange, false);
-    window.addEventListener(orientationChangeEvent,onOrientationChange, false);
-  }
+  var onOrientationChange = function () {
+    iframeModal.classList.remove("resized");
+    if (utils.isIOS && iframeModal && iframeModal.contentWindow) {
+      var width = iframeModal.parentNode.offsetWidth;
+      iframeModal.contentWindow.window.postMessage({
+        event: config.eventPrefix + ':modal_holder_resize',
+        size: [width, Math.floor(width * (9 / 16))]
+      },'*');
+    }
+  };
+  var orientationChangeEvent = 'onorientationchange' in window ? 'orientationchange' : 'resize';
+  window.removeEventListener(orientationChangeEvent,onOrientationChange, false);
+  window.addEventListener(orientationChangeEvent,onOrientationChange, false);
 };
 
 function handlePlayerNext(e) {
     updateModalTitle(e.data.next.assetTitle);
+    iframeModal.classList.remove("resized");
 };
 
 function handleModalNoProducts(e) {
@@ -330,7 +330,10 @@ function handleModalNoProducts(e) {
 };
 
 function handleModalResize(e){
-  iframeModal.style.height = e.data.height;
+  if (!iframeModal.classList.contains("resized")) {
+    iframeModal.style.height = e.data.height;
+    iframeModal.classList.add("resized");
+  }
 };
 
 function handleModalProducts(e) {
