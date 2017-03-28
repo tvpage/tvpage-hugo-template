@@ -11,6 +11,10 @@
   "border-radius: {{ ($.Scratch.Get "settings").play_button_border_radius }};" +
 "}" +
 
+".tvp-play:hover {" +
+  "background-color: {{ ($.Scratch.Get "settings").play_button_background_color_hover }};" +
+"}" +
+
 ".tvp-play > polygon {" +
   "fill: {{ ($.Scratch.Get "settings").play_button_icon_color }};" +
 "}" +

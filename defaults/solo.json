@@ -75,6 +75,13 @@
     {
       "for": "player",
       "type": "text",
+      "label": "Play Button Background Color Hover",
+      "code": "play_button_background_color_hover",
+      "value": "#333"
+    },
+    {
+      "for": "player",
+      "type": "text",
       "label": "Play Button Border Radius",
       "code": "play_button_border_radius",
       "value": "50%"
