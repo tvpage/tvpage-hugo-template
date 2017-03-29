@@ -54,6 +54,13 @@
     {
       "for": "player",
       "type": "text",
+      "label": "Playlist",
+      "code": "playlist",
+      "value": "hide"
+    },
+    {
+      "for": "player",
+      "type": "text",
       "label": "Play Button Height",
       "code": "play_button_height",
       "value": "65px"
@@ -162,6 +169,55 @@
       "label": "Menu Item Play Button Icon Color Hover",
       "code": "menu_item_play_button_icon_color_hover",
       "value": "white"
+    },
+    {
+      "for": "menu",
+      "type": "text",
+      "label": "Menu Item Category Tag Attribute",
+      "code": "menu_item_play_category_tag_attribute",
+      "value": ""
+    },
+    {
+      "for": "menu",
+      "type": "text",
+      "label": "Menu Item Category Tag Background Color",
+      "code": "menu_item_play_category_tag_background_color",
+      "value": "#333"
+    },
+    {
+      "for": "menu",
+      "type": "text",
+      "label": "Menu Item Category Tag Font Family",
+      "code": "menu_item_play_category_tag_font_family",
+      "value": "Arial"
+    },
+    {
+      "for": "menu",
+      "type": "text",
+      "label": "Menu Item Category Tag Font Size",
+      "code": "menu_item_play_category_tag_font_size",
+      "value": "12px"
+    },
+    {
+      "for": "menu",
+      "type": "text",
+      "label": "Menu Item Category Tag Font Weight",
+      "code": "menu_item_play_category_tag_font_weight",
+      "value": "Bold"
+    },
+    {
+      "for": "menu",
+      "type": "text",
+      "label": "Menu Item Category Tag Font Color",
+      "code": "menu_item_play_category_tag_font_color",
+      "value": "#fff"
+    },
+    {
+      "for": "menu",
+      "type": "text",
+      "label": "Menu Item Category Tag Border Radius",
+      "code": "menu_item_play_category_tag_border_radius",
+      "value": "0"
     }
   ]
 }

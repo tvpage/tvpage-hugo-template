@@ -203,7 +203,7 @@
         if (isset(window,'BigScreen')) {
             BigScreen.onchange = function(){
                 that.isFullScreen = !that.isFullScreen;
-                if (that.onFullscreenChange()) {
+                if (that.onFullscreenChange) {
                   that.onFullscreenChange();
                 }
             };
@@ -229,7 +229,9 @@
 
         that.current = that.getCurrentIndex(startWith);
         that.play(that.assets[that.current],null,true);
-        that.onPlayerReady();
+        if (that.onPlayerReady) {
+          that.onPlayerReady();
+        }
     };
 
     that.onStateChange = function(e){
