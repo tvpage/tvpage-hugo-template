@@ -175,7 +175,7 @@
       "type": "text",
       "label": "Menu Item Category Tag Attribute",
       "code": "menu_item_play_category_tag_attribute",
-      "value": "product_category"
+      "value": ""
     },
     {
       "for": "menu",
