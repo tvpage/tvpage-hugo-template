@@ -119,7 +119,6 @@
 
     this.hideMenu = function(){
         that.slideMenu.classList.remove('active');
-        that.hiddenMenu.classList.remove('active');
     };
 
     this.hideMenuEvents = function(){
