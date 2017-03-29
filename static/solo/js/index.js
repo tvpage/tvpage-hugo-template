@@ -44,11 +44,11 @@
     return s;
   },
   loadData = function(s,cbName,callback){
-    jsonpCall({
+   return jsonpCall({
       src: function(){
-        var channel = s.channel,
-            params = channel.parameters,
-            url = '//api.tvpage.com/v1/channels/' + channel.id + '/videos?X-login-id=' + s.loginid;
+        var channel = s.channel || {},
+            params = channel.parameters || {},
+            url = '//api.tvpage.com/v1/channels/' + (channel.id || (s.channelid || s.channelId)) + '/videos?X-login-id=' + (s.loginid || s.loginId);
 
         for (var p in params) { url += '&' + p + '=' + params[p];}
         url += '&n=' + itemsPerPage + '&p=' + channelVideosPage;
@@ -78,7 +78,11 @@
             menu = null,
             playerSettings = JSON.parse(JSON.stringify(settings)),
             menuSettings = JSON.parse(JSON.stringify(settings)),
+<<<<<<< HEAD
             playlistOption = Utils.isset(settings,'playlist') ? settings.playlist: 'hide';
+=======
+            playlistOption = Utils.isset(settings,'playlist') ? settings.playlist: null;
+>>>>>>> 373ce5bd9943458921ce1044df1dc78636a30d41
 
         render(unique,document.body);
 
@@ -86,12 +90,17 @@
           playerSettings.data = data || [];
           player = new Player('tvp-player-el-'+unique,playerSettings);
 
+<<<<<<< HEAD
           if (playlistOption === 'show') {
+=======
+          if (playlistOption === 'show' && playlistOption) {
+>>>>>>> 373ce5bd9943458921ce1044df1dc78636a30d41
             menuSettings.data = data || [];
             menu = new Menu(player,menuSettings);        
           }
         });
 
+<<<<<<< HEAD
         playerSettings.onPlayerReady = function(){
           menu.init();
         };
@@ -119,6 +128,37 @@
           }
         };
 
+=======
+        if (playlistOption === 'show' && playlistOption) {
+
+          playerSettings.onPlayerReady = function(){
+            menu.init();
+          };
+
+          playerSettings.onNext = function(){
+            var playerAsset = player.assets[player.current];
+            menu.setActiveItem(playerAsset.assetId);
+            menu.hideMenu();
+          };
+
+          playerSettings.onFullscreenChange = function(){
+            menu.hideMenu();
+          };
+
+          Menu.prototype.loadMore = function(){
+            if (!lastPage && !isFetching) {
+              channelVideosPage++;
+              isFetching = true;
+              loadData(settings,unique,function(newData){
+                isFetching = false;
+                lastPage = (!newData.length || newData.length < itemsPerPage) ? true : false;
+                player.addData(newData);
+                menu.update(newData);
+              });
+            }
+          };
+        }
+>>>>>>> 373ce5bd9943458921ce1044df1dc78636a30d41
       }(Utils.random(),getSettings('dynamic')));
     }
   };

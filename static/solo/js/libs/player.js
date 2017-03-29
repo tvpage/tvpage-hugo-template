@@ -9,20 +9,6 @@
       isEmpty = function(obj) {
         for(var key in obj) { if (obj.hasOwnProperty(key)) return false;}
         return true;
-      },
-      debounce = function(func,wait,immediate) {
-        var timeout;  
-        return function() {
-          var context = this, args = arguments;
-          var later = function() {
-            timeout = null;
-            if (!immediate) func.apply(context, args);
-          };
-          var callNow = immediate && !timeout;
-          clearTimeout(timeout);
-          timeout = setTimeout(later, wait);
-          if (callNow) func.apply(context, args);
-        };
       };
 
   //The player singleton. We basically create an instance from the tvpage
@@ -49,6 +35,15 @@
 
     //Context reference for Methods.
     var that = this;
+<<<<<<< HEAD
+=======
+    
+    this.getOption = function (name) {
+      if (this.options.hasOwnProperty(name))
+        return this.options.hasOwnProperty(name);
+      return null;
+    };
+>>>>>>> 373ce5bd9943458921ce1044df1dc78636a30d41
 
     this.createAsset = function(obj){
         if (!obj || "object" !== typeof obj || isEmpty(obj) || !isset(obj,'asset')) return;
@@ -186,8 +181,9 @@
 
       that.instance.resize(width, height);
       
-      if(!this.onResize) return;
-      this.onResize(that.initialResize, [width, height]);
+      if (this.onResize) {
+        this.onResize(that.initialResize, [width, height]);
+      }
       
       that.initialResize = false;
     };
@@ -210,7 +206,11 @@
         if (isset(window,'BigScreen')) {
             BigScreen.onchange = function(){
                 that.isFullScreen = !that.isFullScreen;
+<<<<<<< HEAD
                 if (that.onFullscreenChange()) {
+=======
+                if (that.onFullscreenChange) {
+>>>>>>> 373ce5bd9943458921ce1044df1dc78636a30d41
                   that.onFullscreenChange();
                 }
             };
@@ -220,23 +220,29 @@
         //Alternative is to receive external size from host.
         if (window.location !== window.parent.location && isIOS){
             var onHolderResize = function (e) {
-                if (!e || !isset(e, 'data') || 'tvp_solo:holder_resize' !== (e.data.event || '')) return;
+                if (!e || !isset(e, 'data') || (("tvp_" + options.id).replace(/-/g,'_') + ':holder_resize') !== (e.data.event || '')) return;
                 var size = e.data.size || [];
                 that.resize(size[0], size[1]);
             };
+
             window.removeEventListener('message', onHolderResize, false);
             window.addEventListener('message', onHolderResize, false);
         } else {
-            var onWindowResize = debounce(that.resize,50);
-            window.removeEventListener('resize', onWindowResize, false);
-            window.addEventListener('resize', onWindowResize);
+            window.removeEventListener('resize', that.resize, false);
+            window.addEventListener('resize', that.resize,false);
         }
 
         that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progressColor;
 
         that.current = that.getCurrentIndex(startWith);
         that.play(that.assets[that.current],null,true);
+<<<<<<< HEAD
         that.onPlayerReady();
+=======
+        if (that.onPlayerReady) {
+          that.onPlayerReady();
+        }
+>>>>>>> 373ce5bd9943458921ce1044df1dc78636a30d41
     };
 
     that.onStateChange = function(e){
@@ -245,6 +251,7 @@
             if (!that.assets[that.current]) {
                 that.current = 0;
             }
+<<<<<<< HEAD
 
             that.play(that.assets[that.current], true);
         }
@@ -253,6 +260,16 @@
             that.onNext(that.assets[that.current]);
         }
 
+=======
+
+            that.play(that.assets[that.current], true);
+        }
+
+        if ('tvp:media:videoplaying' === e && that.onNext){
+            that.onNext(that.assets[that.current]);
+        }
+
+>>>>>>> 373ce5bd9943458921ce1044df1dc78636a30d41
         if ('tvp:media:videoplaying' === e) {
           var existing = that.el.querySelector('.tvp-overlay');
           if (existing) {
@@ -267,7 +284,8 @@
         if ( (!isset(window,'TVPage') || !isset(window,'_tvpa')) && (++checks < 50) ) {
           libsReady();
         } else {
-          that.player = new TVPage.player({
+          
+          var playerOptions = {
             techOrder: 'html5,flash',
             analytics: { tvpa: that.analytics },
             apiBaseUrl: '//api.tvpage.com/v1',
@@ -282,7 +300,27 @@
                 transcript: that.transcript
               }
             }
-          });
+          };
+
+          var i;
+          var allowOverride = {
+            techOrder: 1,
+            analytics: 1,
+            apiBaseUrl: 1,
+            swf: 1,
+            controls: 1,
+            width: 1,
+            height: 1,
+            mediaProviders: 1,
+            preload: 1
+          };
+          for (i in that.options) {
+            if ( !playerOptions.hasOwnProperty(i) || allowOverride.hasOwnProperty(i) ) {
+              playerOptions[i] = that.options[i];
+            }
+          }
+
+          that.player = new TVPage.player(playerOptions);
 
         }
       },150);
