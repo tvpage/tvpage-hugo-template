@@ -119,14 +119,14 @@
             "type": "text",
             "label": "Videos To Show",
             "code": "videos_to_show",
-            "value": "3"
+            "value": "4"
         },
         {
             "for": "videos-scroller",
             "type": "text",
             "label": "Videos To Scroll",
             "code": "videos_to_scroll",
-            "value": "3"
+            "value": "4"
         }
     ]
 }

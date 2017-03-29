@@ -162,11 +162,28 @@
         this.featuredProductTemplate = options.templates.featured_product;
         this.productItemTemplate = options.templates.product;
 
+        //player settings
+        this.autoplay = Utils.isset(options.autoplay) ? Number(options.autoplay) : false;
+        this.autonext = Utils.isset(options.autonext) ? Number(options.autonext) : true;
+        this.player_version = Utils.isset(options.player_version) ? options.player_version : null;
+        this.progress_color = Utils.isset(options.progress_color) ? options.progress_color : null;
+        this.transcript = Utils.isset(options.transcript) ? options.transcript : null;
+        this.remove_controls = Utils.isset(options.remove_controls) ? options.remove_controls : null;
+        this.analytics = Utils.isset(options.analytics) ? options.analytics : null;
+        this.overlay = Utils.isset(options.overlay) ? options.overlay : null;
+        this.overlay_color = Utils.isset(options.overlay_color) ? options.overlay_color : null;
+        this.overlay_opacity = Utils.isset(options.overlay_opacity) ? options.overlay_opacity : null;
+        this.play_button_background_color = Utils.isset(options.play_button_background_color) ?  options.play_button_background_color : null;
+        this.play_button_border_radius = Utils.isset(options.play_button_border_radius) ? options.play_button_border_radius : null;
+        this.play_button_border_width = Utils.isset(options.play_button_border_width) ? options.play_button_border_width : null;
+        this.play_button_border_color = Utils.isset(options.play_button_border_color) ? options.play_button_border_color : null;
+        this.play_button_icon_color = Utils.isset(options.play_button_icon_color) ? options.play_button_icon_color : null;
+        this.play_button_width = Utils.isset(options.play_button_width) ? options.play_button_width : null;
+        this.play_button_height = Utils.isset(options.play_button_height) ? options.play_button_height : null;
+        
         this.el = 'string' === typeof el ? document.getElementById(el) : el;
         this.container = this.el.getElementsByClassName('tvp-videos-scroller')[0];
         
-        
-
         this.onClick = Utils.isset(options.onClick) && Utils.isFunction(options.onClick) ? options.onClick : null;
         this.onNext = function (e) {
             renderProducts(e.assetId, e.loginId); 
@@ -184,8 +201,6 @@
             }
         };    
         this.render = function(){
-            // this.container.innerHTML = '';
-
             var all = this.data.slice(0);
             
             for (var i = 0; i < all.length; i++) {
@@ -208,8 +223,8 @@
             
             $videoSliderDesktop.slick({
                 arrows: true,
-                slidesToShow: 4,
-                slidesToScroll: 4,
+                slidesToShow: parseInt(options.videos_to_show),
+                slidesToScroll: parseInt(options.videos_to_scroll),
                 nextArrow: '.tvp-videos-arrow-next',
                 prevArrow: '.tvp-videos-arrow-prev',
                 responsive:[
@@ -228,13 +243,13 @@
             });   
 
 
+
             //init player            
             var s = this;
             this.selectedVideo = this.data[0];
             s.data = data;
             this.player = new Player('tvp-player', s, this.selectedVideo.id);
             $(this.el).find('#videoTitle').html(this.selectedVideo.title);
-            
             //render products            
             renderProducts(this.selectedVideo.id, options.loginId);
 
