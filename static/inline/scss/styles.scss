@@ -313,6 +313,25 @@ body {
             }
         }
     }
+    .tvp-videos-container{
+        position: relative;
+        .tvp-videos-arrows {
+            cursor: pointer;
+            height: 100%;
+            position: absolute;
+            text-align: center;
+            width: 50px;
+            height: 50px;
+            top: -14%;
+            bottom: 0;
+            margin: auto 0;
+            z-index: 100;
+            background: #fff;
+        }
+        .tvp-videos-arrow-next {
+            right: 0;
+        }        
+    }
     .tvp-videos-scroller {
         // height: 100%;
         width: 100%;
@@ -321,20 +340,7 @@ body {
             float: none !important;
             width: 100% !important;
         }
-        .tvp-videos-arrows {
-            cursor: pointer;
-            height: 100%;
-            position: absolute;
-            text-align: center;
-            width: 50px;
-            height: 50px;
-            top: 4%;
-            bottom: 0;
-            margin: auto 0;
-        }
-        .tvp-videos-arrow-next {
-            right: 0;
-        }
+
         .tvp-videos-container {
             height: 100%;
             float: left;

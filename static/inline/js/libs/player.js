@@ -16,6 +16,7 @@
     //The player singleton. We basically create an instance from the tvpage
     //player and expose most utilities, helping to encapsualte what is required for a few players to co-exist.
     function Player(el, options, startWith) {
+        console.log('Player', options);
         if (!el || !isset(options) || !isset(options.data) || options.data.length <= 0) return; // console.log('bad args');
 
         this.isFullScreen = false;

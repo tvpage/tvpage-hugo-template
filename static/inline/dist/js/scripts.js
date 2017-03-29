@@ -142,6 +142,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
     //The player singleton. We basically create an instance from the tvpage
     //player and expose most utilities, helping to encapsualte what is required for a few players to co-exist.
     function Player(el, options, startWith) {
+        console.log('Player', options);
         if (!el || !isset(options) || !isset(options.data) || options.data.length <= 0) return; // console.log('bad args');
 
         this.isFullScreen = false;
@@ -543,6 +544,8 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
 
         this.el = 'string' === typeof el ? document.getElementById(el) : el;
         this.container = this.el.getElementsByClassName('tvp-videos-scroller')[0];
+        
+        
 
         this.onClick = Utils.isset(options.onClick) && Utils.isFunction(options.onClick) ? options.onClick : null;
         this.onNext = function (e) {
@@ -561,7 +564,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             }
         };    
         this.render = function(){
-            this.container.innerHTML = '';
+            // this.container.innerHTML = '';
 
             var all = this.data.slice(0);
             
@@ -582,13 +585,13 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             }
 
             $videoSliderDesktop = $(this.el.querySelector('#tvpVideoScroller'));
-
+            
             $videoSliderDesktop.slick({
                 arrows: true,
                 slidesToShow: 4,
                 slidesToScroll: 4,
-                nextArrow: '<div class="tvp-videos-arrows tvp-videos-arrow-next" data-dir="prev"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z"/><path d="M0-.25h24v24H0z" fill="none"/></svg></div>',
-                prevArrow: '<div class="tvp-videos-arrows tvp-videos-arrow-prev" data-dir="next"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z"/><path d="M0-.5h24v24H0z" fill="none"/></svg></div>',
+                nextArrow: '.tvp-videos-arrow-next',
+                prevArrow: '.tvp-videos-arrow-prev',
                 responsive:[
                     {
                         breakpoint: 769,
@@ -771,13 +774,12 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
 
     var initialize = function(){        
         var settings = {};
-        var body = document.body;
 
         if (Utils.isset(parent) && Utils.isset(parent,'__TVPage__') && Utils.isset(parent.__TVPage__, 'config')) {
             settings = parent.__TVPage__.config[body.getAttribute('data-id')];
         }
-
-        var inlineSettings = JSON.parse(JSON.stringify(settings));
+        console.log(settings);
+        var inlineSettings = JSON.parse(JSON.stringify(settings));        
         render(body,{
             id: settings.name,
             title: settings.title || 'Recommended Videos',

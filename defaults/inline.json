@@ -113,6 +113,20 @@
             "label": "Overlay Opacity",
             "code": "overlay_opacity",
             "value": "0.5"
+        },
+        {
+            "for": "videos-scroller",
+            "type": "text",
+            "label": "Videos To Show",
+            "code": "videos_to_show",
+            "value": "3"
+        },
+        {
+            "for": "videos-scroller",
+            "type": "text",
+            "label": "Videos To Scroll",
+            "code": "videos_to_scroll",
+            "value": "3"
         }
     ]
 }

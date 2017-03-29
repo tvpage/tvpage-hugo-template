@@ -17,13 +17,12 @@
 
     var initialize = function(){        
         var settings = {};
-        var body = document.body;
 
         if (Utils.isset(parent) && Utils.isset(parent,'__TVPage__') && Utils.isset(parent.__TVPage__, 'config')) {
             settings = parent.__TVPage__.config[body.getAttribute('data-id')];
         }
-
-        var inlineSettings = JSON.parse(JSON.stringify(settings));
+        console.log(settings);
+        var inlineSettings = JSON.parse(JSON.stringify(settings));        
         render(body,{
             id: settings.name,
             title: settings.title || 'Recommended Videos',
