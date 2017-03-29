@@ -38,8 +38,6 @@
       return t;
     };
 
-<<<<<<< HEAD
-=======
     this.formatDuration = function(secs) {
       if ("undefined" === typeof secs) return;
       var date = new Date(0, 0, 0);
@@ -50,7 +48,6 @@
       return (hour + minutes + ':' + seconds);
     };
 
->>>>>>> 373ce5bd9943458921ce1044df1dc78636a30d41
     this.debounce = function(func,wait,immediate){
       var timeout;  
       return function() {

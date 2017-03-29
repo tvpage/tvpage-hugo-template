@@ -35,15 +35,12 @@
 
     //Context reference for Methods.
     var that = this;
-<<<<<<< HEAD
-=======
     
     this.getOption = function (name) {
       if (this.options.hasOwnProperty(name))
         return this.options.hasOwnProperty(name);
       return null;
     };
->>>>>>> 373ce5bd9943458921ce1044df1dc78636a30d41
 
     this.createAsset = function(obj){
         if (!obj || "object" !== typeof obj || isEmpty(obj) || !isset(obj,'asset')) return;
@@ -206,11 +203,7 @@
         if (isset(window,'BigScreen')) {
             BigScreen.onchange = function(){
                 that.isFullScreen = !that.isFullScreen;
-<<<<<<< HEAD
-                if (that.onFullscreenChange()) {
-=======
                 if (that.onFullscreenChange) {
->>>>>>> 373ce5bd9943458921ce1044df1dc78636a30d41
                   that.onFullscreenChange();
                 }
             };
@@ -236,13 +229,9 @@
 
         that.current = that.getCurrentIndex(startWith);
         that.play(that.assets[that.current],null,true);
-<<<<<<< HEAD
-        that.onPlayerReady();
-=======
         if (that.onPlayerReady) {
           that.onPlayerReady();
         }
->>>>>>> 373ce5bd9943458921ce1044df1dc78636a30d41
     };
 
     that.onStateChange = function(e){
@@ -251,7 +240,6 @@
             if (!that.assets[that.current]) {
                 that.current = 0;
             }
-<<<<<<< HEAD
 
             that.play(that.assets[that.current], true);
         }
@@ -260,16 +248,6 @@
             that.onNext(that.assets[that.current]);
         }
 
-=======
-
-            that.play(that.assets[that.current], true);
-        }
-
-        if ('tvp:media:videoplaying' === e && that.onNext){
-            that.onNext(that.assets[that.current]);
-        }
-
->>>>>>> 373ce5bd9943458921ce1044df1dc78636a30d41
         if ('tvp:media:videoplaying' === e) {
           var existing = that.el.querySelector('.tvp-overlay');
           if (existing) {

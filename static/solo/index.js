@@ -149,9 +149,16 @@ var iframeContent = utils.getIframeHtml({
     ]
 });
 
-var iframeDocument = iframe.contentWindow.document;
-iframeDocument.open().write(iframeContent);
-iframeDocument.close();
+//Firefox does not add the iframe content using the onload method.
+//https://bugzilla.mozilla.org/show_bug.cgi?id=728151
+if (utils.isFirefox) {
+    iframe.contentWindow.contents = iframeContent;
+    iframe.src = 'javascript:window["contents"]';
+} else {
+    var iframeDocument = iframe.contentWindow.document;
+    iframeDocument.open().write(iframeContent);
+    iframeDocument.close();
+}
 
 //Listen to orientation/resize changes in the external page whenever the widget
 //is being used in an iOS device so we can send the size information to the
