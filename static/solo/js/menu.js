@@ -207,7 +207,7 @@
                     categoryDiv.classList.add('tvp-category-tag');
                     categoryDiv.innerHTML += tagAttributeValue;
                     categoryFrag.appendChild(categoryDiv);
-                    that.noVideosContainer.getElementsByClassName('tvp-video-details')[i].appendChild(categoryFrag);
+                    newDiv.getElementsByClassName('tvp-video-details')[i].appendChild(categoryFrag);
                 }
             }
         }
