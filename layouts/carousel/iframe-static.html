@@ -11,7 +11,6 @@
   {{ else }}
   <link rel="stylesheet" type="text/css" href="{{ (printf "%s/dist/css/styles.min.css" .Type ) | absURL }}">
   {{ end }}
-  <style>{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/options.css" .Type ) .)) | safeCSS }}</style>
 </head>
 <body data-id='{{ $id }}'>
 <div id='{{ $id }}' class="iframe-content">
@@ -49,6 +48,7 @@
     window.__TVPage__ = window.__TVPage__ || {};
     __TVPage__.config = __TVPage__.config || {};
     __TVPage__.config[{{ $id }}] = {{ $.Scratch.Get "settings" }};
+    __TVPage__.config[{{ $id }}].widgetId = {{ $id }};
     __TVPage__.config[{{ $id }}].channel = {
         id: '{{ ($.Scratch.Get "settings").channelid }}'
     };

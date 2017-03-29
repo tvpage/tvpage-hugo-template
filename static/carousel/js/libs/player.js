@@ -32,6 +32,7 @@
     function Player(el, options, startWith) {
         if (!el || !isset(options) || !isset(options.data) || options.data.length <= 0) return console.log('bad args');
 
+        this.options = options;
         this.isFullScreen = false;
         this.initialResize = true;
         this.autoplay = isset(options.autoplay) ? Number(options.autoplay) : false;
@@ -82,6 +83,11 @@
 
         //Context reference for Methods.
         var that = this;
+        this.getOption = function (name) {
+          if (this.options.hasOwnProperty(name))
+            return this.options.hasOwnProperty(name);
+          return null;
+        }
 
         //Sometimes we want/need to show an intearctive overlay on top of the player. We need this for MP4 videos that will
         //cue (mobile or autoplay:off) to actual play the video on demand.
@@ -164,7 +170,7 @@
 
             that.instance.resize(width, height);
 
-            if(!that.onResize) return;
+            if (!that.onResize) return;
             that.onResize(that.initialResize, [width, height]);
 
             that.initialResize = false;
@@ -177,9 +183,9 @@
                     (++checks < 50) ? libsReady() : console.log('limit reached');
                 } else {
 
-                    //We create insntances on the tvpage player.
-                    that.player = new TVPage.player({
+                var playerOptions = {
                         techOrder: 'html5,flash',
+                        mediaProviders: 'tvpage,youtube',
                         analytics: { tvpa: that.analytics },
                         apiBaseUrl: '//api.tvpage.com/v1',
                         swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+that.version+'-flash.swf',
@@ -198,16 +204,16 @@
                             //size from host.
                             if (window.location !== window.parent.location && (/iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream)){
                                 var onHolderResize = function (e) {
-                                    if (!e || !isset(e, 'data') || !isset(e.data, 'event') || 'tvp_carousel:modal_holder_resize' !== e.data.event) return;
+                                    if (!e || !isset(e, 'data') || !isset(e.data, 'event') || 'tvp_' + options.id.replace(/-/g,'_') + ':modal_holder_resize' !== e.data.event) return;
                                     var size = e.data.size || [];
                                     that.resize(size[0], size[1]);
                                 };
                                 window.removeEventListener('message', onHolderResize, false);
                                 window.addEventListener('message', onHolderResize, false);
                             } else {
-                                var onWindowResize = Utils.debounce(that.resize,50);
+                                var onWindowResize = that.resize;
                                 window.removeEventListener('message', onWindowResize, false);
-                                window.addEventListener('resize', onWindowResize);
+                                window.addEventListener('resize', onWindowResize, false);
                             }
 
                             that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progressColor;
@@ -243,8 +249,28 @@
                                 transcript: that.transcript
                             }
                         }
-                    });
+                    };
 
+                    // merge with options passed
+                    var i;
+                    var allowOverride = {
+                      techOrder: 1,
+                      analytics: 1,
+                      apiBaseUrl: 1,
+                      swf: 1,
+                      controls: 1,
+                      width: 1,
+                      height: 1,
+                      mediaProviders: 1,
+                      preload: 1
+                    };
+                    for (i in that.options) {
+                      if ( !playerOptions.hasOwnProperty(i) || allowOverride.hasOwnProperty(i) ) {
+                        playerOptions[i] = that.options[i];
+                      }
+                    }
+                    
+                    that.player = new TVPage.player(playerOptions);
                 }
             },150);
         })();

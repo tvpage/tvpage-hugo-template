@@ -1,0 +1,18 @@
+"*[class^='tvp-'] {" + 
+  "box-sizing: border-box;" +
+"}" +
+
+".tvp-solo-holder {" +
+  "height: 0;" +
+  "position: relative;" +
+  "padding-top: 56.25%;" +
+  "background-color: black;" +
+"}" +
+
+".tvp-solo-holder > iframe {" +
+  "top: 0;" +
+  "left: 0;" +
+  "width: 100%;" +
+  "height: 100%;" +
+  "position: absolute;" +
+"}"

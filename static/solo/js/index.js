@@ -1,28 +1,25 @@
 ;(function(document) {
 
-  var random = function(){
-    return 'tvp_' + Math.floor(Math.random() * 50005);
-  },
-  isset = function(o,p){
-    var val = o;
-    if (p) val = o[p];
-    return 'undefined' !== typeof val;
-  },
+  var channelVideosPage = 0,
+      itemsPerPage = 6,
+      lastPage = false,
+      isFetching = false,
+
   jsonpCall = function(opts,callback){
-    var s = document.createElement('script');
-    s.src = opts.src;
-    if (!callback || 'function' !== typeof callback) return;
-    window[opts.cbName || 'callback'] = callback;
-    var b = opts.body || document.body;
-    b.appendChild(s);
+      var s = document.createElement('script');
+      s.src = opts.src;
+      if (!callback || 'function' !== typeof callback) return;
+      window[opts.cbName || 'callback'] = callback;
+      var b = opts.body || document.body;
+      b.appendChild(s);
   },
   getSettings = function(type){
     var getConfig = function(g){
       var c = {};
-      if (isset(g) && isset(g,'__TVPage__') && isset(g.__TVPage__, 'config')) {
+      if (Utils.isset(g) && Utils.isset(g,'__TVPage__') && Utils.isset(g.__TVPage__, 'config')) {
         c = g.__TVPage__.config;
       } else {
-        return console.log('need config');
+        return;
       }
       return c;
     };
@@ -30,7 +27,7 @@
     if ('dynamic' === type) {
       var config = getConfig(parent);
       var id = document.body.getAttribute('data-id');
-      if (!isset(config, id)) return console.log('need settings');
+      if (!Utils.isset(config, id)) return;
       s = config[id];
       s.name = id;
     } else if ('inline' === type && type && type.length) {
@@ -40,29 +37,29 @@
     } else if ('static' === type) {
       var config = getConfig(window);
       var id = document.body.getAttribute('data-id');
-      if (!isset(config, id)) return console.log('need settings');
+      if (!Utils.isset(config, id)) return;
       s = config[id];
       s.name = id;
     }
     return s;
   },
   loadData = function(s,cbName,callback){
-    jsonpCall({
+   return jsonpCall({
       src: function(){
-        var channel = s.channel,
-            params = channel.parameters,
-            url = '//api.tvpage.com/v1/channels/' + channel.id + '/videos?X-login-id=' + s.loginid;
+        var channel = s.channel || {},
+            params = channel.parameters || {},
+            url = '//api.tvpage.com/v1/channels/' + (channel.id || (s.channelid || s.channelId)) + '/videos?X-login-id=' + (s.loginid || s.loginId);
 
         for (var p in params) { url += '&' + p + '=' + params[p];}
+        url += '&n=' + itemsPerPage + '&p=' + channelVideosPage;
         url += '&callback='+cbName;
         return url;
       }(),
       cbName: cbName
     },callback);
-  };
-
-  var render = function(idEl,target){
-    if (!idEl || !target) return console.log('need target');
+  },
+  render = function(idEl,target){
+    if (!idEl || !target) return;
     var frag = document.createDocumentFragment(),
     main = document.createElement('div');
     main.classList.add('tvp-player');
@@ -77,20 +74,63 @@
     if (document.body.classList.contains('dynamic')) {
       //We deal diff with some stuff on iframe.
       (function(unique,settings){
+        var player = null,
+            menu = null,
+            playerSettings = JSON.parse(JSON.stringify(settings)),
+            menuSettings = JSON.parse(JSON.stringify(settings)),
+            playlistOption = Utils.isset(settings,'playlist') ? settings.playlist: null;
+
         render(unique,document.body);
+
         loadData(settings,unique,function(data){
-          settings.data = data || [];
-          new Player('tvp-player-el-'+unique,settings);
+          playerSettings.data = data || [];
+          player = new Player('tvp-player-el-'+unique,playerSettings);
+
+          if (playlistOption === 'show' && playlistOption) {
+            menuSettings.data = data || [];
+            menu = new Menu(player,menuSettings);        
+          }
         });
-      }(random(),getSettings('dynamic')));
+
+        if (playlistOption === 'show' && playlistOption) {
+
+          playerSettings.onPlayerReady = function(){
+            menu.init();
+          };
+
+          playerSettings.onNext = function(){
+            var playerAsset = player.assets[player.current];
+            menu.setActiveItem(playerAsset.assetId);
+            menu.hideMenu();
+          };
+
+          playerSettings.onFullscreenChange = function(){
+            menu.hideMenu();
+          };
+
+          Menu.prototype.loadMore = function(){
+            if (!lastPage && !isFetching) {
+              channelVideosPage++;
+              isFetching = true;
+              loadData(settings,unique,function(newData){
+                isFetching = false;
+                lastPage = (!newData.length || newData.length < itemsPerPage) ? true : false;
+                player.addData(newData);
+                menu.update(newData);
+              });
+            }
+          };
+        }
+      }(Utils.random(),getSettings('dynamic')));
     }
   };
 
-  if (!isset(window.Player)) {
+  var not = function(obj){return 'undefined' === typeof obj};
+  if (not(window.Utils) || not(window.Player) || not(window.Menu) || not(window.SimpleScrollbar)) {
       var libsCheck = 0;
       (function libsReady() {
           setTimeout(function(){
-              if (!isset(window.Player) && (++libsCheck < 50)) {
+              if ( (not(window.Utils) || not(window.Player) || not(window.Menu) || not(window.SimpleScrollbar)) && (++libsCheck < 50) ) {
                   libsReady();
               } else {
                   initialize();

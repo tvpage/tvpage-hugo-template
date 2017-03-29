@@ -9,7 +9,6 @@
   {{ else }}
   <link rel="stylesheet" type="text/css" href="{{ (printf "%s/dist/css/styles.min.css" .Type ) | absURL }}">
   {{ end }}
-  <style>{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/options.css" .Type ) .)) | safeCSS }}</style>
 </head>
 <body>
   <div class="tvp-player">
@@ -18,23 +17,25 @@
   <script async src="//a.tvpage.com/tvpa.min.js"></script>
   <script async src='//cdnjs.tvpage.com/tvplayer/tvp-{{ ($.Scratch.Get "settings").player_version }}.min.js'></script>
   {{ if (getenv "HUGO_DEBUG") }}
+  <script src="{{ (printf "%s/js/libs/utils.js" .Type ) | absURL }}"></script>
   <script src="{{ (printf "%s/js/libs/analytics.js" .Type ) | absURL }}"></script>
   <script src="{{ (printf "%s/js/libs/player.js" .Type ) | absURL }}"></script>
+  <script src="{{ (printf "%s/js/vendor/simple-scrollbar.min.js" .Type ) | absURL }}"></script>
+  <script src="{{ (printf "%s/js/menu.js" .Type ) | absURL }}"></script>
   {{ else }}
   <script src="{{ (printf "%s/dist/js/scripts.min.js" .Type ) | absURL }}"></script>
   {{ end }}
   <script>;(function(doc,settings,videoId,channelId){
 
     var getUrlParams = function(){
-      if (window.location) {
-        var o = {},kv = location.search.substr(1).split('&'), params = [];
-        for (var i = 0; i < kv.length; i++) { params.push(kv[i]); }
-        for (var i = 0; i < params.length; i++) {
+      if (!window.location) return;
+      var o = {},kv = location.search.substr(1).split('&'), params = [];
+      for (var i = 0; i < kv.length; i++) { params.push(kv[i]); }
+      for (var i = 0; i < params.length; i++) {
           var param = params[i].split('=');
           if(param[1]) o[param[0]] = param[1];
-        }
-        return o;
       }
+      return o;
     };
 
     var extend = function(out) {
@@ -60,8 +61,8 @@
     {{ if (isset .Params "channelid") }}
       channelVideos = {{ index $.Site.Data.channelVideos (printf "x%s_page_0" .Params.channelid) }};
     {{ end }}
-    
-    new Player('tvp-player-el', function(){
+
+    var player = new Player('tvp-player-el', function(){
       var videos = [];
       
       if (videoId) {
@@ -69,7 +70,7 @@
       } else if (channelId && 'undefined' !== typeof channelVideos.data) {
         videos = channelVideos.data;
       } else if (!videos.length) {
-        return console.debug("No content found on data/");
+        return console.debug("No content found on data");
       }
 
       settings.data = videos;
@@ -79,7 +80,24 @@
 
       return settings;
     }());
+    var playlist = settings.playlist || null;
+    if (playlist && "show" === playlist) {
+      var menu = new Menu(player, channelVideos);
 
+      player.onPlayerReady = function(){
+        menu.init();
+      };
+
+      player.onNext = function(){
+        var playerAsset = player.assets[player.current];
+        menu.setActiveItem(playerAsset.assetId);
+        menu.hideMenu();
+      };
+
+      player.onFullscreenChange = function(){
+        menu.hideMenu();
+      };
+    }
 }(document,
 {{ $.Scratch.Get "settings" }},
 {{ with .Params.videoid }}{{ . }}{{ else }}''{{ end }},
