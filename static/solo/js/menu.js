@@ -170,7 +170,7 @@
                 var categoryFrag = document.createDocumentFragment(),
                     categoryDiv = document.createElement('div');
                 categoryDiv.classList.add('tvp-category-tag');
-                categoryDiv.innerHTML += menuItem[settings.menu_item_play_category_tag_attribute];
+                categoryDiv.innerHTML += newData[i][settings.menu_item_play_category_tag_attribute];
                 categoryFrag.appendChild(categoryDiv);
                 that.noVideosContainer.getElementsByClassName('tvp-video-details')[i].appendChild(categoryFrag);
             }
@@ -191,7 +191,7 @@
                 var categoryFrag = document.createDocumentFragment(),
                     categoryDiv = document.createElement('div');
                 categoryDiv.classList.add('tvp-category-tag');
-                categoryDiv.innerHTML += menuItem[settings.menu_item_play_category_tag_attribute];
+                categoryDiv.innerHTML += newData[i][settings.menu_item_play_category_tag_attribute];
                 categoryFrag.appendChild(categoryDiv);
                 that.noVideosContainer.getElementsByClassName('tvp-video-details')[i].appendChild(categoryFrag);
             }
