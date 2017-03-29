@@ -2,7 +2,8 @@
 
     var analytics = null;
     var channelId = null;
-    var eventPrefix = "tvp_carousel";
+    var hasData = false;
+    var eventPrefix = "tvp_" + (document.body.getAttribute("data-id") || "").replace(/-/g,'_');
 
     var pkTrack = function() {
         analytics.track('pk', {
@@ -29,10 +30,9 @@
         document.body.appendChild(script);
     };
 
-    var render = function(data) {
+    var render = function(data,config) {
         var container = Utils.getByClass('tvp-products');
         var el = Utils.getByClass('iframe-content');
-        var hasData = false;
 
         if (data && data.length) {
             hasData = true;
@@ -84,9 +84,10 @@
             }
 
             var prodNode = document.createElement('div');
+            var buttonText = product.actionText.trim().length > 0 ? product.actionText : 'View Details';
             prodNode.innerHTML = '<a id="tvp-product-' + productId + '" class="tvp-product" data-vd="' + productVideoId + '" href="' +
                 product.linkUrl + '"><div class="tvp-product-image" style="background-image:url(' + product.imageUrl + ')"></div>' +
-                '<div class="tvp-product-data"><p>' + prodTitle + '</p><h2>' + fixedPrice + '</h2><button>View Details</button></div></a>';
+                '<div class="tvp-product-data"><p>' + prodTitle + '</p><h2>' + fixedPrice + '</h2><button class="tvp-product-cta">'+buttonText+'</button></div></a>';
             frag.appendChild(prodNode);
         }
 
@@ -98,7 +99,7 @@
 
         container.innerHTML = '';
 
-        if (data.length) {
+        if (hasData) {
             var productsLabel = document.createElement('p');
             productsLabel.classList.add('tvp-products-headline');
             productsLabel.innerHTML = 'Related Products';
@@ -140,7 +141,7 @@
                         if (window.parent) {
                             window.parent.postMessage({
                                 event: eventPrefix + ':modal_resize',
-                                height: el.offsetHeight + 'px'
+                                height: (el.offsetHeight + parseInt(config.iframe_modal_body_padding || '0')) + 'px'
                             }, '*');
                         }
                     }, 0);
@@ -171,10 +172,10 @@
 
             s.onResize = function() {
                 setTimeout(function() {
-                    if (window.parent) {
+                    if (window.parent && !hasData) {
                         window.parent.postMessage({
                             event: eventPrefix + ':modal_resize',
-                            height: el.offsetHeight + 'px'
+                            height: (el.offsetHeight + parseInt(data.runTime.iframe_modal_body_padding || '0')) + 'px'
                         }, '*');
                     }
                 }, 0);
@@ -191,7 +192,7 @@
                         data.runTime.loginid || data.runTime.loginId,
                         function(data) {
                             setTimeout(function() {
-                                render(data);
+                                render(data,data.runTime);
                             }, 0);
                         });
                 }
@@ -216,8 +217,10 @@
             if (eventPrefix + ':modal_data' === data.event) {
                 initPlayer(data);
 
-                var loginId = data.runTime.loginid || data.runTime.loginId;
-                channelId = data.runTime.channel.id || data.runTime.channelid;
+                var settings = data.runTime;
+                var loginId = settings.loginid || settings.loginId;
+
+                channelId = Utils.isset(settings.channel) && Utils.isset(settings.channel.id) ? settings.channel.id : settings.channelId;
 
                 analytics = new Analytics();
                 analytics.initConfig({
