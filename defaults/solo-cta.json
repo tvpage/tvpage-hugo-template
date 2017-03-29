@@ -5,14 +5,14 @@
       "type": "text",
       "label": "CTA Overlay Opacity",
       "code": "cta_overlay_opacity",
-      "value": "0.5"
+      "value": "0.35"
     },
     {
       "for": "cta",
       "type": "text",
       "label": "CTA Overlay Color",
       "code": "cta_overlay_color",
-      "value": "transparent"
+      "value": "black"
     },
     {
       "for": "cta",
