@@ -61,11 +61,7 @@
     {{ if (isset .Params "channelid") }}
       channelVideos = {{ index $.Site.Data.channelVideos (printf "x%s_page_0" .Params.channelid) }};
     {{ end }}
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> 373ce5bd9943458921ce1044df1dc78636a30d41
     var player = new Player('tvp-player-el', function(){
       var videos = [];
       
@@ -87,7 +83,6 @@
     var playlist = settings.playlist || null;
     if (playlist && "show" === playlist) {
       var menu = new Menu(player, channelVideos);
-<<<<<<< HEAD
 
       player.onPlayerReady = function(){
         menu.init();
@@ -99,19 +94,6 @@
         menu.hideMenu();
       };
 
-=======
-
-      player.onPlayerReady = function(){
-        menu.init();
-      };
-
-      player.onNext = function(){
-        var playerAsset = player.assets[player.current];
-        menu.setActiveItem(playerAsset.assetId);
-        menu.hideMenu();
-      };
-
->>>>>>> 373ce5bd9943458921ce1044df1dc78636a30d41
       player.onFullscreenChange = function(){
         menu.hideMenu();
       };
