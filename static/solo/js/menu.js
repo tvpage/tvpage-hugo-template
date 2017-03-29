@@ -26,13 +26,15 @@
         that.noVideosContainer = document.getElementById('tvp-no-videos-container');
         that.tvpNoVideos = document.getElementsByClassName('tvp-no-videos');
         that.scrollBar = document.getElementsByClassName('ss-scroll')[0];
+        that.slideMenu = document.getElementById('tvp-slide-menu');
     };
 
     this.render = function() {
         var playlist = settings.data || [];
         if (playlist.length < 1) return;
         that.fullScreenMenu();
-        var menuHiden = document.getElementById('tvp-hidden-menu'),
+        var videoDetails = document.getElementsByClassName('tvp-video-details'),
+            menuHiden = document.getElementById('tvp-hidden-menu'),
             menuItemEl = document.createElement('div'),
             noVideosContainer = document.createElement('div');
 
@@ -50,6 +52,14 @@
             menuItem.title = Utils.trimText(menuItem.title, 100);
             menuItem.duration = Utils.formatDuration(menuItem.duration);
             menuItemEl.innerHTML += Utils.tmpl(settings.templates['menu-item'], menuItem);
+            if (Utils.isset(settings, 'menu_item_play_category_tag_attribute') && settings.menu_item_play_category_tag_attribute && settings.menu_item_play_category_tag_attribute.length > 0 && menuItem[settings.menu_item_play_category_tag_attribute] != (null||undefined)) {
+                var categoryFrag = document.createDocumentFragment(),
+                    categoryDiv = document.createElement('div');
+                categoryDiv.classList.add('tvp-category-tag');
+                categoryDiv.innerHTML += menuItem[settings.menu_item_play_category_tag_attribute];
+                categoryFrag.appendChild(categoryDiv);
+                videoDetails[i].appendChild(categoryFrag);
+            }
 
             if (that.dataMethod !== 'static') {
                 var noVidFrag = document.createDocumentFragment(),
@@ -99,12 +109,11 @@
     };
 
     this.toggleMenu = function() {
-        that.hamburguer.classList.contains('active') ? that.hamburguer.classList.remove('active') : that.hamburguer.classList.add('active');
-        that.hiddenMenu.classList.contains('active') ? that.hiddenMenu.classList.remove('active') : that.hiddenMenu.classList.add('active');
+        that.slideMenu.classList.contains('active') ? that.slideMenu.classList.remove('active') : that.slideMenu.classList.add('active');
     };
 
     this.hideMenu = function(){
-        that.hamburguer.classList.remove('active');
+        that.slideMenu.classList.remove('active');
         that.hiddenMenu.classList.remove('active');
     };
 
@@ -144,29 +153,48 @@
     };
 
     this.update = function(newData) {
+        var playlist = settings.data || [],
+            menuItem;
 
       if (that.noVideosContainer) {
         that.deleteDivs();
         for (var i = 0; i < newData.length; i++) {
+            menuItem = playlist[i];
             that.allVideos.push(newData[i]);
             settings.data.push(newData[i]);
             that.noVideosContainer.setAttribute('id', 'tvp-clearfix');
             newData[i].duration = Utils.formatDuration(newData[i].duration);
             that.noVideosContainer.innerHTML += Utils.tmpl(settings.templates['menu-item'], newData[i]);
             that.scrollMenu.appendChild(that.noVideosContainer);
+            if (Utils.isset(settings, 'menu_item_play_category_tag_attribute') && settings.menu_item_play_category_tag_attribute && settings.menu_item_play_category_tag_attribute.length > 0 && menuItem[settings.menu_item_play_category_tag_attribute] != (null||undefined)) {
+                var categoryFrag = document.createDocumentFragment(),
+                    categoryDiv = document.createElement('div');
+                categoryDiv.classList.add('tvp-category-tag');
+                categoryDiv.innerHTML += menuItem[settings.menu_item_play_category_tag_attribute];
+                categoryFrag.appendChild(categoryDiv);
+                that.noVideosContainer.getElementsByClassName('tvp-video-details')[i].appendChild(categoryFrag);
+            }
         }
       }else{
         var newVivFrag = document.createDocumentFragment(),
             newDiv = document.createElement('div');
         for (var i = 0; i < newData.length; i++) {
+            menuItem = playlist[i];
             that.allVideos.push(newData[i]);
             settings.data.push(newData[i]);
             newDiv.setAttribute('id', 'tvp-clearfix');
             newData[i].duration = Utils.formatDuration(newData[i].duration);
             newDiv.innerHTML += Utils.tmpl(settings.templates['menu-item'], newData[i]);
             newVivFrag.appendChild(newDiv);
-
             that.scrollMenu.appendChild(newDiv);
+            if (Utils.isset(settings, 'menu_item_play_category_tag_attribute') && settings.menu_item_play_category_tag_attribute && settings.menu_item_play_category_tag_attribute.length > 0 && menuItem[settings.menu_item_play_category_tag_attribute] != (null||undefined)) {
+                var categoryFrag = document.createDocumentFragment(),
+                    categoryDiv = document.createElement('div');
+                categoryDiv.classList.add('tvp-category-tag');
+                categoryDiv.innerHTML += menuItem[settings.menu_item_play_category_tag_attribute];
+                categoryFrag.appendChild(categoryDiv);
+                that.noVideosContainer.getElementsByClassName('tvp-video-details')[i].appendChild(categoryFrag);
+            }
         }
       }
       that.cacheDOM();

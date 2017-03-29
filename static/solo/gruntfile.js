@@ -11,8 +11,7 @@ module.exports = function(grunt) {
         css: {
           files: {
             'css/styles.css': 'css/styles.css',
-            'css/host.css': 'css/host.css',
-            'css/mobile/host.css': 'css/mobile/host.css'
+            'css/host.css': 'css/host.css'
           }
         }
       },
