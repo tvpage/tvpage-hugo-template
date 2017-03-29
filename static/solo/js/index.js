@@ -46,9 +46,9 @@
   loadData = function(s,cbName,callback){
    return jsonpCall({
       src: function(){
-        var channel = s.channel,
-            params = channel.parameters,
-            url = '//api.tvpage.com/v1/channels/' + channel.id + '/videos?X-login-id=' + (s.loginid || s.loginId);
+        var channel = s.channel || {},
+            params = channel.parameters || {},
+            url = '//api.tvpage.com/v1/channels/' + (channel.id || (s.channelid || s.channelId)) + '/videos?X-login-id=' + (s.loginid || s.loginId);
 
         for (var p in params) { url += '&' + p + '=' + params[p];}
         url += '&n=' + itemsPerPage + '&p=' + channelVideosPage;
@@ -81,6 +81,7 @@
             playlistOption = Utils.isset(settings,'playlist') ? settings.playlist: null;
 
         render(unique,document.body);
+
         loadData(settings,unique,function(data){
           playerSettings.data = data || [];
           player = new Player('tvp-player-el-'+unique,playerSettings);

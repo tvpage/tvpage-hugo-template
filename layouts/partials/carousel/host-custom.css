@@ -55,6 +55,6 @@
 "}" +
 
 ".tvp-modal-close:hover {" +
-    "background: {{ ($.Scratch.Get "settings").modal_close_button_background_color_hover }};" +
+    "background-color: {{ ($.Scratch.Get "settings").modal_close_button_background_color_hover }};" +
     "opacity: {{ ($.Scratch.Get "settings").modal_close_button_opacity_hover }};" +
 "}"

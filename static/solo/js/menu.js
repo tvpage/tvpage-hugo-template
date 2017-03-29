@@ -196,6 +196,7 @@
             newData[i].duration = Utils.formatDuration(newData[i].duration);
             newDiv.innerHTML += Utils.tmpl(settings.templates['menu-item'], newData[i]);
             newVivFrag.appendChild(newDiv);
+            
             that.scrollMenu.appendChild(newDiv);
             if (Utils.isset(settings, 'menu_item_play_category_tag_attribute') && ("" + settings.menu_item_play_category_tag_attribute).trim().length) {
                 var tagAttribute = settings.menu_item_play_category_tag_attribute;
