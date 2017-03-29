@@ -67,7 +67,7 @@
 
         main.id = d.id || '';
         main.classList.add('iframe-content');
-        main.innerHTML = '<div class="tvp-content"><div class="tvp-row-titles"><div class="tvp-row-player-title"><h1 id="videoTitle"></h1></div><div class="tvp-row-featured-title"><h2>Featured Products</h2></div><div class="clear"></div></div><div class="tvp-row"><div class="tvp-content"><div class="tvp-player" id="tvpPlayerView"><div class="tvp-content"><div id="tvp-player"></div><div id="tvp-controls" class="tvp-not-active"> <span class="tvp-icon tvp-icon-play"></span> <span class="tvp-icon tvp-icon-play anim"></span></div></div></div><div class="tvp-featured" id="tvpFeaturedProduct"><h2>Featured Products</h2></div><div class="tvp-products-scroller" id="tvpProductsView"></div><div class="tvp-clear"></div></div></div><div class="tvp-videos-scroller" id="tvpVideoScroller"></div></div>';
+        main.innerHTML = data.inlineTemplate;
 
         frag.appendChild(main);
         target.appendChild(frag);
@@ -75,7 +75,7 @@
 
     var body = document.body;
 
-    var initialize = function(){
+    var initialize = function(){        
         if (body.classList.contains('dynamic')) {
             (function(settings){
                 var inlineSettings = JSON.parse(JSON.stringify(settings));
@@ -83,7 +83,8 @@
                 
                 render(body,{
                     id: name,
-                    title: settings.title || 'Recommended Videos'
+                    title: settings.title || 'Recommended Videos',
+                    inlineTemplate: settings.templates.inline
                 });
 
                 jsonpCall({
@@ -97,15 +98,14 @@
                     for (var key in options) {
                         var option = options[key];
                         opts[option.code] = option.value;
-                    }
-
+                    }                    
                     inlineSettings = extend(inlineSettings, opts);
                     $.when(
                         $.getScript('//a.tvpage.com/tvpa.min.js'),
                         $.getScript('https://cdnjs.tvpage.com/tvplayer/tvp-'+opts.player_version+'.min.js')
                     ).done(function (a, b) {
                         Inline(name, inlineSettings);
-                    });
+                    });                    
                 });
 
             }(getSettings('dynamic')));

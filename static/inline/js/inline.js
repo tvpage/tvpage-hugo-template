@@ -4,24 +4,6 @@
     var isProductsInitialized = true;
     var analytics = null;
 
-    var productTemplate = '<div class="tvp-product-image" style="background-image: url({imageUrl})"></div>';
-
-    var productFeatureTemplate = '<span class="tvp-featured-image" style="background-image: url({imageUrl})" ></span>'
-        +'<span class="tvp-featured-info">'
-        +'<span class="tvp-featured-info-title">{title}</span>'
-        +'<span class="tvp-featured-info-price">${price}</span>'
-        +'<span class="tvp-featured-info-rating">{formattedRating}</span>'        
-        +'<span class="clear"></span>'
-        +'<button class="tvp-featured-info-view-details">VIEW DETAILS</button>'
-        +'</span>';
-
-    var videoTemplate = '<div class="tvp-video" data-id="{id}">'
-        + '<div class="tvp-video-image" style="background-image: url({asset.thumbnailUrl});">'
-        + '<svg class="tvp-video-play" viewBox="0 0 200 200" alt="Play video"><polygon points="70, 55 70, 145 145, 100"></polygon></svg>'
-        + '<div class="tvp-video-image-overlay"></div>'
-        + '</div>'
-        + '<p class="tvp-video-title">{title}</p>'
-        + '</div>';
     var that = this;
 
     var pkTrack = function(){
@@ -54,7 +36,8 @@
         document.body.appendChild(script);
     };
 
-    var renderFeaturedProduct = function (product) {
+    var renderFeaturedProduct = function (product) {  
+        
         if (Utils.isMobile) return;
         var getRating = function() {
           var rating = 0;
@@ -74,7 +57,7 @@
         featuredProduct.href = product.linkUrl;
         featuredProduct.setAttribute('target', '_blank');
         featuredProduct.setAttribute('data-id', product.id);
-        featuredProduct.innerHTML = Utils.tmpl(productFeatureTemplate, product);
+        featuredProduct.innerHTML = Utils.tmpl(that.featuredProductTemplate, product);
         $(featuredProductContainer).children().remove();
         $(featuredProduct).appendTo(featuredProductContainer);
 
@@ -88,7 +71,7 @@
             function (data) {
                 var $sscontent = $(products).find('.ss-content');
                 if (data.length) {
-                    var itemTemplate = Utils.isMobile ? productFeatureTemplate : productTemplate;
+                    var itemTemplate = Utils.isMobile ? that.featuredProductTemplate : this.productItemTemplate;
                     var _container = null;
 
                     productData = data;
@@ -160,8 +143,7 @@
         });
     };
 
-    function Inline(el, options) {
-        console.log(options);
+    function Inline(el, options) {        
         this.xchg = options.xchg || false;
         this.windowSize = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) <= 200 ? 'small' : 'medium';
         this.initialResize = true;
@@ -175,6 +157,11 @@
         this.isLastPage = false;
         this.page = 0;
 
+        //templates
+        this.inlineItemTemplate = options.templates.inline_item;
+        this.featuredProductTemplate = options.templates.featured_product;
+        this.productItemTemplate = options.templates.product;
+
         this.el = 'string' === typeof el ? document.getElementById(el) : el;
         this.container = this.el.getElementsByClassName('tvp-videos-scroller')[0];
 
@@ -186,15 +173,13 @@
         this.onResize = function (e, d) {
             if (!Utils.isMobile) {                
                 $(that.el).find('#tvpProductsView').height(d[1]);
+            }            
+            if (window.parent) {
+                window.parent.postMessage({
+                    event: 'tvp_'+ that.el.id.replace(/-/g,'_') +':resize',
+                    height: that.el.offsetHeight + 'px'
+                }, '*');
             }
-            // else{
-                if (window.parent) {
-                    window.parent.postMessage({
-                        event: 'tvp_inline:resize',
-                        height: that.el.offsetHeight + 'px'
-                    }, '*');
-                }
-            // }
         };    
         this.render = function(){
             this.container.innerHTML = '';
@@ -212,7 +197,7 @@
 
                 item.className = className;
 
-                rowEl.innerHTML = Utils.tmpl(videoTemplate, item);
+                rowEl.innerHTML = Utils.tmpl(that.inlineItemTemplate, item);
                 
                 this.container.appendChild(rowEl);
             }
@@ -270,10 +255,9 @@
             }
 
             var getChannelVideos = function(callback){
-                // var channel = that.channel || {};
-                // if (Utils.isEmpty(channel) || !channel.id) return console.log('bad channel');
+                var channelId = Utils.isEmpty(that.channel) ? that.channelid : that.channel.id;
                 var params = channel.parameters || {};
-                var src = '//api.tvpage.com/v1/channels/' + that.channelid + '/videos?X-login-id=' + that.loginId;
+                var src = '//api.tvpage.com/v1/channels/' + channelId + '/videos?X-login-id=' + that.loginId;
                 for (var p in params) { src += '&' + p + '=' + params[p];}
                 var cbName = options.callbackName || 'tvp_' + Math.floor(Math.random() * 555);
                 src += '&p=' + that.page + '&n=' + that.itemsPerPage + '&callback='+cbName;
