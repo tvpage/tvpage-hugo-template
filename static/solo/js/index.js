@@ -46,9 +46,9 @@
   loadData = function(s,cbName,callback){
     jsonpCall({
       src: function(){
-        var channel = s.channel,
-            params = channel.parameters,
-            url = '//api.tvpage.com/v1/channels/' + channel.id + '/videos?X-login-id=' + (s.loginid || s.loginId);
+        var channel = s.channel || {},
+            params = channel.parameters || {},
+            url = '//api.tvpage.com/v1/channels/' + (channel.id || (s.channelid || s.channelId)) + '/videos?X-login-id=' + (s.loginid || s.loginId);
 
         for (var p in params) { url += '&' + p + '=' + params[p];}
         url += '&n=' + itemsPerPage + '&p=' + channelVideosPage;
