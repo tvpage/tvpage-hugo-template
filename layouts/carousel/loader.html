@@ -147,9 +147,11 @@
         var createModal = function() {
             var modalOverlay = document.getElementById('tvp-modal-overlay-template').innerHTML;
             var modal = document.getElementById('tvp-modal-template').innerHTML;
-
-            document.body.innerHTML += modalOverlay;
-            document.body.innerHTML += modal;
+            
+            var modalShitContainer = document.createElement("div");
+            modalShitContainer.innerHTML = modalOverlay + modal;
+            
+            document.body.appendChild(modalShitContainer);
 
             var modalTitleElement = document.createElement('h4');
             modalTitleElement.setAttribute('id', 'tvp-modal-title-{{ $id }}');

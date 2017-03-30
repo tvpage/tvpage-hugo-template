@@ -69,7 +69,7 @@
 
                 render(body,{
                     id: name,
-                    title: settings.title_text
+                    title: "Watch Videos: " + "<span>" + settings.title_text + "</span>"
                 });
 
                 if (Utils.isMobile) {
