@@ -1,106 +1,22 @@
 {{- partial "settings.html" . -}}
 {{- $id := ($.Scratch.Get "settings").name -}}
 <style>
-    .tvp-hidden {
-        display: none;
-    }
-
-    .tvp-iframe {
-        width: {{ ($.Scratch.Get "settings").iframe_width }};
-    }
-
-    .tvp-iframe-holder {
-      position: relative;
-      opacity: 0;
-      height: 0;
-      visibility: hidden;
-    }
-
-    .tvp-iframe-holder.enabled {
-      height: auto;
-      opacity: 1;
-      visibility: visible;
-      background: {{ ($.Scratch.Get "settings").background }};
-      margin: {{ ($.Scratch.Get "settings").margin }};
-    }
-
-    .tvp-carousel-title {
-        font-size: {{ ($.Scratch.Get "settings").modal_title_font_size }};
-        font-family: {{ ($.Scratch.Get "settings").modal_title_font_family }};
-    }
-
-    .tvp-modal-header {
-        padding: {{ ($.Scratch.Get "settings").modal_header_padding }};
-        border-bottom:{{ ($.Scratch.Get "settings").modal_header_border_bottom }};
-    }
-
-    .tvp-modal-content {
-        background:{{ ($.Scratch.Get "settings").modal_background }};
-        border:{{ ($.Scratch.Get "settings").modal_border }};
-    }
-
-    .tvp-modal-title {
-        color: {{ ($.Scratch.Get "settings").modal_title_font_color }};
-        font-size: {{ ($.Scratch.Get "settings").modal_title_font_size }};
-        font-family: {{ ($.Scratch.Get "settings").modal_title_font_family }};
-        font-weight: {{ ($.Scratch.Get "settings").modal_title_font_weight }};
-    }
-
-    .tvp-products-headline {
-        display: {{ ($.Scratch.Get "settings").products_headline_display }};
-        color: {{ ($.Scratch.Get "settings").products_headline_font_color }};
-        font-size: {{ ($.Scratch.Get "settings").products_headline_font_size }};
-        top: {{ ($.Scratch.Get "settings").products_headline_top }};
-        right: {{ ($.Scratch.Get "settings").products_headline_right }};
-    }
-
-    .tvp-modal-close {
-        width: {{ ($.Scratch.Get "settings").modal_close_button_width }};
-        height: {{ ($.Scratch.Get "settings").modal_close_button_height }};
-        padding: {{ ($.Scratch.Get "settings").modal_close_button_padding }};
-        background-color: {{ ($.Scratch.Get "settings").modal_close_button_background_color }};
-        background-image: url("{{ $.Site.BaseURL }}carousel/{{ ($.Scratch.Get "settings").modal_close_button_background_image_url }}");
-        border: {{ ($.Scratch.Get "settings").modal_close_button_border }};
-        border-radius: {{ ($.Scratch.Get "settings").modal_close_button_border_radius }};
-        box-shadow: {{ ($.Scratch.Get "settings").modal_close_button_box_shadow }};
-        right: {{ ($.Scratch.Get "settings").modal_close_button_right }};
-        top: {{ ($.Scratch.Get "settings").modal_close_button_top }};
-        opacity: {{ ($.Scratch.Get "settings").modal_close_button_opacity }};
-    }
-
-    .tvp-modal-close > svg {
-      display: {{ ($.Scratch.Get "settings").modal_close_button_svg_display }};
-    }
-
-    .tvp-modal-close:hover {
-        background-color: {{ ($.Scratch.Get "settings").modal_close_button_background_hover }};
-        opacity: {{ ($.Scratch.Get "settings").modal_close_button_opacity_hover }};
-    }
+.tvp-hidden{display:none;}
+.tvp-iframe{width:{{ ($.Scratch.Get "settings").iframe_width }};}
+.tvp-iframe-holder{position:relative;opacity:0;height:0;visibility:hidden;}
+.tvp-iframe-holder.enabled{height:auto;opacity:1;visibility: visible;background: {{ ($.Scratch.Get "settings").background }};margin: {{ ($.Scratch.Get "settings").margin }};}
+.tvp-carousel-title{font-size: {{ ($.Scratch.Get "settings").modal_title_font_size }};font-family: {{ ($.Scratch.Get "settings").modal_title_font_family }};}
+.tvp-modal-header{padding:{{ ($.Scratch.Get "settings").modal_header_padding }};
+    border-bottom:{{ ($.Scratch.Get "settings").modal_header_border_bottom }};
+}
+.tvp-modal-content{background:{{ ($.Scratch.Get "settings").modal_background }};border:{{ ($.Scratch.Get "settings").modal_border }};}
+.tvp-modal-title {color: {{ ($.Scratch.Get "settings").modal_title_font_color }};font-size: {{ ($.Scratch.Get "settings").modal_title_font_size }};
+    font-family: {{ ($.Scratch.Get "settings").modal_title_font_family }};font-weight: {{ ($.Scratch.Get "settings").modal_title_font_weight }};}
+.tvp-products-headline {display: {{ ($.Scratch.Get "settings").products_headline_display }};color: {{ ($.Scratch.Get "settings").products_headline_font_color }};font-size: {{ ($.Scratch.Get "settings").products_headline_font_size }};top: {{ ($.Scratch.Get "settings").products_headline_top }};right: {{ ($.Scratch.Get "settings").products_headline_right }};}
+.tvp-modal-close {width: {{ ($.Scratch.Get "settings").modal_close_button_width }};height: {{ ($.Scratch.Get "settings").modal_close_button_height }};padding: {{ ($.Scratch.Get "settings").modal_close_button_padding }};background-color: {{ ($.Scratch.Get "settings").modal_close_button_background_color }};background-image: url("{{ $.Site.BaseURL }}carousel/{{ ($.Scratch.Get "settings").modal_close_button_background_image_url }}");border: {{ ($.Scratch.Get "settings").modal_close_button_border }};border-radius: {{ ($.Scratch.Get "settings").modal_close_button_border_radius }};box-shadow: {{ ($.Scratch.Get "settings").modal_close_button_box_shadow }};right: {{ ($.Scratch.Get "settings").modal_close_button_right }};top: {{ ($.Scratch.Get "settings").modal_close_button_top }};opacity: {{ ($.Scratch.Get "settings").modal_close_button_opacity }};}
+.tvp-modal-close>svg{display: {{ ($.Scratch.Get "settings").modal_close_button_svg_display }};}
+.tvp-modal-close:hover{background-color: {{ ($.Scratch.Get "settings").modal_close_button_background_hover }};opacity: {{ ($.Scratch.Get "settings").modal_close_button_opacity_hover }};}
 </style>
-<script id="tvp-modal-overlay-template" type="text/template">
-    <div id="tvp-modal-overlay-{{ $id }}" class="tvp-modal-overlay tvp-hidden"></div>
-</script>
-<script id="tvp-modal-template" type="text/template">
-    <div id="tvp-modal-{{ $id }}" class="tvp-modal tvp-hidden">
-        <div class="tvp-modal-wrapper">
-            <div class="tvp-modal-content">
-                <div id="tvp-modal-header-{{ $id }}" class="tvp-modal-header">
-                    <div id="tvp-modal-close-{{ $id }}" class="tvp-modal-close">
-                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="#ffffff" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
-                            <path d="M0 0h24v24H0z" fill="none"></path>
-                        </svg>
-                    </div>
-                    <div id="tvp-modal-title-top-{{ $id }}" class="tvp-modal-title-top"></div>
-                </div>
-                <div class="tvp-modal-body">
-                    <div id="tvp-modal-iframe-holder-{{ $id }}" class="tvp-modal-iframe-holder">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</script>
 <script id="tvp-iframe-modal-template" type="text/template">
     <div id="{{ $id }}" class="tvp-clearfix iframe-content">
         <div class="tvp-player-holder">
@@ -145,11 +61,10 @@
         };
 
         var createModal = function() {
-            var modalOverlay = document.getElementById('tvp-modal-overlay-template').innerHTML;
-            var modal = document.getElementById('tvp-modal-template').innerHTML;
-            
             var modalShitContainer = document.createElement("div");
-            modalShitContainer.innerHTML = modalOverlay + modal;
+
+            modalShitContainer.innerHTML = '<div id="tvp-modal-overlay-{{ $id }}" class="tvp-modal-overlay tvp-hidden"></div><div id="tvp-modal-{{ $id }}" class="tvp-modal tvp-hidden"><div class="tvp-modal-wrapper"><div class="tvp-modal-content"><div id="tvp-modal-header-{{ $id }}" class="tvp-modal-header"><div id="tvp-modal-close-{{ $id }}" class="tvp-modal-close"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#ffffff" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></div><div id="tvp-modal-title-top-{{ $id }}" class="tvp-modal-title-top"></div><div id="tvp-modal-title-top-{{ $id }}" class="tvp-modal-title-top"></div></div><div class="tvp-modal-body"><div id="tvp-modal-iframe-holder-{{ $id }}" class="tvp-modal-iframe-holder"></div></div></div></div></div>';
+
             
             document.body.appendChild(modalShitContainer);
 
