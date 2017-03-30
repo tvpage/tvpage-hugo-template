@@ -29,7 +29,16 @@
   //The player singleton. We basically create an instance from the tvpage
   //player and expose most utilities, helping to encapsualte what is required for a few players to co-exist.
   function Player(el, options, startWith) {
-    if (!el || !isset(options) || !isset(options.data) || options.data.length <= 0) return;
+    var iframeHolder = window.parent.document.getElementById(options.name + '-holder');
+
+    if (!el || !isset(options) || !isset(options.data) || options.data.length <= 0) {
+      var parentBody = window.parent.document.body;
+      window.parent.document.getElementById(options.name + '-holder');
+      parentBody.removeChild(iframeHolder);
+      return;
+    } else {
+      iframeHolder.style.display = 'block';
+    }
 
     this.isFullScreen = false;
     this.initialResize = true;

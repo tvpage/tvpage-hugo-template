@@ -3,6 +3,7 @@ div[class^="tvp-"] {
 }
 
 .tvp-iframe-holder {
+  display: none;
   height: 0;
   position: relative;
   transition: height ease-out 0.0001s;
