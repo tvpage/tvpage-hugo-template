@@ -238,6 +238,7 @@
             techOrder: 'html5,flash',
             analytics: { tvpa: that.analytics },
             apiBaseUrl: '//api.tvpage.com/v1',
+            apiTranscript: '//api.tvpage.com/v1/videos/transcript',
             swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+that.version+'-flash.swf',
             onReady: that.onReady,
             onStateChange: that.onStateChange,
