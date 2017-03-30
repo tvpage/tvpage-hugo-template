@@ -83,6 +83,13 @@
         render(unique,document.body);
 
         loadData(settings,unique,function(data){
+          
+          if (!data.length && window.parent) {
+            window.parent.postMessage({
+                event: ("tvp_" + settings.id).replace(/-/g,'_') + ':no_data'
+            }, '*');
+          }
+
           playerSettings.data = data || [];
           player = new Player('tvp-player-el-'+unique,playerSettings);
 

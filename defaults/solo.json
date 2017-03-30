@@ -196,7 +196,7 @@
       "type": "text",
       "label": "Menu Item Category Tag Font Size",
       "code": "menu_item_play_category_tag_font_size",
-      "value": "12px"
+      "value": ""
     },
     {
       "for": "menu",

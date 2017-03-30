@@ -289,7 +289,7 @@ body {
 .tvp-video-title,
 .tvp-video-duration {
   color: #FFF;
-  text-align: -webkit-auto;
+  text-align: left;
   font-family: Arial;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -298,11 +298,11 @@ body {
 }
 
 .tvp-video-title {
-  font-size: 14px;
+  font-size: calc(10px + (24 - 10) * ((100vw - 300px) / (1600 - 300)));
 }
 
 .tvp-video-duration {
-  font-size: 12px;
+  font-size: calc(8px + (22 - 8) * ((100vw - 300px) / (1600 - 300)));
 }
 
 .tvp-video-details {
@@ -316,6 +316,7 @@ body {
   text-align: left;
   padding: 5px;
   margin-top: 5px;
+  font-size: calc(8px + (22 - 8) * ((100vw - 300px) / (1600 - 300)));
 }
 
 .tvp-video-image {

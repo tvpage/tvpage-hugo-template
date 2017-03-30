@@ -203,6 +203,7 @@
         if (isset(window,'BigScreen')) {
             BigScreen.onchange = function(){
                 that.isFullScreen = !that.isFullScreen;
+                that.resize();
                 if (that.onFullscreenChange) {
                   that.onFullscreenChange();
                 }
