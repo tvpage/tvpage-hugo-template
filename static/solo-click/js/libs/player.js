@@ -35,12 +35,11 @@
     this.initialResize = true;
     this.autoplay = isset(options.autoplay) ? Number(options.autoplay) : false;
     this.autonext = isset(options.autonext) ? Number(options.autonext) : true;
-    this.version = isset(options.player_version) ? options.player_version : null;
-    this.progressColor = isset(options.progress_color) ? options.progress_color : null;
+    this.version = isset(options.version) ? options.version : null;
+    this.progressColor = isset(options.progressColor) ? options.progressColor : null;
     this.transcript = isset(options.transcript) ? options.transcript : null;
-    this.removeControls = isset(options.remove_controls) ? options.remove_controls : null;
+    this.removeControls = isset(options.removeControls) ? options.removeControls : null;
     this.analytics = isset(options.analytics) ? options.analytics : null;
-    // this.overlay = isset(options.overlay) ? options.overlay : null;
     this.overlay = isset(options.overlay) ? options.overlay : false;
     this.overlayColor = isset(options.overlayColor) ? options.overlayColor : null;
     this.overlayOpacity = isset(options.overlayOpacity) ? options.overlayOpacity : (isMobile ? '0' : '0.5');

@@ -10,13 +10,13 @@ tvpcallback({
       "type": "text",
       "label": "Progress Color",
       "code": "progressColor",
-      "value": "#E57211"
+      "value": "#243193"
     },
     {
       "type": "boolean",
       "label": "Transcript",
       "code": "transcript",
-      "value": false
+      "value": true
     },
     {
       "type": "text",
