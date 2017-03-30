@@ -153,6 +153,12 @@ var iframeDocument = iframe.contentWindow.document;
 iframeDocument.open().write(iframeContent);
 iframeDocument.close();
 
+window.addEventListener("message", function(e){
+    if (e && "undefined" !== typeof e.data && "undefined" !== typeof e.data.event && e.data.event === config.eventPrefix + ":no_data") {
+        holder.parentNode.removeChild(holder);
+    }
+});
+
 //Listen to orientation/resize changes in the external page whenever the widget
 //is being used in an iOS device so we can send the size information to the
 //player so it can resize itself.
