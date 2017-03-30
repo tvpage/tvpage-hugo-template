@@ -20,7 +20,11 @@
     <script id="{{ $id }}-script">
         var widgetId = "{{ $id }}";
         var isIOS = /iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream;
-        var isset = function(o,p){var val = o;if (p) val = o[p];return 'undefined' !== typeof val;};
+        var isset = function(o,p){
+            var val = o;
+            if (p) val = o[p];
+            return 'undefined' !== typeof val;
+        };
         var extend = function(o) {
             o = o || {};
             for (var i = 1; i < arguments.length; i++) {
@@ -35,19 +39,25 @@
         };
 
         (function() {
-            var c = document.createElement("div");
-            var p = 'tvp-modal';
-            c.innerHTML = '<div id="'+p+'-overlay-{{ $id }}" class="'+p+'-overlay tvp-hidden"></div><div id="'+p+'-{{ $id }}" class="'+p+' tvp-hidden"><div class="'+p+'-wrapper"><div class="'+p+'-content"><div id="'+p+'-header-{{ $id }}" class="'+p+'-header"><div id="'+p+'-close-{{ $id }}" class="'+p+'-close"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#ffffff" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></div><div id="'+p+'-title-top-{{ $id }}" class="'+p+'-title-top"></div><div id="'+p+'-title-top-{{ $id }}" class="'+p+'-title-top"></div></div><div class="'+p+'-body"><div id="'+p+'-iframe-holder-{{ $id }}" class="tvp-modal-iframe-holder"></div></div></div></div></div>';
-            document.body.appendChild(c);
-            var t = document.createElement('h4');
-            t.setAttribute('id', p + '-title-{{ $id }}');
-            t.setAttribute('class', p + '-title');
-            var target = '.'+ p +'-title-top';
+            var container = document.createElement("div");
+            var prefix = 'tvp-modal';
+            
+            container.innerHTML = '<div id="'+prefix+'-overlay-{{ $id }}" class="'+prefix+'-overlay tvp-hidden"></div><div id="'+prefix+'-{{ $id }}" class="'+prefix+' tvp-hidden"><div class="'+prefix+'-wrapper"><div class="'+prefix+'-content"><div id="'+prefix+'-header-{{ $id }}" class="'+prefix+'-header"><div id="'+prefix+'-close-{{ $id }}" class="'+prefix+'-close"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#ffffff" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></div><div id="'+prefix+'-title-top-{{ $id }}" class="'+prefix+'-title-top"></div><div id="'+prefix+'-title-top-{{ $id }}" class="'+prefix+'-title-top"></div></div><div class="'+prefix+'-body"><div id="'+prefix+'-iframe-holder-{{ $id }}" class="tvp-modal-iframe-holder"></div></div></div></div></div>';
+
+            
+            document.body.appendChild(container);
+
+            var title = document.createElement('h4');
+            title.setAttribute('id', prefix + '-title-{{ $id }}');
+            title.setAttribute('class', prefix + '-title');
+
+            var target = '.'+ prefix +'-title-top';
             if ({{ $.Scratch.Get "settings" }}.modal_title_position === 'bottom') {
-                t.setAttribute('class', p + '-title bottom');
-                target = '.'+ p + '-body';
+                title.setAttribute('class', prefix + '-title bottom');
+                target = '.'+ prefix + '-body';
             }
-            document.querySelector(target).appendChild(t);
+            
+            document.querySelector(target).appendChild(title);
         }());
 
         var getIframeHtml = function(options) {
