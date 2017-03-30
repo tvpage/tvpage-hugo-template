@@ -127,14 +127,14 @@
 
 ".tvp-iframe-holder {" +
   "position: relative;" +
+  'padding: {{- ($.Scratch.Get "settings").iframe_holder_padding -}};' +
 "}" +
 
 ".tvp-iframe {" +
   "top: 0;" +
   "left: 0;" +
   "width: 100%;" +
-  "height: 100%;" +
-  "position: absolute;" +
+  "height: 100%;" +  
 "}" +
 
 ".tvp-modal-close {" +

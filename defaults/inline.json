@@ -192,6 +192,13 @@
             "value": "#fff"
         },
         {
+            "for": "iframe-holder",
+            "type": "text",
+            "label": "iFrame Holder Padding",
+            "code": "iframe_holder_padding",
+            "value": "0"
+        },
+        {
             "for": "inline",
             "type": "text",
             "label": "Default Font Family",
