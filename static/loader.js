@@ -108,6 +108,21 @@
                     self.static + '/dist/js/scripts.min.js'
                 ]
             },
+            "solo-click": {
+                dev: [
+                    '//a.tvpage.com/tvpa.min.js',
+                    playerLib,
+                    self.static + '/js/libs/analytics.js',
+                    self.static + '/js/libs/player.js',
+                    self.static + '/js/index.js'
+                ],
+                prod: [
+                    '//a.tvpage.com/tvpa.min.js',
+                    playerLib,
+                    self.static + '/dist/js/scripts.min.js'
+                ]
+            },
+
             "solo-cta": {
                 player: {
                     dev: [
@@ -202,7 +217,6 @@
             }
         };
 
-        self.paths['solo-click'] = self.paths.solo;
         self.config = {};
 
         if (isset(window, '__TVPage__') && isset(__TVPage__, 'config') && isset(__TVPage__.config, self.id)) {
@@ -431,7 +445,7 @@
     }
 
     function load () {
-        var spots = document.querySelectorAll('.tvp-sidebar, .tvp-carousel, .tvp-solo, .tvp-solo-cta, .tvp-solo-append');
+        var spots = document.querySelectorAll('.tvp-sidebar, .tvp-carousel, .tvp-solo, .tvp-solo-cta, .tvp-solo-append, .tvp-solo-click');
         for (var i = 0; i < spots.length; i++) {
             var widget  = Widget(spots[i]);
             widget.initialize();
