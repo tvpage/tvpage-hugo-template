@@ -414,7 +414,21 @@ body {
   margin-left: 2.43%;
 }
 .iframe-content .tvp-row {
+  position: relative;
   margin-bottom: 2.70%;
+}
+.iframe-content .tvp-row:before {
+  display: block;
+  content: "";
+  width: 100%;
+  padding-top: 32.44094%;
+}
+.iframe-content .tvp-row > .tvp-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 .iframe-content .tvp-row .tvp-content {
   padding: 0;
@@ -442,7 +456,7 @@ body {
   position: relative;
   float: left;
   overflow: hidden;
-  width: 57.73%;
+  width: 57.2072%;
 }
 .iframe-content .tvp-player:before {
   display: block;
@@ -515,8 +529,9 @@ body {
 }
 .iframe-content .tvp-featured {
   float: left;
-  margin-left: 2.73%;
-  width: 24.82%;
+  height: 100%;
+  margin-left: 2.7027%;
+  width: 24.5946%;
   display: inline-block;
 }
 .iframe-content .tvp-featured .tvp-featured-product {
@@ -589,9 +604,11 @@ body {
 }
 .iframe-content .tvp-products-scroller {
   box-sizing: border-box;
-  float: right;
+  height: 100%;
+  float: left;
   position: relative;
-  width: 13.64%;
+  margin-left: 1.5315%;
+  width: 13.5135%;
 }
 .iframe-content .tvp-products-scroller .tvp-product-item {
   cursor: pointer;
