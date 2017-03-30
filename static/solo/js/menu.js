@@ -66,7 +66,7 @@
                 }
             }
 
-            if (that.dataMethod !== 'static') {
+            if (that.dataMethod !== 'static' && playlist.length > 4) {
                 var noVidFrag = document.createDocumentFragment(),
                     noVideos = document.createElement('div');
                 noVideos.classList.add('tvp-no-videos');
@@ -207,7 +207,7 @@
                     categoryDiv.classList.add('tvp-category-tag');
                     categoryDiv.innerHTML += tagAttributeValue;
                     categoryFrag.appendChild(categoryDiv);
-                    that.noVideosContainer.getElementsByClassName('tvp-video-details')[i].appendChild(categoryFrag);
+                    newDiv.getElementsByClassName('tvp-video-details')[i].appendChild(categoryFrag);
                 }
             }
         }
