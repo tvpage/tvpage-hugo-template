@@ -35,7 +35,7 @@
     this.initialResize = true;
     this.autoplay = isset(options.autoplay) ? Number(options.autoplay) : false;
     this.autonext = isset(options.autonext) ? Number(options.autonext) : true;
-    this.version = isset(options.version) ? options.version : null;
+    this.version = isset(options.player_version) ? options.player_version : null;
     this.progressColor = isset(options.progressColor) ? options.progressColor : null;
     this.transcript = isset(options.transcript) ? options.transcript : null;
     this.removeControls = isset(options.removeControls) ? options.removeControls : null;
@@ -69,6 +69,7 @@
         asset.assetId = video.id;
         asset.assetTitle = video.title;
         asset.loginId = video.loginId;
+        asset.transcripts = isset(video.transcripts) ? video.transcripts : '';
 
         if (isset(video,'events') && video.events.length) {
           asset.analyticsLogUrl = video.analytics;
@@ -213,7 +214,6 @@
             }
         }
         that.current = current;
-
         that.play(that.assets[that.current]);
     };
 
