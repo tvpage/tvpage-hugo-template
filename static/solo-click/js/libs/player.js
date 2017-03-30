@@ -51,7 +51,7 @@
     this.analytics = isset(options.analytics) ? options.analytics : null;
     this.overlay = isset(options.overlay) ? options.overlay : false;
     this.overlayColor = isset(options.overlayColor) ? options.overlayColor : null;
-    this.overlayOpacity = isset(options.overlayOpacity) ? options.overlayOpacity : (isMobile ? '0' : '0.5');
+    this.overlayOpacity = isMobile ? 1 : (isset(options.overlayOpacity) ? options.overlayOpacity : '0.5');
     this.playButtonBackgroundColor = isset(options.playButtonBackgroundColor) ? options.playButtonBackgroundColor : 'fff';
     this.playButtonBorderRadius = isset(options.playButtonBorderRadius) ? options.playButtonBorderRadius : '0';
     this.playButtonBorderWidth = isset(options.playButtonBorderWidth) ? options.playButtonBorderWidth : '0';
