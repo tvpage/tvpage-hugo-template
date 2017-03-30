@@ -6,12 +6,15 @@
 	bootstrap.templates = {
 		inline: {{- (partial (printf "%s/inline.html" .Type) .) -}},
 		inline_item: {{- (partial (printf "%s/inline-item.html" .Type) .) -}},
+		inline_carousel_next_arrow: {{- (partial (printf "%s/inline-carousel-next-arrow.html" .Type) .) -}},
+		inline_carousel_previous_arrow: {{- (partial (printf "%s/inline-carousel-previous-arrow.html" .Type) .) -}},
 		featured_product: {{- (partial (printf "%s/featured-product.html" .Type) .) -}},
 		product: {{- (partial (printf "%s/product-item.html" .Type) .) -}}
 	};
 	bootstrap.css = {
 		host: {{- (partial (printf "%s/host.css" .Type) .) -}},
-		'host-custom': {{- (partial (printf "%s/host-custom.css" .Type) .) -}}
+		'host-custom': {{- (partial (printf "%s/host-custom.css" .Type) .) -}},
+		inline: {{- (partial (printf "%s/inline.css" .Type) .) -}}
 	};
 
 	{{- (readFile "/themes/tvpage/static/inline/index.js") | htmlUnescape | safeHTML -}}

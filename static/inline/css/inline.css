@@ -393,15 +393,12 @@ body {
   background-position: 0 -79px;
 }
 .iframe-content .tvp-row-titles {
-  height: 46px;
   width: 100%;
 }
 .iframe-content .tvp-row-titles h1, .iframe-content .tvp-row-titles h2 {
-  font-size: 150%;
   line-height: 43px;
   padding: 0;
   margin: 0;
-  font-weight: normal;
 }
 .iframe-content .tvp-row-titles .tvp-row-player-title {
   display: inline-block;
@@ -540,6 +537,7 @@ body {
   display: block;
   padding: 17px 16px;
   width: 100%;
+  height: 100%;
 }
 .iframe-content .tvp-featured .tvp-featured-product .tvp-featured-image {
   position: relative;
@@ -568,10 +566,8 @@ body {
   width: 100%;
 }
 .iframe-content .tvp-featured .tvp-featured-product .tvp-featured-info-title {
-  color: #000;
   display: block;
   width: 100%;
-  font-size: 14px;
   line-height: 19px;
   max-height: 38px;
   overflow: hidden;
@@ -642,35 +638,27 @@ body {
 }
 .iframe-content .tvp-videos-container {
   position: relative;
+  overflow: hidden;
 }
 .iframe-content .tvp-videos-container .tvp-videos-arrows {
   cursor: pointer;
-  height: 100%;
   position: absolute;
   text-align: center;
-  width: 50px;
-  height: 50px;
   top: -14%;
   bottom: 0;
   margin: auto 0;
   z-index: 100;
-  background: #fff;
 }
 .iframe-content .tvp-videos-container .tvp-videos-arrow-next {
   right: 0;
 }
 .iframe-content .tvp-videos-scroller {
-  width: 100%;
+  margin: 0 auto;
 }
 .iframe-content .tvp-videos-scroller .no-arrows {
   margin: 0 auto;
   float: none !important;
   width: 100% !important;
-}
-.iframe-content .tvp-videos-scroller .tvp-videos-container {
-  height: 100%;
-  float: left;
-  width: 90%;
 }
 .iframe-content .tvp-videos-scroller .tvp-video-scroller-item-container {
   box-sizing: border-box;
@@ -685,13 +673,18 @@ body {
 .iframe-content .tvp-videos-scroller .tvp-video-scroller-item-container:last-child {
   margin-right: 0;
 }
+.iframe-content .tvp-videos-scroller .slick-list {
+  margin: 0 -15px;
+}
+.iframe-content .tvp-videos-scroller .slick-slide {
+  margin: 0 15px;
+}
 .iframe-content .tvp-videos-scroller .tvp-video {
   box-sizing: border-box;
   display: block;
   position: relative;
   width: 100%;
   cursor: pointer;
-  padding: 5px;
 }
 .iframe-content .tvp-videos-scroller .tvp-video .tvp-video-image {
   position: relative;
@@ -715,7 +708,6 @@ body {
 }
 .iframe-content .tvp-videos-scroller .tvp-video .tvp-video-title {
   overflow: hidden;
-  font-size: 12px;
   margin: 10px 0;
 }
 .iframe-content .tvp-videos-scroller .tvp-video .tvp-video-image-overlay {

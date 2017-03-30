@@ -1,0 +1,61 @@
+'body{' +
+	'font-family: "{{- ($.Scratch.Get "settings").font_family -}}";' +
+	'color: {{- ($.Scratch.Get "settings").font_color -}};' +
+'}' +
+
+'.iframe-content .tvp-row-titles{' +	
+	'height: {{- ($.Scratch.Get "settings").header_height -}};' +
+'}' +
+
+'.iframe-content .tvp-row-titles h1{' +
+	'color: {{- ($.Scratch.Get "settings").video_header_font_color -}};' +
+	'font-size: {{- ($.Scratch.Get "settings").video_header_font_size -}};' +
+	'font-weight: {{- ($.Scratch.Get "settings").video_header_font_weight -}};' +
+'}' +
+'.iframe-content .tvp-row-titles h2{' +
+	'color: {{- ($.Scratch.Get "settings").featured_product_header_font_color -}};' +
+	'font-size: {{- ($.Scratch.Get "settings").featured_product_header_font_size -}};' +
+	'font-weight: {{- ($.Scratch.Get "settings").featured_product_header_font_weight -}};' +
+'}' +
+'.iframe-content .tvp-featured .tvp-featured-product .tvp-featured-info-title{' +
+	'color: {{- ($.Scratch.Get "settings").featured_product_title_font_color -}};' +
+	'font-size: {{- ($.Scratch.Get "settings").featured_product_title_font_size -}};' +
+	'font-weight: {{- ($.Scratch.Get "settings").featured_product_title_font_weight -}};' +
+'}'+
+
+'.iframe-content .tvp-featured .tvp-featured-product .tvp-featured-info-price{' +
+	'color: {{- ($.Scratch.Get "settings").featured_product_price_font_color -}};' +
+	'font-size: {{- ($.Scratch.Get "settings").featured_product_price_font_size -}};' +
+	'font-weight: {{- ($.Scratch.Get "settings").featured_product_price_font_weight -}};' +
+'}' +
+
+'.iframe-content .tvp-featured .tvp-featured-product .tvp-featured-info-view-details{' +
+	'color: {{- ($.Scratch.Get "settings").featured_product_view_button_font_color -}};' +
+	'font-size: {{- ($.Scratch.Get "settings").featured_product_view_button_font_size -}};' +
+	'font-weight: {{- ($.Scratch.Get "settings").featured_product_view_button_font_weight -}};' +
+	'display: {{- ($.Scratch.Get "settings").featured_product_view_button_display -}};' +
+'}' +
+
+'.iframe-content .tvp-videos-scroller{' +	
+	'width: {{- ($.Scratch.Get "settings").videos_carousel_width -}};' +
+'}' +
+
+'.iframe-content .tvp-videos-scroller .slick-list{' +
+	'margin: 0 -{{- ($.Scratch.Get "settings").videos_carousel_item_space_inbetween -}}; ' +
+'}' +
+
+'.iframe-content .tvp-videos-scroller .slick-slide{' +
+	'margin: 0 {{- ($.Scratch.Get "settings").videos_carousel_item_space_inbetween -}};' +
+'}' +
+
+'.iframe-content .tvp-videos-container .tvp-videos-arrows{' +
+	'background: {{- ($.Scratch.Get "settings").videos_carousel_arrow_background -}};' +
+	'height: {{- ($.Scratch.Get "settings").videos_carousel_arrow_height -}};' +
+	'width: {{- ($.Scratch.Get "settings").videos_carousel_arrow_width -}};' +
+'}' +
+
+'.iframe-content .tvp-videos-scroller .tvp-video .tvp-video-title{' +
+	'color: {{- ($.Scratch.Get "settings").videos_carousel_item_title_font_color -}};' +
+	'font-size: {{- ($.Scratch.Get "settings").videos_carousel_item_title_font_size -}};' +
+	'font-weight: {{- ($.Scratch.Get "settings").videos_carousel_item_title_font_weight -}};' +
+'}'

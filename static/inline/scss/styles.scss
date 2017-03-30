@@ -105,14 +105,11 @@ body {
         }
     }
     .tvp-row-titles {
-        height: 46px;
         width: 100%;
-        h1, h2 {
-            font-size: 150%;
+        h1, h2 {            
             line-height: 43px;
             padding: 0;
-            margin: 0;
-            font-weight: normal;
+            margin: 0;            
         }
         .tvp-row-player-title {
             display: inline-block;
@@ -227,6 +224,7 @@ body {
             display: block;
             padding: 17px 16px;
             width: 100%;
+            height: 100%;
             .tvp-featured-image {
                 @include aspect-ratio(230, 169);
                 display: block;
@@ -240,10 +238,8 @@ body {
                 font-size: 18px;
                 width: 100%;
                 &-title {
-                    color: #000;
                     display: block;
                     width: 100%;
-                    font-size: 14px;
                     line-height: 19px;
                     max-height: 38px;
                     overflow: hidden;
@@ -304,35 +300,26 @@ body {
     }
     .tvp-videos-container{
         position: relative;
+        overflow: hidden;
         .tvp-videos-arrows {
             cursor: pointer;
-            height: 100%;
             position: absolute;
             text-align: center;
-            width: 50px;
-            height: 50px;
             top: -14%;
             bottom: 0;
             margin: auto 0;
             z-index: 100;
-            background: #fff;
         }
         .tvp-videos-arrow-next {
             right: 0;
         }        
     }
-    .tvp-videos-scroller {
-        width: 100%;
+    .tvp-videos-scroller {        
+        margin: 0 auto;
         .no-arrows {
             margin: 0 auto;
             float: none !important;
             width: 100% !important;
-        }
-
-        .tvp-videos-container {
-            height: 100%;
-            float: left;
-            width: 90%;
         }
         .tvp-video-scroller-item-container {
             box-sizing: border-box;
@@ -347,13 +334,18 @@ body {
                 margin-right: 0;
             }
         }
+        .slick-list{
+            margin: 0 -15px;
+        }
+        .slick-slide{
+            margin: 0 15px;
+        }
         .tvp-video {
             box-sizing: border-box;
             display: block;
             position: relative;
             width: 100%;
             cursor: pointer;
-            padding: 5px;
             .tvp-video-image {
                 @include aspect-ratio(16, 9);
                 display: block;
@@ -364,7 +356,6 @@ body {
             }
             .tvp-video-title {
                 overflow: hidden;
-                font-size: 12px;
                 margin: 10px 0;
             }
             .tvp-video-image-overlay {

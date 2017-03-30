@@ -159,6 +159,8 @@
 
         //templates
         this.inlineItemTemplate = options.templates.inline_item;
+        this.videosCarouselNextArrowTemplate = options.templates.inline_carousel_next_arrow;
+        this.videosCarouselPreviousArrowTemplate = options.templates.inline_carousel_previous_arrow;
         this.featuredProductTemplate = options.templates.featured_product;
         this.productItemTemplate = options.templates.product;
 
@@ -218,6 +220,10 @@
                 
                 this.container.appendChild(rowEl);
             }
+
+            //insert custom arrow icon template
+            $('.tvp-videos-arrow-next').append(that.videosCarouselNextArrowTemplate);
+            $('.tvp-videos-arrow-prev').append(that.videosCarouselPreviousArrowTemplate);
 
             $videoSliderDesktop = $(this.el.querySelector('#tvpVideoScroller'));
             

@@ -538,6 +538,8 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
 
         //templates
         this.inlineItemTemplate = options.templates.inline_item;
+        this.videosCarouselNextArrowTemplate = options.templates.inline_carousel_next_arrow;
+        this.videosCarouselPreviousArrowTemplate = options.templates.inline_carousel_previous_arrow;
         this.featuredProductTemplate = options.templates.featured_product;
         this.productItemTemplate = options.templates.product;
 
@@ -597,6 +599,10 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                 
                 this.container.appendChild(rowEl);
             }
+
+            //insert custom arrow icon template
+            $('.tvp-videos-arrow-next').append(that.videosCarouselNextArrowTemplate);
+            $('.tvp-videos-arrow-prev').append(that.videosCarouselPreviousArrowTemplate);
 
             $videoSliderDesktop = $(this.el.querySelector('#tvpVideoScroller'));
             
