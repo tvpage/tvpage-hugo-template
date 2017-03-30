@@ -127,6 +127,14 @@
             "label": "Videos To Scroll",
             "code": "videos_to_scroll",
             "value": "4"
+        },
+
+        {
+            "for": "iframe-holder",
+            "type": "text",
+            "label": "iFrame Holder Background Color",
+            "code": "iframe_holder_background_color",
+            "value": "#000"
         }
     ]
 }
