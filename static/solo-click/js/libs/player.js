@@ -1,6 +1,7 @@
 ;(function(window,document) {
 
   var isIOS = (/iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream),
+      isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
       isset = function(o,p){
         var val = o;
         if (p) val = o[p];
@@ -42,7 +43,7 @@
     // this.overlay = isset(options.overlay) ? options.overlay : null;
     this.overlay = isset(options.overlay) ? options.overlay : false;
     this.overlayColor = isset(options.overlayColor) ? options.overlayColor : null;
-    this.overlayOpacity = isset(options.overlayOpacity) ? options.overlayOpacity : '0.5';
+    this.overlayOpacity = isset(options.overlayOpacity) ? options.overlayOpacity : (isMobile ? '0' : '0.5');
     this.playButtonBackgroundColor = isset(options.playButtonBackgroundColor) ? options.playButtonBackgroundColor : 'fff';
     this.playButtonBorderRadius = isset(options.playButtonBorderRadius) ? options.playButtonBorderRadius : '0';
     this.playButtonBorderWidth = isset(options.playButtonBorderWidth) ? options.playButtonBorderWidth : '0';
@@ -117,8 +118,8 @@
 
     this.play = function(asset,ongoing){
       if (!asset) return;
-      var willCue = false,
-          isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      var willCue = false;
+          
       
       if (ongoing) {
         if (isMobile || (isset(this.autonext) && !this.autonext)) {
