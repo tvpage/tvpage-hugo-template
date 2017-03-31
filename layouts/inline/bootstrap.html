@@ -9,7 +9,8 @@
 		inline_carousel_next_arrow: {{- (partial (printf "%s/inline-carousel-next-arrow.html" .Type) .) -}},
 		inline_carousel_previous_arrow: {{- (partial (printf "%s/inline-carousel-previous-arrow.html" .Type) .) -}},
 		featured_product: {{- (partial (printf "%s/featured-product.html" .Type) .) -}},
-		product: {{- (partial (printf "%s/product-item.html" .Type) .) -}}
+		product: {{- (partial (printf "%s/product-item.html" .Type) .) -}},
+		play_icon: {{- (partial (printf "%s/play-icon.html" .Type) .) -}}
 	};
 	bootstrap.css = {
 		host: {{- (partial (printf "%s/host.css" .Type) .) -}},

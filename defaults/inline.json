@@ -264,6 +264,13 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Featured Product Box Padding",
+            "code": "featured_product_box_padding",
+            "value": "17px 16px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Featured Product Title Font Color",
             "code": "featured_product_title_font_color",
             "value": "#000"
@@ -315,7 +322,7 @@
             "type": "text",
             "label": "Featured Product Price View Details Button Font Size",
             "code": "featured_product_view_button_font_size",
-            "value": "26px"
+            "value": "100%"
         },
         {
             "for": "inline",
@@ -330,6 +337,83 @@
             "label": "Featured Product Price View Details Button Font Display",
             "code": "featured_product_view_button_display",
             "value": "inline-block"
+        },
+        {
+            "for": "videos-carosuel-item",
+            "type": "text",
+            "label": "Videos Carousel Item Padding",
+            "code": "videos_carousel_item_padding",
+            "value": "0"
+        },
+        {
+            "for": "videos-carosuel-item",
+            "type": "text",
+            "label": "Videos Carousel Item Margin",
+            "code": "videos_carousel_item_margin",
+            "value": "0"
+        },
+        {
+            "for": "videos-carosuel-item",
+            "type": "text",
+            "label": "Videos Carousel Item Border",
+            "code": "videos_carousel_item_border",
+            "value": "none"
+        },
+        {
+            "for": "videos-carosuel-item",
+            "type": "text",
+            "label": "Videos Carousel Play Icon Background Color",
+            "code": "videos_carousel_play_icon_background_color",
+            "value": "fff"
+        },
+        {
+            "for": "videos-carosuel-item",
+            "type": "text",
+            "label": "Videos Carousel Play Icon Background Color Hover",
+            "code": "videos_carousel_play_icon_background_color_hover",
+            "value": "#e57211"
+        },
+        {
+            "for": "videos-carosuel-item",
+            "type": "text",
+            "label": "Videos Carousel Play Icon Color",
+            "code": "videos_carousel_play_icon_color",
+            "value": ""
+        },
+        {
+            "for": "videos-carosuel-item",
+            "type": "text",
+            "label": "Videos Carousel Play Icon Border Radius",
+            "code": "videos_carousel_play_icon_border_radius",
+            "value": "50%"
+        },
+        {
+            "for": "videos-carosuel-item",
+            "type": "text",
+            "label": "Videos Carousel Play Icon Height",
+            "code": "videos_carousel_play_icon_height",
+            "value": "45px"
+        },
+        {
+            "for": "videos-carosuel-item",
+            "type": "text",
+            "label": "Videos Carousel Play Icon width",
+            "code": "videos_carousel_play_icon_width",
+            "value": "45px"
+        },
+        {
+            "for": "videos-carosuel-item",
+            "type": "text",
+            "label": "Videos Carousel Overlay Opacity",
+            "code": "videos_carousel_overlay_opacity",
+            "value": "0.2"
+        },
+        {
+            "for": "videos-carosuel-item",
+            "type": "text",
+            "label": "Videos Carousel Overlay Background Color",
+            "code": "videos_carousel_overlay_background_color",
+            "value": "000"
         }
     ]
 }

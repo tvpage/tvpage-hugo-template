@@ -10,6 +10,7 @@ body {
     -webkit-font-smoothing: antialiased !important;
     -moz-osx-font-smoothing: grayscale !important;
     font-family: 'Open Sans', sans-serif;
+    margin: 0;
 }
 .tvp-control-volume-selector-container,
 .tvp-controlbar-floater {
@@ -130,10 +131,7 @@ body {
         }
     }
     .tvp-video-play {
-        background-color: #fff;
         box-sizing: border-box;
-        width: 45px;
-        height: 45px;
         padding: 0;
         position: absolute;
         top: 0;
@@ -142,7 +140,6 @@ body {
         right: 0;
         margin: auto;
         cursor: pointer;
-        border-radius: 50%;
         border: 0;
         z-index: 1000;
         -webkit-transition: all .05s ease-in-out;
@@ -365,16 +362,11 @@ body {
                 left: 0;
                 right: 0;
                 position: absolute;
-                background-color: black;
                 margin: auto;
-                opacity: 0.2;
                 -webkit-transition: all .05s ease-in-out;
                 transition: all .05s ease-in-out;
             }
             &:hover {
-                .tvp-video-play {
-                    background-color: #e57211;
-                }
                 .tvp-video-image-overlay {
                     display: block;
                 }

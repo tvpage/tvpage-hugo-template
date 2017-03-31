@@ -17,6 +17,11 @@
 	'font-size: {{- ($.Scratch.Get "settings").featured_product_header_font_size -}};' +
 	'font-weight: {{- ($.Scratch.Get "settings").featured_product_header_font_weight -}};' +
 '}' +
+
+'.iframe-content .tvp-featured .tvp-featured-product{' +
+	'padding: {{- ($.Scratch.Get "settings").featured_product_box_padding -}};' +
+'}' +
+
 '.iframe-content .tvp-featured .tvp-featured-product .tvp-featured-info-title{' +
 	'color: {{- ($.Scratch.Get "settings").featured_product_title_font_color -}};' +
 	'font-size: {{- ($.Scratch.Get "settings").featured_product_title_font_size -}};' +
@@ -58,4 +63,30 @@
 	'color: {{- ($.Scratch.Get "settings").videos_carousel_item_title_font_color -}};' +
 	'font-size: {{- ($.Scratch.Get "settings").videos_carousel_item_title_font_size -}};' +
 	'font-weight: {{- ($.Scratch.Get "settings").videos_carousel_item_title_font_weight -}};' +
+'}' +
+
+'.iframe-content .tvp-videos-scroller .tvp-video{' +
+	'padding: {{- ($.Scratch.Get "settings").videos_carousel_item_padding -}};' +
+	'margin: {{- ($.Scratch.Get "settings").videos_carousel_item_margin -}};' +
+	'border: {{- ($.Scratch.Get "settings").videos_carousel_item_border -}};' +
+'}' +
+
+'.iframe-content .tvp-videos-scroller .tvp-video-play{' +
+	'background-color: {{- ($.Scratch.Get "settings").videos_carousel_play_icon_background_color -}};' +
+	'border-radius: {{- ($.Scratch.Get "settings").videos_carousel_play_icon_border_radius -}};' +
+	'height: {{- ($.Scratch.Get "settings").videos_carousel_play_icon_height -}};' +
+	'width: {{- ($.Scratch.Get "settings").videos_carousel_play_icon_width -}};' +
+'}' +
+
+'.iframe-content .tvp-videos-scroller .tvp-video:hover .tvp-video-play{' +
+	'background-color: {{- ($.Scratch.Get "settings").videos_carousel_play_icon_background_color_hover -}};' +
+'}' +
+
+'.iframe-content .tvp-videos-scroller .tvp-video-play > polygon{' +
+	'fill: {{- ($.Scratch.Get "settings").videos_carousel_play_icon_color -}};' +
+'}' +
+
+'.iframe-content .tvp-videos-scroller .tvp-video:hover .tvp-video-image-overlay{' +
+	'background-color: {{- ($.Scratch.Get "settings").videos_carousel_overlay_background_color -}};' +
+	'opacity: {{- ($.Scratch.Get "settings").videos_carousel_overlay_opacity -}};' +
 '}'

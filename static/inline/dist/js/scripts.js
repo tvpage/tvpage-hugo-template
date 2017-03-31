@@ -542,6 +542,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
         this.videosCarouselPreviousArrowTemplate = options.templates.inline_carousel_previous_arrow;
         this.featuredProductTemplate = options.templates.featured_product;
         this.productItemTemplate = options.templates.product;
+        this.playIconTemplate = options.templates.play_icon;
 
         //player settings
         this.autoplay = Utils.isset(options.autoplay) ? Number(options.autoplay) : false;
@@ -603,6 +604,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             //insert custom arrow icon template
             $('.tvp-videos-arrow-next').append(that.videosCarouselNextArrowTemplate);
             $('.tvp-videos-arrow-prev').append(that.videosCarouselPreviousArrowTemplate);
+            $('.tvp-video-image').append(that.playIconTemplate);
 
             $videoSliderDesktop = $(this.el.querySelector('#tvpVideoScroller'));
             
@@ -617,7 +619,6 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                         breakpoint: 769,
                         settings: {
                             arrows: false,
-                            // centerMode: true,
                             centerPadding: '0px',
                             slidesToShow: 2,
                             slidesToScroll: 2,

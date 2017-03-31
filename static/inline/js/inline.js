@@ -163,6 +163,7 @@
         this.videosCarouselPreviousArrowTemplate = options.templates.inline_carousel_previous_arrow;
         this.featuredProductTemplate = options.templates.featured_product;
         this.productItemTemplate = options.templates.product;
+        this.playIconTemplate = options.templates.play_icon;
 
         //player settings
         this.autoplay = Utils.isset(options.autoplay) ? Number(options.autoplay) : false;
@@ -224,6 +225,7 @@
             //insert custom arrow icon template
             $('.tvp-videos-arrow-next').append(that.videosCarouselNextArrowTemplate);
             $('.tvp-videos-arrow-prev').append(that.videosCarouselPreviousArrowTemplate);
+            $('.tvp-video-image').append(that.playIconTemplate);
 
             $videoSliderDesktop = $(this.el.querySelector('#tvpVideoScroller'));
             
@@ -238,7 +240,6 @@
                         breakpoint: 769,
                         settings: {
                             arrows: false,
-                            // centerMode: true,
                             centerPadding: '0px',
                             slidesToShow: 2,
                             slidesToScroll: 2,
