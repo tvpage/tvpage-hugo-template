@@ -32,9 +32,7 @@
     var iframeHolder = window.parent.document.getElementById(options.name + '-holder');
 
     if (!el || !isset(options) || !isset(options.data) || options.data.length <= 0) {
-      var parentBody = window.parent.document.body;
-      window.parent.document.getElementById(options.name + '-holder');
-      parentBody.removeChild(iframeHolder);
+      window.parent.postMessage({event: 'tvp_solo_click:no_data',}, '*');
       return;
     } else {
       iframeHolder.style.display = 'block';
