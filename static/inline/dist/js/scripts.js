@@ -572,9 +572,6 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             $(that.el).find('#videoTitle').html(e.assetTitle);
         };
         this.onResize = function (e, d) {
-            if (!Utils.isMobile) {                
-                $(that.el).find('#tvpProductsView').height(d[1]);
-            }            
             if (window.parent) {
                 window.parent.postMessage({
                     event: 'tvp_'+ that.el.id.replace(/-/g,'_') +':resize',
