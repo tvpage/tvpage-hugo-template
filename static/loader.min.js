@@ -5,6 +5,7 @@
 (function(window, document) {
     var _startTime = performance.now();
     var debug = window.DEBUG,
+        isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
         env = debug ? 'dev' : 'prod',
         isset = function(o, p) {
             var val = o;
@@ -57,7 +58,8 @@
 
         //http://stackoverflow.com/questions/7589853/how-is-insertadjacenthtml-so-much-faster-than-innerhtml
         var holderId = id + "-holder";
-        spot.insertAdjacentHTML('beforebegin', '<style>.tvp-play-holder,[class^=tvp-]{box-sizing:border-box}.tvp-iframe-holder{height:0;position:relative;transition:height ease-out .1ms}.tvp-holder-poster,.tvp-iframe-holder>iframe{width:100%;height:100%}.tvp-holder-poster,.tvp-holder-poster-cover,.tvp-iframe-holder>iframe,.tvp-play-holder{position:absolute;top:0;left:0}.tvp-iframe-holder.solo-click{padding-top:56.25%;background-color:#000}.tvp-holder-poster{background-size:cover;background-position:center center;background-repeat:no-repeat}.tvp-holder-poster-cover{opacity:.7;width:100%;height:100%;background-image:linear-gradient(to bottom right,#fff,#fff)}.tvp-play-holder{height:65px;padding:0;bottom:0;right:0;margin:auto;cursor:pointer;width:135px}.tvp-play-text{font-family:Helvetica;font-size:19px;color:#333;margin-top:10px;text-align:center}</style><div id="' + holderId + '" class="tvp-iframe-holder"><div id="'+holderId+'-poster" class="tvp-holder-poster"></div><div class="tvp-holder-poster-cover"></div>'+
+        var coverOpacity = isMobile ? "1" : "0.7";
+        spot.insertAdjacentHTML('beforebegin', '<style>.tvp-play-holder,[class^=tvp-]{box-sizing:border-box}.tvp-iframe-holder{height:0;position:relative;transition:height ease-out .1ms}.tvp-holder-poster,.tvp-iframe-holder>iframe{width:100%;height:100%}.tvp-holder-poster,.tvp-holder-poster-cover,.tvp-iframe-holder>iframe,.tvp-play-holder{position:absolute;top:0;left:0}.tvp-iframe-holder.solo-click{padding-top:56.25%;background-color:#000}.tvp-holder-poster{background-size:cover;background-position:center center;background-repeat:no-repeat}.tvp-holder-poster-cover{opacity:'+coverOpacity+';width:100%;height:100%;background-image:linear-gradient(to bottom right,#fff,#fff)}.tvp-play-holder{height:65px;padding:0;bottom:0;right:0;margin:auto;cursor:pointer;width:135px}.tvp-play-text{font-family:Helvetica;font-size:19px;color:#333;margin-top:10px;text-align:center}</style><div id="' + holderId + '" class="tvp-iframe-holder"><div id="'+holderId+'-poster" class="tvp-holder-poster"></div><div class="tvp-holder-poster-cover"></div>'+
         '<div class="tvp-play-holder"><svg style="box-sizing:border-box;padding:0;margin:auto;cursor:pointer;display:block;width:65px;height:65px;background-color:#eeeeee;border:1px solid #000;border-radius:50%;" viewBox="0 0 200 200"><polygon fill="#273691" points="70, 55 70, 145 145, 100"></polygon></svg><div class="tvp-play-text">Watch Video</div></div><iframe class="tvp-iframe" src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe></div>');
         console.debug("first render: " + (performance.now() - _startTime) );
 
