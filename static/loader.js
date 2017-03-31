@@ -134,9 +134,28 @@
 
     function load () {
         var spots = document.querySelectorAll('.tvp-solo-click');
-        for (var i = 0; i < spots.length; i++) {
-            var widget  = Widget(spots[i]);
-            widget.initialize(spots);
+        if (spots.length) {
+            for (var i = 0; i < spots.length; i++) {
+                var widget  = Widget(spots[i]);
+                widget.initialize(spots);
+            }
+        } else {
+            console.log("Lets poll baby");
+            var spotsCheck = 0;
+            (function spotsReady() {
+              setTimeout(function(){
+                  if (!document.querySelectorAll('.tvp-solo-click').length && (++spotsCheck < 100)) {
+                    console.log("couldn't find spots");
+                    spotsReady();
+                  } else {
+                    var spots = document.querySelectorAll('.tvp-solo-click');
+                    for (var i = 0; i < spots.length; i++) {
+                        var widget  = Widget(spots[i]);
+                        widget.initialize(spots);
+                    }
+                  }
+              },280);
+            })();
         }
     }
 
