@@ -200,7 +200,7 @@
         //Alternative is to receive external size from host.
         if (window.location !== window.parent.location && isIOS){
             var onHolderResize = function (e) {
-                if (!e || !isset(e, 'data') || 'tvp_solo:holder_resize' !== (e.data.event || '')) return;
+                if (!e || !isset(e, 'data') || 'tvp_solo_click:holder_resize' !== (e.data.event || '')) return;
                 var size = e.data.size || [];
                 that.resize(size[0], size[1]);
             };
