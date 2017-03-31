@@ -10,6 +10,10 @@ body {
   padding-bottom: 56.25%;
 }
 
+.mobile .tvp-player {
+  padding-bottom: 100%;
+}
+
 .tvp-player.inline {
   position: absolute;
   top:0;
