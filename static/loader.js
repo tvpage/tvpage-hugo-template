@@ -3,35 +3,13 @@
 //to load the iframe scripts asynchronouse, this hides the browser spinner.
 //Loader is the delegator of iframe messages.
 (function(window, document) {
-
-    if (window.DEBUG) {
-        console.debug("startTime = " + performance.now());
-    }
-
-    var env = window.DEBUG ? 'dev' : 'prod',
-        playerLib = '//cdnjs.tvpage.com/tvplayer/tvp-1.8.6.min.js',
-        cssExt = window.DEBUG ? '.css' : '.min.css',
-        isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
-        mobilePath = isMobile  ? 'mobile/' : '',
+    var _startTime = performance.now();
+    var debug = window.DEBUG,
+        env = debug ? 'dev' : 'prod',
         isset = function(o, p) {
             var val = o;
             if (p) val = o[p];
             return 'undefined' !== typeof val;
-        },
-        debounce = function(func, wait, immediate) {
-            var timeout = null;
-            return function() {
-                var context = this,
-                    args = arguments;
-                var later = function() {
-                    timeout = null;
-                    if (!immediate) func.apply(context, args);
-                };
-                var callNow = immediate && !timeout;
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-                if (callNow) func.apply(context, args);
-            };
         };
 
     //Dynamically creates an iframe & appends it's required CSS & JS libraries.
@@ -41,7 +19,7 @@
         'var doc = document, head = doc.getElementsByTagName(\'head\')[0],' +
         'addJS = function(s){ var sc = doc.createElement(\'script\');sc.src=s;doc.body.appendChild(sc);};' +
         'addCSS = function(h){ var l = doc.createElement(\'link\');l.type=\'text/css\';l.rel=\'stylesheet\';l.href=h;head.appendChild(l);};' +
-        'window.DEBUG=' + (window.DEBUG || 0) + ';';
+        'window.DEBUG=' + (debug || 0) + ';';
 
         var js = options.js || [];
         if (js && js.length) {
@@ -75,380 +53,90 @@
     function Widget(spot) {
         var self = function() {};
 
-        self.id = spot.getAttribute('data-id');
+        var id = spot.getAttribute('data-id');
 
         //http://stackoverflow.com/questions/7589853/how-is-insertadjacenthtml-so-much-faster-than-innerhtml
-        spot.insertAdjacentHTML('beforebegin', '<div id="' + self.id + '-holder" class="tvp-iframe-holder">'+
-        '<iframe class="tvp-iframe" src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe></div>');
+        var holderId = id + "-holder";
+        spot.insertAdjacentHTML('beforebegin', '<style>.tvp-play-holder,[class^=tvp-]{box-sizing:border-box}.tvp-iframe-holder{display:none;height:0;position:relative;transition:height ease-out .1ms}.tvp-holder-poster,.tvp-iframe-holder>iframe{width:100%;height:100%}.tvp-holder-poster,.tvp-holder-poster-cover,.tvp-iframe-holder>iframe,.tvp-play-holder{position:absolute;top:0;left:0}.tvp-iframe-holder.solo-click{padding-top:56.25%;background-color:#000}.tvp-holder-poster{background-size:cover;background-position:center center;background-repeat:no-repeat}.tvp-holder-poster-cover{opacity:.7;width:100%;height:100%;background-image:linear-gradient(to bottom right,#fff,#fff)}.tvp-play-holder{height:65px;padding:0;bottom:0;right:0;margin:auto;cursor:pointer;width:135px}.tvp-play-text{font-family:Helvetica;font-size:19px;color:#333;margin-top:10px;text-align:center}</style><div id="' + holderId + '" class="tvp-iframe-holder"><div id="'+holderId+'-poster" class="tvp-holder-poster"></div><div class="tvp-holder-poster-cover"></div>'+
+        '<div class="tvp-play-holder"><svg style="box-sizing:border-box;padding:0;margin:auto;cursor:pointer;display:block;width:65px;height:65px;background-color:#eeeeee;border:1px solid #000;border-radius:50%;" viewBox="0 0 200 200"><polygon fill="#273691" points="70, 55 70, 145 145, 100"></polygon></svg><div class="tvp-play-text">Watch Video</div></div><iframe class="tvp-iframe" src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe></div>');
+        console.debug("first render: " + (performance.now() - _startTime) );
 
-        self.holder = document.getElementById(self.id + '-holder') || null;
-        self.type = spot.className.replace('tvp-', '') || '';
-        self.holder.classList.add(self.type);
-        self.data = {};
-        self.data[self.id] = {};
-        self.dataMethod = 'static';
-        self.domain = spot.getAttribute('data-domain');
-        self.senderId = 'tvp_' + self.type.replace(/-/g,'_');
+        var config = {};
+        if (isset(window, '__TVPage__') && isset(__TVPage__, 'config') && isset(__TVPage__.config, id)) {
+            config = __TVPage__.config[id];
+        }
+
+        var holder = document.getElementById(holderId) || null;
+        
+        var channel = isset(config, "channel") ? config.channel : {};
+        var jsonpScript = document.createElement('script');
+        var srcUrl = '//api.tvpage.com/v1/channels/' + channel.id + '/videos?X-login-id=' + config.loginid;
+        var params = isset(channel.parameters) ? channel.parameters : {};
+        for (var p in params) { srcUrl += '&' + p + '=' + params[p];}
+        jsonpScript.src = srcUrl + "&callback=_tvpcallback_";
+        window['_tvpcallback_'] = function(data){
+            if (data.length) {
+                holder.querySelector("#" + holderId + "-poster").style.backgroundImage = "url("+ data[0].asset.thumbnailUrl +")";
+            }
+        };
+        document.body.appendChild(jsonpScript);
+
+        var type = spot.className.replace('tvp-', '') || '';
+        
+        holder.classList.add(type);
+
+        var domain = spot.getAttribute('data-domain');
+        var senderId = 'tvp_' + type.replace(/-/g,'_');
 
         spot.parentNode.removeChild(spot);
 
-        self.static = self.domain + '/' + self.type;
-        self.paths = {
-            solo: {
-                dev: [
-                    '//a.tvpage.com/tvpa.min.js',
-                    playerLib,
-                    self.static + '/js/libs/analytics.js',
-                    self.static + '/js/libs/player.js',
-                    self.static + '/js/index.js'
-                ],
-                prod: [
-                    '//a.tvpage.com/tvpa.min.js',
-                    playerLib,
-                    self.static + '/dist/js/scripts.min.js'
-                ]
-            },
-            "solo-click": {
-                dev: [
-                    '//a.tvpage.com/tvpa.min.js',
-                    playerLib,
-                    self.static + '/js/libs/analytics.js',
-                    self.static + '/js/libs/player.js',
-                    self.static + '/js/index.js'
-                ],
-                prod: [
-                    '//a.tvpage.com/tvpa.min.js',
-                    playerLib,
-                    self.static + '/dist/js/scripts.min.js'
-                ]
-            },
-
-            "solo-cta": {
-                player: {
-                    dev: [
-                        '//a.tvpage.com/tvpa.min.js',
-                        playerLib,
-                        self.static + '/js/libs/analytics.js',
-                        self.static + '/js/libs/player.js',
-                        self.static + '/js/index.js'
-                    ],
-                    prod: [
-                        '//a.tvpage.com/tvpa.min.js',
-                        playerLib,
-                        self.static + '/dist/js/scripts.min.js'
-                    ]
-                },
-                modal: {
-                    dev: [
-                        '//a.tvpage.com/tvpa.min.js',
-                        playerLib,
-                        (isMobile ? self.static + '/js/vendor/jquery.js' : ''),
-                        self.static + '/js/libs/utils.js',
-                        self.static + '/js/libs/analytics.js',
-                        self.static + '/js/libs/player.js',
-                        self.static + '/js/' + mobilePath + 'modal/index.js'
-                    ],
-                    prod: [
-                        '//a.tvpage.com/tvpa.min.js',
-                        playerLib,
-                        (isMobile ? self.static + '/js/vendor/jquery.js' : ''),
-                        self.static + '/dist/js/' + mobilePath + 'modal/scripts.min.js'
-                    ]
-                }
-            },
-            sidebar: {
-                gallery: {
-                    dev: [
-                        self.static + '/js/libs/utils.js',
-                        self.static + '/js/grid.js',
-                        self.static + '/js/index.js'
-                    ],
-                    prod: [
-                        self.static + '/dist/js/scripts.min.js'
-                    ]
-                },
-                modal: {
-                    dev: [
-                        '//a.tvpage.com/tvpa.min.js',
-                        playerLib,
-                        (isMobile ? self.static + '/js/vendor/jquery.js' : ''),
-                        (isMobile ? '' : self.static + '/js/vendor/simple-scrollbar.min.js'),
-                        self.static + '/js/libs/utils.js',
-                        self.static + '/js/libs/analytics.js',
-                        self.static + '/js/libs/player.js',
-                        self.static + '/js/' + mobilePath + 'modal/index.js'
-                    ],
-                    prod: [
-                        '//a.tvpage.com/tvpa.min.js',
-                        playerLib,
-                        self.static + '/dist/js/' + mobilePath + 'modal/scripts.min.js'
-                    ]
-                }
-            },
-            carousel: {
-                gallery: {
-                    dev: [
-                        self.static + '/js/vendor/jquery.js',
-                        self.static + '/js/libs/utils.js',
-                        self.static + '/js/carousel.js',
-                        self.static + '/js/index.js'
-                    ],
-                    prod: [
-                        self.static + '/dist/js/scripts.min.js'
-                    ]
-                },
-                modal: {
-                    dev: [
-                        '//a.tvpage.com/tvpa.min.js',
-                        playerLib,
-                        (isMobile ? self.static + '/js/vendor/jquery.js' : ''),
-                        (isMobile ? '' : self.static + '/js/vendor/simple-scrollbar.min.js'),
-                        self.static + '/js/libs/utils.js',
-                        self.static + '/js/libs/analytics.js',
-                        self.static + '/js/libs/player.js',
-                        self.static + '/js/' + mobilePath + 'modal/index.js'
-                    ],
-                    prod: [
-                        '//a.tvpage.com/tvpa.min.js',
-                        playerLib,
-                        self.static + '/dist/js/' + mobilePath + 'modal/scripts.min.js'
-                    ]
-                }
-            }
-        };
-
-        self.config = {};
-
-        if (isset(window, '__TVPage__') && isset(__TVPage__, 'config') && isset(__TVPage__.config, self.id)) {
-            self.config = __TVPage__.config[self.id];
-        }
-
-        if (isset(self.config, 'channel') && isset(self.config.channel, 'id')) {
-            self.dataMethod = 'dynamic';
-        }
+        var static = domain + '/' + type;
+        var paths = {
+            dev: [
+                '//a.tvpage.com/tvpa.min.js',
+                '//cdnjs.tvpage.com/tvplayer/tvp-1.8.6.min.js',
+                static + '/js/libs/analytics.js',
+                static + '/js/libs/player.js',
+                static + '/js/index.js'
+            ],
+            prod: [
+                '//a.tvpage.com/tvpa.min.js',
+                '//cdnjs.tvpage.com/tvplayer/tvp-1.8.6.min.js',
+                static + '/dist/js/scripts.min.js'
+            ]
+        }[env];
 
         self.initialize = function() {
-
-            //Add target/host page css for our self
-            var link = document.createElement('link');
-            link.rel = 'stylesheet';
-            link.href = self.static + (window.DEBUG ? '/' : '/dist/') + 'css/' + mobilePath + 'host' + cssExt;
-            document.getElementsByTagName('head')[0].appendChild(link);
-
-            var iframe = self.holder.querySelector('iframe');
-
-            window.addEventListener('resize', debounce(function() {
-                window.postMessage({
-                    event: self.senderId + ':holder_resize',
-                    size: [self.holder.offsetWidth, self.holder.offsetHeight]
-                }, '*');
-            }, 50));
-
-            //Central point for cross-domain messaging between iframes, we always us the host page window.
-            window.addEventListener('message', function(e) {
-                if (!e || !isset(e, 'data') || !isset(e.data, 'event')) return;
-
-                var eventName = e.data.event;
-                var data = e.data;
-                var id = self.id;
-
-                self.iframeModalId = 'tvp-iframe-modal-' + id;
-
-                if (self.senderId + ':render' === eventName || self.senderId + ':resize' === eventName) {
-                    self.holder.style.height = e.data.height;
-                }
-
-                if (self.senderId + ':video_click' === eventName) {
-                    var runTime = (data.runTime || (isset(window, '__TVPage__') ? __TVPage__ : {}) ).config[id];
-                    var selectedVideo = data.selectedVideo || {};
-
-                    self.data[id] = self[id] || {};
-                    self[id] = {
-                        data: data.videos || [],
-                        selectedVideo: selectedVideo,
-                        runTime: runTime
-                    };
-
-                    var modalFrag = document.createDocumentFragment();
-                    var overlay = document.createElement('div');
-                    overlay.classList.add('tvp-modal-overlay');
-                    modalFrag.appendChild(overlay);
-                    var modal = document.createElement('div');
-                    modal.classList.add('tvp-modal');
-                    modal.innerHTML = '<div class="tvp-modal-wrapper"><div class="tvp-modal-content"><div class="tvp-modal-header">' +
-                        '<svg class="tvp-modal-close" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">' +
-                        '<path fill="#ffffff" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>' +
-                        '<h4 class="tvp-modal-title">' + selectedVideo.title + '</h4></div><div class="tvp-modal-body"><div class="tvp-modal-iframe-holder"><iframe id="' + self.iframeModalId + '" src="about:blank"' +
-                        'allowfullscreen frameborder="0" scrolling="no" class="tvp-iframe-modal"></iframe></div></div></div></div>';
-
-                    modalFrag.appendChild(modal);
-
-                    var button = modalFrag.querySelector('.tvp-modal-close');
-                    var close = function() {
-                        document.body.classList.remove('tvp-modal-open');
-                        button.removeEventListener('click', close, false);
-                        [modal, overlay, button].forEach(function(el) {
-                            el.parentNode.removeChild(el);
-                        });
-                    };
-                    button.addEventListener('click', close);
-
-                    var iframeModal = modalFrag.querySelector('.tvp-iframe-modal');
-
-                    var body = document.body;
-
-                    body.classList.add('tvp-modal-open');
-                    body.appendChild(modalFrag);
-
-                    var iframeModalDoc = iframeModal.contentWindow.document;
-
-                    iframeModalDoc.open().write(getIframeHtml({
-                        domain: self.domain,
-                        id: id,
-                        html: function () {
-                            var html = '<div id="' + id + '" class="tvp-clearfix iframe-content">';
-
-                            if (isMobile) {
-                                html += '<div class="tvp-player"><div id="tvp-player-el"></div></div><div class="tvp-products"><div class="tvp-products-carousel"></div></div>';
-                            } else {
-                                html += '<div class="tvp-player-holder"><div class="tvp-player"><div id="tvp-player-el"></div></div></div>';
-
-                                if ("solo-cta" !== self.type) {
-                                    html += '<div class="tvp-products-holder"><div class="tvp-products"></div></div>';
-                                }
-                            }
-
-                            return (html + '</div>');
-                        },
-                        js: self.paths[self.type].modal[env].filter(Boolean),
-                        css: function () {
-                            var files = [self.static + (window.DEBUG ? '/' : '/dist/') + 'css/' + mobilePath + 'modal/styles' + cssExt];
-                            if (window.DEBUG) {
-                                if (isMobile) {
-                                    files.push(self.static + '/css/vendor/slick.css');
-                                } else {
-                                    files.push(self.static + '/css/vendor/simple-scrollbar.css');
-                                }
-                            }
-                            return files;
-                        }
-                    }));
-                    iframeModalDoc.close();
-                }
-
-                if (self.senderId + ':modal_initialized' === eventName) {
-                    var widgetData = self[id];
-                    var iframeModal = document.getElementById(self.iframeModalId);
-
-                    if (iframeModal.contentWindow) {
-                        iframeModal.contentWindow.postMessage({
-                            event: self.senderId + ':modal_data',
-                            data: widgetData.data,
-                            selectedVideo: widgetData.selectedVideo,
-                            runTime: widgetData.runTime
-                        }, '*');
-                    }
-
-                    if (/iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream) {
-                        var onOrientationChange = debounce(function () {
-                            var iframeModal = document.getElementById(self.iframeModalId);
-                            if (iframeModal && iframeModal.contentWindow) {
-                                var widthRef = iframeModal.parentNode.offsetWidth;
-                                iframeModal.contentWindow.window.postMessage({
-                                    event: self.senderId + ':modal_holder_resize',
-                                    size: [widthRef, Math.floor(widthRef * (9 / 16))]
-                                },'*');
-                            }
-                        },30);
-                        var orientationChangeEvent = 'onorientationchange' in window ? 'orientationchange' : 'resize';
-                        window.removeEventListener(orientationChangeEvent,onOrientationChange, false);
-                        window.addEventListener(orientationChangeEvent,onOrientationChange, false);
-                    }
-                }
-
-                if (self.senderId + ':modal_resized' === eventName) {
-                    document.getElementById(self.iframeModalId).style.height = e.data.height;
-                }
-
-                if (self.senderId + ':player_next' === eventName) {
-                    document.querySelector('.tvp-modal-title').innerHTML = e.data.next.assetTitle;
-                }
-
-                var iframeModalHolder = document.querySelector('.tvp-modal-iframe-holder');
-
-                if (self.senderId + ':modal_no_products' === eventName) {
-                    if (!isMobile) {
-                        var pLabel = document.querySelector('.tvp-products-headline');
-                        if (pLabel) {
-                            pLabel.remove();
-                        }
-                    }
-
-                    iframeModalHolder.classList.remove('products');
-                    iframeModalHolder.classList.add('no-products');
-                }
-
-                if (self.senderId + ':modal_products' === eventName) {
-                    if (!isMobile) {
-                        var productsLabel = document.createElement('p');
-                        productsLabel.classList.add('tvp-products-headline');
-                        productsLabel.innerHTML = 'Related Products';
-                        document.querySelector('.tvp-modal-header').appendChild(productsLabel);
-                    }
-                    iframeModalHolder.classList.remove('no-products');
-                    iframeModalHolder.classList.add('products');
-                }
-            });
 
             //Because iframes are loaded first before the host page loading, we load them empties, making this load time
             //reduced as its minimum, we start then creating the content of the iframe dynamically.
             //Reference: http://www.aaronpeters.nl/blog/iframe-loading-techniques-performance?%3E
-            if ('dynamic' === self.dataMethod) {
+            var iframeDoc = holder.querySelector('iframe').contentWindow.document;
+            iframeDoc.open().write(getIframeHtml({
+                js: paths,
+                css: [ static + (debug ? '/' : '/dist/') + 'css/styles' + (debug ? '.css' : '.min.css') ],
+                className: 'dynamic',
+                domain: domain,
+                id: id
+            }));
+            iframeDoc.close();
 
-                var iframeDoc = iframe.contentWindow.document;
-
-                iframeDoc.open().write(getIframeHtml({
-                    js: function () {
-                        var jsFiles = self.paths[self.type];
-                        if ('sidebar' === self.type || 'carousel' === self.type) {
-                            jsFiles = jsFiles.gallery;
-                        } else if ('solo-cta' === self.type) {
-                            jsFiles = jsFiles.player;
-                        }
-                        return jsFiles[env];
-                    }(),
-                    css: function () {
-                        var cssFiles = [self.static + (window.DEBUG ? '/' : '/dist/') + 'css/styles' + cssExt]
-                        if ('carousel' === self.type && window.DEBUG) {
-                            cssFiles = cssFiles.concat([self.static + '/css/vendor/slick.css']);
-                        }
-                        return cssFiles;
-                    },
-                    className: self.dataMethod,
-                    domain: self.domain,
-                    id: self.id
-                }));
-
-                iframeDoc.close();
-            }
-
-            //Handling the static iframe scenario, not much to do, just delay the src addition.
-            else {
-                setTimeout(function () {
-                    var src = spot.href;
-                    (-1 == navigator.userAgent.indexOf("MSIE")) ? iframe.src = src: iframe.location = src;
-                },5);
-            }
+            window.addEventListener('resize', function() {
+                window.postMessage({
+                    event: senderId + ':holder_resize',
+                    size: [holder.offsetWidth, holder.offsetHeight]
+                }, '*');
+            });
         }
 
         return self;
     }
 
     function load () {
-        var spots = document.querySelectorAll('.tvp-sidebar, .tvp-carousel, .tvp-solo, .tvp-solo-cta, .tvp-solo-append, .tvp-solo-click');
+        var spots = document.querySelectorAll('.tvp-solo-click');
         for (var i = 0; i < spots.length; i++) {
             var widget  = Widget(spots[i]);
-            widget.initialize();
+            widget.initialize(spots);
         }
     }
 
