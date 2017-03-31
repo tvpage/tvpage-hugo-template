@@ -1,3 +1,7 @@
+*[class^="tvp-"] {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -81,7 +85,6 @@ body {
 .tvp-play {
   display: block;
   background-color: #fff;
-  box-sizing: border-box;
   width: 55px;
   height: 55px;
   padding: 0;
@@ -142,6 +145,21 @@ body {
   z-index: 9999;
 }
 
+.mobile .tvp-product {
+  margin-bottom: 0;
+}
+
+.tvp-product-cta {
+  font-size: 10px;
+  text-align: center;
+  width: 155px;
+  border-radius: 0;
+  border: 0;
+  display: block;
+  cursor: pointer;
+  padding: 0;
+}
+
 .tvp-product-image {
   display: block;
   width: 80px;
@@ -176,21 +194,4 @@ body {
 .tvp-product-data > h2 {
   margin: 5px 0;
   font-size: 16px;
-}
-
-.tvp-product-data > button {
-  font-size: 10px;
-  text-align: center;
-  width: 95px;
-  border-radius: 2px;
-  text-transform: uppercase;
-  height: 25px;
-  background: black;
-  border: 0;
-  color: white;
-  text-transform: uppercase;
-  display: block;
-  cursor: pointer;
-  position: absolute;
-  bottom: 5px;
 }
