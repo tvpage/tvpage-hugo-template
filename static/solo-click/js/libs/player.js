@@ -179,8 +179,9 @@
 
       that.instance.resize(width, height);
       
-      if(!this.onResize) return;
-      this.onResize(that.initialResize, [width, height]);
+      if (this.onResize) {
+        this.onResize(that.initialResize, [width, height]);
+      }
       
       that.initialResize = false;
     };
@@ -207,7 +208,7 @@
             window.removeEventListener('message', onHolderResize, false);
             window.addEventListener('message', onHolderResize, false);
         } else {
-            var onWindowResize = debounce(that.resize,50);
+            var onWindowResize = that.resize;
             window.removeEventListener('resize', onWindowResize, false);
             window.addEventListener('resize', onWindowResize);
         }

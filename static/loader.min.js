@@ -95,7 +95,6 @@
         holder.classList.add(type);
 
         var domain = spot.getAttribute('data-domain');
-        var senderId = 'tvp_' + type.replace(/-/g,'_');
 
         spot.parentNode.removeChild(spot);
 
@@ -132,7 +131,7 @@
 
             window.addEventListener('resize', function() {
                 window.postMessage({
-                    event: senderId + ':holder_resize',
+                    event: 'tvp_solo_click:holder_resize',
                     size: [holder.offsetWidth, holder.offsetHeight]
                 }, '*');
             });
