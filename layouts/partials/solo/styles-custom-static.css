@@ -46,3 +46,7 @@
   color: {{ ($.Scratch.Get "settings").menu_item_play_category_tag_font_color }};
   border-radius: {{ ($.Scratch.Get "settings").menu_item_play_category_tag_border_radius }};
 }
+
+.tvp-play>polygon {
+  fill: {{ ($.Scratch.Get "settings").play_button_icon_color }};
+}
