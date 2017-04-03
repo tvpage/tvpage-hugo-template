@@ -355,15 +355,13 @@ body {
                 background-size: cover;
                 background-repeat: no-repeat;
                 background-position: center;
-                position: absolute;
-                width: 100%;
-                top: 0;
+
             }
             .tvp-video-title {
                 overflow: hidden;
                 margin: 10px 0;
-                position: absolute;
-                bottom: 0;
+                top: 50%;
+                transform: translateY(-50%);
             }
             .tvp-video-image-overlay {
                 display: none;

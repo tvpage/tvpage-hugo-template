@@ -140,7 +140,7 @@
             "type": "text",
             "label": "Videos Carousel Margin",
             "code": "videos_carousel_margin",
-            "value": "0 0 209px 0"
+            "value": "0"
         },
         {
             "for": "videos-carousel",
@@ -187,6 +187,48 @@
         {
             "for": "videos-carousel",
             "type": "text",
+            "label": "Videos Carousel Item Thumbnail Height",
+            "code": "videos_carousel_item_thumbnail_height",
+            "value": "56.25%"
+        },
+        {
+            "for": "videos-carousel",
+            "type": "text",
+            "label": "Videos Carousel Item Thumbnail Width",
+            "code": "videos_carousel_item_thumbnail_width",
+            "value": "100%"
+        },
+        {
+            "for": "videos-carousel",
+            "type": "text",
+            "label": "Videos Carousel Item Thumbnail Display",
+            "code": "videos_carousel_item_thumbnail_display",
+            "value": "block"
+        },
+        {
+            "for": "videos-carousel",
+            "type": "text",
+            "label": "Videos Carousel Item Thumbnail Border Style",
+            "code": "videos_carousel_item_thumbnail_border_style",
+            "value": "solid"
+        },
+        {
+            "for": "videos-carousel",
+            "type": "text",
+            "label": "Videos Carousel Item Thumbnail Border Color",
+            "code": "videos_carousel_item_thumbnail_border_color",
+            "value": "#fff"
+        },
+        {
+            "for": "videos-carousel",
+            "type": "text",
+            "label": "Videos Carousel Item Thumbnail Border Width",
+            "code": "videos_carousel_item_thumbnail_border_width",
+            "value": "0"
+        },
+        {
+            "for": "videos-carousel",
+            "type": "text",
             "label": "Videos Carousel Item Title Font Size",
             "code": "videos_carousel_item_title_font_size",
             "value": "12px"
@@ -204,6 +246,41 @@
             "label": "Videos Carousel Item Title Font Color",
             "code": "videos_carousel_item_title_font_color",
             "value": "#000"
+        },
+        {
+            "for": "videos-carousel",
+            "type": "text",
+            "label": "Videos Carousel Item Title Margin",
+            "code": "videos_carousel_item_title_margin",
+            "value": "10px 0"
+        },
+        {
+            "for": "videos-carousel",
+            "type": "text",
+            "label": "Videos Carousel Item Title Width",
+            "code": "videos_carousel_item_title_width",
+            "value": "100%"
+        },
+        {
+            "for": "videos-carousel",
+            "type": "text",
+            "label": "Videos Carousel Item Title Display",
+            "code": "videos_carousel_item_title_display",
+            "value": "block"
+        },
+        {
+            "for": "videos-carousel",
+            "type": "text",
+            "label": "Videos Carousel Item Title Position",
+            "code": "videos_carousel_item_title_position",
+            "value": "static"
+        },
+        {
+            "for": "videos-carousel",
+            "type": "text",
+            "label": "Videos Carousel Item Title Transform",
+            "code": "videos_carousel_item_title_transform",
+            "value": "none"
         },
         {
             "for": "iframe-holder",
@@ -287,7 +364,7 @@
             "type": "text",
             "label": "Video Header Padding",
             "code": "video_header_padding",
-            "value": "20px 0"
+            "value": "0"
         },
         {
             "for": "inline",

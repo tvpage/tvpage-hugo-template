@@ -710,9 +710,6 @@ body {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  position: absolute;
-  width: 100%;
-  top: 0;
 }
 .iframe-content .tvp-videos-scroller .tvp-video .tvp-video-image:before {
   display: block;
@@ -730,8 +727,9 @@ body {
 .iframe-content .tvp-videos-scroller .tvp-video .tvp-video-title {
   overflow: hidden;
   margin: 10px 0;
-  position: absolute;
-  bottom: 0;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
 }
 .iframe-content .tvp-videos-scroller .tvp-video .tvp-video-image-overlay {
   display: none;
