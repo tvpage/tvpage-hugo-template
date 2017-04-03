@@ -66,7 +66,6 @@
 
         var config = {};
         if (isset(window, '__TVPage__') && isset(__TVPage__, 'config') && isset(__TVPage__.config, id)) {
-            __TVPage__.config[id].channel.parameters = {referenceId:"3264902"};
             config = __TVPage__.config[id];
         }
 
