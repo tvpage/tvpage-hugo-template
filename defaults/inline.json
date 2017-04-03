@@ -222,6 +222,13 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Player / Product Section Height",
+            "code": "player_product_section_height",
+            "value": "32.44094%"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Video Header Font Color",
             "code": "video_header_font_color",
             "value": "#000"
@@ -239,6 +246,20 @@
             "label": "Video Header Font Weight",
             "code": "video_header_font_weight",
             "value": "normal"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Video Header Line Height",
+            "code": "video_header_line_height",
+            "value": "46px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Video Header Padding",
+            "code": "video_header_padding",
+            "value": "20px 0"
         },
         {
             "for": "inline",
@@ -330,6 +351,41 @@
             "label": "Featured Product Price View Details Button Font Weight",
             "code": "featured_product_view_button_font_weight",
             "value": "normal"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Video Player Holder Width",
+            "code": "video_player_holder_width",
+            "value": "57.2072%"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Holder Width",
+            "code": "featured_product_holder_width",
+            "value": "24.5946%"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Holder Left Margin",
+            "code": "featured_product_holder_left_margin",
+            "value": "2.7027%"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Holder Width",
+            "code": "product_holder_width",
+            "value": "13.5135%"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Holder Left Margin",
+            "code": "product_holder_left_margin",
+            "value": "1.5315%"
         },
         {
             "for": "inline",
