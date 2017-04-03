@@ -101,7 +101,7 @@
 '}' +
 
 '.iframe-content .tvp-videos-container .tvp-videos-arrows{' +
-	// 'display: {{- ($.Scratch.Get "settings").videos_carousel_arrow_display -}};' +
+	'display: {{- ($.Scratch.Get "settings").videos_carousel_arrow_display -}};' +
 	'background: {{- ($.Scratch.Get "settings").videos_carousel_arrow_background -}};' +
 	'height: {{- ($.Scratch.Get "settings").videos_carousel_arrow_height -}};' +
 	'width: {{- ($.Scratch.Get "settings").videos_carousel_arrow_width -}};' +

@@ -216,7 +216,7 @@
             $videoSliderDesktop = $(this.el.querySelector('#tvpVideoScroller'));
             
             $videoSliderDesktop.slick({
-                arrows: true,
+                arrows: options.videos_carousel_arrow_display === "none" ? false : true,
                 slidesToShow: parseInt(options.videos_to_show),
                 slidesToScroll: parseInt(options.videos_to_scroll),
                 nextArrow: '.tvp-videos-arrow-next',

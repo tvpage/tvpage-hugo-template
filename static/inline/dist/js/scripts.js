@@ -595,7 +595,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             $videoSliderDesktop = $(this.el.querySelector('#tvpVideoScroller'));
             
             $videoSliderDesktop.slick({
-                arrows: true,
+                arrows: options.videos_carousel_arrow_display === "none" ? false : true,
                 slidesToShow: parseInt(options.videos_to_show),
                 slidesToScroll: parseInt(options.videos_to_scroll),
                 nextArrow: '.tvp-videos-arrow-next',
@@ -790,7 +790,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
         if (Utils.isset(parent) && Utils.isset(parent,'__TVPage__') && Utils.isset(parent.__TVPage__, 'config')) {
             settings = parent.__TVPage__.config[body.getAttribute('data-id')];
         }
-        var inlineSettings = JSON.parse(JSON.stringify(settings));        
+        var inlineSettings = JSON.parse(JSON.stringify(settings));
         render(body,{
             id: settings.name,
             title: settings.title || 'Recommended Videos',
