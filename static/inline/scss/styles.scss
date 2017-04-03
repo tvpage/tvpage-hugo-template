@@ -303,7 +303,6 @@ body {
     }
     .tvp-videos-container{
         position: relative;
-        overflow: hidden;
         .tvp-videos-arrows {
             cursor: pointer;
             position: absolute;
@@ -344,6 +343,7 @@ body {
             margin: 0 15px;
         }
         .tvp-video {
+            @include aspect-ratio(16, 11);
             box-sizing: border-box;
             display: block;
             position: relative;
@@ -355,11 +355,15 @@ body {
                 background-size: cover;
                 background-repeat: no-repeat;
                 background-position: center;
-
+                position: absolute;
+                width: 100%;
+                top: 0;
             }
             .tvp-video-title {
                 overflow: hidden;
                 margin: 10px 0;
+                position: absolute;
+                bottom: 0;
             }
             .tvp-video-image-overlay {
                 display: none;

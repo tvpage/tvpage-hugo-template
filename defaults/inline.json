@@ -138,6 +138,20 @@
         {
             "for": "videos-carousel",
             "type": "text",
+            "label": "Videos Carousel Margin",
+            "code": "videos_carousel_margin",
+            "value": "0 0 209px 0"
+        },
+        {
+            "for": "videos-carousel",
+            "type": "text",
+            "label": "Videos Carousel Item Height",
+            "code": "videos_carousel_item_height",
+            "value": "68.75%"
+        },
+        {
+            "for": "videos-carousel",
+            "type": "text",
             "label": "Videos Carousel Item Space InBetween",
             "code": "videos_carousel_item_space_inbetween",
             "value": "15px"
