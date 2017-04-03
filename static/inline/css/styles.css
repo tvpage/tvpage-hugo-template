@@ -574,6 +574,11 @@ body {
   text-transform: capitalize;
   margin-bottom: 15px;
 }
+.iframe-content .tvp-featured .tvp-featured-product .tvp-featured-info-gender {
+  display: block;
+  color: #B7B7B7;
+  font-size: 10px;
+}
 .iframe-content .tvp-featured .tvp-featured-product .tvp-featured-info-price {
   color: #000;
   float: left;

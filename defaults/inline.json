@@ -145,6 +145,13 @@
         {
             "for": "videos-carousel",
             "type": "text",
+            "label": "Videos Carousel Arrow Display",
+            "code": "videos_carousel_arrow_display",
+            "value": "block"
+        },
+        {
+            "for": "videos-carousel",
+            "type": "text",
             "label": "Videos Carousel Arrow Background",
             "code": "videos_carousel_arrow_background",
             "value": "#fff"
@@ -229,6 +236,13 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Player / Product Section Margin",
+            "code": "player_product_section_margin",
+            "value": "0 0 30px 0"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Video Header Font Color",
             "code": "video_header_font_color",
             "value": "#000"
@@ -292,6 +306,13 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Featured Product Image Height",
+            "code": "featured_product_image_height",
+            "value": "73.47826%"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Featured Product Title Font Color",
             "code": "featured_product_title_font_color",
             "value": "#000"
@@ -313,6 +334,48 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Featured Product Title Margin",
+            "code": "featured_product_title_margin",
+            "value": "0 0 15px 0"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Genre Font Color",
+            "code": "featured_product_genre_font_color",
+            "value": "#B7B7B7"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Genre Font Size",
+            "code": "featured_product_genre_font_size",
+            "value": "12px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Genre Font Weight",
+            "code": "featured_product_genre_font_weight",
+            "value": "normal"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Genre Margin",
+            "code": "featured_product_genre_margin",
+            "value": "0 0 4px 0"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Genre Display",
+            "code": "featured_product_genre_display",
+            "value": "none"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Featured Product Price Font Color",
             "code": "featured_product_price_font_color",
             "value": "#000"
@@ -330,6 +393,13 @@
             "label": "Featured Product Price Font Weight",
             "code": "featured_product_price_font_weight",
             "value": "bold"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Price Margin",
+            "code": "featured_product_price_margin",
+            "value": "0 0 0 25px"
         },
         {
             "for": "inline",

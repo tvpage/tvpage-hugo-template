@@ -7,8 +7,21 @@
 	'padding-top: {{- ($.Scratch.Get "settings").player_product_section_height -}};' +
 '}' +
 
+'.iframe-content .tvp-row{' +
+	'margin: {{- ($.Scratch.Get "settings").player_product_section_margin -}};' +
+'}' +
+
 '.iframe-content .tvp-row-titles{' +	
 	'height: {{- ($.Scratch.Get "settings").header_height -}};' +
+'}' +
+
+'.iframe-content .tvp-row-titles .tvp-row-player-title{' +
+	'width: {{- ($.Scratch.Get "settings").video_player_holder_width -}};' +
+'}' +
+
+'.iframe-content .tvp-row-titles .tvp-row-featured-title {' +
+	'width: {{- ($.Scratch.Get "settings").featured_product_holder_width -}};' +
+	'margin-left: {{- ($.Scratch.Get "settings").featured_product_holder_left_margin -}};' +
 '}' +
 
 '.iframe-content .tvp-row-titles h1{' +
@@ -42,16 +55,30 @@
 	'padding: {{- ($.Scratch.Get "settings").featured_product_box_padding -}};' +
 '}' +
 
+'.iframe-content .tvp-featured .tvp-featured-product .tvp-featured-image:before{' +
+	'padding-top: {{- ($.Scratch.Get "settings").featured_product_image_height -}};' +
+'}' +
+
 '.iframe-content .tvp-featured .tvp-featured-product .tvp-featured-info-title{' +
 	'color: {{- ($.Scratch.Get "settings").featured_product_title_font_color -}};' +
 	'font-size: {{- ($.Scratch.Get "settings").featured_product_title_font_size -}};' +
 	'font-weight: {{- ($.Scratch.Get "settings").featured_product_title_font_weight -}};' +
+	'margin: {{- ($.Scratch.Get "settings").featured_product_title_margin -}};' +
+'}'+
+
+'.iframe-content .tvp-featured .tvp-featured-product .tvp-featured-info-gender{' +
+	'color: {{- ($.Scratch.Get "settings").featured_product_genre_font_color -}};' +
+	'font-size: {{- ($.Scratch.Get "settings").featured_product_genre_font_size -}};' +
+	'font-weight: {{- ($.Scratch.Get "settings").featured_product_genre_font_weight -}};' +
+	'margin: {{- ($.Scratch.Get "settings").featured_product_genre_margin -}};' +
+	'display: {{- ($.Scratch.Get "settings").featured_product_genre_display -}};' +
 '}'+
 
 '.iframe-content .tvp-featured .tvp-featured-product .tvp-featured-info-price{' +
 	'color: {{- ($.Scratch.Get "settings").featured_product_price_font_color -}};' +
 	'font-size: {{- ($.Scratch.Get "settings").featured_product_price_font_size -}};' +
 	'font-weight: {{- ($.Scratch.Get "settings").featured_product_price_font_weight -}};' +
+	'margin: {{- ($.Scratch.Get "settings").featured_product_price_margin -}};' +
 '}' +
 
 '.iframe-content .tvp-featured .tvp-featured-product .tvp-featured-info-view-details{' +
@@ -74,6 +101,7 @@
 '}' +
 
 '.iframe-content .tvp-videos-container .tvp-videos-arrows{' +
+	// 'display: {{- ($.Scratch.Get "settings").videos_carousel_arrow_display -}};' +
 	'background: {{- ($.Scratch.Get "settings").videos_carousel_arrow_background -}};' +
 	'height: {{- ($.Scratch.Get "settings").videos_carousel_arrow_height -}};' +
 	'width: {{- ($.Scratch.Get "settings").videos_carousel_arrow_width -}};' +
