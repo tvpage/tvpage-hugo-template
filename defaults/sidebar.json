@@ -84,7 +84,7 @@
             "for": "sidebar",
             "type": "text",
             "label": "Title Font Family",
-            "code": "item_title_font_family",
+            "code": "title_font_family",
             "value": "Helvetica"
         },
         {
@@ -120,7 +120,7 @@
             "type": "text",
             "label": "Title Padding",
             "code": "title_padding",
-            "value": "0"
+            "value": "0 5px 10px"
         },
         {
             "for": "sidebar",
@@ -135,6 +135,13 @@
             "label": "Item Play Button Background Color",
             "code": "item_play_button_background_color",
             "value": "white"
+        },
+        {
+            "for": "sidebar",
+            "type": "text",
+            "label": "Item Play Button Background Color Hover",
+            "code": "item_play_button_background_color_hover",
+            "value": "#333"
         },
         {
             "for": "player",
@@ -162,16 +169,23 @@
             "type": "text",
             "label": "Item Play Button Border",
             "code": "item_play_button_border",
-            "value": "1px solid black"
+            "value": "1px solid #333"
         },
         {
             "for": "sidebar",
             "type": "text",
             "label": "Item Play Button Icon Color",
             "code": "item_play_button_icon_color",
-            "value": "black"
+            "value": "#333"
         },
-                {
+        {
+            "for": "sidebar",
+            "type": "text",
+            "label": "Item Play Button Icon Color Hover",
+            "code": "item_play_button_icon_color_hover",
+            "value": "white"
+        },
+        {
             "for": "sidebar",
             "type": "text",
             "label": "Item Title Font Family",
@@ -231,15 +245,22 @@
             "for": "sidebar",
             "type": "text",
             "label": "Load Button Text Color",
-            "code": "loadButtonTextColor",
+            "code": "load_button_text_color",
             "value": "white"
         },
         {
             "for": "sidebar",
             "type": "text",
+            "label": "Load Button Font Size",
+            "code": "load_button_font_size",
+            "value": "10px"
+        },
+        {
+            "for": "sidebar",
+            "type": "text",
             "label": "Load Button Background Color",
-            "code": "loadButtonBackgroundColor",
-            "value": "#1F1D26"
+            "code": "load_button_background_color",
+            "value": "#DFDFDF"
         },
         {
             "for": "sidebar",
@@ -247,6 +268,55 @@
             "label": "Load Button Border Radius",
             "code": "load_button_border_radius",
             "value": "0"
+        },
+        {
+            "for": "sidebar",
+            "type": "text",
+            "label": "Load Button Text Align",
+            "code": "load_button_text_align",
+            "value": "center"
+        },
+        {
+            "for": "sidebar",
+            "type": "text",
+            "label": "Load Button Width",
+            "code": "load_button_width",
+            "value": "85px"
+        },
+        {
+            "for": "sidebar",
+            "type": "text",
+            "label": "Load Button Height",
+            "code": "load_button_height",
+            "value": "26px"
+        },
+        {
+            "for": "sidebar",
+            "type": "text",
+            "label": "Load Button Border",
+            "code": "load_button_border",
+            "value": "1px solid #DFDFDF"
+        },
+        {
+            "for": "sidebar",
+            "type": "text",
+            "label": "Load Button Text Transform",
+            "code": "load_button_text_transform",
+            "value": "uppercase"
+        },
+        {
+            "for": "sidebar",
+            "type": "text",
+            "label": "Load Button Margin",
+            "code": "load_button_margin",
+            "value": "5px auto"
+        },
+        {
+            "for": "sidebar",
+            "type": "text",
+            "label": "Load Button Padding",
+            "code": "load_button_padding",
+            "value": "0 2px"
         },
         {
             "for": "modal",

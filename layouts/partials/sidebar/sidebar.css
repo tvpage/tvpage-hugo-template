@@ -16,9 +16,17 @@
     "border-radius:{{ ($.Scratch.Get "settings").item_play_button_border_radius }};" +
 "}" +
 
+".tvp-video:hover .tvp-video-play {" +
+    "background-color:{{ ($.Scratch.Get "settings").item_play_button_background_color_hover }};" +
+"}" +
+
 ".tvp-video-play > polygon {" +
     "fill:{{ ($.Scratch.Get "settings").item_play_button_icon_color }};" +
 "}" +
+
+".tvp-video:hover .tvp-video-play > polygon {" +
+    "fill:{{ ($.Scratch.Get "settings").item_play_button_icon_color_hover }};" +
+"}"+
 
 ".tvp-video-title {" +
     "font-family: {{ ($.Scratch.Get "settings").item_title_font_family }};" +
@@ -29,46 +37,16 @@
     "padding:{{ ($.Scratch.Get "settings").item_title_padding }};" +
 "}" +
 
-".tvp-video-image {" +
-    "background-size: {{ ($.Scratch.Get "settings").item_background_image_size }};" +
-"}" +
-
-".tvp-video-metadata {" +
-    "font-size:{{ ($.Scratch.Get "settings").item_metadata_font_size }};" +
-    "color:{{ ($.Scratch.Get "settings").item_metadata_font_color }};" +
-"}" +
-
-".tvp-video-metadata > div {" +
-    "padding:{{ ($.Scratch.Get "settings").item_metadata_padding }};" +
-"}" +
-
-".tvp-video-image-overlay {" +
-    "background:{{ ($.Scratch.Get "settings").item_image_overlay_color }};" +
-"}" +
-
 ".tvp-sidebar-load {" +
-  "font-size: 10px;" +
-  "text-align: center;" +
-  "width: 85px;" +
-  "height: 26px;" +
-  "background-color: #F5F5F5;" +
-  "border: 1px solid #DFDFDF;" +
-  "color: #666666;" +
-  "text-transform: uppercase;" +
-"}" +
-
-"@media (min-width:480px){" +
-    ".tvp-sidebar-arrow {" +
-        "width:{{ ($.Scratch.Get "settings").arrow_size_480 }};" +
-    "}" +
-"}" +
-
-"@media (min-width:768px) {" +
-    ".tvp-video:hover .tvp-video-play {" +
-        "background-color:{{ ($.Scratch.Get "settings").item_play_button_hover_color }};" +
-    "}" +
-
-    ".tvp-video:hover .tvp-video-play > polygon {" +
-        "fill:{{ ($.Scratch.Get "settings").item_play_button_icon_hover_color }};" +
-    "}" +
+  "font-size: {{ ($.Scratch.Get "settings").load_button_font_size }};" +
+  "border-radius: {{ ($.Scratch.Get "settings").load_button_border_radius }};" +
+  "text-align: {{ ($.Scratch.Get "settings").load_button_text_align }};" +
+  "width: {{ ($.Scratch.Get "settings").load_button_width }};" +
+  "height: {{ ($.Scratch.Get "settings").load_button_height }};" +
+  "background-color: {{ ($.Scratch.Get "settings").load_button_background_color }};" +
+  "border: {{ ($.Scratch.Get "settings").load_button_border }};" +
+  "color: {{ ($.Scratch.Get "settings").load_button_text_color }};" +
+  "text-transform: {{ ($.Scratch.Get "settings").load_button_text_transform }};" +
+  "margin: {{ ($.Scratch.Get "settings").load_button_margin }};" +
+  "padding: {{ ($.Scratch.Get "settings").load_button_padding }};" +
 "}"

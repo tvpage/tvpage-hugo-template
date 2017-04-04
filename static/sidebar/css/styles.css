@@ -122,7 +122,6 @@ body  {
 
 .tvp-video-play > polygon {
   pointer-events: none;
-  fill: #333;
 }
 
 .tvp-video-title {
@@ -220,8 +219,6 @@ body  {
 }
 
 .tvp-sidebar-load {
-  margin: 5px auto;
-  padding: 0 2px;
   cursor: pointer;
 }
 
