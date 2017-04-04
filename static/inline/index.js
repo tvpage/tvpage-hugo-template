@@ -177,42 +177,10 @@ var getEventType = function (e) {
     return null;
 };
 
-function handlePostMessages(e){
-  var eventType = getEventType(e);  
-  switch (eventType) {
-    // case 'video_click':
-    //   handleVideoClick(e);
-    //   break;
-    // case 'modal_initialized':
-    //   handleModalInitialized(e);
-    //   break;
-    // case 'modal_no_products': 
-    //   handleModalNoProducts(e);
-    //   break;
-    // case 'modal_products':
-    //   handleModalProducts(e);
-    //   break;
-    // case 'player_next':
-    //   handlePlayerNext(e);
-    //   break;
-    // case 'modal_resize':
-    //   handleModalResize(e);
-    //   break;
-    default: 
-      // do nothing
-  }
-
-  handleCallback(e);
-};
-
 function handleCallback(e){
   if (__windowCallbackFunc__) 
     __windowCallbackFunc__(e);
 }
-
-window.addEventListener("message", function(e){
-  handlePostMessages(e);
-});
 
 function handleModalInitialized(e){
   if (iframeModal.contentWindow) {

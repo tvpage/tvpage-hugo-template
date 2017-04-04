@@ -74,8 +74,7 @@ module.exports = function(grunt) {
               ,'js/libs/utils.js'
               ,'js/libs/player.js'
               , 'js/inline.js'
-              , 'js/index.js'],
-            'loader.min.js' : ['loader.js']
+              , 'js/index.js']
           }
         }
       },
