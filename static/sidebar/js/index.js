@@ -82,7 +82,7 @@
         var el = document.getElementById(name);
         gridSettings.onLoad = function(){el.classList.add('loading');};
         gridSettings.onLoadEnd = function(){el.classList.remove('loading');};
-        
+
         new Grid(name, gridSettings);
       }(getSettings('static')));
     }
