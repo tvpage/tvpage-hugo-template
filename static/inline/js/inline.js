@@ -78,7 +78,6 @@
 
         loadProducts(vid, lid, 
             function (data) {                
-                var $sscontent = $(products).find('.ss-content');
                 if (data.length) {
                     var itemTemplate = isScrollBar() ? this.productItemTemplate : that.featuredProductTemplate;
                     var _container = $('.tvp-products-scroller');

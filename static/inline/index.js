@@ -176,33 +176,3 @@ var getEventType = function (e) {
     
     return null;
 };
-
-function handleCallback(e){
-  if (__windowCallbackFunc__) 
-    __windowCallbackFunc__(e);
-}
-
-function handleModalInitialized(e){
-  if (iframeModal.contentWindow) {
-      iframeModal.contentWindow.postMessage({
-          event: config.eventPrefix + ':modal_data',
-          data: clickData.data,
-          selectedVideo: clickData.selectedVideo,            
-          runTime: clickData.runTime
-      }, '*');
-  }
-
-  var onOrientationChange = function () {
-    iframeModal.classList.remove("resized");
-    if (utils.isIOS && iframeModal && iframeModal.contentWindow) {
-      var width = iframeModal.parentNode.offsetWidth;
-      iframeModal.contentWindow.window.postMessage({
-        event: config.eventPrefix + ':modal_holder_resize',
-        size: [width, Math.floor(width * (9 / 16))]
-      },'*');
-    }
-  };
-  var orientationChangeEvent = 'onorientationchange' in window ? 'orientationchange' : 'resize';
-  window.removeEventListener(orientationChangeEvent,onOrientationChange, false);
-  window.addEventListener(orientationChangeEvent,onOrientationChange, false);
-};
