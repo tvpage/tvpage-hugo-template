@@ -1,12 +1,12 @@
-"[class^=tvp-] {" +
+"*[class^=tvp-] {" +
     "box-sizing: border-box;" +
 "}" +
 
-".tvp-carousel-holder {" +
+".tvp-sidebar-holder {" +
     "position: relative;" +
 "}" +
 
-".tvp-carousel-holder > iframe {" +
+".tvp-sidebar-holder > iframe {" +
     "top: 0;" +
     "left: 0;" +
     "width: 100%;" +

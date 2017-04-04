@@ -112,7 +112,7 @@ if ( !config.hasOwnProperty('targetEl') ||  !document.getElementById(config.targ
 } 
 
 var targetElement = document.getElementById(config.targetEl);
-targetElement.insertAdjacentHTML('beforebegin', "<style>" + config.css["host-custom"] + "</style>" + hostCssTag + '<div id="' + id + '-holder" class="tvp-carousel-holder">'+
+targetElement.insertAdjacentHTML('beforebegin', "<style>" + config.css["host-custom"] + "</style>" + hostCssTag + '<div id="' + id + '-holder" class="tvp-sidebar-holder">'+
 '<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe></div>');
 targetElement.parentNode.removeChild(targetElement);
 
@@ -137,7 +137,7 @@ if (config.modal_title_position.trim().length && "bottom" === config.modal_title
   modalTitle.classList.add("bottom");
   modal.querySelector(".tvp-modal-body").appendChild(modalTitle);
 }
-
+console.log(config)
 var holder = document.getElementById(config.id + "-holder");
 var iframe = holder.querySelector("iframe");
 var iframeDocument = iframe.contentWindow.document;
@@ -145,11 +145,11 @@ var iframeContent = utils.getIframeHtml({
     id: config.id,
     className: "dynamic",
     domain: config.baseUrl,
-    style: config.css.carousel,
+    style: config.css.sidebar,
     js: [
         config.debug ? config.jsPath + "vendor/jquery.js" : "",
         config.debug ? config.jsPath + "libs/utils.js" : "",
-        config.debug ? config.jsPath + "carousel.js" : "",
+        config.debug ? config.jsPath + "grid.js" : "",
         config.debug ? config.jsPath + "index.js" : "",
         config.debug ? "" : config.jsPath + "scripts.min.js"
     ],
@@ -180,8 +180,9 @@ var updateModalTitle = function(title){
 };
 
 window.addEventListener("message", function(e){
-    if (!isEvent(e, ":resize")) return;
-    holder.style.height = e.data.height;
+    if (isEvent(e, ":resize") || isEvent(e, ":render")) {
+      holder.style.height = e.data.height;
+    }
 });
 
 var clickData = {};
@@ -336,7 +337,7 @@ function handleModalProducts(e) {
     var label = document.createElement('p');
     utils.addClass(label,'tvp-products-headline');
     label.id = 'tvp-products-headline-' + config.id;
-    label.innerHTML = 'Related Products';
+    label.innerHTML = config.products_headline_text;
     document.getElementById('tvp-modal-header-' + config.id).appendChild(label);
   }
 

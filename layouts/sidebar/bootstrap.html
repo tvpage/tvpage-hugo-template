@@ -4,8 +4,8 @@
 	var bootstrap = {{ $.Scratch.Get "settings" | jsonify }};
 	bootstrap.baseUrl = "{{ $.Site.BaseURL }}";
 	bootstrap.templates = {
-		carousel: {{- (partial (printf "%s/carousel.html" .Type) .) -}},
-		"carousel-item": {{- (partial (printf "%s/carousel-item.html" .Type) .) -}},
+		sidebar: {{- (partial (printf "%s/sidebar.html" .Type) .) -}},
+		"sidebar-item": {{- (partial (printf "%s/sidebar-item.html" .Type) .) -}},
 		modal: {{- (partial (printf "%s/modal.html" .Type) .) -}},
 		"modal-content": {{- (partial (printf "%s/modal-content.html" .Type) .) -}},
 		"modal-content-mobile": {{- (partial (printf "%s/modal-content-mobile.html" .Type) .) -}}
@@ -14,7 +14,7 @@
 	bootstrap.css = {
 		host: {{- (partial (printf "%s/host.css" .Type) .) -}},
 		"host-custom": {{- (partial (printf "%s/host-custom.css" .Type) .) -}},
-		carousel: {{- (partial (printf "%s/carousel.css" .Type) .) -}},
+		sidebar: {{- (partial (printf "%s/sidebar.css" .Type) .) -}},
 		modal: {{- (partial (printf "%s/modal.css" .Type) .) -}}
 	};
 

@@ -1,48 +1,86 @@
 ;(function(window,document) {
+  
+  var isset = function(o,p){
+    var val = o;
+    if (p) val = o[p];
+    return 'undefined' !== typeof val;
+  };
 
-var initialize = function(){
-    var settings = {};
-    var body = document.body;
-
-    if (Utils.isset(parent) && Utils.isset(parent,'__TVPage__') && Utils.isset(parent.__TVPage__, 'config')) {
-        settings = parent.__TVPage__.config[body.getAttribute('data-id')];
-    }
-
-    var carouselSettings = JSON.parse(JSON.stringify(settings));
-    var name = carouselSettings.name;
-    var main = document.createElement('div');
-
-    main.id = name;
-    main.className = 'iframe-content' + (Utils.isMobile ? " mobile" : "");
-    main.innerHTML = carouselSettings.templates.carousel;
-    body.appendChild(main);
-
-    carouselSettings.onClick = function (clicked,videos) {
-        window.parent.postMessage({
-            runTime: 'undefined' !== typeof window.__TVPage__ ? __TVPage__ : null,
-            event: "tvp_" + (carouselSettings.id || "").replace(/-/g,'_') + ":video_click",
-            selectedVideo: clicked,
-            videos: videos
-        }, '*');
+  var getSettings = function(type){
+    var getConfig = function(g){
+      var c = {};
+      if (isset(g) && isset(g,'__TVPage__') && isset(g.__TVPage__, 'config')) {
+        c = g.__TVPage__.config;
+      } else {
+        return console.log('need config');
+      }
+      return c;
     };
+    var s = {};
+    if ('dynamic' === type) {
+      var config = getConfig(parent);
+      var id = document.body.getAttribute('data-id');
+      if (!isset(config, id)) return console.log('need settings');
+      s = config[id];
+      s.name = id;
+    } else if ('inline' === type && type && type.length) {
+      var config = getConfig(parent);
+      s = config[type];
+      s.name = type;
+    } else if ('static' === type) {
+      var config = getConfig(window);
+      var id = document.body.getAttribute('data-id');
+      if (!isset(config, id)) return console.log('need settings');
+      s = config[id];
+      s.name = id;
+    }
+    return s;
+  };
 
-    Carousel(name, carouselSettings);
-};
+  var render = function(target,data){
+    if (!target) return console.log('need target');
+    var frag = document.createDocumentFragment(),
+    main = document.createElement('div');
+    var d = data || {};
+    main.id = d.id || '';
+    main.classList.add('iframe-content');
+    main.innerHTML +=  d.templates['sidebar'];
+    frag.appendChild(main);
+    target.appendChild(frag);
+  };
 
-var not = function(obj){return 'undefined' === typeof obj};
-if (not(window.jQuery) || not(window.Carousel) || not(window.Utils)) {
-    var libsCheck = 0;
-    (function libsReady() {
-        setTimeout(function(){
-            if (not(window.jQuery) || not(window.Carousel) || not(window.Utils)) {
-                (++libsCheck < 50) ? libsReady() : console.log('limit reached');
-            } else {
-                initialize();
-            }
-        },150);
-    })();
-} else {
-    initialize();
-}
+  var body = document.body;
+
+  var initialize = function(){
+    (function(settings){
+      var gridSettings = JSON.parse(JSON.stringify(settings));
+      var name = settings.name;
+
+      render(body,settings);
+
+      var el = document.getElementById(name);
+      gridSettings.onLoad = function(){el.classList.add('loading');};
+      gridSettings.onLoadEnd = function(){el.classList.remove('loading');};
+      
+      new Grid(name, gridSettings);
+
+    }(getSettings('dynamic')));
+  };
+
+  var not = function(obj){return 'undefined' === typeof obj};
+  if (not(window.Grid) || not(window.Utils)) {
+      var libsCheck = 0;
+      (function libsReady() {
+          setTimeout(function(){
+              if (not(window.Grid) || not(window.Utils)) {
+                  (++libsCheck < 50) ? libsReady() : console.log('limit reached');
+              } else {
+                  initialize();
+              }
+          },150);
+      })();
+  } else {
+      initialize();
+  }
 
 }(window, document));

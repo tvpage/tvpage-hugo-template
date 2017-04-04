@@ -70,9 +70,7 @@
             var productLink = product.linkUrl;
             var productImgStyle = 'style="background-image:url(\''+product.imageUrl+'\');"';
             var productVideoId = product.entityIdParent;
-            var fixedPrice = '';
-            var prodTitle = product.title || '';
-
+            
             var prodNode = document.createElement('a');
             prodNode.classList.add('tvp-product');
             prodNode.id = 'tvp-product-' + productId;
@@ -81,14 +79,13 @@
             prodNode.innerHTML = '<div class="tvp-product-image" '+productImgStyle+'><div class="tvp-product-image-overlay"></div></div>';
             thumbsFrag.appendChild(prodNode);
 
-            //we want to remove all special character, so they don't duplicate
-            //also we shorten the lenght of long titles and add 3 point at the end
-            if (prodTitle || product.price) {
-                prodTitle = prodTitle.length > 50 ? prodTitle.substring(0, 50) + "...":prodTitle;
-                var price = product.price.toString().replace(/[^0-9.]+/g, '');
-                price = parseFloat(price).toFixed(2);
-                fixedPrice = price > 0 ? ('$' + price):'';
-            }
+            var prodTitle = product.title || '';
+            //shorten the lenght of long titles, we need to set a character limit
+            prodTitle = Utils.trimText(prodTitle, 50);
+
+            var fixedPrice = product.price || '';
+            //remove all special character, so they don't duplicate
+            fixedPrice = Utils.trimPrice(fixedPrice);
 
             var prodPopupNode = document.createElement('a');
             prodPopupNode.classList.add('tvp-product-popup');
@@ -234,14 +231,14 @@
                         showPopup(e);
                     };
                     element.onmouseleave = function () {
-                        timeOut = setTimeout(function(){
-                            var activeThumbs = document.querySelectorAll('.tvp-product.active');
-                            for (var i = activeThumbs.length - 1; i >= 0; i--) {
-                                activeThumbs[i].classList.remove('active');
-                            }
+                        
+                        var activeThumbs = document.querySelectorAll('.tvp-product.active');
+                        for (var i = activeThumbs.length - 1; i >= 0; i--) {
+                            activeThumbs[i].classList.remove('active');
+                        }
 
+                        timeOut = setTimeout(function(){   
                             arrow.classList.remove('active');
-
                             var activePopups = document.querySelectorAll('.tvp-product-popup.active');
                             for (var i = activePopups.length - 1; i >= 0; i--) {
                                 activePopups[i].classList.remove('active');
@@ -300,7 +297,7 @@
 
                 if (window.parent) {
                     window.parent.postMessage({
-                        event: 'tvp_carousel:player_next',
+                        event: eventPrefix + ':player_next',
                         next: next
                     }, '*');
                 }

@@ -54,73 +54,24 @@
         },
         {
             "for": "player",
-            "type": "text",
-            "label": "Play Button Height",
-            "code": "play_button_height",
-            "value": "65px"
-        },
-        {
-            "for": "player",
-            "type": "text",
-            "label": "Play Button Width",
-            "code": "play_button_width",
-            "value": "65px"
-        },
-        {
-            "for": "player",
-            "type": "text",
-            "label": "Play Button Background Color",
-            "code": "play_button_background_color",
-            "value": "#fff"
-        },
-        {
-            "for": "player",
-            "type": "text",
-            "label": "Play Button Border Radius",
-            "code": "play_button_border_radius",
-            "value": "50%"
-        },
-        {
-            "for": "player",
-            "type": "text",
-            "label": "Play Button Border",
-            "code": "play_button_border_width",
-            "value": "0"
-        },
-        {
-            "for": "player",
-            "type": "text",
-            "label": "Play Button Border Color",
-            "code": "play_button_border_color",
-            "value": "#000"
-        },
-        {
-            "for": "player",
-            "type": "text",
-            "label": "Play Button Icon Color",
-            "code": "play_button_icon_color",
-            "value": "#000"
-        },
-        {
-            "for": "player",
             "type": "boolean",
             "label": "Overlay",
             "code": "overlay",
             "value": false
         },
         {
-            "for": "player",
+            "for": "sidebar",
             "type": "text",
-            "label": "Overlay Color",
-            "code": "overlay_color",
-            "value": "transparent"
+            "label": "Items Per Page",
+            "code": "items_per_page",
+            "value": "6"
         },
         {
-            "for": "player",
+            "for": "sidebar",
             "type": "text",
-            "label": "Overlay Opacity",
-            "code": "overlay_opacity",
-            "value": "0.5"
+            "label": "Items Per Row",
+            "code": "items_per_row",
+            "value": "2"
         },
         {
             "for": "sidebar",
@@ -132,57 +83,148 @@
         {
             "for": "sidebar",
             "type": "text",
-            "label": "Items Per Page",
-            "code": "itemsPerPage",
-            "value": "6"
+            "label": "Title Font Family",
+            "code": "item_title_font_family",
+            "value": "Helvetica"
         },
         {
             "for": "sidebar",
             "type": "text",
-            "label": "Items Per Row",
-            "code": "itemsPerRow",
-            "value": "2"
+            "label": "Title Font Weight",
+            "code": "title_font_weight",
+            "value": "initial"
         },
         {
             "for": "sidebar",
             "type": "text",
-            "label": "Item Title Color",
-            "code": "itemTitleColor",
-            "value": "#333333"
+            "label": "Title Font size",
+            "code": "title_font_size",
+            "value": "18px"
         },
         {
             "for": "sidebar",
             "type": "text",
-            "label": "Item Play Button Background",
-            "code": "itemPlayButtonBackground",
+            "label": "Title Color",
+            "code": "title_color",
+            "value": "#333"
+        },
+        {
+            "for": "sidebar",
+            "type": "text",
+            "label": "Title Text Align",
+            "code": "title_text_align",
+            "value": "left"
+        },
+        {
+            "for": "sidebar",
+            "type": "text",
+            "label": "Title Padding",
+            "code": "title_padding",
+            "value": "0"
+        },
+        {
+            "for": "sidebar",
+            "type": "text",
+            "label": "Title Background",
+            "code": "title_background",
+            "value": "none"
+        },
+        {
+            "for": "sidebar",
+            "type": "text",
+            "label": "Item Play Button Background Color",
+            "code": "item_play_button_background_color",
             "value": "white"
+        },
+        {
+            "for": "player",
+            "type": "text",
+            "label": "Item Play Button Height",
+            "code": "item_play_button_height",
+            "value": "35px"
+        },
+        {
+            "for": "player",
+            "type": "text",
+            "label": "Item Play Button Width",
+            "code": "item_play_button_width",
+            "value": "35px"
         },
         {
             "for": "sidebar",
             "type": "text",
             "label": "Item Play Button Border Radius",
-            "code": "itemPlayButtonBorderRadius",
+            "code": "item_play_button_border_radius",
             "value": "0"
         },
         {
             "for": "sidebar",
             "type": "text",
             "label": "Item Play Button Border",
-            "code": "itemPlayButtonBorder",
+            "code": "item_play_button_border",
             "value": "1px solid black"
         },
         {
             "for": "sidebar",
             "type": "text",
             "label": "Item Play Button Icon Color",
-            "code": "itemPlayButtonIconColor",
+            "code": "item_play_button_icon_color",
             "value": "black"
+        },
+                {
+            "for": "sidebar",
+            "type": "text",
+            "label": "Item Title Font Family",
+            "code": "item_item_title_font_family",
+            "value": "Helvetica"
+        },
+        {
+            "for": "sidebar",
+            "type": "text",
+            "label": "Item Title Font Weight",
+            "code": "item_title_font_weight",
+            "value": "initial"
+        },
+        {
+            "for": "sidebar",
+            "type": "text",
+            "label": "Item Title Font size",
+            "code": "item_title_font_size",
+            "value": "12px"
+        },
+        {
+            "for": "sidebar",
+            "type": "text",
+            "label": "Item Title Color",
+            "code": "item_title_color",
+            "value": "#333"
+        },
+        {
+            "for": "sidebar",
+            "type": "text",
+            "label": "Item Title Text Align",
+            "code": "item_title_text_align",
+            "value": "left"
+        },
+        {
+            "for": "sidebar",
+            "type": "text",
+            "label": "Item Title Padding",
+            "code": "item_title_padding",
+            "value": "0"
+        },
+        {
+            "for": "sidebar",
+            "type": "text",
+            "label": "Item Title Background",
+            "code": "item_title_background",
+            "value": "none"
         },
         {
             "for": "sidebar",
             "type": "text",
             "label": "Load Button Text",
-            "code": "loadButtonText",
+            "code": "load_button_text",
             "value": "View More"
         },
         {
@@ -212,6 +254,20 @@
             "label": "Modal Background",
             "code": "modal_background",
             "value": "#fff"
+        },
+        {
+            "for": "player",
+            "type": "text",
+            "label": "Overlay Color",
+            "code": "overlay_color",
+            "value": "transparent"
+        },
+        {
+            "for": "player",
+            "type": "text",
+            "label": "Overlay Opacity",
+            "code": "overlay_opacity",
+            "value": "0.5"
         },
         {
             "for": "modal",
@@ -576,6 +632,13 @@
             "label": "Products Background",
             "code": "products_background",
             "value": "#fff"
+        },
+        {
+            "for": "modal",
+            "type": "boolean",
+            "label": "Products Headline Text",
+            "code": "products_headline_text",
+            "value": "Related Products"
         },
         {
             "for": "modal",

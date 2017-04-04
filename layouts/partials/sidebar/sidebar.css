@@ -1,0 +1,74 @@
+".tvp-sidebar-title{" +
+    "font-family: {{ ($.Scratch.Get "settings").title_font_family }};" +
+    "font-weight: {{ ($.Scratch.Get "settings").title_font_weight }};" +
+    "font-size:{{ ($.Scratch.Get "settings").title_font_size }};" +
+    "text-align:{{ ($.Scratch.Get "settings").title_text_align }};" +
+    "color:{{ ($.Scratch.Get "settings").title_color }};" +
+    "padding: {{ ($.Scratch.Get "settings").title_padding }};" +
+    "background:{{ ($.Scratch.Get "settings").title_background }};" +
+"}" +
+
+".tvp-video-play {" +
+    "background-color:{{ ($.Scratch.Get "settings").item_play_button_background_color }};" +
+    "width:{{ ($.Scratch.Get "settings").item_play_button_width }};" +
+    "height:{{ ($.Scratch.Get "settings").item_play_button_height }};" +
+    "border: {{ ($.Scratch.Get "settings").item_play_button_border }};" +
+    "border-radius:{{ ($.Scratch.Get "settings").item_play_button_border_radius }};" +
+"}" +
+
+".tvp-video-play > polygon {" +
+    "fill:{{ ($.Scratch.Get "settings").item_play_button_icon_color }};" +
+"}" +
+
+".tvp-video-title {" +
+    "font-family: {{ ($.Scratch.Get "settings").item_title_font_family }};" +
+    "font-weight: {{ ($.Scratch.Get "settings").item_title_font_weight }};" +
+    "font-size:{{ ($.Scratch.Get "settings").item_title_font_size }};" +
+    "text-align:{{ ($.Scratch.Get "settings").item_title_text_align }};" +
+    "color:{{ ($.Scratch.Get "settings").item_title_color }};" +
+    "padding:{{ ($.Scratch.Get "settings").item_title_padding }};" +
+"}" +
+
+".tvp-video-image {" +
+    "background-size: {{ ($.Scratch.Get "settings").item_background_image_size }};" +
+"}" +
+
+".tvp-video-metadata {" +
+    "font-size:{{ ($.Scratch.Get "settings").item_metadata_font_size }};" +
+    "color:{{ ($.Scratch.Get "settings").item_metadata_font_color }};" +
+"}" +
+
+".tvp-video-metadata > div {" +
+    "padding:{{ ($.Scratch.Get "settings").item_metadata_padding }};" +
+"}" +
+
+".tvp-video-image-overlay {" +
+    "background:{{ ($.Scratch.Get "settings").item_image_overlay_color }};" +
+"}" +
+
+".tvp-sidebar-load {" +
+  "font-size: 10px;" +
+  "text-align: center;" +
+  "width: 85px;" +
+  "height: 26px;" +
+  "background-color: #F5F5F5;" +
+  "border: 1px solid #DFDFDF;" +
+  "color: #666666;" +
+  "text-transform: uppercase;" +
+"}" +
+
+"@media (min-width:480px){" +
+    ".tvp-sidebar-arrow {" +
+        "width:{{ ($.Scratch.Get "settings").arrow_size_480 }};" +
+    "}" +
+"}" +
+
+"@media (min-width:768px) {" +
+    ".tvp-video:hover .tvp-video-play {" +
+        "background-color:{{ ($.Scratch.Get "settings").item_play_button_hover_color }};" +
+    "}" +
+
+    ".tvp-video:hover .tvp-video-play > polygon {" +
+        "fill:{{ ($.Scratch.Get "settings").item_play_button_icon_hover_color }};" +
+    "}" +
+"}"

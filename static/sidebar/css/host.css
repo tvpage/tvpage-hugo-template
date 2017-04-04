@@ -1,13 +1,13 @@
-*[class^="tvp-"] {
+/**[class^="tvp-"] {
   box-sizing: border-box;
 }
 
-.tvp-carousel-holder {
+.tvp-sidebar-holder {
   height: 500px;
   position: relative;
 }
 
-.tvp-carousel-holder > iframe {
+.tvp-sidebar-holder > iframe {
   top: 0;
   left: 0;
   width: 100%;
@@ -149,4 +149,4 @@
   top: -6px;
   -webkit-transition: all .05s ease-in-out;
   transition: all .05s ease-in-out;
-}
+}*/
