@@ -605,7 +605,6 @@ body {
 }
 .iframe-content .tvp-products-scroller {
   box-sizing: border-box;
-  height: 100%;
   float: left;
   position: relative;
   margin-left: 1.5315%;
@@ -803,7 +802,6 @@ body {
   .iframe-content .tvp-row .tvp-products-scroller {
     width: 100%;
     float: none;
-    height: 100%;
     margin: 0 -10px;
   }
   .iframe-content .tvp-row .tvp-products-scroller .tvp-product-item {

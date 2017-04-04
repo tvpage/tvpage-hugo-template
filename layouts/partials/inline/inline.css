@@ -165,4 +165,25 @@
 '.iframe-content .tvp-videos-scroller .tvp-video:hover .tvp-video-image-overlay{' +
 	'background-color: {{- ($.Scratch.Get "settings").videos_carousel_overlay_background_color -}};' +
 	'opacity: {{- ($.Scratch.Get "settings").videos_carousel_overlay_opacity -}};' +
+'}' +
+
+//all media queries here
+'@media only screen and (max-width: 768px){' +
+	'.iframe-content #tvpPlayerView {' +
+		'width: 100%;' +
+	'}' +
+
+	'.iframe-content .tvp-row:before{' +
+		'padding-top: 83.19444%;' +
+	'}' +
+
+	'.iframe-content .tvp-videos-container .tvp-videos-arrows{' +
+		'display: none;' +
+	'}' +
+'}' +
+
+'@media only screen and (max-width: 321px){' +
+	'.iframe-content .tvp-row:before{' +
+		'padding-top: 100%;' +
+	'}' +
 '}'

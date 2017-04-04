@@ -88,7 +88,6 @@
 
                     var productContent = document.createElement('div');
                     productContent.id = "productContent";
-                    productContent.style.height = "100%";
                     for (var i = 0; i < data.length; i++) {
                         var row = document.createElement('a');                    
                         row.setAttribute('data-id', data[i].id);
