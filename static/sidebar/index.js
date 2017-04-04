@@ -112,7 +112,7 @@ if ( !config.hasOwnProperty('targetEl') ||  !document.getElementById(config.targ
 } 
 
 var targetElement = document.getElementById(config.targetEl);
-targetElement.insertAdjacentHTML('beforebegin', "<style>" + config.css["host-custom"] + "</style>" + hostCssTag + '<div id="' + id + '-holder" class="tvp-sidebar-holder">'+
+targetElement.insertAdjacentHTML('beforebegin', hostCssTag + '<style>' + config.css["host-custom"] + '</style><div id="' + id + '-holder" class="tvp-sidebar-holder">'+
 '<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe></div>');
 targetElement.parentNode.removeChild(targetElement);
 
@@ -263,7 +263,7 @@ function handleVideoClick(e){
     iframeModalDocument.open().write(utils.getIframeHtml({
       id: config.id,
       domain: config.baseUrl,
-      style: config.css.modal,
+      style: config.css["modal-content"],
       className: utils.isMobile ? "mobile" : "",
       html: config.templates["modal-content" + (utils.isMobile ? "-mobile" : "")],
       js: [

@@ -1,6 +1,20 @@
 {
     "option": [
         {
+           "for": "sidebar",
+           "type": "text",
+           "label": "Background",
+           "code": "background",
+           "value": "white"
+        },
+        {
+           "for": "sidebar",
+           "type": "text",
+           "label": "Margin",
+           "code": "margin",
+           "value": "0"
+        },
+        {
             "type": "boolean",
             "label": "Analytics",
             "code": "analytics",

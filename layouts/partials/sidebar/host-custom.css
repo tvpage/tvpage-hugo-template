@@ -3,6 +3,11 @@
     "margin: {{ ($.Scratch.Get "settings").margin }};" +
 "}" +
 
+".tvp-modal-overlay {" +
+    "background-color: #000;" +
+    "opacity: .5;" +
+"}" +
+
 ".tvp-modal-header {" +
     "padding:{{ ($.Scratch.Get "settings").modal_header_padding }};" +
     "border-bottom:{{ ($.Scratch.Get "settings").modal_header_border_bottom }};" +
@@ -18,6 +23,10 @@
     "font-family: {{ ($.Scratch.Get "settings").modal_title_font_family }};" +
     "font-weight: {{ ($.Scratch.Get "settings").modal_title_font_weight }};" +
     "font-size: {{ ($.Scratch.Get "settings").modal_title_font_size }};" +
+"}" +
+
+".tvp-modal-title.bottom {" +
+  "padding: 0 0 30px 10px;" +
 "}" +
 
 ".tvp-products-headline {" +

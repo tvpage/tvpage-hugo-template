@@ -10,12 +10,10 @@ html {
 body  {
   margin: 0;
   height: 100%;
-  font-family: Helvetica;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
-
 
 .tvp-clearfix:before, 
 .tvp-clearfix:after {
