@@ -2,10 +2,6 @@ module.exports = function(grunt) {
 
     grunt.initConfig({
       watch: {
-        // css: {
-        //   files: ['css/**/*.css'],
-        //   tasks: ['autoprefixer']
-        // },
         sass:{
           files: ['scss/**/*.scss'],
           tasks: ['sass', 'autoprefixer', 'cssmin']
@@ -22,17 +18,13 @@ module.exports = function(grunt) {
           },
           files: {
             'css/styles.css' : 'scss/styles.scss',
-            'css/inline.css' : 'scss/styles.scss',
-            'css/host.css' : 'scss/host.scss',
-            'css/mobile/host.css' : 'scss/mobile/host.scss'
+            'css/inline.css' : 'scss/styles.scss'
           }
         }
       },
       autoprefixer: {
         css: {
           files: {
-            'css/host.css': 'css/host.css',
-            'css/mobile/host.css': 'css/mobile/host.css',
             'css/inline.css' : 'css/inline.css',
             'css/styles.css' : 'css/styles.css'
           }
@@ -46,14 +38,7 @@ module.exports = function(grunt) {
         desktop: {
           files: {
             'dist/css/inline.min.css' : ['css/inline.css'],
-            'dist/css/styles.min.css' : ['css/styles.css'],
-            'dist/css/host.min.css' : ['css/host.css'],
-          }
-        },
-        mobile: {
-          files: {
-            // 'dist/css/mobile/modal/styles.min.css': ['css/vendor/slick.css', 'css/mobile/modal/styles.css'],
-            'dist/css/mobile/host.min.css': ['css/mobile/host.css']
+            'dist/css/styles.min.css' : ['css/styles.css']
           }
         }
       },

@@ -1,6 +1,7 @@
 {
     "option": [
         {
+            "for": "player",
             "type": "boolean",
             "label": "Analytics",
             "code": "analytics",
