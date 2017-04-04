@@ -37,8 +37,14 @@
 	'font-weight: {{- ($.Scratch.Get "settings").featured_product_header_font_weight -}};' +
 '}' +
 
-'.iframe-content .tvp-player{' +
+'.iframe-content #tvpPlayerView{' +
 	'width: {{- ($.Scratch.Get "settings").video_player_holder_width -}};' +
+'}' +
+
+'#tvp-player .tvp-overlay .tvp-play-holder .tvp-video-play {' +
+	'fill: #{{- ($.Scratch.Get "settings").play_button_icon_color -}};' +
+	'width: {{- ($.Scratch.Get "settings").play_button_width -}};' +	
+	'height: {{- ($.Scratch.Get "settings").play_button_height -}};' +	
 '}' +
 
 '.iframe-content .tvp-featured{' +

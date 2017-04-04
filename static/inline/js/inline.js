@@ -132,7 +132,7 @@
         });
     };
 
-    function Inline(el, options) {        
+    function Inline(el, options) {
         this.xchg = options.xchg || false;
         this.windowSize = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) <= 200 ? 'small' : 'medium';
         this.initialResize = true;
@@ -153,6 +153,7 @@
         this.featuredProductTemplate = options.templates.featured_product;
         this.productItemTemplate = options.templates.product;
         this.playIconTemplate = options.templates.play_icon;
+        this.playerOverlayTemplate = options.templates.player_overlay;
 
         //player settings
         this.autoplay = Utils.isset(options.autoplay) ? Number(options.autoplay) : false;

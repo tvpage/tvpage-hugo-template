@@ -163,7 +163,8 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
         this.playButtonIconColor = isset(options.play_button_icon_color) ? options.play_button_icon_color : null;
         this.playButtonWidth = isset(options.play_button_width) ? options.play_button_width : null;
         this.playButtonHeight = isset(options.play_button_height) ? options.play_button_height : null;
-
+        this.playerOverlayTemplate =  isset(options.playerOverlayTemplate) ? options.playerOverlayTemplate : null;
+        this.playIconTemplate = isset(options.playIconTemplate) ? options.playIconTemplate : null;
         this.onResize = isset(options.onResize) && isFunction(options.onResize) ? options.onResize : null;
         this.onNext = isset(options.onNext) && isFunction(options.onNext) ? options.onNext : null;
 
@@ -211,16 +212,14 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             overlay.classList.add('tvp-overlay');
             overlay.style.backgroundImage = 'url("' + asset.thumbnailUrl + '")';
 
-            var overlayColor = this.overlayColor ? '#' + this.overlayColor : 'transparent';
-            var overlayHtml = '<div class="tvp-overlay-cover" style="opacity:' + this.overlayOpacity + ';' +
-                'background-image:linear-gradient(to bottom right,' + overlayColor + ',' + overlayColor + ');"></div>' +
-                '<div class="tvp-play-holder" style="height:' + this.playButtonHeight + ';">'+
-                '<svg class="tvp-video-play" style="width:' + this.playButtonWidth + ';height:' + this.playButtonHeight + ';' +
-                'background-color:#' + this.playButtonBackgroundColor + ';border:' + this.playButtonBorderWidth + ' solid #' +
-                this.playButtonBorderColor + ';border-radius:' + this.playButtonBorderRadius + ';" viewBox="0 0 200 200">' +
-                '<polygon fill="#'+this.playButtonIconColor+'" points="70, 55 70, 145 145, 100"></polygon></svg>';
+            var overlayTemplate = Utils.tmpl(that.playerOverlayTemplate, {
+                thumbnailUrl: asset.thumbnailUrl,
+                overlayOpacity: this.overlayOpacity,
+                overlayColor: this.overlayColor ? '#' + this.overlayColor : 'transparent',
+                playButtonHeight: this.playButtonHeight
+            });
 
-            overlay.innerHTML = overlayHtml;
+            overlay.innerHTML = overlayTemplate;
 
             var click = function(){
                 var clear = function () {
@@ -238,6 +237,11 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
 
             overlay.addEventListener('click', click);
             this.el.appendChild(overlay);
+            var playerHolder = this.el.querySelector('.tvp-play-holder');
+            playerHolder.innerHTML = this.playIconTemplate;
+            playerHolder.querySelector('.tvp-video-play').style.backgroundColor = this.playButtonBackgroundColor
+            playerHolder.querySelector('.tvp-video-play').style.borderRadius = this.playButtonBorderRadius;
+            playerHolder.querySelector('.tvp-video-play').style.border = this.playButtonBorderWidth + ' solid #' + this.playButtonBorderColor;
         };
 
         this.play = function(asset,ongoing){
@@ -511,7 +515,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
         });
     };
 
-    function Inline(el, options) {        
+    function Inline(el, options) {
         this.xchg = options.xchg || false;
         this.windowSize = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) <= 200 ? 'small' : 'medium';
         this.initialResize = true;
@@ -532,6 +536,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
         this.featuredProductTemplate = options.templates.featured_product;
         this.productItemTemplate = options.templates.product;
         this.playIconTemplate = options.templates.play_icon;
+        this.playerOverlayTemplate = options.templates.player_overlay;
 
         //player settings
         this.autoplay = Utils.isset(options.autoplay) ? Number(options.autoplay) : false;
