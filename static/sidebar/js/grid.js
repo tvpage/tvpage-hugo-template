@@ -21,9 +21,9 @@
     this.page = 0;
 
     this.el = 'string' === typeof el ? document.getElementById(el) : el;
-    this.loadBtn = this.el.getElementsByClassName('tvp-sidebar-load')[0];
-    this.container = this.el.getElementsByClassName('tvp-sidebar-container')[0];
-    this.sidebarTitle = this.el.getElementsByClassName('tvp-sidebar-title')[0];
+    this.loadBtn = this.el.querySelector('.tvp-sidebar-load');
+    this.container = this.el.querySelector('.tvp-sidebar-container');
+    this.sidebarTitle = this.el.querySelector('.tvp-sidebar-title');
     this.onLoad = options.onLoad && isFunction(options.onLoad) ? options.onLoad : null;
     this.onLoadEnd = options.onLoadEnd && isFunction(options.onLoadEnd) ? options.onLoadEnd : null;
     this.onItemClick = options.onItemClick && isFunction(options.onItemClick) ? options.onItemClick : null;

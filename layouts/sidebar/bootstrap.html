@@ -8,7 +8,8 @@
 		"sidebar-item": {{- (partial (printf "%s/sidebar-item.html" .Type) .) -}},
 		modal: {{- (partial (printf "%s/modal.html" .Type) .) -}},
 		"modal-content": {{- (partial (printf "%s/modal-content.html" .Type) .) -}},
-		"modal-content-mobile": {{- (partial (printf "%s/modal-content-mobile.html" .Type) .) -}}
+		"modal-content-mobile": {{- (partial (printf "%s/modal-content-mobile.html" .Type) .) -}},
+		overlay: {{- (partial (printf "%s/overlay.html" .Type) .) -}}
 	};
 	
 	bootstrap.css = {

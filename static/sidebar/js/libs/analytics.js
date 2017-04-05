@@ -9,10 +9,7 @@
   function Analytics() {
 
     this.initConfig = function(options){
-      if (!isset(options) || !isset(options.loginId) || !isset(options.domain) || !isset(options.logUrl)) {
-        return console.log('need config');
-      }
-      
+      if (!isset(options) || !isset(options.loginId) || !isset(options.domain) || !isset(options.logUrl)) return console.warn('Needs Config');
       _tvpa.push(['config', {
         logUrl: options.logUrl,
         li: options.loginId,
@@ -21,7 +18,7 @@
     };
 
     this.track = function(e,data){
-      if (!e || !data || !_tvpa) return console.log('no data');
+      if (!isset(e) || !isset(data) || !isset(window, '_tvpa')) return console.warn('No Data');
       _tvpa.push(['track', e, data]);
     };
     

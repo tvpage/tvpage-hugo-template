@@ -30,7 +30,7 @@
     //The player singleton. We basically create an instance from the tvpage
     //player and expose most utilities, helping to encapsualte what is required for a few players to co-exist.
     function Player(el, options, startWith) {
-        if (!el || !isset(options) || !isset(options.data) || options.data.length <= 0) return console.log('bad args');
+        if (!el || !isset(options) || !isset(options.data) || options.data.length <= 0) return console.warn('Bad Arguments');
 
         this.options = options;
         this.isFullScreen = false;
@@ -95,8 +95,7 @@
             var overlay = document.createElement('div');
             overlay.className = 'tvp-overlay';
             overlay.style.backgroundImage = 'url("' + asset.thumbnailUrl + '")';
-            overlay.innerHTML = '<div class="tvp-overlay-cover"></div><svg class="tvp-play" viewBox="0 0 200 200">' +
-            '<polygon points="70, 55 70, 145 145, 100"></polygon></svg>';
+            overlay.innerHTML = options.templates['overlay'];
 
             var click = function(){
                 var clear = function () {
@@ -115,7 +114,7 @@
         };
 
         this.play = function(asset,ongoing){
-            if (!asset) return console.log('need asset');
+            if (!isset(asset)) return console.warn('Needs Asset');
             var willCue = false,
                 isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 

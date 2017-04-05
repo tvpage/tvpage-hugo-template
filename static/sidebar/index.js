@@ -268,7 +268,7 @@ function handleVideoClick(e){
       html: config.templates["modal-content" + (utils.isMobile ? "-mobile" : "")],
       js: [
           "//a.tvpage.com/tvpa.min.js",
-          "https://cdnjs.tvpage.com/tvplayer/tvp-1.8.6.min.js",
+          "https://cdnjs.tvpage.com/tvplayer/tvp-"+(config.player_version)+".min.js",
           config.debug && utils.isMobile ? config.jsPath + "/vendor/jquery.js" : "",
           config.debug && !utils.isMobile ? config.jsPath + "/vendor/simple-scrollbar.min.js" : "",
           config.debug ? config.jsPath + "/libs/utils.js" : "",

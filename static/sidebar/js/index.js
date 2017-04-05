@@ -12,7 +12,7 @@
       if (isset(g) && isset(g,'__TVPage__') && isset(g.__TVPage__, 'config')) {
         c = g.__TVPage__.config;
       } else {
-        return console.log('need config');
+        return console.warn('Needs Config');
       }
       return c;
     };
@@ -20,7 +20,7 @@
     if ('dynamic' === type) {
       var config = getConfig(parent);
       var id = document.body.getAttribute('data-id');
-      if (!isset(config, id)) return console.log('need settings');
+      if (!isset(config, id)) return console.warn('Needs Settings');
       s = config[id];
       s.name = id;
     } else if ('inline' === type && type && type.length) {
@@ -30,7 +30,7 @@
     } else if ('static' === type) {
       var config = getConfig(window);
       var id = document.body.getAttribute('data-id');
-      if (!isset(config, id)) return console.log('need settings');
+      if (!isset(config, id)) return console.warn('Needs Settings');
       s = config[id];
       s.name = id;
     }
@@ -38,7 +38,7 @@
   };
 
   var render = function(target,data){
-    if (!target) return console.log('need target');
+    if (!isset(target) || !isset(data)) return console.warn('Needs Target|Data');
     var frag = document.createDocumentFragment(),
     main = document.createElement('div');
     var d = data || {};
@@ -73,7 +73,7 @@
       (function libsReady() {
           setTimeout(function(){
               if (not(window.Grid) || not(window.Utils)) {
-                  (++libsCheck < 50) ? libsReady() : console.log('limit reached');
+                  (++libsCheck < 50) ? libsReady() : console.warn('limit reached');
               } else {
                   initialize();
               }
