@@ -3,9 +3,9 @@
 	'color: {{- ($.Scratch.Get "settings").font_color -}};' +
 '}' +
 
-'.iframe-content .tvp-row:before{' +
-	'padding-top: {{- ($.Scratch.Get "settings").player_product_section_height -}};' +
-'}' +
+// '.iframe-content .tvp-row:before{' +
+// 	'padding-top: {{- ($.Scratch.Get "settings").player_product_section_height -}};' +
+// '}' +
 
 '.iframe-content .tvp-row{' +
 	'margin: {{- ($.Scratch.Get "settings").player_product_section_margin -}};' +
@@ -16,12 +16,12 @@
 '}' +
 
 '.iframe-content .tvp-row-titles .tvp-row-player-title{' +
-	'width: {{- ($.Scratch.Get "settings").video_player_holder_width -}};' +
+	// 'width: {{- ($.Scratch.Get "settings").video_player_holder_width -}};' +
 '}' +
 
 '.iframe-content .tvp-row-titles .tvp-row-featured-title {' +
-	'width: {{- ($.Scratch.Get "settings").featured_product_holder_width -}};' +
-	'margin-left: {{- ($.Scratch.Get "settings").featured_product_holder_left_margin -}};' +
+	// 'width: {{- ($.Scratch.Get "settings").featured_product_holder_width -}};' +
+	// 'margin-left: {{- ($.Scratch.Get "settings").featured_product_holder_left_margin -}};' +
 '}' +
 
 '.iframe-content .tvp-row-titles h1{' +
@@ -37,9 +37,9 @@
 	'font-weight: {{- ($.Scratch.Get "settings").featured_product_header_font_weight -}};' +
 '}' +
 
-'.iframe-content #tvpPlayerView{' +
-	'width: {{- ($.Scratch.Get "settings").video_player_holder_width -}};' +
-'}' +
+// '.iframe-content #tvpPlayerView{' +
+// 	'width: {{- ($.Scratch.Get "settings").video_player_holder_width -}};' +
+// '}' +
 
 '#tvp-player .tvp-overlay .tvp-play-holder .tvp-video-play {' +
 	'fill: #{{- ($.Scratch.Get "settings").play_button_icon_color -}};' +
@@ -47,15 +47,15 @@
 	'height: {{- ($.Scratch.Get "settings").play_button_height -}};' +	
 '}' +
 
-'.iframe-content .tvp-featured{' +
-	'width: {{- ($.Scratch.Get "settings").featured_product_holder_width -}};' +
-	'margin-left: {{- ($.Scratch.Get "settings").featured_product_holder_left_margin -}};' +
-'}' +
+// '.iframe-content .tvp-featured{' +
+	// 'width: {{- ($.Scratch.Get "settings").featured_product_holder_width -}};' +
+	// 'margin-left: {{- ($.Scratch.Get "settings").featured_product_holder_left_margin -}};' +
+// '}' +
 
-'.iframe-content .tvp-products-scroller{' +
-	'width: {{- ($.Scratch.Get "settings").product_holder_width -}};' +
-	'margin-left: {{- ($.Scratch.Get "settings").product_holder_left_margin -}};' +
-'}' +
+// '.iframe-content .tvp-products-scroller{' +
+	// 'width: {{- ($.Scratch.Get "settings").product_holder_width -}};' +
+	// 'margin-left: {{- ($.Scratch.Get "settings").product_holder_left_margin -}};' +
+// '}' +
 
 '.iframe-content .tvp-featured .tvp-featured-product{' +
 	'padding: {{- ($.Scratch.Get "settings").featured_product_box_padding -}};' +
