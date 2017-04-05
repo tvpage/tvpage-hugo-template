@@ -3,7 +3,7 @@
 @import "vendor/slick-theme.scss";
 @import "vendor/simple-scrollbar.scss";
 // Reebok fonts, kill before deploy!
-/*@import "reebok-fonts.scss";*/
+@import "reebok-fonts.scss";
 
 body {
     text-rendering: optimizeLegibility !important;
