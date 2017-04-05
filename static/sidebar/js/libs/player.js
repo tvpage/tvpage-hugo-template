@@ -95,7 +95,7 @@
             var overlay = document.createElement('div');
             overlay.className = 'tvp-overlay';
             overlay.style.backgroundImage = 'url("' + asset.thumbnailUrl + '")';
-            overlay.innerHTML = options.templates['overlay'];
+            overlay.innerHTML = options.templates["modal-content"].overlay;
 
             var click = function(){
                 var clear = function () {
@@ -179,7 +179,7 @@
         (function libsReady() {
             setTimeout(function() {
                 if ( !isset(window,'TVPage') || !isset(window,'_tvpa') ) {
-                    (++checks < 50) ? libsReady() : console.log('limit reached');
+                    (++checks < 50) ? libsReady() : console.warn('limit reached');
                 } else {
 
                 var playerOptions = {

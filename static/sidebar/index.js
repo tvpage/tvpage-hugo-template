@@ -265,7 +265,7 @@ function handleVideoClick(e){
       domain: config.baseUrl,
       style: config.css["modal-content"],
       className: utils.isMobile ? "mobile" : "",
-      html: config.templates["modal-content" + (utils.isMobile ? "-mobile" : "")],
+      html: (utils.isMobile ? config.templates["modal-content-mobile"] : config.templates["modal-content"].body),
       js: [
           "//a.tvpage.com/tvpa.min.js",
           "https://cdnjs.tvpage.com/tvplayer/tvp-"+(config.player_version)+".min.js",

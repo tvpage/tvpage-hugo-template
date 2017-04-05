@@ -55,101 +55,72 @@
 
     var render = function(data, config){
         var holder = Utils.getByClass('tvp-products-holder');
-        holder.innerHTML = "";
-
-        var container = document.createElement("div");
-        container.className = "tvp-products";
-        holder.appendChild(container);
-
-        var thumbsFrag = document.createDocumentFragment();
-        var popupsFrag = document.createDocumentFragment();
+        var container = Utils.getByClass('tvp-products');
+        var popupsContainer = Utils.getByClass('tvp-popups');
+        container.innerHTML = "";
 
         for (var i = 0; i < data.length; i++) {
             var product = data[i];
-            var productId = product.id;
-            var productLink = product.linkUrl;
-            var productImgStyle = 'style="background-image:url(\''+product.imageUrl+'\');"';
-            var productVideoId = product.entityIdParent;
-            
-            var prodNode = document.createElement('a');
-            prodNode.classList.add('tvp-product');
-            prodNode.id = 'tvp-product-' + productId;
-            prodNode.setAttribute('data-vd', productVideoId);
-            prodNode.href = productLink;
-            prodNode.innerHTML = '<div class="tvp-product-image" '+productImgStyle+'><div class="tvp-product-image-overlay"></div></div>';
-            thumbsFrag.appendChild(prodNode);
-
-            var prodTitle = product.title || '';
-            //shorten the lenght of long titles, we need to set a character limit
-            prodTitle = Utils.trimText(prodTitle, 50);
-
-            var fixedPrice = product.price || '';
-            //remove all special character, so they don't duplicate
-            fixedPrice = Utils.trimPrice(fixedPrice);
-
-            var prodPopupNode = document.createElement('a');
-            prodPopupNode.classList.add('tvp-product-popup');
-            prodPopupNode.id = 'tvp-product-popup-' + productId;
-            prodPopupNode.setAttribute('data-vd', productVideoId);
-            prodPopupNode.href = productLink;
+            product.title = !Utils.isEmpty(product.title) ? Utils.trimText(product.title, 50) : '';
+            product.price = !Utils.isEmpty(product.price) ? Utils.trimPrice(product.price) : '';
+    
+            container.innerHTML += Utils.tmpl(config.templates["modal-content"].product, product);
+            popupsContainer.innerHTML += Utils.tmpl(config.templates["modal-content"].popup, product);
 
             var productRating = 0;
             if (Utils.isset(product.rating) && null !== product.rating) {
-                productRating = Number(product.rating);
+              productRating = Number(product.rating);
             }
 
             var ratingReviewsHtml = "";
-            if (productRating > 0){
-                var fulls = 0;
-                var half = false;
-                if(productRating % 1 != 0){
-                    half = true;
-                    fulls = Math.floor(productRating);
-                } else {
-                    fulls = productRating;
-                }
+            if (productRating > 0) {
+              var fulls = 0;
+              var half = false;
+              if (productRating % 1 != 0) {
+                half = true;
+                fulls = Math.floor(productRating);
+              } else {
+                fulls = productRating;
+              }
 
-                var empties = 0;
-                if (4 === fulls && half) {
-                    empties = 0;
-                } else if (1 === fulls && half) {
-                    empties = 3;
-                } else if (half) {
-                    empties = (5 - fulls) - 1;
-                } else {
-                    empties = 5 - fulls;
-                }
+              var empties = 0;
+              if (4 === fulls && half) {
+                empties = 0;
+              } else if (1 === fulls && half) {
+                empties = 3;
+              } else if (half) {
+                empties = (5 - fulls) - 1;
+              } else {
+                empties = 5 - fulls;
+              }
 
-                ratingReviewsHtml = '<ul class="tvp-product-rating">';
-                for (var j = 0; j < fulls; j++) {
-                    ratingReviewsHtml += '<li class="tvp-rate full"></li>';
-                }
+              ratingReviewsHtml = '<ul class="tvp-product-rating">';
+              for (var j = 0; j < fulls; j++) {
+                ratingReviewsHtml += '<li class="tvp-rate full"></li>';
+              }
 
-                if (half){
-                    ratingReviewsHtml += '<li class="tvp-rate half"></li>';
-                }
+              if (half) {
+                ratingReviewsHtml += '<li class="tvp-rate half"></li>';
+              }
 
-                for (var k = 0; k < empties; k++) {
-                    ratingReviewsHtml += '<li class="tvp-rate empty"></li>';
-                }
+              for (var k = 0; k < empties; k++) {
+                ratingReviewsHtml += '<li class="tvp-rate empty"></li>';
+              }
 
-                if (Utils.isset(product.review_count) && null !== product.review_count) {
-                    ratingReviewsHtml += '<li class="tvp-reviews">' + product.review_count + ' Reviews </li>';
-                }
+              if (Utils.isset(product.review_count) && null !== product.review_count) {
+                ratingReviewsHtml += '<li class="tvp-reviews">' + product.review_count + ' Reviews </li>';
+              }
 
-                ratingReviewsHtml += '</ul>';
+              ratingReviewsHtml += '</ul>';
             }
 
-            var buttonText = product.actionText.length > 0? product.actionText : config.product_popup_cta_text;
-
-            prodPopupNode.innerHTML = '<div class="tvp-product-popup-image" '+productImgStyle+'></div>'+
-                '<p class="tvp-product-title">' + prodTitle + '</p><p class="tvp-product-price">'+fixedPrice+'</p>'+ ratingReviewsHtml +
-                '<button class="tvp-product-cta">' + buttonText + '</button>';
-            popupsFrag.appendChild(prodPopupNode);
+            // where/how to inject? 
+            // var buttonText = product.actionText.length > 0? product.actionText : config.product_popup_cta_text;
+            // ratingReviewsHtml 
 
             analytics.track('pi',{
-                vd: productVideoId,
-                ct: productId,
+                vd: product.entityIdParent,
+                ct: product.id,
                 pg: channelId
             });
         }
@@ -162,9 +133,6 @@
             }
         }
 
-        var arrow = document.createElement('div');
-        arrow.classList.add('tvp-arrow-indicator');
-
         var willScroll = data.length > 2;
         if (willScroll) {
           holder.classList.remove("no-overflow");
@@ -172,17 +140,13 @@
         } else {
           holder.classList.add("no-overflow");
         }
-
-        container.appendChild(thumbsFrag);
-        container.parentNode.appendChild(popupsFrag);
-        container.parentNode.insertBefore(arrow, container.nextSibling);
         
         if (willScroll) {
            SimpleScrollbar.initAll();
         }
 
         setTimeout(function(){
-
+            var arrow = Utils.getByClass('tvp-arrow-indicator');
             var showPopup = function(e){
                 var productEl = closestByClass(e.target,'tvp-product');
                 if (!productEl) return;
@@ -362,7 +326,7 @@
         (function libsReady() {
             setTimeout(function(){
                 if (not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player) || not(window.SimpleScrollbar)) {
-                    (++libsCheck < 50) ? libsReady() : console.log('limit reached');
+                    (++libsCheck < 50) ? libsReady() : console.warn('limit reached');
                 } else {
                     initialize();
                 }
