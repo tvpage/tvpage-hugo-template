@@ -776,9 +776,9 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             that.render(data);
         });     
 
-        window.addEventListener('resize', function () {
-            renderProducts(that.selectedVideo.id, that.selectedVideo.loginId);
-        });
+        // window.addEventListener('resize', function () {
+        //     if (that.el.offsetWidth >= breakpoint;) renderProducts(that.selectedVideo.id, that.selectedVideo.loginId);
+        // });
     }
 
     window.Inline = Inline;

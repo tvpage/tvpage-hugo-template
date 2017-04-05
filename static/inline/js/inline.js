@@ -393,9 +393,9 @@
             that.render(data);
         });     
 
-        window.addEventListener('resize', function () {
-            renderProducts(that.selectedVideo.id, that.selectedVideo.loginId);
-        });
+        // window.addEventListener('resize', function () {
+        //     if (that.el.offsetWidth >= breakpoint;) renderProducts(that.selectedVideo.id, that.selectedVideo.loginId);
+        // });
     }
 
     window.Inline = Inline;
