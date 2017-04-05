@@ -110,18 +110,24 @@ body {
         h1, h2 {            
             line-height: 43px;
             padding: 0;
-            margin: 0;            
+            margin: 0;
+            position: absolute;
+            bottom: 0;
         }
         .tvp-row-player-title {
             display: inline-block;
             width: 53.1165%;
             white-space: nowrap;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
         }
         .tvp-row-featured-title {
             display: inline-block;
             height: 100%;
             margin-left: 1.2195%;
             width: 22.2222%;
+            position: relative;            
         }
     }
     .tvp-row {

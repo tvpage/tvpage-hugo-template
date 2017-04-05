@@ -314,6 +314,20 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Body Background Color",
+            "code": "body_background_color",
+            "value": "#fff"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Body Padding",
+            "code": "body_padding",
+            "value": "0"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Header Height",
             "code": "header_height",
             "value": "46px;"
@@ -346,6 +360,13 @@
             "code": "video_header_font_size",
             "value": "150%"
         },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Video Header Case",
+            "code": "video_header_case",
+            "value": "none"
+        },        
         {
             "for": "inline",
             "type": "text",
