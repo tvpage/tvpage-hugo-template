@@ -71,6 +71,7 @@
 '}' +
 
 '.iframe-content .tvp-featured .tvp-featured-product .tvp-featured-info-title{' +
+	'font-family: {{- ($.Scratch.Get "settings").featured_product_title_font_family -}};' +
 	'color: {{- ($.Scratch.Get "settings").featured_product_title_font_color -}};' +
 	'font-size: {{- ($.Scratch.Get "settings").featured_product_title_font_size -}};' +
 	'font-weight: {{- ($.Scratch.Get "settings").featured_product_title_font_weight -}};' +

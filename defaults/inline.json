@@ -440,6 +440,13 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Featured Product Title Font Family",
+            "code": "featured_product_title_font_family",
+            "value": "Helvetica"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Featured Product Title Font Color",
             "code": "featured_product_title_font_color",
             "value": "#000"
