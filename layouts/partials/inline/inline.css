@@ -38,6 +38,8 @@
 	// 'color: {{- ($.Scratch.Get "settings").featured_product_header_font_color -}};' +
 	'font-size: {{- ($.Scratch.Get "settings").featured_product_header_font_size -}};' +
 	'font-weight: {{- ($.Scratch.Get "settings").featured_product_header_font_weight -}};' +
+	'line-height: {{- ($.Scratch.Get "settings").featured_product_header_line_height -}};' +
+	'padding: {{- ($.Scratch.Get "settings").featured_product_header_padding -}};' +
 '}' +
 
 // '.iframe-content #tvpPlayerView{' +

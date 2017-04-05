@@ -412,6 +412,20 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Featured Product Header Font Size",
+            "code": "featured_product_header_padding",
+            "value": "10px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Font Size",
+            "code": "featured_product_header_line_height",
+            "value": "43px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Featured Product Box Padding",
             "code": "featured_product_box_padding",
             "value": "17px 16px"
