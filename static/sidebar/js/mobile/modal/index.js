@@ -182,14 +182,14 @@
                 if (!next) return;
 
                 if (Utils.isset(next, 'products')) {
-                    render(next.products);
+                    render(next.products,data.runTime);
                 } else {
                     loadProducts(
                         next.assetId,
                         data.runTime.loginid || data.runTime.loginId,
-                        function(data) {
+                        function(products) {
                             setTimeout(function() {
-                                render(data,data.runTime);
+                                render(products,data.runTime);
                             }, 0);
                         });
                 }
@@ -228,14 +228,14 @@
 
                 var selectedVideo = data.selectedVideo;
                 if (Utils.isset(selectedVideo, 'products')) {
-                    render(selectedVideo.products);
+                    render(selectedVideo.products,settings);
                 } else {
                     loadProducts(
                         selectedVideo.id,
                         loginId,
                         function(data) {
                             setTimeout(function() {
-                                render(data);
+                                render(data,settings);
                             }, 0);
                         });
                 }

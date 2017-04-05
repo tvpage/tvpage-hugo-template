@@ -150,11 +150,9 @@ body {
 }
 
 .tvp-product-cta {
-  font-size: 10px;
   text-align: center;
   width: 155px;
   border-radius: 0;
-  border: 0;
   display: block;
   cursor: pointer;
   padding: 0;

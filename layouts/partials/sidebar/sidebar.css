@@ -18,6 +18,8 @@
 
 ".tvp-video:hover .tvp-video-play {" +
     "background-color:{{ ($.Scratch.Get "settings").item_play_button_background_color_hover }};" +
+    "transform:{{ ($.Scratch.Get "settings").item_play_button_transform_hover }};" +
+    "-webkit-transform:{{ ($.Scratch.Get "settings").item_play_button_transform_hover }};" +
 "}" +
 
 ".tvp-video-play > polygon {" +
@@ -39,14 +41,30 @@
 
 ".tvp-sidebar-load {" +
   "font-size: {{ ($.Scratch.Get "settings").load_button_font_size }};" +
+  "font-family: {{ ($.Scratch.Get "settings").load_button_font_family }};" +
+  "font-weight: {{ ($.Scratch.Get "settings").load_button_font_weight }};" +
   "border-radius: {{ ($.Scratch.Get "settings").load_button_border_radius }};" +
-  "text-align: {{ ($.Scratch.Get "settings").load_button_text_align }};" +
   "width: {{ ($.Scratch.Get "settings").load_button_width }};" +
   "height: {{ ($.Scratch.Get "settings").load_button_height }};" +
   "background-color: {{ ($.Scratch.Get "settings").load_button_background_color }};" +
   "border: {{ ($.Scratch.Get "settings").load_button_border }};" +
   "color: {{ ($.Scratch.Get "settings").load_button_text_color }};" +
+  "text-align: {{ ($.Scratch.Get "settings").load_button_text_align }};" +
   "text-transform: {{ ($.Scratch.Get "settings").load_button_text_transform }};" +
   "margin: {{ ($.Scratch.Get "settings").load_button_margin }};" +
   "padding: {{ ($.Scratch.Get "settings").load_button_padding }};" +
+"}"+
+
+".tvp-sidebar-load:hover{" +
+  "background-color: {{ ($.Scratch.Get "settings").load_button_background_color_hover }};" +
+  "color: {{ ($.Scratch.Get "settings").load_button_text_color_hover }};" +
+  "border: {{ ($.Scratch.Get "settings").load_button_border_hover }};" +
+"}" +
+
+".tvp-sidebar-load:active{" +
+  "color: {{ ($.Scratch.Get "settings").load_button_text_color_active }};" +
+  "background-color: {{ ($.Scratch.Get "settings").load_button_background_color_active }};" +
+  "box-shadow: {{ ($.Scratch.Get "settings").load_button_box_shadow_active }};" +
+  "-webkit-transform: {{ ($.Scratch.Get "settings").load_button_text_transform_active }};" +
+  "transform: {{ ($.Scratch.Get "settings").load_button_text_transform_active }};" +
 "}"

@@ -53,7 +53,7 @@
         document.body.appendChild(script);
     };
 
-    var render = function(data){
+    var render = function(data, config){
         var holder = Utils.getByClass('tvp-products-holder');
         holder.innerHTML = "";
 
@@ -140,7 +140,7 @@
                 ratingReviewsHtml += '</ul>';
             }
 
-            var buttonText = product.actionText.length > 0? product.actionText : 'View Details';
+            var buttonText = product.actionText.length > 0? product.actionText : config.product_popup_cta_text;
 
             prodPopupNode.innerHTML = '<div class="tvp-product-popup-image" '+productImgStyle+'></div>'+
                 '<p class="tvp-product-title">' + prodTitle + '</p><p class="tvp-product-price">'+fixedPrice+'</p>'+ ratingReviewsHtml +
@@ -281,14 +281,14 @@
             s.onNext = function(next){
                 if (!next) return;
                 if (Utils.isset(next,'products')) {
-                    render(next.products);
+                    render(next.products,data.runTime);
                 } else {
                     loadProducts(
                         next.assetId,
                         data.runTime.loginId,
-                        function(data){
+                        function(products){
                             setTimeout(function(){
-                                render(data);
+                                render(products,data.runTime);
                                 checkProducts(data,el);
                                 player.resize();
                             },0);
@@ -331,14 +331,14 @@
 
                 var selectedVideo = data.selectedVideo;
                 if (Utils.isset(selectedVideo,'products')) {
-                    render(selectedVideo.products);
+                    render(selectedVideo.products,settings);
                 } else {
                     loadProducts(
                         selectedVideo.id,
                         loginId,
                         function(data){
                             setTimeout(function(){
-                                render(data);
+                                render(data,settings);
                                 checkProducts(data,el);
                             },0);
                         });

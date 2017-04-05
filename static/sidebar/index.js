@@ -137,7 +137,7 @@ if (config.modal_title_position.trim().length && "bottom" === config.modal_title
   modalTitle.classList.add("bottom");
   modal.querySelector(".tvp-modal-body").appendChild(modalTitle);
 }
-console.log(config)
+
 var holder = document.getElementById(config.id + "-holder");
 var iframe = holder.querySelector("iframe");
 var iframeDocument = iframe.contentWindow.document;

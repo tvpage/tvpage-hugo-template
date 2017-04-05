@@ -4,8 +4,8 @@
 "}" +
 
 ".tvp-modal-overlay {" +
-    "background-color: #000;" +
-    "opacity: .5;" +
+    "background-color: {{ ($.Scratch.Get "settings").modal_overlay_background_color }};" +
+    "opacity: {{ ($.Scratch.Get "settings").modal_overlay_opacity }};" +
 "}" +
 
 ".tvp-modal-header {" +
