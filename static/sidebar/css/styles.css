@@ -22,6 +22,23 @@ body  {
   clear: both;
 }
 
+.loading .tvp-cover {
+  display: block;
+}
+
+.tvp-cover {
+  display: none;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: absolute;
+  background-color: white;
+  margin: auto;
+  opacity: 0.70;
+  z-index: 99999;
+}
+
 .tvp-video {
   cursor: pointer;
   padding: 0 5px;

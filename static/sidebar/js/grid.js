@@ -23,12 +23,15 @@
     this.el = 'string' === typeof el ? document.getElementById(el) : el;
     this.loadBtn = this.el.getElementsByClassName('tvp-sidebar-load')[0];
     this.container = this.el.getElementsByClassName('tvp-sidebar-container')[0];
+    this.sidebarTitle = this.el.getElementsByClassName('tvp-sidebar-title')[0];
     this.onLoad = options.onLoad && isFunction(options.onLoad) ? options.onLoad : null;
     this.onLoadEnd = options.onLoadEnd && isFunction(options.onLoadEnd) ? options.onLoadEnd : null;
     this.onItemClick = options.onItemClick && isFunction(options.onItemClick) ? options.onItemClick : null;
     
     this.render = function(){
       this.container.innerHTML = '';
+
+      this.sidebarTitle.innerHTML = options.title_text;
 
       var all = this.data.slice(0),
           pages = [];
