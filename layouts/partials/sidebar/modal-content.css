@@ -87,6 +87,7 @@
     "background: {{ ($.Scratch.Get "settings").product_popup_background }};" +
     "padding: {{ ($.Scratch.Get "settings").product_popup_padding }};" +
     "border: {{ ($.Scratch.Get "settings").product_popup_border }};" +
+    "border-radius: {{ ($.Scratch.Get "settings").product_popup_border_radius }};" +
     "box-shadow: {{ ($.Scratch.Get "settings").product_popup_box_shadow }};" +
 "}" +
 
@@ -109,6 +110,7 @@
 
 ".tvp-product-cta:hover {" +
     "background: {{ ($.Scratch.Get "settings").product_popup_cta_background_hover }};" +
+    "color: {{ ($.Scratch.Get "settings").product_popup_cta_font_color_hover }};" +
 "}" +
 
 ".tvp-arrow-indicator:before {" +

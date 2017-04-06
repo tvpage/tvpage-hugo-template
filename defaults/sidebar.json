@@ -87,6 +87,13 @@
           "value": "none"
         },
         {
+          "for": "modal",
+          "type": "text",
+          "label": "Modal Border Radius",
+          "code": "modal_border_radius",
+          "value": "0"
+        },
+        {
             "for": "modal",
             "type": "text",
             "label": "Iframe Modal Body Padding",
@@ -537,6 +544,20 @@
         {
           "for": "modal",
           "type": "text",
+          "label": "Products Headline Font Family",
+          "code": "products_headline_font_family",
+          "value": "Helvetica"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Products Headline Font Weight",
+          "code": "products_headline_font_weight",
+          "value": "initial"
+        },
+        {
+          "for": "modal",
+          "type": "text",
           "label": "Product Popup Thumbnail Border",
           "code": "product_popup_thumbnail_border",
           "value": 0
@@ -579,9 +600,23 @@
         {
           "for": "modal",
           "type": "text",
+          "label": "Product Popup Border Radius",
+          "code": "product_popup_border_radius",
+          "value": "0"
+        },
+        {
+          "for": "modal",
+          "type": "text",
           "label": "Product Popup CTA Background",
           "code": "product_popup_cta_background",
           "value": "#333"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Popup CTA Font Color Hover",
+          "code": "product_popup_cta_font_color_hover",
+          "value": "initial"
         },
         {
           "for": "modal",
@@ -764,6 +799,13 @@
           "label": "Title Text Align",
           "code": "title_text_align",
           "value": "left"
+        },
+        {
+          "for": "sidebar",
+          "type": "text",
+          "label": "Title Text Transform",
+          "code": "title_text_transform",
+          "value": "uppercase"
         },
         {
           "for": "sidebar",

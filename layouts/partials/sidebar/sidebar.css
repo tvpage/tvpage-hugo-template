@@ -3,6 +3,7 @@
     "font-weight: {{ ($.Scratch.Get "settings").title_font_weight }};" +
     "font-size:{{ ($.Scratch.Get "settings").title_font_size }};" +
     "text-align:{{ ($.Scratch.Get "settings").title_text_align }};" +
+    "text-transform:{{ ($.Scratch.Get "settings").title_text_transform }};" +
     "color:{{ ($.Scratch.Get "settings").title_color }};" +
     "padding: {{ ($.Scratch.Get "settings").title_padding }};" +
     "background:{{ ($.Scratch.Get "settings").title_background }};" +
