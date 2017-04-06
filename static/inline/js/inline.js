@@ -438,12 +438,12 @@
             }
 
             if (getTarget('tvp-video')) {
-                var selected = getSelectedData(that.data, target.getAttribute('data-id'));
-
-                that.player.load(selected.id);
+                that.selectedVideo = getSelectedData(that.data, target.getAttribute('data-id'));
+                
+                that.player.load(that.selectedVideo.id);
                 isProductsInitialized = false;
-                renderProducts(selected.id, selected.loginId);
-                $(that.el).find('#videoTitle').html(selected.title);                                
+                renderProducts(that.selectedVideo.id, that.selectedVideo.loginId);
+                $(that.el).find('#videoTitle').html(that.selectedVideo.title);                                
             }
             else if (getTarget('tvp-product-item')){
                 var selected = getSelectedData(productData, target.getAttribute('data-id'));

@@ -631,7 +631,7 @@
             "type": "text",
             "label": "Product Item Opacity Active",
             "code": "product_item_title_font_family",
-            "value": "DINWebPro-CondBold"
+            "value": "Helvetica"
         },
         {
             "for": "videos-carosuel-item",

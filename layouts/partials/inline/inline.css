@@ -201,6 +201,16 @@
 		'padding-top: 83.19444%;' +
 	'}' +
 
+	'.iframe-content .tvp-products-scroller #productContent .tvp-product-item{' +
+		'background-color: transparent;' +
+	'}' +
+
+	'.iframe-content .tvp-products-scroller #productContent .tvp-product-item .tvp-product-info-view-details{' +
+		'display: block;' +
+	'}' +
+
+
+
 	'.iframe-content .tvp-videos-container .tvp-videos-arrows{' +
 		'display: none;' +
 	'}' +
