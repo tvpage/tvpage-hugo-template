@@ -389,10 +389,22 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
     var $videoSliderDesktop = null;
     var productData = [];
     var isProductsInitialized = false;
+    var isFeaturedProductRendered = false;
     var analytics = null;
     var breakpoint = 769;
+    var currentApproach = '';
 
     var that = this;
+
+    var renderedApproach = function () {
+        if (document.body.clientWidth < breakpoint) {
+            isFeaturedProductRendered = false;
+            return 'mobile';
+        }
+        else{
+            return 'desktop';
+        }
+    };
 
     var pkTrack = function(){
         analytics.track('pk',{
@@ -459,19 +471,28 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
         $(featuredProduct).appendTo(featuredProductContainer);
 
         featuredProduct.addEventListener('click', pkTrack, false);
+
+        isFeaturedProductRendered = true;
+
+        $(document.getElementById('tvpProductsView'))
+            .on('afterChange', function(event, slick, currentSlide) {
+                if (currentApproach === 'desktop' && isFeaturedProductRendered) {
+                    var slideItemId = $(slick.$slides[currentSlide]).find('.tvp-product-item')[0].getAttribute('data-id');
+                    var selected = getSelectedData(productData, slideItemId);
+                    renderFeaturedProduct(selected);    
+                }
+            });
     }
 
     var renderProducts = function (vid, lid) {
+        if(isProductsInitialized) return;
+
         var products =  document.getElementById('tvpProductsView');
         var isScrollBar = function () {
             return this.el.offsetWidth >= breakpoint;
         }
         var deInitProd = function () {
-            if(!$(products).find('.ss-content').length){
-                $(products).find('#productContent').slick('unslick');//.children().remove();
-                // $(products).find('#productContent').remove();
-            }
-
+            $('#productContent').slick('unslick');
             products.innerHTML = "";
         };
 
@@ -481,7 +502,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                     var itemTemplate = that.productItemTemplate;
                     var _container = $('.tvp-products-scroller');
 
-                    if (isProductsInitialized) deInitProd();
+                    deInitProd();
 
                     productData = data;
 
@@ -493,7 +514,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                         row.setAttribute('data-id', data[i].id);
                         row.className = 'tvp-product-item';
                         row.innerHTML = Utils.tmpl(itemTemplate, data[i]);
-                        if (Utils.isMobile) {
+                        if (currentApproach === 'mobile') {
                             row.href = data[i].linkUrl;
                             row.setAttribute('target', '_blank');
                         }
@@ -523,7 +544,6 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                         row.addEventListener('click', pkTrack, false);
                     }
 
-                    renderFeaturedProduct(data[0]);
                     $(productContent).slick({
                         arrows: true,
                         slidesToShow: 1,
@@ -541,25 +561,21 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                                 }
                             }
                         ]
-                    })
-                    .on('afterChange', function(event, slick, currentSlide) {
-                        if (document.body.clientWidth >= breakpoint) {
-                            var slideItemId = $(slick.$slides[currentSlide]).find('.tvp-product-item')[0].getAttribute('data-id');
-                            var selected = getSelectedData(productData, slideItemId);
-                            renderFeaturedProduct(selected);    
-                        }
                     });
+
+                    renderFeaturedProduct(data[0]);
 
                     isProductsInitialized = true;
                 }
                 else{
-                    $(products).find('#productContent').slick('unslick').children().remove();
-                    document.getElementById('tvpFeaturedProduct').innerHTML = "";
+                    deInitProd();
                 }
         });
     };
 
     function Inline(el, options) {
+        currentApproach = renderedApproach();
+
         this.xchg = options.xchg || false;
         this.windowSize = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) <= 200 ? 'small' : 'medium';
         this.initialResize = true;
@@ -609,16 +625,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             renderProducts(e.assetId, e.loginId); 
             $(that.el).find('#videoTitle').html(e.assetTitle);
         };
-        // this.onResize = function (e, d) {
-        //     if (!e) return;
-        //     // if (window.parent) {
-        //     //     window.parent.postMessage({
-        //     //         event: 'tvp_'+ that.el.id.replace(/-/g,'_') +':resize',
-        //     //         height: that.el.offsetHeight + 'px'
-        //     //     }, '*');
-        //     //     that.initialResize = false;
-        //     // }
-        // };    
+
         this.render = function(){
             var all = this.data.slice(0);
             
@@ -692,8 +699,13 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             });
 
             window.addEventListener('resize', Utils.debounce(function(){
+                if (isProductsInitialized) {
+                    if(currentApproach !== renderedApproach()){
+                        isProductsInitialized = false;
+                        currentApproach = renderedApproach();
+                    }
+                }
                 renderProducts(this.selectedVideo.id, options.loginId);
-
                 if (window.parent) {
                     window.parent.postMessage({
                         event: 'tvp_'+ that.el.id.replace(/-/g,'_') +':resize',
@@ -802,8 +814,9 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                 var selected = getSelectedData(that.data, target.getAttribute('data-id'));
 
                 that.player.load(selected.id);
+                isProductsInitialized = false;
                 renderProducts(selected.id, selected.loginId);
-                $(that.el).find('#videoTitle').html(selected.title);                
+                $(that.el).find('#videoTitle').html(selected.title);                                
             }
             else if (getTarget('tvp-product-item')){
                 var selected = getSelectedData(productData, target.getAttribute('data-id'));
