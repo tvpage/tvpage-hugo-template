@@ -14,7 +14,7 @@
 '}' +
 
 '.iframe-content .tvp-row-titles{' +	
-	'height: {{- ($.Scratch.Get "settings").header_height -}};' +
+	// 'height: {{- ($.Scratch.Get "settings").header_height -}};' +
 '}' +
 
 '.iframe-content .tvp-row-titles .tvp-row-player-title{' +

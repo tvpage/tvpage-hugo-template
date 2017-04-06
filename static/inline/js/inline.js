@@ -110,17 +110,22 @@
                             row.href = data[i].linkUrl;
                             row.setAttribute('target', '_blank');
                         }
-
-                        $(row).appendTo(productGroup);
                         
-                        if (( ((i + 1) % 4) === 0 ) && (i !== (data.length - 1))) {
-                            $(productGroup).appendTo(productContent);
+                        if(document.body.clientWidth < breakpoint){
+                            $(row).appendTo(productContent);
                             $(productContent).appendTo(_container);
-                            productGroup = document.createElement('div');
                         }
-                        else if (i === (data.length - 1)) {
-                            $(productGroup).appendTo(productContent);
-                            $(productContent).appendTo(_container);
+                        else{
+                            $(row).appendTo(productGroup);
+                            if (( ((i + 1) % 4) === 0 ) && (i !== (data.length - 1))) {
+                                $(productGroup).appendTo(productContent);
+                                $(productContent).appendTo(_container);
+                                productGroup = document.createElement('div');
+                            }
+                            else if (i === (data.length - 1)) {
+                                $(productGroup).appendTo(productContent);
+                                $(productContent).appendTo(_container);
+                            }                            
                         }
 
                         analytics.track('pi',{
@@ -136,12 +141,26 @@
                         arrows: true,
                         slidesToShow: 1,
                         slidesToScroll: 1,
-                        dots: true
+                        dots: true,
+                        responsive:[
+                            {
+                                breakpoint: 769,
+                                settings: {
+                                    arrows: false,
+                                    centerPadding: '0px',
+                                    slidesToShow: 1,
+                                    slidesToScroll: 1,
+                                    dots: false
+                                }
+                            }
+                        ]
                     })
                     .on('afterChange', function(event, slick, currentSlide) {
-                        var slideItemId = $(slick.$slides[currentSlide]).find('.tvp-product-item')[0].getAttribute('data-id');
-                        var selected = getSelectedData(productData, slideItemId);
-                        renderFeaturedProduct(selected);
+                        if (document.body.clientWidth >= breakpoint) {
+                            var slideItemId = $(slick.$slides[currentSlide]).find('.tvp-product-item')[0].getAttribute('data-id');
+                            var selected = getSelectedData(productData, slideItemId);
+                            renderFeaturedProduct(selected);    
+                        }
                     });
 
                     isProductsInitialized = true;
@@ -203,14 +222,16 @@
             renderProducts(e.assetId, e.loginId); 
             $(that.el).find('#videoTitle').html(e.assetTitle);
         };
-        this.onResize = function (e, d) {
-            if (window.parent) {
-                window.parent.postMessage({
-                    event: 'tvp_'+ that.el.id.replace(/-/g,'_') +':resize',
-                    height: that.el.offsetHeight + 'px'
-                }, '*');
-            }
-        };    
+        // this.onResize = function (e, d) {
+        //     if (!e) return;
+        //     // if (window.parent) {
+        //     //     window.parent.postMessage({
+        //     //         event: 'tvp_'+ that.el.id.replace(/-/g,'_') +':resize',
+        //     //         height: that.el.offsetHeight + 'px'
+        //     //     }, '*');
+        //     //     that.initialResize = false;
+        //     // }
+        // };    
         this.render = function(){
             var all = this.data.slice(0);
             
@@ -268,17 +289,31 @@
             //render products  
             
             renderProducts(this.selectedVideo.id, options.loginId);
-
-            window.addEventListener('resize', Utils.debounce(function(){
-                this.player.resize();
-            }, 85));
             
+            if (window.parent) {
+                window.parent.postMessage({
+                    event: 'tvp_'+ that.el.id.replace(/-/g,'_') +':resize',
+                    height: that.el.offsetHeight + 'px'
+                }, '*');
+            }
+
             analytics =  new Analytics();
             analytics.initConfig({
                 logUrl: '\/\/api.tvpage.com\/v1\/__tvpa.gif',
                 domain: Utils.isset(location,'hostname') ?  location.hostname : '',
                 loginId: this.loginId
             });
+
+            window.addEventListener('resize', Utils.debounce(function(){
+                renderProducts(this.selectedVideo.id, options.loginId);
+
+                if (window.parent) {
+                    window.parent.postMessage({
+                        event: 'tvp_'+ that.el.id.replace(/-/g,'_') +':resize',
+                        height: that.el.offsetHeight + 'px'
+                    }, '*');
+                }
+            }, 85));
         };
 
         this.load = function(callback){
@@ -391,11 +426,7 @@
 
         this.load(function(data){
             that.render(data);
-        });     
-
-        // window.addEventListener('resize', function () {
-        //     if (that.el.offsetWidth >= breakpoint;) renderProducts(that.selectedVideo.id, that.selectedVideo.loginId);
-        // });
+        });
     }
 
     window.Inline = Inline;

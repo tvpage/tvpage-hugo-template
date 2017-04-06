@@ -107,6 +107,7 @@ body {
     }
     .tvp-row-titles {
         width: 100%;
+        height: 43px;
         h1, h2 {            
             line-height: 43px;
             padding: 0;
@@ -440,7 +441,7 @@ body {
 @media only screen and (max-width: 768px){
   .iframe-content {
     .tvp-row-titles{
-        height: initial !important;
+        height: 23px;
         margin-bottom: 10px;
         .tvp-row-featured-title{ display: none;}
         .tvp-row-player-title {            
@@ -477,53 +478,58 @@ body {
         .tvp-products-scroller{
             width: 100%;
             float: none;
-            // height: 100%;
-            margin: 0 -10px;
-            .tvp-product-item{
-                border: 1px solid #DDDDDD;
-                padding: 5px;
-                background-color: transparent;
-                min-height: 75px;
-                margin: 0 10px;
-                position: relative;
-                .tvp-featured-image{
-                    @include aspect-ratio(1,1);
-                    display: inline-block;
-                    background-size: cover;
-                    background-repeat: no-repeat;
-                    background-position: center;
-                    width: 18.6%;
-                }
-                .tvp-featured-info{
-                    display: inline-block;
-                    width: 79%;
-                    float: right;
-                    font-size: 12px;
-                    &-title{                    
-                        display: block;
-                        line-height: 14px;
-                        max-height: 28px;
-                        overflow: hidden;
-                        margin-right: 5px;
+            // height: auto;
+            margin: 0 -5px;
+            #productContent{
+                height: auto;
+                .tvp-product-item{
+                    border: 1px solid #DDDDDD;
+                    margin: 0 5px;
+                    // padding: 5px;
+                    // background-color: transparent;
+                    // min-height: 75px;
+                    
+                    // position: relative;
+                    .tvp-product-image{
+                        @include aspect-ratio(1,1);
+                        display: inline-block;
+                        background-size: cover;
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        width: 18.6%;
                     }
-                    &-rating{
-                        display: none;
-                    }
-                    &-price{
-                        display: block;
-                        color: #2557AC;
-                    }
-                    &-view-details{
-                        border: 1px solid #DDDDDD;
-                        border-bottom: 0;
-                        border-right: 0;
-                        background-color: transparent;
-                        position: absolute;
-                        bottom: 0;
-                        right: 0;
+                    .tvp-product-info{
+                        display: inline-block;
+                        width: 79%;
+                        float: right;
+                        font-size: 12px;
+                        // &-title{                    
+                        //     display: block;
+                        //     line-height: 14px;
+                        //     max-height: 28px;
+                        //     overflow: hidden;
+                        //     margin-right: 5px;
+                        // }
+                        &-rating{
+                            display: none;
+                        }
+                        &-price{
+                            display: block;
+                            color: #2557AC;
+                        }
+                        &-view-details{
+                            border: 1px solid #DDDDDD;
+                            border-bottom: 0;
+                            border-right: 0;
+                            background-color: transparent;
+                            position: absolute;
+                            bottom: 0;
+                            right: 0;
+                        }
                     }
                 }
             }
+
         }
     }
     

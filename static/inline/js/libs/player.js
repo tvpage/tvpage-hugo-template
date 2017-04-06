@@ -249,6 +249,10 @@
                     }
                 }
             });            
+
+            window.addEventListener('resize', function () {
+                that.resize();
+            });
         }
         this.initialize();
     }

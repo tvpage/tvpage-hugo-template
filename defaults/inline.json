@@ -330,7 +330,7 @@
             "type": "text",
             "label": "Header Height",
             "code": "header_height",
-            "value": "46px;"
+            "value": "23px;"
         },
         {
             "for": "inline",
