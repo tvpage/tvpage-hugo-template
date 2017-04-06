@@ -208,7 +208,7 @@
                         function(products) {
                             setTimeout(function() {
                                 render(products,data.runTime);
-                                checkProducts(data,el);
+                                checkProducts(products,el);
                             }, 0);
                         });
                 }
@@ -252,10 +252,10 @@
                     loadProducts(
                         selectedVideo.id,
                         loginId,
-                        function(data) {
+                        function(products) {
                             setTimeout(function() {
-                                render(data,settings);
-                                checkProducts(data,el);
+                                render(products,settings);
+                                checkProducts(products,el);
                             }, 0);
                         });
                 }
