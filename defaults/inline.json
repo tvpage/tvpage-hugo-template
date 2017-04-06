@@ -330,7 +330,7 @@
             "type": "text",
             "label": "Header Height",
             "code": "header_height",
-            "value": "23px;"
+            "value": "43px;"
         },
         {
             "for": "inline",
@@ -414,7 +414,7 @@
             "type": "text",
             "label": "Featured Product Header Font Size",
             "code": "featured_product_header_padding",
-            "value": "10px"
+            "value": "0"
         },
         {
             "for": "inline",
@@ -594,9 +594,44 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Product Holder Slider Arrow Color",
+            "code": "product_holder_slide_arrow_color",
+            "value": "#000"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Holder Slider Dots Color",
+            "code": "product_holder_slide_dots_color",
+            "value": "#000"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Featured Product Price View Details Button Font Display",
             "code": "featured_product_view_button_display",
             "value": "inline-block"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item Opacity",
+            "code": "product_item_opacity",
+            "value": "0.6"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item Opacity Active",
+            "code": "product_item_opacity_active",
+            "value": "1"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item Opacity Active",
+            "code": "product_item_title_font_family",
+            "value": "DINWebPro-CondBold"
         },
         {
             "for": "videos-carosuel-item",

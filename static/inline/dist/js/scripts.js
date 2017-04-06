@@ -393,6 +393,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
     var analytics = null;
     var breakpoint = 769;
     var currentApproach = '';
+    var products =  document.getElementById('tvpProductsView');
 
     var that = this;
 
@@ -479,10 +480,20 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                 if (currentApproach === 'desktop' && isFeaturedProductRendered) {
                     var slideItemId = $(slick.$slides[currentSlide]).find('.tvp-product-item')[0].getAttribute('data-id');
                     var selected = getSelectedData(productData, slideItemId);
-                    renderFeaturedProduct(selected);    
+                    renderFeaturedProduct(selected);
+                    addProductActiveState(selected.id);
                 }
             });
+            // .on('beforeChange', function(event, slick, currentSlide, nextSlide) {
+            //     slick.$slides[currentSlide].style.opacity = 0;
+            //     slick.$slides[nextSlide].style.opacity = 1;
+            // });
     }
+    var addProductActiveState = function (elId) {
+        var $productContent = $('#productContent');
+        $productContent.find('.tvp-product-item-active').removeClass('tvp-product-item-active');
+        $productContent.find('.tvp-product-item[data-id="'+elId+'"]').addClass('tvp-product-item-active');
+    };
 
     var renderProducts = function (vid, lid) {
         if(isProductsInitialized) return;
@@ -509,6 +520,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                     var productContent = document.createElement('div');
                     productContent.id = "productContent";
                     var productGroup = document.createElement('div');
+                    productGroup.className = "tvp-product-item-group";
                     for (var i = 0; i < data.length; i++) {
                         var row = document.createElement('a');
                         row.setAttribute('data-id', data[i].id);
@@ -529,6 +541,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                                 $(productGroup).appendTo(productContent);
                                 $(productContent).appendTo(_container);
                                 productGroup = document.createElement('div');
+                                productGroup.className = "tvp-product-item-group";
                             }
                             else if (i === (data.length - 1)) {
                                 $(productGroup).appendTo(productContent);
@@ -564,6 +577,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                     });
 
                     renderFeaturedProduct(data[0]);
+                    addProductActiveState(data[0].id);
 
                     isProductsInitialized = true;
                 }
@@ -821,6 +835,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             else if (getTarget('tvp-product-item')){
                 var selected = getSelectedData(productData, target.getAttribute('data-id'));
                 renderFeaturedProduct(selected);
+                addProductActiveState(selected.id);
             }
         };
 

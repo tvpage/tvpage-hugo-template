@@ -291,7 +291,6 @@ body {
         width: 22.2222%;
         #productContent{
             height: 100%;
-            overflow: hidden;
             position: relative;
             .tvp-product-item {
                 cursor: pointer;
@@ -329,8 +328,21 @@ body {
                     top: 50%;
                     transform: translateY(-50%);
                 }
+                &:hover{
+                    &:after{
+                        @include active-state();
+                    }
+                }
             }
 
+            .tvp-product-item-active{
+                &:after{
+                    @include active-state();
+                }
+            }
+            .tvp-product-item-group{
+                padding: 4px;
+            }
             .slick-dots{
                 position: absolute;
                 bottom: 0;
