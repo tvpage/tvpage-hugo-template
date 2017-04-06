@@ -31,7 +31,11 @@
     this.render = function(){
       this.container.innerHTML = '';
 
-      this.sidebarTitle.innerHTML = options.title_text;
+      if (options.title_text && options.title_text.trim().length) {
+        this.sidebarTitle.innerHTML = options.title_text;
+      } else {
+        this.sidebarTitle.parentNode.removeChild(this.sidebarTitle);
+      }
 
       var all = this.data.slice(0),
           pages = [];

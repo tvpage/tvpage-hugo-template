@@ -26,6 +26,10 @@ body  {
   display: block;
 }
 
+.tvp-sidebar-title {
+  position: relative;
+}
+
 .tvp-cover {
   display: none;
   top: 0;
@@ -41,7 +45,6 @@ body  {
 
 .tvp-video {
   cursor: pointer;
-  padding: 0 5px;
   margin: 0 auto;
 }
 
@@ -59,16 +62,22 @@ body  {
 }
 
 .tvp-video-image-overlay {
-  display: none;
+  position: absolute;
   top: 0;
+  right: 0;
   bottom: 0;
   left: 0;
-  right: 0;
-  position: absolute;
   margin: auto;
-  opacity: 0.2;
-  -webkit-transition: all .05s ease-in-out;
-          transition: all .05s ease-in-out;
+  -webkit-transition: all .2s ease;
+  transition: all .2s ease;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.tvp-video:hover .tvp-video-image-overlay {
+  opacity: 1;
+  visibility: visible;   
 }
 
 .tvp-video-image:focus {

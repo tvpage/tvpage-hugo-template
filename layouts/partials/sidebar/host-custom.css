@@ -13,6 +13,15 @@
     "border-bottom:{{ ($.Scratch.Get "settings").modal_header_border_bottom }};" +
 "}" +
 
+".tvp-products-message {" +
+    "right: -20px;" +
+    "top: 60px;" +
+    "width: 300px;" +
+    "background-color: white;" +
+    "padding: 10px;" +
+    "border: 1px solid black;" +
+"}" +
+
 ".tvp-modal-content {" +
     "background:{{ ($.Scratch.Get "settings").modal_background }};" +
     "border:{{ ($.Scratch.Get "settings").modal_border }};" +

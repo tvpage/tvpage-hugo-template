@@ -173,14 +173,14 @@
                 }
                 else if ( bottomLimit > holderHeight )  {
                     topValue = topValue - (bottomLimit - holderHeight);
-                    topValue = topValue + 10;
+                    topValue = topValue;
                 }
 
                 popup.classList.add('active');
                 popup.style.top = topValue + 'px';
 
                 arrow.classList.add('active');
-                arrow.style.top = (productEl.getBoundingClientRect().top + 20) + 'px';
+                arrow.style.top = (productEl.getBoundingClientRect().top + 30) + 'px';
             };
 
             var classNames = ['tvp-product', 'tvp-product-popup'];

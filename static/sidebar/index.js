@@ -103,7 +103,7 @@ var config = utils.isset(window.__TVPage__) && utils.isset(__TVPage__,"config") 
 var hostCssTagId = "tvp-sidebar-host-css";
 var hostCssTag = "";
 if (!document.getElementById(hostCssTagId)) {
-  hostCssTag = '<style id="' + hostCssTagId + '">' + config.css.host + '</style>';
+  hostCssTag = '<style id="' + hostCssTagId + '">' + config.css["host" + (utils.isMobile ? "-mobile" : "")] + '</style>';
 }
 
 var targetElement;
@@ -321,7 +321,7 @@ function handleModalNoProducts(e) {
   if (!utils.isMobile) {
       var label = document.getElementById('tvp-products-headline-' + config.id);
       if (label) {
-          label.parentNode.removeChild(label);
+        label.parentNode.removeChild(label);
       }
   }
 
@@ -339,7 +339,18 @@ function handleModalProducts(e) {
     utils.addClass(label,'tvp-products-headline');
     label.id = 'tvp-products-headline-' + config.id;
     label.innerHTML = config.products_headline_text;
-    document.getElementById('tvp-modal-header-' + config.id).appendChild(label);
+    var modalHeader = document.getElementById('tvp-modal-header-' + config.id);
+    if (config.products_message.trim().length) {
+      messageEl = modalHeader.querySelector('.tvp-products-message');
+      messageEl.innerHTML = config.products_message.trim();
+    }
+    modalHeader.appendChild(label);
+
+    //products banner addition
+    if (config.products_banner) {
+      //Append to .tvp-modal-content
+      console.log(config.products_banner);
+    }
   }
 
   utils.removeClass(iframeModalHolder,'no-products');

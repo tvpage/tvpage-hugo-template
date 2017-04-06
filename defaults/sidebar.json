@@ -61,6 +61,20 @@
         {
           "for": "sidebar",
           "type": "text",
+          "label": "Font URL",
+          "code": "font_url",
+          "value": ""
+        },
+        {
+          "for": "sidebar",
+          "type": "text",
+          "label": "Sidebar Body Font Family",
+          "code": "sidebar_body_font_family",
+          "value": "Helvetica"
+        },
+        {
+          "for": "sidebar",
+          "type": "text",
           "label": "Items Per Page",
           "code": "items_per_page",
           "value": "6"
@@ -71,6 +85,27 @@
           "label": "Items Per Row",
           "code": "items_per_row",
           "value": "2"
+        },
+        {
+          "for": "modal",
+          "type": "boolean",
+          "label": "Merchandise",
+          "code": "merchandise",
+          "value": true
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Products Banner",
+          "code": "products_banner",
+          "value": ""
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Modal Body Font Family",
+          "code": "modal_body_font_family",
+          "value": "Helvetica"
         },
         {
           "for": "modal",
@@ -302,6 +337,13 @@
           "label": "Modal Close Button Opacity Hover",
           "code": "modal_close_button_opacity_hover",
           "value": 1
+        },
+        {
+          "for": "modal«",
+          "type": "text",
+          "label": "Products Message",
+          "code": "products_message",
+          "value": ""
         },
         {
           "for": "modal",
@@ -705,20 +747,6 @@
         {
           "for": "player",
           "type": "text",
-          "label": "Item Play Button Height",
-          "code": "item_play_button_height",
-          "value": "35px"
-        },
-        {
-          "for": "player",
-          "type": "text",
-          "label": "Item Play Button Width",
-          "code": "item_play_button_width",
-          "value": "35px"
-        },
-        {
-          "for": "player",
-          "type": "text",
           "label": "Overlay Color",
           "code": "overlay_color",
           "value": "transparent"
@@ -824,9 +852,37 @@
         {
           "for": "sidebar",
           "type": "text",
+          "label": "Item Padding",
+          "code": "item_padding",
+          "value": "0 5px 10px 5px"
+        },
+        {
+          "for": "sidebar",
+          "type": "text",
+          "label": "Item Play Button Height",
+          "code": "item_play_button_height",
+          "value": "35px"
+        },
+        {
+          "for": "sidebar",
+          "type": "text",
+          "label": "Item Play Button Width",
+          "code": "item_play_button_width",
+          "value": "35px"
+        },
+        {
+          "for": "sidebar",
+          "type": "text",
           "label": "Item Play Button Background Color",
           "code": "item_play_button_background_color",
           "value": "white"
+        },
+        {
+          "for": "sidebar",
+          "type": "text",
+          "label": "Item Image Overlay Background Color",
+          "code": "item_image_overlay_background_color",
+          "value": "rgba(0, 0, 0, 0.2)"
         },
         {
           "for": "sidebar",
@@ -959,7 +1015,7 @@
           "type": "text",
           "label": "Load Button Background Color",
           "code": "load_button_background_color",
-          "value": "#666666"
+          "value": "#333333"
         },
         {
           "for": "sidebar",
@@ -1043,7 +1099,7 @@
           "type": "text",
           "label": "Load Button Background Color Active",
           "code": "load_button_background_color_active",
-          "value": "#666666"
+          "value": "#333333"
         },
         {
           "for": "sidebar",
