@@ -205,6 +205,7 @@ var getEventType = function (e) {
 
 function handlePostMessages(e){
   var eventType = getEventType(e);
+  console.log(eventType)
   switch (eventType) {
     case 'video_click':
       handleVideoClick(e);

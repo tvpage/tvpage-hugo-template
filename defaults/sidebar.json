@@ -87,6 +87,13 @@
           "value": "none"
         },
         {
+            "for": "modal",
+            "type": "text",
+            "label": "Iframe Modal Body Padding",
+            "code": "iframe_modal_body_padding",
+            "value": "10px"
+        },
+        {
           "for": "modal",
           "type": "text",
           "label": "Product Thumbnail Margin Right",

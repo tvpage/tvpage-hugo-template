@@ -13,6 +13,24 @@
         });
     };
 
+    var checkProducts = function(data,el){
+        var eventName;
+
+        if (!data || !data.length) {
+            el.classList.add('tvp-no-products');
+            eventName = eventPrefix + ':modal_no_products';
+        }else{
+            el.classList.remove('tvp-no-products');
+            eventName = eventPrefix + ':modal_products';
+        }
+
+        setTimeout(function(){
+            if (window.parent) {
+                window.parent.postMessage({event: eventName}, '*');
+            }
+        },0);
+    };
+
     var loadProducts = function(videoId, loginId, fn) {
         if (!videoId) return;
         var src = '//api.tvpage.com/v1/videos/' + videoId + '/products?X-login-id=' + loginId;
@@ -190,6 +208,7 @@
                         function(products) {
                             setTimeout(function() {
                                 render(products,data.runTime);
+                                checkProducts(data,el);
                             }, 0);
                         });
                 }
@@ -236,6 +255,7 @@
                         function(data) {
                             setTimeout(function() {
                                 render(data,settings);
+                                checkProducts(data,el);
                             }, 0);
                         });
                 }
