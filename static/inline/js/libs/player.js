@@ -95,21 +95,6 @@
 
             overlay.innerHTML = overlayTemplate;
 
-            var click = function(){
-                var clear = function () {
-                    this.removeEventListener('click',click,false);
-                    this.parentNode.removeChild(this);
-                };
-
-                if (that.onClick) {
-                    that.onClick();
-                } else if (that.instance) {
-                    clear.call(this);
-                    that.instance.play();
-                }
-            };
-
-            overlay.addEventListener('click', click);
             this.el.appendChild(overlay);
             var playerHolder = this.el.querySelector('.tvp-play-holder');
             playerHolder.innerHTML = this.playIconTemplate;
@@ -254,6 +239,32 @@
                 that.resize();
             });
         }
+        
+        this.el.onclick = function(e){
+            var getTarget = function (name) {                
+                for (var i = 0; i < e.path.length; i++) {
+                    try{
+                        if(Utils.hasClass(e.path[i], name)) {
+                            target = e.path[i];
+                            return true;
+                        }
+                    }
+                    catch(err){
+                        return false;
+                    }
+                }
+            }
+            if (getTarget('tvp-overlay')){
+                if (that.onClick) {
+                    that.onClick();
+                }
+                else{
+                    var ovrly = this.querySelector('.tvp-overlay');
+                    this.removeChild(ovrly);
+                    that.instance.play();
+                }
+            }
+        };
         this.initialize();
     }
 

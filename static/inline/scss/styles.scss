@@ -43,6 +43,18 @@ body {
         color: #000;
         text-decoration: none;
     }
+
+    .tvp-product-item-active, .tvp-video-active{
+        &:after{
+            @include active-state();
+        }
+    }
+    .tvp-video-active{
+        .tvp-video-image-overlay {
+            display: block;
+        }
+    }
+
     /* // TVP Icons // */
     
     .tvp-icon {
@@ -338,12 +350,7 @@ body {
                     }
                 }
             }
-
-            .tvp-product-item-active{
-                &:after{
-                    @include active-state();
-                }
-            }
+            
             .tvp-product-item-group{
                 padding: 4px;
             }
@@ -375,7 +382,7 @@ body {
             cursor: pointer;
             position: absolute;
             text-align: center;
-            top: -14%;
+            top: 0;
             bottom: 0;
             margin: auto 0;
             z-index: 100;
@@ -443,6 +450,9 @@ body {
                 transition: all .05s ease-in-out;
             }
             &:hover {
+                &:after{
+                    @include active-state();
+                }
                 .tvp-video-image-overlay {
                     display: block;
                 }

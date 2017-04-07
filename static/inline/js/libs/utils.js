@@ -68,6 +68,13 @@
       else{return "";}
     };
     
+    this.hasClass = function(obj,c) {
+        if (!obj || !c) return;
+        for (var i = 0; i < obj.classList.length; i++) {
+            if(obj.classList[i] === c) return true;
+        }
+        return false;
+    };
   }
 
   window.Utils = new Utils();

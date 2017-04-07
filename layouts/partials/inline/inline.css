@@ -153,8 +153,7 @@
 	'width: {{- ($.Scratch.Get "settings").videos_carousel_item_title_width -}};' +
 	'display: {{- ($.Scratch.Get "settings").videos_carousel_item_title_display -}};' +
 	'margin: {{- ($.Scratch.Get "settings").videos_carousel_item_title_margin -}};' +
-	'position: {{- ($.Scratch.Get "settings").videos_carousel_item_title_position -}};' +
-	'transform: {{- ($.Scratch.Get "settings").videos_carousel_item_title_transform -}};' +
+	'position: {{- ($.Scratch.Get "settings").videos_carousel_item_title_position -}};' +	
 '}' +
 
 '.iframe-content .tvp-videos-scroller .tvp-video{' +
