@@ -10,12 +10,12 @@
     "position: relative;" +
 "}" +
 
-".tvp-sidebar-holder > iframe {" +
-    "top: 0;" +
-    "left: 0;" +
-    "width: 100%;" +
-    "height: 100%;" +
+{{ with ($.Scratch.Get "settings").products_info_tooltip }}
+".tvp-info-icon{" +
     "position: absolute;" +
+    "top: 50%;" +
+    "right: -15%;" +
+    "transform: translateY(-50%);" +
 "}" +
 
 ".tvp-products-message {" +
@@ -23,11 +23,47 @@
     "z-index: 9999;" +
     "opacity: 0;" +
     "visibility: hidden;" +
+    "right: -35%;" +
+    "top: 170%;" +
 "}" +
 
-".tvp-products-message.active {" +
+".tvp-products-headline:hover .tvp-products-message {" +
     "opacity: 1;" +
     "visibility: visible;" +
+"}" +
+
+
+".tvp-products-message:after, .tvp-products-message:before {" +
+    "bottom: 100%;" +
+    "left: 90.1%;" +
+    "border: solid transparent;" +
+    "content: '';" +
+    "height: 0;" +
+    "width: 0;" +
+    "position: absolute;" +
+    "pointer-events: none;" +
+"}" +
+
+".tvp-products-message:after {" +
+    "border-color: rgba(136, 183, 213, 0);" +
+    "border-bottom-color: #fff;" +
+    "border-width: 12px;" +
+    "margin-left: -12px;" +
+"}" +
+
+".tvp-products-message:before {" +
+    "border-color: rgba(194, 225, 245, 0);" +
+    "border-width: 13px;" +
+    "margin-left: -13px;" +
+"}" +
+{{ end }}
+
+".tvp-sidebar-holder > iframe {" +
+    "top: 0;" +
+    "left: 0;" +
+    "width: 100%;" +
+    "height: 100%;" +
+    "position: absolute;" +
 "}" +
 
 ".tvp-hidden {" +
@@ -124,6 +160,7 @@
     "float: right;" +
     "margin: 0;" +
     "position: relative;" +
+    "display: inline-block;" +
 "}" +
 
 ".tvp-modal-iframe-holder {" +

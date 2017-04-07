@@ -339,11 +339,116 @@
           "value": 1
         },
         {
-          "for": "modal«",
+          "for": "modal",
+          "type": "boolean",
+          "label": "Products Info Tooltip",
+          "code": "products_info_tooltip",
+          "value": false
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Products Info Icon Color",
+          "code": "products_info_icon_color",
+          "value": "#BEBEBE"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Products Info Icon Size",
+          "code": "products_info_icon_size",
+          "value": "16px"
+        },
+        {
+          "for": "modal",
           "type": "text",
           "label": "Products Message",
           "code": "products_message",
           "value": ""
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Products Message Text Color",
+          "code": "products_message_text_color",
+          "value": "#333"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Products Message Font Family",
+          "code": "products_message_font_family",
+          "value": "Helvetica"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Products Message Font Size",
+          "code": "products_message_font_size",
+          "value": "12px"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Products Message Font Weight",
+          "code": "products_message_font_weight",
+          "value": "initial"
+        },
+                {
+          "for": "modal",
+          "type": "text",
+          "label": "Products Message Text Align",
+          "code": "products_message_text_align",
+          "value": "left"
+        },
+                {
+          "for": "modal",
+          "type": "text",
+          "label": "Products Message Text transform",
+          "code": "products_message_text_transform",
+          "value": "none"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Products Message Line Height",
+          "code": "products_message_line_height",
+          "value": "normal"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Products Message Width",
+          "code": "products_message_width",
+          "value": "336px"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Products Message Background Color",
+          "code": "products_message_background_color",
+          "value": "#FFFFFF"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Products Message Box Shadow",
+          "code": "products_message_box_shadow",
+          "value": "0 5px 15px 0 rgba(0, 0, 0, 0.2)"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Products Message Padding",
+          "code": "products_message_padding",
+          "value": "10px"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Products Message Border",
+          "code": "products_message_border",
+          "value": "#BEBEBE"
         },
         {
           "for": "modal",

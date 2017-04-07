@@ -125,7 +125,7 @@ config.jsPath = config.staticPath + config.distPath + 'js/';
 config.eventPrefix = ("tvp_" + config.id).replace(/-/g,'_');
 
 var modalContainer = document.createElement("div");
-modalContainer.innerHTML = config.templates.modal;
+modalContainer.innerHTML = config.templates['modal'].modal;
 document.body.appendChild(modalContainer);
 
 var modal = document.getElementById("tvp-modal-" + config.id);
@@ -335,14 +335,14 @@ function handleModalResize(e){
 
 function handleModalProducts(e) {
   if (!utils.isMobile && !document.getElementById('tvp-products-headline-' + config.id)) {
-    var label = document.createElement('p');
+    var label = document.createElement('div');
     utils.addClass(label,'tvp-products-headline');
     label.id = 'tvp-products-headline-' + config.id;
     label.innerHTML = config.products_headline_text;
     var modalHeader = document.getElementById('tvp-modal-header-' + config.id);
     if (config.products_message.trim().length) {
-      messageEl = modalHeader.querySelector('.tvp-products-message');
-      messageEl.innerHTML = config.products_message.trim();
+      var tooltip = config.products_info_tooltip ? config.templates['modal'].tooltip : '';
+      label.innerHTML += tooltip;
     }
     modalHeader.appendChild(label);
 

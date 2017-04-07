@@ -117,7 +117,7 @@
         if (hasData) {
             var productsLabel = document.createElement('p');
             productsLabel.classList.add('tvp-products-headline');
-            productsLabel.innerHTML = 'Related Products';
+            productsLabel.innerHTML = config.products_headline_text;
             container.appendChild(productsLabel);
         }
 
