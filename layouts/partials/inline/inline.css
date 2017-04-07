@@ -17,6 +17,10 @@
 	'opacity: {{- ($.Scratch.Get "settings").videos_carousel_item_active_opacity -}};' +
 '}' +
 
+'.iframe-content .tvp-products-scroller #productContent .tvp-product-item:hover:after{' +
+	'border-color: {{- ($.Scratch.Get "settings").hover_state_border -}};' +
+'}' +
+
 '.iframe-content .tvp-videos-scroller .tvp-video:hover:after{' +
 	'border-color: {{- ($.Scratch.Get "settings").hover_state_border -}};' +
 '}' +
