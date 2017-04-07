@@ -42,6 +42,7 @@ body {
     a {
         color: #000;
         text-decoration: none;
+        outline: none;
     }
 
     .tvp-product-item-active, .tvp-video-active{
@@ -50,10 +51,27 @@ body {
         }
     }
     .tvp-video-active{
+        .tvp-video-play{
+            background-color: #e57211;
+        }
         .tvp-video-image-overlay {
             display: block;
         }
     }
+
+    .tvp-video-image-overlay {
+        display: none;
+        background-color: #000;
+        opacity: 0.2;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        position: absolute;
+        margin: auto;
+        -webkit-transition: all .05s ease-in-out;
+        transition: all .05s ease-in-out;
+    }    
 
     /* // TVP Icons // */
     
@@ -164,7 +182,10 @@ body {
         border: 0;
         z-index: 1000;
         -webkit-transition: all .05s ease-in-out;
-        transition: all .05s ease-in-out;
+        transition: all .05s ease-in-out;        
+        background-color: #fff;
+        border-radius: 50%;
+        width: 45px;
     }
     .tvp-player {
         @include aspect-ratio(16, 9);
@@ -416,6 +437,8 @@ body {
         }
         .slick-slide{
             margin: 0 15px;
+            padding: 4px;
+            outline: none;
         }
         .tvp-video {
             @include aspect-ratio(16, 11);
@@ -437,21 +460,13 @@ body {
                 margin: 10px 0;
                 top: 50%;
                 transform: translateY(-50%);
-            }
-            .tvp-video-image-overlay {
-                display: none;
-                top: 0;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                position: absolute;
-                margin: auto;
-                -webkit-transition: all .05s ease-in-out;
-                transition: all .05s ease-in-out;
-            }
+            }            
             &:hover {
                 &:after{
                     @include active-state();
+                }
+                .tvp-video-play{
+                    background-color: #e57211;
                 }
                 .tvp-video-image-overlay {
                     display: block;
