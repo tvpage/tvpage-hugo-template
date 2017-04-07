@@ -243,10 +243,14 @@ window.addEventListener("message", function(e){
 function handleVideoClick(e){
     var eventData = e.data;
 
+    //performant way to clone object http://jsben.ch/#/bWfk9
+    var configCopy = JSON.parse(JSON.stringify(config));
+    delete configCopy.no_products_banner;
+
     clickData = {
       data: eventData.videos,
       selectedVideo: eventData.selectedVideo,
-      runTime: (eventData.runTime || (utils.isset(window, '__TVPage__') ? __TVPage__ : {}) ).config[config.id]
+      runTime: configCopy
     };
 
     updateModalTitle(eventData.selectedVideo.title);
@@ -324,15 +328,19 @@ function handleModalNoProducts(e) {
         label.parentNode.removeChild(label);
       }
   }
-  if (config.no_products_banner && config.no_products_banner.trim().length) {
-    if (config.merchandise) {
-      var bannerFrag = document.createDocumentFragment();
-      var bannerDiv = document.createElement('div');
-      utils.addClass(bannerDiv,'tvp-no-products-banner');
-      bannerDiv.innerHTML = config.no_products_banner;
-      bannerFrag.appendChild(bannerDiv);
-      modal.querySelector('.tvp-modal-content').appendChild(bannerFrag);
+  
+  if (config.no_products_banner && config.merchandise) {
+    var bannerHtml = "";
+    if ("function" === typeof config.no_products_banner) {
+      bannerHtml = config.no_products_banner();
+    } else if (String(config.no_products_banner).trim().length) {
+      bannerHtml = config.no_products_banner.trim();
     }
+
+    var bannerDiv = document.createElement('div');
+    utils.addClass(bannerDiv,'tvp-no-products-banner');
+    bannerDiv.innerHTML = bannerHtml;
+    modal.querySelector('.tvp-modal-content').appendChild(bannerDiv);
   }
 
   utils.removeClass(iframeModalHolder,'products');
