@@ -244,8 +244,10 @@
         
         this.onClick = Utils.isset(options.onClick) && Utils.isFunction(options.onClick) ? options.onClick : null;
         this.onNext = function (e) {
+            isProductsInitialized = false;
             renderProducts(e.assetId, e.loginId); 
             $(that.el).find('#videoTitle').html(e.assetTitle);
+            addVideoActiveState(e.assetId);
         };
 
         this.render = function(){
@@ -434,6 +436,7 @@
                 that.selectedVideo = getSelectedData(that.data, target.getAttribute('data-id'));
                 
                 that.player.load(that.selectedVideo.id);
+                addVideoActiveState(that.selectedVideo.id);
                 isProductsInitialized = false;
                 renderProducts(that.selectedVideo.id, that.selectedVideo.loginId);
                 $(that.el).find('#videoTitle').html(that.selectedVideo.title);                                
