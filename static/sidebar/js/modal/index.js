@@ -1,7 +1,8 @@
 (function(window,document){
 
     var analytics,
-        channelId;
+        channelId,
+        eventName;
 
     var eventPrefix = "tvp_" + (document.body.getAttribute("data-id") || "").replace(/-/g,'_');
 
@@ -19,16 +20,18 @@
     };
 
     var checkProducts = function(data,el){
-        var eventName;
-
         if (!data || !data.length) {
             el.classList.add('tvp-no-products');
             eventName = eventPrefix + ':modal_no_products';
+            notify();
         }else{
             el.classList.remove('tvp-no-products');
             eventName = eventPrefix + ':modal_products';
+            notify();
         }
+    };
 
+    var notify = function(argument) {
         setTimeout(function(){
             if (window.parent) {
                 window.parent.postMessage({event: eventName}, '*');
@@ -247,16 +250,20 @@
                 if (Utils.isset(next,'products')) {
                     render(next.products,data.runTime);
                 } else {
-                    loadProducts(
-                        next.assetId,
-                        data.runTime.loginId,
-                        function(products){
+                    if (!data.runTime.merchandise) {
+                        el.classList.add('tvp-no-products');
+                        eventName = eventPrefix + ':modal_no_products';
+                        notify();
+                    }else{
+                        loadProducts(next.assetId,data.runTime.loginId,function(products){
                             setTimeout(function(){
                                 render(products,data.runTime);
                                 checkProducts(products,el);
                                 player.resize();
                             },0);
                         });
+                    }
+                    
                 }
 
                 if (window.parent) {
@@ -297,15 +304,19 @@
                 if (Utils.isset(selectedVideo,'products')) {
                     render(selectedVideo.products,settings);
                 } else {
-                    loadProducts(
-                        selectedVideo.id,
-                        loginId,
-                        function(products){
+                    if (!settings.merchandise) {
+                        el.classList.add('tvp-no-products');
+                        eventName = eventPrefix + ':modal_no_products';
+                        notify();
+                    }else{
+                        loadProducts(selectedVideo.id, loginId,
+                            function(products){
                             setTimeout(function(){
                                 render(products,settings);
                                 checkProducts(products,el);
                             },0);
                         });
+                    }
                 }
             }
         });

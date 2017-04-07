@@ -3,6 +3,7 @@
     var analytics = null;
     var channelId = null;
     var hasData = false;
+    var eventName;
     var eventPrefix = "tvp_" + (document.body.getAttribute("data-id") || "").replace(/-/g,'_');
 
     var pkTrack = function() {
@@ -14,20 +15,22 @@
     };
 
     var checkProducts = function(data,el){
-        var eventName;
-
         if (!data || !data.length) {
             hasData = false;
             Utils.getByClass('tvp-products').classList.remove('enabled');
             el.classList.add('tvp-no-products');
             eventName = eventPrefix + ':modal_no_products';
+            notify();
         }else{
             hasData = true;
             Utils.getByClass('tvp-products').classList.add('enabled');
             el.classList.remove('tvp-no-products');
             eventName = eventPrefix + ':modal_products';
+            notify();
         }
+    };
 
+    var notify = function(){
         setTimeout(function(){
             if (window.parent) {
                 window.parent.postMessage({event: eventName}, '*');
@@ -180,17 +183,19 @@
                 if (Utils.isset(next, 'products')) {
                     render(next.products,data.runTime);
                 } else {
-                    loadProducts(
-                        next.assetId,
-                        data.runTime.loginid || data.runTime.loginId,
-                        function(products) {
+                    if (!data.runTime.merchandise) {
+                        el.classList.add('tvp-no-products');
+                        eventName = eventPrefix + ':modal_no_products';
+                        notify();
+                    }else{
+                        loadProducts(next.assetId,data.runTime.loginid || data.runTime.loginId,function(products) {
                             setTimeout(function() {
                                 render(products,data.runTime);
                                 checkProducts(products,el);
                             }, 0);
                         });
+                    }
                 }
-
                 setTimeout(function() {
                     if (window.parent) {
                         window.parent.postMessage({
@@ -227,15 +232,19 @@
                 if (Utils.isset(selectedVideo, 'products')) {
                     render(selectedVideo.products,settings);
                 } else {
-                    loadProducts(
-                        selectedVideo.id,
-                        loginId,
-                        function(products) {
+                    if (!settings.merchandise) {
+                        el.classList.add('tvp-no-products');
+                        eventName = eventPrefix + ':modal_no_products';
+                        notify();
+                    }else{
+                        loadProducts(selectedVideo.id,loginId,function(products) {
                             setTimeout(function() {
                                 checkProducts(products,el);
                                 render(products,settings);
                             }, 0);
                         });
+                    }
+                    
                 }
             }
         });

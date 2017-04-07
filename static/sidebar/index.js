@@ -324,14 +324,15 @@ function handleModalNoProducts(e) {
         label.parentNode.removeChild(label);
       }
   }
-
   if (config.no_products_banner && config.no_products_banner.trim().length) {
-    var bannerFrag = document.createDocumentFragment();
-    var bannerDiv = document.createElement('div');
-    utils.addClass(bannerDiv,'tvp-no-products-banner');
-    bannerDiv.innerHTML = config.no_products_banner;
-    bannerFrag.appendChild(bannerDiv);
-    modal.querySelector('.tvp-modal-content').appendChild(bannerFrag);
+    if (config.merchandise) {
+      var bannerFrag = document.createDocumentFragment();
+      var bannerDiv = document.createElement('div');
+      utils.addClass(bannerDiv,'tvp-no-products-banner');
+      bannerDiv.innerHTML = config.no_products_banner;
+      bannerFrag.appendChild(bannerDiv);
+      modal.querySelector('.tvp-modal-content').appendChild(bannerFrag);
+    }
   }
 
   utils.removeClass(iframeModalHolder,'products');
