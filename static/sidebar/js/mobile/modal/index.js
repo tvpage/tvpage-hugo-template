@@ -17,9 +17,13 @@
         var eventName;
 
         if (!data || !data.length) {
+            hasData = false;
+            Utils.getByClass('tvp-products').classList.remove('enabled');
             el.classList.add('tvp-no-products');
             eventName = eventPrefix + ':modal_no_products';
         }else{
+            hasData = true;
+            Utils.getByClass('tvp-products').classList.add('enabled');
             el.classList.remove('tvp-no-products');
             eventName = eventPrefix + ':modal_products';
         }
@@ -51,32 +55,6 @@
     var render = function(data,config) {
         var container = Utils.getByClass('tvp-products');
         var el = Utils.getByClass('iframe-content');
-
-        if (data && data.length) {
-            hasData = true;
-        }
-
-        var notifyState = function() {
-            setTimeout(function() {
-                if (window.parent) {
-                    window.parent.postMessage({
-                        event: eventPrefix + ':modal' + (hasData ? '' : '_no') + '_products'
-                    }, '*');
-                }
-            }, 0);
-        };
-
-        if (hasData) {
-            container.classList.add('enabled');
-            el.classList.remove('tvp-no-products');
-            notifyState();
-        } else {
-            container.classList.remove('enabled');
-            el.classList.add('tvp-no-products');
-            notifyState();
-            return;
-        }
-
         var frag = document.createDocumentFragment();
 
         for (var i = 0; i < data.length; i++) {
@@ -254,8 +232,8 @@
                         loginId,
                         function(products) {
                             setTimeout(function() {
-                                render(products,settings);
                                 checkProducts(products,el);
+                                render(products,settings);
                             }, 0);
                         });
                 }
