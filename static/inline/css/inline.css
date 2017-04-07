@@ -410,7 +410,7 @@ body {
 }
 .iframe-content .tvp-product-item-active:after, .iframe-content .tvp-video-active:after {
   bottom: -3px;
-  border: 1px solid #000;
+  border: 1px solid #fff;
   cursor: pointer;
   content: " ";
   left: -3px;
@@ -785,7 +785,7 @@ body {
 }
 .iframe-content .tvp-products-scroller #productContent .tvp-product-item:hover:after {
   bottom: -3px;
-  border: 1px solid #000;
+  border: 1px solid #fff;
   cursor: pointer;
   content: " ";
   left: -3px;
@@ -910,7 +910,7 @@ body {
 }
 .iframe-content .tvp-videos-scroller .tvp-video:hover:after {
   bottom: -3px;
-  border: 1px solid #000;
+  border: 1px solid #fff;
   cursor: pointer;
   content: " ";
   left: -3px;
