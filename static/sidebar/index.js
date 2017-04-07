@@ -147,7 +147,6 @@ var iframeContent = utils.getIframeHtml({
     domain: config.baseUrl,
     style: config.css.sidebar,
     js: [
-        config.debug ? config.jsPath + "vendor/jquery.js" : "",
         config.debug ? config.jsPath + "libs/utils.js" : "",
         config.debug ? config.jsPath + "grid.js" : "",
         config.debug ? config.jsPath + "index.js" : "",
@@ -315,6 +314,7 @@ function handleModalInitialized(e){
 
 function handlePlayerNext(e) {
     updateModalTitle(e.data.next.assetTitle);
+    removeBannerEl();
 };
 
 function handleModalNoProducts(e) {
@@ -323,6 +323,15 @@ function handleModalNoProducts(e) {
       if (label) {
         label.parentNode.removeChild(label);
       }
+  }
+
+  if (config.no_products_banner && config.no_products_banner.trim().length) {
+    var bannerFrag = document.createDocumentFragment();
+    var bannerDiv = document.createElement('div');
+    utils.addClass(bannerDiv,'tvp-no-products-banner');
+    bannerDiv.innerHTML = config.no_products_banner;
+    bannerFrag.appendChild(bannerDiv);
+    modal.querySelector('.tvp-modal-content').appendChild(bannerFrag);
   }
 
   utils.removeClass(iframeModalHolder,'products');
@@ -345,16 +354,17 @@ function handleModalProducts(e) {
       label.innerHTML += tooltip;
     }
     modalHeader.appendChild(label);
-
-    //products banner addition
-    if (config.products_banner) {
-      //Append to .tvp-modal-content
-      console.log(config.products_banner);
-    }
   }
 
   utils.removeClass(iframeModalHolder,'no-products');
   utils.addClass(iframeModalHolder,'products');
+};
+
+var removeBannerEl = function() {
+  var noProductsBanner = modal.querySelector('.tvp-no-products-banner');
+  if (noProductsBanner) {
+    modal.querySelector('.tvp-modal-content').removeChild(noProductsBanner);
+  } 
 };
 
 var closeModal = function () {
@@ -365,6 +375,7 @@ var closeModal = function () {
       utils.removeClass(document.body,'tvp-modal-open');
   }
 
+  removeBannerEl();
   utils.removeClass(iframeModalHolder,'products');
   utils.removeClass(iframeModalHolder,'no-products');
   iframeModal.parentNode.removeChild(iframeModal);

@@ -65,6 +65,15 @@
     "}"+
 {{ end }}
 
+{{ with ($.Scratch.Get "settings").no_products_banner }}
+".tvp-no-products-banner{" +
+    "height: {{ ($.Scratch.Get "settings").no_products_banner_height }};" +
+    "width: {{ ($.Scratch.Get "settings").no_products_banner_width }};" +
+    "padding: {{ ($.Scratch.Get "settings").no_products_banner_padding }};" +
+    "margin: {{ ($.Scratch.Get "settings").no_products_banner_margin }};" +
+"}" +
+{{ end }}
+
 ".tvp-modal-close {" +
     "width: {{ ($.Scratch.Get "settings").modal_close_button_width }};" +
     "height: {{ ($.Scratch.Get "settings").modal_close_button_height }};" +
