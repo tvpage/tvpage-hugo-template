@@ -138,14 +138,8 @@
 
         var willScroll = data.length > 2;
         if (willScroll) {
-          holder.classList.remove("no-overflow");
           container.setAttribute('ss-container', true);
-        } else {
-          holder.classList.add("no-overflow");
-        }
-        
-        if (willScroll) {
-           SimpleScrollbar.initAll();
+          SimpleScrollbar.initAll();
         }
 
         setTimeout(function(){
