@@ -487,7 +487,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
         isFeaturedProductRendered = true;
 
         $(document.getElementById('tvpProductsView'))
-            .on('afterChange', function(event, slick, currentSlide) {
+            .off().on('afterChange', function(event, slick, currentSlide) {
                 if (currentApproach === 'desktop' && isFeaturedProductRendered) {
                     var slideItemId = $(slick.$slides[currentSlide]).find('.tvp-product-item')[0].getAttribute('data-id');
                     var selected = getSelectedData(productData, slideItemId);
