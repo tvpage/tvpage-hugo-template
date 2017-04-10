@@ -66,7 +66,7 @@
                 }
             }
 
-            if (that.dataMethod !== 'static') {
+            if (that.dataMethod !== 'static' && playlist.length > 4) {
                 var noVidFrag = document.createDocumentFragment(),
                     noVideos = document.createElement('div');
                 noVideos.classList.add('tvp-no-videos');

@@ -241,6 +241,7 @@ body {
   -webkit-box-pack: center;
   justify-content: center;
   height: 20vh;
+  position: relative;
 }
 
 .tvp-active-overlay {
@@ -274,7 +275,6 @@ body {
   font-weight: bold;
   line-height: 15px;
   color: #fff;
-  margin: auto;
   z-index: 1000;
 }
 
@@ -289,7 +289,7 @@ body {
 .tvp-video-title,
 .tvp-video-duration {
   color: #FFF;
-  text-align: -webkit-auto;
+  text-align: left;
   font-family: Arial;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -298,16 +298,21 @@ body {
 }
 
 .tvp-video-title {
-  font-size: 14px;
+  font-size: calc(10px + (24 - 10) * ((100vw - 300px) / (1600 - 300)));
 }
 
 .tvp-video-duration {
-  font-size: 12px;
+  font-size: calc(8px + (22 - 8) * ((100vw - 300px) / (1600 - 300)));
 }
 
 .tvp-video-details {
-  width: 60%;
+  width: 55%;
   margin: auto 10px;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  position: absolute;
+  right: 5%;
 }
 
 .tvp-category-tag{
@@ -316,16 +321,21 @@ body {
   text-align: left;
   padding: 5px;
   margin-top: 5px;
+  font-size: calc(8px + (22 - 8) * ((100vw - 300px) / (1600 - 300)));
 }
 
 .tvp-video-image {
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  position: relative;
+  position: absolute;
   pointer-events: none;
   width: 30%;
-  margin: auto 0;
+  margin-left:10px;
+  left: 0;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
 }
 
 .tvp-video-image:focus {
@@ -427,7 +437,7 @@ body {
     width: 100%;
   }
   .tvp-video{
-    height: 40vh;
+    height: 35vh;
   }
 
   #tvp-slide-menu.active #tvp-hamburger-container {
@@ -439,5 +449,10 @@ body {
   }
   .tvp-video-duration {
     font-size: 10px;
+  }
+  .tvp-video-details{
+    width: 50%;
+    right: 10%;
+    margin: auto 15px;
   }
 }
