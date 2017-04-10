@@ -142,8 +142,12 @@ body {
             line-height: 43px;
             padding: 0;
             margin: 0;
-            position: absolute;
-            bottom: 0;
+            // position: absolute;
+            // bottom: 0;
+        }
+        h1{
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .tvp-row-player-title {
             display: inline-block;
@@ -151,14 +155,15 @@ body {
             white-space: nowrap;
             height: 100%;
             position: relative;
-            overflow: hidden;
+            float: left;
         }
         .tvp-row-featured-title {
             display: inline-block;
             height: 100%;
             margin-left: 1.2195%;
             width: 22.2222%;
-            position: relative;            
+            position: relative;
+            float: left;
         }
     }
     .tvp-row {
