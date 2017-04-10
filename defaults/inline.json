@@ -130,160 +130,6 @@
             "value": "4"
         },
         {
-            "for": "videos-carousel",
-            "type": "text",
-            "label": "Videos Carousel Width",
-            "code": "videos_carousel_width",
-            "value": "100%"
-        },
-        {
-            "for": "videos-carousel",
-            "type": "text",
-            "label": "Videos Carousel Margin",
-            "code": "videos_carousel_margin",
-            "value": "0"
-        },
-        {
-            "for": "videos-carousel",
-            "type": "text",
-            "label": "Videos Carousel Item Height",
-            "code": "videos_carousel_item_height",
-            "value": "68.75%"
-        },
-        {
-            "for": "videos-carousel",
-            "type": "text",
-            "label": "Videos Carousel Item Space InBetween",
-            "code": "videos_carousel_item_space_inbetween",
-            "value": "15px"
-        },
-        {
-            "for": "videos-carousel",
-            "type": "text",
-            "label": "Videos Carousel Arrow Display",
-            "code": "videos_carousel_arrow_display",
-            "value": "block"
-        },
-        {
-            "for": "videos-carousel",
-            "type": "text",
-            "label": "Videos Carousel Arrow Background",
-            "code": "videos_carousel_arrow_background",
-            "value": "#fff"
-        },
-        {
-            "for": "videos-carousel",
-            "type": "text",
-            "label": "Videos Carousel Arrow Height",
-            "code": "videos_carousel_arrow_height",
-            "value": "50px"
-        },
-        {
-            "for": "videos-carousel",
-            "type": "text",
-            "label": "Videos Carousel Arrow Width",
-            "code": "videos_carousel_arrow_width",
-            "value": "50px"
-        },
-        {
-            "for": "videos-carousel",
-            "type": "text",
-            "label": "Videos Carousel Item Thumbnail Height",
-            "code": "videos_carousel_item_thumbnail_height",
-            "value": "56.25%"
-        },
-        {
-            "for": "videos-carousel",
-            "type": "text",
-            "label": "Videos Carousel Item Thumbnail Width",
-            "code": "videos_carousel_item_thumbnail_width",
-            "value": "100%"
-        },
-        {
-            "for": "videos-carousel",
-            "type": "text",
-            "label": "Videos Carousel Item Thumbnail Display",
-            "code": "videos_carousel_item_thumbnail_display",
-            "value": "block"
-        },
-        {
-            "for": "videos-carousel",
-            "type": "text",
-            "label": "Videos Carousel Item Thumbnail Border Style",
-            "code": "videos_carousel_item_thumbnail_border_style",
-            "value": "solid"
-        },
-        {
-            "for": "videos-carousel",
-            "type": "text",
-            "label": "Videos Carousel Item Thumbnail Border Color",
-            "code": "videos_carousel_item_thumbnail_border_color",
-            "value": "#fff"
-        },
-        {
-            "for": "videos-carousel",
-            "type": "text",
-            "label": "Videos Carousel Item Thumbnail Border Width",
-            "code": "videos_carousel_item_thumbnail_border_width",
-            "value": "0"
-        },
-        {
-            "for": "videos-carousel",
-            "type": "text",
-            "label": "Videos Carousel Item Title Font Size",
-            "code": "videos_carousel_item_title_font_size",
-            "value": "12px"
-        },
-        {
-            "for": "videos-carousel",
-            "type": "text",
-            "label": "Videos Carousel Item Title Font Weight",
-            "code": "videos_carousel_item_title_font_weight",
-            "value": "normal"
-        },
-        {
-            "for": "videos-carousel",
-            "type": "text",
-            "label": "Videos Carousel Item Title Font Color",
-            "code": "videos_carousel_item_title_font_color",
-            "value": "#000"
-        },
-        {
-            "for": "videos-carousel",
-            "type": "text",
-            "label": "Videos Carousel Item Title Margin",
-            "code": "videos_carousel_item_title_margin",
-            "value": "10px 0"
-        },
-        {
-            "for": "videos-carousel",
-            "type": "text",
-            "label": "Videos Carousel Item Title Width",
-            "code": "videos_carousel_item_title_width",
-            "value": "100%"
-        },
-        {
-            "for": "videos-carousel",
-            "type": "text",
-            "label": "Videos Carousel Item Title Display",
-            "code": "videos_carousel_item_title_display",
-            "value": "block"
-        },
-        {
-            "for": "videos-carousel",
-            "type": "text",
-            "label": "Videos Carousel Item Title Position",
-            "code": "videos_carousel_item_title_position",
-            "value": "static"
-        },
-        {
-            "for": "videos-carousel",
-            "type": "text",
-            "label": "Videos Carousel Item Title Transform",
-            "code": "videos_carousel_item_title_transform",
-            "value": "none"
-        },
-        {
             "for": "iframe-holder",
             "type": "text",
             "label": "iFrame Holder Background Color",
@@ -328,38 +174,25 @@
         {
             "for": "inline",
             "type": "text",
-            "label": "Header Height",
-            "code": "header_height",
-            "value": "43px;"
-        },
-        {
-            "for": "inline",
-            "type": "text",
-            "label": "Player / Product Section Height",
-            "code": "player_product_section_height",
-            "value": "32.44094%"
-        },
-        {
-            "for": "inline",
-            "type": "text",
-            "label": "Player / Product Section Margin",
-            "code": "player_product_section_margin",
-            "value": "0 0 30px 0"
-        },
-        {
-            "for": "inline",
-            "type": "text",
-            "label": "Video Header Font Color",
-            "code": "video_header_font_color",
+            "label": "Active State Box Border",
+            "code": "active_state_border",
             "value": "#000"
         },
         {
             "for": "inline",
             "type": "text",
-            "label": "Video Header Font Size",
-            "code": "video_header_font_size",
-            "value": "150%"
+            "label": "Hover State Box Border",
+            "code": "hover_state_border",
+            "value": "#000"
         },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Header Height",
+            "code": "header_height",
+            "value": "43px"
+        },
+
         {
             "for": "inline",
             "type": "text",
@@ -391,16 +224,30 @@
         {
             "for": "inline",
             "type": "text",
-            "label": "Featured Product Header Font Color",
-            "code": "featured_product_header_font_color",
-            "value": "#000"
+            "label": "Video Header Max Font Size",
+            "code": "video_header_font_size_max",
+            "value": "34"
         },
         {
             "for": "inline",
             "type": "text",
-            "label": "Featured Product Header Font Size",
-            "code": "featured_product_header_font_size",
-            "value": "150%"
+            "label": "Video Header Min Font Size",
+            "code": "video_header_font_size_min",
+            "value": "14"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Max Font Size",
+            "code": "featured_product_header_font_size_max",
+            "value": "32"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Min Font Size",
+            "code": "featured_product_header_font_size_min",
+            "value": "12"
         },
         {
             "for": "inline",
@@ -426,20 +273,6 @@
         {
             "for": "inline",
             "type": "text",
-            "label": "Featured Product Box Padding",
-            "code": "featured_product_box_padding",
-            "value": "17px 16px"
-        },
-        {
-            "for": "inline",
-            "type": "text",
-            "label": "Featured Product Image Height",
-            "code": "featured_product_image_height",
-            "value": "73.47826%"
-        },
-        {
-            "for": "inline",
-            "type": "text",
             "label": "Featured Product Title Font Family",
             "code": "featured_product_title_font_family",
             "value": "Helvetica"
@@ -447,23 +280,16 @@
         {
             "for": "inline",
             "type": "text",
-            "label": "Featured Product Title Font Color",
-            "code": "featured_product_title_font_color",
-            "value": "#000"
+            "label": "Featured Product Title Max Font Size",
+            "code": "featured_product_title_font_size_max",
+            "value": "14"
         },
         {
             "for": "inline",
             "type": "text",
-            "label": "Featured Product Title Font Size",
-            "code": "featured_product_title_font_size",
-            "value": "14px"
-        },
-        {
-            "for": "inline",
-            "type": "text",
-            "label": "Featured Product Title Font Weight",
-            "code": "featured_product_title_font_weight",
-            "value": "normal"
+            "label": "Featured Product Title Min Font Size",
+            "code": "featured_product_title_font_size_min",
+            "value": "12"
         },
         {
             "for": "inline",
@@ -475,17 +301,18 @@
         {
             "for": "inline",
             "type": "text",
-            "label": "Featured Product Genre Font Color",
-            "code": "featured_product_genre_font_color",
-            "value": "#B7B7B7"
+            "label": "Featured Product Genre Max Font Size",
+            "code": "featured_product_genre_font_size_max",
+            "value": "20"
         },
         {
             "for": "inline",
             "type": "text",
-            "label": "Featured Product Genre Font Size",
-            "code": "featured_product_genre_font_size",
-            "value": "12px"
+            "label": "Featured Product Genre Min Font Size",
+            "code": "featured_product_genre_font_size_min",
+            "value": "12"
         },
+
         {
             "for": "inline",
             "type": "text",
@@ -510,16 +337,16 @@
         {
             "for": "inline",
             "type": "text",
-            "label": "Featured Product Price Font Color",
-            "code": "featured_product_price_font_color",
-            "value": "#000"
+            "label": "Featured Product Price Max Font Size",
+            "code": "featured_product_price_font_size_max",
+            "value": "14"
         },
         {
             "for": "inline",
             "type": "text",
-            "label": "Featured Product Price Font Size",
-            "code": "featured_product_price_font_size",
-            "value": "14px"
+            "label": "Featured Product Price Min Font Size",
+            "code": "featured_product_price_font_size_min",
+            "value": "12"
         },
         {
             "for": "inline",
@@ -533,63 +360,7 @@
             "type": "text",
             "label": "Featured Product Price Margin",
             "code": "featured_product_price_margin",
-            "value": "0 0 0 25px"
-        },
-        {
-            "for": "inline",
-            "type": "text",
-            "label": "Featured Product Price View Details Button Font Color",
-            "code": "featured_product_view_button_font_color",
-            "value": "#000"
-        },
-        {
-            "for": "inline",
-            "type": "text",
-            "label": "Featured Product Price View Details Button Font Size",
-            "code": "featured_product_view_button_font_size",
-            "value": "100%"
-        },
-        {
-            "for": "inline",
-            "type": "text",
-            "label": "Featured Product Price View Details Button Font Weight",
-            "code": "featured_product_view_button_font_weight",
-            "value": "normal"
-        },
-        {
-            "for": "inline",
-            "type": "text",
-            "label": "Video Player Holder Width",
-            "code": "video_player_holder_width",
-            "value": "57.2072%"
-        },
-        {
-            "for": "inline",
-            "type": "text",
-            "label": "Featured Product Holder Width",
-            "code": "featured_product_holder_width",
-            "value": "24.5946%"
-        },
-        {
-            "for": "inline",
-            "type": "text",
-            "label": "Featured Product Holder Left Margin",
-            "code": "featured_product_holder_left_margin",
-            "value": "2.7027%"
-        },
-        {
-            "for": "inline",
-            "type": "text",
-            "label": "Product Holder Width",
-            "code": "product_holder_width",
-            "value": "13.5135%"
-        },
-        {
-            "for": "inline",
-            "type": "text",
-            "label": "Product Holder Left Margin",
-            "code": "product_holder_left_margin",
-            "value": "1.5315%"
+            "value": "0"
         },
         {
             "for": "inline",
@@ -629,23 +400,58 @@
         {
             "for": "inline",
             "type": "text",
-            "label": "Product Item Opacity Active",
-            "code": "product_item_title_font_family",
-            "value": "Helvetica"
+            "label": "Product Item Title Max Font Size",
+            "code": "product_item_title_font_size_max",
+            "value": "18"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item Title Min Font Size",
+            "code": "product_item_title_font_size_min",
+            "value": "12"
+        },
+        {
+            "for": "videos-carousel",
+            "type": "text",
+            "label": "Videos Carousel Arrow Display",
+            "code": "videos_carousel_arrow_display",
+            "value": "block"
+        },
+        {
+            "for": "videos-carousel",
+            "type": "text",
+            "label": "Videos Carousel Arrow Background",
+            "code": "videos_carousel_arrow_background",
+            "value": "#fff"
+        },
+        {
+            "for": "videos-carousel",
+            "type": "text",
+            "label": "Videos Carousel Arrow Height",
+            "code": "videos_carousel_arrow_height",
+            "value": "50px"
+        },
+        {
+            "for": "videos-carousel",
+            "type": "text",
+            "label": "Videos Carousel Arrow Width",
+            "code": "videos_carousel_arrow_width",
+            "value": "50px"
         },
         {
             "for": "videos-carosuel-item",
             "type": "text",
-            "label": "Videos Carousel Item Padding",
-            "code": "videos_carousel_item_padding",
-            "value": "0"
+            "label": "Videos Carousel Item Opacity",
+            "code": "videos_carousel_item_opacity",
+            "value": "0.6"
         },
         {
             "for": "videos-carosuel-item",
             "type": "text",
-            "label": "Videos Carousel Item Margin",
-            "code": "videos_carousel_item_margin",
-            "value": "0"
+            "label": "Videos Carousel Item Active Opacity",
+            "code": "videos_carousel_item_active_opacity",
+            "value": "1"
         },
         {
             "for": "videos-carosuel-item",
@@ -655,60 +461,130 @@
             "value": "none"
         },
         {
-            "for": "videos-carosuel-item",
+            "for": "videos-carousel",
             "type": "text",
-            "label": "Videos Carousel Play Icon Background Color",
-            "code": "videos_carousel_play_icon_background_color",
-            "value": "fff"
+            "label": "Videos Carousel Item Title Font Color",
+            "code": "videos_carousel_item_title_font_color",
+            "value": "#000"
         },
         {
-            "for": "videos-carosuel-item",
+            "for": "videos-carousel",
             "type": "text",
-            "label": "Videos Carousel Play Icon Background Color Hover",
-            "code": "videos_carousel_play_icon_background_color_hover",
-            "value": "#e57211"
+            "label": "Videos Carousel Item Title Max Font Size",
+            "code": "videos_carousel_item_title_font_size_max",
+            "value": "16"
         },
         {
-            "for": "videos-carosuel-item",
+            "for": "videos-carousel",
             "type": "text",
-            "label": "Videos Carousel Play Icon Color",
-            "code": "videos_carousel_play_icon_color",
-            "value": ""
+            "label": "Videos Carousel Item Title Min Font Size",
+            "code": "videos_carousel_item_title_font_size_min",
+            "value": "10"
         },
         {
-            "for": "videos-carosuel-item",
+            "for": "videos-carousel",
             "type": "text",
-            "label": "Videos Carousel Play Icon Border Radius",
-            "code": "videos_carousel_play_icon_border_radius",
-            "value": "50%"
+            "label": "Videos Carousel Item Title Font Weight",
+            "code": "videos_carousel_item_title_font_weight",
+            "value": "normal"
         },
         {
-            "for": "videos-carosuel-item",
+            "for": "videos-carousel",
             "type": "text",
-            "label": "Videos Carousel Play Icon Height",
-            "code": "videos_carousel_play_icon_height",
-            "value": "45px"
+            "label": "Videos Carousel Item Title Margin",
+            "code": "videos_carousel_item_title_padding",
+            "value": "10px 0 0 0"
         },
         {
-            "for": "videos-carosuel-item",
+            "for": "videos-carousel",
             "type": "text",
-            "label": "Videos Carousel Play Icon width",
-            "code": "videos_carousel_play_icon_width",
-            "value": "45px"
+            "label": "Videos Carousel Item Title Width",
+            "code": "videos_carousel_item_title_width",
+            "value": "100%"
         },
         {
-            "for": "videos-carosuel-item",
+            "for": "videos-carousel",
             "type": "text",
-            "label": "Videos Carousel Overlay Opacity",
-            "code": "videos_carousel_overlay_opacity",
-            "value": "0.2"
+            "label": "Videos Carousel Item Title Display",
+            "code": "videos_carousel_item_title_display",
+            "value": "block"
         },
         {
-            "for": "videos-carosuel-item",
+            "for": "videos-carousel",
             "type": "text",
-            "label": "Videos Carousel Overlay Background Color",
-            "code": "videos_carousel_overlay_background_color",
-            "value": "000"
+            "label": "Videos Carousel Item Title Position",
+            "code": "videos_carousel_item_title_position",
+            "value": "static"
+        },
+        {
+            "for": "videos-carousel",
+            "type": "text",
+            "label": "Videos Carousel Item Title Top",
+            "code": "videos_carousel_item_title_top",
+            "value": "initial"
+        },        
+        {
+            "for": "videos-carousel",
+            "type": "text",
+            "label": "Videos Carousel Item Title Transform",
+            "code": "videos_carousel_item_title_transform",
+            "value": "none"
+        },
+        {
+            "for": "videos-carousel",
+            "type": "text",
+            "label": "Videos Carousel Item Height",
+            "code": "videos_carousel_item_height",
+            "value": "77.77778%"
+        },
+        {
+            "for": "videos-carousel",
+            "type": "text",
+            "label": "Videos Carousel Item Space InBetween",
+            "code": "videos_carousel_item_space_inbetween",
+            "value": "7.5px"
+        },
+        {
+            "for": "videos-carousel",
+            "type": "text",
+            "label": "Videos Carousel Item Thumbnail Height",
+            "code": "videos_carousel_item_thumbnail_height",
+            "value": "56.25%"
+        },
+        {
+            "for": "videos-carousel",
+            "type": "text",
+            "label": "Videos Carousel Item Thumbnail Width",
+            "code": "videos_carousel_item_thumbnail_width",
+            "value": "100%"
+        },
+        {
+            "for": "videos-carousel",
+            "type": "text",
+            "label": "Videos Carousel Item Thumbnail Display",
+            "code": "videos_carousel_item_thumbnail_display",
+            "value": "block"
+        },
+        {
+            "for": "videos-carousel",
+            "type": "text",
+            "label": "Videos Carousel Item Thumbnail Border Style",
+            "code": "videos_carousel_item_thumbnail_border_style",
+            "value": "solid"
+        },
+        {
+            "for": "videos-carousel",
+            "type": "text",
+            "label": "Videos Carousel Item Thumbnail Border Color",
+            "code": "videos_carousel_item_thumbnail_border_color",
+            "value": "#fff"
+        },
+        {
+            "for": "videos-carousel",
+            "type": "text",
+            "label": "Videos Carousel Item Thumbnail Border Width",
+            "code": "videos_carousel_item_thumbnail_border_width",
+            "value": "0"
         }
     ]
 }

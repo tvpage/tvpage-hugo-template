@@ -142,8 +142,6 @@ body {
             line-height: 43px;
             padding: 0;
             margin: 0;
-            // position: absolute;
-            // bottom: 0;
         }
         h1{
             overflow: hidden;
@@ -446,7 +444,7 @@ body {
             outline: none;
         }
         .tvp-video {
-            @include aspect-ratio(16, 11);
+            @include aspect-ratio(189, 147);
             box-sizing: border-box;
             display: block;
             position: relative;
@@ -461,8 +459,8 @@ body {
 
             }
             .tvp-video-title {
-                overflow: hidden;
-                margin: 10px 0;
+                // overflow: hidden;
+                margin: 0;
                 top: 50%;
                 transform: translateY(-50%);
             }            
@@ -493,7 +491,7 @@ body {
         .tvp-row-player-title {            
             width: 100%;
             h1{
-                font-size: 14px;
+                // font-size: 14px;
                 font-weight: bold;
                 line-height: 16px;
             }
@@ -512,7 +510,6 @@ body {
             margin: 10px 0;
             display: block;
             h2{
-                font-size: 12px;
                 font-weight: 500;
                 line-height: 14px;
                 margin: 0;
@@ -548,14 +545,14 @@ body {
                         display: inline-block;
                         width: 79%;
                         float: right;
-                        font-size: 12px;
+                        // font-size: 12px;
                         background-color: transparent;
                         top: 0;
                         transform: none;
                         padding-top: 5px;
                         &-title{
                             font-weight: 500;
-                            font-size: 12px;
+                            // font-size: 12px;
                             line-height: 14px;                            
                         }
                         &-rating{
@@ -564,7 +561,7 @@ body {
                         &-price{
                             display: block;
                             font-weight: 500;
-                            font-size: 12px;
+                            // font-size: 12px;
                             line-height: 14px;
                         }
                         &-view-details{
