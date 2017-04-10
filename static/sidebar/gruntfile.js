@@ -10,8 +10,6 @@ module.exports = function(grunt) {
       autoprefixer: {
         css: {
           files: {
-            'css/host.css': 'css/host.css',
-            'css/mobile/host.css': 'css/mobile/host.css',
             'css/styles.css': 'css/styles.css',
             'css/modal/styles.css': 'css/modal/styles.css',
             'css/mobile/modal/styles.css': 'css/mobile/modal/styles.css',

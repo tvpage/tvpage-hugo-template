@@ -1,3 +1,0 @@
-.tvp-sidebar-load {
-    border-radius: {{ ($.Scratch.Get "settings").load_button_border_radius }};
-}
