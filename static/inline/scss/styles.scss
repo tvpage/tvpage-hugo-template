@@ -482,23 +482,30 @@ body {
         display: none;
     }
 }
-@media only screen and (max-width: 768px){
+@media only screen and (max-width: 769px){
+    body{
+        padding: 0 10px!important;
+    }
   .iframe-content {
     .tvp-row-titles{
-        height: 23px;
+        height: 43px!important;
         margin-bottom: 10px;
         .tvp-row-featured-title{ display: none;}
         .tvp-row-player-title {            
             width: 100%;
             h1{
-                // font-size: 14px;
                 font-weight: bold;
                 line-height: 16px;
+                padding: 27px 0 0 0;
             }
         }
     }
     .tvp-row{
-        @include aspect-ratio(720,599);
+        // @include aspect-ratio(720,599);
+        @include aspect-ratio(355,310);
+        // &:before{
+        //     padding-top: 95%;
+        // }
         .tvp-player{
           width: 100%;      
           float: none;
@@ -507,13 +514,14 @@ body {
             display: none;
         }
         .tvp-mobile-product-title{
-            margin: 10px 0;
+            margin: 5px 0;
             display: block;
             h2{
                 font-weight: 500;
                 line-height: 14px;
                 margin: 0;
                 padding: 0;
+                font-size: 14px!important;
             }
         }
         .tvp-products-scroller{
@@ -526,12 +534,11 @@ body {
                     margin: 0 -5px;
                 }                
                 .slick-slide{
-                    margin: 0 5px;
+                    margin: 5px;
                 }
                 .tvp-product-item{
                     border: 1px solid #DDDDDD;                    
-                    min-height: 86px;
-                    padding: 5px 0 0 5px;
+                    padding: 1px;
                     opacity: 1;
                     .tvp-product-image{
                         @include aspect-ratio(1,1);
@@ -540,16 +547,18 @@ body {
                         background-repeat: no-repeat;
                         background-position: center;
                         width: 18.6%;
+                        // max-width: 54px;
+                        margin-bottom: 31.3953%;
                     }
                     .tvp-product-info{
                         display: inline-block;
                         width: 79%;
                         float: right;
-                        // font-size: 12px;
                         background-color: transparent;
                         top: 0;
                         transform: none;
                         padding-top: 5px;
+                        margin-left: 10px;
                         &-title{
                             font-weight: 500;
                             // font-size: 12px;
@@ -573,6 +582,7 @@ body {
                             bottom: 0;
                             right: 0;
                             padding: 4px 15px;
+                            font-family: inherit;
                         }
                     }
                 }
@@ -586,4 +596,14 @@ body {
         }
     }
   }
+}
+
+@media only screen and (max-width: 321px){
+    .iframe-content{
+        .tvp-row{
+            &:before{
+                padding-top: 95.7%;
+            }
+        }
+    }
 }

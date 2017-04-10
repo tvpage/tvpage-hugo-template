@@ -931,9 +931,13 @@ body {
   display: none;
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 769px) {
+  body {
+    padding: 0 10px !important;
+  }
+
   .iframe-content .tvp-row-titles {
-    height: 23px;
+    height: 43px !important;
     margin-bottom: 10px;
   }
   .iframe-content .tvp-row-titles .tvp-row-featured-title {
@@ -945,6 +949,7 @@ body {
   .iframe-content .tvp-row-titles .tvp-row-player-title h1 {
     font-weight: bold;
     line-height: 16px;
+    padding: 27px 0 0 0;
   }
   .iframe-content .tvp-row {
     position: relative;
@@ -953,7 +958,7 @@ body {
     display: block;
     content: "";
     width: 100%;
-    padding-top: 83.19444%;
+    padding-top: 87.32394%;
   }
   .iframe-content .tvp-row > .tvp-content {
     position: absolute;
@@ -970,7 +975,7 @@ body {
     display: none;
   }
   .iframe-content .tvp-row .tvp-mobile-product-title {
-    margin: 10px 0;
+    margin: 5px 0;
     display: block;
   }
   .iframe-content .tvp-row .tvp-mobile-product-title h2 {
@@ -978,6 +983,7 @@ body {
     line-height: 14px;
     margin: 0;
     padding: 0;
+    font-size: 14px !important;
   }
   .iframe-content .tvp-row .tvp-products-scroller {
     width: 100%;
@@ -991,12 +997,11 @@ body {
     margin: 0 -5px;
   }
   .iframe-content .tvp-row .tvp-products-scroller #productContent .slick-slide {
-    margin: 0 5px;
+    margin: 5px;
   }
   .iframe-content .tvp-row .tvp-products-scroller #productContent .tvp-product-item {
     border: 1px solid #DDDDDD;
-    min-height: 86px;
-    padding: 5px 0 0 5px;
+    padding: 1px;
     opacity: 1;
   }
   .iframe-content .tvp-row .tvp-products-scroller #productContent .tvp-product-item .tvp-product-image {
@@ -1006,6 +1011,7 @@ body {
     background-repeat: no-repeat;
     background-position: center;
     width: 18.6%;
+    margin-bottom: 31.3953%;
   }
   .iframe-content .tvp-row .tvp-products-scroller #productContent .tvp-product-item .tvp-product-image:before {
     display: block;
@@ -1029,6 +1035,7 @@ body {
     -webkit-transform: none;
             transform: none;
     padding-top: 5px;
+    margin-left: 10px;
   }
   .iframe-content .tvp-row .tvp-products-scroller #productContent .tvp-product-item .tvp-product-info-title {
     font-weight: 500;
@@ -1051,8 +1058,14 @@ body {
     bottom: 0;
     right: 0;
     padding: 4px 15px;
+    font-family: inherit;
   }
   .iframe-content .tvp-videos-container .tvp-videos-arrows {
     display: none;
+  }
+}
+@media only screen and (max-width: 321px) {
+  .iframe-content .tvp-row:before {
+    padding-top: 95.7%;
   }
 }
