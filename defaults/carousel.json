@@ -404,6 +404,13 @@
         },
         {
             "for": "carousel",
+            "type": "boolean",
+            "label": "Item Play Button Show On Hover",
+            "code": "item_play_button_show_on_hover",
+            "value": false
+        },
+        {
+            "for": "carousel",
             "type": "text",
             "label": "Item Play Button Background Color",
             "code": "item_play_button_background_color",

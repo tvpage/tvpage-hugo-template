@@ -40,6 +40,10 @@
         this.render = function(){
             this.container.innerHTML = '';
 
+            if (this.options.item_play_button_show_on_hover) {
+                this.container.classList.add("show-on-hover");
+            }
+
             var all = this.data.slice(0);
             var carouselFrag = document.createDocumentFragment();
 

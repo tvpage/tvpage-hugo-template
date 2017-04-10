@@ -155,6 +155,12 @@
         "background-color:{{ ($.Scratch.Get "settings").item_play_button_hover_color }};" +
     "}" +
 
+    ".show-on-hover .tvp-video:hover .tvp-video-play {" +
+        "background-color:{{ ($.Scratch.Get "settings").item_play_button_hover_color }};" +
+        "opacity: 1;" +
+        "visibility: visible;" +
+    "}" +
+
     ".tvp-video:hover .tvp-video-play > polygon {" +
         "fill:{{ ($.Scratch.Get "settings").item_play_button_icon_hover_color }};" +
     "}" +
