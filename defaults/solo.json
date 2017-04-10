@@ -54,6 +54,13 @@
     {
       "for": "player",
       "type": "text",
+      "label": "Playlist",
+      "code": "playlist",
+      "value": "hide"
+    },
+    {
+      "for": "player",
+      "type": "text",
       "label": "Play Button Height",
       "code": "play_button_height",
       "value": "65px"
@@ -71,6 +78,13 @@
       "label": "Play Button Background Color",
       "code": "play_button_background_color",
       "value": "#fff"
+    },
+    {
+      "for": "player",
+      "type": "text",
+      "label": "Play Button Background Color Hover",
+      "code": "play_button_background_color_hover",
+      "value": "#333"
     },
     {
       "for": "player",
@@ -106,6 +120,104 @@
       "label": "Overlay Opacity",
       "code": "overlay_opacity",
       "value": "0.5"
+    },
+    {
+      "for": "menu",
+      "type": "text",
+      "label": "Menu Item Play Button Width",
+      "code": "menu_item_play_button_width",
+      "value": "33%"
+    },
+    {
+      "for": "menu",
+      "type": "text",
+      "label": "Menu Item Play Button Height",
+      "code": "menu_item_play_button_height",
+      "value": "58%"
+    },
+    {
+      "for": "menu",
+      "type": "text",
+      "label": "Menu Item Play Button Background Color",
+      "code": "menu_item_play_button_background_color",
+      "value": "white"
+    },
+    {
+      "for": "menu",
+      "type": "text",
+      "label": "Menu Item Play Button Background Color Hover",
+      "code": "menu_item_play_button_background_color_hover",
+      "value": "#333"
+    },
+    {
+      "for": "menu",
+      "type": "text",
+      "label": "Menu Item Play Button Border radius",
+      "code": "menu_item_play_button_border_radius",
+      "value": "50%"
+    },
+    {
+      "for": "menu",
+      "type": "text",
+      "label": "Menu Item Play Button Icon Color",
+      "code": "menu_item_play_button_icon_color",
+      "value": "#333"
+    },
+    {
+      "for": "menu",
+      "type": "text",
+      "label": "Menu Item Play Button Icon Color Hover",
+      "code": "menu_item_play_button_icon_color_hover",
+      "value": "white"
+    },
+    {
+      "for": "menu",
+      "type": "text",
+      "label": "Menu Item Category Tag Attribute",
+      "code": "menu_item_play_category_tag_attribute",
+      "value": ""
+    },
+    {
+      "for": "menu",
+      "type": "text",
+      "label": "Menu Item Category Tag Background Color",
+      "code": "menu_item_play_category_tag_background_color",
+      "value": "#333"
+    },
+    {
+      "for": "menu",
+      "type": "text",
+      "label": "Menu Item Category Tag Font Family",
+      "code": "menu_item_play_category_tag_font_family",
+      "value": "Arial"
+    },
+    {
+      "for": "menu",
+      "type": "text",
+      "label": "Menu Item Category Tag Font Size",
+      "code": "menu_item_play_category_tag_font_size",
+      "value": ""
+    },
+    {
+      "for": "menu",
+      "type": "text",
+      "label": "Menu Item Category Tag Font Weight",
+      "code": "menu_item_play_category_tag_font_weight",
+      "value": "Bold"
+    },
+    {
+      "for": "menu",
+      "type": "text",
+      "label": "Menu Item Category Tag Font Color",
+      "code": "menu_item_play_category_tag_font_color",
+      "value": "#fff"
+    },
+    {
+      "for": "menu",
+      "type": "text",
+      "label": "Menu Item Category Tag Border Radius",
+      "code": "menu_item_play_category_tag_border_radius",
+      "value": "0"
     }
   ]
 }

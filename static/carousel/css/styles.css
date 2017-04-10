@@ -25,6 +25,8 @@ body  {
 .tvp-video {
   cursor: pointer;
   margin: 0 auto;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .tvp-video:focus {
@@ -34,7 +36,6 @@ body  {
 .tvp-video-image {
   background-repeat: no-repeat;
   background-position: center;
-  background-size: cover;
   position: relative;
   pointer-events: none;
 }
@@ -47,8 +48,11 @@ body  {
   right: 0;
   position: absolute;
   margin: auto;
-  -webkit-transition: all .05s ease-in-out;
-  transition: all .05s ease-in-out;
+  -webkit-transition: all .2s ease;
+  transition: all .2s ease;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
 }
 
 .tvp-video-image:focus {
@@ -71,7 +75,6 @@ body  {
   right: 0;
   margin: auto;
   cursor: pointer;
-  border: 0;
   z-index: 1000;
   -webkit-transition: all .05s ease-in-out;
   transition: all .05s ease-in-out;
@@ -85,7 +88,8 @@ body  {
 
 @media (min-width: 768px) {
   .tvp-video:hover .tvp-video-image-overlay {
-    display: block;
+    opacity: 1;
+    visibility: visible;
   }
 }
 

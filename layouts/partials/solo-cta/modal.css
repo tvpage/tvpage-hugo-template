@@ -1,0 +1,15 @@
+"body {" +
+    "padding: {{ ($.Scratch.Get "settings").iframe_modal_body_padding }};" +
+"}" +
+
+".tvp-play {" +
+    "width: {{ ($.Scratch.Get "settings").play_button_width }};" +
+    "height: {{ ($.Scratch.Get "settings").play_button_height }};" +
+    "background-color: {{ ($.Scratch.Get "settings").play_button_background_color }};" +
+    "border: {{ ($.Scratch.Get "settings").play_button_border }};" +
+    "border-radius: {{ ($.Scratch.Get "settings").play_button_border_radius }};" +
+"}" +
+
+".tvp-play > polygon {" +
+    "fill: {{ ($.Scratch.Get "settings").play_button_icon_color }};" +
+"}"
