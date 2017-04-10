@@ -1,0 +1,10 @@
+'<div class="tvp-sidebar-title"></div>' +
+'<div class="tvp-sidebar-container"></div>' +
+'<div class="tvp-sidebar-footer tvp-clearfix">' +
+  '<button class="tvp-sidebar-load">{{ ($.Scratch.Get "settings").load_button_text }}</button>' +
+  {{ if eq ($.Scratch.Get "settings").tvp_logo true}}
+    '<a class="tvp-logo" target="_blank" href="https://www.tvpage.com/">' +
+      '<div class="tvp-logo-img"></div>' +
+    '</a>' +
+  {{ end }}
+'</div><div class="tvp-cover"></div>'

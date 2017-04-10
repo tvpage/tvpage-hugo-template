@@ -15,7 +15,6 @@ body  {
   margin: 0;
   padding: 10px;
   height: 100%;
-  font-family: Helvetica;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -91,22 +90,14 @@ body  {
 
 .tvp-play {
   display: block;
-  background-color: #fff;
-  box-sizing: border-box;
-  width: 45px;
-  height: 45px;
-  padding: 0;
   position: absolute;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
   margin: auto;
-  opacity: 0.95;
   cursor: pointer;
-  border-radius: 50%;
-  border: 1px solid black;
-  z-index: 9999999999;
+  z-index: 5000;
 }
 
 .tvp-play > polygon {
@@ -122,31 +113,24 @@ body  {
   float: right;
   width: 20%;
   height: 0;
-  padding-left: 1.35%;
   position: relative;
-  background-color: whitesmoke;
 }
 
 .tvp-product {
-  border: 1px solid black;
   display: block;
-  margin-bottom: 10px;
-  margin-right: 10px;
   position: relative;
 }
 
 .tvp-product-image-overlay {
   -webkit-transition: all .05s ease-in-out;
-          transition: all .05s ease-in-out;
+  transition: all .05s ease-in-out;
   display: none;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
   position: absolute;
-  background-color: black;
   margin: auto;
-  opacity: 0.2;
 }
 
 .tvp-product:hover .tvp-product-image-overlay {
@@ -165,41 +149,36 @@ body  {
 }
 
 .tvp-product-title {
-  height: 35px;
-  overflow: hidden;
-  font-size: 14px;
-  text-decoration: none;
   margin: 10px 0;
-  color: #1F1D26;
 }
 
 .tvp-product-price {
-  margin: 0;
-  float: left;
-  font-size: 14px;
+  margin: 0 0 10px 0;
 }
 
 .tvp-product-rating {
-  float: right;
+  list-style-type: none;
+  margin: 0 0 10px;
+  padding: 0;
+  text-align: center;
+}
+
+.tvp-product-rating > li {
+  display: inline-block;
+}
+
+.tvp-reviews {
+  position: relative;
 }
 
 .tvp-product-cta {
   width: 100%;
-  background: #333;
-  border: 0;
-  color: #fff;
-  text-transform: uppercase;
   display: block;
   margin-top: 10px;
   cursor: pointer;
   -webkit-transition: all .05s ease-in-out;
   transition: all .05s ease-in-out;
-  font-size: 14px;
-  padding: 10px 0;
-}
-
-.tvp-product-cta:hover {
-  background: #000;
+  padding: 0;
 }
 
 .tvp-arrow-indicator {
@@ -221,7 +200,6 @@ body  {
   height: 0;
   border-top: 15px solid transparent;
   border-bottom: 15px solid transparent;
-  border-left: 13px solid black;
   position: absolute;
   top: 0;
   left: 1px;
@@ -248,13 +226,9 @@ body  {
 .tvp-product-popup {
   display: none;
   position: absolute;
-  right: 97%;
-  width: 215px;
-  background: white;
-  padding: 10px;
-  border: 1px solid black;
   text-decoration: none;
   top: 0;
+  right: 97%;
 }
 
 .tvp-product-popup.active {
@@ -263,7 +237,6 @@ body  {
 
 .tvp-product-image {
   display: block;
-  background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   position: absolute;
@@ -276,7 +249,6 @@ body  {
 
 .tvp-product-popup-image {
   display: block;
-  background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   padding-top: 100%;
@@ -286,7 +258,7 @@ body  {
   .tvp-product-popup{
     display: none!important;
   }
-  .tvp-arrow-indicator{
+  .tvp-arrow-indicator {
     display: none!important;
   }
 }
