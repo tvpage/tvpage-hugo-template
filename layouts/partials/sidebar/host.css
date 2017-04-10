@@ -1,5 +1,7 @@
-{{ with ($.Scratch.Get "settings").font_url }}
-  "@import url('{{ ($.Scratch.Get "settings").font_url }}');" +
+{{ with ($.Scratch.Get "settings").fonts }}
+  {{ range . }}
+    "@import url('{{ . }}');" +
+  {{ end }}
 {{ end }}
 
 "*[class^=tvp-] {" +

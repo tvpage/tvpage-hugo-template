@@ -59,11 +59,10 @@
           "value": false
         },
         {
-          "for": "sidebar",
-          "type": "text",
-          "label": "Font URL",
-          "code": "font_url",
-          "value": ""
+          "type": "array",
+          "label": "Fonts",
+          "code": "fonts",
+          "value": []
         },
         {
           "for": "sidebar",
