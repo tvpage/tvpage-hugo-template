@@ -10,9 +10,6 @@
         <video:title>{{- .Title -}}</video:title>
         <video:description>{{- .Description -}}</video:description>
         <video:duration>{{- $video.duration -}}</video:duration>
-        {{- if $video.asset.views -}}
-        <video:view_count>{{- $video.asset.views -}}</video:view_count>
-        {{- end -}}
     </video:video>
     {{- end -}}
   </url>
