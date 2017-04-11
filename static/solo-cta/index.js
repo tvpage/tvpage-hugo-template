@@ -150,6 +150,13 @@ var handleVideoClick = function(){
   iframeModalHolder.innerHTML =  '<iframe class="tvp-iframe-modal" src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe>';
   iframeModal = iframeModalHolder.querySelector('.tvp-iframe-modal');
   iframeModalDocument = iframeModal.contentWindow.document;
+
+  //Some logic to include the player library.. we support diff things.
+  var playerUrl = "https://cdnjs.tvpage.com/tvplayer/tvp-" + config.player_version + ".min.js";
+  if (config.player_url && (config.player_url + "").trim().length) {
+      playerUrl = config.player_url;
+  }
+  
   iframeModalDocument.open().write(utils.getIframeHtml({
     id: config.id,
     domain: config.baseUrl,
@@ -158,7 +165,7 @@ var handleVideoClick = function(){
     html: config.templates["modal-content" + (utils.isMobile ? "-mobile" : "")],
     js: [
         "//a.tvpage.com/tvpa.min.js",
-        "https://cdnjs.tvpage.com/tvplayer/tvp-1.8.6.min.js",
+        playerUrl,
         config.debug ? config.jsPath + "libs/utils.js" : "",
         config.debug ? config.jsPath + "libs/analytics.js" : "",
         config.debug ? config.jsPath + "libs/player.js" : "",
