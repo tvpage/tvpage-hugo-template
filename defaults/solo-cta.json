@@ -141,7 +141,7 @@
     },
     {
         "for": "player",
-        "type": "text",
+        "type": "array",
         "label": "Remove Controls",
         "code": "remove_controls",
         "value": [
