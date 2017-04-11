@@ -130,7 +130,7 @@
         "type": "text",
         "label": "Progress Color",
         "code": "progress_color",
-        "value": "#e57211"
+        "value": "white"
     },
     {
         "for": "player",
