@@ -361,12 +361,20 @@ font-family: DINWebPro-CondLightIta;
   font-family: DINWebPro-CondLightIta;
   src: url("http://www.reebok.com/on/demandware.static/Sites-Reebok-US-Site/-/en_US/v1490078241308/css/fonts/DINWebPro-CondLightIta.woff") format("woff"), url("http://www.reebok.com/on/demandware.static/Sites-Reebok-US-Site/-/en_US/v1490078241308/css/fonts/DINWebPro-CondLightIta.ttf") format("truetype");
 }
+* {
+  box-sizing: border-box;
+}
+
 body {
   text-rendering: optimizeLegibility !important;
   -webkit-font-smoothing: antialiased !important;
   -moz-osx-font-smoothing: grayscale !important;
   font-family: 'Open Sans', sans-serif;
+}
+
+html, body {
   margin: 0;
+  height: 100%;
 }
 
 .tvp-control-volume-selector-container,
@@ -399,6 +407,8 @@ body {
 }
 .iframe-content .tvp-content {
   padding: 0 0;
+  width: 1px;
+  min-width: 100%;
 }
 .iframe-content .tvp-clear {
   clear: both;
@@ -499,7 +509,6 @@ body {
   background-position: 0 -79px;
 }
 .iframe-content .tvp-row-titles {
-  width: 100%;
   height: 43px;
 }
 .iframe-content .tvp-row-titles h1, .iframe-content .tvp-row-titles h2 {
@@ -566,7 +575,7 @@ body {
   transition: all .05s ease-in-out;
   background-color: #fff;
   border-radius: 50%;
-  width: 45px;
+  width: 25%;
 }
 .iframe-content .tvp-player {
   position: relative;
