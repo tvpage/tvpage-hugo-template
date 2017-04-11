@@ -98,7 +98,7 @@
             this.el.appendChild(overlay);
             var playerHolder = this.el.querySelector('.tvp-play-holder');
             playerHolder.innerHTML = this.playIconTemplate;
-            playerHolder.querySelector('.tvp-video-play').style.backgroundColor = this.playButtonBackgroundColor
+            // playerHolder.querySelector('.tvp-video-play').style.backgroundColor = this.playButtonBackgroundColor
             playerHolder.querySelector('.tvp-video-play').style.borderRadius = this.playButtonBorderRadius;
             playerHolder.querySelector('.tvp-video-play').style.border = this.playButtonBorderWidth + ' solid #' + this.playButtonBorderColor;
         };
@@ -133,13 +133,13 @@
                 config.logUrl = '\/\/api.tvpage.com\/v1\/__tvpa.gif';
                 analytics.initConfig(config);
             }
+            var tvp_overlay = this.el.querySelector('.tvp-overlay');
             if (willCue) {
                 this.instance.cueVideo(asset);
                 if ('mp4' === asset.type || this.overlay) {
                     this.addOverlay(asset);
                 }
                 else{ 
-                    var tvp_overlay = this.el.querySelector('.tvp-overlay');
                     if(Boolean(tvp_overlay)){
                         this.el.removeChild(tvp_overlay);
                     }
@@ -148,6 +148,9 @@
                     }
                 }
             } else {
+                if ('youtube' === asset.type || this.overlay) {
+                    tvp_overlay.style.display = "none";
+                }
                 this.instance.loadVideo(asset);
             }
         };
