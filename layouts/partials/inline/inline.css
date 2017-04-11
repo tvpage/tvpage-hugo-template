@@ -4,6 +4,30 @@
 	// 'background-color: {{- ($.Scratch.Get "settings").body_background_color -}};' +
 	'padding: {{- ($.Scratch.Get "settings").body_padding -}};' +
 '}' +
+// ### play icon settings
+' .iframe-content .tvp-player #tvp-player .tvp-overlay:hover .tvp-video-play,' +
+'.iframe-content .tvp-videos-scroller .tvp-video:hover .tvp-video-play,' +
+'.iframe-content .tvp-video-active .tvp-video-play, '+
+'.iframe-content .tvp-video-play{' +
+	'background-color: {{- ($.Scratch.Get "settings").play_icon_background_color -}};' +
+	'border: {{- ($.Scratch.Get "settings").play_icon_border -}};' +
+'}' +
+
+'#tvp-player .tvp-overlay .tvp-play-holder .tvp-video-play {' +
+	'width: {{- ($.Scratch.Get "settings").play_button_width -}};' +	
+	'height: {{- ($.Scratch.Get "settings").play_button_height -}};' +	
+'}' +
+
+'.iframe-content .tvp-video-play > polygon{' +
+	'fill: #{{- ($.Scratch.Get "settings").play_button_icon_color -}};' +
+'}' +
+'.iframe-content .tvp-video-active .anim, ' +
+'.iframe-content .tvp-videos-scroller .tvp-video:hover .anim,' +
+'.iframe-content .tvp-player #tvp-player .tvp-overlay:hover .anim{' +
+	'-webkit-transform: {{- ($.Scratch.Get "settings").play_icon_transform -}};'+
+	'transform: {{- ($.Scratch.Get "settings").play_icon_transform -}};' +
+'}' +
+
 // ### active state settings
 '.iframe-content .tvp-product-item-active:after, .iframe-content .tvp-video-active:after {'+
 	'border-color: {{- ($.Scratch.Get "settings").active_state_border -}};' +
@@ -45,12 +69,6 @@
 
 '.iframe-content .tvp-row .tvp-mobile-product-title h2{' +
 	'font-size: calc({{- ($.Scratch.Get "settings").featured_product_header_font_size_min -}}px + ({{- ($.Scratch.Get "settings").featured_product_header_font_size_max }} - {{ ($.Scratch.Get "settings").featured_product_header_font_size_min -}}) * ((100vw - 300px) / (1600 - 300)));' +
-'}' +
-
-'#tvp-player .tvp-overlay .tvp-play-holder .tvp-video-play {' +
-	'fill: #{{- ($.Scratch.Get "settings").play_button_icon_color -}};' +
-	'width: {{- ($.Scratch.Get "settings").play_button_width -}};' +	
-	'height: {{- ($.Scratch.Get "settings").play_button_height -}};' +	
 '}' +
 
 '.iframe-content .tvp-featured .tvp-featured-product{' +

@@ -424,20 +424,6 @@ html, body {
   background-image: url("data:image/svg+xml;charset=US-ASCII,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%3Csvg%20version%3D%221.1%22%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20x%3D%220px%22%20y%3D%220px%22%20%20viewBox%3D%22-6%2050%20623%20623%22%20enable-background%3D%22new%20-6%2050%20623%20623%22%20xml%3Aspace%3D%22preserve%22%3E%3Cg%3E%20%3Cpath%20fill%3D%22%23E9E9D9%22%20d%3D%22M306%2C668.2c-168.8%2C0-306-137.4-306-306S137.2%2C56%2C306%2C56s306%2C137.4%2C306%2C306S474.8%2C668.2%2C306%2C668.2z%20%20%20M306%2C113.5C169%2C113.5%2C57.5%2C225%2C57.5%2C362S169%2C610.5%2C306%2C610.5S554.5%2C498.9%2C554.5%2C362S443%2C113.5%2C306%2C113.5z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
   background-size: 100% 100%;
 }
-.iframe-content .tvp-icon.tvp-icon-play-small.anim {
-  background-image: url("data:image/svg+xml;charset=US-ASCII,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%3C!DOCTYPE%20svg%20PUBLIC%20%22-%2F%2FW3C%2F%2FDTD%20SVG%201.1%2F%2FEN%22%20%22http%3A%2F%2Fwww.w3.org%2FGraphics%2FSVG%2F1.1%2FDTD%2Fsvg11.dtd%22%3E%3Csvg%20version%3D%221.1%22%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20x%3D%220px%22%20y%3D%220px%22%20%20viewBox%3D%22326.7%20142.1%20276.6%20276.7%22%20enable-background%3D%22new%20326.7%20142.1%20276.6%20276.7%22%20xml%3Aspace%3D%22preserve%22%3E%3Cg%3E%20%3Cpath%20fill%3D%22%23E9E9D9%22%20d%3D%22M465%2C418.8c-76.3%2C0-138.3-62.1-138.3-138.3s62-138.4%2C138.3-138.4s138.3%2C62.1%2C138.3%2C138.3%20%20S541.3%2C418.8%2C465%2C418.8z%20M465%2C168.1c-61.9%2C0-112.3%2C50.4-112.3%2C112.3S403.1%2C392.7%2C465%2C392.7s112.3-50.4%2C112.3-112.3%20%20S526.9%2C168.1%2C465%2C168.1z%22%2F%3E%3C%2Fg%3E%3Cg%3E%20%3Cpolygon%20fill%3D%22%23E9E9D9%22%20points%3D%22442%2C228.9%20442%2C332.9%20503.3%2C280.9%20%20%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
-  background-position: 50% 50%;
-  width: 39.3939%;
-  height: 39.3939%;
-  margin: auto;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  position: absolute;
-  -webkit-transition: all 400ms ease-in-out;
-          transition: all 400ms ease-in-out;
-}
 .iframe-content .tvp-icon.tvp-icon-chevron-right {
   background-position: 5px -115px;
 }
@@ -509,10 +495,6 @@ html, body {
 .iframe-content .tvp-video-active .tvp-video-image-overlay {
   display: block;
 }
-.iframe-content .tvp-video-active .anim {
-  -webkit-transform: scale(0.6);
-          transform: scale(0.6);
-}
 .iframe-content .tvp-video-image-overlay {
   display: none;
   background-color: #000;
@@ -577,8 +559,7 @@ html, body {
 .iframe-content .tvp-row .tvp-mobile-product-title {
   display: none;
 }
-.iframe-content .tvp-video-play {
-  background: url("data:image/svg+xml;base64,CjxzdmcgZmlsbD0iIzAwMDAwMCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICA8cGF0aCBkPSJNOCA1djE0bDExLTd6Ii8+CiAgICA8cGF0aCBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+Cjwvc3ZnPg==");
+.iframe-content .tvp-video-play, .iframe-content .anim {
   background-repeat: no-repeat;
   background-position: 50% 50%;
   background-size: 85% 85%;
@@ -594,6 +575,8 @@ html, body {
   bottom: 0;
   left: 0;
   right: 0;
+  -webkit-transition: all 400ms ease-in-out;
+          transition: all 400ms ease-in-out;
 }
 .iframe-content .tvp-player {
   position: relative;
@@ -631,10 +614,6 @@ html, body {
   top: 0;
   left: 0;
   position: absolute;
-}
-.iframe-content .tvp-player #tvp-player .tvp-overlay:hover .anim {
-  -webkit-transform: scale(0.6);
-          transform: scale(0.6);
 }
 .iframe-content .tvp-player #tvp-player .tvp-overlay:hover .tvp-video-play {
   background-color: #e57211;
@@ -949,10 +928,6 @@ html, body {
   right: -3px;
   position: absolute;
   top: -3px;
-}
-.iframe-content .tvp-videos-scroller .tvp-video:hover .anim {
-  -webkit-transform: scale(0.6);
-          transform: scale(0.6);
 }
 .iframe-content .tvp-videos-scroller .tvp-video:hover .tvp-video-play {
   background-color: #e57211;

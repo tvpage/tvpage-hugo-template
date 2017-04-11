@@ -232,8 +232,8 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             var playerHolder = this.el.querySelector('.tvp-play-holder');
             playerHolder.innerHTML = this.playIconTemplate;
             // playerHolder.querySelector('.tvp-video-play').style.backgroundColor = this.playButtonBackgroundColor
-            playerHolder.querySelector('.tvp-video-play').style.borderRadius = this.playButtonBorderRadius;
-            playerHolder.querySelector('.tvp-video-play').style.border = this.playButtonBorderWidth + ' solid #' + this.playButtonBorderColor;
+            // playerHolder.querySelector('.tvp-video-play').style.borderRadius = this.playButtonBorderRadius;
+            // playerHolder.querySelector('.tvp-video-play').style.border = this.playButtonBorderWidth + ' solid #' + this.playButtonBorderColor;
         };
 
         this.play = function(asset,ongoing){
