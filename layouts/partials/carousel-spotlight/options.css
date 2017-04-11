@@ -30,14 +30,12 @@
     background: {{ ($.Scratch.Get "settings").item_image_overlay_color }};
 }
 
-@media (min-width: 768px) {
-    .tvp-video:hover .tvp-video-play {
-        background-color: {{ ($.Scratch.Get "settings").item_play_button_hover_color }};
-    }
+.tvp-video:hover .tvp-video-play {
+    background-color: {{ ($.Scratch.Get "settings").item_play_button_hover_color }};
+}
 
-    .tvp-video:hover .tvp-video-play > polygon {
-        fill: {{ ($.Scratch.Get "settings").item_play_button_icon_hover_color }};
-    }
+.tvp-video:hover .tvp-video-play > polygon {
+    fill: {{ ($.Scratch.Get "settings").item_play_button_icon_hover_color }};
 }
 
 .tvp-carousel-arrow {
