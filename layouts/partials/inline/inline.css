@@ -136,8 +136,12 @@
 	'margin: 0 -{{- ($.Scratch.Get "settings").videos_carousel_item_space_inbetween -}}; ' +
 '}' +
 
+'.iframe-content .tvp-products-scroller .tvp-products-nav .tvp-products-button{' +
+	'background-color: {{- ($.Scratch.Get "settings").product_holder_slide_arrow_button_color -}};' +
+'}' +
+
 '.slick-dots li.slick-active button:before,.slick-dots li button:before {' +
-	'color: {{- ($.Scratch.Get "settings").product_holder_slide_arrow_color -}};' +
+	'color: {{- ($.Scratch.Get "settings").product_holder_slide_dots_color -}};' +
 '}' +
 
 '.iframe-content .tvp-videos-scroller .slick-slide{' +

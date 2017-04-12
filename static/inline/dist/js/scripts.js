@@ -573,11 +573,19 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                         });
                     }
 
+                    //product scroll nav
+                    if (data.length > 4) {
+                        $(that.productsNav).appendTo(_container);
+                    }
+
                     $(productContent).slick({
                         arrows: true,
+                        prevArrow: document.querySelector('.tvp-products-prev'),
+                        nextArrow: document.querySelector('.tvp-products-next'),
                         slidesToShow: 1,
                         slidesToScroll: 1,
                         dots: true,
+                        appendDots: $('.tvp-products-nav'),
                         responsive:[
                             {
                                 breakpoint: 769,
@@ -625,6 +633,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
         this.videosCarouselPreviousArrowTemplate = options.templates.inline_carousel_previous_arrow;
         this.featuredProductTemplate = options.templates.featured_product;
         this.productItemTemplate = options.templates.product;
+        this.productsNav = options.templates.product_nav;
         this.playIconTemplate = options.templates.play_icon;
         this.playerOverlayTemplate = options.templates.player_overlay;
 
