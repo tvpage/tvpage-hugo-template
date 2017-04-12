@@ -1,6 +1,6 @@
 .tvp-overlay-cover {
     opacity: {{ ($.Scratch.Get "settings").overlay_opacity }};
-    background-image: linear-gradient(to bottom right,{{ ($.Scratch.Get "settings").overlay_color }},{{ ($.Scratch.Get "settings").overlay_color }});
+    background-color: {{ ($.Scratch.Get "settings").overlay_color }};
 }
 
 .tvp-play {

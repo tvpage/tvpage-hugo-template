@@ -84,7 +84,7 @@
       "type": "text",
       "label": "Play Button Border",
       "code": "play_button_border",
-      "value": "#000"
+      "value": "none"
     },
     {
       "for": "player",

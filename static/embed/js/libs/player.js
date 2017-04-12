@@ -34,6 +34,8 @@
 
         this.isFullScreen = false;
         this.initialResize = true;
+
+        this.options = options || {};
         this.autoplay = isset(options.autoplay) ? Number(options.autoplay) : false;
         this.autonext = isset(options.autonext) ? Number(options.autonext) : true;
         this.version = isset(options.player_version) ? options.player_version : null;
@@ -88,9 +90,9 @@
         this.addOverlay = function(asset){
             var overlay = document.createElement('div');
             overlay.className = 'tvp-overlay';
+            overlay.innerHTML = this.options.templates["player-overlay"];
+
             overlay.style.backgroundImage = 'url("' + asset.thumbnailUrl + '")';
-            overlay.innerHTML = '<div class="tvp-overlay-cover"></div><svg class="tvp-play" viewBox="0 0 200 200">' +
-                '<polygon points="70, 55 70, 145 145, 100"></polygon></svg>';
 
             var click = function(){
                 var clear = function () {
@@ -105,7 +107,44 @@
 
             overlay.removeEventListener('click', click, false);
             overlay.addEventListener('click', click, false);
+
             this.el.appendChild(overlay);
+
+            var overlayCover = overlay.querySelector('.tvp-overlay-cover');
+            if (isset(this.options,"overlay_color")) {    
+                overlayCover.style.backgroundColor = this.options.overlay_color;
+            }
+
+            if (isset(this.options,"overlay_opacity")) {
+                overlayCover.style.opacity = this.options.overlay_opacity;
+            }
+
+            var playButton = this.el.querySelector('.tvp-play');
+            if (isset(this.options,"play_button_width")) {
+                playButton.style.width = this.options.play_button_width;
+            }
+
+            if (isset(this.options,"play_button_height")) {
+                playButton.style.height = this.options.play_button_height;
+            }
+
+            if (isset(this.options,"play_button_background_color")) {
+                playButton.style.backgroundColor = this.options.play_button_background_color;
+            }
+
+            if (isset(this.options,"play_button_border_radius")) {
+                playButton.style.borderRadius = this.options.play_button_border_radius;
+            }
+
+            if (isset(this.options,"play_button_border")) {
+                playButton.style.border = decodeURIComponent(this.options.play_button_border);
+            }
+
+            if (isset(this.options,"play_button_icon_color")) {
+                playButton.querySelector(".tvp-play > polygon").style.fill = decodeURIComponent(this.options.play_button_icon_color);
+            }
+
+            overlay.classList.add("initialized");
         };
 
         this.play = function(asset,ongoing){
@@ -174,7 +213,7 @@
         (function libsReady() {
             setTimeout(function() {
                 if ( !isset(window,'TVPage') || !isset(window,'_tvpa') ) {
-                    (++checks < 50) ? libsReady() : console.log('limit reached');
+                    (++checks < 100) ? libsReady() : console.log('limit reached');
                 } else {
 
                     //We create insntances on the tvpage player.
@@ -183,6 +222,7 @@
                         analytics: { tvpa: that.analytics },
                         apiBaseUrl: '//api.tvpage.com/v1',
                         swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+that.version+'-flash.swf',
+                        overlay: false,
                         onReady: function(e, pl){
                             that.instance = pl;
                             that.resize();

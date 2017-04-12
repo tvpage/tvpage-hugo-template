@@ -11,60 +11,53 @@
   <link rel="stylesheet" type="text/css" href="{{ (printf "%s/dist/css/styles.min.css" .Type ) | absURL }}">
   {{- end -}}
 
-  <style>{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/options.css" .Type ) .)) | safeCSS }}</style>
+  <style>{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/player.css" .Type ) .)) | safeCSS }}</style>
 </head>
 <body>
   <div class="tvp-player">
     <div id="tvp-player-el"></div>
   </div>
   <script async src="//a.tvpage.com/tvpa.min.js"></script>
-  <script async src='//cdnjs.tvpage.com/tvplayer/tvp-{{ ($.Scratch.Get "settings").player_version }}.min.js'></script>
+  <!-- <script async src='//cdnjs.tvpage.com/tvplayer/tvp-{{ ($.Scratch.Get "settings").player_version }}.min.js'></script> -->
+  <script async src="//s3-us-west-2.amazonaws.com/cdnjs.tvpage.com/caption/lib.js"></script>
+  <script>
+  ;(function(doc,config,videoId,channelId){
 
-  {{- if (getenv "HUGO_DEBUG") -}}
-  <script src="{{ (printf "%s/js/libs/analytics.js" .Type ) | absURL }}"></script>
-  <script src="{{ (printf "%s/js/libs/player.js" .Type ) | absURL }}"></script>
-  {{- else -}}
-  <script src="{{ (printf "%s/dist/js/scripts.min.js" .Type ) | absURL }}"></script>
-  {{- end -}}
-
-  <script>;(function(doc,settings,videoId,channelId){
-
-    var getUrlParams = function(){
-      if (!window.location) return;
-      var o = {},kv = location.search.substr(1).split('&'), params = [];
-      for (var i = 0; i < kv.length; i++) { params.push(kv[i]); }
-      for (var i = 0; i < params.length; i++) {
-          var param = params[i].split('=');
-          if(param[1]) o[param[0]] = param[1];
-      }
-      return o;
-    };
-
-    var extend = function(out) {
-      out = out || {};
-      for (var i = 1; i < arguments.length; i++) {
-        if (!arguments[i])
-          continue;
-
-        for (var key in arguments[i]) {
-          if (arguments[i].hasOwnProperty(key))
-            out[key] = arguments[i][key];
+      var getUrlParams = function(){
+        if (!window.location) return;
+        var o = {},kv = location.search.substr(1).split('&'), params = [];
+        for (var i = 0; i < kv.length; i++) { params.push(kv[i]); }
+        for (var i = 0; i < params.length; i++) {
+            var param = params[i].split('=');
+            if(param[1]) o[param[0]] = param[1];
         }
-      }
-      return out;
-    };
+        return o;
+      };
 
-    var video = "";
-    {{ if (isset .Params "videoid") }}
-      video = {{ index $.Site.Data.videos (printf "x%s" .Params.videoid) }};
-    {{ end }}
+      var extend = function(out) {
+        out = out || {};
+        for (var i = 1; i < arguments.length; i++) {
+          if (!arguments[i])
+            continue;
 
-    var channelVideos = "";
-    {{ if (isset .Params "channelid") }}
-      channelVideos = {{ index $.Site.Data.channelVideos (printf "x%s_page_0" .Params.channelid) }};
-    {{ end }}
-    
-    new Player('tvp-player-el', function(){
+          for (var key in arguments[i]) {
+            if (arguments[i].hasOwnProperty(key))
+              out[key] = arguments[i][key];
+          }
+        }
+        return out;
+      };
+
+      var video = "";
+      {{ if (isset .Params "videoid") }}
+        video = {{ index $.Site.Data.videos (printf "x%s" .Params.videoid) }};
+      {{ end }}
+
+      var channelVideos = "";
+      {{ if (isset .Params "channelid") }}
+        channelVideos = {{ index $.Site.Data.channelVideos (printf "x%s_page_0" .Params.channelid) }};
+      {{ end }}
+
       var videos = [];
 
       if (videoId) {
@@ -75,15 +68,42 @@
         return console.debug("No data");
       }
 
-      settings.data = videos;
-      settings.widgetId = settings.name;
-      settings = extend(settings, getUrlParams());
-      return settings;
-    }());
+      window.config = config || {};
+      config.data = videos;
+      config.templates = {
+        "player-overlay": '<div class="tvp-overlay-cover"></div>' +
+          '<svg class="tvp-play" viewBox="0 0 200 200">' +
+            '<polygon points="70, 55 70, 145 145, 100"></polygon>' +
+          '</svg>'
+      };
+      config.widgetId = config.name;
+      config = extend(config, getUrlParams());
 
-}(document,
-{{ $.Scratch.Get "settings" }},
-{{ with .Params.videoid }}{{ . }}{{ else }}''{{ end }},
-{{ with .Params.channelid }}{{ . }}{{ else }}''{{ end }}));</script>
+      var videos = [];
+
+      if (videoId) {
+        videos.push(video);
+      } else if (channelId && 'undefined' !== typeof channelVideos.data) {
+        videos = channelVideos.data;
+      } else if (!videos.length) {
+        return console.debug("No data");
+      }
+      
+      config.data = videos;
+      config = extend(config, getUrlParams());
+
+  }(document,
+  {{ $.Scratch.Get "settings" }},
+  {{ with .Params.videoid }}{{ . }}{{ else }}''{{ end }},
+  {{ with .Params.channelid }}{{ . }}{{ else }}''{{ end }}));</script>
+
+  {{- if (getenv "HUGO_DEBUG") -}}
+  <script src="{{ (printf "%s/js/libs/analytics.js" .Type ) | absURL }}"></script>
+  <script src="{{ (printf "%s/js/libs/player.js" .Type ) | absURL }}"></script>
+  {{- else -}}
+  <script src="{{ (printf "%s/dist/js/scripts.min.js" .Type ) | absURL }}"></script>
+  {{- end -}}
+
+  <script>new Player('tvp-player-el', config);</script>
 </body>
 </html>
