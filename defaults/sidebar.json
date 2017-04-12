@@ -53,6 +53,55 @@
         },
         {
           "for": "player",
+          "type": "text",
+          "label": "Play Button Height",
+          "code": "play_button_height",
+          "value": "65px"
+        },
+        {
+          "for": "player",
+          "type": "text",
+          "label": "Play Button Width",
+          "code": "play_button_width",
+          "value": "65px"
+        },
+        {
+          "for": "player",
+          "type": "text",
+          "label": "Play Button Background Color",
+          "code": "play_button_background_color",
+          "value": "#fff"
+        },
+        {
+          "for": "player",
+          "type": "text",
+          "label": "Play Button Background Color Hover",
+          "code": "play_button_background_color_hover",
+          "value": "#333"
+        },
+        {
+          "for": "player",
+          "type": "text",
+          "label": "Play Button Border Radius",
+          "code": "play_button_border_radius",
+          "value": "50%"
+        },
+        {
+          "for": "player",
+          "type": "text",
+          "label": "Play Button Border",
+          "code": "play_button_border",
+          "value": "#000"
+        },
+        {
+          "for": "player",
+          "type": "text",
+          "label": "Play Button Icon Color",
+          "code": "play_button_icon_color",
+          "value": "#000"
+        },
+        {
+          "for": "player",
           "type": "boolean",
           "label": "Overlay",
           "code": "overlay",
@@ -67,23 +116,331 @@
         {
           "for": "sidebar",
           "type": "text",
-          "label": "Sidebar Body Font Family",
-          "code": "sidebar_body_font_family",
-          "value": "Helvetica"
-        },
-        {
-          "for": "sidebar",
-          "type": "text",
           "label": "Items Per Page",
           "code": "items_per_page",
-          "value": "6"
+          "value": 6
         },
         {
           "for": "sidebar",
           "type": "text",
           "label": "Items Per Row",
           "code": "items_per_row",
-          "value": "2"
+          "value": 2
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Modal Body Padding",
+          "code": "mobile_modal_body_padding",
+          "value": "10px"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Modal Close Button Width",
+          "code": "mobile_modal_close_button_width",
+          "value": "24px"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Modal Close Button Height",
+          "code": "mobile_modal_close_button_height",
+          "value": "24px"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Slider Active Dots Color",
+          "code": "mobile_slider_active_dots_color",
+          "value": "#333"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Slider Dots Color",
+          "code": "mobile_slider_dots_color",
+          "value": "#BEBEBE"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Slider Dots Size",
+          "code": "mobile_slider_dots_size",
+          "value": "24px"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Modal Close Button Top",
+          "code": "mobile_modal_close_button_top",
+          "value": 0
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Products Message Width",
+          "code": "mobile_products_message_width",
+          "value": "100%"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product Title Font Size",
+          "code": "mobile_product_title_font_size",
+          "value": "12px"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product Title Font Weight",
+          "code": "mobile_product_title_font_weight",
+          "value": "normal"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product Title Text Align",
+          "code": "mobile_product_title_text_align",
+          "value": "left"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product Title Text Transform",
+          "code": "mobile_product_title_text_transform",
+          "value": "none"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product Title Text Color",
+          "code": "mobile_product_title_text_color",
+          "value": "#333"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product Title Line Height",
+          "code": "mobile_product_title_line_height",
+          "value": "normal"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product Title Margin",
+          "code": "mobile_product_title_margin",
+          "value": 0
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product Price Font Size",
+          "code": "mobile_product_price_font_size",
+          "value": "12px"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product Price Font Weight",
+          "code": "mobile_product_price_font_weight",
+          "value": "normal"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product Price Text Align",
+          "code": "mobile_product_price_text_align",
+          "value": "left"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product Price Text Transform",
+          "code": "mobile_product_price_text_transform",
+          "value": "none"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product Price Text Color",
+          "code": "mobile_product_price_text_color",
+          "value": "#333"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product Price Line Height",
+          "code": "mobile_product_price_line_height",
+          "value": "normal"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product Price Margin",
+          "code": "mobile_product_price_margin",
+          "value": 0
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Products Headline Font Family",
+          "code": "mobile_products_headline_font_family",
+          "value": "Helvetica"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Products Headline Font Size",
+          "code": "mobile_products_headline_font_size",
+          "value": "12px"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Products Headline Font Weight",
+          "code": "mobile_products_headline_font_weight",
+          "value": "normal"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Products Headline Text Transform",
+          "code": "mobile_products_headline_text_transform",
+          "value": "none"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Products Headline Text Color",
+          "code": "mobile_products_headline_text_color",
+          "value": "#333"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product Container Border",
+          "code": "mobile_product_container_border",
+          "value": 0
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product Container Margin",
+          "code": "mobile_product_container_margin",
+          "value": 0
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product CTA Background",
+          "code": "mobile_product_cta_background",
+          "value": "#333"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product CTA Border",
+          "code": "mobile_product_cta_border",
+          "value": "none"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product CTA Border Bottom",
+          "code": "mobile_product_cta_border_bottom",
+          "value": "none"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product CTA Border Right",
+          "code": "mobile_product_cta_border_right",
+          "value": "none"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product CTA Font Color",
+          "code": "mobile_product_cta_font_color",
+          "value": "#fff"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product CTA Font Family",
+          "code": "mobile_product_cta_font_family",
+          "value": "Helvetica"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product CTA Font Weight",
+          "code": "mobile_product_cta_font_weight",
+          "value": "normal"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product CTA Text Align",
+          "code": "mobile_product_cta_text_align",
+          "value": "left"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product CTA Width",
+          "code": "mobile_product_cta_width",
+          "value": "108px"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product CTA Height",
+          "code": "mobile_product_cta_height",
+          "value": "22px"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product CTA Border Radius",
+          "code": "mobile_product_cta_border_radius",
+          "value": 0
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product CTA Bottom",
+          "code": "mobile_product_cta_bottom",
+          "value": 0
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product CTA Right",
+          "code": "mobile_product_cta_right",
+          "value": 0
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product CTA Padding",
+          "code": "mobile_product_cta_padding",
+          "value": 0
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product Data Font Family",
+          "code": "mobile_product_data_font_family",
+          "value": "Helvetica"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product CTA Text Transform",
+          "code": "mobile_product_cta_text_transform",
+          "value": "none"
         },
         {
           "for": "modal",
@@ -97,7 +454,7 @@
           "type": "text",
           "label": "No Products Banner Height",
           "code": "no_products_banner_height",
-          "value": "0"
+          "value": 0
         },
         {
           "for": "modal",
@@ -111,14 +468,14 @@
           "type": "text",
           "label": "No Products Banner Padding",
           "code": "no_products_banner_padding",
-          "value": "0"
+          "value": 0
         },
         {
           "for": "modal",
           "type": "text",
           "label": "No Products Banner Margin",
           "code": "no_products_banner_margin",
-          "value": "0"
+          "value": 0
         },
         {
           "for": "modal",
@@ -153,14 +510,14 @@
           "type": "text",
           "label": "Modal Border Radius",
           "code": "modal_border_radius",
-          "value": "0"
+          "value": 0
         },
         {
-            "for": "modal",
-            "type": "text",
-            "label": "Iframe Modal Body Padding",
-            "code": "iframe_modal_body_padding",
-            "value": "10px"
+          "for": "modal",
+          "type": "text",
+          "label": "Iframe Modal Body Padding",
+          "code": "iframe_modal_body_padding",
+          "value": "10px"
         },
         {
           "for": "modal",
@@ -319,6 +676,13 @@
         {
           "for": "modal",
           "type": "text",
+          "label": "Mobile Modal Close Button Right",
+          "code": "mobile_modal_close_button_right",
+          "value": 0
+        },
+        {
+          "for": "modal",
+          "type": "text",
           "label": "Modal Close Button Top",
           "code": "modal_close_button_top",
           "value": "-6px"
@@ -421,14 +785,14 @@
           "code": "products_message_font_weight",
           "value": "initial"
         },
-                {
+        {
           "for": "modal",
           "type": "text",
           "label": "Products Message Text Align",
           "code": "products_message_text_align",
           "value": "left"
         },
-                {
+        {
           "for": "modal",
           "type": "text",
           "label": "Products Message Text transform",
@@ -776,7 +1140,7 @@
           "type": "text",
           "label": "Product Popup Border Radius",
           "code": "product_popup_border_radius",
-          "value": "0"
+          "value": 0
         },
         {
           "for": "modal",
@@ -874,7 +1238,7 @@
           "type": "boolean",
           "label": "Fix Page Scroll",
           "code": "fix_page_scroll",
-          "value": "True"
+          "value": true
         },
         {
           "for": "player",
@@ -889,6 +1253,13 @@
           "label": "Overlay Opacity",
           "code": "overlay_opacity",
           "value": 0.5
+        },
+        {
+          "for": "sidebar",
+          "type": "text",
+          "label": "Sidebar Body Font Family",
+          "code": "sidebar_body_font_family",
+          "value": "Helvetica"
         },
         {
           "for": "sidebar",
