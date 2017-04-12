@@ -880,6 +880,20 @@ html, body {
 .iframe-content .tvp-videos-container .tvp-videos-arrow-next {
   right: 0;
 }
+.iframe-content .tvp-videos-container .tvp-videos-arrow-next .tvp-icon-arrow-next {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiBoZWlnaHQ9IjE4IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIxOCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gICAgPHBhdGggZD0iTTguNTkgMTYuMzRsNC41OC00LjU5LTQuNTgtNC41OUwxMCA1Ljc1bDYgNi02IDZ6Ii8+ICAgIDxwYXRoIGQ9Ik0wLS4yNWgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==);
+  background-size: 50px;
+  background-position: 0;
+  display: block;
+  height: 100%;
+}
+.iframe-content .tvp-videos-container .tvp-videos-arrow-prev .tvp-icon-arrow-prev {
+  background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gICAgPHBhdGggZD0iTTE1LjQxIDE2LjA5bC00LjU4LTQuNTkgNC41OC00LjU5TDE0IDUuNWwtNiA2IDYgNnoiLz4gICAgPHBhdGggZD0iTTAtLjVoMjR2MjRIMHoiIGZpbGw9Im5vbmUiLz48L3N2Zz4=);
+  background-size: 50px;
+  background-position: 0;
+  display: block;
+  height: 100%;
+}
 .iframe-content .tvp-videos-scroller {
   margin: 0 auto;
 }
