@@ -14,56 +14,11 @@
             "value": "3.0.1"
         },
         {
-            "for": "player",
-            "type": "text",
-            "label": "Remove Controls",
-            "code": "remove_controls",
-            "value": [
-                "tvplogo",
-                "hd"
-            ]
-        },
-        {
-          "for": "player",
-          "type": "text",
-          "label": "Tech Oder",
-          "code": "tech_order",
-          "value": "html5,flash"
-        },
-        {
           "for": "player",
           "type": "boolean",
           "label": "Analytics",
           "code": "analytics",
           "value": true
-        },
-        {
-          "for": "player",
-          "type": "text",
-          "label": "Media Providers",
-          "code": "media_providers",
-          "value": "tvpage,youtube"
-        },
-        {
-          "for": "player",
-          "type": "text",
-          "label": "Preload",
-          "code": "preload",
-          "value": "none"
-        },
-        {
-          "for": "player",
-          "type": "boolean",
-          "label": "Poster",
-          "code": "poster",
-          "value": false
-        },
-        {
-            "for": "player",
-            "type": "text",
-            "label": "Progress Color",
-            "code": "progress_color",
-            "value": "white"
         },
         {
             "for": "player",
