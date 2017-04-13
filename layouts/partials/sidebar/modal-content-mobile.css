@@ -40,7 +40,7 @@
 
 ".tvp-products-headline .tvp-products-message {" +
     "position: absolute;" +
-    "z-index: 9999;" +
+    "z-index: 2147483647;" +
     "opacity: 0;" +
     "visibility: hidden;" +
     "left: 0;" +
