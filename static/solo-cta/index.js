@@ -184,7 +184,7 @@ var handleVideoClick = function(){
 //Loading the videos.
 var jsonpScript = document.createElement('script');
 var cbName = 'tvp_' + Math.floor(Math.random() * 50005);
-var jsonpScriptSrc = '//api.tvpage.com/v1/channels/' + channelId + '/videos?X-login-id=' + (config.loginId || config.loginid);
+var jsonpScriptSrc = config.api_base_url + '/channels/' + channelId + '/videos?X-login-id=' + (config.loginId || config.loginid);
 
 var params = channel.parameters || {};
 for (var p in params) { jsonpScriptSrc += '&' + p + '=' + params[p];}

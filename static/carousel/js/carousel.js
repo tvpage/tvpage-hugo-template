@@ -163,7 +163,7 @@
 
             var channel = that.channel || {};
             var params = channel.parameters || {};
-            var src = '//api.tvpage.com/v1/channels/' + (channel.id || that.channelId) + '/videos?X-login-id=' + that.loginId;
+            var src = this.options.api_base_url + '/channels/' + (channel.id || that.channelId) + '/videos?X-login-id=' + that.loginId;
             for (var p in params) { src += '&' + p + '=' + params[p];}
             var cbName = options.callbackName || 'tvp_' + Math.floor(Math.random() * 555);
             src += '&p=' + that.page + '&n=' + that.itemsPerPage + '&callback='+cbName;

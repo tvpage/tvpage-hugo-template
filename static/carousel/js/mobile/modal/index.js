@@ -13,9 +13,9 @@
         });
     };
 
-    var loadProducts = function(videoId, loginId, fn) {
+    var loadProducts = function(videoId, settings, fn) {
         if (!videoId) return;
-        var src = '//api.tvpage.com/v1/videos/' + videoId + '/products?X-login-id=' + loginId;
+        var src = settings.api_base_url + '/videos/' + videoId + '/products?X-login-id=' + settings.loginId;
         var cbName = 'tvp_' + Math.floor(Math.random() * 555);
         src += '&callback=' + cbName;
         var script = document.createElement('script');
@@ -185,12 +185,14 @@
             s.onNext = function(next) {
                 if (!next) return;
 
+                data.runTime.loginid = data.runTime.loginId || data.runTime.loginid;
+
                 if (Utils.isset(next, 'products')) {
                     render(next.products);
                 } else {
                     loadProducts(
                         next.assetId,
-                        data.runTime.loginid || data.runTime.loginId,
+                        data.runTime,
                         function(products) {
                             setTimeout(function() {
                                 render(products,data.runTime);
@@ -219,7 +221,7 @@
                 initPlayer(data);
 
                 var settings = data.runTime;
-                var loginId = settings.loginid || settings.loginId;
+                settings.loginId = settings.loginId || settings.loginid;
 
                 channelId = Utils.isset(settings.channel) && Utils.isset(settings.channel.id) ? settings.channel.id : settings.channelId;
 
@@ -227,7 +229,7 @@
                 analytics.initConfig({
                     logUrl: '//api.tvpage.com/v1/__tvpa.gif',
                     domain: Utils.isset(location, 'hostname') ? location.hostname : '',
-                    loginId: loginId
+                    loginId: settings.loginId
                 });
 
                 var selectedVideo = data.selectedVideo;
@@ -236,7 +238,7 @@
                 } else {
                     loadProducts(
                         selectedVideo.id,
-                        loginId,
+                        settings,
                         function(products) {
                             setTimeout(function() {
                                 render(products, settings);

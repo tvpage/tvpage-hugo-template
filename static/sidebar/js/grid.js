@@ -6,6 +6,7 @@
 
 
   function Grid(el, options) {
+    this.options = options || {};
     this.windowSize = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) <= 200 ? 'small' : 'medium';
     this.initialResize = true;
     this.eventPrefix = "tvp_" + (options.id || "").trim().replace(/-/g,'_');
@@ -100,7 +101,7 @@
 
       var channel = that.channel || {};
       var params = channel.parameters || {};
-      var src = '//api.tvpage.com/v1/channels/' + (channel.id || that.channelId) + '/videos?X-login-id=' + that.loginId;
+      var src = this.options.api_base_url + '/channels/' + (channel.id || that.channelId) + '/videos?X-login-id=' + that.loginId;
       for (var p in params) {
         src += '&' + p + '=' + params[p];
       }
