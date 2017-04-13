@@ -227,7 +227,7 @@
 
                 analytics = new Analytics();
                 analytics.initConfig({
-                    logUrl: '//api.tvpage.com/v1/__tvpa.gif',
+                    logUrl: settings.api_base_url + '/__tvpa.gif',
                     domain: Utils.isset(location, 'hostname') ? location.hostname : '',
                     loginId: settings.loginId
                 });

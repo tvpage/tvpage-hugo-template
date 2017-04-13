@@ -151,7 +151,7 @@
                 config.logUrl = asset.analyticsLogUrl;
                 analytics.initConfig(config);
             } else {
-                config.logUrl = '\/\/api.tvpage.com\/v1\/__tvpa.gif';
+                config.logUrl = this.apiBaseUrl + '/__tvpa.gif';
                 analytics.initConfig(config);
             }
 
@@ -191,10 +191,10 @@
                 } else {
 
                 var playerOptions = {
-                        techOrder: 'html5,flash',
-                        mediaProviders: 'tvpage,youtube',
+                        techOrder: that.techOrder,
+                        mediaProviders: that.mediaProviders,
                         analytics: { tvpa: that.analytics },
-                        apiBaseUrl: '//api.tvpage.com/v1',
+                        apiBaseUrl: that.apiBaseUrl,
                         swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+that.version+'-flash.swf',
                         onReady: function(e, pl){
                             that.instance = pl;

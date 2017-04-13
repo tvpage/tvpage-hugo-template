@@ -155,7 +155,7 @@
         config.logUrl = asset.analyticsLogUrl;
         analytics.initConfig(config);
       } else {
-        config.logUrl = '//api.tvpage.com/v1/__tvpa.gif';
+        config.logUrl = this.apiBaseUrl + '/__tvpa.gif';
         analytics.initConfig(config);
       }
 
