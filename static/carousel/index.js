@@ -223,6 +223,9 @@ function handlePostMessages(e){
     case 'modal_resize':
       handleModalResize(e);
       break;
+    case 'render':
+      handleRender(e);
+      break;
     default: 
       // do nothing
   }
@@ -238,6 +241,10 @@ function handleCallback(e){
 window.addEventListener("message", function(e){
   handlePostMessages(e);
 });
+
+function handleRender(e){
+  holder.classList.add("initialized");
+}
 
 function handleVideoClick(e){
     var eventData = e.data;

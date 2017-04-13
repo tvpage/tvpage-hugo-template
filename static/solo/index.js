@@ -161,8 +161,8 @@ iframeDocument.open().write(iframeContent);
 iframeDocument.close();
 
 window.addEventListener("message", function(e){
-    if (e && "undefined" !== typeof e.data && "undefined" !== typeof e.data.event && e.data.event === config.eventPrefix + ":no_data") {
-        holder.parentNode.removeChild(holder);
+    if (e && utils.isset(e.data) && utils.isset(e.data.event) && e.data.event === config.eventPrefix + ":render") {
+        holder.classList.add("initialized");
     }
 });
 

@@ -203,7 +203,16 @@
 
     //By default at Grid creation we load & render.
     this.load(function(data){
-      that.render(data);
+      var postEvent = '';
+      if (data.length) {
+        that.render(data);
+        
+        if (window.parent) {
+          window.parent.postMessage({
+            event: that.eventPrefix + ':render'
+          }, '*');
+        }
+      }
     });
 
     window.addEventListener('resize', Utils.debounce(this.resize,100));

@@ -10,6 +10,13 @@
 
 ".tvp-sidebar-holder {" +
     "position: relative;" +
+    "visibility: hidden;" +
+    "opacity: 0;" +
+"}" +
+
+".tvp-sidebar-holder.initialized {" +
+    "visibility: visible;" +
+    "opacity: 1;" +
 "}" +
 
 {{ with ($.Scratch.Get "settings").products_info_tooltip }}

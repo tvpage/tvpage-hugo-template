@@ -83,19 +83,20 @@
         render(unique,document.body);
 
         loadData(settings,unique,function(data){
-          
-          if (!data.length && window.parent) {
-            window.parent.postMessage({
-                event: ("tvp_" + settings.id).replace(/-/g,'_') + ':no_data'
-            }, '*');
-          }
+          if (data.length) {
+            if (window.parent) {
+              window.parent.postMessage({
+                event: ("tvp_" + settings.id).replace(/-/g,'_') + ':render'
+              }, '*');
+            }
 
-          playerSettings.data = data || [];
-          player = new Player('tvp-player-el-'+unique,playerSettings);
+            playerSettings.data = data || [];
+            player = new Player('tvp-player-el-'+unique,playerSettings);
 
-          if (playlistOption === 'show' && playlistOption) {
-            menuSettings.data = data || [];
-            menu = new Menu(player,menuSettings);        
+            if (playlistOption === 'show' && playlistOption) {
+              menuSettings.data = data || [];
+              menu = new Menu(player,menuSettings);        
+            }
           }
         });
 

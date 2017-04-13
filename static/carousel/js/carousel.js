@@ -169,6 +169,7 @@
             src += '&p=' + that.page + '&n=' + that.itemsPerPage + '&callback='+cbName;
             var script = document.createElement('script');
             script.src = src;
+
             window[cbName || 'callback'] = function(data){
                 that.data = data;
                 callback(data);
