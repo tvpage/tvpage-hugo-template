@@ -34,9 +34,7 @@
         var container = Utils.getByClass('tvp-products');
         var el = Utils.getByClass('iframe-content');
 
-        if (data && data.length) {
-            hasData = true;
-        }
+        hasData = data && data.length ? 1 : 0;
 
         var notifyState = function() {
             setTimeout(function() {
@@ -99,11 +97,14 @@
 
         container.innerHTML = '';
 
-        if (hasData) {
-            var productsLabel = document.createElement('p');
-            productsLabel.classList.add('tvp-products-headline');
-            productsLabel.innerHTML = 'Related Products';
-            container.appendChild(productsLabel);
+        if (hasData && !container.querySelector(".tvp-products-headline")) {
+            var headline = document.createElement('p');
+            headline.className = "tvp-products-headline";
+            headline.innerHTML = config.products_headline_text;
+            container.appendChild(headline);
+        } else {
+            var existingHeadline = container.querySelector(".tvp-products-headline");
+            existingHeadline.parentNode.removeChild(existingHeadline);
         }
 
         var carousel = document.createElement('div');
@@ -190,9 +191,9 @@
                     loadProducts(
                         next.assetId,
                         data.runTime.loginid || data.runTime.loginId,
-                        function(data) {
+                        function(products) {
                             setTimeout(function() {
-                                render(data,data.runTime);
+                                render(products,data.runTime);
                             }, 0);
                         });
                 }
@@ -236,9 +237,9 @@
                     loadProducts(
                         selectedVideo.id,
                         loginId,
-                        function(data) {
+                        function(products) {
                             setTimeout(function() {
-                                render(data);
+                                render(products, settings);
                             }, 0);
                         });
                 }

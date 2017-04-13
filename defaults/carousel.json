@@ -914,6 +914,13 @@
             "value": "block"
         },
         {
+          "for": "modal",
+          "type": "text",
+          "label": "Products Headline Text",
+          "code": "products_headline_text",
+          "value": "Related Products"
+        },
+        {
             "for": "modal",
             "type": "text",
             "label": "Products Headline Top",
