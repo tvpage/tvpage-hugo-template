@@ -39,13 +39,6 @@ body  {
     clear: both;
 }
 
-.tvp-player.inline {
-  position: absolute;
-  top:0;
-  left:0;
-  padding: 0;
-}
-
 #tvp-player-el {
   background-repeat: no-repeat;
   background-position: center;
@@ -58,30 +51,6 @@ body  {
   right: 0;
   width: 100%;
   height: 100%;
-}
-
-.tvp-play {
-  display: block;
-  background-color: #fff;
-  box-sizing: border-box;
-  width: 45px;
-  height: 45px;
-  padding: 0;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  margin: auto;
-  opacity: 0.95;
-  cursor: pointer;
-  border-radius: 1px;
-  border: 1px solid black;
-  z-index: 10000;
-}
-
-.tvp-play > polygon {
-  pointer-events: none;
 }
 
 .tvp-products {

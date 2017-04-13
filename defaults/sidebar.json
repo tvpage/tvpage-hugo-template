@@ -1,10 +1,11 @@
 {
     "option": [
         {
-          "type": "boolean",
-          "label": "Analytics",
-          "code": "analytics",
-          "value": true
+          "for": "player",
+          "type": "text",
+          "label": "API Base Url",
+          "code": "api_base_url",
+          "value": "//api.tvpage.com/v1"
         },
         {
           "for": "player",
@@ -16,26 +17,47 @@
         {
           "for": "player",
           "type": "text",
-          "label": "Progress Color",
-          "code": "progress_color",
-          "value": "white"
-        },
-        {
-          "for": "player",
-          "type": "boolean",
-          "label": "Transcript",
-          "code": "transcript",
-          "value": false
-        },
-        {
-          "for": "player",
-          "type": "text",
           "label": "Remove Controls",
           "code": "remove_controls",
           "value": [
               "tvplogo",
               "hd"
           ]
+        },
+        {
+          "for": "player",
+          "type": "text",
+          "label": "Tech Oder",
+          "code": "tech_order",
+          "value": "html5,flash"
+        },
+        {
+          "for": "player",
+          "type": "boolean",
+          "label": "Analytics",
+          "code": "analytics",
+          "value": true
+        },
+        {
+          "for": "player",
+          "type": "text",
+          "label": "Media Providers",
+          "code": "media_providers",
+          "value": "tvpage,youtube"
+        },
+        {
+          "for": "player",
+          "type": "text",
+          "label": "Preload",
+          "code": "preload",
+          "value": "none"
+        },
+        {
+          "for": "player",
+          "type": "boolean",
+          "label": "Poster",
+          "code": "poster",
+          "value": false
         },
         {
           "for": "player",
@@ -50,62 +72,6 @@
           "label": "Autonext",
           "code": "autonext",
           "value": true
-        },
-        {
-          "for": "player",
-          "type": "text",
-          "label": "Play Button Height",
-          "code": "play_button_height",
-          "value": "65px"
-        },
-        {
-          "for": "player",
-          "type": "text",
-          "label": "Play Button Width",
-          "code": "play_button_width",
-          "value": "65px"
-        },
-        {
-          "for": "player",
-          "type": "text",
-          "label": "Play Button Background Color",
-          "code": "play_button_background_color",
-          "value": "#fff"
-        },
-        {
-          "for": "player",
-          "type": "text",
-          "label": "Play Button Background Color Hover",
-          "code": "play_button_background_color_hover",
-          "value": "#333"
-        },
-        {
-          "for": "player",
-          "type": "text",
-          "label": "Play Button Border Radius",
-          "code": "play_button_border_radius",
-          "value": "50%"
-        },
-        {
-          "for": "player",
-          "type": "text",
-          "label": "Play Button Border",
-          "code": "play_button_border",
-          "value": "#000"
-        },
-        {
-          "for": "player",
-          "type": "text",
-          "label": "Play Button Icon Color",
-          "code": "play_button_icon_color",
-          "value": "#000"
-        },
-        {
-          "for": "player",
-          "type": "boolean",
-          "label": "Overlay",
-          "code": "overlay",
-          "value": false
         },
         {
           "type": "array",
@@ -1239,20 +1205,6 @@
           "label": "Fix Page Scroll",
           "code": "fix_page_scroll",
           "value": true
-        },
-        {
-          "for": "player",
-          "type": "text",
-          "label": "Overlay Color",
-          "code": "overlay_color",
-          "value": "transparent"
-        },
-        {
-          "for": "player",
-          "type": "text",
-          "label": "Overlay Opacity",
-          "code": "overlay_opacity",
-          "value": 0.5
         },
         {
           "for": "sidebar",
