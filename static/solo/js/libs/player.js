@@ -100,11 +100,16 @@
             asset.analyticsLogUrl = obj.analytics;
             asset.analyticsObj = obj.events[1].data;
         } else {
-            asset.analyticsObj = {
-                pg: isset(obj,'parentId') ? obj.parentId : ( isset(options,'channel') ? options.channel.id : 0 ),
-                vd: obj.id,
-                li: obj.loginId
-            };
+          var channelId = isset(obj,'parentId') ? obj.parentId : ( isset(options,'channel') ? options.channel.id : 0 );
+          if (!channelId && (options.channelId || options.channelid)) {
+            channelId = options.channelId || options.channelid;
+          }
+
+          asset.analyticsObj = {
+            pg: channelId,
+            vd: obj.id,
+            li: obj.loginId
+          };
         }
 
         if (!asset.sources) asset.sources = [{ file: asset.videoId }];
