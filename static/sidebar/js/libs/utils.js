@@ -1,7 +1,6 @@
 ;(function(window,document) {
 
   function Utils() {
-
     this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
     this.getByClass = function(c){
@@ -36,7 +35,6 @@
         if (day.length < 2) day = '0' + day;
         return [month, day, year].join('/');
     };
-
     this.isset = function(o,p){
       if (!arguments.length) return;
       var val = o;

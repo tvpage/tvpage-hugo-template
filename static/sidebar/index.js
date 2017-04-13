@@ -112,7 +112,7 @@ if ( !config.hasOwnProperty('targetEl') ||  !document.getElementById(config.targ
 } 
 
 var targetElement = document.getElementById(config.targetEl);
-targetElement.insertAdjacentHTML('beforebegin', hostCssTag + '<style>' + config.css["host-custom"] + '</style><div id="' + id + '-holder" class="tvp-sidebar-holder">'+
+targetElement.insertAdjacentHTML('beforebegin', hostCssTag + '<style>' + config.css["host-custom" + (utils.isMobile ? "-mobile" : "")] + '</style><div id="' + id + '-holder" class="tvp-sidebar-holder">'+
 '<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe></div>');
 targetElement.parentNode.removeChild(targetElement);
 
@@ -281,14 +281,14 @@ function handleVideoClick(e){
     iframeModalDocument.open().write(utils.getIframeHtml({
       id: config.id,
       domain: config.baseUrl,
-      style: config.css["modal-content"],
+      style: config.css["modal-content" + (utils.isMobile ? "-mobile" : "")],
       className: utils.isMobile ? "mobile" : "",
-      html: (utils.isMobile ? config.templates["modal-content-mobile"] : config.templates["modal-content"].body),
+      html: config.templates["modal-content" + (utils.isMobile ? "-mobile" : "")].body,
       js: [
           "//a.tvpage.com/tvpa.min.js",
           playerUrl,
           config.debug && utils.isMobile ? config.jsPath + "/vendor/jquery.js" : "",
-          config.debug && !utils.isMobile ? config.jsPath + "/vendor/simple-scrollbar.min.js" : "",
+          config.debug && !utils.isMobile ? config.jsPath + "/vendor/perfect-scrollbar.min.js" : "",
           config.debug ? config.jsPath + "/libs/utils.js" : "",
           config.debug ? config.jsPath + "/libs/analytics.js" : "",
           config.debug ? config.jsPath + "/libs/player.js" : "",
@@ -298,7 +298,7 @@ function handleVideoClick(e){
       css: [
           config.debug ? config.cssPath + "/" + config.mobilePath + "modal/styles.css" : "",
           config.debug && utils.isMobile ? config.cssPath + "/vendor/slick.css" : "",
-          config.debug && !utils.isMobile ? config.cssPath + "/vendor/simple-scrollbar.css" : "",
+          config.debug && !utils.isMobile ? config.cssPath + "/vendor/perfect-scrollbar.min.css" : "",
           config.debug ? "" : config.cssPath + "/" + config.mobilePath + "modal/styles.min.css"
       ]
     }));
@@ -366,16 +366,24 @@ function handleModalResize(e){
 };
 
 function handleModalProducts(e) {
-  if (!utils.isMobile && !document.getElementById('tvp-products-headline-' + config.id)) {
+  if (!utils.isMobile && !document.getElementById('tvp-products-headline-' + config.id) && config.products_headline_display) {
     var label = document.createElement('div');
-    utils.addClass(label,'tvp-products-headline');
+    label.className = 'tvp-products-headline';
     label.id = 'tvp-products-headline-' + config.id;
-    label.innerHTML = config.products_headline_text;
+    
+    var tooltipHtml = "";
+    if (config.products_info_tooltip && config.products_message.trim().length) {
+      tooltipHtml = config.templates['modal'].tooltip + 
+      '<span class="tvp-products-message">' + config.products_message + '</span>';
+    }    
+
+    label.innerHTML = config.products_headline_text + tooltipHtml;
+    
+    label.onclick = function(){
+      this.classList.contains('active') ? this.classList.remove('active') : this.classList.add('active');
+    };
+
     var modalHeader = document.getElementById('tvp-modal-header-' + config.id);
-    if (config.products_message.trim().length) {
-      var tooltip = config.products_info_tooltip ? config.templates['modal'].tooltip : '';
-      label.innerHTML += tooltip;
-    }
     modalHeader.appendChild(label);
   }
 
@@ -396,6 +404,11 @@ var closeModal = function () {
 
   if (config.fix_page_scroll) {
       utils.removeClass(document.body,'tvp-modal-open');
+  }
+
+  var prodHeadline = document.getElementById('tvp-products-headline-' + config.id);
+  if (prodHeadline) {
+    utils.removeClass(prodHeadline,'active');
   }
 
   removeBannerEl();

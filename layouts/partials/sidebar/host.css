@@ -19,24 +19,29 @@
     "opacity: 1;" +
 "}" +
 
-{{ with ($.Scratch.Get "settings").products_info_tooltip }}
 ".tvp-info-icon{" +
     "position: absolute;" +
     "top: 50%;" +
     "right: -15%;" +
     "transform: translateY(-50%);" +
+    "cursor: pointer;" +
 "}" +
 
 ".tvp-products-message {" +
+    "cursor: pointer;" +
+"}" +
+
+".tvp-products-headline .tvp-products-message {" +
     "position: absolute;" +
     "z-index: 9999;" +
     "opacity: 0;" +
     "visibility: hidden;" +
     "right: -35%;" +
-    "top: 170%;" +
+    "top: 165%;" +
+    "transition: opacity 0.5s ease; " +
 "}" +
 
-".tvp-products-headline:hover .tvp-products-message {" +
+".tvp-products-headline.active .tvp-products-message {" +
     "opacity: 1;" +
     "visibility: visible;" +
 "}" +
@@ -65,7 +70,6 @@
     "border-width: 13px;" +
     "margin-left: -13px;" +
 "}" +
-{{ end }}
 
 ".tvp-sidebar-holder > iframe {" +
     "top: 0;" +

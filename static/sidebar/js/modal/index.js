@@ -1,5 +1,4 @@
 (function(window,document){
-
     var analytics,
         channelId,
         eventName;
@@ -12,11 +11,6 @@
             ct: this.id.split('-').pop(),
             pg: channelId
         });
-    };
-
-    var closestByClass = function(el, c) {
-        while ((el = el.parentElement) && !el.classList.contains(c));
-        return el;
     };
 
     var checkProducts = function(data,el){
@@ -101,11 +95,9 @@
               for (var j = 0; j < fulls; j++) {
                 ratingReviewsHtml += '<li class="tvp-rate full"></li>';
               }
-
               if (half) {
                 ratingReviewsHtml += '<li class="tvp-rate half"></li>';
               }
-
               for (var k = 0; k < empties; k++) {
                 ratingReviewsHtml += '<li class="tvp-rate empty"></li>';
               }
@@ -128,37 +120,33 @@
             });
         }
 
-        var classNames = ['tvp-product', 'tvp-product-popup'];
-        for (var i = 0; i < classNames.length; i++) {
-            var elements = container.getElementsByClassName(classNames[i]);
-            for (var j = 0; j < elements.length; j++) {
-                elements[j].removeEventListener('click', pkTrack, false);
-            }
+        var willScroll = data.length > 2;
+        if("undefined" !== typeof Ps){
+            Ps.destroy(holder);
         }
 
-        var willScroll = data.length > 2;
         if (willScroll) {
-          container.setAttribute('ss-container', true);
-          SimpleScrollbar.initAll();
+          Ps.initialize(holder,{
+            suppressScrollX: true
+          });
         }
 
         setTimeout(function(){
             var arrow = Utils.getByClass('tvp-arrow-indicator');
-            var showPopup = function(e){
-                var productEl = closestByClass(e.target,'tvp-product');
-                if (!productEl) return;
+            var showPopup = function(id){
+                var productEl = document.getElementById('tvp-product-'+id);
+                var popup = document.getElementById('tvp-product-popup-'+id);
+                if (!productEl && !popup) return;
 
                 var activePopups = document.querySelectorAll('.tvp-product-popup.active');
                 for (var i = activePopups.length - 1; i >= 0; i--) {
                     activePopups[i].classList.remove('active');
                 }
 
-                var id = productEl.id.split('-').pop();
                 productEl.classList.add('active');
-
-                var popup = document.getElementById('tvp-product-popup-'+id);
-                var topValue = productEl.getBoundingClientRect().top;
                 popup.classList.add('active');
+
+                var topValue = productEl.getBoundingClientRect().top;
                 var bottomLimit = topValue + popup.offsetHeight;
                 var holderHeight = holder.offsetHeight;
 
@@ -177,38 +165,46 @@
                 popup.style.top = topValue + 'px';
 
                 arrow.classList.add('active');
-                arrow.style.top = (productEl.getBoundingClientRect().top + 30) + 'px';
+                arrow.style.top = (productEl.getBoundingClientRect().top + 45) + 'px';
             };
 
-            var classNames = ['tvp-product', 'tvp-product-popup'];
             var timeOut = null;
-            for (var i = 0; i < classNames.length; i++) {
-                var elements = holder.getElementsByClassName(classNames[i]);
-                for (var j = 0; j < elements.length; j++) {
-                    var element = elements[j];
-                    element.addEventListener('click', pkTrack, false);
-                    element.onmouseover = function (e) {
-                        clearTimeout(timeOut);
-                        showPopup(e);
-                    };
-                    element.onmouseleave = function () {
-                        
-                        var activeThumbs = document.querySelectorAll('.tvp-product.active');
-                        for (var i = activeThumbs.length - 1; i >= 0; i--) {
-                            activeThumbs[i].classList.remove('active');
-                        }
-
-                        timeOut = setTimeout(function(){   
-                            arrow.classList.remove('active');
-                            var activePopups = document.querySelectorAll('.tvp-product-popup.active');
-                            for (var i = activePopups.length - 1; i >= 0; i--) {
-                                activePopups[i].classList.remove('active');
-                            }
-                        },100);
-                    };
-
-                }
+            var productElm = holder.querySelectorAll('.tvp-product');
+            for (var i = productElm.length - 1; i >= 0; i--) {
+                productElm[i].addEventListener('click', pkTrack, false);
+                productElm[i].onmouseover = function(e){
+                    clearTimeout(timeOut);
+                    showPopup(this.id.split('-').pop());
+                };
+                productElm[i].onmouseleave = function(e){
+                    clearActive();
+                };
             }
+            var popupEl = popupsContainer.querySelectorAll('.tvp-product-popup');
+            for (var i = popupEl.length - 1; i >= 0; i--) {
+                popupEl[i].addEventListener('click', pkTrack, false);
+                popupEl[i].onmouseover = function() {
+                    clearTimeout(timeOut);
+                    showPopup(this.id.split('-').pop());
+                };
+                popupEl[i].onmouseleave = function(){
+                    clearActive();
+                };
+            }
+
+            var clearActive = function() {
+                var activeThumbs = document.querySelectorAll('.tvp-product.active');
+                for (var j = activeThumbs.length - 1; j >= 0; j--) {
+                    activeThumbs[j].classList.remove('active');
+                }
+                timeOut = setTimeout(function(){   
+                    arrow.classList.remove('active');
+                    var activePopups = document.querySelectorAll('.tvp-product-popup.active');
+                    for (var j = activePopups.length - 1; j >= 0; j--) {
+                        activePopups[j].classList.remove('active');
+                    }
+                },100);
+            };
         },0);
 
     };
@@ -247,23 +243,19 @@
                 if (Utils.isset(next,'products')) {
                     render(next.products,data.runTime);
                 } else {
-                    if (!data.runTime.merchandise) {
-                        el.classList.add('tvp-no-products');
-                        eventName = eventPrefix + ':modal_no_products';
-                        notify();
-                    }else{
-                        loadProducts(
-                            next.assetId,
-                            data.runTime,
-                            function(products){
-                                setTimeout(function(){
-                                    render(products,data.runTime);
-                                    checkProducts(products,el);
-                                    player.resize();
-                                },0);
-                            });
-                    }
-                    
+                  if (!data.runTime.merchandise) {
+                    el.classList.add('tvp-no-products');
+                    eventName = eventPrefix + ':modal_no_products';
+                    notify();
+                  } else {
+                    loadProducts(next.assetId,data.runTime,function(products){
+                      setTimeout(function(){
+                        checkProducts(products,el);
+                        render(products,data.runTime);
+                        player.resize();
+                      },0);
+                    });
+                  }
                 }
 
                 if (window.parent) {
@@ -312,8 +304,8 @@
                         loadProducts(selectedVideo.id, settings,
                             function(products){
                             setTimeout(function(){
-                                render(products,settings);
                                 checkProducts(products,el);
+                                render(products,settings);
                             },0);
                         });
                     }
@@ -332,12 +324,12 @@
     };
 
     var not = function(obj){return 'undefined' === typeof obj};
-    if (not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player) || not(window.SimpleScrollbar)) {
+    if (not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player) || not(window.Ps)) {
         var libsCheck = 0;
         (function libsReady() {
             setTimeout(function(){
-                if (not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player) || not(window.SimpleScrollbar)) {
-                    (++libsCheck < 50) ? libsReady() : console.warn('limit reached');
+                if (not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player) || not(window.Ps)) {
+                    (++libsCheck < 200) ? libsReady() : console.warn('limit reached');
                 } else {
                     initialize();
                 }

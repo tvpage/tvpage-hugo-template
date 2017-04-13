@@ -4,7 +4,6 @@
     return 'function' === typeof obj;
   };
 
-
   function Grid(el, options) {
     this.options = options || {};
     this.windowSize = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) <= 200 ? 'small' : 'medium';
@@ -72,9 +71,7 @@
             }
 
             item.className = className;
-
             var template = options.templates['sidebar-item'];
-
             item.title = Utils.trimText(item.title,50);
             rowEl.innerHTML += Utils.tmpl(template, item);
           }

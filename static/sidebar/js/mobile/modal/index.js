@@ -1,7 +1,7 @@
 (function(window, document) {
-
     var analytics = null;
     var channelId = null;
+    var slickInitialized = false;
     var hasData = false;
     var eventName;
     var eventPrefix = "tvp_" + (document.body.getAttribute("data-id") || "").replace(/-/g,'_');
@@ -58,12 +58,14 @@
     var render = function(data,config) {
         var container = Utils.getByClass('tvp-products');
         var el = Utils.getByClass('iframe-content');
-        var frag = document.createDocumentFragment();
+        var carousel = Utils.getByClass('tvp-products-carousel');
+        carousel.innerHTML = '';
+        carousel.classList = '';
+        carousel.classList.add('tvp-products-carousel');
 
         for (var i = 0; i < data.length; i++) {
             var product = data[i];
             var productId = product.id;
-            var productVideoId = product.entityIdParent;
 
             analytics.track('pi', {
                 vd: product.entityIdParent,
@@ -71,42 +73,29 @@
                 pg: channelId
             });
 
-            var prodTitle = product.title || '';
-            //shorten the lenght of long titles, we need to set a character limit
-            prodTitle = Utils.trimText(prodTitle, 50);
-
-            var fixedPrice = product.price || '';
-            //remove all special character, so they don't duplicate
-            fixedPrice = Utils.trimPrice(fixedPrice);
-
-            var prodNode = document.createElement('div');
-            var buttonText = product.actionText.trim().length > 0 ? product.actionText : 'View Details';
-            prodNode.innerHTML = '<a id="tvp-product-' + productId + '" class="tvp-product" data-vd="' + productVideoId + '" href="' +
-                product.linkUrl + '"><div class="tvp-product-image" style="background-image:url(' + product.imageUrl + ')"></div>' +
-                '<div class="tvp-product-data"><p>' + prodTitle + '</p><h2>' + fixedPrice + '</h2><button class="tvp-product-cta">'+buttonText+'</button></div></a>';
-            frag.appendChild(prodNode);
+            product.title = !Utils.isEmpty(product.title) ? Utils.trimText(product.title, 50) : '';
+            product.price = !Utils.isEmpty(product.price) ? Utils.trimPrice(product.price) : '';
+            carousel.innerHTML += Utils.tmpl(config.templates['modal-content-mobile'].products,product);
         }
 
-        //Remove click listener before cleaning up.
         var toRemove = container.getElementsByClassName('tvp-product');
         for (var j = 0; j < toRemove.length; j++) {
             toRemove[j].removeEventListener('click', pkTrack, false);
         }
 
-        container.innerHTML = '';
-
+        var productsTitle = Utils.getByClass('tvp-products-text');
         if (hasData) {
-            var productsLabel = document.createElement('p');
-            productsLabel.classList.add('tvp-products-headline');
-            productsLabel.innerHTML = config.products_headline_text;
-            container.appendChild(productsLabel);
-        }
+            var tooltipHtml = "";
+            if (config.products_info_tooltip && config.products_message.trim().length) {
+              tooltipHtml = config.templates['modal'].tooltip + 
+              '<span class="tvp-products-message">' + config.products_message + '</span>';
+            }  
+            productsTitle.innerHTML += config.products_headline_text + tooltipHtml;  
+        }   
 
-        var carousel = document.createElement('div');
-        carousel.classList.add('tvp-products-carousel');
-        carousel.appendChild(frag);
-
-        container.appendChild(carousel);
+        productsTitle.onclick = function(){
+            this.classList.contains('active') ? this.classList.remove('active') : this.classList.add('active');
+        };     
 
         var toTrack = container.getElementsByClassName('tvp-product');
         for (var j = 0; j < toTrack.length; j++) {
@@ -115,6 +104,7 @@
 
         //We start loading our slick dependency here, it was breaking while rendering it dynamicaly.
         var startSlick = function() {
+            if (!data.length) return;
             setTimeout(function() {
                 var $el = $(carousel);
                 var config = {
@@ -126,6 +116,12 @@
                 if (data.length > 1) {
                     config.centerMode = true;
                     config.centerPadding = '25px';
+
+                    if (data.length <= 5) {
+                        config.appendDots = '.tvp-products-headline';
+                        config.dots = true;
+                        config.dotsClass = 'tvp-slider-dots';    
+                    }
                 }
 
                 $el.on('init', function() {
@@ -143,7 +139,14 @@
                     }, 0);
                 });
 
-                $el.slick(config);
+                if (!slickInitialized) {
+                    $el.slick(config);
+                    slickInitialized = true;
+                }else{
+                    $('.tvp-slider-dots').remove();
+                    $el.slick(config);
+                }
+
             }, 10);
         };
 
@@ -151,7 +154,7 @@
             $.ajax({
                 dataType: 'script',
                 cache: true,
-                url: document.body.getAttribute('data-domain') + '/carousel/js/vendor/slick-min.js'
+                url: document.body.getAttribute('data-domain') + '/sidebar/js/vendor/slick-min.js'
             }).done(startSlick);
         } else {
             startSlick();
@@ -195,8 +198,8 @@
                             data.runTime,
                             function(products) {
                                 setTimeout(function() {
-                                    render(products,data.runTime);
                                     checkProducts(products,el);
+                                    render(products,data.runTime);
                                 }, 0);
                             });
                     }
@@ -253,7 +256,6 @@
                 }
             }
         });
-
         //Notify when the widget has been initialized.
         setTimeout(function() {
             if (window.parent) {

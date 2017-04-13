@@ -1,3 +1,13 @@
+{{ with ($.Scratch.Get "settings").fonts }}
+  {{ range . }}
+    "@import url('{{ . }}');" +
+  {{ end }}
+{{ end }}
+
+".tvp-modal-body {" +
+    "padding: {{ ($.Scratch.Get "settings").mobile_modal_body_padding }};" +
+"}" +
+
 ".tvp-sidebar-holder {" +
     "background: {{ ($.Scratch.Get "settings").background }};" +
     "margin: {{ ($.Scratch.Get "settings").margin }};" +
@@ -40,30 +50,6 @@
     "right: {{ ($.Scratch.Get "settings").products_headline_right }};" +
 "}" +
 
-".tvp-info-icon{" +
-    "fill: {{ ($.Scratch.Get "settings").products_info_icon_color }};" +
-    "width:{{ ($.Scratch.Get "settings").products_info_icon_size }};" +
-    "height:{{ ($.Scratch.Get "settings").products_info_icon_size }};" +
-"}" +
-".tvp-products-message {" +
-    "color: {{ ($.Scratch.Get "settings").products_message_text_color }};" +
-    "font-size: {{ ($.Scratch.Get "settings").products_message_font_size }};" +
-    "text-align: {{ ($.Scratch.Get "settings").products_message_text_align }};" +
-    "text-transform: {{ ($.Scratch.Get "settings").products_message_text_transform }};" +
-    "font-family: {{ ($.Scratch.Get "settings").products_message_font_family }};" +
-    "font-weight: {{ ($.Scratch.Get "settings").products_message_font_weight }};" +
-    "line-height: {{ ($.Scratch.Get "settings").products_message_line_height }};" +
-    "width:{{ ($.Scratch.Get "settings").products_message_width }};" +
-    "background-color: {{ ($.Scratch.Get "settings").products_message_background_color }};" +
-    "box-shadow: {{ ($.Scratch.Get "settings").products_message_box_shadow }};" +
-    "padding: {{ ($.Scratch.Get "settings").products_message_padding }};" +
-    "border: 1px solid {{ ($.Scratch.Get "settings").products_message_border }};" +
-"}" +
-".tvp-products-message:before {" +
-    "border-bottom-color: {{ ($.Scratch.Get "settings").products_message_border }};" +
-"}"+
-
-
 ".tvp-no-products-banner{" +
     "height: {{ ($.Scratch.Get "settings").no_products_banner_height }};" +
     "width: {{ ($.Scratch.Get "settings").no_products_banner_width }};" +
@@ -72,8 +58,8 @@
 "}" +
 
 ".tvp-modal-close {" +
-    "width: {{ ($.Scratch.Get "settings").modal_close_button_width }};" +
-    "height: {{ ($.Scratch.Get "settings").modal_close_button_height }};" +
+    "width: {{ ($.Scratch.Get "settings").mobile_modal_close_button_width }};" +
+    "height: {{ ($.Scratch.Get "settings").mobile_modal_close_button_height }};" +
     "padding: {{ ($.Scratch.Get "settings").modal_close_button_padding }};" +
     "background-color: {{ ($.Scratch.Get "settings").modal_close_button_background_color }};" +
     {{ with ($.Scratch.Get "settings").modal_close_button_background_image_url }}
@@ -82,8 +68,8 @@
     "border: {{ ($.Scratch.Get "settings").modal_close_button_border }};" +
     "border-radius: {{ ($.Scratch.Get "settings").modal_close_button_border_radius }};" +
     "box-shadow: {{ ($.Scratch.Get "settings").modal_close_button_box_shadow }};" +
-    "right: {{ ($.Scratch.Get "settings").modal_close_button_right }};" +
-    "top: {{ ($.Scratch.Get "settings").modal_close_button_top }};" +
+    "right: {{ ($.Scratch.Get "settings").mobile_modal_close_button_right }};" +
+    "top: {{ ($.Scratch.Get "settings").mobile_modal_close_button_top }};" +
     "opacity: {{ ($.Scratch.Get "settings").modal_close_button_opacity }};" +
 "}" +
 

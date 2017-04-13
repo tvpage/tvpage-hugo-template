@@ -113,6 +113,13 @@
         {
           "for": "mobile",
           "type": "text",
+          "label": "Mobile Products Message Arrow Position",
+          "code": "mobile_products_message_arrow_position",
+          "value": "105px"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
           "label": "Mobile Product Title Font Size",
           "code": "mobile_product_title_font_size",
           "value": "12px"
@@ -311,7 +318,7 @@
           "type": "text",
           "label": "Mobile Product CTA Text Align",
           "code": "mobile_product_cta_text_align",
-          "value": "left"
+          "value": "center"
         },
         {
           "for": "mobile",
@@ -500,7 +507,7 @@
           "type": "text",
           "label": "Modal Header Padding",
           "code": "modal_header_padding",
-          "value": "25px 15px 5px"
+          "value": "25px 30px 5px 15px"
         },
         {
           "for": "modal",
@@ -668,7 +675,7 @@
           "type": "text",
           "label": "Products Info Icon Color",
           "code": "products_info_icon_color",
-          "value": "#BEBEBE"
+          "value": "#333"
         },
         {
           "for": "modal",
@@ -1166,6 +1173,13 @@
           "label": "Fix Page Scroll",
           "code": "fix_page_scroll",
           "value": true
+        },
+        {
+          "for": "sidebar",
+          "type": "text",
+          "label": "Sidebar Body Font Family",
+          "code": "sidebar_body_font_family",
+          "value": "Helvetica"
         },
         {
           "for": "sidebar",
