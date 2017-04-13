@@ -194,6 +194,8 @@ jsonpScript.src = jsonpScriptSrc;
 
 window[cbName] = function (data) {
     if (data.length) {
+      holder.classList.add("initialized");
+
       var overlayEl = document.createElement("div");
       overlayEl.className = "tvp-cta-overlay";
       var video = data[0];
@@ -214,8 +216,6 @@ window[cbName] = function (data) {
       overlayEl.removeEventListener("click",handleVideoClick,false);
       overlayEl.addEventListener("click",handleVideoClick,false);
       holder.appendChild(overlayEl);
-    } else {
-      holder.parentNode.removeChild(holder);
     }
 };
 
