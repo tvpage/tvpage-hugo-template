@@ -191,6 +191,7 @@ body  {
   text-decoration: none;
   top: 0;
   right: 97%;
+  z-index: 2147483647;
 }
 
 .tvp-product-popup.active {
