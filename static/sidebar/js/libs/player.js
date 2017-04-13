@@ -75,8 +75,8 @@
       seekBar: this.seekBar,
       floater: this.floater,
       playbutton: this.playbutton,
-      overlayColor: isset(options.play_overlay_color) ? options.play_overlay_color : null,
-      overlayOpacity: isset(options.play_overlay_opacity) ? options.play_overlay_opacity : null
+      overlayColor: isset(options.overlay_color) ? options.overlay_color : null,
+      overlayOpacity: isset(options.overlay_opacity) ? options.overlay_opacity : null
     });
 
     this.onResize = isset(options.onResize) && isFunction(options.onResize) ? options.onResize : null;

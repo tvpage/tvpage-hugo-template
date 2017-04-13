@@ -71,14 +71,13 @@
       seekBar: this.seekBar,
       floater: this.floater,
       playbutton: this.playbutton,
-      overlayColor: isset(options.play_overlay_color) ? options.play_overlay_color : null,
-      overlayOpacity: isset(options.play_overlay_opacity) ? options.play_overlay_opacity : null
+      overlayColor: isset(options.overlay_color) ? options.overlay_color : null,
+      overlayOpacity: isset(options.overlay_opacity) ? options.overlay_opacity : null
     });
     
     this.onNext = isset(options.onNext) && "function" === typeof options.onNext ? options.onNext : null;
     this.onPlayerReady = isset(options.onPlayerReady) && "function" === typeof options.onPlayerReady ? options.onPlayerReady : null;
     this.onFullscreenChange = isset(options.onFullscreenChange) && "function" === typeof options.onFullscreenChange ? options.onFullscreenChange : null;
-
 
     //Context reference for Methods.
     var that = this;
@@ -318,7 +317,6 @@
           }
 
           that.player = new TVPage.player(playerOptions);
-
         }
       },150);
     })();
