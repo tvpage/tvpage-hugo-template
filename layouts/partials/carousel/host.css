@@ -1,9 +1,22 @@
-"[class^=tvp-] {" +
+{{ with ($.Scratch.Get "settings").fonts }}
+  {{ range . }}
+    "@import url('{{ . }}');" +
+  {{ end }}
+{{ end }}
+
+"*[class^=tvp-] {" +
     "box-sizing: border-box;" +
 "}" +
 
 ".tvp-carousel-holder {" +
     "position: relative;" +
+    "visibility: hidden;" +
+    "opacity: 0;" +
+"}" +
+
+".tvp-carousel-holder.initialized {" +
+    "visibility: visible;" +
+    "opacity: 1;" +
 "}" +
 
 ".tvp-carousel-holder > iframe {" +

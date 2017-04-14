@@ -7,10 +7,10 @@
   <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
   {{ if (getenv "HUGO_DEBUG") }}
   <link rel="stylesheet" type="text/css" href="{{ (printf "%s/css/styles.css" .Type ) | absURL }}">
+  <link rel="stylesheet" type="text/css" href="{{ (printf "%s/css/vendor/slick.css" .Type ) | absURL }}">
   {{ else }}
   <link rel="stylesheet" type="text/css" href="{{ (printf "%s/dist/css/styles.min.css" .Type ) | absURL }}">
   {{ end }}
-  <style>{{ replaceRE " +" " " (replaceRE "\n" "" (partial (printf "%s/config.css" .Type ) .)) | safeCSS }}</style>
 </head>
 <body data-id='{{ $id }}'>
 <div id='{{ $id }}' class="iframe-content">
@@ -22,27 +22,35 @@
       <div class="tvp-logo-img"></div>
     </a>
   </div>
-  <div class="tvp-cover"></div>
 </div>
 <script id="gridItemTemplate" type="text/template">
-  <div id="tvp-video-{id}" class="tvp-video{className}">
+  <div class="tvp-video{className}"  data-id="{id}">
     <div class="tvp-video-image" style="background-image:url({asset.thumbnailUrl})">
-      <svg class="tvp-video-play" viewBox="0 0 200 200" alt="Play video"><polygon points="70, 55 70, 145 145, 100"></polygon></svg>
+      <svg class="tvp-video-play" viewBox="0 0 200 200" alt="Play video">
+        <polygon points="70, 55 70, 145 145, 100"></polygon>
+      </svg>
       <div class="tvp-video-image-overlay"></div>
+    </div>
+    <div class="tvp-video-metadata tvp-clearfix">
+        <div>Length: {mediaDuration}</div>
+        <div>Published: {publishedDate}</div>
     </div>
     <p class="tvp-video-title">{title}</p>
   </div>
 </script>
 <script>
-  window.__TVPage__ = window.__TVPage__ || {};
-  __TVPage__.config = __TVPage__.config || {};
-  __TVPage__.config[{{ $id }}] = {{ $.Scratch.Get "settings" }};
-  __TVPage__.config[{{ $id }}].channel = {
-    id: '{{ ($.Scratch.Get "settings").channelid }}'
-  };
+    window.__TVPage__ = window.__TVPage__ || {};
+    __TVPage__.config = __TVPage__.config || {};
+    __TVPage__.config[{{ $id }}] = {{ $.Scratch.Get "settings" }};
+    __TVPage__.config[{{ $id }}].widgetId = {{ $id }};
+    __TVPage__.config[{{ $id }}].channel = {
+        id: '{{ ($.Scratch.Get "settings").channelid }}'
+    };
 </script>
 {{ if (getenv "HUGO_DEBUG") }}
 <script>window.DEBUG = Number({{getenv "HUGO_DEBUG"}}) || 0;</script>
+<script src="{{ (printf "%s/js/vendor/jquery.js" .Type ) | absURL }}"></script>
+<script src="{{ (printf "%s/js/vendor/slick-min.js" .Type ) | absURL }}"></script>
 <script src="{{ (printf "%s/js/libs/utils.js" .Type ) | absURL }}"></script>
 <script src="{{ (printf "%s/js/grid.js" .Type ) | absURL }}"></script>
 <script src="{{ (printf "%s/js/index.js" .Type ) | absURL }}"></script>

@@ -1,0 +1,17 @@
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+		xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+	{{ range .Data.Pages }}
+  <url>
+    <loc>{{ .Permalink }}</loc>
+    {{- if eq .Layout "channelVideo" -}}
+    <video:video>
+    	{{ $video := index $.Site.Data.videos (printf "x%s" .Params.videoid)  }}
+    	<video:thumbnail_loc>{{- $video.asset.thumbnailUrl -}}</video:thumbnail_loc>
+        <video:title>{{- .Title -}}</video:title>
+        <video:description>{{- .Description -}}</video:description>
+        <video:duration>{{- $video.duration -}}</video:duration>
+    </video:video>
+    {{- end -}}
+  </url>
+  {{ end }}
+</urlset>

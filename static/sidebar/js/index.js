@@ -12,7 +12,7 @@
       if (isset(g) && isset(g,'__TVPage__') && isset(g.__TVPage__, 'config')) {
         c = g.__TVPage__.config;
       } else {
-        return console.log('need config');
+        return console.warn('Needs Config');
       }
       return c;
     };
@@ -20,7 +20,7 @@
     if ('dynamic' === type) {
       var config = getConfig(parent);
       var id = document.body.getAttribute('data-id');
-      if (!isset(config, id)) return console.log('need settings');
+      if (!isset(config, id)) return console.warn('Needs Settings');
       s = config[id];
       s.name = id;
     } else if ('inline' === type && type && type.length) {
@@ -30,7 +30,7 @@
     } else if ('static' === type) {
       var config = getConfig(window);
       var id = document.body.getAttribute('data-id');
-      if (!isset(config, id)) return console.log('need settings');
+      if (!isset(config, id)) return console.warn('Needs Settings');
       s = config[id];
       s.name = id;
     }
@@ -38,17 +38,13 @@
   };
 
   var render = function(target,data){
-    if (!target) return console.log('need target');
+    if (!isset(target) || !isset(data)) return console.warn('Needs Target|Data');
     var frag = document.createDocumentFragment(),
     main = document.createElement('div');
     var d = data || {};
     main.id = d.id || '';
     main.classList.add('iframe-content');
-    main.innerHTML =  '<div class="tvp-sidebar-title">' + (d.title || '') + '</div>'+
-    '<div class="tvp-sidebar-container"></div><div class="tvp-sidebar-footer">'+
-    '<button class="tvp-sidebar-load">' + (d.loadBtnText || '') + '</button>'+
-    '<a class="tvp-logo" target="_blank" href="https://www.tvpage.com/"><div class="tvp-logo-img"></div></a>'+
-    '</div><div class="tvp-cover"></div>';
+    main.innerHTML +=  d.templates['sidebar'];
     frag.appendChild(main);
     target.appendChild(frag);
   };
@@ -56,52 +52,20 @@
   var body = document.body;
 
   var initialize = function(){
-    if (body.classList.contains('dynamic')) {
-      (function(settings){
-        var gridSettings = JSON.parse(JSON.stringify(settings));
-        var name = settings.name;
+    (function(settings){
+      var gridSettings = JSON.parse(JSON.stringify(settings));
+      var name = settings.name;
 
-        render(body,{
-          id: name,
-          title: settings.title || 'Recommended Videos',
-          loadBtnText: settings.loadBtnText || 'View More'
-        });
+      render(body,settings);
 
-        var el = document.getElementById(name);
-        gridSettings.onLoad = function(){el.classList.add('loading');};
-        gridSettings.onLoadEnd = function(){el.classList.remove('loading');};
-        
-        new Grid(name, gridSettings);
+      var el = document.getElementById(name);
+      gridSettings.onLoad = function(){el.classList.add('loading');};
+      gridSettings.onLoadEnd = function(){el.classList.remove('loading');};
+      
+      new Grid(name, gridSettings);
 
-      }(getSettings('dynamic')));
-    } else {
-      (function(settings){
-        var gridSettings = JSON.parse(JSON.stringify(settings));
-        var name = settings.name;
-        
-        var el = document.getElementById(name);
-        gridSettings.onLoad = function(){el.classList.add('loading');};
-        gridSettings.onLoadEnd = function(){el.classList.remove('loading');};
-
-        new Grid(name, gridSettings);
-      }(getSettings('static')));
-    }
+    }(getSettings('dynamic')));
   };
-
-  if ('undefined' === typeof window.Grid) {
-    var gridCheck = 0;
-    (function gridReady() {
-      setTimeout(function() {
-        if ('undefined' === typeof window.Grid) {
-          (++gridCheck < 50) ? gridReady() : console.log('limit reached');
-        } else  {
-          initialize();
-        }
-      },150);
-    })();
-  } else {
-    initialize();
-  }
 
   var not = function(obj){return 'undefined' === typeof obj};
   if (not(window.Grid) || not(window.Utils)) {
@@ -109,7 +73,7 @@
       (function libsReady() {
           setTimeout(function(){
               if (not(window.Grid) || not(window.Utils)) {
-                  (++libsCheck < 50) ? libsReady() : console.log('limit reached');
+                  (++libsCheck < 50) ? libsReady() : console.warn('limit reached');
               } else {
                   initialize();
               }

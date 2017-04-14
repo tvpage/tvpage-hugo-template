@@ -1,7 +1,7 @@
 (function(window,document){
-
     var analytics,
-        channelId;
+        channelId,
+        eventName;
 
     var eventPrefix = "tvp_" + (document.body.getAttribute("data-id") || "").replace(/-/g,'_');
 
@@ -13,22 +13,19 @@
         });
     };
 
-    var closestByClass = function(el, c) {
-        while ((el = el.parentElement) && !el.classList.contains(c));
-        return el;
-    };
-
     var checkProducts = function(data,el){
-        var eventName;
-
         if (!data || !data.length) {
             el.classList.add('tvp-no-products');
             eventName = eventPrefix + ':modal_no_products';
+            notify();
         }else{
             el.classList.remove('tvp-no-products');
             eventName = eventPrefix + ':modal_products';
+            notify();
         }
+    };
 
+    var notify = function(argument) {
         setTimeout(function(){
             if (window.parent) {
                 window.parent.postMessage({event: eventName}, '*');
@@ -36,9 +33,9 @@
         },0);
     };
 
-    var loadProducts = function(videoId,loginId,fn){
+    var loadProducts = function(videoId,settings,fn){
         if (!videoId) return;
-        var src = '//api.tvpage.com/v1/videos/' + videoId + '/products?X-login-id=' + loginId;
+        var src = settings.api_base_url + '/videos/' + videoId + '/products?X-login-id=' + settings.loginId;
         var cbName = 'tvp_' + Math.floor(Math.random() * 555);
         src += '&callback='+cbName;
         var script = document.createElement('script');
@@ -53,154 +50,107 @@
         document.body.appendChild(script);
     };
 
-    var render = function(data){
+    var render = function(data, config){
         var holder = Utils.getByClass('tvp-products-holder');
-        holder.innerHTML = "";
-
-        var container = document.createElement("div");
-        container.className = "tvp-products";
-        holder.appendChild(container);
-
-        var thumbsFrag = document.createDocumentFragment();
-        var popupsFrag = document.createDocumentFragment();
+        var productsContainer = Utils.getByClass('tvp-products');
+        var popupsContainer = Utils.getByClass('tvp-popups');
+        productsContainer.innerHTML = "";
+        var controllBar = document.getElementById('ControlBarFloater');
+        if (controllBar) {
+            controllBar.parentElement.style.cssText += "z-index:2147483 !important;"
+        }
 
         for (var i = 0; i < data.length; i++) {
             var product = data[i];
-            var productId = product.id;
-            var productLink = product.linkUrl;
-            var productImgStyle = 'style="background-image:url(\''+product.imageUrl+'\');"';
-            var productVideoId = product.entityIdParent;
-            var fixedPrice = '';
-            var prodTitle = product.title || '';
-
-            var prodNode = document.createElement('a');
-            prodNode.classList.add('tvp-product');
-            prodNode.id = 'tvp-product-' + productId;
-            prodNode.setAttribute('data-vd', productVideoId);
-            prodNode.href = productLink;
-            prodNode.innerHTML = '<div class="tvp-product-image" '+productImgStyle+'><div class="tvp-product-image-overlay"></div></div>';
-            thumbsFrag.appendChild(prodNode);
-
-            //we want to remove all special character, so they don't duplicate
-            //also we shorten the lenght of long titles and add 3 point at the end
-            if (prodTitle || product.price) {
-                prodTitle = prodTitle.length > 50 ? prodTitle.substring(0, 50) + "...":prodTitle;
-                var price = product.price.toString().replace(/[^0-9.]+/g, '');
-                price = parseFloat(price).toFixed(2);
-                fixedPrice = price > 0 ? ('$' + price):'';
-            }
-
-            var prodPopupNode = document.createElement('a');
-            prodPopupNode.classList.add('tvp-product-popup');
-            prodPopupNode.id = 'tvp-product-popup-' + productId;
-            prodPopupNode.setAttribute('data-vd', productVideoId);
-            prodPopupNode.href = productLink;
+            product.title = !Utils.isEmpty(product.title) ? Utils.trimText(product.title, 50) : '';
+            product.price = !Utils.isEmpty(product.price) ? Utils.trimPrice(product.price) : '';
+    
+            productsContainer.innerHTML += Utils.tmpl(config.templates["modal-content"].product, product);
+            popupsContainer.innerHTML += Utils.tmpl(config.templates["modal-content"].popup, product);
 
             var productRating = 0;
             if (Utils.isset(product.rating) && null !== product.rating) {
-                productRating = Number(product.rating);
+              productRating = Number(product.rating);
             }
 
             var ratingReviewsHtml = "";
-            if (productRating > 0){
-                var fulls = 0;
-                var half = false;
-                if(productRating % 1 != 0){
-                    half = true;
-                    fulls = Math.floor(productRating);
-                } else {
-                    fulls = productRating;
-                }
+            if (productRating > 0) {
+              var fulls = 0;
+              var half = false;
+              if (productRating % 1 != 0) {
+                half = true;
+                fulls = Math.floor(productRating);
+              } else {
+                fulls = productRating;
+              }
 
-                var empties = 0;
-                if (4 === fulls && half) {
-                    empties = 0;
-                } else if (1 === fulls && half) {
-                    empties = 3;
-                } else if (half) {
-                    empties = (5 - fulls) - 1;
-                } else {
-                    empties = 5 - fulls;
-                }
+              var empties = 0;
+              if (4 === fulls && half) {
+                empties = 0;
+              } else if (1 === fulls && half) {
+                empties = 3;
+              } else if (half) {
+                empties = (5 - fulls) - 1;
+              } else {
+                empties = 5 - fulls;
+              }
 
-                ratingReviewsHtml = '<ul class="tvp-product-rating">';
-                for (var j = 0; j < fulls; j++) {
-                    ratingReviewsHtml += '<li class="tvp-rate full"></li>';
-                }
+              ratingReviewsHtml = '<ul class="tvp-product-rating">';
+              for (var j = 0; j < fulls; j++) {
+                ratingReviewsHtml += '<li class="tvp-rate full"></li>';
+              }
+              if (half) {
+                ratingReviewsHtml += '<li class="tvp-rate half"></li>';
+              }
+              for (var k = 0; k < empties; k++) {
+                ratingReviewsHtml += '<li class="tvp-rate empty"></li>';
+              }
 
-                if (half){
-                    ratingReviewsHtml += '<li class="tvp-rate half"></li>';
-                }
+              if (Utils.isset(product.review_count) && null !== product.review_count) {
+                ratingReviewsHtml += '<li class="tvp-reviews">' + product.review_count + ' Reviews </li>';
+              }
 
-                for (var k = 0; k < empties; k++) {
-                    ratingReviewsHtml += '<li class="tvp-rate empty"></li>';
-                }
-
-                if (Utils.isset(product.review_count) && null !== product.review_count) {
-                    ratingReviewsHtml += '<li class="tvp-reviews">' + product.review_count + ' Reviews </li>';
-                }
-
-                ratingReviewsHtml += '</ul>';
+              ratingReviewsHtml += '</ul>';
             }
 
-            var buttonText = product.actionText.length > 0? product.actionText : 'View Details';
-
-            prodPopupNode.innerHTML = '<div class="tvp-product-popup-image" '+productImgStyle+'></div>'+
-                '<p class="tvp-product-title">' + prodTitle + '</p><p class="tvp-product-price">'+fixedPrice+'</p>'+ ratingReviewsHtml +
-                '<button class="tvp-product-cta">' + buttonText + '</button>';
-            popupsFrag.appendChild(prodPopupNode);
+            // where/how to inject? 
+            // var buttonText = product.actionText.length > 0? product.actionText : config.product_popup_cta_text;
+            // ratingReviewsHtml 
 
             analytics.track('pi',{
-                vd: productVideoId,
-                ct: productId,
+                vd: product.entityIdParent,
+                ct: product.id,
                 pg: channelId
             });
         }
 
-        var classNames = ['tvp-product', 'tvp-product-popup'];
-        for (var i = 0; i < classNames.length; i++) {
-            var elements = container.getElementsByClassName(classNames[i]);
-            for (var j = 0; j < elements.length; j++) {
-                elements[j].removeEventListener('click', pkTrack, false);
-            }
-        }
-
-        var arrow = document.createElement('div');
-        arrow.classList.add('tvp-arrow-indicator');
-
         var willScroll = data.length > 2;
-        if (willScroll) {
-          holder.classList.remove("no-overflow");
-          container.setAttribute('ss-container', true);
-        } else {
-          holder.classList.add("no-overflow");
+        if("undefined" !== typeof Ps){
+            Ps.destroy(productsContainer);
         }
 
-        container.appendChild(thumbsFrag);
-        container.parentNode.appendChild(popupsFrag);
-        container.parentNode.insertBefore(arrow, container.nextSibling);
-        
         if (willScroll) {
-           SimpleScrollbar.initAll();
+          Ps.initialize(productsContainer,{
+            suppressScrollX: true
+          });
         }
 
         setTimeout(function(){
-
-            var showPopup = function(e){
-                var productEl = closestByClass(e.target,'tvp-product');
-                if (!productEl) return;
+            var arrow = Utils.getByClass('tvp-arrow-indicator');
+            var showPopup = function(id){
+                var productEl = document.getElementById('tvp-product-'+id);
+                var popup = document.getElementById('tvp-product-popup-'+id);
+                if (!productEl && !popup) return;
 
                 var activePopups = document.querySelectorAll('.tvp-product-popup.active');
                 for (var i = activePopups.length - 1; i >= 0; i--) {
                     activePopups[i].classList.remove('active');
                 }
 
-                var id = productEl.id.split('-').pop();
                 productEl.classList.add('active');
-
-                var popup = document.getElementById('tvp-product-popup-'+id);
-                var topValue = productEl.getBoundingClientRect().top;
                 popup.classList.add('active');
+
+                var topValue = productEl.getBoundingClientRect().top;
                 var bottomLimit = topValue + popup.offsetHeight;
                 var holderHeight = holder.offsetHeight;
 
@@ -212,45 +162,53 @@
                 }
                 else if ( bottomLimit > holderHeight )  {
                     topValue = topValue - (bottomLimit - holderHeight);
-                    topValue = topValue + 10;
+                    topValue = topValue;
                 }
 
                 popup.classList.add('active');
                 popup.style.top = topValue + 'px';
 
                 arrow.classList.add('active');
-                arrow.style.top = (productEl.getBoundingClientRect().top + 20) + 'px';
+                arrow.style.top = (productEl.getBoundingClientRect().top + 45) + 'px';
             };
 
-            var classNames = ['tvp-product', 'tvp-product-popup'];
             var timeOut = null;
-            for (var i = 0; i < classNames.length; i++) {
-                var elements = holder.getElementsByClassName(classNames[i]);
-                for (var j = 0; j < elements.length; j++) {
-                    var element = elements[j];
-                    element.addEventListener('click', pkTrack, false);
-                    element.onmouseover = function (e) {
-                        clearTimeout(timeOut);
-                        showPopup(e);
-                    };
-                    element.onmouseleave = function () {
-                        timeOut = setTimeout(function(){
-                            var activeThumbs = document.querySelectorAll('.tvp-product.active');
-                            for (var i = activeThumbs.length - 1; i >= 0; i--) {
-                                activeThumbs[i].classList.remove('active');
-                            }
-
-                            arrow.classList.remove('active');
-
-                            var activePopups = document.querySelectorAll('.tvp-product-popup.active');
-                            for (var i = activePopups.length - 1; i >= 0; i--) {
-                                activePopups[i].classList.remove('active');
-                            }
-                        },100);
-                    };
-
-                }
+            var productElm = holder.querySelectorAll('.tvp-product');
+            for (var i = productElm.length - 1; i >= 0; i--) {
+                productElm[i].addEventListener('click', pkTrack, false);
+                productElm[i].onmouseover = function(e){
+                    clearTimeout(timeOut);
+                    showPopup(this.id.split('-').pop());
+                };
+                productElm[i].onmouseleave = function(e){
+                    clearActive();
+                };
             }
+            var popupEl = popupsContainer.querySelectorAll('.tvp-product-popup');
+            for (var i = popupEl.length - 1; i >= 0; i--) {
+                popupEl[i].addEventListener('click', pkTrack, false);
+                popupEl[i].onmouseover = function() {
+                    clearTimeout(timeOut);
+                    showPopup(this.id.split('-').pop());
+                };
+                popupEl[i].onmouseleave = function(){
+                    clearActive();
+                };
+            }
+
+            var clearActive = function() {
+                var activeThumbs = document.querySelectorAll('.tvp-product.active');
+                for (var j = activeThumbs.length - 1; j >= 0; j--) {
+                    activeThumbs[j].classList.remove('active');
+                }
+                timeOut = setTimeout(function(){   
+                    arrow.classList.remove('active');
+                    var activePopups = document.querySelectorAll('.tvp-product-popup.active');
+                    for (var j = activePopups.length - 1; j >= 0; j--) {
+                        activePopups[j].classList.remove('active');
+                    }
+                },100);
+            };
         },0);
 
     };
@@ -283,24 +241,30 @@
 
             s.onNext = function(next){
                 if (!next) return;
+
+                data.runTime.loginId = data.runTime.loginId || data.runTime.loginid;
+
                 if (Utils.isset(next,'products')) {
-                    render(next.products);
+                    render(next.products,data.runTime);
                 } else {
-                    loadProducts(
-                        next.assetId,
-                        data.runTime.loginId,
-                        function(data){
-                            setTimeout(function(){
-                                render(data);
-                                checkProducts(data,el);
-                                player.resize();
-                            },0);
-                        });
+                  if (!data.runTime.merchandise) {
+                    el.classList.add('tvp-no-products');
+                    eventName = eventPrefix + ':modal_no_products';
+                    notify();
+                  } else {
+                    loadProducts(next.assetId,data.runTime,function(products){
+                      setTimeout(function(){
+                        checkProducts(products,el);
+                        render(products,data.runTime);
+                        player.resize();
+                      },0);
+                    });
+                  }
                 }
 
                 if (window.parent) {
                     window.parent.postMessage({
-                        event: 'tvp_carousel:player_next',
+                        event: eventPrefix + ':player_next',
                         next: next
                     }, '*');
                 }
@@ -321,30 +285,34 @@
                 initPlayer(data);
 
                 var settings = data.runTime;
-                var loginId = settings.loginid || settings.loginId;
+                settings.loginId = settings.loginId || settings.loginid;
 
-                channelId = Utils.isset(settings.channel) && Utils.isset(settings.channel.id) ? settings.channel.id : settings.channelId;
+                channelId = Utils.isset(settings.channel) && Utils.isset(settings.channel.id) ? settings.channel.id : (settings.channelId || settings.channelid);
                 analytics =  new Analytics();
 
                 analytics.initConfig({
-                    logUrl: '//api.tvpage.com/v1/__tvpa.gif',
+                    logUrl: settings.api_base_url + '/__tvpa.gif',
                     domain: Utils.isset(location,'hostname') ?  location.hostname : '',
-                    loginId: loginId
+                    loginId: settings.loginId
                 });
 
                 var selectedVideo = data.selectedVideo;
                 if (Utils.isset(selectedVideo,'products')) {
-                    render(selectedVideo.products);
+                    render(selectedVideo.products,settings);
                 } else {
-                    loadProducts(
-                        selectedVideo.id,
-                        loginId,
-                        function(data){
+                    if (!settings.merchandise) {
+                        el.classList.add('tvp-no-products');
+                        eventName = eventPrefix + ':modal_no_products';
+                        notify();
+                    }else{
+                        loadProducts(selectedVideo.id, settings,
+                            function(products){
                             setTimeout(function(){
-                                render(data);
-                                checkProducts(data,el);
+                                checkProducts(products,el);
+                                render(products,settings);
                             },0);
                         });
+                    }
                 }
             }
         });
@@ -360,12 +328,12 @@
     };
 
     var not = function(obj){return 'undefined' === typeof obj};
-    if (not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player) || not(window.SimpleScrollbar)) {
+    if (not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player) || not(window.Ps)) {
         var libsCheck = 0;
         (function libsReady() {
             setTimeout(function(){
-                if (not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player) || not(window.SimpleScrollbar)) {
-                    (++libsCheck < 50) ? libsReady() : console.log('limit reached');
+                if (not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player) || not(window.Ps)) {
+                    (++libsCheck < 200) ? libsReady() : console.warn('limit reached');
                 } else {
                     initialize();
                 }

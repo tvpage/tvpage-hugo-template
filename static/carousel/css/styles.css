@@ -41,7 +41,6 @@ body  {
 }
 
 .tvp-video-image-overlay {
-  display: none;
   top: 0;
   bottom: 0;
   left: 0;
@@ -78,6 +77,11 @@ body  {
   z-index: 1000;
   -webkit-transition: all .05s ease-in-out;
   transition: all .05s ease-in-out;
+}
+
+.show-on-hover .tvp-video-play {
+  opacity: 0;
+  visibility: hidden;
 }
 
 .tvp-video-play > polygon {

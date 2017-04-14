@@ -1,0 +1,38 @@
+{
+  "option": [
+    {
+      "type": "text",
+      "label": "API Base Url",
+      "code": "api_base_url",
+      "value": "//api.tvpage.com/v1"
+    },
+    {
+      "for": "player",
+      "type": "text",
+      "label": "Player Version",
+      "code": "player_version",
+      "value": "3.0.1"
+    },
+    {
+      "for": "player",
+      "type": "boolean",
+      "label": "Analytics",
+      "code": "analytics",
+      "value": true
+    },
+    {
+      "for": "player",
+      "type": "boolean",
+      "label": "Autoplay",
+      "code": "autoplay",
+      "value": false
+    },
+    {
+      "for": "player",
+      "type": "boolean",
+      "label": "Autonext",
+      "code": "autonext",
+      "value": true
+    }
+  ]
+}
