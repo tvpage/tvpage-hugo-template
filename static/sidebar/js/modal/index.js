@@ -55,6 +55,10 @@
         var productsContainer = Utils.getByClass('tvp-products');
         var popupsContainer = Utils.getByClass('tvp-popups');
         productsContainer.innerHTML = "";
+        var controllBar = document.getElementById('ControlBarFloater');
+        if (controllBar) {
+            controllBar.parentElement.style.cssText += "z-index:2147483 !important;"
+        }
 
         for (var i = 0; i < data.length; i++) {
             var product = data[i];

@@ -241,6 +241,10 @@ body {
   z-index: 1000;
 }
 
+.tvplayer-overlay {
+  z-index: 2147483 !important;
+}
+
 .tvp-video.active .tvp-active-overlay > p {
   display: block;
 }
