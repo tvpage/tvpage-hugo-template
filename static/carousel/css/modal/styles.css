@@ -157,6 +157,7 @@ body  {
 }
 
 .tvp-arrow-indicator {
+  pointer-events: none;
   display: none;
   width: 35px;
   height: 35px;

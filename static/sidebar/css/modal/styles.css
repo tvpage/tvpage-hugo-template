@@ -158,13 +158,14 @@ body  {
 
 .tvp-arrow-indicator {
   display: none;
+  pointer-events: none;
   width: 35px;
   height: 35px;
   position: absolute;
   overflow: hidden;
   z-index: 214748364;
   top: 0;
-  left: -9px;
+  left: -7px;
   -webkit-transform: rotate(90deg);
   transform: rotate(90deg);
 }
@@ -189,7 +190,7 @@ body  {
   position: absolute;
   text-decoration: none;
   top: 0;
-  right: 104.5%;
+  right: 103.5%;
   z-index: 21474836;
 }
 

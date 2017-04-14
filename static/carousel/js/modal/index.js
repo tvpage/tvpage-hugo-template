@@ -135,81 +135,70 @@
           });
         }
 
-        setTimeout(function(){
-            var arrow = Utils.getByClass('tvp-arrow-indicator');
-            var showPopup = function(id){
-                var productEl = document.getElementById('tvp-product-'+id);
-                var popup = document.getElementById('tvp-product-popup-'+id);
-                if (!productEl && !popup) return;
+        var arrow = Utils.getByClass('tvp-arrow-indicator');
+        var showPopup = function(id){
+            var productEl = document.getElementById('tvp-product-'+id);
+            var popup = document.getElementById('tvp-product-popup-'+id);
+            if (!productEl && !popup) return;
 
-                var activePopups = document.querySelectorAll('.tvp-product-popup.active');
-                for (var i = activePopups.length - 1; i >= 0; i--) {
-                    activePopups[i].classList.remove('active');
-                }
-
-                productEl.classList.add('active');
-                popup.classList.add('active');
-
-                var topValue = productEl.getBoundingClientRect().top;
-                var bottomLimit = topValue + popup.offsetHeight;
-                var holderHeight = holder.offsetHeight;
-
-                //We must first check if it's overflowing. To do this we first check if it's overflowing in the top, this is an
-                //easy one, if it's a negative value then it's overflowing. Otherwise if it's failing in the bottom, we rectify
-                //by removing the excess from the top value.
-                if (topValue <= 10) {
-                    topValue = -10;
-                }
-                else if ( bottomLimit > holderHeight )  {
-                    topValue = topValue - (bottomLimit - holderHeight);
-                    topValue = topValue;
-                }
-
-                popup.classList.add('active');
-                popup.style.top = topValue + 'px';
-
-                arrow.classList.add('active');
-                arrow.style.top = (productEl.getBoundingClientRect().top + 45) + 'px';
-            };
-
-            var timeOut = null;
-            var productElm = holder.querySelectorAll('.tvp-product');
-            for (var i = productElm.length - 1; i >= 0; i--) {
-                productElm[i].addEventListener('click', pkTrack, false);
-                productElm[i].onmouseover = function(e){
-                    clearTimeout(timeOut);
-                    showPopup(this.id.split('-').pop());
-                };
-                productElm[i].onmouseleave = function(e){
-                    clearActive();
-                };
-            }
-            var popupEl = popupsContainer.querySelectorAll('.tvp-product-popup');
-            for (var i = popupEl.length - 1; i >= 0; i--) {
-                popupEl[i].addEventListener('click', pkTrack, false);
-                popupEl[i].onmouseover = function() {
-                    clearTimeout(timeOut);
-                    showPopup(this.id.split('-').pop());
-                };
-                popupEl[i].onmouseleave = function(){
-                    clearActive();
-                };
+            var activePopups = document.querySelectorAll('.tvp-product-popup.active');
+            for (var i = activePopups.length - 1; i >= 0; i--) {
+                activePopups[i].classList.remove('active');
             }
 
-            var clearActive = function() {
-                var activeThumbs = document.querySelectorAll('.tvp-product.active');
-                for (var j = activeThumbs.length - 1; j >= 0; j--) {
-                    activeThumbs[j].classList.remove('active');
+            productEl.classList.add('active');
+            popup.classList.add('active');
+
+            var topValue = productEl.getBoundingClientRect().top;
+            var bottomLimit = topValue + popup.offsetHeight;
+            var holderHeight = holder.offsetHeight;
+
+            //We must first check if it's overflowing. To do this we first check if it's overflowing in the top, this is an
+            //easy one, if it's a negative value then it's overflowing. Otherwise if it's failing in the bottom, we rectify
+            //by removing the excess from the top value.
+            if (topValue <= 10) {
+                topValue = -10;
+            }
+            else if ( bottomLimit > holderHeight )  {
+                topValue = topValue - (bottomLimit - holderHeight);
+                topValue = topValue;
+            }
+
+            popup.classList.add('active');
+            popup.style.top = topValue + 'px';
+
+            arrow.classList.add('active');
+            arrow.style.top = (productEl.getBoundingClientRect().top + 45) + 'px';
+        };
+
+        var clearActive = function() {
+            arrow.classList.remove('active');
+            var actives = ['.tvp-product.active','.tvp-product-popup.active'];
+            for (var i = actives.length - 1; i >= 0; i--) {
+                var activeElems = document.querySelectorAll(actives[i]);
+                for (var j = 0; j < activeElems.length; j++) {
+                    activeElems[j].classList.remove('active');
                 }
-                timeOut = setTimeout(function(){   
-                    arrow.classList.remove('active');
-                    var activePopups = document.querySelectorAll('.tvp-product-popup.active');
-                    for (var j = activePopups.length - 1; j >= 0; j--) {
-                        activePopups[j].classList.remove('active');
-                    }
-                },100);
+            }
+        };
+
+        var mainContent = Utils.getByClass('iframe-content');
+        mainContent.addEventListener("mouseleave", clearActive);
+
+        var productElm = holder.querySelectorAll('.tvp-product');
+        for (var i = productElm.length - 1; i >= 0; i--) {
+            productElm[i].addEventListener('click', pkTrack, false);
+            productElm[i].onmouseover = function(e){
+                showPopup(this.id.split('-').pop());
             };
-        },0);
+        }
+        var popupEl = popupsContainer.querySelectorAll('.tvp-product-popup');
+        for (var i = popupEl.length - 1; i >= 0; i--) {
+            popupEl[i].addEventListener('click', pkTrack, false);
+            popupEl[i].onmouseleave = function(){
+                clearActive();
+            };
+        }
 
     };
 
