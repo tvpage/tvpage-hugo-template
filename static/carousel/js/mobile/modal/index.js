@@ -113,6 +113,13 @@
 
         container.appendChild(carousel);
 
+        if (window.parent) {
+            window.parent.postMessage({
+                event: eventPrefix + ':modal_resize',
+                height: (el.offsetHeight + parseInt(config.iframe_modal_body_padding || '0')) + 'px'
+            }, '*');
+        }
+
         var toTrack = container.getElementsByClassName('tvp-product');
         for (var j = 0; j < toTrack.length; j++) {
             toTrack[j].addEventListener('click', pkTrack, false);
@@ -122,15 +129,37 @@
         var startSlick = function() {
             setTimeout(function() {
                 var $el = $(carousel);
+                var centerMode = true;
+                var centerPadding = hasData ? '20px' : "0px";
                 var config = {
                     slidesToSlide: 1,
-                    slidesToShow: 1,
-                    arrows: false
+                    slidesToShow: 3,
+                    arrows: false,
+                    responsive: [
+                      {
+                        breakpoint: 768,
+                        settings: {
+                          arrows: false,
+                          centerMode: centerMode,
+                          centerPadding: centerPadding,
+                          slidesToShow: 2
+                        }
+                      },
+                      {
+                        breakpoint: 480,
+                        settings: {
+                          arrows: false,
+                          centerMode: centerMode,
+                          centerPadding: centerPadding,
+                          slidesToShow: 1
+                        }
+                      }
+                    ]
                 };
 
                 if (data.length > 1) {
-                    config.centerMode = true;
-                    config.centerPadding = '25px';
+                    config.centerMode = centerMode;
+                    config.centerPadding = centerPadding;
                 }
 
                 $el.on('init', function() {

@@ -82,7 +82,7 @@ body {
 }
 
 .tvp-products-headline{
-  margin: 0 0 10px 10px;
+  margin: 0 0 10px 0;
   font-family: Helvetica;
 }
 
@@ -90,9 +90,9 @@ body {
   border: 1px solid #333;
   display: block;
   overflow: hidden;
-  margin: 0 7px;
   padding: 5px;
   z-index: 9999;
+  position: relative;
 }
 
 .mobile .tvp-product {
@@ -100,37 +100,30 @@ body {
 }
 
 .tvp-product-cta {
-  font-size: 10px;
-  text-align: center;
-  width: 155px;
-  border-radius: 0;
-  border: 0;
   display: block;
   cursor: pointer;
   padding: 0;
+  text-align: center;
 }
 
 .tvp-product-image {
   display: block;
-  width: 80px;
-  height: 80px;
+  width: 36%;
   float: left;
-  background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
 }
-@media only screen and (min-width : 480px) {
-  .tvp-product-image {
-    width: 100px;
-    height: 100px;
-  }
+
+.tvp-product-image:before {
+  display: block;
+  content: "";
+  width: 100%;
+  padding-top: 100%;
 }
 
 .tvp-product-data {
-  float: left;
-  width: 60%;
-  margin-left: 2.5%;
-  font-family: Helvetica;
+  float: right;
+  width: 58%;
 }
 
 .tvp-product-data > p {

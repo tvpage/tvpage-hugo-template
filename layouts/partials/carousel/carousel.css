@@ -1,3 +1,9 @@
+{{ with ($.Scratch.Get "settings").fonts }}
+  {{ range . }}
+    "@import url('{{ . }}');" +
+  {{ end }}
+{{ end }}
+
 "body {" +
     "padding: {{ ($.Scratch.Get "settings").iframe_carousel_body_padding }};" +
 "}" +

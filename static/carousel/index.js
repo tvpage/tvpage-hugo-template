@@ -103,7 +103,7 @@ var config = utils.isset(window.__TVPage__) && utils.isset(__TVPage__,"config") 
 var hostCssTagId = "tvp-carousel-host-css";
 var hostCssTag = "";
 if (!document.getElementById(hostCssTagId)) {
-  hostCssTag = '<style id="' + hostCssTagId + '">' + config.css.host + '</style>';
+  hostCssTag = '<style id="' + hostCssTagId + '">' + config.css["host" + (utils.isMobile ? "-mobile" : "")] + '</style>';
 }
 
 var targetElement;
@@ -276,7 +276,7 @@ function handleVideoClick(e){
     iframeModalDocument.open().write(utils.getIframeHtml({
       id: config.id,
       domain: config.baseUrl,
-      style: config.css.modal,
+      style: config.css["modal-content" + (utils.isMobile ? "-mobile" : "")],
       className: utils.isMobile ? "mobile" : "",
       html: config.templates["modal-content" + (utils.isMobile ? "-mobile" : "")],
       js: [

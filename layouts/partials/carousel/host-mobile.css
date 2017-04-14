@@ -87,12 +87,6 @@
     "width: 100%;" +
     "height: 100%;" +
     "opacity: 0;" +
-    "position: absolute;" +
-    "top: 0;" +
-    "left: 0;" +
-"}" +
-
-".mobile .tvp-iframe-modal {" +
     "position: relative;" +
     "top: auto;" +
     "left: auto;" +
@@ -133,16 +127,12 @@
 "}" +
 
 ".tvp-modal-iframe-holder.no-products {" +
-    "padding-bottom: 57.4%;" +
+    "padding-bottom: 59.5%;" +
 "}" +
 
-".mobile .tvp-modal-iframe-holder.products {" +
+".tvp-modal-iframe-holder.products {" +
     "padding-bottom: 0;" +
     "height: auto;" +
-"}" +
-
-".mobile .tvp-modal-iframe-holder.no-products {" +
-    "padding-bottom: 59.5%;" +
 "}" +
 
 ".tvp-title {" +

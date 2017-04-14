@@ -1,3 +1,9 @@
+{{ with ($.Scratch.Get "settings").fonts }}
+  {{ range . }}
+    "@import url('{{ . }}');" +
+  {{ end }}
+{{ end }}
+
 "body {" +
     "padding: {{ ($.Scratch.Get "settings").iframe_modal_body_padding }};" +
 "}" +
@@ -81,16 +87,22 @@
     "background-size: {{ ($.Scratch.Get "settings").product_thumbnail_background_image_size }};" +
 "}" +
 
+".tvp-product-data {" +
+  "font-family: Helvetica;" +
+"}" +
+
 ".tvp-product-cta {" +
+    "width: {{ ($.Scratch.Get "settings").product_popup_cta_width_480 }};" +
+    "border-radius: {{ ($.Scratch.Get "settings").product_popup_cta_border_radius_480 }};" +
     "background: {{ ($.Scratch.Get "settings").product_popup_cta_background }};" +
     "border: {{ ($.Scratch.Get "settings").product_popup_cta_border }};" +
     "border-bottom: {{ ($.Scratch.Get "settings").product_popup_cta_border_bottom }};" +
     "color: {{ ($.Scratch.Get "settings").product_popup_cta_font_color }};" +
     "text-transform: {{ ($.Scratch.Get "settings").product_popup_cta_text_transform }};" +
-    "font-size: {{ ($.Scratch.Get "settings").product_popup_cta_font_size }};" +
+    "font-size: {{ ($.Scratch.Get "settings").product_popup_cta_font_size_480 }};" +
     "font-family: {{ ($.Scratch.Get "settings").product_popup_cta_font_family }};" +
     "font-weight: {{ ($.Scratch.Get "settings").product_popup_cta_font_weight }};" +
-    "height: {{ ($.Scratch.Get "settings").product_popup_cta_height }};" +
+    "height: {{ ($.Scratch.Get "settings").product_popup_cta_height_480 }};" +
 "}" +
 
 ".tvp-product-cta:hover {" +
