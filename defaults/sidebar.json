@@ -1077,6 +1077,27 @@
           "value": 0
         },
         {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Width 480",
+            "code": "product_popup_cta_width_480",
+            "value": "110px"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Height 480",
+            "code": "product_popup_cta_height_480",
+            "value": "22px"
+        },
+        {
+          "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Border 480",
+            "code": "product_popup_cta_border_radius_480",
+            "value": "0"
+        },
+        {
           "for": "modal",
           "type": "text",
           "label": "Product Popup CTA Background",
@@ -1089,6 +1110,13 @@
           "label": "Product Popup CTA Font Color Hover",
           "code": "product_popup_cta_font_color_hover",
           "value": "#fff"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Font Size 480",
+            "code": "product_popup_cta_font_size_480",
+            "value": "12px"
         },
         {
           "for": "modal",
