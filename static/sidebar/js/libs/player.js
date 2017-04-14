@@ -205,6 +205,9 @@
             onReady: function(e, pl) {
               that.instance = pl;
               that.resize();
+              
+              //Fix required to let popups be displayed on top of plauer overlay.
+              that.el.querySelector("#ControlBarFloater").parentNode.style.zIndex = "9999";
 
               //We don't want to resize the player here on fullscreen... we need the player be.
               if (isset(window, 'BigScreen')) {
