@@ -71,6 +71,11 @@
     "margin-left: -13px;" +
 "}" +
 
+".tvp-no-products-banner{" +
+    "height: 100%;" +
+    "width: 100%;" +
+"}" +
+
 ".tvp-sidebar-holder > iframe {" +
     "top: 0;" +
     "left: 0;" +

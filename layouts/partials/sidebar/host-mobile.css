@@ -88,6 +88,11 @@
     "opacity: 1;" +
 "}" +
 
+".tvp-no-products-banner{" +
+    "height: 100%;" +
+    "width: 100%;" +
+"}" +
+
 ".tvp-modal-header:after {" +
     'content: "";' +
     "display: table;" +

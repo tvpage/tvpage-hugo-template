@@ -51,10 +51,7 @@
 "}" +
 
 ".tvp-no-products-banner{" +
-    "height: {{ ($.Scratch.Get "settings").no_products_banner_height }};" +
-    "width: {{ ($.Scratch.Get "settings").no_products_banner_width }};" +
-    "padding: {{ ($.Scratch.Get "settings").no_products_banner_padding }};" +
-    "margin: {{ ($.Scratch.Get "settings").no_products_banner_margin }};" +
+    "padding: {{ ($.Scratch.Get "settings").mobile_modal_body_padding }};" +
 "}" +
 
 ".tvp-modal-close {" +
