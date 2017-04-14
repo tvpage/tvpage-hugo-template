@@ -84,6 +84,7 @@
         }
 
         var productsTitle = Utils.getByClass('tvp-products-text');
+        productsTitle.innerHTML = "";
         if (hasData) {
             var tooltipHtml = "";
             if (config.products_info_tooltip && config.products_message.trim().length) {

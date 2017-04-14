@@ -377,6 +377,13 @@
           "value": "none"
         },
         {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Modal Close Button Right",
+          "code": "mobile_modal_close_button_right",
+          "value": 0
+        },
+        {
           "for": "modal",
           "type": "text",
           "label": "No Products Banner",
@@ -606,13 +613,6 @@
           "label": "Modal Close Button Box Shadow",
           "code": "modal_close_button_box_shadow",
           "value": "none"
-        },
-        {
-          "for": "modal",
-          "type": "text",
-          "label": "Mobile Modal Close Button Right",
-          "code": "mobile_modal_close_button_right",
-          "value": 0
         },
         {
           "for": "modal",
@@ -1088,7 +1088,7 @@
           "type": "text",
           "label": "Product Popup CTA Font Color Hover",
           "code": "product_popup_cta_font_color_hover",
-          "value": "initial"
+          "value": "#fff"
         },
         {
           "for": "modal",

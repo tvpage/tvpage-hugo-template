@@ -1,8 +1,9 @@
 (function(window, document) {
-
     var analytics = null;
     var channelId = null;
+    var slickInitialized = false;
     var hasData = false;
+    var eventName;
     var eventPrefix = "tvp_" + (document.body.getAttribute("data-id") || "").replace(/-/g,'_');
 
     var pkTrack = function() {
@@ -11,6 +12,30 @@
             ct: this.id.split('-').pop(),
             pg: channelId
         });
+    };
+
+    var checkProducts = function(data,el){
+        if (!data || !data.length) {
+            hasData = false;
+            Utils.getByClass('tvp-products').classList.remove('enabled');
+            el.classList.add('tvp-no-products');
+            eventName = eventPrefix + ':modal_no_products';
+            notify();
+        }else{
+            hasData = true;
+            Utils.getByClass('tvp-products').classList.add('enabled');
+            el.classList.remove('tvp-no-products');
+            eventName = eventPrefix + ':modal_products';
+            notify();
+        }
+    };
+
+    var notify = function(){
+        setTimeout(function(){
+            if (window.parent) {
+                window.parent.postMessage({event: eventName}, '*');
+            }
+        },0);
     };
 
     var loadProducts = function(videoId, settings, fn) {
@@ -33,38 +58,14 @@
     var render = function(data,config) {
         var container = Utils.getByClass('tvp-products');
         var el = Utils.getByClass('iframe-content');
-
-        hasData = data && data.length ? 1 : 0;
-
-        var notifyState = function() {
-            setTimeout(function() {
-                if (window.parent) {
-                    window.parent.postMessage({
-                        event: eventPrefix + ':modal' + (hasData ? '' : '_no') + '_products'
-                    }, '*');
-                }
-            }, 0);
-        };
-
-        if (hasData) {
-            container.classList.add('enabled');
-            el.classList.remove('tvp-no-products');
-            notifyState();
-        } else {
-            container.classList.remove('enabled');
-            el.classList.add('tvp-no-products');
-            notifyState();
-            return;
-        }
-
-        var frag = document.createDocumentFragment();
+        var carousel = Utils.getByClass('tvp-products-carousel');
+        carousel.innerHTML = '';
+        carousel.classList = '';
+        carousel.classList.add('tvp-products-carousel');
 
         for (var i = 0; i < data.length; i++) {
             var product = data[i];
             var productId = product.id;
-            var productVideoId = product.entityIdParent;
-            var fixedPrice = '';
-            var prodTitle = product.title || '';
 
             analytics.track('pi', {
                 vd: product.entityIdParent,
@@ -72,46 +73,30 @@
                 pg: channelId
             });
 
-            //we want to remove all special character, so they don't duplicate
-            //also we shorten the lenght of long titles and add 3 point at the end
-            if (prodTitle || product.price) {
-                prodTitle = prodTitle.length > 50 ? prodTitle.substring(0, 50) + "..." : prodTitle;
-                var price = product.price.toString().replace(/[^0-9.]+/g, '');
-                price = parseFloat(price).toFixed(2);
-                fixedPrice = price > 0 ? ('$' + price) : '';
-            }
-
-            var prodNode = document.createElement('div');
-            var buttonText = product.actionText.trim().length > 0 ? product.actionText : 'View Details';
-            prodNode.innerHTML = '<a id="tvp-product-' + productId + '" class="tvp-product" data-vd="' + productVideoId + '" href="' +
-                product.linkUrl + '"><div class="tvp-product-image" style="background-image:url(' + product.imageUrl + ')"></div>' +
-                '<div class="tvp-product-data"><p>' + prodTitle + '</p><h2>' + fixedPrice + '</h2><button class="tvp-product-cta">'+buttonText+'</button></div></a>';
-            frag.appendChild(prodNode);
+            product.title = !Utils.isEmpty(product.title) ? Utils.trimText(product.title, 50) : '';
+            product.price = !Utils.isEmpty(product.price) ? Utils.trimPrice(product.price) : '';
+            carousel.innerHTML += Utils.tmpl(config.templates['modal-content-mobile'].products,product);
         }
 
-        //Remove click listener before cleaning up.
         var toRemove = container.getElementsByClassName('tvp-product');
         for (var j = 0; j < toRemove.length; j++) {
             toRemove[j].removeEventListener('click', pkTrack, false);
         }
 
-        container.innerHTML = '';
+        var productsTitle = Utils.getByClass('tvp-products-text');
+        productsTitle.innerHTML = "";
+        if (hasData) {
+            var tooltipHtml = "";
+            if (config.products_info_tooltip && config.products_message.trim().length) {
+              tooltipHtml = config.templates['modal'].tooltip + 
+              '<span class="tvp-products-message">' + config.products_message + '</span>';
+            }  
+            productsTitle.innerHTML += config.products_headline_text + tooltipHtml;  
+        }   
 
-        if (hasData && !container.querySelector(".tvp-products-headline")) {
-            var headline = document.createElement('p');
-            headline.className = "tvp-products-headline";
-            headline.innerHTML = config.products_headline_text;
-            container.appendChild(headline);
-        } else {
-            var existingHeadline = container.querySelector(".tvp-products-headline");
-            existingHeadline.parentNode.removeChild(existingHeadline);
-        }
-
-        var carousel = document.createElement('div');
-        carousel.classList.add('tvp-products-carousel');
-        carousel.appendChild(frag);
-
-        container.appendChild(carousel);
+        productsTitle.onclick = function(){
+            this.classList.contains('active') ? this.classList.remove('active') : this.classList.add('active');
+        };     
 
         if (window.parent) {
             window.parent.postMessage({
@@ -127,6 +112,7 @@
 
         //We start loading our slick dependency here, it was breaking while rendering it dynamicaly.
         var startSlick = function() {
+            if (!data.length) return;
             setTimeout(function() {
                 var $el = $(carousel);
                 var centerMode = true;
@@ -160,6 +146,12 @@
                 if (data.length > 1) {
                     config.centerMode = centerMode;
                     config.centerPadding = centerPadding;
+
+                    if (data.length <= 5) {
+                        config.appendDots = '.tvp-products-headline';
+                        config.dots = true;
+                        config.dotsClass = 'tvp-slider-dots';    
+                    }
                 }
 
                 $el.on('init', function() {
@@ -177,7 +169,14 @@
                     }, 0);
                 });
 
-                $el.slick(config);
+                if (!slickInitialized) {
+                    $el.slick(config);
+                    slickInitialized = true;
+                }else{
+                    $('.tvp-slider-dots').remove();
+                    $el.slick(config);
+                }
+
             }, 10);
         };
 
@@ -214,21 +213,27 @@
             s.onNext = function(next) {
                 if (!next) return;
 
-                data.runTime.loginid = data.runTime.loginId || data.runTime.loginid;
+                data.runTime.loginId = data.runTime.loginId || data.runTime.loginid;
 
                 if (Utils.isset(next, 'products')) {
-                    render(next.products);
+                    render(next.products,data.runTime);
                 } else {
-                    loadProducts(
-                        next.assetId,
-                        data.runTime,
-                        function(products) {
-                            setTimeout(function() {
-                                render(products,data.runTime);
-                            }, 0);
-                        });
+                    if (!data.runTime.merchandise) {
+                        el.classList.add('tvp-no-products');
+                        eventName = eventPrefix + ':modal_no_products';
+                        notify();
+                    }else{
+                        loadProducts(
+                            next.assetId,
+                            data.runTime,
+                            function(products) {
+                                setTimeout(function() {
+                                    checkProducts(products,el);
+                                    render(products,data.runTime);
+                                }, 0);
+                            });
+                    }
                 }
-
                 setTimeout(function() {
                     if (window.parent) {
                         window.parent.postMessage({
@@ -263,20 +268,24 @@
 
                 var selectedVideo = data.selectedVideo;
                 if (Utils.isset(selectedVideo, 'products')) {
-                    render(selectedVideo.products);
+                    render(selectedVideo.products,settings);
                 } else {
-                    loadProducts(
-                        selectedVideo.id,
-                        settings,
-                        function(products) {
+                    if (!settings.merchandise) {
+                        el.classList.add('tvp-no-products');
+                        eventName = eventPrefix + ':modal_no_products';
+                        notify();
+                    }else{
+                        loadProducts(selectedVideo.id,settings,function(products) {
                             setTimeout(function() {
-                                render(products, settings);
+                                checkProducts(products,el);
+                                render(products,settings);
                             }, 0);
                         });
+                    }
+                    
                 }
             }
         });
-
         //Notify when the widget has been initialized.
         setTimeout(function() {
             if (window.parent) {
@@ -296,7 +305,7 @@
         (function libsReady() {
             setTimeout(function() {
                 if (not(window.TVPage) || not(window._tvpa) || not(window.jQuery) || not(window.Utils) || not(window.Analytics) || not(window.Player)) {
-                    (++libsCheck < 50) ? libsReady(): console.log('limit reached');
+                    (++libsCheck < 200) ? libsReady(): console.log('limit reached');
                 } else {
                     initialize();
                 }

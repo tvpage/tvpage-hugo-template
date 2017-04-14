@@ -11,6 +11,10 @@ html {
   height: 100%;
 }
 
+.tvplayer-overlay {
+  z-index: 2147483 !important;
+}
+
 body  {
   margin: 0;
   padding: 10px;
@@ -61,17 +65,19 @@ body  {
   height: 100%;
 }
 
-.tvp-popups {
-  position: relative;
-  float: left; 
-  right: 27%; 
-}
 
 .tvp-products-holder {
   float: right;
   width: 20%;
   height: 0;
   position: relative;
+}
+
+.tvp-products{
+  height: 100%;
+  position: relative;
+  width: 105%;
+  padding-right: 6%;
 }
 
 .tvp-product {
@@ -151,9 +157,9 @@ body  {
   height: 35px;
   position: absolute;
   overflow: hidden;
-  z-index: 2147483647;
+  z-index: 214748364;
   top: 0;
-  right: 150px;
+  left: -9px;
   -webkit-transform: rotate(90deg);
   transform: rotate(90deg);
 }
@@ -169,7 +175,7 @@ body  {
   left: -5px;
 }
 
-.tvp-product:last-child {
+.tvp-product:last-of-type{
   margin-bottom: 0;
 }
 
@@ -178,7 +184,8 @@ body  {
   position: absolute;
   text-decoration: none;
   top: 0;
-  z-index: 2147483647;
+  right: 104.5%;
+  z-index: 21474836;
 }
 
 .tvp-product-popup.active {

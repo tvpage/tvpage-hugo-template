@@ -13,6 +13,7 @@ body  {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  -webkit-transform:translate3d(0,0,0);
 }
 
 .tvp-clearfix:before, 

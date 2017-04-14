@@ -52,16 +52,16 @@
 
     var render = function(data, config){
         var holder = Utils.getByClass('tvp-products-holder');
-        var container = Utils.getByClass('tvp-products');
+        var productsContainer = Utils.getByClass('tvp-products');
         var popupsContainer = Utils.getByClass('tvp-popups');
-        container.innerHTML = "";
+        productsContainer.innerHTML = "";
 
         for (var i = 0; i < data.length; i++) {
             var product = data[i];
             product.title = !Utils.isEmpty(product.title) ? Utils.trimText(product.title, 50) : '';
             product.price = !Utils.isEmpty(product.price) ? Utils.trimPrice(product.price) : '';
     
-            container.innerHTML += Utils.tmpl(config.templates["modal-content"].product, product);
+            productsContainer.innerHTML += Utils.tmpl(config.templates["modal-content"].product, product);
             popupsContainer.innerHTML += Utils.tmpl(config.templates["modal-content"].popup, product);
 
             var productRating = 0;
@@ -122,11 +122,11 @@
 
         var willScroll = data.length > 2;
         if("undefined" !== typeof Ps){
-            Ps.destroy(holder);
+            Ps.destroy(productsContainer);
         }
 
         if (willScroll) {
-          Ps.initialize(holder,{
+          Ps.initialize(productsContainer,{
             suppressScrollX: true
           });
         }
