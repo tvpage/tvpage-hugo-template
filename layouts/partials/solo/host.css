@@ -5,8 +5,16 @@
 ".tvp-solo-holder {" +
   "height: 0;" +
   "position: relative;" +
-  "padding-top: 56.25%;" +
   "background-color: black;" +
+  "padding-top: 0;" +
+  "visibility: hidden;" +
+  "opacity: 0;" +
+"}" +
+
+".tvp-solo-holder.initialized {" +
+  "visibility: visible;" +
+  "opacity: 1;" +
+  "padding-top: 56.25%;" +
 "}" +
 
 ".tvp-solo-holder > iframe {" +

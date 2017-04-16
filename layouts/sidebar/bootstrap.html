@@ -1,0 +1,26 @@
+{{- partial "settings.html" . -}}
+(function(){
+
+	var bootstrap = {{ $.Scratch.Get "settings" | jsonify }};
+	bootstrap.baseUrl = "{{ $.Site.BaseURL }}";
+	bootstrap.templates = {
+		sidebar: {{- (partial (printf "%s/sidebar.html" .Type) .) -}},
+		"sidebar-item": {{- (partial (printf "%s/sidebar-item.html" .Type) .) -}},
+		modal: {{- (partial (printf "%s/modal.html" .Type) .) -}},
+		"modal-content": {{- (partial (printf "%s/modal-content.html" .Type) .) -}},
+		"modal-content-mobile": {{- (partial (printf "%s/modal-content-mobile.html" .Type) .) -}}
+	};
+	
+	bootstrap.css = {
+		host: {{- (partial (printf "%s/host.css" .Type) .) -}},
+		"host-mobile": {{- (partial (printf "%s/host-mobile.css" .Type) .) -}},
+		"host-custom": {{- (partial (printf "%s/host-custom.css" .Type) .) -}},
+		"host-custom-mobile": {{- (partial (printf "%s/host-custom-mobile.css" .Type) .) -}},
+		sidebar: {{- (partial (printf "%s/sidebar.css" .Type) .) -}},
+		"modal-content": {{- (partial (printf "%s/modal-content.css" .Type) .) -}},
+		"modal-content-mobile": {{- (partial (printf "%s/modal-content-mobile.css" .Type) .) -}}
+	};
+
+	{{- (readFile "/themes/tvpage/static/sidebar/index.js") | htmlUnescape | safeHTML -}}
+
+}());

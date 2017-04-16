@@ -48,7 +48,7 @@
       src: function(){
         var channel = s.channel || {},
             params = channel.parameters || {},
-            url = '//api.tvpage.com/v1/channels/' + (channel.id || (s.channelid || s.channelId)) + '/videos?X-login-id=' + (s.loginid || s.loginId);
+            url = s.api_base_url + '/channels/' + (channel.id || (s.channelid || s.channelId)) + '/videos?X-login-id=' + (s.loginid || s.loginId);
 
         for (var p in params) { url += '&' + p + '=' + params[p];}
         url += '&n=' + itemsPerPage + '&p=' + channelVideosPage;
@@ -83,19 +83,20 @@
         render(unique,document.body);
 
         loadData(settings,unique,function(data){
-          
-          if (!data.length && window.parent) {
-            window.parent.postMessage({
-                event: ("tvp_" + settings.id).replace(/-/g,'_') + ':no_data'
-            }, '*');
-          }
+          if (data.length) {
+            if (window.parent) {
+              window.parent.postMessage({
+                event: ("tvp_" + settings.id).replace(/-/g,'_') + ':render'
+              }, '*');
+            }
 
-          playerSettings.data = data || [];
-          player = new Player('tvp-player-el-'+unique,playerSettings);
+            playerSettings.data = data || [];
+            player = new Player('tvp-player-el-'+unique,playerSettings);
 
-          if (playlistOption === 'show' && playlistOption) {
-            menuSettings.data = data || [];
-            menu = new Menu(player,menuSettings);        
+            if (playlistOption === 'show' && playlistOption) {
+              menuSettings.data = data || [];
+              menu = new Menu(player,menuSettings);        
+            }
           }
         });
 

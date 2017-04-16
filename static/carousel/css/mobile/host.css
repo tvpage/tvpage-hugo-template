@@ -1,9 +1,5 @@
-*[class^="tvp-"] {
-  box-sizing: border-box;
-}
-
-.tvp-hidden {
-  display: none;
+div[class^="tvp-"] {
+    box-sizing: border-box;
 }
 
 .tvp-modal-overlay {
@@ -15,10 +11,6 @@
   z-index: 1040;
   background-color: black;
   opacity: 0.5;
-}
-
-.tvp-modal-open {
-  overflow: hidden;
 }
 
 .tvp-modal {
@@ -43,48 +35,35 @@
 
 .tvp-modal-content {
   position: relative;
+  background-color: #fff;
+  border: 1px solid #999;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
   background-clip: padding-box;
   outline: 0;
 }
 
 .tvp-modal-header {
-  padding: 10px;
+  padding: 15px;
   border-bottom: 1px solid #e5e5e5;
-  background: #fff;
 }
 
 .tvp-modal-title {
   margin: 0;
   line-height: 1.4285;
 }
-
-.tvp-title p {
+.tvp-title p{
   display: none;
 }
-
 .tvp-modal-body {
   position: relative;
-}
-
-.tvp-modal-iframe-holder {
-  position: relative;
-  height: 0;
-  overflow: hidden;
-  padding-bottom: 56.25%;
-  background-color: black;
-}
-
-.tvp-modal-iframe-holder.products {
-  height: auto;
-  padding-bottom: 0;
-  background-color: transparent;
 }
 
 .tvp-iframe-holder {
   height: 0;
   position: relative;
   -webkit-transition: height ease-out 0.0001s;
-  transition: height ease-out 0.0001s;
+          transition: height ease-out 0.0001s;
 }
 
 /*This is the gallery iframe*/
@@ -98,36 +77,39 @@
 
 /*This is the modal iframe*/
 .tvp-iframe-modal {
-  top:0;
-  left: 0;
+  margin:0;
+  border: 0;
   width: 100%;
-  height: 450px;
-}
-
-@media screen and (min-width: 500px){
-  .tvp-iframe-modal {
-    height: 650px;
-  }
+  height: 0;
+  display: block;
 }
 
 .tvp-modal-close {
-  width: 27px;
-  height: 27px;
-  padding: 3px;
+  padding: 0;
   cursor: pointer;
-  background: rgba(0, 0, 0, 0.75);
+  background: rgb(239, 239, 239);
   border: 0;
   -webkit-appearance: none;
-  right: -6px;
-  position: absolute;
-  top: -6px;
-  border-radius: 50%;
+  float: right;
 }
 
-.tvp-modal-close > path:nth-child(1) {
-  fill: #fff;
+/*@media only screen and (min-device-width : 414px) and (orientation: portrait) {
+  .tvp-modal {
+    width: 390px;
+    height: 395px;
+  }
 }
 
-.tvp-modal-close > path:nth-child(2){
-  fill: none;
+@media only screen and (min-device-width : 550px) and (orientation: portrait) {
+  .tvp-modal {
+    width: 520px;
+    height: 485px;
+  }
 }
+
+@media only screen and (min-device-width : 600px) and (orientation: landscape) {
+  .tvp-modal {
+    width: 520px;
+    height: 485px;
+  }
+}*/
