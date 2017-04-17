@@ -215,8 +215,13 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
         //Sometimes we want/need to show an intearctive overlay on top of the player. We need this for MP4 videos that will
         //cue (mobile or autoplay:off) to actual play the video on demand.
         this.addOverlay = function(asset){
-            var overlay = document.createElement('div');
-            overlay.classList.add('tvp-overlay');
+            var overlay = this.el.querySelector('.tvp-overlay');
+
+            if (!Boolean(overlay)){
+                overlay = document.createElement('div');
+                overlay.classList.add('tvp-overlay');
+            }            
+            
             overlay.style.backgroundImage = 'url("' + asset.thumbnailUrl + '")';
 
             var overlayTemplate = Utils.tmpl(that.playerOverlayTemplate, {
@@ -269,7 +274,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             var tvp_overlay = this.el.querySelector('.tvp-overlay');
             if (willCue) {
                 this.instance.cueVideo(asset);
-                if ('mp4' === asset.type || this.overlay) {
+                if ('mp4' === asset.type) {
                     this.addOverlay(asset);
                 }
                 else{ 
@@ -281,9 +286,10 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                     }
                 }
             } else {
-                if ('youtube' === asset.type || this.overlay) {
-                    tvp_overlay.style.display = "none";
+                if (Boolean(tvp_overlay)) {
+                    tvp_overlay.style.display = 'none';
                 }
+
                 this.instance.loadVideo(asset);
             }
         };
