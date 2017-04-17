@@ -547,6 +547,13 @@
         {
             "for": "videos-carousel",
             "type": "text",
+            "label": "Videos Carousel Item Thumbnail Container Height",
+            "code": "videos_carousel_item_thumbnail_container_height",
+            "value": "auto"
+        },
+        {
+            "for": "videos-carousel",
+            "type": "text",
             "label": "Videos Carousel Item Thumbnail Height",
             "code": "videos_carousel_item_thumbnail_height",
             "value": "56.25%"

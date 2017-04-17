@@ -479,7 +479,7 @@ html, body {
   text-decoration: none;
   outline: none;
 }
-.iframe-content .tvp-product-item-active:after, .iframe-content .tvp-video-active:after {
+.iframe-content .tvp-product-item-active:after {
   bottom: -3px;
   border: 1px solid #000;
   cursor: pointer;
@@ -488,6 +488,16 @@ html, body {
   right: -3px;
   position: absolute;
   top: -3px;
+}
+.iframe-content .tvp-video-active:after {
+  bottom: -5px;
+  border: 1px solid #000;
+  cursor: pointer;
+  content: " ";
+  left: -5px;
+  right: -5px;
+  position: absolute;
+  top: -5px;
 }
 .iframe-content .tvp-video-active .tvp-video-play {
   background-color: #e57211;
@@ -924,7 +934,7 @@ html, body {
 }
 .iframe-content .tvp-videos-scroller .slick-slide {
   margin: 0 15px;
-  padding: 4px;
+  padding: 6px;
   outline: none;
 }
 .iframe-content .tvp-videos-scroller .tvp-video {
@@ -975,14 +985,14 @@ html, body {
           transform: translateY(-50%);
 }
 .iframe-content .tvp-videos-scroller .tvp-video:hover:after {
-  bottom: -3px;
+  bottom: -5px;
   border: 1px solid #000;
   cursor: pointer;
   content: " ";
-  left: -3px;
-  right: -3px;
+  left: -5px;
+  right: -5px;
   position: absolute;
-  top: -3px;
+  top: -5px;
 }
 .iframe-content .tvp-videos-scroller .tvp-video:hover .tvp-video-play {
   background-color: #e57211;

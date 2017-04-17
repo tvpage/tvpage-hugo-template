@@ -116,9 +116,14 @@ html, body{
         outline: none;
     }
 
-    .tvp-product-item-active, .tvp-video-active{
+    .tvp-product-item-active{
         &:after{
-            @include active-state();
+            @include active-state(3);
+        }
+    }
+    .tvp-video-active{
+        &:after{
+            @include active-state(5);
         }
     }
     .tvp-video-active{
@@ -386,7 +391,7 @@ html, body{
                 }
                 &:hover{
                     &:after{
-                        @include active-state();
+                        @include active-state(3);
                     }
                 }
             }
@@ -513,7 +518,7 @@ html, body{
         }
         .slick-slide{
             margin: 0 15px;
-            padding: 4px;
+            padding: 6px;
             outline: none;
         }
         .tvp-video {
@@ -529,7 +534,6 @@ html, body{
                 background-size: cover;
                 background-repeat: no-repeat;
                 background-position: center;
-
             }
             .tvp-video-title {
                 // overflow: hidden;
@@ -539,7 +543,7 @@ html, body{
             }            
             &:hover {
                 &:after{
-                    @include active-state();
+                    @include active-state(5);
                 }                
                 .tvp-video-play{
                     background-color: #e57211;

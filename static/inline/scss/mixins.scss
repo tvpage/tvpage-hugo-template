@@ -15,13 +15,13 @@
   }
 }
 
-@mixin active-state(){
-  bottom: -3px;
+@mixin active-state($borderPadding){
+  bottom: $borderPadding * -1px;
   border: 1px solid #000;
   cursor: pointer;
   content: " ";
-  left: -3px;
-  right: -3px;
+  left: $borderPadding * -1px;
+  right: $borderPadding * -1px;
   position: absolute;
-  top: -3px;
+  top: $borderPadding * -1px;
 }
