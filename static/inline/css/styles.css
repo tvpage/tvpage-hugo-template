@@ -876,6 +876,10 @@ html, body {
   bottom: 0;
   margin: auto 0;
   z-index: 100;
+  opacity: 0.5;
+}
+.iframe-content .tvp-videos-container .tvp-videos-arrows:hover {
+  opacity: 1;
 }
 .iframe-content .tvp-videos-container .tvp-videos-arrow-next {
   right: 0;

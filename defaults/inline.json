@@ -430,14 +430,14 @@
             "type": "text",
             "label": "Videos Carousel Arrow Height",
             "code": "videos_carousel_arrow_height",
-            "value": "50px"
+            "value": "50"
         },
         {
             "for": "videos-carousel",
             "type": "text",
             "label": "Videos Carousel Arrow Width",
             "code": "videos_carousel_arrow_width",
-            "value": "50px"
+            "value": "50"
         },
         {
             "for": "videos-carosuel-item",
