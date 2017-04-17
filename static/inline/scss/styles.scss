@@ -2,7 +2,6 @@
 @import "vendor/slick.scss";
 @import "vendor/slick-theme.scss";
 @import "vendor/simple-scrollbar.scss";
-// Reebok fonts, kill before deploy!
 @import "reebok-fonts.scss";
 
 * {
@@ -169,7 +168,6 @@ html, body{
     
 
     .tvp-row-titles {
-        // width: 100%;
         height: 43px;
         h1, h2 {            
             line-height: 43px;
@@ -355,14 +353,12 @@ html, body{
     }
     .tvp-products-scroller {
         box-sizing: border-box;
-        // height: 100%;
         float: left;
         position: relative;
         margin-left: 1.2195%;
         width: 22.2222%;
         height: 100%;
         #productContent{
-            // height: 100%;
             position: relative;
             .tvp-product-item {
                 cursor: pointer;
@@ -404,11 +400,6 @@ html, body{
                         display: none;
                     }
                 }
-                // &:hover{
-                //     &:after{
-                //         @include active-state(3);                        
-                //     }
-                // }
             }
             
             .tvp-product-item-group{
@@ -596,11 +587,7 @@ html, body{
         }
     }
     .tvp-row{
-        // @include aspect-ratio(720,599);
         @include aspect-ratio(355,310);
-        // &:before{
-        //     padding-top: 95%;
-        // }
         .tvp-player{
           width: 100%;      
           float: none;
@@ -642,7 +629,6 @@ html, body{
                         background-repeat: no-repeat;
                         background-position: center;
                         width: 18.6%;
-                        // max-width: 54px;
                         margin-bottom: 31.3953%;
                     }
                     .tvp-product-info{
@@ -656,7 +642,6 @@ html, body{
                         margin-left: 10px;
                         &-title{
                             font-weight: 500;
-                            // font-size: 12px;
                             line-height: 14px;                            
                         }
                         &-rating{
@@ -665,7 +650,6 @@ html, body{
                         &-price{
                             display: block;
                             font-weight: 500;
-                            // font-size: 12px;
                             line-height: 14px;
                         }
                         &-view-details{
