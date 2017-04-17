@@ -474,7 +474,7 @@ html, body {
 .iframe-content .tvp-clear {
   clear: both;
 }
-.iframe-content .tvp-animate, .iframe-content .tvp-product-item, .iframe-content .tvp-video, .iframe-content .tvp-video:after, .iframe-content .tvp-video-image-overlay, .iframe-content .tvp-videos-container .tvp-videos-arrows, .iframe-content .tvp-videos-scroller .tvp-video .tvp-video-title {
+.iframe-content .tvp-animate, .iframe-content .tvp-product-item, .iframe-content .tvp-product-item:after, .iframe-content .tvp-video, .iframe-content .tvp-video:after, .iframe-content .tvp-video-image-overlay, .iframe-content .tvp-videos-container .tvp-videos-arrows, .iframe-content .tvp-videos-scroller .tvp-video .tvp-video-title {
   -webkit-transition: border .5s ease-out, color .5s linear, opacity .3s ease-out;
           transition: border .5s ease-out, color .5s linear, opacity .3s ease-out;
 }
