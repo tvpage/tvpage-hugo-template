@@ -474,6 +474,10 @@ html, body {
 .iframe-content .tvp-clear {
   clear: both;
 }
+.iframe-content .tvp-animate, .iframe-content .tvp-product-item, .iframe-content .tvp-video, .iframe-content .tvp-video:after, .iframe-content .tvp-video-image-overlay, .iframe-content .tvp-videos-container .tvp-videos-arrows, .iframe-content .tvp-videos-scroller .tvp-video .tvp-video-title {
+  -webkit-transition: border .5s ease-out, color .5s linear, opacity .3s ease-out;
+          transition: border .5s ease-out, color .5s linear, opacity .3s ease-out;
+}
 .iframe-content a {
   color: #000;
   text-decoration: none;
@@ -488,8 +492,6 @@ html, body {
   right: -3px;
   position: absolute;
   top: -3px;
-  -webkit-transition: border .5s ease-out, color .5s linear, opacity .3s ease-out;
-          transition: border .5s ease-out, color .5s linear, opacity .3s ease-out;
   border-color: #000;
 }
 .iframe-content .tvp-product-item:after {
@@ -501,8 +503,6 @@ html, body {
   right: -3px;
   position: absolute;
   top: -3px;
-  -webkit-transition: border .5s ease-out, color .5s linear, opacity .3s ease-out;
-          transition: border .5s ease-out, color .5s linear, opacity .3s ease-out;
 }
 .iframe-content .tvp-video:after {
   bottom: -6px;
@@ -513,8 +513,6 @@ html, body {
   right: -6px;
   position: absolute;
   top: -6px;
-  -webkit-transition: border .5s ease-out, color .5s linear, opacity .3s ease-out;
-          transition: border .5s ease-out, color .5s linear, opacity .3s ease-out;
 }
 .iframe-content .tvp-video-active:after {
   bottom: -6px;
@@ -525,8 +523,6 @@ html, body {
   right: -6px;
   position: absolute;
   top: -6px;
-  -webkit-transition: border .5s ease-out, color .5s linear, opacity .3s ease-out;
-          transition: border .5s ease-out, color .5s linear, opacity .3s ease-out;
   border-color: #000;
 }
 .iframe-content .tvp-video-active .tvp-video-play {
@@ -544,8 +540,6 @@ html, body {
   right: 0;
   position: absolute;
   margin: auto;
-  -webkit-transition: all .05s ease-in-out;
-  transition: all .05s ease-in-out;
 }
 .iframe-content .tvp-row-titles {
   height: 43px;
@@ -908,8 +902,6 @@ html, body {
   margin: auto 0;
   z-index: 100;
   opacity: 0.5;
-  -webkit-transition: all .05s ease-in-out;
-          transition: all .05s ease-in-out;
 }
 .iframe-content .tvp-videos-container .tvp-videos-arrows:hover {
   opacity: 1;
@@ -1006,8 +998,6 @@ html, body {
   top: 50%;
   -webkit-transform: translateY(-50%);
           transform: translateY(-50%);
-  -webkit-transition: all .05s ease-in-out;
-          transition: all .05s ease-in-out;
 }
 .iframe-content .tvp-videos-scroller .tvp-video:hover:after {
   border-color: #000;

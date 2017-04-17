@@ -110,6 +110,9 @@ html, body{
     .tvp-clear {
         clear: both;
     }
+    .tvp-animate {
+        transition: border .5s ease-out, color .5s linear, opacity .3s ease-out;
+    }    
     a {
         color: #000;
         text-decoration: none;
@@ -123,13 +126,16 @@ html, body{
         }
     }
     .tvp-product-item {
+        @extend .tvp-animate;
         &:after{
             @include active-state(3);
         }
     }
-    .tvp-video{        
+    .tvp-video{
+        @extend .tvp-animate;
         &:after{
             @include active-state(6);
+            @extend .tvp-animate;
         }
     }
     .tvp-video-active{
@@ -148,7 +154,7 @@ html, body{
     }
 
     .tvp-video-image-overlay {
-        // display: block;
+        @extend .tvp-animate;
         background-color: #000;
         opacity: 0;
         top: 0;
@@ -157,8 +163,6 @@ html, body{
         right: 0;
         position: absolute;
         margin: auto;
-        -webkit-transition: all .05s ease-in-out;
-        transition: all .05s ease-in-out;
     }    
 
     /* // TVP Icons // */
@@ -367,7 +371,7 @@ html, body{
                 padding: 0;
                 margin-bottom: 5px;
                 max-height: 28%;
-                position: relative;
+                position: relative;                
                 &:last-child {
                     margin: 0;
                 }
@@ -482,7 +486,7 @@ html, body{
             margin: auto 0;
             z-index: 100;
             opacity: 0.5;
-            transition: all .05s ease-in-out;
+            @extend .tvp-animate;
             &:hover{
                 opacity: 1;
             }
@@ -553,10 +557,10 @@ html, body{
                 margin: 0;
                 top: 50%;
                 transform: translateY(-50%);
-                transition: all .05s ease-in-out;
+                @extend .tvp-animate;
             }
             &:hover {
-                &:after{
+                &:after{                    
                     border-color: #000;
                 }      
                 .tvp-video-play{
