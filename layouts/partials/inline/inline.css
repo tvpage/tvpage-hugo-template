@@ -1,15 +1,18 @@
 'body{' +
 	'font-family: "{{- ($.Scratch.Get "settings").font_family -}}";' +
 	'color: {{- ($.Scratch.Get "settings").font_color -}};' +
-	// 'background-color: {{- ($.Scratch.Get "settings").body_background_color -}};' +
 	'padding: {{- ($.Scratch.Get "settings").body_padding -}};' +
 '}' +
 // ### play icon settings
 ' .iframe-content .tvp-player #tvp-player .tvp-overlay:hover .tvp-video-play,' +
 '.iframe-content .tvp-videos-scroller .tvp-video:hover .tvp-video-play,' +
-'.iframe-content .tvp-video-active .tvp-video-play, '+
+'.iframe-content .tvp-video-active .tvp-video-play { '+
+	'background-color: {{- ($.Scratch.Get "settings").play_button_background_color -}};' +
+	'border: {{- ($.Scratch.Get "settings").play_icon_border -}};' +
+'}' +
+
 '.iframe-content .tvp-video-play{' +
-	'background-color: {{- ($.Scratch.Get "settings").play_icon_background_color -}};' +
+	'background-color: {{- ($.Scratch.Get "settings").play_button_background_color_inactive -}};' +
 	'border: {{- ($.Scratch.Get "settings").play_icon_border -}};' +
 '}' +
 
@@ -24,8 +27,8 @@
 '.iframe-content .tvp-video-active .anim, ' +
 '.iframe-content .tvp-videos-scroller .tvp-video:hover .anim,' +
 '.iframe-content .tvp-player #tvp-player .tvp-overlay:hover .anim{' +
-	'-webkit-transform: {{- ($.Scratch.Get "settings").play_icon_transform -}};'+
-	'transform: {{- ($.Scratch.Get "settings").play_icon_transform -}};' +
+	'-webkit-transform: {{- ($.Scratch.Get "settings").play_button_transform -}};'+
+	'transform: {{- ($.Scratch.Get "settings").play_button_transform -}};' +
 '}' +
 
 // ### active state settings
@@ -141,7 +144,6 @@
 '}' +
 
 '.iframe-content .tvp-videos-container .tvp-videos-arrows{' +
-	'display: {{- ($.Scratch.Get "settings").videos_carousel_arrow_display -}};' +
 	'background: {{- ($.Scratch.Get "settings").videos_carousel_arrow_background -}};' +
 	'height: {{- ($.Scratch.Get "settings").videos_carousel_arrow_height -}}px;' +
 	'width: {{- ($.Scratch.Get "settings").videos_carousel_arrow_width -}}px;' +	
@@ -189,7 +191,7 @@
 '}' +
 
 '.iframe-content .tvp-video-image-overlay{' +
-	'opacity: {{- ($.Scratch.Get "settings").videos_carousel_item_thumbnail_overlay_color -}};'+
+	'background-color: {{- ($.Scratch.Get "settings").videos_carousel_item_thumbnail_overlay_color -}};'+
 	'opacity: {{- ($.Scratch.Get "settings").videos_carousel_item_thumbnail_inactive -}};'+
 '}' +
 

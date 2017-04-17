@@ -69,9 +69,30 @@
         {
             "for": "player",
             "type": "text",
+            "label": "Play Icon Border",
+            "code": "play_icon_border",
+            "value": "0"
+        },
+        {
+            "for": "player",
+            "type": "text",
             "label": "Play Button Background Color",
             "code": "play_button_background_color",
+            "value": "#e57211"
+        },        
+        {
+            "for": "player",
+            "type": "text",
+            "label": "Play Button Background Color",
+            "code": "play_button_background_color_inactive",
             "value": "fff"
+        },        
+        {
+            "for": "player",
+            "type": "text",
+            "label": "Play Button Transform",
+            "code": "play_button_transform",
+            "value": "none"
         },
         {
             "for": "player",
@@ -135,13 +156,6 @@
             "label": "iFrame Holder Background Color",
             "code": "iframe_holder_background_color",
             "value": "#fff"
-        },
-        {
-            "for": "iframe-holder",
-            "type": "text",
-            "label": "iFrame Holder Padding",
-            "code": "iframe_holder_padding",
-            "value": "0"
         },
         {
             "for": "inline",
@@ -365,10 +379,10 @@
         {
             "for": "inline",
             "type": "text",
-            "label": "Product Holder Slider Arrow Color",
-            "code": "product_holder_slide_arrow_color",
-            "value": "#000"
-        },
+            "label": "Product Holder Slider Arrow Button Color",
+            "code": "product_holder_slide_arrow_button_color",
+            "value": "rgba(0, 0, 0, 0.75)"
+        },        
         {
             "for": "inline",
             "type": "text",
@@ -414,13 +428,6 @@
         {
             "for": "videos-carousel",
             "type": "text",
-            "label": "Videos Carousel Arrow Display",
-            "code": "videos_carousel_arrow_display",
-            "value": "block"
-        },
-        {
-            "for": "videos-carousel",
-            "type": "text",
             "label": "Videos Carousel Arrow Background",
             "code": "videos_carousel_arrow_background",
             "value": "#fff"
@@ -440,18 +447,11 @@
             "value": "50"
         },
         {
-            "for": "videos-carosuel-item",
+            "for": "videos-carousel",
             "type": "text",
-            "label": "Videos Carousel Item Opacity",
-            "code": "videos_carousel_item_opacity",
-            "value": "0.6"
-        },
-        {
-            "for": "videos-carosuel-item",
-            "type": "text",
-            "label": "Videos Carousel Item Active Opacity",
-            "code": "videos_carousel_item_active_opacity",
-            "value": "1"
+            "label": "Videos Carousel Arrow Color",
+            "code": "videos_carousel_arrow_color",
+            "value": "#000"
         },
         {
             "for": "videos-carosuel-item",
@@ -540,9 +540,44 @@
         {
             "for": "videos-carousel",
             "type": "text",
+            "label": "Videos Carousel Item Title Active",
+            "code": "videos_carousel_item_title_active",
+            "value": "1"
+        },
+        {
+            "for": "videos-carousel",
+            "type": "text",
+            "label": "Videos Carousel Item Title Inactive",
+            "code": "videos_carousel_item_title_inactive",
+            "value": "1"
+        },
+        {
+            "for": "videos-carousel",
+            "type": "text",
             "label": "Videos Carousel Item Space InBetween",
             "code": "videos_carousel_item_space_inbetween",
             "value": "7.5px"
+        },
+        {
+            "for": "videos-carousel",
+            "type": "text",
+            "label": "Videos Carousel Item Thumbnail Overlay Color",
+            "code": "videos_carousel_item_thumbnail_overlay_color",
+            "value": "#000"
+        },
+        {
+            "for": "videos-carousel",
+            "type": "text",
+            "label": "Videos Carousel Item Thumbnail Active",
+            "code": "videos_carousel_item_thumbnail_active",
+            "value": "0.2"
+        },
+        {
+            "for": "videos-carousel",
+            "type": "text",
+            "label": "Videos Carousel Item Thumbnail InActive",
+            "code": "videos_carousel_item_thumbnail_inactive",
+            "value": "0"
         },
         {
             "for": "videos-carousel",
@@ -591,6 +626,20 @@
             "type": "text",
             "label": "Videos Carousel Item Thumbnail Border Width",
             "code": "videos_carousel_item_thumbnail_border_width",
+            "value": "0"
+        },
+        {
+            "for": "videos-carousel",
+            "type": "text",
+            "label": "Videos Carousel Width",
+            "code": "videos_carousel_width",
+            "value": "100%"
+        },
+        {
+            "for": "videos-carousel",
+            "type": "text",
+            "label": "Videos Carousel Padding",
+            "code": "videos_carousel_padding",
             "value": "0"
         }
     ]
