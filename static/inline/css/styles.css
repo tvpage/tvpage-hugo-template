@@ -481,34 +481,63 @@ html, body {
 }
 .iframe-content .tvp-product-item-active:after {
   bottom: -3px;
-  border: 1px solid #000;
+  border: 1px solid transparent;
   cursor: pointer;
   content: " ";
   left: -3px;
   right: -3px;
   position: absolute;
   top: -3px;
+  -webkit-transition: border .5s ease-out, color .5s linear, opacity .3s ease-out;
+          transition: border .5s ease-out, color .5s linear, opacity .3s ease-out;
+  border-color: #000;
 }
-.iframe-content .tvp-video-active:after {
-  bottom: -5px;
-  border: 1px solid #000;
+.iframe-content .tvp-product-item:after {
+  bottom: -3px;
+  border: 1px solid transparent;
   cursor: pointer;
   content: " ";
-  left: -5px;
-  right: -5px;
+  left: -3px;
+  right: -3px;
   position: absolute;
-  top: -5px;
+  top: -3px;
+  -webkit-transition: border .5s ease-out, color .5s linear, opacity .3s ease-out;
+          transition: border .5s ease-out, color .5s linear, opacity .3s ease-out;
+}
+.iframe-content .tvp-video:after {
+  bottom: -6px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  content: " ";
+  left: -6px;
+  right: -6px;
+  position: absolute;
+  top: -6px;
+  -webkit-transition: border .5s ease-out, color .5s linear, opacity .3s ease-out;
+          transition: border .5s ease-out, color .5s linear, opacity .3s ease-out;
+}
+.iframe-content .tvp-video-active:after {
+  bottom: -6px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  content: " ";
+  left: -6px;
+  right: -6px;
+  position: absolute;
+  top: -6px;
+  -webkit-transition: border .5s ease-out, color .5s linear, opacity .3s ease-out;
+          transition: border .5s ease-out, color .5s linear, opacity .3s ease-out;
+  border-color: #000;
 }
 .iframe-content .tvp-video-active .tvp-video-play {
   background-color: #e57211;
 }
 .iframe-content .tvp-video-active .tvp-video-image-overlay {
-  display: block;
+  opacity: 0.2;
 }
 .iframe-content .tvp-video-image-overlay {
-  display: none;
   background-color: #000;
-  opacity: 0.2;
+  opacity: 0;
   top: 0;
   bottom: 0;
   left: 0;
@@ -574,8 +603,8 @@ html, body {
   background-position: 50% 50%;
   background-size: 85% 85%;
   position: absolute;
-  width: 23px;
-  height: 23px;
+  width: 40px;
+  height: 40px;
   margin: auto;
   padding: 0;
   cursor: pointer;
@@ -805,16 +834,6 @@ html, body {
 .iframe-content .tvp-products-scroller #productContent .tvp-product-item .tvp-product-info-view-details {
   display: none;
 }
-.iframe-content .tvp-products-scroller #productContent .tvp-product-item:hover:after {
-  bottom: -3px;
-  border: 1px solid #000;
-  cursor: pointer;
-  content: " ";
-  left: -3px;
-  right: -3px;
-  position: absolute;
-  top: -3px;
-}
 .iframe-content .tvp-products-scroller #productContent .tvp-product-item-group {
   padding: 4px;
 }
@@ -844,6 +863,7 @@ html, body {
   width: 100%;
 }
 .iframe-content .tvp-products-scroller .tvp-products-nav .tvp-products-button {
+  cursor: pointer;
   display: inline-block;
   height: 23px;
   width: 23px;
@@ -879,6 +899,7 @@ html, body {
   position: relative;
 }
 .iframe-content .tvp-videos-container .tvp-videos-arrows {
+  outline: none;
   cursor: pointer;
   position: absolute;
   text-align: center;
@@ -887,6 +908,8 @@ html, body {
   margin: auto 0;
   z-index: 100;
   opacity: 0.5;
+  -webkit-transition: all .05s ease-in-out;
+          transition: all .05s ease-in-out;
 }
 .iframe-content .tvp-videos-container .tvp-videos-arrows:hover {
   opacity: 1;
@@ -983,22 +1006,17 @@ html, body {
   top: 50%;
   -webkit-transform: translateY(-50%);
           transform: translateY(-50%);
+  -webkit-transition: all .05s ease-in-out;
+          transition: all .05s ease-in-out;
 }
 .iframe-content .tvp-videos-scroller .tvp-video:hover:after {
-  bottom: -5px;
-  border: 1px solid #000;
-  cursor: pointer;
-  content: " ";
-  left: -5px;
-  right: -5px;
-  position: absolute;
-  top: -5px;
+  border-color: #000;
 }
 .iframe-content .tvp-videos-scroller .tvp-video:hover .tvp-video-play {
   background-color: #e57211;
 }
 .iframe-content .tvp-videos-scroller .tvp-video:hover .tvp-video-image-overlay {
-  display: block;
+  opacity: 0.2;
 }
 .iframe-content #tvpMobileVideoScroller,
 .iframe-content #tvpMobileProductsScroller {

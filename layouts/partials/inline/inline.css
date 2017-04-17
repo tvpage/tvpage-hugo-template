@@ -33,14 +33,6 @@
 	'border-color: {{- ($.Scratch.Get "settings").active_state_border -}};' +
 '}' +
 
-'.iframe-content .tvp-videos-scroller .tvp-video.tvp-video-active{' +
-	'opacity: {{- ($.Scratch.Get "settings").videos_carousel_item_active_opacity -}};' +
-'}' +
-
-'.iframe-content .tvp-videos-scroller .tvp-video:hover{' +
-	'opacity: {{- ($.Scratch.Get "settings").videos_carousel_item_active_opacity -}};' +
-'}' +
-
 '.iframe-content .tvp-products-scroller #productContent .tvp-product-item:hover:after{' +
 	'border-color: {{- ($.Scratch.Get "settings").hover_state_border -}};' +
 '}' +
@@ -177,15 +169,28 @@
 	'padding: {{- ($.Scratch.Get "settings").videos_carousel_item_title_padding -}};' +
 	'position: {{- ($.Scratch.Get "settings").videos_carousel_item_title_position -}};' +	
 	'top: {{- ($.Scratch.Get "settings").videos_carousel_item_title_top -}};' +	
+	'opacity: {{- ($.Scratch.Get "settings").videos_carousel_item_title_inactive -}};'+
 	'-webkit-transform: {{- ($.Scratch.Get "settings").videos_carousel_item_title_transform -}};' +	
 	'transform: {{- ($.Scratch.Get "settings").videos_carousel_item_title_transform -}};' +
 '}' +
 
+'.iframe-content .tvp-videos-scroller .tvp-video-active .tvp-video-title ' +
+', .iframe-content .tvp-videos-scroller .tvp-video:hover .tvp-video-title{' +
+	'opacity: {{- ($.Scratch.Get "settings").videos_carousel_item_title_active -}};'+
+'}' +
+
 '.iframe-content .tvp-videos-scroller .tvp-video{' +
-	// 'padding: {{- ($.Scratch.Get "settings").videos_carousel_item_padding -}};' +
-	// 'margin: {{- ($.Scratch.Get "settings").videos_carousel_item_margin -}};' +
-	'border: {{- ($.Scratch.Get "settings").videos_carousel_item_border -}};' +
-	'opacity: {{- ($.Scratch.Get "settings").videos_carousel_item_opacity -}};' +
+	'border: {{- ($.Scratch.Get "settings").videos_carousel_item_border -}};' +	
+'}' +
+
+'.iframe-content .tvp-video-active .tvp-video-image-overlay' +
+', .iframe-content .tvp-videos-scroller .tvp-video:hover .tvp-video-image-overlay{' +
+	'opacity: {{- ($.Scratch.Get "settings").videos_carousel_item_thumbnail_active -}};'+
+'}' +
+
+'.iframe-content .tvp-video-image-overlay{' +
+	'opacity: {{- ($.Scratch.Get "settings").videos_carousel_item_thumbnail_overlay_color -}};'+
+	'opacity: {{- ($.Scratch.Get "settings").videos_carousel_item_thumbnail_inactive -}};'+
 '}' +
 
 '.iframe-content .tvp-videos-scroller .tvp-video:before{' +

@@ -17,11 +17,12 @@
 
 @mixin active-state($borderPadding){
   bottom: $borderPadding * -1px;
-  border: 1px solid #000;
+  border: 1px solid transparent;
   cursor: pointer;
   content: " ";
   left: $borderPadding * -1px;
   right: $borderPadding * -1px;
   position: absolute;
   top: $borderPadding * -1px;
+  transition: border .5s ease-out, color .5s linear, opacity .3s ease-out;
 }
