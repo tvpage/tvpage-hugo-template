@@ -19,12 +19,18 @@
     "opacity: 1;" +
 "}" +
 
-".tvp-info-icon{" +
+".tvp-tooltip{" +
     "position: absolute;" +
+    "right: -20px;" +
     "top: 50%;" +
-    "right: -15%;" +
     "transform: translateY(-50%);" +
+    "z-index: 10;" +
+"}" +
+
+".tvp-info-icon{" +
+    "position: relative;" +
     "cursor: pointer;" +
+    "float: right;" +
 "}" +
 
 ".tvp-products-message {" +
@@ -36,7 +42,7 @@
     "z-index: 9999;" +
     "opacity: 0;" +
     "visibility: hidden;" +
-    "right: -35%;" +
+    "right: -150%;" +
     "top: 165%;" +
     "transition: opacity 0.5s ease; " +
 "}" +
@@ -49,7 +55,7 @@
 
 ".tvp-products-message:after, .tvp-products-message:before {" +
     "bottom: 100%;" +
-    "left: 90.1%;" +
+    "left: 90.7%;" +
     "border: solid transparent;" +
     "content: '';" +
     "height: 0;" +
