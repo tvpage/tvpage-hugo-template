@@ -58,11 +58,22 @@
     var render = function(data,config) {
         var container = Utils.getByClass('tvp-products');
         var el = Utils.getByClass('iframe-content');
-        var carousel = Utils.getByClass('tvp-products-carousel');
-        carousel.innerHTML = '';
-        carousel.classList = '';
-        carousel.classList.add('tvp-products-carousel');
+        
+        var carousel = container.querySelector('.tvp-products-carousel');
+        if (carousel) {
+            carousel.parentNode.removeChild(carousel);
+        }
 
+        carousel = document.createElement("div");
+        carousel.className = 'tvp-products-carousel';
+        container.appendChild(carousel);
+
+        var toRemove = container.getElementsByClassName('tvp-product');
+        for (var j = 0; j < toRemove.length; j++) {
+            toRemove[j].removeEventListener('click', pkTrack, false);
+        }
+
+        var productsHtml = "";
         for (var i = 0; i < data.length; i++) {
             var product = data[i];
             var productId = product.id;
@@ -75,13 +86,10 @@
 
             product.title = !Utils.isEmpty(product.title) ? Utils.trimText(product.title, 50) : '';
             product.price = !Utils.isEmpty(product.price) ? Utils.trimPrice(product.price) : '';
-            carousel.innerHTML += Utils.tmpl(config.templates['modal-content-mobile'].products,product);
+            productsHtml += Utils.tmpl(config.templates['modal-content-mobile'].products,product);
         }
 
-        var toRemove = container.getElementsByClassName('tvp-product');
-        for (var j = 0; j < toRemove.length; j++) {
-            toRemove[j].removeEventListener('click', pkTrack, false);
-        }
+        carousel.innerHTML = productsHtml;
 
         var productsTitle = Utils.getByClass('tvp-products-text');
         productsTitle.innerHTML = "";
@@ -112,11 +120,12 @@
 
         //We start loading our slick dependency here, it was breaking while rendering it dynamicaly.
         var startSlick = function() {
-            if (!data.length) return;
+            if (!data.length || 1 > data.length) return;
             setTimeout(function() {
                 var $el = $(carousel);
-                var centerMode = true;
+                var centerMode = data.length > 1 ? true : false;
                 var centerPadding = hasData ? '20px' : "0px";
+
                 var config = {
                     slidesToSlide: 1,
                     slidesToShow: 3,
@@ -143,15 +152,23 @@
                     ]
                 };
 
-                if (data.length > 1) {
-                    config.centerMode = centerMode;
-                    config.centerPadding = centerPadding;
-
-                    if (data.length <= 5) {
-                        config.appendDots = '.tvp-products-headline';
-                        config.dots = true;
-                        config.dotsClass = 'tvp-slider-dots';    
+                config.centerMode = centerMode;
+                config.centerPadding = centerPadding;
+                
+                if (data.length <= 5) {
+                    var dotsHolderClass = "tvp-slider-dots-holder";
+                    var dotsHolderElement = container.querySelector("." + dotsHolderClass);
+                    if (dotsHolderElement) {
+                        dotsHolderElement.parentNode.removeChild(dotsHolderElement);
                     }
+
+                    dotsHolderElement = document.createElement("div");
+                    dotsHolderElement.className = dotsHolderClass;
+                    container.querySelector(".tvp-products-headline").appendChild(dotsHolderElement);
+
+                    config.appendDots = dotsHolderElement;
+                    config.dots = true;
+                    config.dotsClass = "tvp-slider-dots";
                 }
 
                 $el.on('init', function() {
@@ -168,14 +185,8 @@
                         }
                     }, 0);
                 });
-
-                if (!slickInitialized) {
-                    $el.slick(config);
-                    slickInitialized = true;
-                }else{
-                    $('.tvp-slider-dots').remove();
-                    $el.slick(config);
-                }
+                
+                $el.slick(config);
 
             }, 10);
         };

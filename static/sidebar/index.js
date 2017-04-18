@@ -370,14 +370,16 @@ function handleModalProducts(e) {
     var label = document.createElement('div');
     label.className = 'tvp-products-headline';
     label.id = 'tvp-products-headline-' + config.id;
+    label.innerHTML = config.products_headline_text;
     
-    var tooltipHtml = "";
     if (config.products_info_tooltip && config.products_message.trim().length) {
-      tooltipHtml = config.templates['modal'].tooltip + 
-      '<span class="tvp-products-message">' + config.products_message + '</span>';
-    }    
-
-    label.innerHTML = config.products_headline_text + tooltipHtml;
+      tooltipHtml = config.templates['modal'].tooltip;
+      var tooltipDiv = document.createElement('div');
+      tooltipDiv.classList.add('tvp-tooltip');
+      tooltipDiv.innerHTML = tooltipHtml;
+      tooltipDiv.getElementsByClassName('tvp-products-message')[0].innerHTML = config.products_message;
+      label.appendChild(tooltipDiv);
+    } 
     
     label.onclick = function(){
       this.classList.contains('active') ? this.classList.remove('active') : this.classList.add('active');
