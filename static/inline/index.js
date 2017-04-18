@@ -124,6 +124,7 @@ config.cssPath = config.staticPath + config.distPath + 'css/';
 config.jsPath = config.staticPath  + '/dist/js/';
 config.eventPrefix = ("tvp_" + config.id).replace(/-/g,'_');
 
+var playerUrl = "https://cdnjs.tvpage.com/tvplayer/tvp-" + config.player_version + ".min.js";
 var holder = document.getElementById(config.id + "-holder");
 var iframe = holder.querySelector("iframe");
 var iframeDocument = iframe.contentWindow.document;
@@ -133,6 +134,8 @@ var iframeContent = utils.getIframeHtml({
     domain: config.baseUrl,
     style: config.css.inline,
     js: [
+        '//a.tvpage.com/tvpa.min.js',
+        playerUrl,
         config.debug ? config.jsPath + "scripts.js" : "",
         config.debug ? "" : config.jsPath + "scripts.min.js"
     ],

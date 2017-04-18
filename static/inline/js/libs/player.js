@@ -250,11 +250,22 @@
         }
         
         this.el.onclick = function(e){
-            var getTarget = function (name) {                
-                for (var i = 0; i < e.path.length; i++) {
+            var getTarget = function (name) { 
+                var path = [];
+                var currentElem = e.target;
+                while (currentElem) {
+                    path.push(currentElem);
+                    currentElem = currentElem.parentElement;
+                }
+                if (path.indexOf(window) === -1 && path.indexOf(document) === -1)
+                    path.push(document);
+                if (path.indexOf(window) === -1)
+                    path.push(window);
+
+                for (var i = 0; i < path.length; i++) {
                     try{
-                        if(Utils.hasClass(e.path[i], name)) {
-                            target = e.path[i];
+                        if(Utils.hasClass(path[i], name)) {
+                            target = path[i];
                             return true;
                         }
                     }
@@ -274,7 +285,18 @@
                 }
             }
         };
-        this.initialize();
+
+        var checks = 0;
+        (function libsReady(){
+            setTimeout(function(){
+                if ( (!isset(window,'TVPage') || !isset(window,'_tvpa')) && (++checks < 200) ) {
+                    libsReady();
+                }
+                else{
+                    that.initialize();
+                }
+            }, 150);
+        })();
     }
 
     window.Player = Player;

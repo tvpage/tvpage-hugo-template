@@ -22,18 +22,15 @@
             settings = parent.__TVPage__.config[body.getAttribute('data-id')];
         }
         var inlineSettings = JSON.parse(JSON.stringify(settings));
+
         render(body,{
             id: settings.name,
             title: settings.title || 'Recommended Videos',
             inlineTemplate: settings.templates.inline
         });
-        $.when(
-            $.getScript('//a.tvpage.com/tvpa.min.js'),
-            $.getScript('https://cdnjs.tvpage.com/tvplayer/tvp-'+settings.player_version+'.min.js')
-        ).done(function (a, b) {
-            Inline(settings.name, inlineSettings);
-        });
-    };
 
+        Inline(settings.name, inlineSettings);
+    };
+    
     initialize();
 }(window, document));
