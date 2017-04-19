@@ -11,6 +11,15 @@
         },
         isFunction = function(obj){
             return 'undefined' !== typeof obj;
+        },
+        compact = function(o){
+            if (!o && "object" !== typeof o) return;
+            for (var k in o) {
+                if (!o[k]) {
+                    delete o[k];
+                }
+            }
+            return o;
         };
 
     //The player singleton. We basically create an instance from the tvpage
@@ -23,20 +32,8 @@
         this.autoplay = isset(options.autoplay) ? Number(options.autoplay) : false;
         this.autonext = isset(options.autonext) ? Number(options.autonext) : true;
         this.version = isset(options.player_version) ? options.player_version : null;
-        this.progressColor = isset(options.progress_color) ? options.progress_color : null;
         this.transcript = isset(options.transcript) ? options.transcript : null;
-        this.removeControls = isset(options.remove_controls) ? options.remove_controls : null;
-        this.analytics = isset(options.analytics) ? options.analytics : null;
         this.overlay = isset(options.overlay) ? options.overlay : null;
-        this.overlayColor = isset(options.overlay_color) ? options.overlay_color : null;
-        this.overlayOpacity = isset(options.overlay_opacity) ? options.overlay_opacity : null;
-        this.playButtonBackgroundColor = isset(options.play_button_background_color) ?  options.play_button_background_color : null;
-        this.playButtonBorderRadius = isset(options.play_button_border_radius) ? options.play_button_border_radius : null;
-        this.playButtonBorderWidth = isset(options.play_button_border_width) ? options.play_button_border_width : null;
-        this.playButtonBorderColor = isset(options.play_button_border_color) ? options.play_button_border_color : null;
-        this.playButtonIconColor = isset(options.play_button_icon_color) ? options.play_button_icon_color : null;
-        this.playButtonWidth = isset(options.play_button_width) ? options.play_button_width : null;
-        this.playButtonHeight = isset(options.play_button_height) ? options.play_button_height : null;
         this.playerOverlayTemplate =  isset(options.playerOverlayTemplate) ? options.playerOverlayTemplate : null;
         this.playIconTemplate = isset(options.playIconTemplate) ? options.playIconTemplate : null;
         this.onResize = isset(options.onResize) && isFunction(options.onResize) ? options.onResize : null;
@@ -75,38 +72,38 @@
             return assets;
         }(options.data));
 
+        this.playButton = compact({
+            height: isset(options.play_button_height) ? options.play_button_height : null,
+            width: isset(options.play_button_width) ? options.play_button_width : null,
+            backgroundColor: isset(options.play_button_background_color) ? options.play_button_background_color : null,
+            borderRadius: isset(options.play_button_border_radius) ? options.play_button_border_radius : null,
+            borderWidth: isset(options.play_button_border_width) ? options.play_button_border_width : null,
+            borderColor: isset(options.play_button_border_color) ? options.play_button_border_color : null,
+            borderStyle: isset(options.play_button_border_style) ? options.play_button_border_style : null,
+            iconColor: isset(options.play_button_icon_color) ? options.play_button_icon_color : null
+        });
 
+        this.floater = compact({
+            controlbarColor: isset(options.control_bar_color) ? options.control_bar_color : null,
+            iconColor: isset(options.icon_color) ? options.icon_color : null,
+            removeControls: isset(options.remove_controls) ? options.remove_controls : null
+        });
+
+        this.seekBar = compact({
+            progressColor: isset(options.progress_color) ? options.progress_color : null
+        });
+
+        this.controls = compact({
+            active: true,
+            seekbar: this.seekBar,
+            floater: this.floater,
+            playbutton: this.playButton,
+            overlayColor: isset(options.overlay_color) ? options.overlay_color : null,
+            overlayOpacity: isset(options.overlay_opacity) ? options.overlay_opacity : null
+        });
+        
         //Context reference for Methods.
         var that = this;
-
-        //Sometimes we want/need to show an intearctive overlay on top of the player. We need this for MP4 videos that will
-        //cue (mobile or autoplay:off) to actual play the video on demand.
-        this.addOverlay = function(asset){
-            var overlay = this.el.querySelector('.tvp-overlay');
-
-            if (!Boolean(overlay)){
-                overlay = document.createElement('div');
-                overlay.classList.add('tvp-overlay');
-            }            
-            
-            overlay.style.backgroundImage = 'url("' + asset.thumbnailUrl + '")';
-
-            var overlayTemplate = Utils.tmpl(that.playerOverlayTemplate, {
-                thumbnailUrl: asset.thumbnailUrl,
-                overlayOpacity: this.overlayOpacity,
-                overlayColor: this.overlayColor ? '#' + this.overlayColor : 'transparent',
-                playButtonHeight: this.playButtonHeight
-            });
-
-            overlay.innerHTML = overlayTemplate;
-
-            this.el.appendChild(overlay);
-            var playerHolder = this.el.querySelector('.tvp-play-holder');
-            playerHolder.innerHTML = this.playIconTemplate;
-            // playerHolder.querySelector('.tvp-video-play').style.backgroundColor = this.playButtonBackgroundColor
-            // playerHolder.querySelector('.tvp-video-play').style.borderRadius = this.playButtonBorderRadius;
-            // playerHolder.querySelector('.tvp-video-play').style.border = this.playButtonBorderWidth + ' solid #' + this.playButtonBorderColor;
-        };
 
         this.play = function(asset,ongoing){
             if (!asset) return; // console.log('need asset');
@@ -138,27 +135,8 @@
                 config.logUrl = '\/\/api.tvpage.com\/v1\/__tvpa.gif';
                 analytics.initConfig(config);
             }
-            var tvp_overlay = this.el.querySelector('.tvp-overlay');
-            if (willCue) {
-                this.instance.cueVideo(asset);
-                if ('mp4' === asset.type) {
-                    this.addOverlay(asset);
-                }
-                else{ 
-                    if(Boolean(tvp_overlay)){
-                        this.el.removeChild(tvp_overlay);
-                    }
-                    else{
-                        return undefined;
-                    }
-                }
-            } else {
-                if (Boolean(tvp_overlay)) {
-                    tvp_overlay.style.display = 'none';
-                }
-
-                this.instance.loadVideo(asset);
-            }
+            if (willCue) this.instance.cueVideo(asset);                
+            else this.instance.loadVideo(asset);
         };
 
         this.resize = function(){
@@ -190,59 +168,92 @@
             }
             this.play(this.assets[this.current], true);
         }
-        this.initialize = function () {
-            this.player = new TVPage.player({
-                techOrder: 'html5,flash',
-                analytics: { tvpa: this.analytics },
-                apiBaseUrl: '//api.tvpage.com/v1',
-                swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+this.version+'-flash.swf',
-                onReady: function(e, pl){
-                    that.instance = pl;
-                    that.resize();
 
-                    //We don't want to resize the player here on fullscreen... we need the player be.
-                    if (isset(window,'BigScreen')) {
-                        BigScreen.onchange = function(){
-                            that.isFullScreen = !that.isFullScreen;
-                        };
-                    }
+        this.onReady = function(e, pl){
+            that.instance = pl;
+            that.resize();
 
-                    that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progressColor;
-                    var current = 0;
-                    if (startWith && startWith.length) {
-                        for (var i = 0; i < that.assets.length; i++) {
-                            if (that.assets[i].assetId === startWith) current = i;
-                        }
-                    }
+            //We don't want to resize the player here on fullscreen... we need the player be.
+            if (isset(window,'BigScreen')) {
+                BigScreen.onchange = function(){
+                    that.isFullScreen = !that.isFullScreen;
+                };
+            }
 
-                    that.current = current;                            
-                    that.play(that.assets[that.current]);
-                    if (window.DEBUG) {
-                        console.debug("endTime = " + performance.now());
-                    }
-                },
-                onStateChange: function(e){
-                    if ('tvp:media:videoended' !== e) return;
-                    that.current++;
-                    if (!that.assets[that.current]) {
-                        that.current = 0;
-                    }
-
-                    var next = that.assets[that.current];
-                    that.play(next, true);
-                    if(that.onNext) {
-                        that.onNext(next);
-                    }
-                },
-                divId: that.el.id,
-                controls: {
-                    active: true,
-                    floater: {
-                        removeControls: that.removeControls,
-                        transcript: that.transcript
-                    }
+            var current = 0;
+            if (startWith && startWith.length) {
+                for (var i = 0; i < that.assets.length; i++) {
+                    if (that.assets[i].assetId === startWith) current = i;
                 }
-            });            
+            }
+
+            that.current = current;                            
+            that.play(that.assets[that.current]);
+            if (window.DEBUG) {
+                console.debug("endTime = " + performance.now());
+            }
+        };
+
+        this.onStateChange = function(e){
+            if ('tvp:media:videoended' !== e) return;
+            that.current++;
+            if (!that.assets[that.current]) {
+                that.current = 0;
+            }
+
+            var next = that.assets[that.current];
+            that.play(next, true);
+            if(that.onNext) {
+                that.onNext(next);
+            }
+        };
+
+        this.initialize = function () {
+            var playerOptions = {
+                techOrder: isset(options.tech_order) ? options.tech_order : null,
+                analytics: isset(options.analytics) ? options.analytics : null,
+                apiBaseUrl: isset(options.api_base_url) ? options.api_base_url : null,
+                mediaProviders: isset(options.media_providers) ? options.media_providers : null,
+                divId: this.el.id,
+                preload: isset(options.preload) ? options.preload : null,
+                swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+that.version+'-flash.swf',
+                poster: isset(options.poster) ? options.poster : null,
+                overlay: isset(options.overlay) ? options.overlay : null,
+                onReady: that.onReady,
+                onStateChange: that.onStateChange,
+                controls: that.controls
+            };
+
+            var extras = ["preload","poster","overlay"];
+                for (var i = 0; i < extras.length; i++) {
+                var option = extras[i];
+                if (that[option] !== null) {
+                    playerOptions[option] = that[option];
+                }
+            }
+
+            var i;
+            var allowOverride = {
+                techOrder: 1,
+                analytics: 1,
+                apiBaseUrl: 1,
+                swf: 1,
+                controls: 1,
+                width: 1,
+                height: 1,
+                mediaProviders: 1,
+                preload: 1,
+                poster: 1,
+                overlay: 1
+            };
+
+            for (i in options) {
+                if ( !playerOptions.hasOwnProperty(i) || allowOverride.hasOwnProperty(i) ) {
+                    playerOptions[i] = options[i];
+                }
+            }
+
+            this.player = new TVPage.player(playerOptions);
 
             window.addEventListener('resize', function () {
                 that.resize();
@@ -272,16 +283,6 @@
                     catch(err){
                         return false;
                     }
-                }
-            }
-            if (getTarget('tvp-overlay')){
-                if (that.onClick) {
-                    that.onClick();
-                }
-                else{
-                    var ovrly = this.querySelector('.tvp-overlay');
-                    this.removeChild(ovrly);
-                    that.instance.play();
                 }
             }
         };
