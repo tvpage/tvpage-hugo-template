@@ -55,7 +55,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
   function Utils() {
 
     this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
+    this.isIOS = /iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream;
     this.getByClass = function(c){
       return document.getElementsByClassName(c || '')[0];
     };
@@ -168,7 +168,6 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
         this.transcript = isset(options.transcript) ? options.transcript : null;
         this.overlay = isset(options.overlay) ? options.overlay : null;
         this.playerOverlayTemplate =  isset(options.playerOverlayTemplate) ? options.playerOverlayTemplate : null;
-        this.playIconTemplate = isset(options.playIconTemplate) ? options.playIconTemplate : null;
         this.onResize = isset(options.onResize) && isFunction(options.onResize) ? options.onResize : null;
         this.onNext = isset(options.onNext) && isFunction(options.onNext) ? options.onNext : null;
 
@@ -299,7 +298,22 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                     this.current = i;
                 }
             }
-            this.play(this.assets[this.current], true);
+            
+            // this will fix the continues loading of youtube type video on iOS (iPad/iPhone)            
+            var selectedAsset = this.assets[this.current];
+            var player_overlay = that.el.getElementsByClassName('tvplayer-overlay');
+            
+            if (Utils.isIOS) {
+                var control_overlay = that.el.querySelector('.tvp-control-overlay');
+                if (selectedAsset.type === 'youtube') {                                
+                    control_overlay.style.display = "none";
+                }
+                else{
+                    control_overlay.style.display = "block";
+                }
+            }
+            
+            this.play(selectedAsset, true);
         }
 
         this.onReady = function(e, pl){
@@ -666,25 +680,6 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
         this.playIconTemplate = options.templates.play_icon;
         this.playerOverlayTemplate = options.templates.player_overlay;
 
-        //player settings
-        // this.autoplay = Utils.isset(options.autoplay) ? Number(options.autoplay) : false;
-        // this.autonext = Utils.isset(options.autonext) ? Number(options.autonext) : true;
-        // this.player_version = Utils.isset(options.player_version) ? options.player_version : null;
-        // this.progress_color = Utils.isset(options.progress_color) ? options.progress_color : null;
-        // this.transcript = Utils.isset(options.transcript) ? options.transcript : null;
-        // this.remove_controls = Utils.isset(options.remove_controls) ? options.remove_controls : null;
-        // this.analytics = Utils.isset(options.analytics) ? options.analytics : null;
-        // this.overlay = Utils.isset(options.overlay) ? options.overlay : null;
-        // this.overlay_color = Utils.isset(options.overlay_color) ? options.overlay_color : null;
-        // this.overlay_opacity = Utils.isset(options.overlay_opacity) ? options.overlay_opacity : null;
-        // this.play_button_background_color = Utils.isset(options.play_button_background_color) ?  options.play_button_background_color : null;
-        // this.play_button_border_radius = Utils.isset(options.play_button_border_radius) ? options.play_button_border_radius : null;
-        // this.play_button_border_width = Utils.isset(options.play_button_border_width) ? options.play_button_border_width : null;
-        // this.play_button_border_color = Utils.isset(options.play_button_border_color) ? options.play_button_border_color : null;
-        // this.play_button_icon_color = Utils.isset(options.play_button_icon_color) ? options.play_button_icon_color : null;
-        // this.play_button_width = Utils.isset(options.play_button_width) ? options.play_button_width : null;
-        // this.play_button_height = Utils.isset(options.play_button_height) ? options.play_button_height : null;
-        
         this.el = 'string' === typeof el ? document.getElementById(el) : el;
         this.container = this.el.getElementsByClassName('tvp-videos-scroller')[0];
         

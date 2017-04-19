@@ -35,7 +35,6 @@
         this.transcript = isset(options.transcript) ? options.transcript : null;
         this.overlay = isset(options.overlay) ? options.overlay : null;
         this.playerOverlayTemplate =  isset(options.playerOverlayTemplate) ? options.playerOverlayTemplate : null;
-        this.playIconTemplate = isset(options.playIconTemplate) ? options.playIconTemplate : null;
         this.onResize = isset(options.onResize) && isFunction(options.onResize) ? options.onResize : null;
         this.onNext = isset(options.onNext) && isFunction(options.onNext) ? options.onNext : null;
 
@@ -166,7 +165,22 @@
                     this.current = i;
                 }
             }
-            this.play(this.assets[this.current], true);
+            
+            // this will fix the continues loading of youtube type video on iOS (iPad/iPhone)            
+            var selectedAsset = this.assets[this.current];
+            var player_overlay = that.el.getElementsByClassName('tvplayer-overlay');
+            
+            if (Utils.isIOS) {
+                var control_overlay = that.el.querySelector('.tvp-control-overlay');
+                if (selectedAsset.type === 'youtube') {                                
+                    control_overlay.style.display = "none";
+                }
+                else{
+                    control_overlay.style.display = "block";
+                }
+            }
+            
+            this.play(selectedAsset, true);
         }
 
         this.onReady = function(e, pl){

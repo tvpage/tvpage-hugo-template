@@ -3,7 +3,7 @@
   function Utils() {
 
     this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
+    this.isIOS = /iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream;
     this.getByClass = function(c){
       return document.getElementsByClassName(c || '')[0];
     };
