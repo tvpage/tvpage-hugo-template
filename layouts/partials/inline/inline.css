@@ -201,19 +201,4 @@
 
 '.iframe-content .tvp-videos-scroller .tvp-video .tvp-video-image:before{' +
 	'padding-top: {{- ($.Scratch.Get "settings").videos_carousel_item_thumbnail_height -}};' +	
-'}' +
-
-//all media queries here
-'@media only screen and (max-width: 769px){' +
-	'.iframe-content .tvp-row-titles h2, .iframe-content .tvp-row .tvp-mobile-product-title h2{' +
-		'line-height: 14px;' +
-	'}' +
-
-	'.iframe-content .tvp-products-scroller #productContent .tvp-product-item .tvp-product-info-view-details{' +
-		'display: block;' +
-	'}' +
-
-	'.iframe-content .tvp-videos-container .tvp-videos-arrows{' +
-		'display: none;' +
-	'}' +
 '}'

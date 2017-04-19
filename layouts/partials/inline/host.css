@@ -1,11 +1,11 @@
 'div[class^="tvp-"] {' +
   'box-sizing: border-box;' +
 '}' +
-'.tvp-iframe-holder {' +
+'.tvp-inline-holder {' +
   'position: relative;' +
 '}' +
 
-'.tvp-iframe-holder > iframe {' +
+'.tvp-inline-holder > iframe {' +
   'top: 0;' +
   'left: 0;' +
   'width: 100%;' +
