@@ -52,8 +52,7 @@ module.exports = function(grunt) {
           files: {
             'dist/js/scripts.min.js': [
                'js/vendor/jquery.js'
-              ,'js/vendor/slick-min.js'
-              ,'js/vendor/simple-scrollbar.min.js'
+              ,'js/vendor/slick-min.js'              
               ,'js/carousel.js'
               ,'js/libs/analytics.js'
               ,'js/libs/utils.js'
@@ -74,8 +73,7 @@ module.exports = function(grunt) {
         dev: {
           src: [
              'js/vendor/jquery.js'
-            ,'js/vendor/slick-min.js'
-            ,'js/vendor/simple-scrollbar.min.js'
+            ,'js/vendor/slick-min.js'            
             ,'js/carousel.js'
             ,'js/libs/analytics.js'
             ,'js/libs/utils.js'
