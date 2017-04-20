@@ -104,7 +104,7 @@
         //Context reference for Methods.
         var that = this;
 
-        this.play = function(asset,ongoing){
+        this.play = function(asset,ongoing){            
             if (!asset) return; // console.log('need asset');
             var willCue = false,
                 isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -136,6 +136,17 @@
             }
             if (willCue) this.instance.cueVideo(asset);                
             else this.instance.loadVideo(asset);
+
+            // this will fix the continues loading of youtube type video on iOS (iPad/iPhone)
+            if (Utils.isIOS) {
+                var control_overlay = that.el.querySelector('.tvp-control-overlay');
+                if (asset.type === 'youtube') {                                
+                    control_overlay.style.display = "none";
+                }
+                else{
+                    control_overlay.style.display = "block";
+                }
+            }
         };
 
         this.resize = function(){
@@ -165,25 +176,10 @@
                     this.current = i;
                 }
             }
-            
-            // this will fix the continues loading of youtube type video on iOS (iPad/iPhone)            
-            var selectedAsset = this.assets[this.current];
-            var player_overlay = that.el.getElementsByClassName('tvplayer-overlay');
-            
-            if (Utils.isIOS) {
-                var control_overlay = that.el.querySelector('.tvp-control-overlay');
-                if (selectedAsset.type === 'youtube') {                                
-                    control_overlay.style.display = "none";
-                }
-                else{
-                    control_overlay.style.display = "block";
-                }
-            }
-            
-            this.play(selectedAsset, true);
+            this.play(this.assets[this.current], true);
         }
 
-        this.onReady = function(e, pl){
+        this.onReady = function(e, pl){            
             that.instance = pl;
             that.resize();
 
