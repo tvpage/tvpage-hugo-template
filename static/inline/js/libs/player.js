@@ -309,7 +309,5 @@
             }, 150);
         })();
     }
-
     window.Player = Player;
-
 }(window, document));
