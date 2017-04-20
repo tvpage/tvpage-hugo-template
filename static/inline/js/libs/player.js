@@ -257,11 +257,11 @@
                 overlay: 1
             };
 
-            for (i in options) {
-                if ( !playerOptions.hasOwnProperty(i) || allowOverride.hasOwnProperty(i) ) {
+            $.each(options, function(i, val) {
+                 if (!playerOptions.hasOwnProperty(i) || allowOverride.hasOwnProperty(i)) {
                     playerOptions[i] = options[i];
-                }
-            }
+                 }
+            });
 
             this.player = new TVPage.player(playerOptions);
 
@@ -269,33 +269,6 @@
                 that.resize();
             });
         }
-        
-        this.el.onclick = function(e){
-            var getTarget = function (name) { 
-                var path = [];
-                var currentElem = e.target;
-                while (currentElem) {
-                    path.push(currentElem);
-                    currentElem = currentElem.parentElement;
-                }
-                if (path.indexOf(window) === -1 && path.indexOf(document) === -1)
-                    path.push(document);
-                if (path.indexOf(window) === -1)
-                    path.push(window);
-
-                for (var i = 0; i < path.length; i++) {
-                    try{
-                        if(Utils.hasClass(path[i], name)) {
-                            target = path[i];
-                            return true;
-                        }
-                    }
-                    catch(err){
-                        return false;
-                    }
-                }
-            }
-        };
 
         var checks = 0;
         (function libsReady(){

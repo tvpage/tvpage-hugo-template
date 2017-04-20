@@ -6,15 +6,12 @@
     var analytics = null;
     var breakpoint = 769;
     var currentApproach = '';
-    var products =  document.getElementById('tvpProductsView');
     var loginId = null;
     var channel = null;
     var channelId = null;
     var player = null;
     var xchg = null;
     var itemsPerPage = 1000;
-    var loading = false;
-    var isLastPage = false;
     var page = 0;
     var templates = {};
     var selectedVideo = null;
@@ -119,9 +116,6 @@
         if(isProductsInitialized) return;
 
         var products =  document.getElementById('tvpProductsView');
-        var isScrollBar = function () {
-            return inlineEl.offsetWidth >= breakpoint;
-        }
         var deInitProd = function () {
             $('#productContent').slick('unslick');
             products.innerHTML = "";
@@ -330,8 +324,6 @@
         };
 
         var load = function(callback){
-            loading = true;
-            
             var getChannelVideos = function(callback){
                 var channel_id = Utils.isEmpty(channel) ? channelId : channel.id;
                 var params = channel.parameters || {};
@@ -361,26 +353,16 @@
                                 }
                             }
 
-                            if (!data.length) {
-                                isLastPage = true;
-                            }
-
                             videosData = data;
-                            callback(data.concat(xchg));
-                            loading = false;
+                            callback(data.concat(xchg));                            
                         });
                     }
                 };
                 xhr.send({p: 0,n: 1000,si: 1,li: 1,'X-login-id': 1});
             } else {
                 getChannelVideos(function(data){                    
-                    if ( !data.length || (data.length < itemsPerPage) ) {
-                        isLastPage = true;
-                    }
-
                     videosData = data;
-                    callback(data);
-                    loading = false;                    
+                    callback(data);                    
                 });
             }
         };

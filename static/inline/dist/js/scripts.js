@@ -390,11 +390,11 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                 overlay: 1
             };
 
-            for (i in options) {
-                if ( !playerOptions.hasOwnProperty(i) || allowOverride.hasOwnProperty(i) ) {
+            $.each(options, function(i, val) {
+                 if (!playerOptions.hasOwnProperty(i) || allowOverride.hasOwnProperty(i)) {
                     playerOptions[i] = options[i];
-                }
-            }
+                 }
+            });
 
             this.player = new TVPage.player(playerOptions);
 
@@ -402,33 +402,6 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                 that.resize();
             });
         }
-        
-        this.el.onclick = function(e){
-            var getTarget = function (name) { 
-                var path = [];
-                var currentElem = e.target;
-                while (currentElem) {
-                    path.push(currentElem);
-                    currentElem = currentElem.parentElement;
-                }
-                if (path.indexOf(window) === -1 && path.indexOf(document) === -1)
-                    path.push(document);
-                if (path.indexOf(window) === -1)
-                    path.push(window);
-
-                for (var i = 0; i < path.length; i++) {
-                    try{
-                        if(Utils.hasClass(path[i], name)) {
-                            target = path[i];
-                            return true;
-                        }
-                    }
-                    catch(err){
-                        return false;
-                    }
-                }
-            }
-        };
 
         var checks = 0;
         (function libsReady(){
@@ -451,15 +424,12 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
     var analytics = null;
     var breakpoint = 769;
     var currentApproach = '';
-    var products =  document.getElementById('tvpProductsView');
     var loginId = null;
     var channel = null;
     var channelId = null;
     var player = null;
     var xchg = null;
     var itemsPerPage = 1000;
-    var loading = false;
-    var isLastPage = false;
     var page = 0;
     var templates = {};
     var selectedVideo = null;
@@ -564,9 +534,6 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
         if(isProductsInitialized) return;
 
         var products =  document.getElementById('tvpProductsView');
-        var isScrollBar = function () {
-            return inlineEl.offsetWidth >= breakpoint;
-        }
         var deInitProd = function () {
             $('#productContent').slick('unslick');
             products.innerHTML = "";
@@ -775,8 +742,6 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
         };
 
         var load = function(callback){
-            loading = true;
-            
             var getChannelVideos = function(callback){
                 var channel_id = Utils.isEmpty(channel) ? channelId : channel.id;
                 var params = channel.parameters || {};
@@ -806,26 +771,16 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                                 }
                             }
 
-                            if (!data.length) {
-                                isLastPage = true;
-                            }
-
                             videosData = data;
-                            callback(data.concat(xchg));
-                            loading = false;
+                            callback(data.concat(xchg));                            
                         });
                     }
                 };
                 xhr.send({p: 0,n: 1000,si: 1,li: 1,'X-login-id': 1});
             } else {
                 getChannelVideos(function(data){                    
-                    if ( !data.length || (data.length < itemsPerPage) ) {
-                        isLastPage = true;
-                    }
-
                     videosData = data;
-                    callback(data);
-                    loading = false;                    
+                    callback(data);                    
                 });
             }
         };
