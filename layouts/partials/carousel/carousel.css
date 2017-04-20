@@ -4,6 +4,7 @@
   {{ end }}
 {{ end }}
 
+
 "body {" +
     "padding: {{ ($.Scratch.Get "settings").iframe_carousel_body_padding }};" +
 "}" +
@@ -55,6 +56,7 @@
 "}" +
 
 ".tvp-video-metadata {" +
+    "font-family:{{ ($.Scratch.Get "settings").item_metadata_font_family }};" +
     "font-size:{{ ($.Scratch.Get "settings").item_metadata_font_size }};" +
     "color:{{ ($.Scratch.Get "settings").item_metadata_font_color }};" +
 "}" +

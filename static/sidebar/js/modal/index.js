@@ -107,11 +107,15 @@
               }
 
               ratingReviewsHtml += '</ul>';
-            }
 
-            // where/how to inject? 
-            // var buttonText = product.actionText.length > 0? product.actionText : config.product_popup_cta_text;
-            // ratingReviewsHtml 
+              var ratingsFrag = document.createDocumentFragment();
+              var ratingsDiv = document.createElement('div');
+              ratingsDiv.classList.add('tvp-ratings');
+              ratingsDiv.innerHTML += ratingReviewsHtml;
+              ratingsFrag.appendChild(ratingsDiv);
+              var popUpPrice = popupsContainer.getElementsByClassName('tvp-product-price')[i];
+              popUpPrice.parentNode.insertBefore(ratingsFrag , popUpPrice.nextSibling);
+            }
 
             analytics.track('pi',{
                 vd: product.entityIdParent,

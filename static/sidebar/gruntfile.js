@@ -9,6 +9,9 @@ module.exports = function(grunt) {
       },
       autoprefixer: {
         css: {
+          options: {
+            remove: false
+          },
           files: {
             'css/styles.css': 'css/styles.css',
             'css/modal/styles.css': 'css/modal/styles.css',
