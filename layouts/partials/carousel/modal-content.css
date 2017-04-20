@@ -4,6 +4,8 @@
   {{ end }}
 {{ end }}
 
+"{{ partial (printf "%s/custom-fonts.css" .Type) . }}" +
+
 "body {" +
     "padding: {{ ($.Scratch.Get "settings").iframe_modal_body_padding }};" +
     {{ with ($.Scratch.Get "settings").modal_body_font_family }}
