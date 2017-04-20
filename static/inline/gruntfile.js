@@ -17,15 +17,13 @@ module.exports = function(grunt) {
             style : 'expanded'
           },
           files: {
-            'css/styles.css' : 'scss/styles.scss',
-            'css/inline.css' : 'scss/styles.scss'
+            'css/styles.css' : 'scss/styles.scss'
           }
         }
       },
       autoprefixer: {
         css: {
           files: {
-            'css/inline.css' : 'css/inline.css',
             'css/styles.css' : 'css/styles.css'
           }
         }
@@ -36,8 +34,7 @@ module.exports = function(grunt) {
           roundingPrecision: -1
         },
         desktop: {
-          files: {
-            'dist/css/inline.min.css' : ['css/inline.css'],
+          files: {            
             'dist/css/styles.min.css' : ['css/styles.css']
           }
         }
