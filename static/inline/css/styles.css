@@ -645,20 +645,6 @@ html, body {
   height: 100%;
   width: 100%;
 }
-.iframe-content .tvp-player #tvp-player .tvp-overlay {
-  cursor: pointer;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-  top: 0;
-  left: 0;
-  position: absolute;
-}
-.iframe-content .tvp-player #tvp-player .tvp-overlay:hover .tvp-video-play {
-  background-color: #e57211;
-}
 .iframe-content .tvp-player #tvp-controls {
   bottom: 0;
   cursor: pointer;

@@ -162,12 +162,6 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
 
         this.isFullScreen = false;
         this.initialResize = true;
-        this.autoplay = isset(options.autoplay) ? Number(options.autoplay) : false;
-        this.autonext = isset(options.autonext) ? Number(options.autonext) : true;
-        this.version = isset(options.player_version) ? options.player_version : null;
-        this.transcript = isset(options.transcript) ? options.transcript : null;
-        this.overlay = isset(options.overlay) ? options.overlay : null;
-        this.playerOverlayTemplate =  isset(options.playerOverlayTemplate) ? options.playerOverlayTemplate : null;
         this.onResize = isset(options.onResize) && isFunction(options.onResize) ? options.onResize : null;
         this.onNext = isset(options.onNext) && isFunction(options.onNext) ? options.onNext : null;
 
@@ -241,13 +235,13 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             if (!asset) return; // console.log('need asset');
             var willCue = false,
                 isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
+            
             if (ongoing) {
-                if (isMobile || (isset(this.autonext) && !this.autonext)) {
+                if (isMobile || (isset(options.autonext) && !options.autonext)) {
                     willCue = true;
                 }
             } else {
-                if (isMobile || (isset(this.autoplay) && !this.autoplay)) {
+                if (isMobile || (isset(options.autoplay) && !options.autoplay)) {
                     willCue = true;
                 }
             }
@@ -352,6 +346,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
         };
 
         this.initialize = function () {
+            console.log('initialize', options);
             var playerOptions = {
                 techOrder: isset(options.tech_order) ? options.tech_order : null,
                 analytics: isset(options.analytics) ? options.analytics : null,
@@ -359,7 +354,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                 mediaProviders: isset(options.media_providers) ? options.media_providers : null,
                 divId: this.el.id,
                 preload: isset(options.preload) ? options.preload : null,
-                swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+that.version+'-flash.swf',
+                swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+options.version+'-flash.swf',
                 poster: isset(options.poster) ? options.poster : null,
                 overlay: isset(options.overlay) ? options.overlay : null,
                 onReady: that.onReady,
