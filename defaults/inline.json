@@ -33,6 +33,13 @@
             "label": "Autonext",
             "code": "autonext",
             "value": true
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Header Title Text",
+            "code": "product_header_title_text",
+            "value": "Related Products"
         }
     ]
 }
