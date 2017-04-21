@@ -54,10 +54,6 @@
         var holder = Utils.getByClass('tvp-products-holder');
         var productsContainer = Utils.getByClass('tvp-products');
         var popupsContainer = Utils.getByClass('tvp-popups');
-        var tvpRatings = Utils.getByClass('tvp-ratings');
-        if (tvpRatings) {
-            tvpRatings.innerHTML = "";
-        }
         productsContainer.innerHTML = "";
 
         for (var i = 0; i < data.length; i++) {
@@ -111,15 +107,11 @@
               }
 
               ratingReviewsHtml += '</ul>';
-
-              var ratingsFrag = document.createDocumentFragment();
-              var ratingsDiv = document.createElement('div');
-              ratingsDiv.classList.add('tvp-ratings');
-              ratingsDiv.innerHTML += ratingReviewsHtml;
-              ratingsFrag.appendChild(ratingsDiv);
-              var popUpPrice = popupsContainer.getElementsByClassName('tvp-product-price')[i];
-              popUpPrice.parentNode.insertBefore(ratingsFrag , popUpPrice.nextSibling);
             }
+
+            // where/how to inject? 
+            // var buttonText = product.actionText.length > 0? product.actionText : config.product_popup_cta_text;
+            // ratingReviewsHtml 
 
             analytics.track('pi',{
                 vd: product.entityIdParent,

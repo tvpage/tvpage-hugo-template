@@ -9,9 +9,6 @@ module.exports = function(grunt) {
       },
       autoprefixer: {
         css: {
-          options: {
-            remove: false
-          },
           files: {
             'css/host.css': 'css/host.css',
             'css/mobile/host.css': 'css/mobile/host.css',
@@ -41,11 +38,11 @@ module.exports = function(grunt) {
         }
       },
       uglify: {
-        // options: {
-        //   compress: {
-        //     drop_console: true
-        //   }
-        // },
+        options: {
+          compress: {
+            drop_console: true
+          }
+        },
         scripts: {
           files: {
             'dist/js/scripts.min.js': ['js/vendor/jquery.js','js/vendor/slick-min.js','js/libs/utils.js','js/carousel.js', 'js/index.js']

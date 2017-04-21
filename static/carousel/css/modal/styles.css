@@ -124,17 +124,12 @@ body  {
 }
 
 .tvp-product-price {
-  margin: 5px 0;
-  float: left;
-}
-
-.tvp-ratings{
-  float: right;
+  margin: 0 0 10px 0;
 }
 
 .tvp-product-rating {
   list-style-type: none;
-  margin: 0;
+  margin: 0 0 10px;
   padding: 0;
   text-align: center;
 }
@@ -171,9 +166,8 @@ body  {
   z-index: 214748364;
   top: 0;
   left: -9px;
-  -ms-transform: rotate(90deg);
-      -webkit-transform: rotate(90deg);
-          transform: rotate(90deg);
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg);
 }
 
 .tvp-arrow-indicator:after {
@@ -181,9 +175,8 @@ body  {
   position: absolute;
   width: 44px;
   height: 45px;
-  -ms-transform: rotate(45deg);
-      -webkit-transform: rotate(45deg);
-          transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
   top: 26px;
   left: -5px;
 }
