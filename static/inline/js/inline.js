@@ -260,10 +260,13 @@
 
             $videoSliderDesktop = $(inlineEl.querySelector('#tvpVideoScroller'));
             
+            var videosToShow =  Utils.isset(options.videos_to_show) ? parseInt(options.videos_to_show) : 4;
+            var videosToScroll =  Utils.isset(options.videos_to_scroll) ? parseInt(options.videos_to_scroll) : 4;
+
             $videoSliderDesktop.slick({
                 arrows: options.videos_carousel_arrow_display === "none" ? false : true,
-                slidesToShow: parseInt(options.videos_to_show),
-                slidesToScroll: parseInt(options.videos_to_scroll),
+                slidesToShow: videosToShow,
+                slidesToScroll: videosToScroll,
                 nextArrow: '.tvp-videos-arrow-next',
                 prevArrow: '.tvp-videos-arrow-prev',
                 responsive:[

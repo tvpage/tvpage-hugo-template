@@ -12,7 +12,8 @@ body {
     text-rendering: optimizeLegibility !important;
     -webkit-font-smoothing: antialiased !important;
     -moz-osx-font-smoothing: grayscale !important;
-    font-family: 'Open Sans', sans-serif; 
+    // font-family: 'Open Sans', sans-serif; 
+    font-family: Helvetica;
 }
 html, body{
   margin: 0;
@@ -119,6 +120,7 @@ html, body{
     }
 
     .tvp-product-item-active{
+        opacity: 1;
         &:after{
             @include active-state(3);
             border-color: #000;
@@ -141,7 +143,6 @@ html, body{
     .tvp-video-active{
         &:after{
             @include active-state(6);
-            border-color: #000;
         }
     }
     .tvp-video-active{
@@ -178,6 +179,13 @@ html, body{
         h1{
             overflow: hidden;
             text-overflow: ellipsis;
+            font-weight: normal;
+            font-size: calc(14px + (34 - 14) * ((100vw - 300px) / (1600 - 300)));
+        }
+        h2{
+            font-size: calc(12px + (32 - 12) * ((100vw - 300px) / (1600 - 300)));
+            font-weight: normal;
+
         }
         .tvp-row-player-title {
             display: inline-block;
@@ -319,16 +327,17 @@ html, body{
                     overflow: hidden;
                     text-transform: capitalize;
                     margin-bottom: 15px;
+                    font-size: calc(12px + (14 - 12) * ((100vw - 300px) / (1600 - 300)));
                 }
                 &-gender{
-                    display: block;
+                    display: none;
                     color: #B7B7B7;
-                    font-size: 10px;
+                    font-size: calc(12px + (20 - 12) * ((100vw - 300px) / (1600 - 300)));
                 }
                 &-price {
                     color: #000;
                     float: left;
-                    font-size: 14px;
+                    font-size: calc(12px + (14 - 12) * ((100vw - 300px) / (1600 - 300)));
                     line-height: 19px;
                     letter-spacing: 0.005em;
                     font-weight: bold;
@@ -387,7 +396,7 @@ html, body{
                 margin-left: 10%;
                 width: 51%;
                 &-title{
-                    font-size: 14px;
+                    font-size: calc(12px + (18 - 12) * ((100vw - 300px) / (1600 - 300)));
                     max-height: 65%;
                     line-height: 15px;                        
                     overflow: hidden;
@@ -475,11 +484,10 @@ html, body{
             bottom: 0;
             margin: auto 0;
             z-index: 100;
-            opacity: 0.5;
+            background-color: #fff;
+            width: 50px;
+            height: 50px;
             @extend .tvp-animate;
-            &:hover{
-                opacity: 1;
-            }
         }
         .tvp-videos-arrow-next {
             right: 0;
@@ -544,15 +552,20 @@ html, body{
                 background-position: center;
             }
             .tvp-video-title {
+                font-size: calc(10px + (16 - 10) * ((100vw - 300px) / (1600 - 300)));
+                font-weight: normal;
+                width: 100%;
+                padding: 10px 0 0 0;
+                position: static;                
                 margin: 0;
                 top: 50%;
-                transform: translateY(-50%);
+                // transform: translateY(-50%);
                 @extend .tvp-animate;
             }
             &:hover {
-                &:after{                    
-                    border-color: #000;
-                }      
+                // &:after{                    
+                //     border-color: #000;
+                // }      
                 .tvp-video-play{
                     background-color: #e57211;
                 }

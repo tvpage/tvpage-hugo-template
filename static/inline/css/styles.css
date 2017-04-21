@@ -369,7 +369,7 @@ body {
   text-rendering: optimizeLegibility !important;
   -webkit-font-smoothing: antialiased !important;
   -moz-osx-font-smoothing: grayscale !important;
-  font-family: 'Open Sans', sans-serif;
+  font-family: Helvetica;
 }
 
 html, body {
@@ -483,6 +483,9 @@ html, body {
   text-decoration: none;
   outline: none;
 }
+.iframe-content .tvp-product-item-active {
+  opacity: 1;
+}
 .iframe-content .tvp-product-item-active:after {
   bottom: -3px;
   border: 1px solid transparent;
@@ -523,7 +526,6 @@ html, body {
   right: -6px;
   position: absolute;
   top: -6px;
-  border-color: #000;
 }
 .iframe-content .tvp-video-active .tvp-video-play {
   background-color: #e57211;
@@ -552,6 +554,12 @@ html, body {
 .iframe-content .tvp-row-titles h1 {
   overflow: hidden;
   text-overflow: ellipsis;
+  font-weight: normal;
+  font-size: calc(14px + (34 - 14) * ((100vw - 300px) / (1600 - 300)));
+}
+.iframe-content .tvp-row-titles h2 {
+  font-size: calc(12px + (32 - 12) * ((100vw - 300px) / (1600 - 300)));
+  font-weight: normal;
 }
 .iframe-content .tvp-row-titles .tvp-row-player-title {
   display: inline-block;
@@ -732,16 +740,17 @@ html, body {
   overflow: hidden;
   text-transform: capitalize;
   margin-bottom: 15px;
+  font-size: calc(12px + (14 - 12) * ((100vw - 300px) / (1600 - 300)));
 }
 .iframe-content .tvp-featured .tvp-featured-product .tvp-featured-info-gender {
-  display: block;
+  display: none;
   color: #B7B7B7;
-  font-size: 10px;
+  font-size: calc(12px + (20 - 12) * ((100vw - 300px) / (1600 - 300)));
 }
 .iframe-content .tvp-featured .tvp-featured-product .tvp-featured-info-price {
   color: #000;
   float: left;
-  font-size: 14px;
+  font-size: calc(12px + (14 - 12) * ((100vw - 300px) / (1600 - 300)));
   line-height: 19px;
   letter-spacing: 0.005em;
   font-weight: bold;
@@ -814,7 +823,7 @@ html, body {
   width: 51%;
 }
 .iframe-content .tvp-products-scroller .tvp-product-item .tvp-product-info-title {
-  font-size: 14px;
+  font-size: calc(12px + (18 - 12) * ((100vw - 300px) / (1600 - 300)));
   max-height: 65%;
   line-height: 15px;
   overflow: hidden;
@@ -898,10 +907,9 @@ html, body {
   bottom: 0;
   margin: auto 0;
   z-index: 100;
-  opacity: 0.5;
-}
-.iframe-content .tvp-videos-container .tvp-videos-arrows:hover {
-  opacity: 1;
+  background-color: #fff;
+  width: 50px;
+  height: 50px;
 }
 .iframe-content .tvp-videos-container .tvp-videos-arrow-next {
   right: 0;
@@ -991,13 +999,13 @@ html, body {
   bottom: 0;
 }
 .iframe-content .tvp-videos-scroller .tvp-video .tvp-video-title {
+  font-size: calc(10px + (16 - 10) * ((100vw - 300px) / (1600 - 300)));
+  font-weight: normal;
+  width: 100%;
+  padding: 10px 0 0 0;
+  position: static;
   margin: 0;
   top: 50%;
-  -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
-}
-.iframe-content .tvp-videos-scroller .tvp-video:hover:after {
-  border-color: #000;
 }
 .iframe-content .tvp-videos-scroller .tvp-video:hover .tvp-video-play {
   background-color: #e57211;
