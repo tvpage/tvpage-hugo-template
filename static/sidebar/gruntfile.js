@@ -9,9 +9,6 @@ module.exports = function(grunt) {
       },
       autoprefixer: {
         css: {
-          options: {
-            remove: false
-          },
           files: {
             'css/styles.css': 'css/styles.css',
             'css/modal/styles.css': 'css/modal/styles.css',
@@ -40,11 +37,11 @@ module.exports = function(grunt) {
         }
       },
       uglify: {
-        // options: {
-        //   compress: {
-        //     drop_console: true
-        //   }
-        // },
+        options: {
+          compress: {
+            drop_console: true
+          }
+        },
         scripts: {
           files: {
             'dist/js/scripts.min.js': ['js/libs/utils.js','js/grid.js', 'js/index.js']
