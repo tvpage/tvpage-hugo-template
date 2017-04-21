@@ -207,3 +207,6 @@ body  {
       -ms-flex-pack: justify;
           justify-content: space-between;
 }
+.tvp-video-metadata > div:last-child {
+  text-align: right;
+}
