@@ -106,10 +106,10 @@
         $productContent.find('.tvp-product-item[data-id="'+elId+'"]').addClass('tvp-product-item-active');
     };
 
-    var addVideoActiveState = function (videoId) {
+    var addVideoActiveState = function (videoId) {        
         var $videosContainer = $('#tvpVideoScroller');
-        $videosContainer.find('.tvp-video-active').removeClass('tvp-video-active');
-        $videosContainer.find('.tvp-video[data-id="'+videoId+'"]').addClass('tvp-video-active');
+        $videosContainer.find('.tvp-video-item-active').removeClass('tvp-video-item-active');
+        $videosContainer.find('.tvp-video-item[data-id="'+videoId+'"]').addClass('tvp-video-item-active');
     }
 
     var renderProducts = function (vid, lid) {
@@ -256,7 +256,7 @@
             //insert custom arrow icon template
             $('.tvp-videos-arrow-next').append(templates.videosCarouselNextArrow);
             $('.tvp-videos-arrow-prev').append(templates.videosCarouselPreviousArrow);
-            $('.tvp-video-image').append(templates.playIcon);
+            $('.tvp-video-item-image').append(templates.playIcon);
 
             $videoSliderDesktop = $(inlineEl.querySelector('#tvpVideoScroller'));
             
@@ -398,7 +398,7 @@
                 }
             }
 
-            if (getTarget('tvp-video')) {
+            if (getTarget('tvp-video-item')) {
                 selectedVideo = getSelectedData(videosData, target.getAttribute('data-id'));
                 
                 player.load(selectedVideo.id);

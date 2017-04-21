@@ -213,7 +213,6 @@
         };
 
         this.initialize = function () {
-            console.log('initialize', options);
             var playerOptions = {
                 techOrder: isset(options.tech_order) ? options.tech_order : null,
                 analytics: isset(options.analytics) ? options.analytics : null,
