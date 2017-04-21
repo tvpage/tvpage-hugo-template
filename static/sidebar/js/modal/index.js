@@ -54,6 +54,10 @@
         var holder = Utils.getByClass('tvp-products-holder');
         var productsContainer = Utils.getByClass('tvp-products');
         var popupsContainer = Utils.getByClass('tvp-popups');
+        var tvpRatings = Utils.getByClass('tvp-ratings');
+        if (tvpRatings) {
+            tvpRatings.innerHTML = "";
+        }
         productsContainer.innerHTML = "";
 
         for (var i = 0; i < data.length; i++) {

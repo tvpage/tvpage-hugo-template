@@ -40,11 +40,11 @@ module.exports = function(grunt) {
         }
       },
       uglify: {
-        options: {
-          compress: {
-            drop_console: true
-          }
-        },
+        // options: {
+        //   compress: {
+        //     drop_console: true
+        //   }
+        // },
         scripts: {
           files: {
             'dist/js/scripts.min.js': ['js/libs/utils.js','js/grid.js', 'js/index.js']
