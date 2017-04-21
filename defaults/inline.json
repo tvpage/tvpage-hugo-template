@@ -40,6 +40,13 @@
             "label": "Product Header Title Text",
             "code": "product_header_title_text",
             "value": "Related Products"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Rating Image URL",
+            "code": "product_rating_image_url",
+            "value": "dist/img/ratings.png"
         }
     ]
 }

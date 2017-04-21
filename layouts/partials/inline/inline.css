@@ -40,7 +40,9 @@
 	'font-weight: {{- ($.Scratch.Get "settings").featured_product_price_font_weight -}};' +
 	'margin: {{- ($.Scratch.Get "settings").featured_product_price_margin -}};' +
 '}' +
-
+'.tvp-icon.tvp-icon-rating{ '+
+	'background-image: url("{{ $.Site.BaseURL }}/inline/{{ ($.Scratch.Get "settings").product_rating_image_url -}}")' +
+'}' +
 '.tvp-featured-info-view-details{' +
 	'display: {{- ($.Scratch.Get "settings").featured_product_view_button_display -}};' +
 '}' +
