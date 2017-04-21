@@ -1,7 +1,6 @@
 (function(window, document) {
     var analytics = null;
     var channelId = null;
-    var slickInitialized = false;
     var hasData = false;
     var eventName;
     var eventPrefix = "tvp_" + (document.body.getAttribute("data-id") || "").replace(/-/g,'_');
@@ -316,7 +315,7 @@
         (function libsReady() {
             setTimeout(function() {
                 if (not(window.TVPage) || not(window._tvpa) || not(window.jQuery) || not(window.Utils) || not(window.Analytics) || not(window.Player)) {
-                    (++libsCheck < 200) ? libsReady(): console.log('limit reached');
+                    (++libsCheck < 200) ? libsReady(): console.warn('limit reached');
                 } else {
                     initialize();
                 }
