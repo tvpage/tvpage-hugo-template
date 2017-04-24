@@ -94,9 +94,13 @@
         asset.assetTitle = video.title;
         asset.loginId = video.loginId;
 
-        if (isset(video, 'events') && video.events.length) {
-          asset.analyticsLogUrl = video.analytics;
-          asset.analyticsObj = video.events[1].data;
+        if (isset(video, 'isCampaignVideo')) {
+          asset.analyticsLogUrl = "";
+          asset.analyticsObj = {
+            pg: 0,
+            vd: video.id,
+            li: video.loginId
+          };
         } else {
           var channelId = isset(video,'parentId') ? video.parentId : ( isset(options,'channel') ? options.channel.id : 0 );
           if (!channelId && (options.channelId || options.channelid)) {

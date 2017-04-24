@@ -5,6 +5,7 @@
   };
 
   function Grid(el, options) {
+    this.campaign = options.campaign || null;
     this.options = options || {};
     this.windowSize = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) <= 200 ? 'small' : 'medium';
     this.initialResize = true;
@@ -94,6 +95,32 @@
       that.loading = true;
       if (this.onLoad) {
         this.onLoad();
+      }
+
+      var getChannelVideos = function(cb){
+
+      };
+
+      //Request tne campaign videos and merge them in.
+      if (this.campaign) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '//localhost:1313/campaign.json', true);
+        xhr.onreadystatechange = function() {
+          var campaignVideos = [];
+          if (xhr.readyState == XMLHttpRequest.DONE) {
+            campaignVideos = JSON.parse(xhr.responseText);
+          }
+
+          // getChannelVideos(function(data){
+
+
+          // });
+        };
+        xhr.send();
+      } else {
+        // getChannelVideos(function(){
+
+        // });
       }
 
       var channel = that.channel || {};

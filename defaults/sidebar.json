@@ -1,6 +1,12 @@
 {
     "option": [
         {
+          "type": "boolean",
+          "label": "Campaign",
+          "code": "campaign",
+          "value": true
+        },
+        {
           "type": "text",
           "label": "API Base Url",
           "code": "api_base_url",
