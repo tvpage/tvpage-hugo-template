@@ -93,7 +93,11 @@
 
 
 // ### carousel section
-
+'.tvp-player .tvp-video-play{ ' +
+	'height: {{- ($.Scratch.Get "settings").play_button_width -}};' +
+	'width: {{- ($.Scratch.Get "settings").play_button_width -}};' +
+'}' +
+'.tvp-player .tvp-video-play, ' +
 '.tvp-video-item .tvp-video-play{' +
 	'background-color: {{- ($.Scratch.Get "settings").play_button_background_color_inactive -}};' +
 	'border: {{- ($.Scratch.Get "settings").play_icon_border -}};' +
@@ -120,6 +124,7 @@
 '}' +
 
 '.tvp-video-item-active .anim, ' +
+'.tvp-player:hover .anim, ' +
 '.tvp-video-item:hover .anim {' +
 	'-webkit-transform: {{- ($.Scratch.Get "settings").play_button_transform -}};'+
 	'transform: {{- ($.Scratch.Get "settings").play_button_transform -}};' +

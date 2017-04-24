@@ -157,14 +157,14 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
 
     //The player singleton. We basically create an instance from the tvpage
     //player and expose most utilities, helping to encapsualte what is required for a few players to co-exist.
-    function Player(el, options, startWith) {
+    function Player(el, options, startWith) {        
         if (!el || !isset(options) || !isset(options.data) || options.data.length <= 0) return; // console.log('bad args');
 
         this.isFullScreen = false;
         this.initialResize = true;
         this.onResize = isset(options.onResize) && isFunction(options.onResize) ? options.onResize : null;
         this.onNext = isset(options.onNext) && isFunction(options.onNext) ? options.onNext : null;
-
+        this.playIconTemplate = isset(options.templates.play_icon) ? options.templates.play_icon : null;
         this.instance = null;
         this.el = 'string' === typeof el ? document.getElementById(el) : el;
 
@@ -264,14 +264,17 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             if (willCue) this.instance.cueVideo(asset);                
             else this.instance.loadVideo(asset);
 
-            // this will fix the continues loading of youtube type video on iOS (iPad/iPhone)
+            // this will fix the continues loading of youtube type video on iOS (iPad/iPhone)            
             if (Utils.isIOS) {
                 var control_overlay = that.el.querySelector('.tvp-control-overlay');
+                var playerOverlay = that.el.querySelector('#playerOverlay');
                 if (asset.type === 'youtube') {                                
                     control_overlay.style.display = "none";
+                    playerOverlay.style.display = "none";
                 }
                 else{
                     control_overlay.style.display = "block";
+                    playerOverlay.style.display = "block";
                 }
             }
         };
@@ -332,6 +335,9 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
         };
 
         this.onStateChange = function(e){
+            if(e === 'tvp:media:videoplaying'){
+                that.el.querySelector('#playerOverlay').style.display = "none";
+            }
             if ('tvp:media:videoended' !== e) return;
             that.current++;
             if (!that.assets[that.current]) {
@@ -395,6 +401,12 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             window.addEventListener('resize', function () {
                 that.resize();
             });
+
+            //add overlay for mp4 video type
+            var divOverlay = document.createElement('div');
+            divOverlay.id = "playerOverlay";
+            divOverlay.innerHTML = this.playIconTemplate;
+            this.el.appendChild(divOverlay);
         }
 
         var checks = 0;
