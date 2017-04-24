@@ -20,10 +20,16 @@
     "font-size: {{ ($.Scratch.Get "settings").modal_title_font_size }};" +
 "}" +
 
+".tvp-modal-body {" +
+    "padding: {{ ($.Scratch.Get "settings").modal_body_padding }};" +
+"}" +
+
 ".tvp-products-headline {" +
     "display: {{ ($.Scratch.Get "settings").products_headline_display }};" +
     "color: {{ ($.Scratch.Get "settings").products_headline_font_color }};" +
     "font-size: {{ ($.Scratch.Get "settings").products_headline_font_size }};" +
+    "font-weight: {{ ($.Scratch.Get "settings").products_headline_font_weight }};" +
+    "font-family: {{ ($.Scratch.Get "settings").products_headline_font_family }};" +
     "top: {{ ($.Scratch.Get "settings").products_headline_top }};" +
     "right: {{ ($.Scratch.Get "settings").products_headline_right }};" +
 "}" +

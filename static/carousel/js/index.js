@@ -35,7 +35,7 @@ if (not(window.jQuery) || not(window.Carousel) || not(window.Utils)) {
     (function libsReady() {
         setTimeout(function(){
             if (not(window.jQuery) || not(window.Carousel) || not(window.Utils)) {
-                (++libsCheck < 50) ? libsReady() : console.log('limit reached');
+                (++libsCheck < 50) ? libsReady() : console.warn('limit reached');
             } else {
                 initialize();
             }

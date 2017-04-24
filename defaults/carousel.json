@@ -462,6 +462,13 @@
         {
             "for": "carousel",
             "type": "text",
+            "label": "Item Metadata Font Family",
+            "code": "item_metadata_font_family",
+            "value": "Helvetica"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
             "label": "Item Metadata Font Size",
             "code": "item_metadata_font_size",
             "value": "55%"
@@ -542,6 +549,13 @@
           "label": "Modal Body Font Family",
           "code": "modal_body_font_family",
           "value": "Helvetica"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Modal Body Padding",
+          "code": "modal_body_padding",
+          "value": "0"
         },
         {
           "for": "modal",

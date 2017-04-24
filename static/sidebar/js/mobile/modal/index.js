@@ -316,7 +316,7 @@
         (function libsReady() {
             setTimeout(function() {
                 if (not(window.TVPage) || not(window._tvpa) || not(window.jQuery) || not(window.Utils) || not(window.Analytics) || not(window.Player)) {
-                    (++libsCheck < 200) ? libsReady(): console.log('limit reached');
+                    (++libsCheck < 200) ? libsReady(): console.warn('limit reached');
                 } else {
                     initialize();
                 }

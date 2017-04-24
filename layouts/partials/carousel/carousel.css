@@ -55,6 +55,7 @@
 "}" +
 
 ".tvp-video-metadata {" +
+    "font-family:{{ ($.Scratch.Get "settings").item_metadata_font_family }};" +
     "font-size:{{ ($.Scratch.Get "settings").item_metadata_font_size }};" +
     "color:{{ ($.Scratch.Get "settings").item_metadata_font_color }};" +
 "}" +
