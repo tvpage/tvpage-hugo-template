@@ -208,6 +208,39 @@ a {
         }
     }
 }
+
+.tvp-product-rating{
+    list-style-type: none;
+    margin: 0 0 10px;
+    padding: 0;
+    text-align: center;
+    >li{
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+    }
+}
+.tvp-rate {    
+    &.half{
+        path:nth-child(3), path:nth-child(5){
+            fill: none;
+        }
+    }
+    &.empty-border{
+        path:nth-child(3), path:nth-child(4){
+            fill: none;
+        }
+    }
+    &.empty{
+        path:nth-child(4), path:nth-child(5){
+            fill: none;
+        }
+        path:nth-child(3){
+            fill: rgba(0,0,0,0.5);
+        }
+    }
+}
+
 .tvp-featured {
     float: left;
     height: 100%;

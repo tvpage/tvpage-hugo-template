@@ -429,6 +429,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
     var selectedVideo = null;
     var videosData = null;
     var inlineEl = null;
+    var productRatingEmptyIsBordered = false;
 
     var renderedApproach = function () {
         if (document.body.clientWidth < breakpoint) {
@@ -477,20 +478,9 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
     };
 
     var renderFeaturedProduct = function (product) {  
-        var getRating = function() {
-          var rating = 0;
-          
-          if(product.hasOwnProperty('rating')){            
-            rating = parseInt(product.rating);
-          }
-
-          return '<span class="tvp-icon tvp-icon-rating tvp-rating-' + rating + '"></span>';
-        }
-
         var featuredProductContainer = document.getElementById('tvpFeaturedProduct');
 
         var featuredProduct = document.createElement('a');        
-        product.formattedRating = getRating();
         featuredProduct.className = 'tvp-featured-product';
         featuredProduct.href = product.linkUrl;
         featuredProduct.setAttribute('target', '_blank');
@@ -510,6 +500,31 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                     addProductActiveState(selected.id);
                 }
             });
+
+        var productRating = 0;
+        if (Utils.isset(product.rating) && null !== product.rating) {
+          productRating = Number(product.rating);
+        }
+
+        var fulls = 0;        
+        var half = 0;
+        if (productRating % 1 != 0) {
+            fulls = Math.floor(productRating);
+            half = fulls + 1;            
+        } else {
+            fulls = productRating;
+        }
+        var emptyType = productRatingEmptyIsBordered ? 'empty-border' : 'empty';
+        $(inlineEl).find('.tvp-product-rating .tvp-rate').each(function(index, el) {
+            if (index+1 > fulls) {
+                if (half && half === index + 1) {
+                    $(el).addClass('half');
+                }
+                else{
+                    $(el).addClass(emptyType);
+                }
+            }
+        });
     }
     
     var addProductActiveState = function (elId) {
@@ -627,13 +642,14 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
         addVideoActiveState(e.assetId);
     };
 
-    function Inline(el, options) {
+    function Inline(el, options) {        
         currentApproach = renderedApproach();
         xchg = options.xchg || false;
         loginId = (options.loginId || options.loginid) || 0;
         channel = options.channel || {};
         channelId = options.channelid || {};
-        
+        productRatingEmptyIsBordered = Utils.isset(options.product_rating_empty_bordered) ? options.product_rating_empty_bordered : false;
+
         inlineEl = 'string' === typeof el ? document.getElementById(el) : el;
         var container = inlineEl.getElementsByClassName('tvp-videos-scroller')[0];
 

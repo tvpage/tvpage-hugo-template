@@ -601,6 +601,31 @@ a {
   display: none;
 }
 
+.tvp-product-rating {
+  list-style-type: none;
+  margin: 0 0 10px;
+  padding: 0;
+  text-align: center;
+}
+.tvp-product-rating > li {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}
+
+.tvp-rate.half path:nth-child(3), .tvp-rate.half path:nth-child(5) {
+  fill: none;
+}
+.tvp-rate.empty-border path:nth-child(3), .tvp-rate.empty-border path:nth-child(4) {
+  fill: none;
+}
+.tvp-rate.empty path:nth-child(4), .tvp-rate.empty path:nth-child(5) {
+  fill: none;
+}
+.tvp-rate.empty path:nth-child(3) {
+  fill: rgba(0, 0, 0, 0.5);
+}
+
 .tvp-featured {
   float: left;
   height: 100%;

@@ -47,6 +47,36 @@
             "label": "Product Rating Image URL",
             "code": "product_rating_image_url",
             "value": "dist/img/ratings.png"
+        },
+        
+        {
+            "for": "inline",
+            "type": "boolean",
+            "label": "Product Rating Size",
+            "code": "product_rating_size",
+            "value": "20"
+        },
+        {
+            "for": "inline",
+            "type": "boolean",
+            "label": "Product Rating Color",
+            "code": "product_rating_color",
+            "value": "#000"
+        },
+        {
+            "for": "inline",
+            "type": "boolean",
+            "label": "Product Rating Empty Bordered",
+            "code": "product_rating_empty_bordered",
+            "value": true
+        },
+        {
+            "for": "inline",
+            "type": "boolean",
+            "label": "Product Rating Empty Color",
+            "code": "product_rating_empty_color",
+            "value": "#CDCDCD"
         }
+        
     ]
 }
