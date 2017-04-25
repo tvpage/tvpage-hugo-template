@@ -1,6 +1,7 @@
 ".tvp-carousel-holder {" +
     "background: {{ ($.Scratch.Get "settings").background }};" +
     "margin: {{ ($.Scratch.Get "settings").margin }};" +
+    "box-shadow: {{ ($.Scratch.Get "settings").box_shadow }};" +
 "}" +
 
 ".tvp-modal-header {" +

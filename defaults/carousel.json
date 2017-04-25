@@ -76,6 +76,13 @@
         },
         {
             "for": "carousel",
+            "type": "text",
+            "label": "Box Shadow",
+            "code": "box_shadow",
+            "value": "none"
+        },
+        {
+            "for": "carousel",
             "type": "boolean",
             "label": "Infinite",
             "code": "infinite",
