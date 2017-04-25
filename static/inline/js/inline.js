@@ -298,13 +298,15 @@
                     }
                 ]
             }).on('setPosition', function(s) {
-                var item = s.currentTarget.querySelector('.slick-current');
-                var itemPadding = parseInt($(item).css('padding'));
-                var baseHeight = item.querySelector('.tvp-video-item-image').offsetHeight;
-                var arrowHeight = parseInt(s.currentTarget.slick.$nextArrow[0].offsetHeight);
+                if (renderedApproach() !== 'mobile') {
+                    var item = s.currentTarget.querySelector('.slick-current');
+                    var itemPadding = parseInt($(item).css('padding'));
+                    var baseHeight = item.querySelector('.tvp-video-item-image').offsetHeight;
+                    var arrowHeight = parseInt(s.currentTarget.slick.$nextArrow[0].offsetHeight);
 
-                s.currentTarget.slick.$nextArrow[0].style.marginTop = ((baseHeight - arrowHeight) / 2) + itemPadding + "px";
-                s.currentTarget.slick.$prevArrow[0].style.marginTop = ((baseHeight - arrowHeight) / 2) + itemPadding + "px";
+                    s.currentTarget.slick.$nextArrow[0].style.marginTop = ((baseHeight - arrowHeight) / 2) + itemPadding + "px";
+                    s.currentTarget.slick.$prevArrow[0].style.marginTop = ((baseHeight - arrowHeight) / 2) + itemPadding + "px";    
+                }
             });
 
 
