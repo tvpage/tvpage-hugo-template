@@ -112,7 +112,7 @@
 '}' +
 
 '.tvp-video-item-active:after{' +
-	'border-color: {{- ($.Scratch.Get "settings").hover_state_border -}};' +
+	'border-color: {{- ($.Scratch.Get "settings").active_state_border -}};' +
 '}' +
 '.tvp-video-item-active .tvp-video-play { '+
 	'background-color: {{- ($.Scratch.Get "settings").play_button_background_color -}};' +

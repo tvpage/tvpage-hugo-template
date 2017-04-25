@@ -34,6 +34,148 @@
             "code": "autonext",
             "value": true
         },
+
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "iFrame Holder Background Color",
+            "code": "body_padding",
+            "value": "transparent"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Body Padding",
+            "code": "body_padding",
+            "value": "0"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Font Color",
+            "code": "font_color",
+            "value": "#000"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Font Family",
+            "code": "font_family",
+            "value": "Helvetica"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Player Play Button Height",
+            "code": "play_button_height",
+            "value": "40px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Player Play Button Width",
+            "code": "play_button_width",
+            "value": "40px"
+        },
+
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Play Button Icon Color",
+            "code": "play_button_icon_color",
+            "value": "000"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Play Button Icon Border",
+            "code": "play_icon_border",
+            "value": "none"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Play Button Background Color",
+            "code": "play_button_background_color",
+            "value": "#e57211"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Play Button Background Color InActive",
+            "code": "play_button_background_color_inactive",
+            "value": "#fff"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Play Button Transform",
+            "code": "play_button_transform",
+            "value": "none"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Active State Border",
+            "code": "active_state_border",
+            "value": "transparent"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Hover State Border",
+            "code": "hover_state_border",
+            "value": "transparent"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Header Height",
+            "code": "header_height",
+            "value": "43px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Video Header Font Size Max",
+            "code": "video_header_font_size_max",
+            "value": "34"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Video Header Font Size Min",
+            "code": "video_header_font_size_min",
+            "value": "14"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Video Header Line Height",
+            "code": "video_header_line_height",
+            "value": "43px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Video Header Line Weight",
+            "code": "video_header_font_weight",
+            "value": "normal"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Video Header Padding",
+            "code": "video_header_padding",
+            "value": "0"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Video Header Case",
+            "code": "video_header_case",
+            "value": "none"
+        },        
         {
             "for": "inline",
             "type": "text",
@@ -44,21 +186,146 @@
         {
             "for": "inline",
             "type": "text",
-            "label": "Product Rating Image URL",
-            "code": "product_rating_image_url",
-            "value": "dist/img/ratings.png"
+            "label": "Featured Product Header Font Size Max",
+            "code": "featured_product_header_font_size_max",
+            "value": "32"
         },
-        
         {
             "for": "inline",
-            "type": "boolean",
+            "type": "text",
+            "label": "Featured Product Header Font Size Min",
+            "code": "featured_product_header_font_size_min",
+            "value": "12"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Font Weight",
+            "code": "featured_product_header_font_weight",
+            "value": "normal"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Padding",
+            "code": "featured_product_header_padding",
+            "value": "0"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Line Height",
+            "code": "featured_product_header_line_height",
+            "value": "43px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Title Font Family",
+            "code": "featured_product_title_font_family",
+            "value": "Helvetica"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Title Font Size Max",
+            "code": "featured_product_title_font_size_max",
+            "value": "14"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Title Font Size Max",
+            "code": "featured_product_title_font_size_min",
+            "value": "12"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Title Margin",
+            "code": "featured_product_title_margin",
+            "value": "0 0 15px 0"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Genre Display",
+            "code": "featured_product_genre_display",
+            "value": "none"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Genre Font Weight",
+            "code": "featured_product_genre_font_weight",
+            "value": "normal"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Genre Font Size Max",
+            "code": "featured_product_genre_font_size_max",
+            "value": "20"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Genre Font Size Min",
+            "code": "featured_product_genre_font_size_min",
+            "value": "12"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Genre Margin",
+            "code": "featured_product_genre_margin",
+            "value": "0"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Price Font Size Max",
+            "code": "featured_product_price_font_size_max",
+            "value": "14"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Price Font Size Min",
+            "code": "featured_product_price_font_size_min",
+            "value": "12"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Price Margin",
+            "code": "featured_product_price_margin",
+            "value": "0"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Price Font Weight",
+            "code": "featured_product_price_font_weight",
+            "value": "bold"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Price Font Weight",
+            "code": "featured_product_view_button_display",
+            "value": "block"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Product Rating Size",
             "code": "product_rating_size",
             "value": "20"
         },
         {
             "for": "inline",
-            "type": "boolean",
+            "type": "text",
             "label": "Product Rating Color",
             "code": "product_rating_color",
             "value": "#000"
@@ -66,17 +333,276 @@
         {
             "for": "inline",
             "type": "boolean",
-            "label": "Product Rating Empty Bordered",
+            "label": "Product Rating Color",
             "code": "product_rating_empty_bordered",
             "value": true
         },
         {
             "for": "inline",
-            "type": "boolean",
-            "label": "Product Rating Empty Color",
+            "type": "text",
+            "label": "Product Rating Color",
             "code": "product_rating_empty_color",
-            "value": "#CDCDCD"
+            "value": "transparent"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Holder Slider Arrow Button Color",
+            "code": "product_holder_slide_arrow_button_color",
+            "value": "rgba(0,0,0,0.75)"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Holder Slider Dots Color",
+            "code": "product_holder_slide_dots_color",
+            "value": "#000"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item Opacity",
+            "code": "product_item_opacity",
+            "value": "1"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item Opacity Active",
+            "code": "product_item_opacity_active",
+            "value": "1"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item Title Font Size Max",
+            "code": "product_item_title_font_size_max",
+            "value": "18"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item Title Font Size Min",
+            "code": "product_item_title_font_size_min",
+            "value": "12"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Height",
+            "code": "videos_carousel_item_height",
+            "value": "77.77778%"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Border",
+            "code": "videos_carousel_item_border",
+            "value": "1px solid transparent"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Space In Between",
+            "code": "videos_carousel_item_space_inbetween",
+            "value": "0"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Title Font Color",
+            "code": "videos_carousel_item_title_font_color",
+            "value": "#000"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Title Font Size Max",
+            "code": "videos_carousel_item_title_font_size_max",
+            "value": "16"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Title Font Size Min",
+            "code": "videos_carousel_item_title_font_size_min",
+            "value": "10"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Title Font Weight",
+            "code": "videos_carousel_item_title_font_weight",
+            "value": "normal"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Title Padding",
+            "code": "videos_carousel_item_title_padding",
+            "value": "10px 0 0 0"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Title Width",
+            "code": "videos_carousel_item_title_width",
+            "value": "100%"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Title Display",
+            "code": "videos_carousel_item_title_display",
+            "value": "block"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Title Position",
+            "code": "videos_carousel_item_title_position",
+            "value": "static"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Title Top",
+            "code": "videos_carousel_item_title_top",
+            "value": "50%"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Title Transform",
+            "code": "videos_carousel_item_title_transform",
+            "value": "none"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Title Inactive",
+            "code": "videos_carousel_item_title_inactive",
+            "value": "1"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Title Active",
+            "code": "videos_carousel_item_title_active",
+            "value": "1"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Thumbnail Overlay Color",
+            "code": "videos_carousel_item_thumbnail_overlay_color",
+            "value": "#000"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Thumbnail InActive",
+            "code": "videos_carousel_item_thumbnail_inactive",
+            "value": "0"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Thumbnail Active",
+            "code": "videos_carousel_item_thumbnail_active",
+            "value": "0.2"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Thumbnail Container Height",
+            "code": "videos_carousel_item_thumbnail_container_height",
+            "value": "inherit"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Thumbnail Height",
+            "code": "videos_carousel_item_thumbnail_height",
+            "value": "56.25%"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Thumbnail Width",
+            "code": "videos_carousel_item_thumbnail_width",
+            "value": "inherit"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Thumbnail Display",
+            "code": "videos_carousel_item_thumbnail_display",
+            "value": "block"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Thumbnail Border Style",
+            "code": "videos_carousel_item_thumbnail_border_style",
+            "value": "none"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Thumbnail Border Color",
+            "code": "videos_carousel_item_thumbnail_border_color",
+            "value": "transparent"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Thumbnail Border Width",
+            "code": "videos_carousel_item_thumbnail_border_width",
+            "value": "0"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Width",
+            "code": "videos_carousel_width",
+            "value": "100%"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Padding",
+            "code": "videos_carousel_padding",
+            "value": "0"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Arrow Background",
+            "code": "videos_carousel_arrow_background",
+            "value": "#fff"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Arrow Height",
+            "code": "videos_carousel_arrow_height",
+            "value": "50px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Arrow Width",
+            "code": "videos_carousel_arrow_width",
+            "value": "50px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Arrow Color",
+            "code": "videos_carousel_arrow_color",
+            "value": "#000"
         }
-        
+
     ]
 }
