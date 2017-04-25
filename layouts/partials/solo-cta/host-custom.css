@@ -1,6 +1,5 @@
-".tvp-solo-cta-holder {" +
-    "background: {{ ($.Scratch.Get "settings").background }};" +
-    "margin: {{ ($.Scratch.Get "settings").margin }};" +
+".tvp-solo-cta-holder.initialized {" +
+    "padding-top: {{ ($.Scratch.Get "settings").padding_top }};" +
 "}" +
 
 ".tvp-cta-overlay-cover {" +
