@@ -164,6 +164,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
         this.initialResize = true;
         this.onResize = isset(options.onResize) && isFunction(options.onResize) ? options.onResize : null;
         this.onNext = isset(options.onNext) && isFunction(options.onNext) ? options.onNext : null;
+        this.onPlayerChange = isset(options.onPlayerChange) && isFunction(options.onPlayerChange) ? options.onPlayerChange : null;
         this.playIconTemplate = isset(options.templates.play_icon) ? options.templates.play_icon : null;
         this.instance = null;
         this.el = 'string' === typeof el ? document.getElementById(el) : el;
@@ -335,19 +336,30 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
         };
 
         this.onStateChange = function(e){
-            if(e === 'tvp:media:videoplaying'){
+
+            if (e === 'tvp:media:videoplaying'){
                 that.el.querySelector('#playerOverlay').style.display = "none";
-            }
-            if ('tvp:media:videoended' !== e) return;
-            that.current++;
-            if (!that.assets[that.current]) {
-                that.current = 0;
+            } else if (e === 'tvp:media:videoended') {
+                that.current++;
+
+                if (!that.assets[that.current]) {
+                    that.current = 0;
+                }
+                
+                var next = that.assets[that.current];
+                that.play(next, true);
+
+                if (that.onNext) {
+                    that.onNext(next);
+                }
             }
 
-            var next = that.assets[that.current];
-            that.play(next, true);
-            if(that.onNext) {
-                that.onNext(next);
+            var stateData = JSON.parse(JSON.stringify(that.assets[that.current]));
+            
+            stateData.currentTime = that.instance.getCurrentTime();
+            
+            if (that.onPlayerChange) {
+                that.onPlayerChange(e, stateData);
             }
         };
 
@@ -654,7 +666,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
         addVideoActiveState(e.assetId);
     };
 
-    function Inline(el, options) {        
+    function Inline(el, options) {
         currentApproach = renderedApproach();
         xchg = options.xchg || false;
         loginId = (options.loginId || options.loginid) || 0;
@@ -728,6 +740,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             s.onNext = onNext;
             selectedVideo = data[0];
             s.data = data;
+
             player = new Player('tvp-player', s, selectedVideo.id);
             $(inlineEl).find('#videoTitle').html(selectedVideo.title);
             addVideoActiveState(selectedVideo.id);
@@ -891,7 +904,6 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
         if (Utils.isset(parent) && Utils.isset(parent,'__TVPage__') && Utils.isset(parent.__TVPage__, 'config')) {
             settings = parent.__TVPage__.config[body.getAttribute('data-id')];
         }
-        var inlineSettings = JSON.parse(JSON.stringify(settings));
 
         render(body,{
             id: settings.name,
@@ -899,7 +911,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             inlineTemplate: settings.templates.inline
         });
 
-        Inline(settings.name, inlineSettings);
+        Inline(settings.name, settings);
     };
     
     initialize();

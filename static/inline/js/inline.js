@@ -230,7 +230,7 @@
         addVideoActiveState(e.assetId);
     };
 
-    function Inline(el, options) {        
+    function Inline(el, options) {
         currentApproach = renderedApproach();
         xchg = options.xchg || false;
         loginId = (options.loginId || options.loginid) || 0;
@@ -304,6 +304,7 @@
             s.onNext = onNext;
             selectedVideo = data[0];
             s.data = data;
+
             player = new Player('tvp-player', s, selectedVideo.id);
             $(inlineEl).find('#videoTitle').html(selectedVideo.title);
             addVideoActiveState(selectedVideo.id);

@@ -21,7 +21,6 @@
         if (Utils.isset(parent) && Utils.isset(parent,'__TVPage__') && Utils.isset(parent.__TVPage__, 'config')) {
             settings = parent.__TVPage__.config[body.getAttribute('data-id')];
         }
-        var inlineSettings = JSON.parse(JSON.stringify(settings));
 
         render(body,{
             id: settings.name,
@@ -29,7 +28,7 @@
             inlineTemplate: settings.templates.inline
         });
 
-        Inline(settings.name, inlineSettings);
+        Inline(settings.name, settings);
     };
     
     initialize();

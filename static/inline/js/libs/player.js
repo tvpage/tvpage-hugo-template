@@ -31,6 +31,7 @@
         this.initialResize = true;
         this.onResize = isset(options.onResize) && isFunction(options.onResize) ? options.onResize : null;
         this.onNext = isset(options.onNext) && isFunction(options.onNext) ? options.onNext : null;
+        this.onPlayerChange = isset(options.onPlayerChange) && isFunction(options.onPlayerChange) ? options.onPlayerChange : null;
         this.playIconTemplate = isset(options.templates.play_icon) ? options.templates.play_icon : null;
         this.instance = null;
         this.el = 'string' === typeof el ? document.getElementById(el) : el;
@@ -202,19 +203,30 @@
         };
 
         this.onStateChange = function(e){
-            if(e === 'tvp:media:videoplaying'){
+
+            if (e === 'tvp:media:videoplaying'){
                 that.el.querySelector('#playerOverlay').style.display = "none";
-            }
-            if ('tvp:media:videoended' !== e) return;
-            that.current++;
-            if (!that.assets[that.current]) {
-                that.current = 0;
+            } else if (e === 'tvp:media:videoended') {
+                that.current++;
+
+                if (!that.assets[that.current]) {
+                    that.current = 0;
+                }
+                
+                var next = that.assets[that.current];
+                that.play(next, true);
+
+                if (that.onNext) {
+                    that.onNext(next);
+                }
             }
 
-            var next = that.assets[that.current];
-            that.play(next, true);
-            if(that.onNext) {
-                that.onNext(next);
+            var stateData = JSON.parse(JSON.stringify(that.assets[that.current]));
+            
+            stateData.currentTime = that.instance.getCurrentTime();
+            
+            if (that.onPlayerChange) {
+                that.onPlayerChange(e, stateData);
             }
         };
 
