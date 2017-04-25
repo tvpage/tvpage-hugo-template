@@ -135,16 +135,17 @@
             // this will fix the continues loading of youtube type video on iOS (iPad/iPhone)            
             if (Utils.isIOS) {
                 var control_overlay = that.el.querySelector('.tvp-control-overlay');
-                var playerOverlay = that.el.querySelector('#playerOverlay');
+                
                 if (asset.type === 'youtube') {                                
-                    control_overlay.style.display = "none";
-                    playerOverlay.style.display = "none";
+                    control_overlay.style.display = "none";                    
                 }
                 else{
-                    control_overlay.style.display = "block";
-                    playerOverlay.style.display = "block";
+                    control_overlay.style.display = "block";                    
                 }
             }
+
+            var playerOverlay = that.el.querySelector('#playerOverlay');
+            playerOverlay.style.display = asset.type === 'youtube' ? "none" : "block";
         };
 
         this.resize = function(){
