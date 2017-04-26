@@ -1015,6 +1015,13 @@
         {
           "for": "modal",
             "type": "text",
+            "label": "Product Popup CTA Border Radius",
+            "code": "product_popup_cta_border_radius",
+            "value": "0"
+        },
+        {
+          "for": "modal",
+            "type": "text",
             "label": "Product Popup CTA Border 480",
             "code": "product_popup_cta_border_radius_480",
             "value": "0"

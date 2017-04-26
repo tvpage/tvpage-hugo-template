@@ -98,6 +98,7 @@
 ".tvp-product-cta {" +
     "background: {{ ($.Scratch.Get "settings").product_popup_cta_background }};" +
     "border: {{ ($.Scratch.Get "settings").product_popup_cta_border }};" +
+    "border-radius: {{ ($.Scratch.Get "settings").product_popup_cta_border_radius }};" +
     "border-bottom: {{ ($.Scratch.Get "settings").product_popup_cta_border_bottom }};" +
     "color: {{ ($.Scratch.Get "settings").product_popup_cta_font_color }};" +
     "text-transform: {{ ($.Scratch.Get "settings").product_popup_cta_text_transform }};" +
