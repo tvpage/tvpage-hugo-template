@@ -57,20 +57,20 @@
 ".tvp-rate {" +
     "width: {{ ($.Scratch.Get "settings").product_rate_width }};" +
     "height: {{ ($.Scratch.Get "settings").product_rate_height }};" +
-    "background-image: url('{{ $.Site.BaseURL }}/carousel/{{ ($.Scratch.Get "settings").product_rating_background_image_url }}');" +
+    "background-image: url('{{ $.Site.BaseURL }}/carousel/img/{{ ($.Scratch.Get "settings").product_rating_background_image_url }}');" +
     "background-size: cover;" +
 "}" +
 
 ".tvp-rate.full {" +
-    "background-position: 0 0;" +
+    "background-position: {{ ($.Scratch.Get "settings").product_rating_full_background_image_position }};" +
 "}" +
 
 ".tvp-rate.half {" +
-    "background-position: 0 -41px;" +
+    "background-position: {{ ($.Scratch.Get "settings").product_rating_half_background_image_position }};" +
 "}" +
 
 ".tvp-rate.empty {" +
-    "background-position: 0 -20px;" +
+    "background-position: {{ ($.Scratch.Get "settings").product_rating_empty_background_image_position }};" +
 "}" +
 
 ".tvp-product-image {" +

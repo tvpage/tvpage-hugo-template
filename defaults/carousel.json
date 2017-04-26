@@ -982,7 +982,28 @@
           "type": "text",
           "label": "Product Rating Background Image Url",
           "code": "product_rating_background_image_url",
-          "value": ""
+          "value": "product_rating_icons.png"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Rating Empty Background Image Position",
+          "code": "product_rating_empty_background_image_position",
+          "value": "0 -20px"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Rating Half Background Image Position",
+          "code": "product_rating_half_background_image_position",
+          "value": "0 -41px"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Rating Full Background Image Position",
+          "code": "product_rating_full_background_image_position",
+          "value": "0 0"
         },
         {
           "for": "modal",
@@ -1333,6 +1354,20 @@
           "label": "Fix Page Scroll",
           "code": "fix_page_scroll",
           "value": true
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Rating Attribute",
+          "code": "product_rating_attribute",
+          "value": "rating"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Review Attribute",
+          "code": "product_review_attribute",
+          "value": "review_count"
         },
         {
           "for": "mobile",
