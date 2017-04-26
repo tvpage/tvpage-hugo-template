@@ -41,6 +41,13 @@
 	'margin: {{- ($.Scratch.Get "settings").featured_product_price_margin -}};' +
 '}' +
 
+'.tvp-featured-info-rating-count {' +
+	'display: {{- ($.Scratch.Get "settings").featured_product_rating_count_display -}};' +
+	'font-size: calc({{- ($.Scratch.Get "settings").featured_product_rating_count_font_size_min -}}px + ({{- ($.Scratch.Get "settings").featured_product_rating_count_font_size_max }} - {{ ($.Scratch.Get "settings").featured_product_rating_count_font_size_min -}}) * ((100vw - 300px) / (1600 - 300)));' +
+	'font-weight: {{- ($.Scratch.Get "settings").featured_product_rating_count_font_weight -}};' +
+	'color: {{- ($.Scratch.Get "settings").featured_product_rating_count_font_color -}};' +
+'}' +
+
 '.tvp-rate > svg {' +
 	'fill: {{- ($.Scratch.Get "settings").product_rating_color -}};' +
 '}' +

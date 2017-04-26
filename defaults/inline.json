@@ -312,7 +312,42 @@
         {
             "for": "inline",
             "type": "text",
-            "label": "Featured Product Price Font Weight",
+            "label": "Featured Product Rating Count Display",
+            "code": "featured_product_rating_count_display",
+            "value": "none"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Rating Count Font Size Max",
+            "code": "featured_product_rating_count_font_size_max",
+            "value": "16"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Rating Count Font Size Min",
+            "code": "featured_product_rating_count_font_size_min",
+            "value": "8"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Rating Count Font Weight",
+            "code": "featured_product_rating_count_font_weight",
+            "value": "bold"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Rating Count Font Color",
+            "code": "featured_product_rating_count_font_color",
+            "value": "#9D9D9D"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product View Button Display",
             "code": "featured_product_view_button_display",
             "value": "block"
         },

@@ -65,7 +65,7 @@
         document.body.appendChild(script);
     };
 
-    var renderFeaturedProduct = function (product) {  
+    var renderFeaturedProduct = function (product) {
         var featuredProductContainer = document.getElementById('tvpFeaturedProduct');
 
         var featuredProduct = document.createElement('a');        
