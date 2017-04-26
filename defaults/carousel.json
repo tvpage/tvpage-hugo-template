@@ -96,6 +96,41 @@
             "value": false
         },
         {
+          "for": "carousel",
+          "type": "text",
+          "label": "Navigation Bullets Append To",
+          "code": "navigation_bullets_append_to",
+          "value": ""
+        },
+        {
+          "for": "carousel",
+          "type": "text",
+          "label": "Navigation Bullets Position",
+          "code": "navigation_bullets_position",
+          "value": "absolute"
+        },
+        {
+          "for": "carousel",
+          "type": "text",
+          "label": "Navigation Bullets Bottom",
+          "code": "navigation_bullets_bottom",
+          "value": "-25px"
+        },
+        {
+          "for": "carousel",
+          "type": "text",
+          "label": "Navigation Bullets Text Align",
+          "code": "navigation_bullets_text_align",
+          "value": "center"
+        },
+        {
+          "for": "carousel",
+          "type": "text",
+          "label": "Navigation Bullets Margin",
+          "code": "navigation_bullets_margin",
+          "value": "0"
+        },
+        {
             "for": "carousel",
             "type": "boolean",
             "label": "Navigation Bullets Margin Bottom",
@@ -122,6 +157,34 @@
            "label": "Navigation Bullet Size",
            "code": "navigation_bullet_background_position",
            "value": "0px 0px"
+        },
+        {
+           "for": "carousel",
+           "type": "text",
+           "label": "Navigation Bullet Background Color",
+           "code": "navigation_bullet_background_color",
+           "value": "#333"
+        },
+        {
+           "for": "carousel",
+           "type": "text",
+           "label": "Navigation Bullet Border Radius",
+           "code": "navigation_bullet_border_radius",
+           "value": "50%"
+        },
+        {
+           "for": "carousel",
+           "type": "text",
+           "label": "Navigation Bullet Border",
+           "code": "navigation_bullet_border",
+           "value": "none"
+        },
+        {
+           "for": "carousel",
+           "type": "text",
+           "label": "Navigation Bullet Margin",
+           "code": "navigation_bullet_margin",
+           "value": "0 5px"
         },
         {
            "for": "carousel",

@@ -112,12 +112,20 @@
 "}" +
 
 ".slick-dotted.slick-slider {" +
-    "margin-bottom: {{ ($.Scratch.Get "settings").modal_title_font_color }};" +
+    "margin-bottom: {{ ($.Scratch.Get "settings").navigation_bullets_margin_bottom }};" +
+"}" +
+
+".slick-dots {" +
+    "position: {{ ($.Scratch.Get "settings").navigation_bullets_position }};" +
+    "bottom: {{ ($.Scratch.Get "settings").navigation_bullets_bottom }};" +
+    "text-align: {{ ($.Scratch.Get "settings").navigation_bullets_text_align }};" +
+    "margin: {{ ($.Scratch.Get "settings").navigation_bullets_margin }};" +
 "}" +
 
 ".slick-dots li {" +
     "width: {{ ($.Scratch.Get "settings").navigation_bullet_size }};" +
     "height: {{ ($.Scratch.Get "settings").navigation_bullet_size }};" +
+    "margin: {{ ($.Scratch.Get "settings").navigation_bullet_margin }};" +
 "}" +
 
 ".slick-dots li button {" +
@@ -126,8 +134,11 @@
     "padding: {{ ($.Scratch.Get "settings").navigation_bullet_padding }};" +
     {{ with ($.Scratch.Get "settings").navigation_bullet_background_image_url }}
         "background-image: url('{{ $.Site.BaseURL }}/carousel/{{ . }}');" +
+        "background-position: {{ ($.Scratch.Get "settings").navigation_bullet_background_position }};" +
     {{ end }}
-    "background-position: {{ ($.Scratch.Get "settings").navigation_bullet_background_position }};" +
+    "background-color: {{ ($.Scratch.Get "settings").navigation_bullet_background_color }};" +
+    "border: {{ ($.Scratch.Get "settings").navigation_bullet_border }};" +
+    "border-radius: {{ ($.Scratch.Get "settings").navigation_bullet_border_radius }};" +
 "}" +
 
 ".slick-dots li button:hover {" +
@@ -136,25 +147,6 @@
 
 ".slick-dots li.slick-active button {" +
     "background-position: {{ ($.Scratch.Get "settings").navigation_active_bullet_background_position }};" +
-"}" +
-
-".slick-dots li button:before" +
-"{" +
-    "width: {{ ($.Scratch.Get "settings").navigation_bullet_size }};" +
-    "height: {{ ($.Scratch.Get "settings").navigation_bullet_size }};" +
-    "font-size: {{ ($.Scratch.Get "settings").navigation_bullet_font_size }};" +
-    "color: {{ ($.Scratch.Get "settings").navigation_bullet_font_color }};" +
-"}" +
-
-".slick-dots li.slick-active button:before" +
-"{" +
-    "color: {{ ($.Scratch.Get "settings").navigation_active_bullet_font_color }};" +
-"}" +
-
-"@media (min-width:480px){" +
-    ".tvp-carousel-arrow {" +
-        "width:{{ ($.Scratch.Get "settings").arrow_size_480 }};" +
-    "}" +
 "}" +
 
 ".tvp-video:hover .tvp-video-play {" +
@@ -169,4 +161,10 @@
 
 ".tvp-video:hover .tvp-video-play > polygon {" +
     "fill:{{ ($.Scratch.Get "settings").item_play_button_icon_hover_color }};" +
+"}" +
+
+"@media (min-width:480px){" +
+    ".tvp-carousel-arrow {" +
+        "width:{{ ($.Scratch.Get "settings").arrow_size_480 }};" +
+    "}" +
 "}"
