@@ -143,10 +143,17 @@
 
 ".slick-dots li button:hover {" +
     "background-position: {{ ($.Scratch.Get "settings").navigation_active_bullet_background_position }};" +
+    "background-color: {{ ($.Scratch.Get "settings").navigation_active_bullet_background_color }};" +
+    "border: {{ ($.Scratch.Get "settings").navigation_active_bullet_border }};" +
 "}" +
 
 ".slick-dots li.slick-active button {" +
+    {{ with ($.Scratch.Get "settings").navigation_active_bullet_background_image_url }}
+        "background-image: url('{{ $.Site.BaseURL }}/carousel/{{ . }}');" +
+    {{ end }}
     "background-position: {{ ($.Scratch.Get "settings").navigation_active_bullet_background_position }};" +
+    "background-color: {{ ($.Scratch.Get "settings").navigation_active_bullet_background_color }};" +
+    "border: {{ ($.Scratch.Get "settings").navigation_active_bullet_border }};" +
 "}" +
 
 ".tvp-video:hover .tvp-video-play {" +

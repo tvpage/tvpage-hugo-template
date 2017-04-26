@@ -163,7 +163,7 @@
            "type": "text",
            "label": "Navigation Bullet Background Color",
            "code": "navigation_bullet_background_color",
-           "value": "#333"
+           "value": "#777777"
         },
         {
            "for": "carousel",
@@ -189,9 +189,30 @@
         {
            "for": "carousel",
            "type": "text",
-           "label": "Navigation Bullet Size",
+           "label": "Navigation Active Bullet Size",
+           "code": "navigation_active_bullet_background_image_url",
+           "value": ""
+        },
+        {
+           "for": "carousel",
+           "type": "text",
+           "label": "Navigation Active Bullet Size",
            "code": "navigation_active_bullet_background_position",
            "value": "0px 0px"
+        },
+        {
+           "for": "carousel",
+           "type": "text",
+           "label": "Navigation Active Bullet Background Color",
+           "code": "navigation_active_bullet_background_color",
+           "value": "#333333"
+        },
+        {
+           "for": "carousel",
+           "type": "text",
+           "label": "Navigation Active Bullet Border",
+           "code": "navigation_active_bullet_border",
+           "value": "none"
         },
         {
            "for": "carousel",
