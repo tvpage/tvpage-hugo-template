@@ -21,6 +21,6 @@
     '<p class="tvp-product-title">{title}</p>' +
     '<p class="tvp-product-price">{price}</p>' +
     '{ratingReviews}' +
-    '<button class="tvp-product-cta">{{ ($.Scratch.Get "settings").product_popup_cta_text }}</button>' +
+    '<button class="tvp-product-cta">{{ ($.Scratch.Get "settings").product_popup_cta_text | safeHTML }}</button>' +
   '</a>'
 }
