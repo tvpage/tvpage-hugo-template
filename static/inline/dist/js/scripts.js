@@ -281,7 +281,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             playerOverlay.style.display = asset.type === 'youtube' ? "none" : "block";
         };
 
-        this.resize = function(){
+        this.resize = function(){            
             if (!that.instance || that.isFullScreen) return;
             var width, height;
 
@@ -565,99 +565,103 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
     }
 
     var renderProducts = function (vid, lid) {
-        if(isProductsInitialized) return;
-
         var products =  document.getElementById('tvpProductsView');
         var deInitProd = function () {
             $('#productContent').slick('unslick');
             products.innerHTML = "";
         };
-
-        loadProducts(vid, lid, 
-            function (data) {                
-                if (data.length) {
-                    var itemTemplate = templates.productItem;
-                    var _container = $('.tvp-products-scroller');
-
-                    deInitProd();
-
-                    productData = data;
-
-                    var productContent = document.createElement('div');
-                    productContent.id = "productContent";
-                    var productGroup = document.createElement('div');
-                    productGroup.className = "tvp-product-item-group";
-                    for (var i = 0; i < data.length; i++) {
-                        var row = document.createElement('a');
-                        row.setAttribute('data-id', data[i].id);
-                        row.className = 'tvp-product-item';
-                        row.innerHTML = Utils.tmpl(itemTemplate, data[i]);
-                        if (currentApproach === 'mobile') {
-                            row.href = data[i].linkUrl;
-                            row.setAttribute('target', '_blank');
-                        }
-                        
-                        if(renderedApproach() === 'mobile'){
-                            $(row).appendTo(productContent);
-                            $(productContent).appendTo(_container);
-                        }
-                        else{
-                            $(row).appendTo(productGroup);
-                            if (( ((i + 1) % 4) === 0 ) && (i !== (data.length - 1))) {
-                                $(productGroup).appendTo(productContent);
-                                $(productContent).appendTo(_container);
-                                productGroup = document.createElement('div');
-                                productGroup.className = "tvp-product-item-group";
-                            }
-                            else if (i === (data.length - 1)) {
-                                $(productGroup).appendTo(productContent);
-                                $(productContent).appendTo(_container);
-                            }                            
-                        }
-
-                        analytics.track('pi',{
-                            vd: data[i].entityIdParent,
-                            ct: data[i].id,
-                            pg: channelId
-                        });
-                    }
-
-                    //product scroll nav
-                    if (data.length > 4) {
-                        $(templates.productsNav).appendTo(_container);
-                    }
-
-                    $(productContent).slick({
-                        arrows: true,
-                        prevArrow: document.querySelector('.tvp-products-prev'),
-                        nextArrow: document.querySelector('.tvp-products-next'),
-                        slidesToShow: 1,
-                        slidesToScroll: 1,
-                        dots: true,
-                        appendDots: $('.tvp-products-nav'),
-                        responsive:[
-                            {
-                                breakpoint: 769,
-                                settings: {
-                                    arrows: false,
-                                    centerPadding: '0px',
-                                    slidesToShow: 1,
-                                    slidesToScroll: 1,
-                                    dots: false
-                                }
-                            }
-                        ]
-                    });
-
-                    renderFeaturedProduct(data[0]);
-                    addProductActiveState(data[0].id);
-
-                    isProductsInitialized = true;
+        var layoutProducts = function () {            
+            deInitProd();
+            var itemTemplate = templates.productItem;
+            var _container = $('.tvp-products-scroller');
+            var productContent = document.createElement('div');
+            productContent.id = "productContent";
+            var productGroup = document.createElement('div');
+            productGroup.className = "tvp-product-item-group";
+            for (var i = 0; i < productData.length; i++) {
+                var row = document.createElement('a');
+                row.setAttribute('data-id', productData[i].id);
+                row.className = 'tvp-product-item';
+                row.innerHTML = Utils.tmpl(itemTemplate, productData[i]);
+                if (currentApproach === 'mobile') {
+                    row.href = productData[i].linkUrl;
+                    row.setAttribute('target', '_blank');
+                }
+                
+                if(renderedApproach() === 'mobile'){
+                    $(row).appendTo(productContent);
+                    $(productContent).appendTo(_container);
                 }
                 else{
-                    deInitProd();
+                    $(row).appendTo(productGroup);
+                    if (( ((i + 1) % 4) === 0 ) && (i !== (productData.length - 1))) {
+                        $(productGroup).appendTo(productContent);
+                        $(productContent).appendTo(_container);
+                        productGroup = document.createElement('div');
+                        productGroup.className = "tvp-product-item-group";
+                    }
+                    else if (i === (productData.length - 1)) {
+                        $(productGroup).appendTo(productContent);
+                        $(productContent).appendTo(_container);
+                    }                            
                 }
-        });
+            }
+
+            //product scroll nav
+            if (productData.length > 4) {
+                $(templates.productsNav).appendTo(_container);
+            }
+
+            $(productContent).slick({
+                arrows: true,
+                prevArrow: document.querySelector('.tvp-products-prev'),
+                nextArrow: document.querySelector('.tvp-products-next'),
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                dots: true,
+                appendDots: $('.tvp-products-nav'),
+                responsive:[
+                    {
+                        breakpoint: 769,
+                        settings: {
+                            arrows: false,
+                            centerPadding: '0px',
+                            slidesToShow: 1,
+                            slidesToScroll: 1,
+                            dots: false
+                        }
+                    }
+                ]
+            });
+            addProductActiveState(productData[0].id);
+        };
+
+        if(!isProductsInitialized){
+            loadProducts(vid, lid, 
+                function (data) {                
+                    if (data.length) {
+                        for (var i = data.length - 1; i >= 0; i--) {
+                            analytics.track('pi',{
+                                vd: data[i].entityIdParent,
+                                ct: data[i].id,
+                                pg: channelId
+                            });
+                        }
+
+                        productData = data;
+                        layoutProducts();
+                        renderFeaturedProduct(data[0]);                        
+                        isProductsInitialized = true;
+                    }
+                    else{
+                        deInitProd();
+                    }
+            });
+        }
+        else{
+            layoutProducts();
+        }
+
     };
 
     var onNext = function (e) {
@@ -776,12 +780,12 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
 
             window.addEventListener('resize', Utils.debounce(function(){
                 if (isProductsInitialized) {
-                    if(currentApproach !== renderedApproach()){
-                        isProductsInitialized = false;
+                    if(currentApproach !== renderedApproach()){                        
                         currentApproach = renderedApproach();
                     }
+                    renderProducts(selectedVideo.id, loginId);
                 }
-                renderProducts(selectedVideo.id, loginId);
+                
                 if (window.parent) {
                     window.parent.postMessage({
                         event: 'tvp_'+ inlineEl.id.replace(/-/g,'_') +':resize',
@@ -910,7 +914,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
 
     var body = document.body;
 
-    var initialize = function(){        
+    var initialize = function(){       
         var settings = {};
 
         if (Utils.isset(parent) && Utils.isset(parent,'__TVPage__') && Utils.isset(parent.__TVPage__, 'config')) {

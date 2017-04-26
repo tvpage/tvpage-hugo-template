@@ -148,7 +148,7 @@
             playerOverlay.style.display = asset.type === 'youtube' ? "none" : "block";
         };
 
-        this.resize = function(){
+        this.resize = function(){            
             if (!that.instance || that.isFullScreen) return;
             var width, height;
 

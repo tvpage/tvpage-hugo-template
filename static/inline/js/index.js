@@ -15,7 +15,7 @@
 
     var body = document.body;
 
-    var initialize = function(){        
+    var initialize = function(){       
         var settings = {};
 
         if (Utils.isset(parent) && Utils.isset(parent,'__TVPage__') && Utils.isset(parent.__TVPage__, 'config')) {
