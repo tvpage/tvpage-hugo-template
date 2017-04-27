@@ -114,19 +114,6 @@ body  {
   padding-top: 100%;
 }
 
-.tvp-products-title {
-  margin: 10px 0;
-}
-
-.tvp-product-title {
-  margin: 10px 0;
-  color: #1F1D26;
-}
-
-.tvp-product-price {
-  margin: 0 0 10px 0;
-}
-
 .tvp-product-rating {
   list-style-type: none;
   margin: 0 0 10px;
@@ -145,7 +132,6 @@ body  {
 .tvp-product-cta {
   width: 100%;
   display: block;
-  margin-top: 10px;
   cursor: pointer;
   -webkit-transition: all .05s ease-in-out;
   transition: all .05s ease-in-out;

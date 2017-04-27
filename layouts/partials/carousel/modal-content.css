@@ -31,6 +31,7 @@
     "text-transform: {{ ($.Scratch.Get "settings").product_title_text_transform }};" +
     "text-decoration: {{ ($.Scratch.Get "settings").product_title_text_decoration }};" +
     "text-align: {{ ($.Scratch.Get "settings").product_title_text_align }};" +
+    "margin: {{ ($.Scratch.Get "settings").product_title_margin }};" +
 "}" +
 
 ".tvp-product-title:hover {" +
@@ -43,6 +44,7 @@
     "font-family: {{ ($.Scratch.Get "settings").product_price_font_family }};" +
     "font-weight: {{ ($.Scratch.Get "settings").product_price_font_weight }};" +
     "text-align: {{ ($.Scratch.Get "settings").product_price_text_align }};" +
+    "margin: {{ ($.Scratch.Get "settings").product_price_margin }};" +
 "}" +
 
 ".tvp-reviews {" +
@@ -106,6 +108,7 @@
     "font-family: {{ ($.Scratch.Get "settings").product_popup_cta_font_family }};" +
     "font-weight: {{ ($.Scratch.Get "settings").product_popup_cta_font_weight }};" +
     "height: {{ ($.Scratch.Get "settings").product_popup_cta_height }};" +
+    "margin: {{ ($.Scratch.Get "settings").product_popup_cta_margin }};" +
 "}" +
 
 ".tvp-product-cta:hover {" +
