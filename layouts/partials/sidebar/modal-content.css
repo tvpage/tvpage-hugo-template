@@ -1,6 +1,6 @@
 {{ with ($.Scratch.Get "settings").fonts }}
   {{ range . }}
-    "@import url('{{ . }}');" +
+    "@import url('{{ . | htmlUnescape | safeHTML }}');" +
   {{ end }}
 {{ end }}
 
