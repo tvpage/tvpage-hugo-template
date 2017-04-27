@@ -212,7 +212,7 @@
 '}' +
 
 '.tvp-video-item-active .tvp-video-item-title ' +
-', ..tvp-video-item:hover .tvp-video-item-title{' +
+', .tvp-video-item:hover .tvp-video-item-title{' +
 	'opacity: {{- ($.Scratch.Get "settings").videos_carousel_item_title_active -}};'+
 '}' +
 
