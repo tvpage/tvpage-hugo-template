@@ -51,22 +51,18 @@
     };
 
     var render = function(data, config){
-        var holder = Utils.getByClass('tvp-products-holder');
-        var productsContainer = Utils.getByClass('tvp-products');
-        var popupsContainer = Utils.getByClass('tvp-popups');
-        productsContainer.innerHTML = "";
+        var productsHtml = "";
+        var popupsHtml = "";
 
         for (var i = 0; i < data.length; i++) {
             var product = data[i];
+            
             product.title = !Utils.isEmpty(product.title) ? Utils.trimText(product.title, 50) : '';
             product.price = !Utils.isEmpty(product.price) ? Utils.trimPrice(product.price) : '';
-    
-            productsContainer.innerHTML += Utils.tmpl(config.templates["modal-content"].product, product);
-            popupsContainer.innerHTML += Utils.tmpl(config.templates["modal-content"].popup, product);
 
-            var productRating = 0;
-            if (Utils.isset(product.rating) && null !== product.rating) {
-              productRating = Number(product.rating);
+            var productRating = Utils.isset(product[config.product_rating_attribute]) ? product[config.product_rating_attribute] : 0;
+            if (null !== productRating) {
+              productRating = Number(productRating);
             }
 
             var ratingReviewsHtml = "";
@@ -102,16 +98,18 @@
                 ratingReviewsHtml += '<li class="tvp-rate empty"></li>';
               }
 
-              if (Utils.isset(product.review_count) && null !== product.review_count) {
-                ratingReviewsHtml += '<li class="tvp-reviews">' + product.review_count + ' Reviews </li>';
+              var productReview = Utils.isset(product[config.product_review_attribute]) ? product[config.product_review_attribute] : 0;
+              if (null !== productReview && productReview > 0) {
+                ratingReviewsHtml += '<li class="tvp-reviews">' + productReview + ' Reviews </li>';
               }
 
               ratingReviewsHtml += '</ul>';
             }
 
-            // where/how to inject? 
-            // var buttonText = product.actionText.length > 0? product.actionText : config.product_popup_cta_text;
-            // ratingReviewsHtml 
+            product.ratingReviews = ratingReviewsHtml;
+
+            productsHtml += Utils.tmpl(config.templates["modal-content"].product, product);
+            popupsHtml += Utils.tmpl(config.templates["modal-content"].popup, product);
 
             analytics.track('pi',{
                 vd: product.entityIdParent,
@@ -119,6 +117,13 @@
                 pg: channelId
             });
         }
+
+        var holder = Utils.getByClass('tvp-products-holder');
+        var productsContainer = holder.querySelector('.tvp-products');
+        var popupsContainer = holder.querySelector('.tvp-popups');
+
+        productsContainer.innerHTML = productsHtml;
+        popupsContainer.innerHTML = popupsHtml;
 
         var willScroll = data.length > 2;
         if("undefined" !== typeof Ps){
@@ -195,6 +200,7 @@
                 clearActive();
             };
         }
+
     };
 
     var initialize = function(){
