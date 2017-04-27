@@ -164,6 +164,19 @@
         }
     }
 
-    window.addEventListener('load', load);
+    window.addEventListener('load', function(){
+        load();
+
+        if (isset(window, '__TVPage__') && isset(__TVPage__, 'config')) {
+            __TVPage__.load = load;
+
+            __TVPage__.trigger = function(e){
+                window.postMessage({
+                    event: 'tvp_solo_click:' + (e + "")
+                }, '*');
+            };
+
+        }
+    });
 
 }(window, document));

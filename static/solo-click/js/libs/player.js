@@ -65,6 +65,25 @@
     this.instance = null;
     this.el = 'string' === typeof el ? document.getElementById(el) : el;
 
+    //Context reference for Methods.
+    var that = this;
+
+    var onWidgetEvent = function (e) {
+      if (!e || !isset(e, 'data')) {
+        return;
+      }
+      
+      if ("tvp_solo_click:player_pause" === e.data.event) {
+        that.instance.pause();
+      } else if ("tvp_solo_click:player_play" === e.data.event) {
+        that.instance.play();
+      } else if ("tvp_solo_click:player_cue" === e.data.event) {
+        that.play(that.assets[that.current]);
+      }
+    };
+    window.parent.removeEventListener('message', onWidgetEvent, false);
+    window.parent.addEventListener('message', onWidgetEvent, false);
+
     this.assets = (function(data){
       var assets = [];
       for (var i = 0; i < data.length; i++) {
@@ -95,10 +114,6 @@
       }
       return assets;
     }(options.data));
-    
-
-    //Context reference for Methods.
-    var that = this;
     
     //Sometimes we want/need to show an intearctive overlay on top of the player. We need this for MP4 videos that will
     //cue (mobile or autoplay:off) to actual play the video on demand.
