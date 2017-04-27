@@ -236,4 +236,10 @@
 
 '.tvp-video-item-image:before{' +
 	'padding-top: {{- ($.Scratch.Get "settings").videos_carousel_item_thumbnail_height -}};' +	
+'}' +
+
+'@media only screen and (max-width: 768px){' +
+	'.tvp-row-titles{' +	
+		'height: {{- ($.Scratch.Get "settings").header_height_320 -}};' +
+	'}' +
 '}'

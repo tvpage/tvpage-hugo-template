@@ -137,6 +137,13 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Header Height 320",
+            "code": "header_height_320",
+            "value": "43px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Video Header Font Size Max",
             "code": "video_header_font_size_max",
             "value": "34"
