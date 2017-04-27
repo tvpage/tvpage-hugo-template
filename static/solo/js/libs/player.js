@@ -314,7 +314,7 @@
             poster: 1,
             overlay: 1
           };
-          for (o in that.options) {
+          for (var o in that.options) {
             if ( !playerOptions.hasOwnProperty(o) || allowOverride.hasOwnProperty(o) ) {
               playerOptions[o] = that.options[o];
             }
