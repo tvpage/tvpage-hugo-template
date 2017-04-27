@@ -99,6 +99,13 @@
 
 '.tvp-products-nav-button{' +
 	'background-color: {{- ($.Scratch.Get "settings").product_holder_slide_arrow_button_color -}};' +
+	'height: {{- ($.Scratch.Get "settings").product_holder_slide_arrow_height -}};' +
+	'width: {{- ($.Scratch.Get "settings").product_holder_slide_arrow_width -}};' +
+	'border-radius: {{- ($.Scratch.Get "settings").product_holder_slide_arrow_button_border_radius -}};' +
+'}' +
+
+'.tvp-products-nav-button > svg{' +
+	'fill: {{- ($.Scratch.Get "settings").product_holder_slide_arrow_color -}};' +
 '}' +
 
 

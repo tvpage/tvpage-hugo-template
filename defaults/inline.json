@@ -424,6 +424,34 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Product Holder Slider Arrow Button Border Radius",
+            "code": "product_holder_slide_arrow_button_border_radius",
+            "value": "0"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Holder Slider Arrow Color",
+            "code": "product_holder_slide_arrow_color",
+            "value": "#fff"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Holder Slider Arrow Width",
+            "code": "product_holder_slide_arrow_width",
+            "value": "23"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Holder Slider Arrow Height",
+            "code": "product_holder_slide_arrow_height",
+            "value": "23"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Product Holder Slider Dots Color",
             "code": "product_holder_slide_dots_color",
             "value": "#000"
