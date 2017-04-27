@@ -347,6 +347,41 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Featured Product View Button Font Size Max",
+            "code": "featured_product_view_button_font_size_max",
+            "value": "26"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product View Button Font Size Min",
+            "code": "featured_product_view_button_font_size_min",
+            "value": "12"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product View Button Font Weight",
+            "code": "featured_product_view_button_font_weight",
+            "value": "normal"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product View Button Border",
+            "code": "featured_product_view_button_border",
+            "value": "1px solid transparent"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product View Button Background",
+            "code": "featured_product_view_button_background",
+            "value": "#DDDDDD"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Featured Product View Button Display",
             "code": "featured_product_view_button_display",
             "value": "block"
