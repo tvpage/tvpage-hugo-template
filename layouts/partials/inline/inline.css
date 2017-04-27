@@ -88,9 +88,18 @@
 	'opacity: {{- ($.Scratch.Get "settings").product_item_opacity_active -}};' +
 '}' +
 
-'.tvp-product-info-title, '+
-' .tvp-product-info-view-details{' +
+'.tvp-product-info-title { '+
 	'font-size: calc({{- ($.Scratch.Get "settings").product_item_title_font_size_min -}}px + ({{- ($.Scratch.Get "settings").product_item_title_font_size_max }} - {{ ($.Scratch.Get "settings").product_item_title_font_size_min -}}) * ((100vw - 300px) / (1600 - 300)));' +
+	'color: {{- ($.Scratch.Get "settings").product_item_title_font_color -}};' +
+	'font-weight: {{- ($.Scratch.Get "settings").product_item_title_font_weight -}};' +
+'}' +
+
+'.tvp-product-info-view-details{' +
+	'font-size: calc({{- ($.Scratch.Get "settings").product_item_view_button_font_size_min -}}px + ({{- ($.Scratch.Get "settings").product_item_view_button_font_size_max }} - {{ ($.Scratch.Get "settings").product_item_view_button_font_size_min -}}) * ((100vw - 300px) / (1600 - 300)));' +
+	'color: {{- ($.Scratch.Get "settings").product_item_view_button_font_color -}};' +
+	'font-weight: {{- ($.Scratch.Get "settings").product_item_view_button_font_weight -}};' +
+	'border-color: {{- ($.Scratch.Get "settings").product_item_view_button_border_color -}};' +
+	'background: {{- ($.Scratch.Get "settings").product_item_view_button_border_background -}};' +
 '}' +
 
 '.tvp-product-info-price{' +

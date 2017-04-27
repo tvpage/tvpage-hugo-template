@@ -475,7 +475,7 @@
             "type": "text",
             "label": "Product Item Title Font Size Max",
             "code": "product_item_title_font_size_max",
-            "value": "18"
+            "value": "14"
         },
         {
             "for": "inline",
@@ -483,6 +483,62 @@
             "label": "Product Item Title Font Size Min",
             "code": "product_item_title_font_size_min",
             "value": "12"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item Title Font Color",
+            "code": "product_item_title_font_color",
+            "value": "#000"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item Title Font Weight",
+            "code": "product_item_title_font_weight",
+            "value": "normal"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item View Button Border Color",
+            "code": "product_item_view_button_border_color",
+            "value": "white"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item View Button Border Background",
+            "code": "product_item_view_button_border_background",
+            "value": "transparent"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item View Button Font Size Max",
+            "code": "product_item_view_button_font_size_max",
+            "value": "14"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item View Button Font Size Min",
+            "code": "product_item_view_button_font_size_min",
+            "value": "12"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item View Button Font Color",
+            "code": "product_item_view_button_font_color",
+            "value": "#000"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item View Button Font Weight",
+            "code": "product_item_view_button_font_weight",
+            "value": "normal"
         },
         {
             "for": "inline",
