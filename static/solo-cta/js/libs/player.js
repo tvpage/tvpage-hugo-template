@@ -25,7 +25,7 @@
     //The player singleton. We basically create an instance from the tvpage
     //player and expose most utilities, helping to encapsualte what is required for a few players to co-exist.
     function Player(el, options, startWith) {
-        if (!el || !isset(options) || !isset(options.data) || options.data.length <= 0) return console.log('bad args');
+        if (!el || !isset(options) || !isset(options.data) || options.data.length <= 0) return;
 
         this.options = options;
         this.instance = null;
@@ -124,7 +124,7 @@
         }
 
         this.play = function(asset,ongoing){
-            if (!asset) return console.log('need asset');
+            if (!asset) return;
             var willCue = false,
                 isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
@@ -186,7 +186,9 @@
         (function libsReady() {
             setTimeout(function() {
                 if ( !isset(window,'TVPage') || !isset(window,'_tvpa') ) {
-                    (++checks < 50) ? libsReady() : console.log('limit reached');
+                    if (++checks < 50) {
+                        libsReady();
+                    }
                 } else {
 
                 var playerOptions = {

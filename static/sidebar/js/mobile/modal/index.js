@@ -1,7 +1,6 @@
 (function(window, document) {
     var analytics = null;
     var channelId = null;
-    var slickInitialized = false;
     var hasData = false;
     var eventName;
     var eventPrefix = "tvp_" + (document.body.getAttribute("data-id") || "").replace(/-/g,'_');
