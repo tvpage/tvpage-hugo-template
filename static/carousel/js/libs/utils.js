@@ -45,7 +45,7 @@
     };
 
     this.debounce = function(func,wait,immediate){
-      var timeout;  
+      var timeout = null;
       return function() {
         var context = this, args = arguments;
         var later = function() {
@@ -84,6 +84,8 @@
           for (var i = 0, l = keys.length; i < l; i++) v = v[keys[i]];
           return (typeof v !== "undefined" && v !== null) ? v : "";
         });
+      } else {
+        return false;
       }
     };
     

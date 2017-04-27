@@ -126,7 +126,6 @@ config.eventPrefix = ("tvp_" + config.id).replace(/-/g,'_');
 
 var holder = document.getElementById(config.id + "-holder");
 var iframe = holder.querySelector("iframe");
-var iframeDocument = iframe.contentWindow.document;
 
 //Some logic to include the player library.. we support diff things.
 var playerUrl = "https://cdnjs.tvpage.com/tvplayer/tvp-" + config.player_version + ".min.js";
@@ -134,7 +133,8 @@ if (config.player_url && (config.player_url + "").trim().length) {
     playerUrl = config.player_url;
 }
 
-var iframeContent = utils.getIframeHtml({
+var iframeDocument = iframe.contentWindow.document;
+iframeDocument.open().write(utils.getIframeHtml({
     id: config.id,
     className: "dynamic",
     domain: config.baseUrl,
@@ -154,10 +154,7 @@ var iframeContent = utils.getIframeHtml({
         config.debug ? config.cssPath + "styles.css" : "",
         config.debug ? "" : config.cssPath + "styles.min.css"
     ]
-});
-
-var iframeDocument = iframe.contentWindow.document;
-iframeDocument.open().write(iframeContent);
+}));
 iframeDocument.close();
 
 window.addEventListener("message", function(e){

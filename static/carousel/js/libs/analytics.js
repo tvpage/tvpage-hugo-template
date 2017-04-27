@@ -21,7 +21,7 @@
     };
 
     this.track = function(e,data){
-      if (!e || !data || !_tvpa) return console.warn('no data');
+      if (!isset(e) || !isset(data) || !isset(window, '_tvpa')) return console.warn('No Data');
       _tvpa.push(['track', e, data]);
     };
     
