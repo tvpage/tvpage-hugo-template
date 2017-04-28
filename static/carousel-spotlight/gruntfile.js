@@ -24,11 +24,11 @@ module.exports = function(grunt) {
           roundingPrecision: -1
         },
         desktop: {
-            files: {
-                'dist/css/styles.min.css': ['css/vendor/slick.css','css/styles.css'],
-                'dist/css/host.min.css': ['css/host.css'],
-                'dist/css/modal/styles.min.css': ['css/vendor/perfect-scrollbar.min.css','css/modal/styles.css']
-            }
+          files: {
+            'dist/css/styles.min.css': ['css/vendor/slick.css','css/styles.css'],
+            'dist/css/host.min.css': ['css/host.css'],
+            'dist/css/modal/styles.min.css': ['css/vendor/slick.css','css/modal/styles.css']
+          }
         },
         mobile: {
           files: {
@@ -50,10 +50,19 @@ module.exports = function(grunt) {
         },
         modal: {
             files: {
-                'dist/js/modal/scripts.min.js': ['js/vendor/jquery.js', 'js/libs/utils.js', 'js/libs/analytics.js','js/libs/player.js','js/vendor/perfect-scrollbar.min.js', 'js/modal/index.js'],
+                'dist/js/modal/scripts.min.js': ['js/vendor/jquery.js', 'js/libs/utils.js', 'js/libs/analytics.js','js/libs/player.js', 'js/modal/index.js'],
                 'dist/js/mobile/modal/scripts.min.js': ['js/vendor/jquery.js', 'js/libs/utils.js', 'js/libs/analytics.js','js/libs/player.js', 'js/mobile/modal/index.js']
             }
         }
+      },
+      concat: {
+        options: {
+          separator: ';',
+        },
+        dist: {
+          src: ['src/intro.js', 'src/project.js', 'src/outro.js'],
+          dest: 'dist/built.js',
+        },
       }
     });
 
