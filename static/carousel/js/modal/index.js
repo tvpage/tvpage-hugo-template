@@ -1,9 +1,10 @@
 (function(window,document){
     var analytics,
         channelId,
-        eventName;
+        eventName,
+        body = document.body;
 
-    var eventPrefix = "tvp_" + (document.body.getAttribute("data-id") || "").replace(/-/g,'_');
+    var eventPrefix = "tvp_" + (body.getAttribute("data-id") || "").replace(/-/g,'_');
 
     var pkTrack = function(){
         analytics.track('pk',{
@@ -47,7 +48,7 @@
                 fn([]);
             }
         };
-        document.body.appendChild(script);
+        body.appendChild(script);
     };
 
     var render = function(data, config){
@@ -138,38 +139,55 @@
 
         var arrow = Utils.getByClass('tvp-arrow-indicator');
         var showPopup = function(id){
-            var productEl = document.getElementById('tvp-product-'+id);
+            var scrollerThumb = document.getElementById('tvp-product-'+id);
             var popup = document.getElementById('tvp-product-popup-'+id);
-            if (!productEl && !popup) return;
+            
+            if (!scrollerThumb && !popup) return;
 
-            var activePopups = document.querySelectorAll('.tvp-product-popup.active');
-            for (var i = activePopups.length - 1; i >= 0; i--) {
-                activePopups[i].classList.remove('active');
+            var popups = document.querySelectorAll('.tvp-product-popup.active');
+            for (var i = popups.length - 1; i >= 0; i--) {
+                popups[i].classList.remove('active');
             }
 
-            productEl.classList.add('active');
+            scrollerThumb.classList.add('active');
             popup.classList.add('active');
 
-            var topValue = productEl.getBoundingClientRect().top;
-            var bottomLimit = topValue + popup.offsetHeight;
-            var holderHeight = holder.offsetHeight;
-
-            //We must first check if it's overflowing. To do this we first check if it's overflowing in the top, this is an
+            //We must first check if it's overflowing. We check the top edge first, this is an easy one.
             //easy one, if it's a negative value then it's overflowing. Otherwise if it's failing in the bottom, we rectify
             //by removing the excess from the top value.
-            if (topValue <= 10) {
-                topValue = -10;
-            }
-            else if ( bottomLimit > holderHeight )  {
-                topValue = topValue - (bottomLimit - holderHeight);
-                topValue = topValue;
+            var bodyPaddingTop = (body.currentStyle || window.getComputedStyle(body)).paddingTop;
+            var bodyPaddingBottom = (body.currentStyle || window.getComputedStyle(body)).paddingBottom;
+            
+            bodyPaddingTop = parseInt(bodyPaddingTop,10);
+            bodyPaddingBottom = parseInt(bodyPaddingBottom,10);
+            
+            var scrollerThumbTop = scrollerThumb.getBoundingClientRect().top;
+            var popupTop = scrollerThumbTop - bodyPaddingTop;
+            var popupBottom = popupTop + popup.offsetHeight;
+
+            var holderHeight = holder.offsetHeight;
+
+            if (popupTop <= 10) {
+                popupTop = - bodyPaddingTop;
+            } else if ( popupBottom > holderHeight )  {
+                popupTop = popupTop - (popupBottom - holderHeight);
+                popupTop = popupTop + bodyPaddingBottom;
             }
 
-            popup.classList.add('active');
-            popup.style.top = topValue + 'px';
+            var activate = function(el,top){
+                el.classList.add('active');
+                el.style.top = top + 'px';
+            };
 
-            arrow.classList.add('active');
-            arrow.style.top = (productEl.getBoundingClientRect().top + 45) + 'px';
+            activate(popup, popupTop);
+
+            var arrowTop = scrollerThumbTop;
+            if (arrowTop < 0) {
+                arrowTop = - (bodyPaddingBottom + 1);
+            } else if ((arrowTop + arrow.offsetHeight) > holderHeight) {
+                arrowTop = holderHeight - (arrow.offsetHeight - bodyPaddingBottom) - 1;
+            }
+            activate(arrow, arrowTop);
         };
 
         var clearActive = function() {
