@@ -202,7 +202,7 @@
         data.runTime.loginId = data.runTime.loginId || data.runTime.loginid;
 
         if (Utils.isset(next, 'products')) {
-          render(next.products, data.runTime);
+          render(next.products);
         } else {
           if (!data.runTime.merchandise) {
             el.classList.add('tvp-no-products');
@@ -212,7 +212,7 @@
             loadProducts(next.assetId, data.runTime, function(products) {
               setTimeout(function() {
                 checkProducts(products, el);
-                render(products, data.runTime);
+                render(products);
                 player.resize();
               }, 0);
             });
@@ -255,7 +255,7 @@
 
         var selectedVideo = data.selectedVideo;
         if (Utils.isset(selectedVideo, 'products')) {
-          render(selectedVideo.products, settings);
+          render(selectedVideo.products);
         } else {
           if (!settings.merchandise) {
             el.classList.add('tvp-no-products');
@@ -266,7 +266,7 @@
               function(products) {
                 setTimeout(function() {
                   checkProducts(products, el);
-                  render(products, settings);
+                  render(products);
                 }, 0);
               });
           }
