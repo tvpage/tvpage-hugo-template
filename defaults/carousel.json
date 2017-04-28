@@ -686,16 +686,30 @@
         {
           "for": "modal",
           "type": "text",
-          "label": "Product Thumbnail Margin Right",
-          "code": "product_thumbnail_margin_right",
-          "value": "10px"
+          "label": "Product Thumbnail Margin",
+          "code": "product_thumbnail_margin",
+          "value": "0 10px 10px 0"
         },
         {
           "for": "modal",
           "type": "text",
-          "label": "Product Thumbnail Margin Bottom",
-          "code": "product_thumbnail_margin_bottom",
-          "value": "10px"
+          "label": "Product Thumbnail Margin Mobile",
+          "code": "product_thumbnail_margin_mobile",
+          "value": "0 10px 10px 0"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Thumbnail Padding Mobile",
+          "code": "product_thumbnail_padding_mobile",
+          "value": "5px"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Thumbnail Z-Index Mobile",
+          "code": "product_thumbnail_zindex_mobile",
+          "value": "9999"
         },
         {
           "for": "modal",

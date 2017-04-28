@@ -1,0 +1,89 @@
+{{ with ($.Scratch.Get "settings").fonts }}
+  {{ range . }}
+    "@import url('{{ . | htmlUnescape | safeHTML }}');" +
+  {{ end }}
+{{ end }}
+
+".tvp-modal-body {" +
+    "padding: {{ ($.Scratch.Get "settings").mobile_modal_body_padding }};" +
+"}" +
+
+".tvp-carousel-holder {" +
+    "background: {{ ($.Scratch.Get "settings").background }};" +
+    "margin: {{ ($.Scratch.Get "settings").margin }};" +
+"}" +
+
+".tvp-modal-overlay {" +
+    "background-color: {{ ($.Scratch.Get "settings").modal_overlay_background_color }};" +
+    "opacity: {{ ($.Scratch.Get "settings").modal_overlay_opacity }};" +
+"}" +
+
+".tvp-modal-header {" +
+    "padding:{{ ($.Scratch.Get "settings").modal_header_padding }};" +
+    "border-bottom:{{ ($.Scratch.Get "settings").modal_header_border_bottom }};" +
+"}" +
+
+".tvp-modal-content {" +
+    "background:{{ ($.Scratch.Get "settings").modal_background }};" +
+    "border:{{ ($.Scratch.Get "settings").modal_border }};" +
+    "border-radius:{{ ($.Scratch.Get "settings").modal_border_radius }};" +
+"}" +
+
+".tvp-modal-title {" +
+    "color: {{ ($.Scratch.Get "settings").modal_title_font_color }};" +
+    "font-family: {{ ($.Scratch.Get "settings").modal_title_font_family }};" +
+    "font-weight: {{ ($.Scratch.Get "settings").modal_title_font_weight }};" +
+    "font-size: {{ ($.Scratch.Get "settings").modal_title_font_size }};" +
+"}" +
+
+".tvp-modal-title.bottom {" +
+  "padding: 0 0 30px 10px;" +
+"}" +
+
+".tvp-products-headline {" +
+    "display: {{ ($.Scratch.Get "settings").products_headline_display }};" +
+    "color: {{ ($.Scratch.Get "settings").products_headline_font_color }};" +
+    "font-size: {{ ($.Scratch.Get "settings").products_headline_font_size }};" +
+    "font-family: {{ ($.Scratch.Get "settings").products_headline_font_family }};" +
+    "font-weight: {{ ($.Scratch.Get "settings").products_headline_font_weight }};" +
+    "top: {{ ($.Scratch.Get "settings").products_headline_top }};" +
+    "right: {{ ($.Scratch.Get "settings").products_headline_right }};" +
+"}" +
+
+".tvp-no-products-banner{" +
+    "height: {{ ($.Scratch.Get "settings").no_products_banner_height }};" +
+    "width: {{ ($.Scratch.Get "settings").no_products_banner_width }};" +
+    "padding: {{ ($.Scratch.Get "settings").no_products_banner_padding }};" +
+    "margin: {{ ($.Scratch.Get "settings").no_products_banner_margin }};" +
+"}" +
+
+".tvp-modal-close {" +
+    "width: {{ ($.Scratch.Get "settings").mobile_modal_close_button_width }};" +
+    "height: {{ ($.Scratch.Get "settings").mobile_modal_close_button_height }};" +
+    "padding: {{ ($.Scratch.Get "settings").modal_close_button_padding }};" +
+    "background-color: {{ ($.Scratch.Get "settings").modal_close_button_background_color }};" +
+    {{ with ($.Scratch.Get "settings").modal_close_button_background_image_url }}
+        "background-image: url('{{ $.Site.BaseURL }}carousel/{{ ($.Scratch.Get "settings").modal_close_button_background_image_url }}');" +
+    {{ end }}
+    "border: {{ ($.Scratch.Get "settings").modal_close_button_border }};" +
+    "border-radius: {{ ($.Scratch.Get "settings").modal_close_button_border_radius }};" +
+    "box-shadow: {{ ($.Scratch.Get "settings").modal_close_button_box_shadow }};" +
+    "right: {{ ($.Scratch.Get "settings").mobile_modal_close_button_right }};" +
+    "top: {{ ($.Scratch.Get "settings").mobile_modal_close_button_top }};" +
+    "opacity: {{ ($.Scratch.Get "settings").modal_close_button_opacity }};" +
+"}" +
+
+".tvp-modal-close-svg {" +
+    "display: {{ ($.Scratch.Get "settings").modal_close_button_svg_display }};" +
+"}" +
+
+".tvp-modal-close-svg > path:nth-child(1){ " +
+  "stroke-width: {{ ($.Scratch.Get "settings").modal_close_button_svg_icon_stroke_width }};" +
+  "stroke: {{ ($.Scratch.Get "settings").modal_close_button_svg_icon_color }};" +
+  "fill: {{ ($.Scratch.Get "settings").modal_close_button_svg_icon_color }};" +
+"}" +
+
+".tvp-modal-close:hover {" +
+    "background-color: {{ ($.Scratch.Get "settings").modal_close_button_background_color_hover }};" +
+    "opacity: {{ ($.Scratch.Get "settings").modal_close_button_opacity_hover }};" +
+"}" 

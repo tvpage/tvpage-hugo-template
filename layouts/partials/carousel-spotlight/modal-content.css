@@ -11,15 +11,14 @@
     {{ end }}
 "}" +
 
-".tvp-products-holder {" +
-    "padding-left: 1.3%;" +
-    "padding-right: 1.3%;" +
-    "right: -10px;" +
-"}" +
-
 ".tvp-product {" +
     "border: {{ ($.Scratch.Get "settings").product_thumbnail_border }};" +
     "margin: {{ ($.Scratch.Get "settings").product_thumbnail_margin }};" +
+"}" +
+
+".tvp-product-content {" +
+    "padding: {{ ($.Scratch.Get "settings").product_content_padding }};" +
+    "border: {{ ($.Scratch.Get "settings").product_content_border }};" +
 "}" +
 
 ".tvp-product-title {" +
@@ -76,47 +75,58 @@
 
 ".tvp-product-image {" +
     "background-size: {{ ($.Scratch.Get "settings").product_thumbnail_background_image_size }};" +
+    "width: {{ ($.Scratch.Get "settings").product_thumbnail_image_width }};" +
+    "margin: {{ ($.Scratch.Get "settings").product_thumbnail_image_margin }};" +
 "}" +
 
 ".tvp-product-image-overlay {" +
     "background-color: {{ ($.Scratch.Get "settings").product_thumbnail_image_overlay_color }};" +
 "}" +
 
-".tvp-product-popup {" +
-    "width: {{ ($.Scratch.Get "settings").product_popup_width }};" +
-    "background: {{ ($.Scratch.Get "settings").product_popup_background }};" +
-    "padding: {{ ($.Scratch.Get "settings").product_popup_padding }};" +
-    "border: {{ ($.Scratch.Get "settings").product_popup_border }};" +
-    "border-radius: {{ ($.Scratch.Get "settings").product_popup_border_radius }};" +
-    "box-shadow: {{ ($.Scratch.Get "settings").product_popup_box_shadow }};" +
-"}" +
-
-".tvp-product-popup-image {" +
-    "background-size: {{ ($.Scratch.Get "settings").product_thumbnail_background_image_size }};" +
-    "border: {{ ($.Scratch.Get "settings").product_popup_thumbnail_border }};" +
-"}" +
-
 ".tvp-product-cta {" +
-    "background: {{ ($.Scratch.Get "settings").product_popup_cta_background }};" +
-    "border: {{ ($.Scratch.Get "settings").product_popup_cta_border }};" +
-    "border-radius: {{ ($.Scratch.Get "settings").product_popup_cta_border_radius }};" +
-    "border-bottom: {{ ($.Scratch.Get "settings").product_popup_cta_border_bottom }};" +
-    "color: {{ ($.Scratch.Get "settings").product_popup_cta_font_color }};" +
-    "text-transform: {{ ($.Scratch.Get "settings").product_popup_cta_text_transform }};" +
-    "font-size: {{ ($.Scratch.Get "settings").product_popup_cta_font_size }};" +
-    "font-family: {{ ($.Scratch.Get "settings").product_popup_cta_font_family }};" +
-    "font-weight: {{ ($.Scratch.Get "settings").product_popup_cta_font_weight }};" +
-    "height: {{ ($.Scratch.Get "settings").product_popup_cta_height }};" +
-    "margin: {{ ($.Scratch.Get "settings").product_popup_cta_margin }};" +
+    "background: {{ ($.Scratch.Get "settings").product_cta_background }};" +
+    "border: {{ ($.Scratch.Get "settings").product_cta_border }};" +
+    "border-radius: {{ ($.Scratch.Get "settings").product_cta_border_radius }};" +
+    "border-bottom: {{ ($.Scratch.Get "settings").product_cta_border_bottom }};" +
+    "color: {{ ($.Scratch.Get "settings").product_cta_font_color }};" +
+    "text-transform: {{ ($.Scratch.Get "settings").product_cta_text_transform }};" +
+    "font-size: {{ ($.Scratch.Get "settings").product_cta_font_size }};" +
+    "font-family: {{ ($.Scratch.Get "settings").product_cta_font_family }};" +
+    "font-weight: {{ ($.Scratch.Get "settings").product_cta_font_weight }};" +
+    "height: {{ ($.Scratch.Get "settings").product_cta_height }};" +
+    "margin: {{ ($.Scratch.Get "settings").product_cta_margin }};" +
 "}" +
 
 ".tvp-product-cta:hover {" +
-    "background: {{ ($.Scratch.Get "settings").product_popup_cta_background_hover }};" +
-    "color: {{ ($.Scratch.Get "settings").product_popup_cta_font_color_hover }};" +
+    "background: {{ ($.Scratch.Get "settings").product_cta_background_hover }};" +
+    "color: {{ ($.Scratch.Get "settings").product_cta_font_color_hover }};" +
 "}" +
 
-".tvp-arrow-indicator:after {" +
-    "border: {{ ($.Scratch.Get "settings").product_popup_border }};" +
-    " box-shadow: {{ ($.Scratch.Get "settings").product_popup_box_shadow }};" +
-    "background: {{ ($.Scratch.Get "settings").product_popup_background }};" +
+".tvp-products-carousel-arrow {" +
+  "bottom: {{ ($.Scratch.Get "settings").products_carousel_arrow_bottom }};" +
+  "margin: {{ ($.Scratch.Get "settings").products_carousel_arrow_margin }};" +
+  "padding: {{ ($.Scratch.Get "settings").products_carousel_arrow_padding }};" +
+  "z-index: {{ ($.Scratch.Get "settings").products_carousel_arrow_zindex }};" +
+  "top: {{ ($.Scratch.Get "settings").products_carousel_arrow_top }};" +
+  "width: {{ ($.Scratch.Get "settings").products_carousel_arrow_width }};" +
+  "height: {{ ($.Scratch.Get "settings").products_carousel_arrow_height }};" +
+  "border: {{ ($.Scratch.Get "settings").products_carousel_arrow_border }};" +
+"}" +
+
+".tvp-products-carousel-arrow.prev {" +
+    "left: {{ ($.Scratch.Get "settings").products_carousel_arrow_prev_left }};" +
+"}" +
+
+".tvp-products-carousel-arrow.next {" +
+    "right: {{ ($.Scratch.Get "settings").products_carousel_arrow_next_right }};" +
+"}" +
+
+".tvp-products-carousel-arrow > svg {" +
+    "background-color: {{ ($.Scratch.Get "settings").products_carousel_arrow_svg_background_color }};" +
+    "fill: {{ ($.Scratch.Get "settings").products_carousel_arrow_svg_fill }};" +
+"}" +
+
+".tvp-products-carousel-arrow:hover > svg {" +
+    "background-color: {{ ($.Scratch.Get "settings").products_carousel_arrow_svg_background_color_hover }};" +
+    "fill: {{ ($.Scratch.Get "settings").products_carousel_arrow_svg_fill_hover }};" +
 "}"

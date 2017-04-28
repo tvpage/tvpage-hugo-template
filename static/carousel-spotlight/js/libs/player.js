@@ -12,42 +12,73 @@
         isFunction = function(obj){
             return 'undefined' !== typeof obj;
         },
-        debounce = function(func,wait,immediate) {
-            var timeout;
-            return function() {
-                var context = this, args = arguments;
-                var later = function() {
-                    timeout = null;
-                    if (!immediate) func.apply(context, args);
-                };
-                var callNow = immediate && !timeout;
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-                if (callNow) func.apply(context, args);
-            };
+        compact = function(o){
+          if (!o && "object" !== typeof o) return;
+          for (var k in o) {
+            if (!o[k]) {
+              delete o[k];
+            }
+          }
+          return o;
         };
 
     //The player singleton. We basically create an instance from the tvpage
     //player and expose most utilities, helping to encapsualte what is required for a few players to co-exist.
     function Player(el, options, startWith) {
-        if (!el || !isset(options) || !isset(options.data) || options.data.length <= 0) return console.log('bad args');
+        if (!el || !isset(options) || !isset(options.data) || options.data.length <= 0) return console.warn('bad args');
+
+        this.options = options;
+        this.instance = null;
+        this.el = 'string' === typeof el ? document.getElementById(el) : el;
 
         this.isFullScreen = false;
         this.initialResize = true;
+
         this.autoplay = isset(options.autoplay) ? Number(options.autoplay) : false;
         this.autonext = isset(options.autonext) ? Number(options.autonext) : true;
         this.version = isset(options.player_version) ? options.player_version : null;
-        this.progressColor = isset(options.progress_color) ? options.progress_color : null;
-        this.transcript = isset(options.transcript) ? options.transcript : null;
+
         this.removeControls = isset(options.remove_controls) ? options.remove_controls : null;
+        this.techOrder = isset(options.tech_order) ? options.tech_order : null;
         this.analytics = isset(options.analytics) ? options.analytics : null;
+        this.apiBaseUrl = isset(options.api_base_url) ? options.api_base_url : null;
+        this.mediaProviders = isset(options.media_providers) ? options.media_providers : null;
+        this.preload = isset(options.preload) ? options.preload : null;
+        this.poster = isset(options.poster) ? options.poster : null;
         this.overlay = isset(options.overlay) ? options.overlay : null;
+
+        this.playbutton = compact({
+          height: isset(options.play_button_height) ? options.play_button_height : null,
+          width: isset(options.play_button_width) ? options.play_button_width : null,
+          backgroundColor: isset(options.play_button_background_color) ? options.play_button_background_color : null,
+          borderRadius: isset(options.play_button_border_radius) ? options.play_button_border_radius : null,
+          borderWidth: isset(options.play_button_border_width) ? options.play_button_border_width : null,
+          borderColor: isset(options.play_button_border_color) ? options.play_button_border_color : null,
+          borderStyle: isset(options.play_button_border_style) ? options.play_button_border_style : null,
+          iconColor: isset(options.play_button_icon_color) ? options.play_button_icon_color : null
+        });
+
+        this.floater = compact({
+         controlbarColor: isset(options.control_bar_color) ? options.control_bar_color : null,
+         iconColor: isset(options.icon_color) ? options.icon_color : null,
+         removeControls: isset(options.remove_controls) ? options.remove_controls : null
+        });
+
+        this.seekBar = compact({
+         progressColor: isset(options.progress_color) ? options.progress_color : null
+        });
+        
+        this.controls = compact({
+          active: true,
+          seekBar: this.seekBar,
+          floater: this.floater,
+          playbutton: this.playbutton,
+          overlayColor: isset(options.overlay_color) ? options.overlay_color : null,
+          overlayOpacity: isset(options.overlay_opacity) ? options.overlay_opacity : null
+        });
 
         this.onResize = isset(options.onResize) && isFunction(options.onResize) ? options.onResize : null;
         this.onNext = isset(options.onNext) && isFunction(options.onNext) ? options.onNext : null;
-
-        this.instance = null;
-        this.el = 'string' === typeof el ? document.getElementById(el) : el;
 
         this.assets = (function(data){
             var assets = [];
@@ -65,8 +96,13 @@
                     asset.analyticsLogUrl = video.analytics;
                     asset.analyticsObj = video.events[1].data;
                 } else {
+                    var channelId = isset(video,'parentId') ? video.parentId : ( isset(options,'channel') ? options.channel.id : 0 );
+                    if (!channelId && (options.channelId || options.channelid)) {
+                      channelId = options.channelId || options.channelid;
+                    }
+
                     asset.analyticsObj = {
-                        pg: isset(video,'parentId') ? video.parentId : ( isset(options,'channel') ? options.channel.id : 0 ),
+                        pg: channelId,
                         vd: video.id,
                         li: video.loginId
                     };
@@ -82,34 +118,14 @@
 
         //Context reference for Methods.
         var that = this;
-
-        //Sometimes we want/need to show an intearctive overlay on top of the player. We need this for MP4 videos that will
-        //cue (mobile or autoplay:off) to actual play the video on demand.
-        this.addOverlay = function(asset){
-            var overlay = document.createElement('div');
-            overlay.className = 'tvp-overlay';
-            overlay.style.backgroundImage = 'url("' + asset.thumbnailUrl + '")';
-            overlay.innerHTML = '<div class="tvp-overlay-cover"></div><svg class="tvp-play" viewBox="0 0 200 200">' +
-            '<polygon points="70, 55 70, 145 145, 100"></polygon></svg>';
-
-            var click = function(){
-                var clear = function () {
-                    this.removeEventListener('click',click,false);
-                    this.parentNode.removeChild(this);
-                };
-                clear.call(this);
-                if (that.instance) {
-                    that.instance.play();
-                }
-            };
-
-            overlay.removeEventListener('click', click, false);
-            overlay.addEventListener('click', click, false);
-            this.el.appendChild(overlay);
-        };
+        this.getOption = function (name) {
+          if (this.options.hasOwnProperty(name))
+            return this.options.hasOwnProperty(name);
+          return null;
+        }
 
         this.play = function(asset,ongoing){
-            if (!asset) return console.log('need asset');
+            if (!asset) return console.warn('need asset');
             var willCue = false,
                 isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
@@ -135,15 +151,12 @@
                 config.logUrl = asset.analyticsLogUrl;
                 analytics.initConfig(config);
             } else {
-                config.logUrl = '\/\/api.tvpage.com\/v1\/__tvpa.gif';
+                config.logUrl = this.apiBaseUrl + '/__tvpa.gif';
                 analytics.initConfig(config);
             }
 
             if (willCue) {
                 this.instance.cueVideo(asset);
-                if ('mp4' === asset.type || this.overlay) {
-                    this.addOverlay(asset);
-                }
             } else {
                 this.instance.loadVideo(asset);
             }
@@ -164,7 +177,7 @@
 
             that.instance.resize(width, height);
 
-            if(!that.onResize) return;
+            if (!that.onResize) return;
             that.onResize(that.initialResize, [width, height]);
 
             that.initialResize = false;
@@ -174,18 +187,24 @@
         (function libsReady() {
             setTimeout(function() {
                 if ( !isset(window,'TVPage') || !isset(window,'_tvpa') ) {
-                    (++checks < 50) ? libsReady() : console.log('limit reached');
+                    (++checks < 50) ? libsReady() : console.warn('limit reached');
                 } else {
 
-                    //We create insntances on the tvpage player.
-                    that.player = new TVPage.player({
-                        techOrder: 'html5,flash',
+                var playerOptions = {
+                        techOrder: that.techOrder,
+                        mediaProviders: that.mediaProviders,
                         analytics: { tvpa: that.analytics },
-                        apiBaseUrl: '//api.tvpage.com/v1',
+                        apiBaseUrl: that.apiBaseUrl,
                         swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+that.version+'-flash.swf',
                         onReady: function(e, pl){
                             that.instance = pl;
                             that.resize();
+
+                            //Fix required to let popups be displayed on top of plauer overlay.
+                            var controlBar = that.el.querySelector("#ControlBarFloater");
+                            if (controlBar && controlBar.parentNode) {
+                                controlBar.parentNode.style.zIndex = "9999";
+                            }
 
                             //We don't want to resize the player here on fullscreen... we need the player be.
                             if (isset(window,'BigScreen')) {
@@ -198,19 +217,18 @@
                             //size from host.
                             if (window.location !== window.parent.location && (/iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream)){
                                 var onHolderResize = function (e) {
-                                    if (!e || !isset(e, 'data') || !isset(e.data, 'event') || 'tvp_carousel_spotlight:modal_holder_resize' !== e.data.event) return;
+                                    if (!e || !isset(e, 'data') || !isset(e.data, 'event') || 'tvp_' + options.id.replace(/-/g,'_') + ':modal_holder_resize' !== e.data.event) return;
                                     var size = e.data.size || [];
                                     that.resize(size[0], size[1]);
                                 };
                                 window.removeEventListener('message', onHolderResize, false);
                                 window.addEventListener('message', onHolderResize, false);
                             } else {
-                                var onWindowResize = Utils.debounce(that.resize,50);
+                                var onWindowResize = that.resize;
                                 window.removeEventListener('message', onWindowResize, false);
-                                window.addEventListener('resize', onWindowResize);
+                                window.addEventListener('resize', onWindowResize, false);
                             }
 
-                            that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progressColor;
                             var current = 0;
                             if (startWith && startWith.length) {
                                 for (var i = 0; i < that.assets.length; i++) {
@@ -236,15 +254,38 @@
                             }
                         },
                         divId: that.el.id,
-                        controls: {
-                            active: true,
-                            floater: {
-                                removeControls: that.removeControls,
-                                transcript: that.transcript
-                            }
-                        }
-                    });
+                        controls: that.controls
+                    };
 
+                    var extras = ["preload","poster","overlay"];
+                    for (var i = 0; i < extras.length; i++) {
+                      var option = extras[i];
+                      if (that[option] !== null) {
+                        playerOptions[option] = that[option];
+                      }
+                    }
+
+                    // merge with options passed
+                    var allowOverride = {
+                      techOrder: 1,
+                      analytics: 1,
+                      apiBaseUrl: 1,
+                      swf: 1,
+                      controls: 1,
+                      width: 1,
+                      height: 1,
+                      mediaProviders: 1,
+                      preload: 1,
+                      poster: 1,
+                      overlay: 1
+                    };
+                    for (var o in that.options) {
+                      if ( !playerOptions.hasOwnProperty(o) || allowOverride.hasOwnProperty(o) ) {
+                        playerOptions[o] = that.options[o];
+                      }
+                    }
+                    
+                    that.player = new TVPage.player(playerOptions);
                 }
             },150);
         })();
