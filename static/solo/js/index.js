@@ -13,6 +13,36 @@
       var b = opts.body || document.body;
       b.appendChild(s);
   },
+  getSettings = function(type){
+    var getConfig = function(g){
+      var c = {};
+      if (Utils.isset(g) && Utils.isset(g,'__TVPage__') && Utils.isset(g.__TVPage__, 'config')) {
+        c = g.__TVPage__.config;
+      } else {
+        return;
+      }
+      return c;
+    };
+    var s = {};
+    if ('dynamic' === type) {
+      var config = getConfig(parent);
+      var id = document.body.getAttribute('data-id');
+      if (!Utils.isset(config, id)) return;
+      s = config[id];
+      s.name = id;
+    } else if ('inline' === type && type && type.length) {
+      var config = getConfig(parent);
+      s = config[type];
+      s.name = type;
+    } else if ('static' === type) {
+      var config = getConfig(window);
+      var id = document.body.getAttribute('data-id');
+      if (!Utils.isset(config, id)) return;
+      s = config[id];
+      s.name = id;
+    }
+    return s;
+  },
   loadData = function(s,cbName,callback){
    return jsonpCall({
       src: function(){
@@ -41,68 +71,65 @@
   //We need to know a few things before we can start a player. We need to know if we will render
   //this here or somehow the will be content (when used with iframe).
   function initialize(){
-    var unique = Utils.random(),
-        player = null,
-        menu = null,
-        settings = {},
-        body = document.body;
-    
-    if (Utils.isset(parent) && Utils.isset(parent,'__TVPage__') && Utils.isset(parent.__TVPage__, 'config')) {
-      settings = parent.__TVPage__.config[body.getAttribute('data-id')];
-    }
+    if (document.body.classList.contains('dynamic')) {
+      //We deal diff with some stuff on iframe.
+      (function(unique,settings){
+        var player = null,
+            menu = null,
+            playerSettings = JSON.parse(JSON.stringify(settings)),
+            menuSettings = JSON.parse(JSON.stringify(settings)),
+            playlistOption = Utils.isset(settings,'playlist') ? settings.playlist: null;
 
-    var playerSettings = JSON.parse(JSON.stringify(settings)),
-        menuSettings = JSON.parse(JSON.stringify(settings)),
-        playlistOption = Utils.isset(settings,'playlist') ? settings.playlist: null;
+        render(unique,document.body);
 
-    render(unique,body);
+        loadData(settings,unique,function(data){
+          if (data.length) {
+            if (window.parent) {
+              window.parent.postMessage({
+                event: ("tvp_" + settings.id).replace(/-/g,'_') + ':render'
+              }, '*');
+            }
 
-    loadData(settings,unique,function(data){
-      if (data.length) {
-        if (window.parent) {
-          window.parent.postMessage({
-            event: ("tvp_" + settings.id).replace(/-/g,'_') + ':render'
-          }, '*');
-        }
+            playerSettings.data = data || [];
+            player = new Player('tvp-player-el-'+unique,playerSettings);
 
-        playerSettings.data = data || [];
-        player = new Player('tvp-player-el-'+unique,playerSettings);
+            if (playlistOption === 'show' && playlistOption) {
+              menuSettings.data = data || [];
+              menu = new Menu(player,menuSettings);        
+            }
+          }
+        });
 
         if (playlistOption === 'show' && playlistOption) {
-          menuSettings.data = data || [];
-          menu = new Menu(player,menuSettings);        
+
+          playerSettings.onPlayerReady = function(){
+            menu.init();
+          };
+
+          playerSettings.onNext = function(){
+            var playerAsset = player.assets[player.current];
+            menu.setActiveItem(playerAsset.assetId);
+            menu.hideMenu();
+          };
+
+          playerSettings.onFullscreenChange = function(){
+            menu.hideMenu();
+          };
+
+          Menu.prototype.loadMore = function(){
+            if (!lastPage && !isFetching) {
+              channelVideosPage++;
+              isFetching = true;
+              loadData(settings,unique,function(newData){
+                isFetching = false;
+                lastPage = (!newData.length || newData.length < itemsPerPage) ? true : false;
+                player.addData(newData);
+                menu.update(newData);
+              });
+            }
+          };
         }
-      }
-    });
-
-    if (playlistOption === 'show' && playlistOption) {
-
-      playerSettings.onPlayerReady = function(){
-        menu.init();
-      };
-
-      playerSettings.onNext = function(){
-        var playerAsset = player.assets[player.current];
-        menu.setActiveItem(playerAsset.assetId);
-        menu.hideMenu();
-      };
-
-      playerSettings.onFullscreenChange = function(){
-        menu.hideMenu();
-      };
-
-      Menu.prototype.loadMore = function(){
-        if (!lastPage && !isFetching) {
-          channelVideosPage++;
-          isFetching = true;
-          loadData(settings,unique,function(newData){
-            isFetching = false;
-            lastPage = (!newData.length || newData.length < itemsPerPage) ? true : false;
-            player.addData(newData);
-            menu.update(newData);
-          });
-        }
-      };
+      }(Utils.random(),getSettings('dynamic')));
     }
   };
 
