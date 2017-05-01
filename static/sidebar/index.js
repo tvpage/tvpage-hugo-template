@@ -373,7 +373,7 @@ function handleModalProducts(e) {
     label.innerHTML = config.products_headline_text;
     
     if (config.products_info_tooltip && config.products_message.trim().length) {
-      var tooltipHtml = config.templates['modal'].tooltip;
+      tooltipHtml = config.templates['modal'].tooltip;
       var tooltipDiv = document.createElement('div');
       tooltipDiv.classList.add('tvp-tooltip');
       tooltipDiv.innerHTML = tooltipHtml;

@@ -5,7 +5,6 @@
   };
 
   function Grid(el, options) {
-    this.campaign = options.campaign || null;
     this.options = options || {};
     this.windowSize = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) <= 200 ? 'small' : 'medium';
     this.initialResize = true;
@@ -19,9 +18,7 @@
     this.channelId = (options.channelid || options.channelId) || null;
     this.loading = false;
     this.isLastPage = false;
-    this.page = 1;
-    this.campVideos = true;
-    this.callbackVideos = [];
+    this.page = 0;
 
     this.el = 'string' === typeof el ? document.getElementById(el) : el;
     this.loadBtn = this.el.querySelector('.tvp-sidebar-load');
@@ -92,35 +89,6 @@
       }
     };
 
-    this.handleVideosToRender = function(callback){
-      var videosToRender = [];
-      for (var i = (that.page -1) * that.itemsPerPage; i < (that.page * that.itemsPerPage) && i < that.callbackVideos.length; i++) {
-        videosToRender.push(that.callbackVideos[i]);
-      }
-
-      if ( !videosToRender.length || (videosToRender.length < that.itemsPerPage) ) {
-        that.isLastPage = true;
-        that.campVideos = true;
-      }
-      that.data = videosToRender;
-      callback(that.data);
-    };
-
-    this.getChannelVideos = function(cb){
-      var channel = that.channel || {};
-      var params = channel.parameters || {};
-      var src = this.options.api_base_url + '/channels/' + (channel.id || that.channelId) + '/videos?X-login-id=' + that.loginId;
-      for (var p in params) {
-        src += '&' + p + '=' + params[p];
-      }
-      var cbName = options.callbackName || 'tvp_' + Math.floor(Math.random() * 555);
-      src += '&callback=' + cbName;
-      var script = document.createElement('script');
-      script.src = src;
-      window[cbName || 'callback'] = cb;
-      document.body.appendChild(script);
-    };
-
     var that = this;
     this.load = function(callback){
       that.loading = true;
@@ -128,64 +96,37 @@
         this.onLoad();
       }
 
-      if (that.campaign) {
-        if (that.campVideos) {
-          var xhr = new XMLHttpRequest();
-          xhr.open('GET', '//localhost:1313/campaign.json', true);
-          xhr.onreadystatechange = function() {
-            var campaignVideos = [];
-            if (xhr.readyState == XMLHttpRequest.DONE) {
-              if (xhr.status === 200) {
-                var tempCampaignVideos = JSON.parse(xhr.responseText);
-                for (var i = (that.page -1) * that.itemsPerPage; i < (that.page * that.itemsPerPage) && i < tempCampaignVideos.length; i++) {
-                campaignVideos.push(tempCampaignVideos[i]);
-                }
-
-                if (!campaignVideos.length || (campaignVideos.length < that.itemsPerPage)) {
-                  that.campVideos = false;
-                  that.isLastPage = true;
-                  that.page = 1;
-
-                  var fillVideos = [];
-                  for (var i = (that.page -1) * that.itemsPerPage; i < (that.page * that.itemsPerPage) && i < that.callbackVideos.length; i++) {
-                    fillVideos.push(that.callbackVideos[i])
-                  }
-
-                  var toSplice = Number(that.itemsPerPage - campaignVideos.length);
-                  fillVideos.splice(toSplice, fillVideos.length);
-
-                  for(var i = 0; i < fillVideos.length; i++){
-                    campaignVideos.push(fillVideos[i])
-                  }
-                }
-                that.data = campaignVideos;
-                callback(that.data);
-              }
-            }
-          };
-          xhr.send();
-        }else{
-          that.handleVideosToRender(callback);
+      var channel = that.channel || {};
+      var params = channel.parameters || {};
+      var src = this.options.api_base_url + '/channels/' + (channel.id || that.channelId) + '/videos?X-login-id=' + that.loginId;
+      for (var p in params) {
+        src += '&' + p + '=' + params[p];
+      }
+      var cbName = options.callbackName || 'tvp_' + Math.floor(Math.random() * 555);
+      src += '&p=' + that.page + '&n=' + that.itemsPerPage + '&callback='+cbName;
+      var script = document.createElement('script');
+      script.src = src;
+      window[cbName || 'callback'] = function(data){
+        if ( !data.length || (data.length < that.itemsPerPage) ) {
+          that.isLastPage = true;
         }
 
+        that.data = data;
+        callback(data);
         that.loading = false;
-
         if (that.onLoadEnd) {
           that.onLoadEnd();
         }
-
-      } else {
-        that.handleVideosToRender(callback);
-      }
+      };
+      document.body.appendChild(script);
     };
 
     this.next = function(){
       if (this.isLastPage) {
-        this.page = 1;
+        this.page = 0;
         this.isLastPage = false;
       } else {
         this.page++;
-        this.loading = true;
       }
     };
 
@@ -206,7 +147,7 @@
         that.itemsPerPage = isSmall ? 2 : (options.itemsPerPage || 6);
         that.itemsPerRow = isSmall ? 1 : (options.itemsPerRow || 2);
         //reset page to 0 if we detect a resize, so we don't have trouble loading the grid
-        that.page = 1;
+        that.page = 0;
         that.isLastPage = false;
         
         that.load(function(){
@@ -269,13 +210,6 @@
             event: that.eventPrefix + ':render'
           }, '*');
         }
-      }
-    });
-
-    this.getChannelVideos(function(data){
-      if (!data.length || data.length == 0) return;
-      for(var i = 0; i < data.length; i++){
-        that.callbackVideos.push(data[i])
       }
     });
 

@@ -399,6 +399,20 @@
         {
           "for": "modal",
           "type": "text",
+          "label": "Modal Box Shadow",
+          "code": "modal_box_shadow",
+          "value": "0 2px 18px 0 rgba(0,0,0,0.5)"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Modal Body Padding",
+          "code": "modal_body_padding",
+          "value": "0"
+        },
+        {
+          "for": "modal",
+          "type": "text",
           "label": "No Products Banner Height",
           "code": "no_products_banner_height",
           "value": 0
@@ -847,9 +861,37 @@
         {
           "for": "modal",
           "type": "text",
+          "label": "Product Price Margin",
+          "code": "product_price_margin",
+          "value": "0 0 10px 0"
+        },
+        {
+          "for": "modal",
+          "type": "text",
           "label": "Product Rating Background Image Url",
           "code": "product_rating_background_image_url",
-          "value": ""
+          "value": "product_rating_icons.png"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Rating Empty Background Image Position",
+          "code": "product_rating_empty_background_image_position",
+          "value": "0 -20px"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Rating Half Background Image Position",
+          "code": "product_rating_half_background_image_position",
+          "value": "0 -41px"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Rating Full Background Image Position",
+          "code": "product_rating_full_background_image_position",
+          "value": "0 0"
         },
         {
           "for": "modal",
@@ -969,6 +1011,13 @@
           "label": "Product Title Text Align",
           "code": "product_title_text_align",
           "value": "left"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Title Margin",
+          "code": "product_title_margin",
+          "value": "10px 0"
         },
         {
           "for": "modal",
@@ -1105,6 +1154,20 @@
         },
         {
           "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Border Radius",
+            "code": "product_popup_cta_border_radius",
+            "value": "0"
+        },
+        {
+          "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Margin",
+            "code": "product_popup_cta_margin",
+            "value": "10px 0 0 0"
+        },
+        {
+          "for": "modal",
           "type": "text",
           "label": "Product Popup CTA Background",
           "code": "product_popup_cta_background",
@@ -1200,6 +1263,20 @@
           "label": "Product Popup CTA Height",
           "code": "product_popup_cta_height",
           "value": "40px"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Rating Attribute",
+          "code": "product_rating_attribute",
+          "value": "rating"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Review Attribute",
+          "code": "product_review_attribute",
+          "value": "review_count"
         },
         {
           "for": "modal",
