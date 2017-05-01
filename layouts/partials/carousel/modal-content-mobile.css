@@ -1,6 +1,6 @@
 {{ with ($.Scratch.Get "settings").fonts }}
   {{ range . }}
-    "@import url('{{ . }}');" +
+    "@import url('{{ . | htmlUnescape | safeHTML }}');" +
   {{ end }}
 {{ end }}
 
@@ -14,8 +14,9 @@
 
 ".tvp-product {" +
     "border: {{ ($.Scratch.Get "settings").product_thumbnail_border }};" +
-    "margin-right: {{ ($.Scratch.Get "settings").product_thumbnail_margin_right }};" +
-    "margin-bottom: {{ ($.Scratch.Get "settings").product_thumbnail_margin_bottom }};" +
+    "margin: {{ ($.Scratch.Get "settings").product_thumbnail_margin_mobile }};" +
+    "padding: {{ ($.Scratch.Get "settings").product_thumbnail_padding_mobile }};" +
+    "z-index: {{ ($.Scratch.Get "settings").product_thumbnail_zindex_mobile }};" +
 "}" +
 
 ".tvp-product-title {" +

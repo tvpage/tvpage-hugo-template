@@ -112,8 +112,7 @@ if ( !config.hasOwnProperty('targetEl') ||  !document.getElementById(config.targ
 } 
 
 var targetElement = document.getElementById(config.targetEl);
-targetElement.insertAdjacentHTML('beforebegin', "<style>" + config.css["host-custom"] + "</style>" + hostCssTag + 
-'<div id="' + id + '-holder" class="tvp-solo-cta-holder"></div>');
+targetElement.insertAdjacentHTML('beforebegin', hostCssTag + "<style>" + config.css["host-custom"] + "</style><div id=\"" + id + "-holder\" class=\"tvp-solo-cta-holder\"></div>");
 targetElement.parentNode.removeChild(targetElement);
 
 config.id = id;

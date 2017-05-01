@@ -71,7 +71,9 @@
         (function libsReady() {
             setTimeout(function() {
                 if (not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player)) {
-                    (++libsCheck < 50) ? libsReady(): console.log('limit reached');
+                    if (++libsCheck < 50) {
+                        libsReady();
+                    }
                 } else {
                     initialize();
                 }
