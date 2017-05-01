@@ -17,6 +17,26 @@
       return true;
     };
 
+    this.formatDuration = function(secs) {
+        if ("undefined" === typeof secs) return;
+        var date = new Date(0, 0, 0);
+        date.setSeconds(Number(secs));
+        var hour = (date.getHours() ? date.getHours() : ''),
+            minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes(),
+            seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+        return (hour + minutes + ':' + seconds);
+    };
+
+    this.formatDate = function(unixTimestamp) {
+        var d = (new Date(Number(unixTimestamp) * 1000)),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+        return [month, day, year].join('/');
+    };
+
     this.isset = function(o,p){
       if (!arguments.length) return;
       var val = o;
@@ -25,7 +45,7 @@
     };
 
     this.debounce = function(func,wait,immediate){
-      var timeout;  
+      var timeout = null;
       return function() {
         var context = this, args = arguments;
         var later = function() {
@@ -64,6 +84,8 @@
           for (var i = 0, l = keys.length; i < l; i++) v = v[keys[i]];
           return (typeof v !== "undefined" && v !== null) ? v : "";
         });
+      } else {
+        return false;
       }
     };
     

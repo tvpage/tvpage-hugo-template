@@ -76,6 +76,13 @@
         },
         {
             "for": "carousel",
+            "type": "text",
+            "label": "Box Shadow",
+            "code": "box_shadow",
+            "value": "none"
+        },
+        {
+            "for": "carousel",
             "type": "boolean",
             "label": "Infinite",
             "code": "infinite",
@@ -87,6 +94,41 @@
             "label": "Navigation Bullets",
             "code": "navigation_bullets",
             "value": false
+        },
+        {
+          "for": "carousel",
+          "type": "text",
+          "label": "Navigation Bullets Append To",
+          "code": "navigation_bullets_append_to",
+          "value": ""
+        },
+        {
+          "for": "carousel",
+          "type": "text",
+          "label": "Navigation Bullets Position",
+          "code": "navigation_bullets_position",
+          "value": "absolute"
+        },
+        {
+          "for": "carousel",
+          "type": "text",
+          "label": "Navigation Bullets Bottom",
+          "code": "navigation_bullets_bottom",
+          "value": "-25px"
+        },
+        {
+          "for": "carousel",
+          "type": "text",
+          "label": "Navigation Bullets Text Align",
+          "code": "navigation_bullets_text_align",
+          "value": "center"
+        },
+        {
+          "for": "carousel",
+          "type": "text",
+          "label": "Navigation Bullets Margin",
+          "code": "navigation_bullets_margin",
+          "value": "0"
         },
         {
             "for": "carousel",
@@ -119,9 +161,58 @@
         {
            "for": "carousel",
            "type": "text",
-           "label": "Navigation Bullet Size",
+           "label": "Navigation Bullet Background Color",
+           "code": "navigation_bullet_background_color",
+           "value": "#777777"
+        },
+        {
+           "for": "carousel",
+           "type": "text",
+           "label": "Navigation Bullet Border Radius",
+           "code": "navigation_bullet_border_radius",
+           "value": "50%"
+        },
+        {
+           "for": "carousel",
+           "type": "text",
+           "label": "Navigation Bullet Border",
+           "code": "navigation_bullet_border",
+           "value": "none"
+        },
+        {
+           "for": "carousel",
+           "type": "text",
+           "label": "Navigation Bullet Margin",
+           "code": "navigation_bullet_margin",
+           "value": "0 5px"
+        },
+        {
+           "for": "carousel",
+           "type": "text",
+           "label": "Navigation Active Bullet Size",
+           "code": "navigation_active_bullet_background_image_url",
+           "value": ""
+        },
+        {
+           "for": "carousel",
+           "type": "text",
+           "label": "Navigation Active Bullet Size",
            "code": "navigation_active_bullet_background_position",
            "value": "0px 0px"
+        },
+        {
+           "for": "carousel",
+           "type": "text",
+           "label": "Navigation Active Bullet Background Color",
+           "code": "navigation_active_bullet_background_color",
+           "value": "#333333"
+        },
+        {
+           "for": "carousel",
+           "type": "text",
+           "label": "Navigation Active Bullet Border",
+           "code": "navigation_active_bullet_border",
+           "value": "none"
         },
         {
            "for": "carousel",
@@ -462,6 +553,13 @@
         {
             "for": "carousel",
             "type": "text",
+            "label": "Item Metadata Font Family",
+            "code": "item_metadata_font_family",
+            "value": "Helvetica"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
             "label": "Item Metadata Font Size",
             "code": "item_metadata_font_size",
             "value": "55%"
@@ -546,6 +644,20 @@
         {
           "for": "modal",
           "type": "text",
+          "label": "Modal Box Shadow",
+          "code": "modal_box_shadow",
+          "value": "0 2px 18px 0 rgba(0,0,0,0.5)"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Modal Body Padding",
+          "code": "modal_body_padding",
+          "value": "0"
+        },
+        {
+          "for": "modal",
+          "type": "text",
           "label": "Modal Background",
           "code": "modal_background",
           "value": "#fff"
@@ -574,16 +686,30 @@
         {
           "for": "modal",
           "type": "text",
-          "label": "Product Thumbnail Margin Right",
-          "code": "product_thumbnail_margin_right",
-          "value": "10px"
+          "label": "Product Thumbnail Margin",
+          "code": "product_thumbnail_margin",
+          "value": "0 10px 10px 0"
         },
         {
           "for": "modal",
           "type": "text",
-          "label": "Product Thumbnail Margin Bottom",
-          "code": "product_thumbnail_margin_bottom",
-          "value": "10px"
+          "label": "Product Thumbnail Margin Mobile",
+          "code": "product_thumbnail_margin_mobile",
+          "value": "0 10px 10px 0"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Thumbnail Padding Mobile",
+          "code": "product_thumbnail_padding_mobile",
+          "value": "5px"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Thumbnail Z-Index Mobile",
+          "code": "product_thumbnail_zindex_mobile",
+          "value": "9999"
         },
         {
           "for": "modal",
@@ -959,9 +1085,37 @@
         {
           "for": "modal",
           "type": "text",
+          "label": "Product Price Margin",
+          "code": "product_price_margin",
+          "value": "0 0 10px 0"
+        },
+        {
+          "for": "modal",
+          "type": "text",
           "label": "Product Rating Background Image Url",
           "code": "product_rating_background_image_url",
-          "value": ""
+          "value": "product_rating_icons.png"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Rating Empty Background Image Position",
+          "code": "product_rating_empty_background_image_position",
+          "value": "0 -20px"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Rating Half Background Image Position",
+          "code": "product_rating_half_background_image_position",
+          "value": "0 -41px"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Rating Full Background Image Position",
+          "code": "product_rating_full_background_image_position",
+          "value": "0 0"
         },
         {
           "for": "modal",
@@ -969,6 +1123,20 @@
           "label": "Product Reviews Font Color",
           "code": "product_reviews_font_color",
           "value": "#333"
+        },
+        {
+          "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Border Radius",
+            "code": "product_popup_cta_border_radius",
+            "value": "0"
+        },
+        {
+          "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Margin",
+            "code": "product_popup_cta_margin",
+            "value": "10px 0 0 0"
         },
         {
           "for": "modal",
@@ -1102,6 +1270,13 @@
           "label": "Product Title Text Align",
           "code": "product_title_text_align",
           "value": "left"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Title Margin",
+          "code": "product_title_margin",
+          "value": "10px 0"
         },
         {
           "for": "modal",
@@ -1312,6 +1487,20 @@
           "label": "Fix Page Scroll",
           "code": "fix_page_scroll",
           "value": true
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Rating Attribute",
+          "code": "product_rating_attribute",
+          "value": "rating"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Review Attribute",
+          "code": "product_review_attribute",
+          "value": "review_count"
         },
         {
           "for": "mobile",

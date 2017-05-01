@@ -12,13 +12,13 @@
 	};
 	
 	bootstrap.css = {
-		host: {{- (partial (printf "%s/host.css" .Type) .) -}},
-		"host-mobile": {{- (partial (printf "%s/host-mobile.css" .Type) .) -}},
-		"host-custom": {{- (partial (printf "%s/host-custom.css" .Type) .) -}},
-		"host-custom-mobile": {{- (partial (printf "%s/host-custom-mobile.css" .Type) .) -}},
-		sidebar: {{- (partial (printf "%s/sidebar.css" .Type) .) -}},
-		"modal-content": {{- (partial (printf "%s/modal-content.css" .Type) .) -}},
-		"modal-content-mobile": {{- (partial (printf "%s/modal-content-mobile.css" .Type) .) -}}
+		host: {{- (partial (printf "%s/host.css" .Type) .) | htmlUnescape | safeHTML -}},
+		"host-mobile": {{- (partial (printf "%s/host-mobile.css" .Type) .) | htmlUnescape | safeHTML -}},
+		"host-custom": {{- (partial (printf "%s/host-custom.css" .Type) .) | htmlUnescape | safeHTML -}},
+		"host-custom-mobile": {{- (partial (printf "%s/host-custom-mobile.css" .Type) .) | htmlUnescape | safeHTML -}},
+		sidebar: {{- (partial (printf "%s/sidebar.css" .Type) .) | htmlUnescape | safeHTML -}},
+		"modal-content": {{- (partial (printf "%s/modal-content.css" .Type) .) | htmlUnescape | safeHTML -}},
+		"modal-content-mobile": {{- (partial (printf "%s/modal-content-mobile.css" .Type) .) | htmlUnescape | safeHTML -}}
 	};
 
 	{{- (readFile "/themes/tvpage/static/sidebar/index.js") | htmlUnescape | safeHTML -}}

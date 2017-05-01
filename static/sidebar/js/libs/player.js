@@ -272,7 +272,6 @@
           }
 
           // merge with options passed
-          var i;
           var allowOverride = {
             techOrder: 1,
             analytics: 1,
@@ -286,9 +285,9 @@
             poster: 1,
             overlay: 1
           };
-          for (i in that.options) {
-            if (!playerOptions.hasOwnProperty(i) || allowOverride.hasOwnProperty(i)) {
-              playerOptions[i] = that.options[i];
+          for (var o in that.options) {
+            if (!playerOptions.hasOwnProperty(o) || allowOverride.hasOwnProperty(o)) {
+              playerOptions[o] = that.options[o];
             }
           }
 

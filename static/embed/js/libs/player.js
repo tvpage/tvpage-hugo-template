@@ -25,7 +25,7 @@
     //The player singleton. We basically create an instance from the tvpage
     //player and expose most utilities, helping to encapsualte what is required for a few players to co-exist.
     function Player(el, options, startWith) {
-        if (!el || !isset(options) || !isset(options.data) || options.data.length <= 0) return console.log('bad args');
+        if (!el || !isset(options) || !isset(options.data) || options.data.length <= 0) return;
         this.options = options || {};
         this.instance = null;
         this.el = 'string' === typeof el ? document.getElementById(el) : el;
@@ -119,7 +119,7 @@
         var that = this;
 
         this.play = function(asset,ongoing){
-            if (!asset) return console.log('need asset');
+            if (!asset) return;
             var willCue = false,
                 isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
@@ -256,7 +256,6 @@
               }
 
               // merge with options passed
-              var i;
               var allowOverride = {
                 techOrder: 1,
                 analytics: 1,
@@ -270,9 +269,9 @@
                 poster: 1,
                 overlay: 1
               };
-              for (i in that.options) {
-                if (!playerOptions.hasOwnProperty(i) || allowOverride.hasOwnProperty(i)) {
-                  playerOptions[i] = that.options[i];
+              for (var o in that.options) {
+                if (!playerOptions.hasOwnProperty(o) || allowOverride.hasOwnProperty(o)) {
+                  playerOptions[o] = that.options[o];
                 }
               }
 
