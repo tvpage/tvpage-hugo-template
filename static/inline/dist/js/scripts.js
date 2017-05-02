@@ -506,12 +506,19 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
         isFeaturedProductRendered = true;
 
         $(document.getElementById('tvpProductsView'))
-            .off().on('afterChange', function(event, slick, currentSlide) {
-                if (currentApproach === 'desktop' && isFeaturedProductRendered) {
-                    var slideItemId = $(slick.$slides[currentSlide]).find('.tvp-product-item')[0].getAttribute('data-id');
-                    var selected = getSelectedData(productData, slideItemId);
-                    renderFeaturedProduct(selected);
-                    addProductActiveState(selected.id);
+            .off().on({
+                'beforeChange': function(event, slick, currentSlide, nextSlide){
+                    console.log('beforeChange', slick.$slides[currentSlide]);
+                    addProductActiveState();
+                },
+                'afterChange' : function(event, slick, currentSlide) {
+                    console.log('afterChange');
+                    if (currentApproach === 'desktop' && isFeaturedProductRendered) {
+                        var slideItemId = $(slick.$slides[currentSlide]).find('.tvp-product-item')[0].getAttribute('data-id');
+                        var selected = getSelectedData(productData, slideItemId);
+                        renderFeaturedProduct(selected);
+                        addProductActiveState(selected.id);
+                    }
                 }
             });
 
@@ -544,7 +551,9 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
     var addProductActiveState = function (elId) {
         var $productContent = $('#productContent');
         $productContent.find('.tvp-product-item-active').removeClass('tvp-product-item-active');
-        $productContent.find('.tvp-product-item[data-id="'+elId+'"]').addClass('tvp-product-item-active');
+        if (elId) {
+            $productContent.find('.tvp-product-item[data-id="'+elId+'"]').addClass('tvp-product-item-active');
+        }
     };
 
     var addVideoActiveState = function (videoId) {        
