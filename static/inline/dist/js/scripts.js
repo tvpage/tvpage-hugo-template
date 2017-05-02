@@ -857,6 +857,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                 }
             }
 
+
             if (getTarget('tvp-video-item')) {
                 selectedVideo = getSelectedData(videosData, target.getAttribute('data-id'));
                 
@@ -878,6 +879,9 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             }
             else if (getTarget('tvp-featured-product')) {
                 pkTrack(this.querySelector('.tvp-featured-product').getAttribute('data-id'));
+            }
+            else if (getTarget('tvp-video-play')) {
+                player.instance.play();
             }
         };
 

@@ -431,6 +431,7 @@
                 }
             }
 
+
             if (getTarget('tvp-video-item')) {
                 selectedVideo = getSelectedData(videosData, target.getAttribute('data-id'));
                 
@@ -452,6 +453,9 @@
             }
             else if (getTarget('tvp-featured-product')) {
                 pkTrack(this.querySelector('.tvp-featured-product').getAttribute('data-id'));
+            }
+            else if (getTarget('tvp-video-play')) {
+                player.instance.play();
             }
         };
 

@@ -539,6 +539,9 @@ a {
 .tvp-player-product-section .tvp-mobile-product-title {
   display: none;
 }
+.tvp-player-product-section #playerOverlay {
+  display: none;
+}
 
 .tvp-player {
   position: relative;
