@@ -13,6 +13,15 @@
             pg: channelId
         });
     };
+    
+    var createProductsArray = function(obj){
+      if ("object" !== typeof obj) return;
+      var arr = [];
+      for (var key in obj) {
+        arr.push(obj[key]);
+      }
+      return arr;
+    };
 
     var checkProducts = function(data,el){
         if (!data || !data.length) {
@@ -225,9 +234,13 @@
                 if (!next) return;
 
                 data.runTime.loginId = data.runTime.loginId || data.runTime.loginid;
+                
+                var nextProducts = Utils.isset(next,'products') ? next.products : null;
 
-                if (Utils.isset(next, 'products')) {
-                    render(next.products,data.runTime);
+                if (nextProducts) {
+                    var nextVideoProductsArray = createProductsArray(nextProducts);
+                    checkProducts(nextVideoProductsArray,el);
+                    render(nextVideoProductsArray,data.runTime);
                 } else {
                     if (!data.runTime.merchandise) {
                         el.classList.add('tvp-no-products');
@@ -278,8 +291,11 @@
                 });
 
                 var selectedVideo = data.selectedVideo;
-                if (Utils.isset(selectedVideo, 'products')) {
-                    render(selectedVideo.products,settings);
+                var selectedVideoProducts = Utils.isset(selectedVideo,'products') ? selectedVideo.products : null;
+                if (selectedVideoProducts) {
+                    var selectedVideoProductsArray = createProductsArray(selectedVideoProducts);
+                    checkProducts(selectedVideoProductsArray,el);
+                    render(selectedVideoProductsArray,settings);
                 } else {
                     if (!settings.merchandise) {
                         el.classList.add('tvp-no-products');

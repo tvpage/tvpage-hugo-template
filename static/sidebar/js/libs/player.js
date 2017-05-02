@@ -91,6 +91,7 @@
         var videoIsSpot = 'undefined' !== typeof video.entity;
         if (videoIsSpot) {
           video.entity.analytics = video.analytics;
+          video.entity.asset.products = video.products;
           video = videoIsSpot ? video.entity : video;
         }
         
@@ -100,7 +101,7 @@
         asset.loginId = video.loginId;
 
         if (isset(video, 'events') && video.events.length) {
-          //asset.analyticsLogUrl = video.analytics;
+          asset.analyticsLogUrl = video.analytics;
           asset.analyticsObj = video.events[1].data;
         } else {
           var channelId = isset(video,'parentId') ? video.parentId : ( isset(options,'channel') ? options.channel.id : 0 );
@@ -146,7 +147,7 @@
           willCue = true;
         }
       }
-
+      
       var analytics = new Analytics(),
         config = {
           domain: isset(location, 'hostname') ? location.hostname : '',
