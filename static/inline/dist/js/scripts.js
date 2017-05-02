@@ -421,18 +421,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             divOverlay.innerHTML = this.playIconTemplate;
             this.el.appendChild(divOverlay);
         }
-
-        var checks = 0;
-        (function libsReady(){
-            setTimeout(function(){
-                if ( (!isset(window,'TVPage') || !isset(window,'_tvpa')) && (++checks < 200) ) {
-                    libsReady();
-                }
-                else{
-                    that.initialize();
-                }
-            }, 150);
-        })();
+        that.initialize();
     }
     window.Player = Player;
 }(window, document));;;(function(window, document) {
@@ -911,7 +900,12 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
 
         frag.appendChild(main);
         target.appendChild(frag);
-    };
+    },
+    isset = function(o,p){
+            var val = o;
+            if (p) val = o[p];
+            return 'undefined' !== typeof val;
+        };
 
     var body = document.body;
 
@@ -928,7 +922,17 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             inlineTemplate: settings.templates.inline
         });
 
-        Inline(settings.name, settings);
+        var checks = 0;
+        (function libsReady(){
+            setTimeout(function(){
+                if ( (!isset(window,'TVPage') || !isset(window,'_tvpa')) && (++checks < 200) ) {
+                    libsReady();
+                }
+                else{
+                    Inline(settings.name, settings);
+                }
+            }, 150);
+        })();
     };
     
     initialize();

@@ -288,18 +288,7 @@
             divOverlay.innerHTML = this.playIconTemplate;
             this.el.appendChild(divOverlay);
         }
-
-        var checks = 0;
-        (function libsReady(){
-            setTimeout(function(){
-                if ( (!isset(window,'TVPage') || !isset(window,'_tvpa')) && (++checks < 200) ) {
-                    libsReady();
-                }
-                else{
-                    that.initialize();
-                }
-            }, 150);
-        })();
+        that.initialize();
     }
     window.Player = Player;
 }(window, document));

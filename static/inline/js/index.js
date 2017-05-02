@@ -11,7 +11,12 @@
 
         frag.appendChild(main);
         target.appendChild(frag);
-    };
+    },
+    isset = function(o,p){
+            var val = o;
+            if (p) val = o[p];
+            return 'undefined' !== typeof val;
+        };
 
     var body = document.body;
 
@@ -28,7 +33,17 @@
             inlineTemplate: settings.templates.inline
         });
 
-        Inline(settings.name, settings);
+        var checks = 0;
+        (function libsReady(){
+            setTimeout(function(){
+                if ( (!isset(window,'TVPage') || !isset(window,'_tvpa')) && (++checks < 200) ) {
+                    libsReady();
+                }
+                else{
+                    Inline(settings.name, settings);
+                }
+            }, 150);
+        })();
     };
     
     initialize();
