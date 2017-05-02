@@ -21,7 +21,11 @@
 	'padding: {{- ($.Scratch.Get "settings").featured_product_header_padding -}};' +
 '}' +
 
-// ### player product section
+'.tvp-featured-image{' +
+	'background-size: {{- ($.Scratch.Get "settings").featured_product_image_background_size -}};' +
+	'margin: {{- ($.Scratch.Get "settings").featured_product_image_margin -}};' +
+'}'+
+
 '.tvp-featured-info-title{' +
 	'font-family: {{- ($.Scratch.Get "settings").featured_product_title_font_family -}};' +
 	'font-size: calc({{- ($.Scratch.Get "settings").featured_product_title_font_size_min -}}px + ({{- ($.Scratch.Get "settings").featured_product_title_font_size_max }} - {{ ($.Scratch.Get "settings").featured_product_title_font_size_min -}}) * ((100vw - 300px) / (1600 - 300)));' +	
