@@ -86,16 +86,21 @@
       var assets = [];
       for (var i = 0; i < data.length; i++) {
         var video = data[i];
-
         if (isEmpty(video)) break;
-
+        
+        var videoIsSpot = 'undefined' !== typeof video.entity;
+        if (videoIsSpot) {
+          video.entity.analytics = video.analytics;
+          video = videoIsSpot ? video.entity : video;
+        }
+        
         var asset = video.asset;
         asset.assetId = video.id;
         asset.assetTitle = video.title;
         asset.loginId = video.loginId;
 
         if (isset(video, 'events') && video.events.length) {
-          asset.analyticsLogUrl = video.analytics;
+          //asset.analyticsLogUrl = video.analytics;
           asset.analyticsObj = video.events[1].data;
         } else {
           var channelId = isset(video,'parentId') ? video.parentId : ( isset(options,'channel') ? options.channel.id : 0 );
@@ -118,7 +123,6 @@
       }
       return assets;
     }(options.data));
-
 
     //Context reference for Methods.
     var that = this;
@@ -148,9 +152,7 @@
           domain: isset(location, 'hostname') ? location.hostname : '',
           loginId: asset.loginId
         };
-
-      //Update tvpa analytics configuration depending on the video type
-      //(exhange or standard)
+      
       if (isset(asset, 'analyticsLogUrl')) {
         config.logUrl = asset.analyticsLogUrl;
         analytics.initConfig(config);
@@ -272,7 +274,6 @@
           }
 
           // merge with options passed
-          var i;
           var allowOverride = {
             techOrder: 1,
             analytics: 1,
@@ -286,9 +287,9 @@
             poster: 1,
             overlay: 1
           };
-          for (i in that.options) {
-            if (!playerOptions.hasOwnProperty(i) || allowOverride.hasOwnProperty(i)) {
-              playerOptions[i] = that.options[i];
+          for (var o in that.options) {
+            if (!playerOptions.hasOwnProperty(o) || allowOverride.hasOwnProperty(o)) {
+              playerOptions[o] = that.options[o];
             }
           }
 

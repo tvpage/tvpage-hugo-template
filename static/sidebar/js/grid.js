@@ -1,7 +1,28 @@
 ;(function(window, document) {
+  
+  var jsonpCall = function(src, params, cb){
+    var s = document.createElement('script');
+    var cbName = 'tvp_' + Math.floor(Math.random()*555);
 
-  var loadCampaign = function(){
+    window[cbName] = cb;
+    src || "";
 
+    var firstParam = true;
+    params = params || {};
+    for (var p in params) {
+      if (firstParam) {
+        src += '?';
+        firstParam = false;
+      } else {
+        src += '&';
+      }
+      src += p + '=' + params[p];
+    }
+
+    src += '&callback='+cbName;
+    s.src = src;
+
+    document.body.appendChild(s);
   };
 
   function Grid(el, options) {
@@ -11,14 +32,14 @@
     this.initialResize = true;
     this.eventPrefix = "tvp_" + (options.id || "").trim().replace(/-/g,'_');
     this.isSmall = this.windowSize == 'small';
+    this.page = 0;
+    this.isLastPage = false;
     this.itemsPerPage = this.isSmall ? 2 : (options.items_per_page || 6);
     this.itemsPerRow = this.isSmall ? 1 : (options.items_per_row || 2);
     this.loginId = (options.loginId || options.loginid) || 0;
     this.channel = options.channel || {};
     this.channelId = (options.channelid || options.channelId) || null;
     this.loading = false;
-    this.isLastPage = false;
-    this.page = 0;
     this.el = 'string' === typeof el ? document.getElementById(el) : el;
     this.loadBtn = this.el.querySelector('.tvp-sidebar-load');
     this.container = this.el.querySelector('.tvp-sidebar-container');
@@ -32,30 +53,33 @@
       window.parent.postMessage(data || {}, '*');   
     };
     
-    this.render = function(){
-      this.container.innerHTML = '';
-
+    this.renderTitle = function(){
       if (options.title_text && options.title_text.trim().length) {
         this.sidebarTitle.innerHTML = options.title_text;
       } else {
         this.sidebarTitle.parentNode.removeChild(this.sidebarTitle);
       }
+    };
+    
+    this.render = function(){
+      this.container.innerHTML = '';
+      this.renderTitle();
 
       var all = this.data.slice(0),
           pages = [];
-
       while (all.length) {
         pages.push(all.splice(0, this.itemsPerPage));
       }
       
       for (var i = 0; i < pages.length; i++) {
         var page = pages[i];
+        var pageFrag = document.createDocumentFragment();
+        
         var pageRows = [];
         while (page.length) {
           pageRows.push(page.splice(0, this.itemsPerRow));
         }
-
-        var pageFrag = document.createDocumentFragment();
+        
         for (var j = 0; pageRows.length > j; j++) {
           
           var rowEl = document.createElement('div');
@@ -64,20 +88,21 @@
           var row = pageRows[j];
           for (var k = 0; k < row.length; k++) {
             var item = row[k];
-            var className = '';
-
-            if ('undefined' !== typeof item.entity) {
-              className += ' tvp-exchange';
-            }
-
-            if (that.windowSize === 'medium' && this.itemsPerRow > 1) {
+            var itemIsSpot = 'undefined' !== typeof item.entity;
+            
+            var className = itemIsSpot ? ' tvp-ad' : '';
+            if (this.windowSize === 'medium' && this.itemsPerRow > 1) {
               className += ' col-6';
             }
-
             item.className = className;
-            var template = options.templates['sidebar-item'];
-            item.title = Utils.trimText(item.title,50);
-            rowEl.innerHTML += Utils.tmpl(template, item);
+            
+            if (itemIsSpot) {
+              item.entity.title = Utils.trimText(item.entity.title,50);
+            } else {
+              item.title = Utils.trimText(item.title,50);
+            }
+            
+            rowEl.innerHTML += Utils.tmpl(options.templates[ itemIsSpot ? 'sidebar-item-ad' : 'sidebar-item'], item);
           }
 
           pageFrag.appendChild(rowEl);
@@ -139,8 +164,15 @@
 
       var data = that.data;
       for (var i = 0; i < data.length; i++) {
-        if (data[i].id === id) {
-          selected = data[i];
+        var item = data[i];
+        if ("undefined" !== typeof item.entity) {
+          if (id === item.entity.id) {
+            selected = item;
+          }
+        } else  {
+          if (id === item.id) {
+            selected = item;
+          }
         }
       }
 
@@ -167,90 +199,57 @@
       });
     };
 
-    this.load = function(campaign,callback){
+    this.load = function(callback){
       that.loading = true;
-
+      
       if (this.onLoad) {
         this.onLoad();
       }
-
-      var jsonpCall = function(src, params, callback){
-        var s = document.createElement('script');
-        var cbName = 'tvp_' + Math.floor(Math.random()*555);
-        
-        window[cbName] = callback;
-        src || "";
-        
-        var firstParam = true;
-        params = params || {};
-        for (var p in params) {
-          if (firstParam) {
-            src += '?';
-            firstParam = false;
-          } else {
-            src += '&';
-          }
-          src += p + '=' + params[p];
+      
+      var endWith = function(data){
+        if ( !data.length || (data.length < that.itemsPerPage) ) {
+          that.isLastPage = true;
         }
-
-        src += '&callback='+cbName;
-        s.src = src;
-
-        document.body.appendChild(s);
+        
+        that.data = data;
+        callback(data);
+        
+        that.loading = false;
+        if (that.onLoadEnd) {
+          that.onLoadEnd();
+        }
       };
 
-      // if (this.campaign) {
-      //   jsonpCall('//localhost:1313/campaign.json', {}, function(data){
-
-      //   })
-      // }
-
+      var src = this.options.api_base_url + '/channels/' + (that.channel.id || that.channelId) + '/videos';
       var params = that.channel.parameters || {};
       params.p = that.page;
       params.n = that.itemsPerPage;
       params["X-login-id"] = that.loginId;
-
-      var src = this.options.api_base_url + '/channels/' + (that.channel.id || that.channelId) + '/videos';
-
-      jsonpCall(src, params, function(data){
-
-        //console.log(data);
-
-        // if ( !data.length || (data.length < that.itemsPerPage) ) {
-        //   that.isLastPage = true;
-        // }
-
-        //that.data = data;
-        //callback(data);
-        // that.loading = false;
-        // if (that.onLoadEnd) {
-        //   that.onLoadEnd();
-        // }
-      });
-
-      // var channel = that.channel || {};
-      // var params = channel.parameters || {};
-      // var src = this.options.api_base_url + '/channels/' + (channel.id || that.channelId) + '/videos?X-login-id=' + that.loginId;
-      // for (var p in params) {
-      //   src += '&' + p + '=' + params[p];
-      // }
-      // var cbName = options.callbackName || 'tvp_' + Math.floor(Math.random() * 555);
-      // src += '&p=' + that.page + '&n=' + that.itemsPerPage + '&callback='+cbName;
-      // var script = document.createElement('script');
-      // script.src = src;
-      // window[cbName || 'callback'] = function(data){
-      //   if ( !data.length || (data.length < that.itemsPerPage) ) {
-      //     that.isLastPage = true;
-      //   }
-
-      //   that.data = data;
-      //   callback(data);
-      //   that.loading = false;
-      //   if (that.onLoadEnd) {
-      //     that.onLoadEnd();
-      //   }
-      // };
-      // document.body.appendChild(script);
+      
+      if (this.campaign && 0 === that.page) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', that.options.videoSpotsEndpoint, true);
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState == XMLHttpRequest.DONE) {
+            var videoSpots = [];
+            if (200 === xhr.status && xhr.responseText.length) {
+              videoSpots = JSON.parse(xhr.responseText);
+            }
+            
+            var itemsNeeded = params.n - videoSpots.length;
+            params.n = itemsNeeded > 0 ? itemsNeeded : 10000;
+            
+            jsonpCall(src, params, function(channelVideos){
+              endWith(videoSpots.concat(channelVideos));
+            });
+          }
+        };
+        xhr.send();
+      } else {
+        jsonpCall(src, params, function(data){
+          endWith(data || []);
+        });
+      }
     };
 
     //By default at Grid creation we load & render.

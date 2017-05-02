@@ -6,6 +6,7 @@
 	bootstrap.templates = {
 		sidebar: {{- (partial (printf "%s/sidebar.html" .Type) .) -}},
 		"sidebar-item": {{- (partial (printf "%s/sidebar-item.html" .Type) .) -}},
+    "sidebar-item-ad": {{- (partial (printf "%s/sidebar-item-ad.html" .Type) .) -}},
 		modal: {{- (partial (printf "%s/modal.html" .Type) .) -}},
 		"modal-content": {{- (partial (printf "%s/modal-content.html" .Type) .) -}},
 		"modal-content-mobile": {{- (partial (printf "%s/modal-content-mobile.html" .Type) .) -}}

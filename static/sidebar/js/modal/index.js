@@ -281,6 +281,10 @@
                 });
 
                 var selectedVideo = data.selectedVideo;
+                if ("undefined" !== typeof selectedVideo.entity) {
+                  console.log(selectedVideo);
+                }
+                
                 if (Utils.isset(selectedVideo,'products')) {
                     render(selectedVideo.products,settings);
                 } else {
