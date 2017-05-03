@@ -86,11 +86,11 @@
 '}' +
 
 '.tvp-product-item-active:after, .tvp-video-active:after {'+
-	'border-color: transparent;' +
+	'border: none;' +
 '}' +
 
 '.tvp-product-item:hover:after{' +
-	'border-color: transparent;'+ 
+	'border: none;'+ 
 '}' +
 
 
