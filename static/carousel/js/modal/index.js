@@ -1,9 +1,10 @@
 (function(window,document){
     var analytics,
         channelId,
-        eventName;
+        eventName,
+        body = document.body;
 
-    var eventPrefix = "tvp_" + (document.body.getAttribute("data-id") || "").replace(/-/g,'_');
+    var eventPrefix = "tvp_" + (body.getAttribute("data-id") || "").replace(/-/g,'_');
 
     var pkTrack = function(){
         analytics.track('pk',{
@@ -47,26 +48,22 @@
                 fn([]);
             }
         };
-        document.body.appendChild(script);
+        body.appendChild(script);
     };
 
     var render = function(data, config){
-        var holder = Utils.getByClass('tvp-products-holder');
-        var productsContainer = Utils.getByClass('tvp-products');
-        var popupsContainer = Utils.getByClass('tvp-popups');
-        productsContainer.innerHTML = "";
+        var productsHtml = "";
+        var popupsHtml = "";
 
         for (var i = 0; i < data.length; i++) {
             var product = data[i];
+            
             product.title = !Utils.isEmpty(product.title) ? Utils.trimText(product.title, 50) : '';
             product.price = !Utils.isEmpty(product.price) ? Utils.trimPrice(product.price) : '';
-    
-            productsContainer.innerHTML += Utils.tmpl(config.templates["modal-content"].product, product);
-            popupsContainer.innerHTML += Utils.tmpl(config.templates["modal-content"].popup, product);
 
-            var productRating = 0;
-            if (Utils.isset(product.rating) && null !== product.rating) {
-              productRating = Number(product.rating);
+            var productRating = Utils.isset(product[config.product_rating_attribute]) ? product[config.product_rating_attribute] : 0;
+            if (null !== productRating) {
+              productRating = Number(productRating);
             }
 
             var ratingReviewsHtml = "";
@@ -102,16 +99,18 @@
                 ratingReviewsHtml += '<li class="tvp-rate empty"></li>';
               }
 
-              if (Utils.isset(product.review_count) && null !== product.review_count) {
-                ratingReviewsHtml += '<li class="tvp-reviews">' + product.review_count + ' Reviews </li>';
+              var productReview = Utils.isset(product[config.product_review_attribute]) ? product[config.product_review_attribute] : 0;
+              if (null !== productReview && productReview > 0) {
+                ratingReviewsHtml += '<li class="tvp-reviews">' + productReview + ' Reviews </li>';
               }
 
               ratingReviewsHtml += '</ul>';
             }
 
-            // where/how to inject? 
-            // var buttonText = product.actionText.length > 0? product.actionText : config.product_popup_cta_text;
-            // ratingReviewsHtml 
+            product.ratingReviews = ratingReviewsHtml;
+
+            productsHtml += Utils.tmpl(config.templates["modal-content"].product, product);
+            popupsHtml += Utils.tmpl(config.templates["modal-content"].popup, product);
 
             analytics.track('pi',{
                 vd: product.entityIdParent,
@@ -119,6 +118,13 @@
                 pg: channelId
             });
         }
+
+        var holder = Utils.getByClass('tvp-products-holder');
+        var productsContainer = holder.querySelector('.tvp-products');
+        var popupsContainer = holder.querySelector('.tvp-popups');
+
+        productsContainer.innerHTML = productsHtml;
+        popupsContainer.innerHTML = popupsHtml;
 
         var willScroll = data.length > 2;
         if("undefined" !== typeof Ps){
@@ -133,38 +139,55 @@
 
         var arrow = Utils.getByClass('tvp-arrow-indicator');
         var showPopup = function(id){
-            var productEl = document.getElementById('tvp-product-'+id);
+            var scrollerThumb = document.getElementById('tvp-product-'+id);
             var popup = document.getElementById('tvp-product-popup-'+id);
-            if (!productEl && !popup) return;
+            
+            if (!scrollerThumb && !popup) return;
 
-            var activePopups = document.querySelectorAll('.tvp-product-popup.active');
-            for (var i = activePopups.length - 1; i >= 0; i--) {
-                activePopups[i].classList.remove('active');
+            var popups = document.querySelectorAll('.tvp-product-popup.active');
+            for (var i = popups.length - 1; i >= 0; i--) {
+                popups[i].classList.remove('active');
             }
 
-            productEl.classList.add('active');
+            scrollerThumb.classList.add('active');
             popup.classList.add('active');
 
-            var topValue = productEl.getBoundingClientRect().top;
-            var bottomLimit = topValue + popup.offsetHeight;
-            var holderHeight = holder.offsetHeight;
-
-            //We must first check if it's overflowing. To do this we first check if it's overflowing in the top, this is an
+            //We must first check if it's overflowing. We check the top edge first, this is an easy one.
             //easy one, if it's a negative value then it's overflowing. Otherwise if it's failing in the bottom, we rectify
             //by removing the excess from the top value.
-            if (topValue <= 10) {
-                topValue = -10;
-            }
-            else if ( bottomLimit > holderHeight )  {
-                topValue = topValue - (bottomLimit - holderHeight);
-                topValue = topValue;
+            var bodyPaddingTop = (body.currentStyle || window.getComputedStyle(body)).paddingTop;
+            var bodyPaddingBottom = (body.currentStyle || window.getComputedStyle(body)).paddingBottom;
+            
+            bodyPaddingTop = parseInt(bodyPaddingTop,10);
+            bodyPaddingBottom = parseInt(bodyPaddingBottom,10);
+            
+            var scrollerThumbTop = scrollerThumb.getBoundingClientRect().top;
+            var popupTop = scrollerThumbTop - bodyPaddingTop;
+            var popupBottom = popupTop + popup.offsetHeight;
+
+            var holderHeight = holder.offsetHeight;
+
+            if (popupTop <= 10) {
+                popupTop = - bodyPaddingTop;
+            } else if ( popupBottom > holderHeight )  {
+                popupTop = popupTop - (popupBottom - holderHeight);
+                popupTop = popupTop + bodyPaddingBottom;
             }
 
-            popup.classList.add('active');
-            popup.style.top = topValue + 'px';
+            var activate = function(el,top){
+                el.classList.add('active');
+                el.style.top = top + 'px';
+            };
 
-            arrow.classList.add('active');
-            arrow.style.top = (productEl.getBoundingClientRect().top + 45) + 'px';
+            activate(popup, popupTop);
+
+            var arrowTop = scrollerThumbTop;
+            if (arrowTop < 0) {
+                arrowTop = - (bodyPaddingBottom + 1);
+            } else if ((arrowTop + arrow.offsetHeight) > holderHeight) {
+                arrowTop = holderHeight - (arrow.offsetHeight - bodyPaddingBottom) - 1;
+            }
+            activate(arrow, arrowTop);
         };
 
         var clearActive = function() {

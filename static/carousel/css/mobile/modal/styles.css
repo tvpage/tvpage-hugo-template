@@ -166,16 +166,9 @@ body {
 }
 
 .tvp-product {
-  border: 1px solid #333;
   display: block;
   overflow: hidden;
-  padding: 5px;
-  z-index: 9999;
   position: relative;
-}
-
-.tvp-product {
-  margin-bottom: 0;
 }
 
 .tvp-product-cta {

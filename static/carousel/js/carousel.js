@@ -114,17 +114,20 @@
                     
                     var navBulletsHeight = 0;
                     if (options.navigation_bullets) {
-                        var marginBottom = parseInt(options.navigation_bullets_margin_bottom,10);
-                        var heightOffset = parseInt(options.height_offset,10);
-                        navBulletsHeight = marginBottom + heightOffset;
+                        navBulletsHeight = parseInt(options.navigation_bullets_margin_bottom,10);
+                    }
+
+                    var heightOffset = 0;
+                    if (Utils.isset(options.height_offset)) {
+                        heightOffset = parseInt(options.height_offset,10);
                     }
 
                     that.emitMessage('resize', {
-                      height: (that.el.offsetHeight + navBulletsHeight) + 'px'
+                      height: (that.el.offsetHeight + navBulletsHeight + heightOffset) + 'px'
                     });
                 },100));
 
-                $carousel.slick({
+                var slickConfig = {
                     slidesToShow: Number(options.items_to_show),
                     slidesToScroll: Number(options.items_to_scroll),
                     dots: options.navigation_bullets,
@@ -139,7 +142,13 @@
                             }
                         }
                     ]
-                });
+                };
+
+                if (this.options.navigation_bullets_append_to) {
+                    slickConfig.appendDots = this.options.navigation_bullets_append_to;
+                }
+
+                $carousel.slick(slickConfig);
             };
 
             if ('undefined' === typeof $.fn.slick) {
