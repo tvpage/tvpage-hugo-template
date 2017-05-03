@@ -735,13 +735,13 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                         }
                     }
                 ]
-            }).on('setPosition', function(s) {
+            }).off().on('setPosition', function(s) {
                 if (renderedApproach() !== 'mobile') {
                     var item = s.currentTarget.querySelector('.slick-current');
-                    var itemPadding = parseInt($(item).css('padding'));
+                    var itemPadding = parseInt(window.getComputedStyle(item, null).paddingTop);
                     var baseHeight = item.querySelector('.tvp-video-item-image').offsetHeight;
                     var arrowHeight = parseInt(s.currentTarget.slick.$nextArrow[0].offsetHeight);
-
+                    
                     s.currentTarget.slick.$nextArrow[0].style.marginTop = ((baseHeight - arrowHeight) / 2) + itemPadding + "px";
                     s.currentTarget.slick.$prevArrow[0].style.marginTop = ((baseHeight - arrowHeight) / 2) + itemPadding + "px";    
                 }
