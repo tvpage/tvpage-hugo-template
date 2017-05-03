@@ -4,7 +4,7 @@
           "type": "boolean",
           "label": "Campaign",
           "code": "campaign",
-          "value": true
+          "value": false
         },
         {
           "type": "text",
