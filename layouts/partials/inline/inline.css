@@ -135,6 +135,9 @@
 	'fill: {{- ($.Scratch.Get "settings").product_holder_slide_arrow_color -}};' +
 '}' +
 
+'.tvp-products-nav .slick-dots{' +
+	'width: calc(100% - ({{- ($.Scratch.Get "settings").product_holder_slide_arrow_width -}}px * 2));' +
+'}' +
 
 
 // ### carousel section
