@@ -777,6 +777,20 @@
             "label": "Videos Carousel Arrow Color",
             "code": "videos_carousel_arrow_color",
             "value": "#000"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Arrow Inactive Opacity",
+            "code": "videos_carousel_arrow_inactive_opacity",
+            "value": "1"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Arrow Active Opacity",
+            "code": "videos_carousel_arrow_active_opacity",
+            "value": "1"
         }
 
     ]
