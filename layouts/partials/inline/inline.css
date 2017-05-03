@@ -209,6 +209,11 @@
 	'background: {{- ($.Scratch.Get "settings").videos_carousel_arrow_background -}};' +
 	'height: {{- ($.Scratch.Get "settings").videos_carousel_arrow_height -}};' +
 	'width: {{- ($.Scratch.Get "settings").videos_carousel_arrow_width -}};' +	
+	'opacity: {{- ($.Scratch.Get "settings").videos_carousel_arrow_inactive_opacity -}};' +	
+'}' +
+
+'.tvp-videos-container-arrows:hover{' +
+	'opacity: {{- ($.Scratch.Get "settings").videos_carousel_arrow_active_opacity -}};' +	
 '}' +
 
 '.tvp-videos-container-arrows > svg {' +
