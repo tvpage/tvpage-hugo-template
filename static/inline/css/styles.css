@@ -265,7 +265,6 @@
   top: 0;
   z-index: 2;
   cursor: pointer;
-  -webkit-transition: opacity 0.25s linear;
   transition: opacity 0.25s linear;
 }
 
@@ -450,8 +449,7 @@ a {
 }
 
 .tvp-animate, .tvp-product-item, .tvp-product-item:after, .tvp-videos-container-arrows, .tvp-video-item, .tvp-video-item:after, .tvp-video-item-image-overlay, .tvp-video-item-title {
-  -webkit-transition: border .5s ease-out, color .5s linear, opacity .3s ease-out;
-          transition: border .5s ease-out, color .5s linear, opacity .3s ease-out;
+  transition: border .5s ease-out, color .5s linear, opacity .3s ease-out;
 }
 
 .tvp-control-volume-selector-container,
@@ -1028,8 +1026,7 @@ a {
   bottom: 0;
   left: 0;
   right: 0;
-  -webkit-transition: all 400ms ease-in-out;
-          transition: all 400ms ease-in-out;
+  transition: all 400ms ease-in-out;
 }
 
 @media only screen and (max-width: 769px) {
