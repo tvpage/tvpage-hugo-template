@@ -228,7 +228,7 @@
       
       if (this.campaign && 0 === that.page) {
         var xhr = new XMLHttpRequest();
-        xhr.open('GET', that.options.videoSpotsEndpoint, true);
+        xhr.open('GET', that.options.video_spots_endpoint, true);
         xhr.onreadystatechange = function() {
           if (xhr.readyState == XMLHttpRequest.DONE) {
             var videoSpots = [];

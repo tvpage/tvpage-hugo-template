@@ -8,6 +8,12 @@
         },
         {
           "type": "text",
+          "label": "Video Spots Endpoint",
+          "code": "video_spots_endpoint",
+          "value": ""
+        },
+        {
+          "type": "text",
           "label": "API Base Url",
           "code": "api_base_url",
           "value": "//api.tvpage.com/v1"
