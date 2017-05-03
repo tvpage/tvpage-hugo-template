@@ -92,7 +92,6 @@ body  {
 }
 
 .tvp-product-image-overlay {
-  -webkit-transition: all .05s ease-in-out;
   transition: all .05s ease-in-out;
   display: none;
   top: 0;
