@@ -13,6 +13,15 @@
             pg: channelId
         });
     };
+    
+    var createProductsArray = function(obj){
+      if ("object" !== typeof obj) return;
+      var arr = [];
+      for (var key in obj) {
+        arr.push(obj[key]);
+      }
+      return arr;
+    };
 
     var checkProducts = function(data,el){
         if (!data || !data.length) {
@@ -248,34 +257,37 @@
             };
 
             s.onNext = function(next){
-                if (!next) return;
+               if (!next) return;
 
-                data.runTime.loginId = data.runTime.loginId || data.runTime.loginid;
+               data.runTime.loginId = data.runTime.loginId || data.runTime.loginid;
+               var nextProducts = Utils.isset(next,'products') ? next.products : null;
 
-                if (Utils.isset(next,'products')) {
-                    render(next.products,data.runTime);
-                } else {
-                  if (!data.runTime.merchandise) {
-                    el.classList.add('tvp-no-products');
-                    eventName = eventPrefix + ':modal_no_products';
-                    notify();
-                  } else {
-                    loadProducts(next.assetId,data.runTime,function(products){
-                      setTimeout(function(){
-                        checkProducts(products,el);
-                        render(products,data.runTime);
-                        player.resize();
-                      },0);
-                    });
-                  }
-                }
+               if (nextProducts) {
+                   var nextVideoProductsArray = createProductsArray(nextProducts);
+                   checkProducts(nextVideoProductsArray,el);
+                   render(nextVideoProductsArray,data.runTime);
+               } else {
+                 if (!data.runTime.merchandise) {
+                   el.classList.add('tvp-no-products');
+                   eventName = eventPrefix + ':modal_no_products';
+                   notify();
+                 } else {
+                   loadProducts(next.assetId,data.runTime,function(products){
+                     setTimeout(function(){
+                       checkProducts(products,el);
+                       render(products,data.runTime);
+                       player.resize();
+                     },0);
+                   });
+                 }
+               }
 
-                if (window.parent) {
-                    window.parent.postMessage({
-                        event: eventPrefix + ':player_next',
-                        next: next
-                    }, '*');
-                }
+               if (window.parent) {
+                   window.parent.postMessage({
+                       event: eventPrefix + ':player_next',
+                       next: next
+                   }, '*');
+               }
             };
 
             player = new Player('tvp-player-el',s,data.selectedVideo.id);
@@ -305,8 +317,12 @@
                 });
 
                 var selectedVideo = data.selectedVideo;
-                if (Utils.isset(selectedVideo,'products')) {
-                    render(selectedVideo.products,settings);
+                var selectedVideoProducts = Utils.isset(selectedVideo,'products') ? selectedVideo.products : null;
+                if (selectedVideoProducts) {
+                    var selectedVideoProductsArray = createProductsArray(selectedVideoProducts);
+                    
+                    checkProducts(selectedVideoProductsArray,el);
+                    render(selectedVideoProductsArray,settings);
                 } else {
                     if (!settings.merchandise) {
                         el.classList.add('tvp-no-products');
