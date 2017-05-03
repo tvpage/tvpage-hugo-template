@@ -226,7 +226,7 @@
       params.n = that.itemsPerPage;
       params["X-login-id"] = that.loginId;
       
-      if (this.campaign && 0 === that.page) {
+      if (this.campaign && that.options.video_spots_endpoint && 0 === that.page) {
         var xhr = new XMLHttpRequest();
         xhr.open('GET', that.options.video_spots_endpoint, true);
         xhr.onreadystatechange = function() {
