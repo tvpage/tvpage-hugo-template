@@ -262,9 +262,9 @@
         templates.productItem = options.templates.product;
         templates.playIcon = options.templates.play_icon;
         
-        var render = function(data){            
+        var render = function(data){
             var all = data.slice(0);
-            
+
             for (var i = 0; i < all.length; i++) {
                 var item = all[i];
                 var rowEl = document.createElement('div');
@@ -287,40 +287,45 @@
             $('.tvp-video-item-image').append(templates.playIcon);
 
             $videoSliderDesktop = $(inlineEl.querySelector('#tvpVideoScroller'));
-            
-            var videosToShow =  Utils.isset(options.videos_to_show) ? parseInt(options.videos_to_show) : 4;
-            var videosToScroll =  Utils.isset(options.videos_to_scroll) ? parseInt(options.videos_to_scroll) : 4;
 
-            $videoSliderDesktop.slick({
-                arrows: options.videos_carousel_arrow_display === "none" ? false : true,
-                slidesToShow: videosToShow,
-                slidesToScroll: videosToScroll,
-                nextArrow: '.tvp-videos-arrow-next',
-                prevArrow: '.tvp-videos-arrow-prev',
-                responsive:[
-                    {
-                        breakpoint: 769,
-                        settings: {
-                            arrows: false,
-                            centerPadding: '0px',
-                            slidesToShow: 2,
-                            slidesToScroll: 2,
-                            dots: true
+            if (all.length > 1) {
+                var videosToShow =  Utils.isset(options.videos_to_show) ? parseInt(options.videos_to_show) : 4;
+                var videosToScroll =  Utils.isset(options.videos_to_scroll) ? parseInt(options.videos_to_scroll) : 4;
+
+                $videoSliderDesktop.slick({
+                    arrows: options.videos_carousel_arrow_display === "none" ? false : true,
+                    slidesToShow: videosToShow,
+                    slidesToScroll: videosToScroll,
+                    nextArrow: '.tvp-videos-arrow-next',
+                    prevArrow: '.tvp-videos-arrow-prev',
+                    responsive:[
+                        {
+                            breakpoint: 769,
+                            settings: {
+                                arrows: false,
+                                centerPadding: '0px',
+                                slidesToShow: 2,
+                                slidesToScroll: 2,
+                                dots: true
+                            }
                         }
+                    ]
+                }).on('setPosition', function(s) {
+                    if (renderedApproach() !== 'mobile') {
+                        var item = s.currentTarget.querySelector('.slick-current');
+                        var itemPadding = parseInt(window.getComputedStyle(item, null).paddingTop);
+                        var baseHeight = item.querySelector('.tvp-video-item-image').offsetHeight;
+                        var arrowHeight = parseInt(s.currentTarget.slick.$nextArrow[0].offsetHeight);
+
+                        s.currentTarget.slick.$nextArrow[0].style.marginTop = ((baseHeight - arrowHeight) / 2) + itemPadding + "px";
+                        s.currentTarget.slick.$prevArrow[0].style.marginTop = ((baseHeight - arrowHeight) / 2) + itemPadding + "px";    
                     }
-                ]
-            }).on('setPosition', function(s) {
-                if (renderedApproach() !== 'mobile') {
-                    var item = s.currentTarget.querySelector('.slick-current');
-                    var itemPadding = parseInt($(item).css('padding'));
-                    var baseHeight = item.querySelector('.tvp-video-item-image').offsetHeight;
-                    var arrowHeight = parseInt(s.currentTarget.slick.$nextArrow[0].offsetHeight);
-
-                    s.currentTarget.slick.$nextArrow[0].style.marginTop = ((baseHeight - arrowHeight) / 2) + itemPadding + "px";
-                    s.currentTarget.slick.$prevArrow[0].style.marginTop = ((baseHeight - arrowHeight) / 2) + itemPadding + "px";    
-                }
-            });
-
+                });
+            }
+            else{
+                $videoSliderDesktop.hide();
+            }
+            
 
             //init player            
             var s = options;
