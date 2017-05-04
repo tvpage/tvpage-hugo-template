@@ -410,6 +410,13 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Featured Product View Button Margin",
+            "code": "featured_product_view_button_margin",
+            "value": "0 15px 17px 15px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Product Rating Size",
             "code": "product_rating_size",
             "value": "20"

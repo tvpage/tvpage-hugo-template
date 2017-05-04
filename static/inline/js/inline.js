@@ -152,7 +152,7 @@
                 var row = document.createElement('a');
                 row.setAttribute('data-id', productData[i].id);
                 row.className = 'tvp-product-item';
-                productData[i].trimTitle = Utils.trimText(productData[i].title, 50);
+                productData[i].trimTitle = Utils.trimText(productData[i].title, 42);
                 row.innerHTML = Utils.tmpl(itemTemplate, productData[i]);
                 if (currentApproach === 'mobile') {
                     row.href = productData[i].linkUrl;
