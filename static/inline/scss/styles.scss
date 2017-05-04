@@ -149,14 +149,15 @@ a {
     }
 }
 
+.iframe-content > .tvp-content{
+    padding: 0;
+    width: 1px;
+    min-width: 100%;
+}
+
 .tvp-player-product-section{
     @include aspect-ratio(1476,446);
     margin-bottom: 2.70%;
-    .tvp-content {
-        padding: 0;
-        width: 1px;
-        min-width: 100%;
-    }
     .tvp-mobile-product-title{display: none;}    
     #playerOverlay{
         display: none;

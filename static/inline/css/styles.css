@@ -514,6 +514,12 @@ a {
   float: left;
 }
 
+.iframe-content > .tvp-content {
+  padding: 0;
+  width: 1px;
+  min-width: 100%;
+}
+
 .tvp-player-product-section {
   position: relative;
   margin-bottom: 2.70%;
@@ -530,11 +536,6 @@ a {
   left: 0;
   right: 0;
   bottom: 0;
-}
-.tvp-player-product-section .tvp-content {
-  padding: 0;
-  width: 1px;
-  min-width: 100%;
 }
 .tvp-player-product-section .tvp-mobile-product-title {
   display: none;
