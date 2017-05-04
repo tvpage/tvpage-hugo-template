@@ -269,7 +269,7 @@
                 var item = all[i];
                 var rowEl = document.createElement('div');
                 var className = '';                
-                item.title = Utils.trimText(item.title,50);
+                item.trimTitle = Utils.trimText(item.title,50);
                 if ('undefined' !== typeof item.entity) {
                     className += ' tvp-exchange';
                 }

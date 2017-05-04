@@ -695,7 +695,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                 var item = all[i];
                 var rowEl = document.createElement('div');
                 var className = '';                
-                item.title = Utils.trimText(item.title,50);
+                item.trimTitle = Utils.trimText(item.title,50);
                 if ('undefined' !== typeof item.entity) {
                     className += ' tvp-exchange';
                 }
