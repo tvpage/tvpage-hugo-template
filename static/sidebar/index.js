@@ -100,8 +100,6 @@ if (   __TVPage__.config[id].hasOwnProperty('onChange') && typeof   __TVPage__.c
 
 var config = utils.isset(window.__TVPage__) && utils.isset(__TVPage__,"config") && utils.isset(__TVPage__.config,id) ? __TVPage__.config[id] : {};
 
-console.log(config);
-
 var hostCssTagId = "tvp-sidebar-host-css";
 var hostCssTag = "";
 if (!document.getElementById(hostCssTagId)) {
