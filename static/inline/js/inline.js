@@ -65,7 +65,7 @@
         document.body.appendChild(script);
     };
 
-    var renderFeaturedProduct = function (product) {
+    var renderFeaturedProduct = function (product) {        
         var featuredProductContainer = document.getElementById('tvpFeaturedProduct');
 
         var featuredProduct = document.createElement('a');        
@@ -118,6 +118,10 @@
                 }
             }
         });
+
+        $('.tvp-featured-info-title').ellipsis({
+            row: 2
+        });  
     }
     
     var addProductActiveState = function (elId) {
@@ -134,7 +138,7 @@
         $videosContainer.find('.tvp-video-item[data-id="'+videoId+'"]').addClass('tvp-video-item-active');
     }
 
-    var renderProducts = function (vid, lid) {
+    var renderProducts = function (vid, lid) {        
         var products =  document.getElementById('tvpProductsView');
         var deInitProd = function () {
             $('#productContent').slick('unslick');
@@ -206,6 +210,9 @@
                 ]
             });
             addProductActiveState(productData[0].id);
+            $('.tvp-product-info-title').ellipsis({
+                row: 3
+            });  
         };
 
         if(!isProductsInitialized){
@@ -233,7 +240,6 @@
         else{
             layoutProducts();
         }
-
     };
 
     var onNext = function (e) {
@@ -312,7 +318,7 @@
                             }
                         }
                     ]
-                }).on('setPosition', function(s) {
+                }).on('setPosition', function(s) {                    
                     if (renderedApproach() !== 'mobile') {
                         var item = s.currentTarget.querySelector('.slick-current');
                         var itemPadding = parseInt(window.getComputedStyle(item, null).paddingTop);
@@ -322,6 +328,16 @@
                         s.currentTarget.slick.$nextArrow[0].style.marginTop = ((baseHeight - arrowHeight) / 2) + itemPadding + "px";
                         s.currentTarget.slick.$prevArrow[0].style.marginTop = ((baseHeight - arrowHeight) / 2) + itemPadding + "px";    
                     }
+
+                    for (var i = s.currentTarget.slick.$slides.length - 1; i >= 0; i--) {
+                        var slideItem = s.currentTarget.slick.$slides[i];
+                        var defaultTitle = slideItem.querySelector('.tvp-video-item').getAttribute('data-title');                        
+                        slideItem.querySelector('.tvp-video-item-title').innerHTML = defaultTitle;
+                    }
+
+                    $('.tvp-video-item-title').ellipsis({
+                        row: 2
+                    });
                 });
             }
             else{
@@ -341,7 +357,7 @@
             
             //render products  
             renderProducts(selectedVideo.id, loginId);
-            
+
             if (window.parent) {
                 window.parent.postMessage({
                     event: 'tvp_'+ inlineEl.id.replace(/-/g,'_') +':resize',
