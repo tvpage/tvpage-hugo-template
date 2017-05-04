@@ -132,7 +132,7 @@
 }
 .slick-prev.slick-disabled:before,
 .slick-next.slick-disabled:before {
-  opacity: 0.25;
+  opacity: 1;
 }
 .slick-prev:before,
 .slick-next:before {
@@ -140,7 +140,7 @@
   font-size: 20px;
   line-height: 1;
   color: white;
-  opacity: 0.75;
+  opacity: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -228,13 +228,13 @@
   line-height: 20px;
   text-align: center;
   color: black;
-  opacity: 0.25;
+  opacity: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 .slick-dots li.slick-active button:before {
   color: black;
-  opacity: 0.75;
+  opacity: 1;
 }
 
 .ss-wrapper {
@@ -265,7 +265,6 @@
   top: 0;
   z-index: 2;
   cursor: pointer;
-  -webkit-transition: opacity 0.25s linear;
   transition: opacity 0.25s linear;
 }
 
@@ -285,82 +284,6 @@
   user-select: none;
 }
 
-/*Combo StyleSheet*/
-/* Font Family and http://www.reebok.com/on/demandware.static/Sites-Reebok-US-Site/-/en_US/v1490078241308/css/fonts for Easy Access
-font-family:"Q Stencil", 'Bodoni SvtyTwo ITC TT', Didot, serif; font-weight:normal; font-style:normal;
-font-family:"Q Regular", 'Bodoni SvtyTwo ITC TT', Didot, serif; font-weight:normal; font-style:normal;
-font-family: FFDINWebProLight, 'Palatino Linotype', serif;
-font-family: FFDINWebProMedium, Helvetica, sans-serif;
-font-family: FFDINWebProCondLight,'Palatino Linotype', serif;
-font-family: FFDINWebPro, 'Palatino Linotype', serif;
-font-family: 'FFDINWebProLight', 'Palatino Linotype', serif;
-font-family: 'FFDINWebProMedium', Helvetica, sans-serif;
-font-family: 'FFDINWebProCondLight','Palatino Linotype', serif;
-font-family: 'FFDINWebProCondMedium', Helvetica, sans-serif;
-font-family: 'FFDINWebPro','Palatino Linotype', serif;
-font-family: 'FFSuperGroteskWebMedium', Arial, sans-serif;
-font-family: 'FF Super Grotesk Web Regular', Arial, sans-serif;
-font-family: 'FFSuperGroteskWebBold', colfax, 'Arial Black' sans-serif;
-font-family: 'FFSuperGroteskWebCondensedMediium', 'FFSuperGroteskWebBold', sans-serif;
-font-family: 'DINWebPro-CondBold';
-font-family: DINWebPro-CondBoldIta;
-font-family: DINWebPro-CondMedium;
-font-family: DINWebPro-CondMediumIta;
-font-family: DINWebPro-Cond;
-font-family: DINWebPro-CondIta;
-font-family: DINWebPro-CondBlack;
-font-family: DINWebPro-CondBlackIta;
-font-family: DINWebPro-CondLight;
-font-family: DINWebPro-CondLightIta;
-*/
-@font-face {
-  font-family: 'Q Stencil';
-  src: url("http://www.reebok.com/on/demandware.static/Sites-Reebok-US-Site/-/en_US/v1490078241308/css/fonts/Q-Stencil.eot");
-  /* IE9 Compat Modes */
-  src: url("http://www.reebok.com/on/demandware.static/Sites-Reebok-US-Site/-/en_US/v1490078241308/css/fonts/Q-Stencil.eot&#iefix") format("embedded-opentype"), url("http://www.reebok.com/on/demandware.static/Sites-Reebok-US-Site/-/en_US/v1490078241308/css/fonts/Q-Stencil.woff") format("woff"), url("http://www.reebok.com/on/demandware.static/Sites-Reebok-US-Site/-/en_US/v1490078241308/css/fonts/Q-Stencil.ttf") format("truetype"), url("http://www.reebok.com/on/demandware.static/Sites-Reebok-US-Site/-/en_US/v1490078241308/css/fonts/Q-Stencil.svg#8dfb79a238f0618c16db9ec103dfe2a3") format("svg");
-  font-style: normal;
-  font-weight: 400;
-}
-@font-face {
-  font-family: DINWebPro-CondBold;
-  src: url("http://www.reebok.com/dwstatic/aajp_prd/on/demandware.static/-/Sites-Reebok-US-Library/en_US/v1490078241308/voltage-global/css/fonts/DINWebPro-CondBold.woff") format("woff"), url("http://www.reebok.com/dwstatic/aajp_prd/on/demandware.static/-/Sites-Reebok-US-Library/en_US/v1490078241308/voltage-global/css/fonts/DINCompPro-CondBold.ttf") format("truetype");
-}
-@font-face {
-  font-family: DINWebPro-CondBoldIta;
-  src: url("http://www.reebok.com/on/demandware.static/Sites-Reebok-US-Site/-/en_US/v1490078241308/css/fonts/DINWebPro-CondBoldIta.woff") format("woff"), url("http://www.reebok.com/on/demandware.static/Sites-Reebok-US-Site/-/en_US/v1490078241308/css/fonts/DINWebPro-CondBoldIta.ttf") format("truetype");
-}
-@font-face {
-  font-family: DINWebPro-CondMedium;
-  src: url("http://www.reebok.com/on/demandware.static/Sites-Reebok-US-Site/-/en_US/v1490078241308/css/fonts/DINWebPro-CondMedium.woff") format("woff"), url("http://www.reebok.com/on/demandware.static/Sites-Reebok-US-Site/-/en_US/v1490078241308/css/fonts/DINWebPro-CondMedium.ttf") format("truetype");
-}
-@font-face {
-  font-family: DINWebPro-CondMediumIta;
-  src: url("http://www.reebok.com/on/demandware.static/Sites-Reebok-US-Site/-/en_US/v1490078241308/css/fonts/DINWebPro-CondMediumIta.woff") format("woff"), url("http://www.reebok.com/on/demandware.static/Sites-Reebok-US-Site/-/en_US/v1490078241308/css/fonts/DINWebPro-CondMediumIta.ttf") format("truetype");
-}
-@font-face {
-  font-family: DINWebPro-Cond;
-  src: url("http://www.reebok.com/on/demandware.static/Sites-Reebok-US-Site/-/en_US/v1490078241308/css/fonts/DINWebPro-Cond.woff") format("woff"), url("http://www.reebok.com/on/demandware.static/Sites-Reebok-US-Site/-/en_US/v1490078241308/css/fonts/DINWebPro-Cond.woff") format("woff");
-}
-@font-face {
-  font-family: DINWebPro-CondIta;
-  src: url("http://www.reebok.com/on/demandware.static/Sites-Reebok-US-Site/-/en_US/v1490078241308/css/fonts/DINWebPro-CondIta.woff") format("woff"), url("http://www.reebok.com/on/demandware.static/Sites-Reebok-US-Site/-/en_US/v1490078241308/css/fonts/DINWebPro-CondIta.ttf") format("truetype");
-}
-@font-face {
-  font-family: DINWebPro-CondBlack;
-  src: url("http://www.reebok.com/dwstatic/aajp_prd/on/demandware.static/-/Sites-Reebok-US-Library/en_US/v1490078241308/voltage-global/css/fonts/DINWebPro-CondBlack.woff") format("woff"), url("http://www.reebok.com/dwstatic/aajp_prd/on/demandware.static/-/Sites-Reebok-US-Library/en_US/v1490078241308/voltage-global/css/fonts/DINWebPro-CondBlack.ttf") format("truetype");
-}
-@font-face {
-  font-family: DINWebPro-CondBlackIta;
-  src: url("http://www.reebok.com/on/demandware.static/Sites-Reebok-US-Site/-/en_US/v1490078241308/css/fonts/DINWebPro-CondBlackIta.woff") format("woff"), url("http://www.reebok.com/on/demandware.static/Sites-Reebok-US-Site/-/en_US/v1490078241308/css/fonts/DINWebPro-CondBlackIta.ttf") format("woff");
-}
-@font-face {
-  font-family: DINWebPro-CondLight;
-  src: url("http://www.reebok.com/on/demandware.static/Sites-Reebok-US-Site/-/en_US/v1490078241308/css/fonts/DINWebPro-CondLight.woff") format("woff"), url("http://www.reebok.com/on/demandware.static/Sites-Reebok-US-Site/-/en_US/v1490078241308/css/fonts/DINWebPro-CondLight.ttf") format("truetype");
-}
-@font-face {
-  font-family: DINWebPro-CondLightIta;
-  src: url("http://www.reebok.com/on/demandware.static/Sites-Reebok-US-Site/-/en_US/v1490078241308/css/fonts/DINWebPro-CondLightIta.woff") format("woff"), url("http://www.reebok.com/on/demandware.static/Sites-Reebok-US-Site/-/en_US/v1490078241308/css/fonts/DINWebPro-CondLightIta.ttf") format("truetype");
-}
 * {
   box-sizing: border-box;
 }
@@ -451,10 +374,10 @@ a {
 
 .tvp-slider-dots {
   list-style: none;
-  width: 80%;
+  width: 100%;
   display: inline-block;
   margin: 0 auto;
-  position: absolute;
+  position: relative;
   bottom: 0;
   padding: 0;
   text-align: center;
@@ -478,23 +401,17 @@ a {
   outline: 0;
   line-height: 0;
   font-size: 0;
-  color: transparent;
   padding: 3.5px;
   cursor: pointer;
-  background-color: #000;
-  opacity: .25;
+  opacity: 1;
   top: 50%;
   -webkit-transform: translateY(-50%);
           transform: translateY(-50%);
   position: absolute;
 }
-.tvp-slider-dots .slick-active button {
-  opacity: .75;
-}
 
 .tvp-animate, .tvp-product-item, .tvp-product-item:after, .tvp-videos-container-arrows, .tvp-video-item, .tvp-video-item:after, .tvp-video-item-image-overlay, .tvp-video-item-title {
-  -webkit-transition: border .5s ease-out, color .5s linear, opacity .3s ease-out;
-          transition: border .5s ease-out, color .5s linear, opacity .3s ease-out;
+  transition: border .5s ease-out, color .5s linear, opacity .3s ease-out;
 }
 
 .tvp-control-volume-selector-container,
@@ -726,6 +643,7 @@ a {
   width: 100%;
   overflow: hidden;
   text-transform: capitalize;
+  max-height: 23%;
   margin-bottom: 15px;
   font-size: calc(12px + (14 - 12) * ((100vw - 300px) / (1600 - 300)));
 }
@@ -814,7 +732,6 @@ a {
 }
 .tvp-product-item:after {
   bottom: -3px;
-  border: 1px solid transparent;
   cursor: pointer;
   content: " ";
   left: -3px;
@@ -859,8 +776,8 @@ a {
   -webkit-transform: translateY(-50%);
           transform: translateY(-50%);
   position: absolute;
-  max-height: 85px;
-  line-height: 15px;
+  max-height: 65%;
+  overflow: hidden;
   display: block;
 }
 
@@ -872,14 +789,27 @@ a {
   display: none;
 }
 
-.tvp-product-item-group {
-  padding: 4px;
-}
-
 .tvp-products-nav {
   position: absolute;
   bottom: 0;
   width: 100%;
+}
+.tvp-products-nav .slick-dots {
+  display: inline-block;
+  margin: 0 auto;
+  position: absolute;
+}
+.tvp-products-nav .slick-dots li {
+  margin: 0;
+  width: 15px;
+}
+.tvp-products-nav .slick-dots li button {
+  padding: 0;
+  width: 15px;
+}
+.tvp-products-nav .slick-dots li button:before {
+  width: 15px;
+  font-size: 8px;
 }
 
 .tvp-products-nav-button {
@@ -898,24 +828,9 @@ a {
   display: block;
 }
 
-.tvp-product-item-active:after {
-  bottom: -3px;
-  border: 1px solid transparent;
-  cursor: pointer;
-  content: " ";
-  left: -3px;
-  right: -3px;
-  position: absolute;
-  top: -3px;
-}
-
 .tvp-videos-container {
   position: relative;
-}
-.tvp-videos-container .tvp-slider-dots {
-  position: relative;
-  width: 100%;
-  display: block;
+  padding-top: 12%;
 }
 
 .tvp-videos-container-arrows {
@@ -932,12 +847,10 @@ a {
   height: 50px;
 }
 
-.tvp-videos-arrow-next {
-  right: 0;
-}
-
 .tvp-videos-scroller {
   margin: 0 auto;
+  position: absolute;
+  top: 0;
 }
 .tvp-videos-scroller .slick-list {
   margin: 0 -15px;
@@ -977,7 +890,6 @@ a {
 }
 .tvp-video-item:after {
   bottom: -6px;
-  border: 1px solid transparent;
   cursor: pointer;
   content: " ";
   left: -6px;
@@ -1026,6 +938,8 @@ a {
   position: static;
   margin: 0;
   top: 50%;
+  max-height: 100%;
+  overflow: hidden;
 }
 
 .tvp-video-item-active .tvp-video-play {
@@ -1036,7 +950,6 @@ a {
 }
 .tvp-video-item-active:after {
   bottom: -6px;
-  border: 1px solid transparent;
   cursor: pointer;
   content: " ";
   left: -6px;
@@ -1061,13 +974,30 @@ a {
   bottom: 0;
   left: 0;
   right: 0;
-  -webkit-transition: all 400ms ease-in-out;
-          transition: all 400ms ease-in-out;
+  transition: all 400ms ease-in-out;
 }
 
 @media only screen and (max-width: 769px) {
   body {
     padding: 0 10px !important;
+  }
+
+  .tvp-videos-container {
+    padding-top: 0;
+    position: relative;
+  }
+  .tvp-videos-container:before {
+    display: block;
+    content: "";
+    width: 100%;
+    padding-top: 30.2168%;
+  }
+  .tvp-videos-container > .tvp-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
   }
 
   .tvp-row-titles {

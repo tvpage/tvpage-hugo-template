@@ -17,7 +17,6 @@
 
 @mixin active-state($borderPadding){
   bottom: $borderPadding * -1px;
-  border: 1px solid transparent;
   cursor: pointer;
   content: " ";
   left: $borderPadding * -1px;

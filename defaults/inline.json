@@ -193,6 +193,13 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Featured Product Background Color",
+            "code": "featured_product_bacground_color",
+            "value": "#EBEBEB"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Featured Product Header Font Size Max",
             "code": "featured_product_header_font_size_max",
             "value": "32"
@@ -266,6 +273,20 @@
             "label": "Featured Product Title Margin",
             "code": "featured_product_title_margin",
             "value": "0 0 15px 0"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Title Color",
+            "code": "featured_product_title_color",
+            "value": "#333"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Title Line Height",
+            "code": "featured_product_title_line_height",
+            "value": "normal"
         },
         {
             "for": "inline",
@@ -487,9 +508,65 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Product Holder Slider Dots Color",
+            "code": "product_holder_slide_dots_color_active",
+            "value": "#333"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Product Item Opacity",
             "code": "product_item_opacity",
             "value": "1"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item Padding",
+            "code": "product_item_padding",
+            "value": "0"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item Border Color Hover",
+            "code": "product_item_border_color_hover",
+            "value": "none"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item Border Color Active",
+            "code": "product_item_border_color_active",
+            "value": "none"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item Border",
+            "code": "product_item_border",
+            "value": "none"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Video Item Outter Border",
+            "code": "video_item_outter_border",
+            "value": "none"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item Font Family",
+            "code": "product_item_title_font_family",
+            "value": "Helvetica"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item Background Color",
+            "code": "product_item_background_color",
+            "value": "#D8D8D8"
         },
         {
             "for": "inline",
@@ -524,6 +601,13 @@
             "type": "text",
             "label": "Product Item Title Font Weight",
             "code": "product_item_title_font_weight",
+            "value": "normal"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item Title Line Height",
+            "code": "product_item_title_line_height",
             "value": "normal"
         },
         {
@@ -615,6 +699,13 @@
             "type": "text",
             "label": "Videos Carousel Item Title Font Weight",
             "code": "videos_carousel_item_title_font_weight",
+            "value": "normal"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Title Line Height",
+            "code": "videos_carousel_item_title_line_height",
             "value": "normal"
         },
         {
@@ -762,6 +853,20 @@
             "type": "text",
             "label": "Videos Carousel Padding",
             "code": "videos_carousel_padding",
+            "value": "0"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Arrow Left",
+            "code": "videos_carousel_arrow_left",
+            "value": "0"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Arrow Right",
+            "code": "videos_carousel_arrow_right",
             "value": "0"
         },
         {

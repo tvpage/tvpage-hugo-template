@@ -2,7 +2,6 @@
 @import "vendor/slick.scss";
 @import "vendor/slick-theme.scss";
 @import "vendor/simple-scrollbar.scss";
-@import "reebok-fonts.scss";
 
 * {
   box-sizing: border-box;
@@ -90,10 +89,10 @@ a {
 }
 .tvp-slider-dots{
     list-style: none;
-    width: 80%;
+    width: 100%;
     display: inline-block;
     margin: 0 auto;
-    position: absolute;
+    position: relative;
     bottom: 0;
     padding: 0;
     text-align: center;
@@ -115,18 +114,13 @@ a {
             outline: 0;
             line-height: 0;
             font-size: 0;
-            color: transparent;
             padding: 3.5px;
             cursor: pointer;
-            background-color: #000;
-            opacity: .25;
+            opacity: 1;
             top: 50%;
             transform: translateY(-50%);
             position: absolute;
         }        
-    }
-    .slick-active button{
-        opacity: .75;
     }
 }
 .tvp-animate {
@@ -322,6 +316,7 @@ a {
     width: 100%;
     overflow: hidden;
     text-transform: capitalize;
+    max-height: 23%;
     margin-bottom: 15px;
     font-size: calc(12px + (14 - 12) * ((100vw - 300px) / (1600 - 300)));
 }
@@ -427,8 +422,8 @@ a {
     top: 50%;
     transform: translateY(-50%);
     position: absolute;
-    max-height: 85px;
-    line-height: 15px;
+    max-height: 65%;                        
+    overflow: hidden;
     display: block;
 }
 .tvp-product-info-price{
@@ -437,13 +432,28 @@ a {
 .tvp-product-info-view-details{
     display: none;
 }
-.tvp-product-item-group{
-    padding: 4px;
-}
+
 .tvp-products-nav{
     position: absolute;
     bottom: 0;
     width: 100%;
+    .slick-dots{
+        display: inline-block;
+        margin: 0 auto;
+        position: absolute;
+        li {
+            margin: 0;
+            width: 15px;
+            button{
+                padding: 0;
+                width: 15px;
+                &:before{
+                    width: 15px;
+                    font-size: 8px;
+                }
+            }
+        }
+    }
 }
 .tvp-products-nav-button{
     cursor: pointer;
@@ -460,16 +470,10 @@ a {
         display: block;
     }
 }
-.tvp-product-item-active:after{        
-        @include active-state(3); 
-}
+
 .tvp-videos-container{
     position: relative;
-    .tvp-slider-dots{
-        position: relative;
-        width: 100%;
-        display: block;
-    }
+    padding-top: 12%;
 }
 .tvp-videos-container-arrows {
     outline: none;
@@ -485,11 +489,11 @@ a {
     height: 50px;
     @extend .tvp-animate;
 }
-.tvp-videos-arrow-next {
-    right: 0;
-}
+
 .tvp-videos-scroller {
     margin: 0 auto;
+    position: absolute;
+    top: 0;
     .slick-list{
         margin: 0 -15px;
     }
@@ -546,6 +550,8 @@ a {
     position: static;                
     margin: 0;
     top: 50%;
+    max-height: 100%;
+    overflow: hidden;
     @extend .tvp-animate;
 }
 
@@ -582,6 +588,10 @@ a {
 @media only screen and (max-width: 769px){
     body{
         padding: 0 10px!important;
+    }
+    .tvp-videos-container {
+        padding-top: 0;
+        @include aspect-ratio(1476,446);
     }
     .tvp-row-titles{
         margin-bottom: 10px;
