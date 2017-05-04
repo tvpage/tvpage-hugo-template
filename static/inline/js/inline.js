@@ -254,7 +254,7 @@
         xchg = options.xchg || false;
         loginId = (options.loginId || options.loginid) || 0;
         channel = options.channel || {};
-        channelId = options.channel.id || {};
+        channelId = channel.id || ( options.channelId || options.channelid );
         productRatingEmptyIsBordered = Utils.isset(options.product_rating_empty_bordered) ? options.product_rating_empty_bordered : false;
 
         inlineEl = 'string' === typeof el ? document.getElementById(el) : el;
