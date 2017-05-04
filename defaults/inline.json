@@ -676,6 +676,13 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Videos Carousel Item Title Lines to Display",
+            "code": "videos_carousel_item_title_lines_to_display",
+            "value": "2"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Videos Carousel Item Thumbnail Overlay Color",
             "code": "videos_carousel_item_thumbnail_overlay_color",
             "value": "#000"

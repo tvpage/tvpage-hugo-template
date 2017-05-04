@@ -336,8 +336,8 @@
                     }
 
                     $('.tvp-video-item-title').ellipsis({
-                        row: 2
-                    });
+                        row: options.videos_carousel_item_title_lines_to_display
+                    });                    
                 });
             }
             else{

@@ -862,8 +862,8 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                     }
 
                     $('.tvp-video-item-title').ellipsis({
-                        row: 2
-                    });
+                        row: options.videos_carousel_item_title_lines_to_display
+                    });                    
                 });
             }
             else{
