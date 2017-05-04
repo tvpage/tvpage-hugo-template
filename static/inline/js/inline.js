@@ -190,6 +190,7 @@
                 slidesToShow: 1,
                 slidesToScroll: 1,
                 dots: true,
+                dotsClass: 'tvp-slider-dots',
                 appendDots: $('.tvp-products-nav'),
                 responsive:[
                     {
@@ -298,6 +299,7 @@
                     slidesToScroll: videosToScroll,
                     nextArrow: '.tvp-videos-arrow-next',
                     prevArrow: '.tvp-videos-arrow-prev',
+                    dotsClass: 'tvp-slider-dots',
                     responsive:[
                         {
                             breakpoint: 769,

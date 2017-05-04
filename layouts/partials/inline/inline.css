@@ -197,8 +197,8 @@
 	'fill: {{- ($.Scratch.Get "settings").videos_carousel_arrow_color -}};' +
 '}' +
 
-'.slick-dots li.slick-active button:before,.slick-dots li button:before {' +
-	'color: {{- ($.Scratch.Get "settings").product_holder_slide_dots_color -}};' +
+'.tvp-slider-dots li button { ' +
+	'background-color: {{- ($.Scratch.Get "settings").product_holder_slide_dots_color -}};' +
 '}' +
 
 '.tvp-video-item-image{' +

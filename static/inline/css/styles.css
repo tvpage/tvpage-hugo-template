@@ -449,6 +449,49 @@ a {
   clear: both;
 }
 
+.tvp-slider-dots {
+  list-style: none;
+  width: 80%;
+  display: inline-block;
+  margin: 0 auto;
+  position: absolute;
+  bottom: 0;
+  padding: 0;
+  text-align: center;
+}
+.tvp-slider-dots li {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  width: 15px;
+  height: 24px;
+  padding: 0;
+  cursor: pointer;
+}
+.tvp-slider-dots li button {
+  border: 0;
+  border-radius: 50%;
+  background: 0 0;
+  display: block;
+  height: 8px;
+  width: 8px;
+  outline: 0;
+  line-height: 0;
+  font-size: 0;
+  color: transparent;
+  padding: 3.5px;
+  cursor: pointer;
+  background-color: #000;
+  opacity: .25;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  position: absolute;
+}
+.tvp-slider-dots .slick-active button {
+  opacity: .75;
+}
+
 .tvp-animate, .tvp-product-item, .tvp-product-item:after, .tvp-videos-container-arrows, .tvp-video-item, .tvp-video-item:after, .tvp-video-item-image-overlay, .tvp-video-item-title {
   -webkit-transition: border .5s ease-out, color .5s linear, opacity .3s ease-out;
           transition: border .5s ease-out, color .5s linear, opacity .3s ease-out;
@@ -740,10 +783,6 @@ a {
   width: 22.2222%;
   height: 100%;
 }
-.tvp-products-scroller .slick-dots {
-  position: absolute;
-  bottom: 0;
-}
 .tvp-products-scroller .slick-arrow {
   bottom: 0;
   z-index: 10;
@@ -842,24 +881,6 @@ a {
   bottom: 0;
   width: 100%;
 }
-.tvp-products-nav .slick-dots {
-  width: 80%;
-  display: inline-block;
-  margin: 0 auto;
-  position: absolute;
-}
-.tvp-products-nav .slick-dots li {
-  margin: 0;
-  width: 15px;
-}
-.tvp-products-nav .slick-dots li button {
-  padding: 0;
-  width: 15px;
-}
-.tvp-products-nav .slick-dots li button:before {
-  width: 15px;
-  font-size: 8px;
-}
 
 .tvp-products-nav-button {
   cursor: pointer;
@@ -890,6 +911,11 @@ a {
 
 .tvp-videos-container {
   position: relative;
+}
+.tvp-videos-container .tvp-slider-dots {
+  position: relative;
+  width: 100%;
+  display: block;
 }
 
 .tvp-videos-container-arrows {

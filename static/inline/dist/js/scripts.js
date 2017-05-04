@@ -616,6 +616,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                 slidesToShow: 1,
                 slidesToScroll: 1,
                 dots: true,
+                dotsClass: 'tvp-slider-dots',
                 appendDots: $('.tvp-products-nav'),
                 responsive:[
                     {
@@ -724,6 +725,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                     slidesToScroll: videosToScroll,
                     nextArrow: '.tvp-videos-arrow-next',
                     prevArrow: '.tvp-videos-arrow-prev',
+                    dotsClass: 'tvp-slider-dots',
                     responsive:[
                         {
                             breakpoint: 769,
