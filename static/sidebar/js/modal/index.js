@@ -59,7 +59,7 @@
         }
     };
 
-    var notify = function(argument) {
+    var notify = function() {
         setTimeout(function(){
             if (window.parent) {
                 window.parent.postMessage({event: eventName}, '*');
@@ -100,6 +100,7 @@
               product.isCampaignProduct = true;
             }
             
+            product.className = "tvp-product" + (product.isCampaignProduct ? " tvp-ad" : "");
             product.title = !Utils.isEmpty(product.title) ? Utils.trimText(product.title, 50) : '';
             product.price = !Utils.isEmpty(product.price) ? Utils.trimPrice(product.price) : '';
 

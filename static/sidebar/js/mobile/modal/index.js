@@ -137,6 +137,7 @@
             
             analyticsTrack("pi", product);
 
+            product.className = "tvp-product" + (product.isCampaignProduct ? " tvp-ad" : "");
             product.title = !Utils.isEmpty(product.title) ? Utils.trimText(product.title, 50) : '';
             product.price = !Utils.isEmpty(product.price) ? Utils.trimPrice(product.price) : '';
             productsHtml += Utils.tmpl(config.templates['modal-content-mobile'].products,product);
@@ -381,7 +382,7 @@
         (function libsReady() {
             setTimeout(function() {
                 if (not(window.TVPage) || not(window._tvpa) || not(window.jQuery) || not(window.Utils) || not(window.Analytics) || not(window.Player)) {
-                    (++libsCheck < 200) ? libsReady(): console.log('limit reached');
+                    (++libsCheck < 200) ? libsReady(): console.warn('limit reached');
                 } else {
                     initialize();
                 }
