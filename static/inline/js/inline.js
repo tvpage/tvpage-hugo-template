@@ -94,9 +94,15 @@
                 }
             });
 
+
         var productRating = 0;
         if (Utils.isset(product.rating) && null !== product.rating) {
           productRating = Number(product.rating);
+        }
+
+        if (productRating || productRating > 0) {
+            var ratingsTmpl = Utils.tmpl(templates.ratingsHtml, product);
+            $(featuredProduct).find('.tvp-featured-info-price').after(ratingsTmpl);
         }
 
         var fulls = 0;        
@@ -157,6 +163,7 @@
                 row.setAttribute('data-id', productData[i].id);
                 row.className = 'tvp-product-item';
                 productData[i].trimTitle = Utils.trimText(productData[i].title, 42);
+                productData[i].price = Utils.trimPrice(productData[i].price);
                 row.innerHTML = Utils.tmpl(itemTemplate, productData[i]);
                 if (currentApproach === 'mobile') {
                     row.href = productData[i].linkUrl;
@@ -265,9 +272,10 @@
         templates.inlineItem = options.templates.inline_item;
         templates.videosCarouselNextArrow = options.templates.inline_carousel_next_arrow;
         templates.videosCarouselPreviousArrow = options.templates.inline_carousel_previous_arrow;
-        templates.featuredProduct = options.templates.featured_product;
+        templates.featuredProduct = options.templates.featured_product.product;
         templates.productItem = options.templates.product;
         templates.playIcon = options.templates.play_icon;
+        templates.ratingsHtml = options.templates.featured_product.ratings;
         
         var render = function(data){
             var all = data.slice(0);
