@@ -540,7 +540,7 @@ a {
   display: none;
 }
 .tvp-player-product-section #playerOverlay {
-  display: none;
+  z-index: 10000;
   position: relative;
 }
 .tvp-player-product-section #playerOverlay:before {

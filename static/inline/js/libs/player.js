@@ -146,7 +146,6 @@
 
             var playerOverlay = that.el.querySelector('#playerOverlay');
             playerOverlay.style.cssText = 'background:url('+that.assets[that.current].thumbnailUrl+')no-repeat;background-size:cover;background-position:center;position:absolute;top:0;width:100%;';
-            playerOverlay.style.display = asset.type === 'youtube' ? "none" : "block";
         };
 
         this.resize = function(){            
@@ -175,6 +174,12 @@
                 if(this.assets[i].assetId === videoId){
                     this.current = i;
                 }
+            }
+
+            //Fix required to let popups be displayed on top of plauer overlay.
+            var controlBar = that.el.querySelector("#ControlBarFloater");
+            if (controlBar && controlBar.parentNode) {
+                controlBar.parentNode.style.zIndex = "9999";
             }
 
             var _overlay = isset(options.overlay) ? options.overlay : null;

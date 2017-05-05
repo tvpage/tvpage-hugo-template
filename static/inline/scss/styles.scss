@@ -227,7 +227,7 @@ a {
     margin-bottom: 2.70%;
     .tvp-mobile-product-title{display: none;}    
     #playerOverlay{
-        display: none;
+        z-index:10000;
         @include aspect-ratio(16,9);
     }
 }
