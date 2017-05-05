@@ -470,8 +470,8 @@ a {
 }
 
 .tvp-videos-container{
+    @include aspect-ratio(1024, 200);
     position: relative;
-    padding-top: 12%;
 }
 .tvp-videos-container-arrows {
     outline: none;
@@ -502,7 +502,7 @@ a {
     }
 }
 .tvp-video-item {
-    @include aspect-ratio(189, 147);
+    @include aspect-ratio(238, 176);
     box-sizing: border-box;
     display: block;
     position: relative;
@@ -588,8 +588,10 @@ a {
         padding: 0 10px!important;
     }
     .tvp-videos-container {
-        padding-top: 0;
-        @include aspect-ratio(1476,446);
+        @include aspect-ratio(732,274);
+    }
+    .tvp-video-item{
+        @include aspect-ratio(351,222);
     }
     .tvp-row-titles{
         margin-bottom: 10px;
@@ -703,7 +705,10 @@ a {
     }
 }
 
-@media only screen and (max-width: 321px){
+@media only screen and (max-width: 375px){
+    .tvp-videos-container {
+        @include aspect-ratio(337,164);
+    }
     .tvp-player-product-section:before{
     padding-top: 95.7%;
     }

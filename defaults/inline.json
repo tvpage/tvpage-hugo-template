@@ -657,7 +657,21 @@
             "type": "text",
             "label": "Videos Carousel Item Height",
             "code": "videos_carousel_item_height",
-            "value": "77.77778%"
+            "value": "73.94958%"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Height 768px",
+            "code": "videos_carousel_item_height_768",
+            "value": "67.24786%"
+        },        
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Height 375px",
+            "code": "videos_carousel_item_height_375",
+            "value": "81.88976%"
         },
         {
             "for": "inline",

@@ -373,6 +373,7 @@
             }
             else{
                 $videoSliderDesktop.hide();
+                inlineEl.querySelector('.tvp-videos-container').style.display = "none";
             }
             
 

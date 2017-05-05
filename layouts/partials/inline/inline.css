@@ -298,4 +298,13 @@
 	'.tvp-row-titles{' +	
 		'height: {{- ($.Scratch.Get "settings").header_height_320 -}};' +
 	'}' +
+	'.tvp-video-item:before{' +	
+		'padding-top: {{- ($.Scratch.Get "settings").videos_carousel_item_height_768 -}};' +
+	'}' +	
+'}' +
+
+'@media only screen and (max-width: 375px){' +
+	'.tvp-video-item:before{' +	
+		'padding-top: {{- ($.Scratch.Get "settings").videos_carousel_item_height_375 -}};' +
+	'}' +	
 '}'
