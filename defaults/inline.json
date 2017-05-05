@@ -655,6 +655,27 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Videos Carousel Container Height",
+            "code": "videos_carousel_container_height",
+            "value": "19.53125%"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Container Height 768px",
+            "code": "videos_carousel_container_height_768",
+            "value": "37.43169%"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Container Height 375px",
+            "code": "videos_carousel_container_height_375",
+            "value": "48.66469%"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Videos Carousel Item Height",
             "code": "videos_carousel_item_height",
             "value": "73.94958%"
