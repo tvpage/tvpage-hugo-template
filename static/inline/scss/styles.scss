@@ -619,6 +619,12 @@ a {
                 font-size: 14px;
             }
         }
+        &.no-products{
+            @include aspect-ratio(16,9);
+            .tvp-mobile-product-title{
+                display: none;
+            }
+        }
     }
     .tvp-player{
         width: 100%;
@@ -632,6 +638,7 @@ a {
         width: 100%;
         float: none;
         margin: 0;
+        height: auto;
         .slick-list{
             margin: 0 -5px;
         }                

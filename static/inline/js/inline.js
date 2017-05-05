@@ -29,6 +29,15 @@
         }
     };
 
+    var resizeParent = function () {
+        if (window.parent) {
+            window.parent.postMessage({
+                event: 'tvp_'+ inlineEl.id.replace(/-/g,'_') +':resize',
+                height: inlineEl.offsetHeight + 'px'
+            }, '*');
+        }
+    }
+
     var pkTrack = function(ctId){
         analytics.track('pk',{
             vd: player.assets[player.current].assetId,
@@ -219,6 +228,7 @@
             loadProducts(vid, lid, 
                 function (data) {                
                     if (data.length) {
+                        $('.tvp-player-product-section').removeClass('no-products');
                         for (var i = data.length - 1; i >= 0; i--) {
                             analytics.track('pi',{
                                 vd: data[i].entityIdParent,
@@ -230,11 +240,14 @@
                         productData = data;
                         layoutProducts();
                         renderFeaturedProduct(data[0]);                        
-                        isProductsInitialized = true;
+                        isProductsInitialized = true;                        
                     }
                     else{
                         deInitProd();
+                        document.getElementById('tvpFeaturedProduct').innerHTML = '';
+                        $('.tvp-player-product-section').addClass('no-products');
                     }
+                    resizeParent();
             });
         }
         else{
@@ -358,12 +371,7 @@
             //render products  
             renderProducts(selectedVideo.id, loginId);
 
-            if (window.parent) {
-                window.parent.postMessage({
-                    event: 'tvp_'+ inlineEl.id.replace(/-/g,'_') +':resize',
-                    height: inlineEl.offsetHeight + 'px'
-                }, '*');
-            }
+            resizeParent();
 
             analytics =  new Analytics();
             analytics.initConfig({
@@ -380,12 +388,7 @@
                     renderProducts(selectedVideo.id, loginId);
                 }
                 
-                if (window.parent) {
-                    window.parent.postMessage({
-                        event: 'tvp_'+ inlineEl.id.replace(/-/g,'_') +':resize',
-                        height: inlineEl.offsetHeight + 'px'
-                    }, '*');
-                }
+                resizeParent();
             }, 85));
         };
 

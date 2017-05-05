@@ -555,6 +555,15 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
         }
     };
 
+    var resizeParent = function () {
+        if (window.parent) {
+            window.parent.postMessage({
+                event: 'tvp_'+ inlineEl.id.replace(/-/g,'_') +':resize',
+                height: inlineEl.offsetHeight + 'px'
+            }, '*');
+        }
+    }
+
     var pkTrack = function(ctId){
         analytics.track('pk',{
             vd: player.assets[player.current].assetId,
@@ -745,6 +754,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             loadProducts(vid, lid, 
                 function (data) {                
                     if (data.length) {
+                        $('.tvp-player-product-section').removeClass('no-products');
                         for (var i = data.length - 1; i >= 0; i--) {
                             analytics.track('pi',{
                                 vd: data[i].entityIdParent,
@@ -756,11 +766,14 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                         productData = data;
                         layoutProducts();
                         renderFeaturedProduct(data[0]);                        
-                        isProductsInitialized = true;
+                        isProductsInitialized = true;                        
                     }
                     else{
                         deInitProd();
+                        document.getElementById('tvpFeaturedProduct').innerHTML = '';
+                        $('.tvp-player-product-section').addClass('no-products');
                     }
+                    resizeParent();
             });
         }
         else{
@@ -884,12 +897,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             //render products  
             renderProducts(selectedVideo.id, loginId);
 
-            if (window.parent) {
-                window.parent.postMessage({
-                    event: 'tvp_'+ inlineEl.id.replace(/-/g,'_') +':resize',
-                    height: inlineEl.offsetHeight + 'px'
-                }, '*');
-            }
+            resizeParent();
 
             analytics =  new Analytics();
             analytics.initConfig({
@@ -906,12 +914,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                     renderProducts(selectedVideo.id, loginId);
                 }
                 
-                if (window.parent) {
-                    window.parent.postMessage({
-                        event: 'tvp_'+ inlineEl.id.replace(/-/g,'_') +':resize',
-                        height: inlineEl.offsetHeight + 'px'
-                    }, '*');
-                }
+                resizeParent();
             }, 85));
         };
 
