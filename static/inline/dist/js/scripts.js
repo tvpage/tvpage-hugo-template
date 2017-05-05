@@ -696,6 +696,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             for (var i = 0; i < productData.length; i++) {
                 var row = document.createElement('a');
                 row.setAttribute('data-id', productData[i].id);
+                row.setAttribute('data-title', productData[i].title);
                 row.className = 'tvp-product-item';
                 productData[i].trimTitle = Utils.trimText(productData[i].title, 42);
                 productData[i].price = Utils.trimPrice(productData[i].price);
@@ -750,6 +751,15 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                         }
                     }
                 ]
+            }).on('setPosition', function(s) {
+                var $productItms = $('.tvp-product-item');
+                for (var i = $productItms.length - 1; i >= 0; i--) {                    
+                    var defaultTitle = $productItms[i].getAttribute('data-title');
+                    $productItms[i].querySelector('.tvp-product-info-title').innerHTML = defaultTitle;
+                }
+                $('.tvp-product-info-title').ellipsis({
+                    row: 3
+                });  
             });
             addProductActiveState(productData[0].id);
             $('.tvp-product-info-title').ellipsis({

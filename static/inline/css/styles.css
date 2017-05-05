@@ -778,8 +778,6 @@ a {
   -webkit-transform: translateY(-50%);
           transform: translateY(-50%);
   position: absolute;
-  max-height: 65%;
-  overflow: hidden;
   display: block;
 }
 
