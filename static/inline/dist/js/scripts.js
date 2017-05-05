@@ -378,6 +378,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             }
 
             var playerOverlay = that.el.querySelector('#playerOverlay');
+            playerOverlay.style.cssText = 'background:url('+that.assets[that.current].thumbnailUrl+')no-repeat;background-size:cover;background-position:center;position:absolute;top:0;width:100%;';
             playerOverlay.style.display = asset.type === 'youtube' ? "none" : "block";
         };
 
@@ -408,6 +409,28 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                     this.current = i;
                 }
             }
+
+            var _overlay = isset(options.overlay) ? options.overlay : null;
+
+            if (_overlay) {
+              var click = function(){
+                var clear = function () {
+                    this.removeEventListener('click',click,false);
+                    this.parentNode.removeChild(this);
+                };
+                clear.call(this);
+                if (that.instance) {
+                    that.instance.play();
+                }
+              };
+
+              var existing = this.el.querySelector('.tvplayer-overlay');
+              if (existing) {
+                  existing.removeEventListener('click', click, false);
+                  existing.parentNode.removeChild(existing);
+              }
+            }
+
             this.play(this.assets[this.current], true);
         }
 
@@ -518,6 +541,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             //add overlay for mp4 video type
             var divOverlay = document.createElement('div');
             divOverlay.id = "playerOverlay";
+            divOverlay.style.cssText = 'background:url('+that.assets[0].thumbnailUrl+')no-repeat;background-size:cover;background-position:center;position:absolute;top:0;width:100%;';
             divOverlay.innerHTML = this.playIconTemplate;
             this.el.appendChild(divOverlay);
         }
@@ -544,6 +568,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
     var videosData = null;
     var inlineEl = null;
     var productRatingEmptyIsBordered = false;
+    var hasProducts = true;
 
     var renderedApproach = function () {
         if (document.body.clientWidth < breakpoint) {
@@ -758,7 +783,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                     $productItms[i].querySelector('.tvp-product-info-title').innerHTML = defaultTitle;
                 }
                 $('.tvp-product-info-title').ellipsis({
-                    row: 3
+                    row: 2
                 });  
             });
             addProductActiveState(productData[0].id);
@@ -771,7 +796,8 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             loadProducts(vid, lid, 
                 function (data) {                
                     if (data.length) {
-                        $('.tvp-player-product-section').removeClass('no-products');
+                        hasProducts = true;
+                        checkProducts();
                         for (var i = data.length - 1; i >= 0; i--) {
                             analytics.track('pi',{
                                 vd: data[i].entityIdParent,
@@ -786,15 +812,28 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                         isProductsInitialized = true;                        
                     }
                     else{
+                        hasProducts = false;
                         deInitProd();
-                        document.getElementById('tvpFeaturedProduct').innerHTML = '';
-                        $('.tvp-player-product-section').addClass('no-products');
+                        checkProducts();
                     }
                     resizeParent();
             });
         }
         else{
             layoutProducts();
+        }
+    };
+
+    var checkProducts = function(){
+        var classType = 'no-products' + (renderedApproach() == 'mobile' ? '-mobile' : '');
+        var bodyEl = $('body');
+        bodyEl.removeClass((i,currentclass) => {return currentclass.replace(/\b(?:dynamic)\b\s*/g, '');});
+        if (hasProducts) {
+            bodyEl.removeClass(classType);
+        }else{
+            bodyEl.addClass(classType);
+            document.getElementById('tvpFeaturedProduct').innerHTML = '';
+            player.resize();
         }
     };
 
@@ -932,7 +971,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                     }
                     renderProducts(selectedVideo.id, loginId);
                 }
-                
+                checkProducts();
                 resizeParent();
             }, 85));
         };

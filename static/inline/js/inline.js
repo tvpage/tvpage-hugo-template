@@ -18,6 +18,7 @@
     var videosData = null;
     var inlineEl = null;
     var productRatingEmptyIsBordered = false;
+    var hasProducts = true;
 
     var renderedApproach = function () {
         if (document.body.clientWidth < breakpoint) {
@@ -232,7 +233,7 @@
                     $productItms[i].querySelector('.tvp-product-info-title').innerHTML = defaultTitle;
                 }
                 $('.tvp-product-info-title').ellipsis({
-                    row: 3
+                    row: 2
                 });  
             });
             addProductActiveState(productData[0].id);
@@ -245,7 +246,8 @@
             loadProducts(vid, lid, 
                 function (data) {                
                     if (data.length) {
-                        $('.tvp-player-product-section').removeClass('no-products');
+                        hasProducts = true;
+                        checkProducts();
                         for (var i = data.length - 1; i >= 0; i--) {
                             analytics.track('pi',{
                                 vd: data[i].entityIdParent,
@@ -260,15 +262,30 @@
                         isProductsInitialized = true;                        
                     }
                     else{
+                        hasProducts = false;
                         deInitProd();
-                        document.getElementById('tvpFeaturedProduct').innerHTML = '';
-                        $('.tvp-player-product-section').addClass('no-products');
+                        checkProducts();
                     }
                     resizeParent();
             });
         }
         else{
             layoutProducts();
+        }
+    };
+
+    var checkProducts = function(){
+        var classType = 'no-products' + (renderedApproach() == 'mobile' ? '-mobile' : '');
+        var bodyEl = $('body');
+        bodyEl.removeClass(function(i,currentclass){
+            return currentclass.replace(/\b(?:dynamic)\b\s*/g, '');
+        });
+        if (hasProducts) {
+            bodyEl.removeClass(classType);
+        }else{
+            bodyEl.addClass(classType);
+            document.getElementById('tvpFeaturedProduct').innerHTML = '';
+            player.resize();
         }
     };
 
@@ -406,7 +423,7 @@
                     }
                     renderProducts(selectedVideo.id, loginId);
                 }
-                
+                checkProducts();
                 resizeParent();
             }, 85));
         };

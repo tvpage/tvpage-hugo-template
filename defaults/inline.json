@@ -237,14 +237,14 @@
             "type": "text",
             "label": "Featured Product Image Background Size",
             "code": "featured_product_image_background_size",
-            "value": "cover"
+            "value": "contain"
         },
         {
             "for": "inline",
             "type": "text",
             "label": "Featured Product Image Margin",
             "code": "featured_product_image_margin",
-            "value": "0 0 16px 0"
+            "value": "0 0 10px 0"
         },
         {
             "for": "inline",
@@ -272,7 +272,7 @@
             "type": "text",
             "label": "Featured Product Title Margin",
             "code": "featured_product_title_margin",
-            "value": "0 0 15px 0"
+            "value": "0 0 10px 0"
         },
         {
             "for": "inline",

@@ -145,6 +145,7 @@
             }
 
             var playerOverlay = that.el.querySelector('#playerOverlay');
+            playerOverlay.style.cssText = 'background:url('+that.assets[that.current].thumbnailUrl+')no-repeat;background-size:cover;background-position:center;position:absolute;top:0;width:100%;';
             playerOverlay.style.display = asset.type === 'youtube' ? "none" : "block";
         };
 
@@ -175,6 +176,28 @@
                     this.current = i;
                 }
             }
+
+            var _overlay = isset(options.overlay) ? options.overlay : null;
+
+            if (_overlay) {
+              var click = function(){
+                var clear = function () {
+                    this.removeEventListener('click',click,false);
+                    this.parentNode.removeChild(this);
+                };
+                clear.call(this);
+                if (that.instance) {
+                    that.instance.play();
+                }
+              };
+
+              var existing = this.el.querySelector('.tvplayer-overlay');
+              if (existing) {
+                  existing.removeEventListener('click', click, false);
+                  existing.parentNode.removeChild(existing);
+              }
+            }
+
             this.play(this.assets[this.current], true);
         }
 
@@ -285,6 +308,7 @@
             //add overlay for mp4 video type
             var divOverlay = document.createElement('div');
             divOverlay.id = "playerOverlay";
+            divOverlay.style.cssText = 'background:url('+that.assets[0].thumbnailUrl+')no-repeat;background-size:cover;background-position:center;position:absolute;top:0;width:100%;';
             divOverlay.innerHTML = this.playIconTemplate;
             this.el.appendChild(divOverlay);
         }
