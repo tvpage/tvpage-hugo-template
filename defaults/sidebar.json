@@ -14,6 +14,12 @@
         },
         {
           "type": "text",
+          "label": "Product Spots Endpoint",
+          "code": "product_spots_endpoint",
+          "value": ""
+        },
+        {
+          "type": "text",
           "label": "API Base Url",
           "code": "api_base_url",
           "value": "//api.tvpage.com/v1"
