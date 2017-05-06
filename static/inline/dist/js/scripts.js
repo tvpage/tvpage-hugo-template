@@ -837,6 +837,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
         });
         if (hasProducts) {
             bodyEl.removeClass(classType);
+            player.resize();
         }else{
             bodyEl.addClass(classType);
             document.getElementById('tvpFeaturedProduct').innerHTML = '';

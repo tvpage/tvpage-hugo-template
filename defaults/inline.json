@@ -503,14 +503,14 @@
             "type": "text",
             "label": "Product Holder Slider Dots Color",
             "code": "product_holder_slide_dots_color",
-            "value": "#000"
+            "value": "#D8D8D8"
         },
         {
             "for": "inline",
             "type": "text",
             "label": "Product Holder Slider Dots Color",
             "code": "product_holder_slide_dots_color_active",
-            "value": "#333"
+            "value": "rgb(64, 64, 64)"
         },
         {
             "for": "inline",

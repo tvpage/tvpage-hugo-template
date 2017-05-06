@@ -282,6 +282,7 @@
         });
         if (hasProducts) {
             bodyEl.removeClass(classType);
+            player.resize();
         }else{
             bodyEl.addClass(classType);
             document.getElementById('tvpFeaturedProduct').innerHTML = '';
