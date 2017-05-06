@@ -137,8 +137,8 @@
 
 '.tvp-products-nav-button{' +
 	'background-color: {{- ($.Scratch.Get "settings").product_holder_slide_arrow_button_color -}};' +
-	'height: {{- ($.Scratch.Get "settings").product_holder_slide_arrow_height -}};' +
-	'width: {{- ($.Scratch.Get "settings").product_holder_slide_arrow_width -}};' +
+	'height: {{- ($.Scratch.Get "settings").product_holder_slide_arrow_height -}}px;' +
+	'width: {{- ($.Scratch.Get "settings").product_holder_slide_arrow_width -}}px;' +
 	'border-radius: {{- ($.Scratch.Get "settings").product_holder_slide_arrow_button_border_radius -}};' +
 '}' +
 
