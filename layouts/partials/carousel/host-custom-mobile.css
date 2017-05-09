@@ -10,7 +10,7 @@
 
 ".tvp-carousel-holder {" +
     "background: {{ ($.Scratch.Get "settings").background }};" +
-    "margin: {{ ($.Scratch.Get "settings").margin }};" +
+    "margin: {{ ($.Scratch.Get "settings").mobile_holder_margin }};" +
 "}" +
 
 ".tvp-modal-overlay {" +
@@ -86,4 +86,10 @@
 ".tvp-modal-close:hover {" +
     "background-color: {{ ($.Scratch.Get "settings").modal_close_button_background_color_hover }};" +
     "opacity: {{ ($.Scratch.Get "settings").modal_close_button_opacity_hover }};" +
-"}" 
+"}" +
+
+"@media screen and (min-width: 480px) {" +
+    ".tvp-carousel-holder {" +
+        "margin: {{ ($.Scratch.Get "settings").margin }};" +
+    "}" +
+"}"

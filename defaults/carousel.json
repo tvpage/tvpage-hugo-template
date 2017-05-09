@@ -693,6 +693,13 @@
         {
           "for": "modal",
           "type": "text",
+          "label": "Mobile Holder Margin",
+          "code": "mobile_holder_margin",
+          "value": "0"
+        },
+        {
+          "for": "modal",
+          "type": "text",
           "label": "Product Thumbnail Margin Mobile",
           "code": "product_thumbnail_margin_mobile",
           "value": "0 10px 10px 0"
