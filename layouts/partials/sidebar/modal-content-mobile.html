@@ -21,6 +21,16 @@
           '<button class="tvp-product-cta">{{ ($.Scratch.Get "settings").product_popup_cta_text }}</button>' +
         '</div>' +
       '</a>',
+  'products-ad':
+      '<a id="tvp-product-{id}" class="{className}" data-vd="{entityIdParent}" href="{linkUrl}">'+
+        '<div class="tvp-product-image" style="background-image:url({imageUrl})"></div>' +
+        '<div class="tvp-product-data">'+
+          '<p>{title}</p>' +
+          '<h2>{price}</h2>' +
+          '<button class="tvp-product-cta">{{ ($.Scratch.Get "settings").product_popup_cta_text }}</button>' +
+        '</div>' +
+        '<span class="tvp-adx-label">Sponsored</span>' +
+      '</a>',
   'tooltip':
       '<svg class="tvp-info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">' +
         '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"></path>' +

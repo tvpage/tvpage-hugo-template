@@ -140,7 +140,7 @@
             product.className = "tvp-product" + (product.isCampaignProduct ? " tvp-ad" : "");
             product.title = !Utils.isEmpty(product.title) ? Utils.trimText(product.title, 50) : '';
             product.price = !Utils.isEmpty(product.price) ? Utils.trimPrice(product.price) : '';
-            productsHtml += Utils.tmpl(config.templates['modal-content-mobile'].products,product);
+            productsHtml += Utils.tmpl(config.templates['modal-content-mobile']["products" + (product.isCampaignProduct ? "-ad" : "")],product);
         }
 
         carousel.innerHTML = productsHtml;
