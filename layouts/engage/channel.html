@@ -4,15 +4,18 @@
 {{ $channel := index $.Site.Data.channels (printf "x%s" .Params.channelid ) }}
 
 {{if ne $channel.entityType "5"}}
-	{{ $.Scratch.Add "channelVideos" (index $.Site.Data.channelVideos (printf "x%s_page_0" $channel.id) "data") }}
-	{{ $.Scratch.Set "videoId" "0" }}
-	{{- $page := index $.Site.Data.channelVideos (printf "x%s_page_0" .Params.channelid) -}}
-	{{ range first 1 $page.data }}
-	   {{ $.Scratch.Set "videoId" .id }}
-	{{ end }}
-	{{- $id := ($.Scratch.Get "videoId") -}}
-	{{ $video := index $.Site.Data.videos (printf "x%s" $id ) }}
-	{{ $.Scratch.Add "channelVideosQty" (len ($.Scratch.Get "channelVideos")) }}
+  {{$channelData := (where $.Site.Data.channelVideos (printf "x%s_page_0" $channel.id) "data")}}
+  {{if $channelData }}
+  	{{ $.Scratch.Add "channelVideos" (index $.Site.Data.channelVideos (printf "x%s_page_0" $channel.id) "data") }}
+  	{{ $.Scratch.Set "videoId" "0" }}
+  	{{- $page := index $.Site.Data.channelVideos (printf "x%s_page_0" .Params.channelid) -}}
+  	{{ range first 1 $page.data }}
+  	   {{ $.Scratch.Set "videoId" .id }}
+  	{{ end }}
+  	{{- $id := ($.Scratch.Get "videoId") -}}
+  	{{ $video := index $.Site.Data.videos (printf "x%s" $id ) }}
+  	{{ $.Scratch.Add "channelVideosQty" (len ($.Scratch.Get "channelVideos")) }}
+  {{end}}
 {{ else }}
 	{{ $.Scratch.Add "channelVideosQty" 0 }}
 {{ end }}
