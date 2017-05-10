@@ -153,6 +153,7 @@
             product.ratingReviews = ratingReviewsHtml;
 
             productsHtml += Utils.tmpl(config.templates["modal-content"].product, product);
+            productsHtml += Utils.tmpl(config.templates["modal-content"][isCampaignProduct ? "product-ad" : "product"], product);
             popupsHtml += Utils.tmpl(config.templates["modal-content"].popup, product);
 
             analyticsTrack("pi", product);
