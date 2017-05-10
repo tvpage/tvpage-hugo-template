@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="73px" height="73px" viewBox="0 0 73 73" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 41.2 (35397) - http://www.bohemiancoding.com/sketch -->
+    <title>icon_btnPlay</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Captivate-Desktop" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Homepage" transform="translate(-304.000000, -1310.000000)">
+            <g id="Latest-Videos" transform="translate(165.000000, 1180.000000)">
+                <g id="icon_btnPlay" transform="translate(139.000000, 130.000000)">
+                    <circle id="Oval" fill="#00DBC0" cx="36.5" cy="36.5" r="36.5"></circle>
+                    <polygon id="Triangle-2" fill="#FFFFFF" transform="translate(42.115385, 36.500000) rotate(90.000000) translate(-42.115385, -36.500000) " points="42.1153846 17.6483516 64.1758242 55.3516484 20.0549451 55.3516484"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
