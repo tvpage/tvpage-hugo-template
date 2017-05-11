@@ -1,6 +1,24 @@
 {
     "option": [
         {
+          "type": "boolean",
+          "label": "Campaign",
+          "code": "campaign",
+          "value": false
+        },
+        {
+          "type": "text",
+          "label": "Video Spots Endpoint",
+          "code": "video_spots_endpoint",
+          "value": ""
+        },
+        {
+          "type": "text",
+          "label": "Product Spots Endpoint",
+          "code": "product_spots_endpoint",
+          "value": ""
+        },
+        {
           "type": "text",
           "label": "API Base Url",
           "code": "api_base_url",

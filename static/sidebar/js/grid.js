@@ -1,57 +1,119 @@
 ;(function(window, document) {
+  
+  var jsonpCall = function(src, params, cb){
+    var s = document.createElement('script');
+    var cbName = 'tvp_' + Math.floor(Math.random()*555);
 
-  var isFunction = function(obj) {
-    return 'function' === typeof obj;
+    window[cbName] = cb;
+    src || "";
+
+    var firstParam = true;
+    params = params || {};
+    for (var p in params) {
+      if (firstParam) {
+        src += '?';
+        firstParam = false;
+      } else {
+        src += '&';
+      }
+      src += p + '=' + params[p];
+    }
+
+    src += '&callback='+cbName;
+    s.src = src;
+
+    document.body.appendChild(s);
   };
 
   function Grid(el, options) {
     this.options = options || {};
+    this.campaign = this.options.campaign || null;
     this.windowSize = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) <= 200 ? 'small' : 'medium';
     this.initialResize = true;
     this.eventPrefix = "tvp_" + (options.id || "").trim().replace(/-/g,'_');
-    
-    var isSmall = this.windowSize == 'small';
-    this.itemsPerPage = isSmall ? 2 : (options.items_per_page || 6);
-    this.itemsPerRow = isSmall ? 1 : (options.items_per_row || 2);
+    this.isSmall = this.windowSize == 'small';
+    this.page = 0;
+    this.isLastPage = false;
+    this.itemsPerPage = this.isSmall ? 2 : (options.items_per_page || 6);
+    this.itemsPerRow = this.isSmall ? 1 : (options.items_per_row || 2);
     this.loginId = (options.loginId || options.loginid) || 0;
     this.channel = options.channel || {};
     this.channelId = (options.channelid || options.channelId) || null;
     this.loading = false;
-    this.isLastPage = false;
-    this.page = 0;
-
     this.el = 'string' === typeof el ? document.getElementById(el) : el;
     this.loadBtn = this.el.querySelector('.tvp-sidebar-load');
     this.container = this.el.querySelector('.tvp-sidebar-container');
     this.sidebarTitle = this.el.querySelector('.tvp-sidebar-title');
-    this.onLoad = options.onLoad && isFunction(options.onLoad) ? options.onLoad : null;
-    this.onLoadEnd = options.onLoadEnd && isFunction(options.onLoadEnd) ? options.onLoadEnd : null;
-    this.onItemClick = options.onItemClick && isFunction(options.onItemClick) ? options.onItemClick : null;
-    
-    this.render = function(){
-      this.container.innerHTML = '';
+    this.onLoad = options.onLoad && Utils.isFunction(options.onLoad) ? options.onLoad : null;
+    this.onLoadEnd = options.onLoadEnd && Utils.isFunction(options.onLoadEnd) ? options.onLoadEnd : null;
+    this.onItemClick = options.onItemClick && Utils.isFunction(options.onItemClick) ? options.onItemClick : null;
+    this.analytics = window.Analytics ? new Analytics() : {};
 
+    this.emitMessage = function(data){
+      if (!window.parent) return;
+      window.parent.postMessage(data || {}, '*');   
+    };
+    
+    this.trackVideoAdsImpression = function(){
+      var videoAds = this.el.getElementsByClassName('tvp-ad');
+      if (!videoAds || !videoAds.length) return;
+      for (var i = 0; i < videoAds.length; i++) {
+        var videoAd = videoAds[i];
+        var videoAdId = videoAd && videoAd.id ? videoAd.id.split('-').pop() : "";
+        for (var j = 0; j < this.data.length; j++) {
+          var dataObject = this.data[j];
+          var dataObjectEntity = dataObject.entity;
+          if (!dataObjectEntity) {
+            continue;
+          } else if (videoAdId == dataObjectEntity.id) {
+            this.analytics.initConfig({
+              domain: Utils.isset(location, 'hostname') ? location.hostname : '',
+              loginId: dataObjectEntity.loginId,
+              logUrl: dataObject.analytics
+            });
+            
+            var trackData = {};
+            var events = dataObjectEntity.events || [];
+            for (var k = 0; k < events.length; k++) {
+              var e = events[k];
+              if ("impression" === e.type) {
+                trackData = e.data;
+              }
+            }
+            
+            this.analytics.track('vi',trackData);
+          }
+        }
+      }
+    };
+    
+    this.renderTitle = function(){
       if (options.title_text && options.title_text.trim().length) {
         this.sidebarTitle.innerHTML = options.title_text;
       } else {
         this.sidebarTitle.parentNode.removeChild(this.sidebarTitle);
       }
+    };
+    
+    this.render = function(){
+      this.container.innerHTML = '';
+      this.renderTitle();
 
       var all = this.data.slice(0),
           pages = [];
-
       while (all.length) {
         pages.push(all.splice(0, this.itemsPerPage));
       }
       
       for (var i = 0; i < pages.length; i++) {
         var page = pages[i];
+        var pageFrag = document.createDocumentFragment();
+        
         var pageRows = [];
         while (page.length) {
           pageRows.push(page.splice(0, this.itemsPerRow));
         }
-
-        var pageFrag = document.createDocumentFragment();
+        
         for (var j = 0; pageRows.length > j; j++) {
           
           var rowEl = document.createElement('div');
@@ -60,66 +122,36 @@
           var row = pageRows[j];
           for (var k = 0; k < row.length; k++) {
             var item = row[k];
-            var className = '';
-
-            if ('undefined' !== typeof item.entity) {
-              className += ' tvp-exchange';
-            }
-
-            if (that.windowSize === 'medium' && this.itemsPerRow > 1) {
+            var itemIsSpot = 'undefined' !== typeof item.entity;
+            
+            var className = itemIsSpot ? ' tvp-ad' : '';
+            if (this.windowSize === 'medium' && this.itemsPerRow > 1) {
               className += ' col-6';
             }
-
             item.className = className;
-            var template = options.templates['sidebar-item'];
-            item.title = Utils.trimText(item.title,50);
-            rowEl.innerHTML += Utils.tmpl(template, item);
+            
+            if (itemIsSpot) {
+              item.entity.title = Utils.trimText(item.entity.title,50);
+            } else {
+              item.title = Utils.trimText(item.title,50);
+            }
+            
+            rowEl.innerHTML += Utils.tmpl(options.templates[ itemIsSpot ? 'sidebar-item-ad' : 'sidebar-item'], item);
           }
 
           pageFrag.appendChild(rowEl);
         }
 
         this.container.appendChild(pageFrag);
-        if (window.parent) {
-          window.parent.postMessage({
-            event: this.eventPrefix + ':render',
-            height: this.el.offsetHeight + 'px'
-          }, '*');
-        }
+        this.trackVideoAdsImpression();
+        this.emitMessage({
+          event: this.eventPrefix + ':render',
+          height: this.el.offsetHeight + 'px'
+        });
       }
     };
 
     var that = this;
-    this.load = function(callback){
-      that.loading = true;
-      if (this.onLoad) {
-        this.onLoad();
-      }
-
-      var channel = that.channel || {};
-      var params = channel.parameters || {};
-      var src = this.options.api_base_url + '/channels/' + (channel.id || that.channelId) + '/videos?X-login-id=' + that.loginId;
-      for (var p in params) {
-        src += '&' + p + '=' + params[p];
-      }
-      var cbName = options.callbackName || 'tvp_' + Math.floor(Math.random() * 555);
-      src += '&p=' + that.page + '&n=' + that.itemsPerPage + '&callback='+cbName;
-      var script = document.createElement('script');
-      script.src = src;
-      window[cbName || 'callback'] = function(data){
-        if ( !data.length || (data.length < that.itemsPerPage) ) {
-          that.isLastPage = true;
-        }
-
-        that.data = data;
-        callback(data);
-        that.loading = false;
-        if (that.onLoadEnd) {
-          that.onLoadEnd();
-        }
-      };
-      document.body.appendChild(script);
-    };
 
     this.next = function(){
       if (this.isLastPage) {
@@ -134,12 +166,10 @@
       var newSize = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) <= 200 ? 'small' : 'medium';
       var notify = function(){
         if (that.initialResize) return;
-        if (window.parent) {
-          window.parent.postMessage({
-            event: that.eventPrefix + ':resize',
-            height: that.el.offsetHeight + 'px'
-          }, '*');
-        }
+        that.emitMessage({
+          event: that.eventPrefix + ':resize',
+          height: that.el.offsetHeight + 'px'
+        });
       };
       if (that.windowSize !== newSize) {
         that.windowSize = newSize;
@@ -169,19 +199,24 @@
 
       var data = that.data;
       for (var i = 0; i < data.length; i++) {
-        if (data[i].id === id) {
-          selected = data[i];
+        var item = data[i];
+        if ("undefined" !== typeof item.entity) {
+          if (id === item.entity.id) {
+            selected = item;
+          }
+        } else  {
+          if (id === item.id) {
+            selected = item;
+          }
         }
       }
 
-      if (window.parent) {
-        window.parent.postMessage({
-          runTime: 'undefined' !== typeof window.__TVPage__ ? __TVPage__ : null,
-          event: that.eventPrefix + ':video_click',
-          selectedVideo: selected,
-          videos: data
-        }, '*');
-      }
+      that.emitMessage({
+        runTime: 'undefined' !== typeof window.__TVPage__ ? __TVPage__ : null,
+        event: that.eventPrefix + ':video_click',
+        selectedVideo: selected,
+        videos: data
+      });
     };
 
     this.loadBtn.onclick = function() {
@@ -199,18 +234,64 @@
       });
     };
 
+    this.load = function(callback){
+      that.loading = true;
+      
+      if (this.onLoad) {
+        this.onLoad();
+      }
+      
+      var endWith = function(data){
+        if ( !data.length || (data.length < that.itemsPerPage) ) {
+          that.isLastPage = true;
+        }
+        
+        that.data = data;
+        callback(data);
+        
+        that.loading = false;
+        if (that.onLoadEnd) {
+          that.onLoadEnd();
+        }
+      };
+
+      var src = this.options.api_base_url + '/channels/' + (that.channel.id || that.channelId) + '/videos';
+      var params = that.channel.parameters || {};
+      params.p = that.page;
+      params.n = that.itemsPerPage;
+      params["X-login-id"] = that.loginId;
+      
+      if (this.campaign && that.options.video_spots_endpoint && 0 === that.page) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', that.options.video_spots_endpoint, true);
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState == XMLHttpRequest.DONE) {
+            var videoSpots = [];
+            if (200 === xhr.status && xhr.responseText.length) {
+              videoSpots = JSON.parse(xhr.responseText);
+            }
+            
+            var itemsNeeded = params.n - videoSpots.length;
+            params.n = itemsNeeded > 0 ? itemsNeeded : 10000;
+            
+            jsonpCall(src, params, function(channelVideos){
+              endWith(videoSpots.concat(channelVideos));
+            });
+          }
+        };
+        xhr.send();
+      } else {
+        jsonpCall(src, params, function(data){
+          endWith(data || []);
+        });
+      }
+    };
+
     //By default at Grid creation we load & render.
     this.load(function(data){
-      var postEvent = '';
-      if (data.length) {
-        that.render(data);
-        
-        if (window.parent) {
-          window.parent.postMessage({
-            event: that.eventPrefix + ':render'
-          }, '*');
-        }
-      }
+      if (!data.length) return;
+      that.render(data);
+      that.emitMessage({ event: that.eventPrefix + ':render' });
     });
 
     window.addEventListener('resize', Utils.debounce(this.resize,100));

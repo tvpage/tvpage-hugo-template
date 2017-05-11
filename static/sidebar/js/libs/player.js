@@ -86,9 +86,15 @@
       var assets = [];
       for (var i = 0; i < data.length; i++) {
         var video = data[i];
-
         if (isEmpty(video)) break;
-
+        
+        var videoIsSpot = 'undefined' !== typeof video.entity;
+        if (videoIsSpot) {
+          video.entity.analytics = video.analytics;
+          video.entity.asset.products = video.products;
+          video = videoIsSpot ? video.entity : video;
+        }
+        
         var asset = video.asset;
         asset.assetId = video.id;
         asset.assetTitle = video.title;
@@ -119,7 +125,6 @@
       return assets;
     }(options.data));
 
-
     //Context reference for Methods.
     var that = this;
     this.getOption = function(name) {
@@ -142,15 +147,13 @@
           willCue = true;
         }
       }
-
+      
       var analytics = new Analytics(),
         config = {
           domain: isset(location, 'hostname') ? location.hostname : '',
           loginId: asset.loginId
         };
-
-      //Update tvpa analytics configuration depending on the video type
-      //(exhange or standard)
+      
       if (isset(asset, 'analyticsLogUrl')) {
         config.logUrl = asset.analyticsLogUrl;
         analytics.initConfig(config);

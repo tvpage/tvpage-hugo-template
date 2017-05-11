@@ -92,7 +92,6 @@ body  {
 }
 
 .tvp-product-image-overlay {
-  -webkit-transition: all .05s ease-in-out;
   transition: all .05s ease-in-out;
   display: none;
   top: 0;
@@ -133,7 +132,6 @@ body  {
   width: 100%;
   display: block;
   cursor: pointer;
-  -webkit-transition: all .05s ease-in-out;
   transition: all .05s ease-in-out;
   padding: 0;
 }
@@ -201,6 +199,16 @@ body  {
   background-repeat: no-repeat;
   background-position: center;
   padding-top: 100%;
+}
+
+.tvp-adx-label {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #e57211;
+  color: white;
+  padding: 5px;
+  text-transform: uppercase;
 }
 
 @media screen and (max-width: 768px) {
