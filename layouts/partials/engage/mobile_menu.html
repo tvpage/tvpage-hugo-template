@@ -21,6 +21,13 @@
           {{ end }}
           {{- else -}}
             No navigation
+          {{ end }}
+          {{- with .Site.Menus.top -}}
+          {{- range sort . "Name" "desc" -}}
+            <li><a class="{{ .Identifier }}-btn" href="{{.URL}}" {{- if eq .Name "Subscribe" -}} id="mobile-subscribe" {{ end }} >{{ .Name }}</li></a>
+          {{ end }}
+          {{- else -}}
+            No navigation
           {{ end }}          
         </ul>
       </div>
