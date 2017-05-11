@@ -14,6 +14,9 @@
   <div class="tvp-player">
     <div id="tvp-player-el"></div>
   </div>
+  {{ if(.Params.advertising.enabled) }}
+  <script type="text/javascript" src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
+  {{end}}
   <script async src="//a.tvpage.com/tvpa.min.js"></script>
   <script async src='//cdnjs.tvpage.com/tvplayer/tvp-{{ ($.Scratch.Get "settings").player_version }}.min.js'></script>
   <script>
