@@ -1,3 +1,5 @@
+$default-font-theme : "Dosis";
+
 @import "variables";
 @import "bootstrap";
 @import "tvp_mixin";
@@ -11,6 +13,7 @@
 /////////////////////////////
 //// CAPTIVATE
 /////////////////////////////
+
 header a {
 	text-transform: uppercase;
 }

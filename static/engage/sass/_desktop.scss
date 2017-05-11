@@ -47,19 +47,40 @@ h1.seo{
 }
 .tvp-sub-channel{
 	position: absolute;
-	bottom: 0;
+	bottom: -6px;
 	width: 100%;
+	list-style : none;
 	padding: 0 15px;
+	margin-bottom : 0px;
+	  li:first-child:nth-last-child(1) {
+    	width: 100%;
+		}
+		li:first-child:nth-last-child(2), 
+		li:first-child:nth-last-child(2) ~ li
+		{
+    	width: 50%;
+		}
+		li:first-child:nth-last-child(3),
+		li:first-child:nth-last-child(3) ~ li
+		{
+    	width: 33.33333%;
+		}
+		li:first-child:nth-last-child(4),
+		li:first-child:nth-last-child(4) ~ li
+		{
+    	width: 25%;
+		}
 	&-item{
-		background-color: #2C6373;
-		opacity: 0.75;
+		background-color: rgba(44, 99, 115,0.75);
 		height: 51px;
 		border-left: 2px solid rgba(31, 29, 38, 0.5);
 		font-size: 20px;
 		line-height: 26px;
-		font-family: FuturaStdHeavy;
+		font-family: Dosis;
 		color: #fff;
 		position: relative;
+		display: inline-block;
+		width: 100%;
 		&:first-child{
 			border-left: 0;
 		}
@@ -194,9 +215,9 @@ h1.seo{
 	}
 	&-title {
 		background: transparent;
-		font-family: FuturaStdLight;
+		font-family: $default-font-theme;
 		font-size: 30px;
-		font-weight: 600;
+		font-weight: 500;
 		color: #FFFFFF;
 		padding: 0 18px;
 		text-transform: uppercase;		
@@ -482,7 +503,7 @@ nav.menu-bar{
 		color: #1F1D26;	
 		width: 37px;
 		height: 20px;
-		font-family: FuturaStdLight;
+		font-family: $default-font-theme;
 		line-height: 20px;
 	}
 	& .active{
@@ -521,7 +542,7 @@ footer{
 	height: 65px;
 	background-color: #1F1D26;
 	& .copyright {
-		font-family: FuturaStdLight;
+		font-family: $default-font-theme;
 		font-size: 20px;
 		text-align: center;
 		color: #FFFFFF;
@@ -573,7 +594,7 @@ footer{
 .brands-carousel{
 	width: 100%;
 	height: 41px;
-	font-family: FuturaStdLight;
+	font-family: $default-font-theme;
 	font-size: 32px;
 	font-weight: 700;
 	line-height: 41px;
@@ -1048,7 +1069,7 @@ footer{
 			height: 45px;
 			overflow: hidden;
 			line-height: 1.3;
-			font-family: FuturaStdLight;
+			font-family: $default-font-theme;
 		}
 	}
 	
@@ -1117,7 +1138,7 @@ footer{
 		opacity: 0.5;
 		font-size: 14px;
 		font-weight: 500;
-		font-family: FuturaStdLight;
+		font-family: $default-font-theme;
 		display: none;
 		cursor: pointer;
 		&:hover{
@@ -1261,7 +1282,7 @@ footer{
 	}
 	&-sorry{
 		height: 48px;
-		font-family: FuturaStdLight;
+		font-family: $default-font-theme;
 		font-size: 38px;
 		font-weight: 200;
 		text-align: center;
@@ -1275,7 +1296,7 @@ footer{
 		margin-bottom: 40px;
 	}
 	&-message{
-		font-family: FuturaStdLight;
+		font-family: $default-font-theme;
 		font-size: 28px;
 		font-weight: 200;
 		text-align: center;

@@ -21,12 +21,27 @@
 									</span>
 								</a>
 							</article>
-							<div class="tvp-sub-channel row">
-								
-												<a href="" class="col-xs-3 text-center tvp-sub-channel-item">
-													<span></span>
-												</a>
-							</div>
+							<ul class="tvp-sub-channel row justify">
+							<!--<div class="tvp-sub-channel row">-->
+									{{- if isset ($.Scratch.Get "settings") .Params.channelid -}}
+									{{ $subchannels := (split (index  ($.Scratch.Get "settings") .Params.channelid ) "," )}}
+									{{- range $subchannels -}}
+										{{ $subchannelPage := index $.Site.Data.channels (printf "x%s" . )}}
+										<!--
+										<a href="{{$baseUrl}}c/{{- lower $subchannelPage.titleTextEncoded -}}/{{.}}" class="col-xs-3 text-center tvp-sub-channel-item">
+													<span>{{- $subchannelPage.title -}}</span>
+										</a>
+										-->
+										<li>
+										<a href="{{$baseUrl}}c/{{- lower $subchannelPage.titleTextEncoded -}}/{{.}}" class="text-center tvp-sub-channel-item">
+													<span>{{- $subchannelPage.title -}}</span>
+										</a>
+										</li>
+										{{- end -}}
+									{{- end -}}
+
+							<!--</div>-->
+							</ul>
 						</div>
 					{{ end }}
 				{{- end -}}
