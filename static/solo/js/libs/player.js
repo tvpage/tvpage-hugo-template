@@ -74,6 +74,12 @@
       overlayColor: isset(options.overlay_color) ? options.overlay_color : null,
       overlayOpacity: isset(options.overlay_opacity) ? options.overlay_opacity : null
     });
+
+    this.enabled = (isset(options.advertising) && isset(options.advertising.enabled)) ? options.advertising.enabled : false;
+    this.adServerUrl = (isset(options.advertising) && isset(options.advertising.adServerUrl)) ? options.advertising.adServerUrl : null;
+    this.adTimeout = (isset(options.advertising) && isset(options.advertising.adTimeout)) ? options.advertising.adTimeout : 2000;
+    this.maxAds = (isset(options.advertising) && isset(options.advertising.maxAds)) ? options.advertising.maxAds : 10;
+    this.adInterval = (isset(options.advertising) && isset(options.advertising.adInterval)) ? options.advertising.adInterval : 0;
     
     this.onNext = isset(options.onNext) && "function" === typeof options.onNext ? options.onNext : null;
     this.onPlayerReady = isset(options.onPlayerReady) && "function" === typeof options.onPlayerReady ? options.onPlayerReady : null;
@@ -290,7 +296,15 @@
             onReady: that.onReady,
             onStateChange: that.onStateChange,
             divId: that.el.id,
-            controls: that.controls
+            controls: that.controls,
+            version: that.version,
+            advertising:{
+              enabled: that.enabled,
+              adServerUrl: that.adServerUrl,
+              adTimeout: that.adTimeout,
+              maxAds: that.maxAds,
+              adInterval: that.adInterval
+            }
           };
 
           var extras = ["preload","poster","overlay"];

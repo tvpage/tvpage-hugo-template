@@ -141,6 +141,7 @@ var iframeContent = utils.getIframeHtml({
     style: config.css["styles-custom"],
     js: [
         '//a.tvpage.com/tvpa.min.js',
+        '//imasdk.googleapis.com/js/sdkloader/ima3.js',
         playerUrl,
         config.debug ? config.jsPath + "vendor/simple-scrollbar.min.js" : "",
         config.debug ? config.jsPath + "libs/utils.js" : "",
