@@ -47,10 +47,44 @@
     this.onLoad = options.onLoad && Utils.isFunction(options.onLoad) ? options.onLoad : null;
     this.onLoadEnd = options.onLoadEnd && Utils.isFunction(options.onLoadEnd) ? options.onLoadEnd : null;
     this.onItemClick = options.onItemClick && Utils.isFunction(options.onItemClick) ? options.onItemClick : null;
+    this.analytics = window.Analytics ? new Analytics() : {};
 
     this.emitMessage = function(data){
       if (!window.parent) return;
       window.parent.postMessage(data || {}, '*');   
+    };
+    
+    this.trackVideoAdsImpression = function(){
+      var videoAds = this.el.getElementsByClassName('tvp-ad');
+      if (!videoAds || !videoAds.length) return;
+      for (var i = 0; i < videoAds.length; i++) {
+        var videoAd = videoAds[i];
+        var videoAdId = videoAd && videoAd.id ? videoAd.id.split('-').pop() : "";
+        for (var j = 0; j < this.data.length; j++) {
+          var dataObject = this.data[j];
+          var dataObjectEntity = dataObject.entity;
+          if (!dataObjectEntity) {
+            continue;
+          } else if (videoAdId == dataObjectEntity.id) {
+            this.analytics.initConfig({
+              domain: Utils.isset(location, 'hostname') ? location.hostname : '',
+              loginId: dataObjectEntity.loginId,
+              logUrl: dataObject.analytics
+            });
+            
+            var trackData = {};
+            var events = dataObjectEntity.events || [];
+            for (var k = 0; k < events.length; k++) {
+              var e = events[k];
+              if ("impression" === e.type) {
+                trackData = e.data;
+              }
+            }
+            
+            this.analytics.track('vi',trackData);
+          }
+        }
+      }
     };
     
     this.renderTitle = function(){
@@ -109,6 +143,7 @@
         }
 
         this.container.appendChild(pageFrag);
+        this.trackVideoAdsImpression();
         this.emitMessage({
           event: this.eventPrefix + ':render',
           height: this.el.offsetHeight + 'px'

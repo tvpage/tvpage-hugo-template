@@ -68,11 +68,11 @@
   };
 
   var not = function(obj){return 'undefined' === typeof obj};
-  if (not(window.Grid) || not(window.Utils)) {
+  if (not(window.Grid) || not(window.Utils) || not(window.Analytics)) {
       var libsCheck = 0;
       (function libsReady() {
           setTimeout(function(){
-              if (not(window.Grid) || not(window.Utils)) {
+              if (not(window.Grid) || not(window.Utils) || not(window.Analytics)) {
                   (++libsCheck < 50) ? libsReady() : console.warn('limit reached');
               } else {
                   initialize();
