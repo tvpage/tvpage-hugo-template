@@ -262,6 +262,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
 
         this.isFullScreen = false;
         this.initialResize = true;
+        this.version = isset(options.player_version) ? options.player_version : null;
         this.onResize = isset(options.onResize) && isFunction(options.onResize) ? options.onResize : null;
         this.onNext = isset(options.onNext) && isFunction(options.onNext) ? options.onNext : null;
         this.onPlayerChange = isset(options.onPlayerChange) && isFunction(options.onPlayerChange) ? options.onPlayerChange : null;
@@ -328,6 +329,15 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             overlayColor: isset(options.overlay_color) ? options.overlay_color : null,
             overlayOpacity: isset(options.overlay_opacity) ? options.overlay_opacity : null
         });
+
+        var advertisingOptions = isset(options.advertising) && "object" === typeof options.advertising && !isEmpty(options.advertising) ? options.advertising : {};
+        this.advertising = compact({
+          enabled: isset(advertisingOptions.enabled) ? advertisingOptions.enabled : false,
+          adServerUrl: isset(advertisingOptions.adServerUrl) ? advertisingOptions.adServerUrl : null,
+          adTimeout: isset(advertisingOptions.adTimeout) ? advertisingOptions.adTimeout : "2000",
+          maxAds: isset(advertisingOptions.maxAds) ? advertisingOptions.maxAds : "100",
+          adInterval: isset(advertisingOptions.adInterval) ? String(advertisingOptions.adInterval) : "0"
+        });
         
         //Context reference for Methods.
         var that = this;
@@ -377,8 +387,6 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                 }
             }
 
-            var playerOverlay = that.el.querySelector('#playerOverlay');
-            playerOverlay.style.cssText = 'background:url('+that.assets[that.current].thumbnailUrl+')no-repeat;background-size:cover;background-position:center;position:absolute;top:0;width:100%;';
         };
 
         this.resize = function(){            
@@ -465,10 +473,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
         };
 
         this.onStateChange = function(e){
-
-            if (e === 'tvp:media:videoplaying'){
-                that.el.querySelector('#playerOverlay').style.display = "none";
-            } else if (e === 'tvp:media:videoended') {
+            if (e === 'tvp:media:videoended') {
                 that.current++;
 
                 if (!that.assets[that.current]) {
@@ -500,15 +505,16 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                 mediaProviders: isset(options.media_providers) ? options.media_providers : null,
                 divId: this.el.id,
                 preload: isset(options.preload) ? options.preload : null,
-                swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+options.version+'-flash.swf',
+                swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+that.version+'-flash.swf',
                 poster: isset(options.poster) ? options.poster : null,
-                overlay: isset(options.overlay) ? options.overlay : null,
                 onReady: that.onReady,
                 onStateChange: that.onStateChange,
-                controls: that.controls
+                controls: that.controls,
+                version: that.version,
+                advertising:that.advertising
             };
 
-            var extras = ["preload","poster","overlay"];
+            var extras = ["preload","poster"];
                 for (var i = 0; i < extras.length; i++) {
                 var option = extras[i];
                 if (that[option] !== null) {
@@ -527,8 +533,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                 height: 1,
                 mediaProviders: 1,
                 preload: 1,
-                poster: 1,
-                overlay: 1
+                poster: 1
             };
 
             $.each(options, function(i, val) {
@@ -543,12 +548,6 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                 that.resize();
             });
 
-            //add overlay for mp4 video type
-            var divOverlay = document.createElement('div');
-            divOverlay.id = "playerOverlay";
-            divOverlay.style.cssText = 'background:url('+that.assets[0].thumbnailUrl+')no-repeat;background-size:cover;background-position:center;position:absolute;top:0;width:100%;';
-            divOverlay.innerHTML = this.playIconTemplate;
-            this.el.appendChild(divOverlay);
         }
         that.initialize();
     }

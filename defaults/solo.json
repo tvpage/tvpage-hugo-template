@@ -35,6 +35,12 @@
       "value": true
     },
     {
+      "type": "array",
+      "label": "Fonts",
+      "code": "fonts",
+      "value": ["//fonts.googleapis.com/css?family=Open+Sans:600,700,800"]
+    },
+    {
       "for": "menu",
       "type": "text",
       "label": "Menu Item Play Button Width",

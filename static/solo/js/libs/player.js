@@ -75,11 +75,14 @@
       overlayOpacity: isset(options.overlay_opacity) ? options.overlay_opacity : null
     });
 
-    this.enabled = (isset(options.advertising) && isset(options.advertising.enabled)) ? options.advertising.enabled : false;
-    this.adServerUrl = (isset(options.advertising) && isset(options.advertising.adServerUrl)) ? options.advertising.adServerUrl : null;
-    this.adTimeout = (isset(options.advertising) && isset(options.advertising.adTimeout)) ? options.advertising.adTimeout : 2000;
-    this.maxAds = (isset(options.advertising) && isset(options.advertising.maxAds)) ? options.advertising.maxAds : 10;
-    this.adInterval = (isset(options.advertising) && isset(options.advertising.adInterval)) ? options.advertising.adInterval : 0;
+    var advertisingOptions = isset(options.advertising) && "object" === typeof options.advertising && !isEmpty(options.advertising) ? options.advertising : {};
+    this.advertising = compact({
+      enabled: isset(advertisingOptions.enabled) ? advertisingOptions.enabled : false,
+      adServerUrl: isset(advertisingOptions.adServerUrl) ? advertisingOptions.adServerUrl : null,
+      adTimeout: isset(advertisingOptions.adTimeout) ? advertisingOptions.adTimeout : "2000",
+      maxAds: isset(advertisingOptions.maxAds) ? advertisingOptions.maxAds : "100",
+      adInterval: isset(advertisingOptions.adInterval) ? String(advertisingOptions.adInterval) : "0"
+    });
     
     this.onNext = isset(options.onNext) && "function" === typeof options.onNext ? options.onNext : null;
     this.onPlayerReady = isset(options.onPlayerReady) && "function" === typeof options.onPlayerReady ? options.onPlayerReady : null;
@@ -298,13 +301,7 @@
             divId: that.el.id,
             controls: that.controls,
             version: that.version,
-            advertising:{
-              enabled: that.enabled,
-              adServerUrl: that.adServerUrl,
-              adTimeout: that.adTimeout,
-              maxAds: that.maxAds,
-              adInterval: that.adInterval
-            }
+            advertising:that.advertising
           };
 
           var extras = ["preload","poster","overlay"];

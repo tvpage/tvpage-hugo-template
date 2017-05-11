@@ -1,3 +1,9 @@
+{{ with ($.Scratch.Get "settings").fonts }}
+  {{ range . }}
+    "@import url('{{ . | htmlUnescape | safeHTML }}');" +
+  {{ end }}
+{{ end }}
+
 ".tvp-solo-cta-holder.initialized {" +
     "padding-top: {{ ($.Scratch.Get "settings").padding_top }};" +
 "}" +
