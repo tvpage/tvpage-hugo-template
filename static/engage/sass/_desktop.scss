@@ -46,13 +46,14 @@ h1.seo{
 	}
 }
 .tvp-sub-channel{
-	position: absolute;
+	position: absolute !important;
 	bottom: 0px;
 	width: 100%;
 	list-style : none;
 	padding: 0 15px;
 	margin-bottom : 0px;
 	line-height : initial;
+	left : 0;
 	li:first-child .tvp-sub-channel-item{
 			border-left: 0;
 	}
@@ -67,13 +68,14 @@ h1.seo{
 	li:first-child:nth-last-child(3),
 	li:first-child:nth-last-child(3) ~ li
 	{
-  	width: 33.33333%;
+  	width: 33.33333333%;
 	}
 	li:first-child:nth-last-child(4),
 	li:first-child:nth-last-child(4) ~ li
 	{
   	width: 25%;
 	}
+	
 	&-item{
 		background-color: rgba(44, 99, 115,0.75);
 		height: 51px;
@@ -83,7 +85,7 @@ h1.seo{
 		font-family: Dosis;
 		color: #fff;
 		position: relative;
-		display: inline-block;
+		display: block;
 		width: 100%;
 		span{
 			position: absolute;
