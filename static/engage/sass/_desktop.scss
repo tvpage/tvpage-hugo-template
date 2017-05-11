@@ -154,11 +154,11 @@ h1.seo{
 }
 .section {
 	&-header {
-		border-bottom: 1px dashed #1F1D26;
+		  border-bottom: 1px dashed #1F1D26;
 	    margin: 0 0 18px 0;
 	    padding-bottom: 5px;
 	    position: relative;
-	    font-weight: 700;
+	    font-weight: 600;
 	    color: #1F1D26;
 	    &-details{
 	    	border-bottom: 1px dashed #1F1D26;
@@ -213,8 +213,9 @@ h1.seo{
 		line-height: 49px;
 		height: 49px;
 		display: inline-block;
-		top: 50%;
+		top: 43%;
 		transform: translateY(-50%);
+
 	}
 	&-title {
 		background: transparent;
@@ -225,7 +226,7 @@ h1.seo{
 		padding: 0 18px;
 		text-transform: uppercase;		
 		display: inline-block;
-		padding: 4px 15px 7px 15px;
+		
 	}
 }
 .latest-video-container{
@@ -489,8 +490,12 @@ nav.menu-bar{
   margin-bottom: 2px;
 }
 .breadcrumb{
+	text-overflow : ellipsis;
+	overflow : hidden;
+	white-space : nowrap;
 	& li{
 	font-size: 16px;
+	display : inline !important;
 	line-height: 20px;
 	text-transform: uppercase;}
 	& > li + li:before {

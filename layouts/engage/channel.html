@@ -4,9 +4,9 @@
 {{ $channel := index $.Site.Data.channels (printf "x%s" .Params.channelid ) }}
 
 {{if ne $channel.entityType "5"}}
-  {{$channelData := (where $.Site.Data.channelVideos (printf "x%s_page_0" $channel.id) "data")}}
-  {{if $channelData }}
-  	{{ $.Scratch.Add "channelVideos" (index $.Site.Data.channelVideos (printf "x%s_page_0" $channel.id) "data") }}
+  {{$channelData := (index $.Site.Data.channelVideos (printf "x%s_page_0" $channel.id) | default "none")}}
+  {{if ne $channelData "none"}}
+    {{ $.Scratch.Add "channelVideos" (index $.Site.Data.channelVideos (printf "x%s_page_0" $channel.id) "data") }}
   	{{ $.Scratch.Set "videoId" "0" }}
   	{{- $page := index $.Site.Data.channelVideos (printf "x%s_page_0" .Params.channelid) -}}
   	{{ range first 1 $page.data }}
