@@ -127,7 +127,8 @@
                     });
                 },100));
 
-                var slickConfig = {
+                var carouselCenterPadding = options.carousel_center_padding,
+                    slickConfig = {
                     slidesToShow: Number(options.items_to_show),
                     slidesToScroll: Number(options.items_to_scroll),
                     dots: options.navigation_bullets,
@@ -140,7 +141,7 @@
                                 arrows: false,
                                 slidesToShow: 1,
                                 centerMode:true,
-                                centerPadding:'0'
+                                centerPadding: carouselCenterPadding
                             }
                         },
                         {
@@ -150,11 +151,12 @@
                                 slidesToScroll: Number(options.items_to_scroll),
                                 arrows: false,
                                 centerMode:true,
-                                centerPadding: '0'
+                                centerPadding: carouselCenterPadding
                             }
                         }
                     ]
                 };
+                console.log(carouselCenterPadding);
 
                 if (this.options.navigation_bullets_append_to) {
                     slickConfig.appendDots = this.options.navigation_bullets_append_to;

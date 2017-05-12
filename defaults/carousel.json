@@ -98,6 +98,13 @@
         {
           "for": "carousel",
           "type": "text",
+          "label": "Carousel Center Padding",
+          "code": "carousel_center_padding",
+          "value": "40px"
+        },
+        {
+          "for": "carousel",
+          "type": "text",
           "label": "Navigation Bullets Append To",
           "code": "navigation_bullets_append_to",
           "value": ""
