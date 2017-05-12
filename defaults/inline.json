@@ -11,7 +11,7 @@
             "type": "text",
             "label": "Player Version",
             "code": "player_version",
-            "value": "3.0.1"
+            "value": "3.1.0"
         },
         {
             "for": "player",
@@ -34,7 +34,12 @@
             "code": "autonext",
             "value": true
         },
-
+        {
+            "type": "array",
+            "label": "Fonts",
+            "code": "fonts",
+            "value": ["//fonts.googleapis.com/css?family=Open+Sans:600,700,800"]
+        },
         {
             "for": "inline",
             "type": "text",
@@ -62,42 +67,6 @@
             "label": "Font Family",
             "code": "font_family",
             "value": "Helvetica"
-        },
-        {
-            "for": "inline",
-            "type": "text",
-            "label": "Player Play Button Height",
-            "code": "play_button_height",
-            "value": "40px"
-        },
-        {
-            "for": "inline",
-            "type": "text",
-            "label": "Player Play Button Width",
-            "code": "play_button_width",
-            "value": "40px"
-        },
-
-        {
-            "for": "inline",
-            "type": "text",
-            "label": "Play Button Icon Color",
-            "code": "play_button_icon_color",
-            "value": "000"
-        },
-        {
-            "for": "inline",
-            "type": "text",
-            "label": "Play Button Icon Border",
-            "code": "play_icon_border",
-            "value": "none"
-        },
-        {
-            "for": "inline",
-            "type": "text",
-            "label": "Play Button Background Color",
-            "code": "play_button_background_color",
-            "value": "#e57211"
         },
         {
             "for": "inline",
