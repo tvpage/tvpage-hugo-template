@@ -100,7 +100,7 @@
           "type": "text",
           "label": "Carousel Center Padding",
           "code": "carousel_center_padding",
-          "value": "40px"
+          "value": "0"
         },
         {
           "for": "carousel",
