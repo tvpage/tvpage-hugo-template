@@ -323,6 +323,17 @@
                 renderUtil.checkResultsScrollerMobile();
             }
         },
+        displayHideElement : function(selector,action){
+            /* true = display false = hide*/
+            if(action==true){
+                if($(selector).hasClass("tvp-hide")){
+                    $(selector).removeClass("tvp-hide");
+                }    
+            }
+            else{
+                $(selector).addClass("tvp-hide");   
+            }
+        },
         renderProd : function(prods, target, templ) {
             var html = "";
             if (prods && prods.length) {
@@ -332,17 +343,12 @@
                     prods[i].imageUrl = data.imageUrl;
                     html += renderUtil.tmpl(templ, prods[i]);
                 }
-            } else {
-                //no prods
+                
             }
 
             if (html.length) {
                 $(target).html(html);
-                if (($(target).length > 0) && !$(target).is(':hidden')) {
-                    //registerProductPanel($(target));
-                }
-                //$searchMobileResultHolder.find('ul').html(html)
-                //    .parent().show();
+                
             }
         }
     };
@@ -795,13 +801,14 @@
             tvp_Player.playVideo(video);
             activeVideoId = video.id;
             //updateProducts(video.id);
-            channelDataExtractor.products(activeVideoId).done(function(data){
+            /*channelDataExtractor.products(activeVideoId).done(function(data){
 
                 renderUtil.renderProd(data, "#mobile-products-wrapper", $("#mobileProduct").html());
                 renderUtil.renderProd(data, "#desktop-products-wrapper", $("#desktopProduct").html());
                 renderUtil.renderProd(data, "#desktop-products-pop-ups", $("#productPopup").html());
                 
             });
+            */
             // if(TVSite.productCartridges && TVSite.productCartridges.length){
             //   TVSite.productCartridges.forEach(function(element, index, array){
             //       var targetIsHidden = $(element.target).is(':hidden');
@@ -1036,6 +1043,7 @@
                 channelDataExtractor.products(opt.videoId)
                     .done(function (results) {
                         if(results.length){
+                            renderUtil.displayHideElement("#player-product-products",true);
                             that.products = results;
                             that.renderProducts(results);
                             Analytics.registerProductPanel($('#tvp-products-wrapper .tvp-product-image'));
@@ -1045,6 +1053,7 @@
                         }
                         else{
                             that.destroy();
+                            renderUtil.displayHideElement("#player-product-products",false);
                             $('#tvp-products-wrapper ul').html('');
                         }
                     });

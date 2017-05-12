@@ -19,7 +19,9 @@ h1.seo{
 	}
 }
 
-
+.tvp-hide{
+	display : none !important;
+}
 .tvp-video-container-mobile{
 	position: relative;
 	.nav-tabs{
@@ -167,6 +169,15 @@ h1.seo{
 		    position: relative;
 		    font-weight: 700;
 		    color: #1F1D26;
+		    li.active>a{
+		    	border : none;
+		    	&:hover{
+		    		border : none;
+		    	}
+		    	&:focus{
+		    		border : none;	
+		    	}
+		    }
 	    }
 	    &:after {
 			position: absolute;
@@ -1206,10 +1217,11 @@ footer{
 	}
 }
 
-.tvp-prod-hover{	
+.tvp-prod-hover{
+	z-index : 2147483647;
 	&.popover{
 		border-radius: 0;
-		max-width: 266;
+		max-width: 266px;
 		width: 266px;
 	}
 	.popover-content{

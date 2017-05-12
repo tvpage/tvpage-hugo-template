@@ -98,5 +98,5 @@ module.exports = function(grunt) {
 
     grunt.registerTask('default', ['sass:dev', 'watch']);    
     grunt.registerTask('images', ['imagemin']);
-    grunt.registerTask('build', ['sass:dist', 'postcss:dist', 'concat', 'uglify:build']);
+    grunt.registerTask('build', ['sass:dist', 'concat', 'uglify:build']);
 };

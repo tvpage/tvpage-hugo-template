@@ -23,11 +23,8 @@
           <div class="col-lg-10 col-md-12">
             {{- partial (printf "%s/player.html" .Type) . -}}
           </div>
-          <div class="col-lg-2 col-md-12 player-product-products">
-            <div class="video-products-container">
-              {{- partial (printf "%s/products.html" .Type) . -}}
-            </div>
-          </div>
+          {{- partial (printf "%s/products.html" .Type) . -}}
+            
         </div>
         {{- partial (printf "%s/video_details.html" $.Type) $videoDetails -}}
         <div class="row container">
