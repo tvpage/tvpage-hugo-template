@@ -46,6 +46,10 @@
 ".tvp-modal-title {" +
     "color: {{ ($.Scratch.Get "settings").modal_title_font_color }};" +
     "font-size: {{ ($.Scratch.Get "settings").modal_title_font_size }};" +
+    "font-weight: {{ ($.Scratch.Get "settings").modal_title_font_weight }};" +
+    "font-family: {{ ($.Scratch.Get "settings").modal_title_font_family }};" +
+    "padding: {{ ($.Scratch.Get "settings").modal_title_padding }};" +
+    "margin: {{ ($.Scratch.Get "settings").modal_title_margin }};" +
 "}" +
 
 ".tvp-products-headline {" +

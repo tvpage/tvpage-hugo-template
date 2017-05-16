@@ -245,6 +245,20 @@
     {
       "for": "modal",
       "type": "text",
+      "label": "Modal Title Padding",
+      "code": "modal_title_padding",
+      "value": "0"
+    },
+    {
+      "for": "modal",
+      "type": "text",
+      "label": "Modal Title Margin",
+      "code": "modal_title_margin",
+      "value": "0"
+    },
+    {
+      "for": "modal",
+      "type": "text",
       "label": "Modal Title Font Weight",
       "code": "modal_title_font_weight",
       "value": "initial"
