@@ -1583,9 +1583,23 @@
         {
           "for": "mobile",
           "type": "text",
+          "label": "Mobile Product Title Font Color",
+          "code": "mobile_product_title_font_color",
+          "value": "#333"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
           "label": "Mobile Product Title Font Weight",
           "code": "mobile_product_title_font_weight",
-          "value": "normal"
+          "value": "initial"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product Title Font Family",
+          "code": "mobile_product_title_font_family",
+          "value": "Helvetica"
         },
         {
           "for": "mobile",
@@ -1604,37 +1618,51 @@
         {
           "for": "mobile",
           "type": "text",
-          "label": "Mobile Product Title Text Color",
-          "code": "mobile_product_title_text_color",
-          "value": "#333"
-        },
-        {
-          "for": "mobile",
-          "type": "text",
           "label": "Mobile Product Title Line Height",
           "code": "mobile_product_title_line_height",
-          "value": "normal"
+          "value": "initial"
         },
         {
           "for": "mobile",
           "type": "text",
           "label": "Mobile Product Title Margin",
           "code": "mobile_product_title_margin",
-          "value": 0
+          "value": "0"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product Title Height",
+          "code": "mobile_product_title_height",
+          "value": "29px"
         },
         {
           "for": "mobile",
           "type": "text",
           "label": "Mobile Product Price Font Size",
           "code": "mobile_product_price_font_size",
-          "value": "12px"
+          "value": "16px"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product Price Font Color",
+          "code": "mobile_product_price_font_color",
+          "value": "initial"
         },
         {
           "for": "mobile",
           "type": "text",
           "label": "Mobile Product Price Font Weight",
           "code": "mobile_product_price_font_weight",
-          "value": "normal"
+          "value": "initial"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product Price Font Family",
+          "code": "mobile_product_price_font_family",
+          "value": "Helvetica"
         },
         {
           "for": "mobile",
@@ -1669,7 +1697,7 @@
           "type": "text",
           "label": "Mobile Product Price Margin",
           "code": "mobile_product_price_margin",
-          "value": 0
+          "value": "5px 0"
         },
         {
           "for": "mobile",

@@ -88,8 +88,26 @@
     "background-size: {{ ($.Scratch.Get "settings").product_thumbnail_background_image_size }};" +
 "}" +
 
-".tvp-product-data {" +
-  "font-family: Helvetica;" +
+".tvp-product-data > p {" +
+  "height: {{ ($.Scratch.Get "settings").mobile_product_title_height }};" +
+  "overflow: hidden;" +
+  "margin: {{ ($.Scratch.Get "settings").mobile_product_title_margin }};" +
+  "font-size: {{ ($.Scratch.Get "settings").mobile_product_title_font_size }};" +
+  "font-weight: {{ ($.Scratch.Get "settings").mobile_product_title_font_weight }};" +
+  "font-family: {{ ($.Scratch.Get "settings").mobile_product_title_font_family }};" +
+  "color: {{ ($.Scratch.Get "settings").mobile_product_title_font_color }};" +
+  "text-align: {{ ($.Scratch.Get "settings").mobile_product_title_text_align }};" +
+  "text-transform: {{ ($.Scratch.Get "settings").mobile_product_title_text_transform }};" +
+  "line-height: {{ ($.Scratch.Get "settings").mobile_product_title_line_height }};" +
+"}" +
+
+".tvp-product-data > h2 {" +
+  "margin: {{ ($.Scratch.Get "settings").mobile_product_price_margin }};" +
+  "font-size: {{ ($.Scratch.Get "settings").mobile_product_price_font_size }};" +
+  "font-weight: {{ ($.Scratch.Get "settings").mobile_product_price_font_weight }};" +
+  "font-family: {{ ($.Scratch.Get "settings").mobile_product_price_font_family }};" +
+  "color: {{ ($.Scratch.Get "settings").mobile_product_price_font_color }};" +
+  "text-align: {{ ($.Scratch.Get "settings").mobile_product_price_text_align }};" +
 "}" +
 
 ".tvp-product-cta {" +
