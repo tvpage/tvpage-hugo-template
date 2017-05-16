@@ -70,10 +70,7 @@
     				n : TVSite.isHomePage ? 6 : 6 ,
     				s : (query == null || query == undefined) ? "" : query,
     				"X-login-id" : TVSite.loginId,
-                    //status: 'approved',
-                    // o: 'date_created',
-                    // od: 'asc',
-    			},
+                },
                 isSearchHeader ? {channelsLimit : TVSite.channelIds} : {})
     		});
     	},

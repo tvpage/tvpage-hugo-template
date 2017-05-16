@@ -1,6 +1,6 @@
 {{- $.Scratch.Set "siteDescription" .Params.description -}}
 {{ $.Scratch.Set "siteTitle" (printf "%s - %s" .Title .Site.Title )  }}
-{{ if eq .Layout "index" }}
+{{ if eq .Layout "home" }}
 	{{- $.Scratch.Add "metaImg" ( printf "%s/%s/images/logo.png" .Site.BaseURL .Type ) -}}
 	{{- $.Scratch.Set "siteDescription" .Site.Params.description -}}
 	{{- $.Scratch.Set "siteTitle" .Site.Title -}}

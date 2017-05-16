@@ -61,11 +61,9 @@
     			data : _.extend({}, Filters.selected  ,{
     				p : (page == null || page == undefined) ? 0 : page,
     				n : TVSite.isHomePage ? 6 : 6 ,
-    				s : (query == null || query == undefined) ? "" : query,
+    				s : (query == null || query == undefined) ? undefined : query,
     				"X-login-id" : TVSite.loginId,
-                    //status: 'approved',
-                    // o: 'date_created',
-                    // od: 'asc',
+                    
     			},
                 isSearchHeader ? {channelsLimit : TVSite.channelIds} : {})
     		});
@@ -298,7 +296,6 @@
                 }
                 else{
                     $filter.html(frag);
-                    //$filter.addClass('tvp-filter-active');
                 }
             }
         },
@@ -379,7 +376,7 @@
                 event.preventDefault();
                 $("#product_category_text").text($(this).text());
                 var _id = event.currentTarget.id;
-                Filters.selected["product_category"] = event.currentTarget.text;
+                Filters.selected["product_category"] = $(event.currentTarget).attr("value");
                 loadMorePage = 0;
                 if(_id){
                     Filters.filterVideos();    
@@ -397,7 +394,7 @@
                 event.preventDefault();
                 $("#video_type_text").text($(this).text());
                 var _id = event.currentTarget.id;
-                Filters.selected["video_type"] = event.currentTarget.text;
+                Filters.selected["video_type"] = $(event.currentTarget).attr("value");
                 loadMorePage = 0;
                 if(_id){
                     Filters.filterVideos();    
@@ -466,13 +463,9 @@
             $nullResults.hide();
             if($(".brand-header-search-container").hasClass("connector"))
                 $(".brand-header-search-container").removeClass("connector");
-
             renderUtil.resetLiveSearch();
-
         }
     });
-
-
     searchDesktopInput.focus(function(){
         if(!searchDesktopInput.val()){
     	   $(".brand-header-search-container").animate({width:"+=175"},"fast");
