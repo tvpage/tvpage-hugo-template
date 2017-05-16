@@ -365,6 +365,13 @@
         {
             "for": "carousel",
             "type": "text",
+            "label": "Arrow Border Radius",
+            "code": "arrow_border_radius",
+            "value": "initial"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
             "label": "Arrow Background Color",
             "code": "arrow_background_color",
             "value": "#fff"

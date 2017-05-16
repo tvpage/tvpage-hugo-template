@@ -81,6 +81,7 @@
 ".tvp-carousel-arrow > svg {" +
     "background:{{ ($.Scratch.Get "settings").arrow_background_color }};" +
     "fill:{{ ($.Scratch.Get "settings").arrow_icon_color }};" +
+    "border-radius:{{ ($.Scratch.Get "settings").arrow_border_radius }};" +
 "}" +
 
 ".tvp-carousel-arrow.inactive > svg {" +
