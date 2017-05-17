@@ -135,6 +135,7 @@ iframeDocument.open().write(utils.getIframeHtml({
     style: config.css.inline,
     js: [
         '//a.tvpage.com/tvpa.min.js',
+        '//imasdk.googleapis.com/js/sdkloader/ima3.js',
         playerUrl,
         config.debug ? config.jsPath + "scripts.js" : "",
         config.debug ? "" : config.jsPath + "scripts.min.js"
