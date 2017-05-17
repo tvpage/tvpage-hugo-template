@@ -156,7 +156,6 @@
                         }
                     ]
                 };
-                console.log(carouselCenterPadding);
 
                 if (this.options.navigation_bullets_append_to) {
                     slickConfig.appendDots = this.options.navigation_bullets_append_to;
