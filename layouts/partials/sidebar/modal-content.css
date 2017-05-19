@@ -37,6 +37,15 @@
     "text-decoration: {{ ($.Scratch.Get "settings").product_title_text_decoration_hover }};" +
 "}" +
 
+".tvp-product-sku {" +
+    "color: {{ ($.Scratch.Get "settings").product_sku_font_color }};" +
+    "font-size: {{ ($.Scratch.Get "settings").product_sku_font_size }};" +
+    "font-family: {{ ($.Scratch.Get "settings").product_sku_font_family }};" +
+    "font-weight: {{ ($.Scratch.Get "settings").product_sku_font_weight }};" +
+    "text-align: {{ ($.Scratch.Get "settings").product_sku_text_align }};" +
+    "margin: {{ ($.Scratch.Get "settings").product_sku_margin }};" +
+"}" +
+
 ".tvp-product-price {" +
     "color: {{ ($.Scratch.Get "settings").product_price_font_color }};" +
     "font-size: {{ ($.Scratch.Get "settings").product_price_font_size }};" +
