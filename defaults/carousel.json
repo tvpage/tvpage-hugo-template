@@ -92,6 +92,13 @@
         {
           "for": "carousel",
           "type": "text",
+          "label": "Carousel Center Padding",
+          "code": "carousel_center_padding",
+          "value": "0"
+        },
+        {
+          "for": "carousel",
+          "type": "text",
           "label": "Navigation Bullets Append To",
           "code": "navigation_bullets_append_to",
           "value": ""
@@ -690,6 +697,13 @@
           "label": "Product Thumbnail Margin",
           "code": "product_thumbnail_margin",
           "value": "0 10px 10px 0"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Mobile Holder Margin",
+          "code": "mobile_holder_margin",
+          "value": "0"
         },
         {
           "for": "modal",

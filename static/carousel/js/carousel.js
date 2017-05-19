@@ -127,7 +127,8 @@
                     });
                 },100));
 
-                var slickConfig = {
+                var carouselCenterPadding = options.carousel_center_padding,
+                    slickConfig = {
                     slidesToShow: Number(options.items_to_show),
                     slidesToScroll: Number(options.items_to_scroll),
                     dots: options.navigation_bullets,
@@ -138,7 +139,19 @@
                             breakpoint: 480,
                             settings: {
                                 arrows: false,
-                                slidesToShow: 1
+                                slidesToShow: 1,
+                                centerMode:true,
+                                centerPadding: carouselCenterPadding
+                            }
+                        },
+                        {
+                            breakpoint: 667,
+                            settings:{
+                                slidesToShow: Number(options.items_to_show),
+                                slidesToScroll: Number(options.items_to_scroll),
+                                arrows: false,
+                                centerMode:true,
+                                centerPadding: carouselCenterPadding
                             }
                         }
                     ]

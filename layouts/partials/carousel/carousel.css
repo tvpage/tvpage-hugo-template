@@ -171,8 +171,30 @@
     "fill:{{ ($.Scratch.Get "settings").item_play_button_icon_hover_color }};" +
 "}" +
 
-"@media (min-width:480px){" +
+"@media screen and (min-width: 448px){"+
     ".tvp-carousel-arrow {" +
         "width:{{ ($.Scratch.Get "settings").arrow_size_480 }};" +
+    "}" +
+"}"+
+
+"@media screen and (max-width: 667px){" +
+    ".slick-center .tvp-video-play {" +
+        "background-color:{{ ($.Scratch.Get "settings").item_play_button_hover_color }} !important;" +
+    "}" +
+
+    ".slick-center .tvp-video-play, .tvp-video-image-overlay {" +
+        "opacity: 1;" +
+        "visibility: visible;" +
+    "}" +
+
+    ".slick-center .tvp-video-play > polygon {" +
+        "fill:{{ ($.Scratch.Get "settings").item_play_button_icon_hover_color }} !important;" +
+    "}" +
+    ".tvp-video:hover .tvp-video-play {" +
+        "background-color:{{ ($.Scratch.Get "settings").item_play_button_background_color }};" +
+    "}" +
+
+    ".tvp-video:hover .tvp-video-play > polygon {" +
+        "fill:{{ ($.Scratch.Get "settings").item_play_button_icon_color }};" +
     "}" +
 "}"
