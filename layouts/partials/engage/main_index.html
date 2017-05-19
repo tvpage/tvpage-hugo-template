@@ -24,22 +24,20 @@
 					  			</a>
 					  		</article>
 					  		<div class="row">
-					  				<ul class="tvp-sub-channel justify">
-					  						{{- if isset ($.Scratch.Get "settings") . -}}
-					  						{{ $subchannels := (split (index  ($.Scratch.Get "settings") . ) "," )}}
-					  						{{- range $subchannels -}}
-					  							{{ $subchannelPage := index $.Site.Data.channels (printf "x%s" . )}}
-					  							<li>
-					  								<a href="{{$baseUrl}}c/{{- lower $subchannelPage.titleTextEncoded -}}/{{.}}" class="text-center tvp-sub-channel-item">
-					  									<span>{{- $subchannelPage.title -}}</span>
-					  								</a>
-					  							</li>
-					  							{{- end -}}
-					  						{{- end -}}
-
-					  				</ul>	
+				  				<ul class="tvp-sub-channel justify">
+			  						{{- if isset ($.Scratch.Get "settings") . -}}
+			  						{{ $subchannels := (split (index  ($.Scratch.Get "settings") . ) "," )}}
+			  						{{- range $subchannels -}}
+			  							{{ $subchannelPage := index $.Site.Data.channels (printf "x%s" . )}}
+			  							<li>
+			  								<a href="{{$baseUrl}}c/{{- lower $subchannelPage.titleTextEncoded -}}/{{.}}" class="text-center tvp-sub-channel-item">
+			  									<span>{{- $subchannelPage.title -}}</span>
+			  								</a>
+			  							</li>
+			  							{{- end -}}
+			  						{{- end -}}
+				  				</ul>	
 					  		</div>
-					  		
 					  	</div>
 					  {{ end }}
 					{{- end -}}
@@ -70,17 +68,16 @@
 				{{ $i := 0 }}
 				{{- range first 6 $page.data -}}
 					<div class="col-sm-4 col-md-4 latest-video-container">
-					    <a href="{{$baseUrl}}/{{slicestr .url 1}}/" class="latest-video" data-id="{{.id}}">				
-						<div class="latest-video-thumbnail">		
-						  <div class="content">
-					      	<img class="lazyImg" {{with .asset.thumbnailUrl}} data-original="{{ . }}"{{else}} data-original='{{$baseUrl}}/{{ $.Type }}/images/defaults/asset.png'{{end}}
-					      			alt="{{- .title -}}">
-					      		<div class="latest-video-hover">	      			
-									<div class="play-icon"></div>
-								</div>
-					      </div>
-						</div>
-						<p class="latest-video-title"><span>{{- .title -}}</span></p>
+				    <a href="{{$baseUrl}}/{{slicestr .url 1}}/" class="latest-video" data-id="{{.id}}">				
+							<div class="latest-video-thumbnail">		
+							  <div class="content">
+					      	<img class="lazyImg" {{with .asset.thumbnailUrl}} data-original="{{ . }}"{{else}} data-original='{{$baseUrl}}/{{ $.Type }}/images/defaults/asset.png'{{end}} alt="{{- .title -}}">
+				      		<div class="latest-video-hover">	      			
+										<div class="play-icon"></div>
+									</div>
+				      	</div>
+							</div>
+							<p class="latest-video-title"><span>{{- .title -}}</span></p>
 						</a>
 					</div>
 					{{- if eq (mod (add $i 2) 3) 0 -}}{{- end -}}
@@ -88,10 +85,10 @@
 			{{- end -}}
 		</div>
 		<div class="row container btn-more load-more">
-      		<div class="btn-more-line"></div>
-    		<div class="btn-more-btn-container">
-          		<button type="button" class="btn btn-primary btn-more-button">LOAD MORE</button>
-        	</div>
-    	</div>
+			<div class="btn-more-line"></div>
+			<div class="btn-more-btn-container">
+				<button type="button" class="btn btn-primary btn-more-button">LOAD MORE</button>
+			</div>
+		</div>
 	</div>
 </main>
