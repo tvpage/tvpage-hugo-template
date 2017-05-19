@@ -1,3 +1,9 @@
+{{ with ($.Scratch.Get "settings").fonts }}
+  {{ range . }}
+    "@import url('{{ . | htmlUnescape | safeHTML }}');" +
+  {{ end }}
+{{ end }}
+
 "body {" +
     "padding: {{ ($.Scratch.Get "settings").iframe_modal_body_padding }};" +
 "}"

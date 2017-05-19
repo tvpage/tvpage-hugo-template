@@ -4,6 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:600,700,800" rel="stylesheet" />
   {{- if (getenv "HUGO_DEBUG") -}}
   <link rel="stylesheet" type="text/css" href="{{ (printf "%s/css/styles.css" .Type ) | absURL }}">
   {{- else -}}
@@ -14,6 +15,9 @@
   <div class="tvp-player">
     <div id="tvp-player-el"></div>
   </div>
+  {{ if(.Params.advertising.enabled) }}
+  <script type="text/javascript" src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
+  {{end}}
   <script async src="//a.tvpage.com/tvpa.min.js"></script>
   <script async src='//cdnjs.tvpage.com/tvplayer/tvp-{{ ($.Scratch.Get "settings").player_version }}.min.js'></script>
   <script>

@@ -77,6 +77,15 @@
           overlayOpacity: isset(options.overlay_opacity) ? options.overlay_opacity : null
         });
 
+        var advertisingOptions = isset(options.advertising) && "object" === typeof options.advertising && !isEmpty(options.advertising) ? options.advertising : {};
+        this.advertising = compact({
+          enabled: isset(advertisingOptions.enabled) ? advertisingOptions.enabled : false,
+          adServerUrl: isset(advertisingOptions.adServerUrl) ? advertisingOptions.adServerUrl : null,
+          adTimeout: isset(advertisingOptions.adTimeout) ? advertisingOptions.adTimeout : "2000",
+          maxAds: isset(advertisingOptions.maxAds) ? advertisingOptions.maxAds : "100",
+          adInterval: isset(advertisingOptions.adInterval) ? String(advertisingOptions.adInterval) : "0"
+        });
+
         this.onResize = isset(options.onResize) && isFunction(options.onResize) ? options.onResize : null;
         this.onNext = isset(options.onNext) && isFunction(options.onNext) ? options.onNext : null;
 
@@ -252,7 +261,9 @@
                             }
                         },
                         divId: that.el.id,
-                        controls: that.controls
+                        controls: that.controls,
+                        version: that.version,
+                        advertising:that.advertising
                     };
 
                     var extras = ["preload","poster","overlay"];
