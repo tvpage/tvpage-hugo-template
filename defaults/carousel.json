@@ -414,6 +414,13 @@
         {
             "for": "carousel",
             "type": "text",
+            "label": "Item Border",
+            "code": "item_border",
+            "value": "0"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
             "label": "Items To Show",
             "code": "items_to_show",
             "value": "3"
@@ -452,6 +459,20 @@
             "label": "Item Padding Right",
             "code": "item_padding_right",
             "value": "5px"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Margin Left",
+            "code": "item_margin_left",
+            "value": "0"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Margin Right",
+            "code": "item_margin_right",
+            "value": "0"
         },
         {
             "for": "carousel",
