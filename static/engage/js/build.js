@@ -398,7 +398,7 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
                     +'<div class="content" >'
                         +'<img class="lazyImgAjax" data-original="{asset.thumbnailUrl}" alt="{title}">'
                         +'<div class="latest-video-hover">'
-                            +'<div class="play-icon"></div>'
+                            +'<svg class="play-icon" viewBox="0 0 200 200" alt="Play video"><polygon class="play-icon-triangle" points="70, 55 70, 145 145, 100"></polygon></svg>'
                             +'<p class="now-playing">NOW PLAYING</p>'
                         +'</div>'
                   +'</div>'
