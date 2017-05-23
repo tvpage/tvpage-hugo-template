@@ -414,6 +414,13 @@
         {
             "for": "carousel",
             "type": "text",
+            "label": "Item Border",
+            "code": "item_border",
+            "value": "0"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
             "label": "Items To Show",
             "code": "items_to_show",
             "value": "3"
@@ -452,6 +459,20 @@
             "label": "Item Padding Right",
             "code": "item_padding_right",
             "value": "5px"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Margin Left",
+            "code": "item_margin_left",
+            "value": "0"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Margin Right",
+            "code": "item_margin_right",
+            "value": "0"
         },
         {
             "for": "carousel",
@@ -609,10 +630,108 @@
         },
         {
           "for": "modal",
+          "type": "boolean",
+          "label": "Product SKU Show",
+          "code": "product_sku_show",
+          "value": true
+        },
+        {
+          "for": "modal",
+          "type": "boolean",
+          "label": "Product SKU Prefix",
+          "code": "product_sku_prefix",
+          "value": "Part:"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product SKU Font Color",
+          "code": "product_sku_font_color",
+          "value": "#333"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product SKU Font Size",
+          "code": "product_sku_font_size",
+          "value": "16px"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product SKU Font Family",
+          "code": "product_sku_font_family",
+          "value": "Helvetica"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product SKU Font Weight",
+          "code": "product_sku_font_weight",
+          "value": "initial"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product SKU Text Align",
+          "code": "product_sku_text_align",
+          "value": "left"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product SKU Margin",
+          "code": "product_sku_margin",
+          "value": "10px 0"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product SKU Font Color Mobile",
+          "code": "product_sku_font_color_mobile",
+          "value": "#333"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product SKU Font Size Mobile",
+          "code": "product_sku_font_size_mobile",
+          "value": "14px"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product SKU Font Family Mobile",
+          "code": "product_sku_font_family_mobile",
+          "value": "Helvetica"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product SKU Font Weight Mobile",
+          "code": "product_sku_font_weight_mobile",
+          "value": "initial"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product SKU Text Align Mobile",
+          "code": "product_sku_text_align_mobile",
+          "value": "left"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product SKU Margin Mobile",
+          "code": "product_sku_margin_mobile",
+          "value": "5px 0 8px 0"
+        },
+        {
+          "for": "modal",
           "type": "text",
           "label": "No Products Banner Height",
           "code": "no_products_banner_height",
-          "value": 0
+          "value": "0"
         },
         {
           "for": "modal",
@@ -626,14 +745,14 @@
           "type": "text",
           "label": "No Products Banner Padding",
           "code": "no_products_banner_padding",
-          "value": 0
+          "value": "0"
         },
         {
           "for": "modal",
           "type": "text",
           "label": "No Products Banner Margin",
           "code": "no_products_banner_margin",
-          "value": 0
+          "value": "0"
         },
         {
           "for": "modal",

@@ -26,6 +26,8 @@
 ".tvp-video {" +
     "padding-left:{{ ($.Scratch.Get "settings").item_padding_left }};" +
     "padding-right:{{ ($.Scratch.Get "settings").item_padding_right }};" +
+    "margin-left:{{ ($.Scratch.Get "settings").item_margin_left }};" +
+    "margin-right:{{ ($.Scratch.Get "settings").item_margin_right }};" +
 "}" +
 
 ".tvp-video-play {" +
@@ -52,6 +54,7 @@
 
 ".tvp-video-image {" +
     "background-size: {{ ($.Scratch.Get "settings").item_background_image_size }};" +
+    "border: {{ ($.Scratch.Get "settings").item_border }};" +
 "}" +
 
 ".tvp-video-metadata {" +

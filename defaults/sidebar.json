@@ -392,6 +392,104 @@
         },
         {
           "for": "modal",
+          "type": "boolean",
+          "label": "Product SKU Show",
+          "code": "product_sku_show",
+          "value": true
+        },
+        {
+          "for": "modal",
+          "type": "boolean",
+          "label": "Product SKU Prefix",
+          "code": "product_sku_prefix",
+          "value": "Part:"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product SKU Font Color",
+          "code": "product_sku_font_color",
+          "value": "#333"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product SKU Font Size",
+          "code": "product_sku_font_size",
+          "value": "16px"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product SKU Font Family",
+          "code": "product_sku_font_family",
+          "value": "Helvetica"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product SKU Font Weight",
+          "code": "product_sku_font_weight",
+          "value": "initial"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product SKU Text Align",
+          "code": "product_sku_text_align",
+          "value": "left"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product SKU Margin",
+          "code": "product_sku_margin",
+          "value": "10px 0"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product SKU Font Color Mobile",
+          "code": "product_sku_font_color_mobile",
+          "value": "#333"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product SKU Font Size Mobile",
+          "code": "product_sku_font_size_mobile",
+          "value": "14px"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product SKU Font Family Mobile",
+          "code": "product_sku_font_family_mobile",
+          "value": "Helvetica"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product SKU Font Weight Mobile",
+          "code": "product_sku_font_weight_mobile",
+          "value": "initial"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product SKU Text Align Mobile",
+          "code": "product_sku_text_align_mobile",
+          "value": "left"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product SKU Margin Mobile",
+          "code": "product_sku_margin_mobile",
+          "value": "5px 0 8px 0"
+        },
+        {
+          "for": "modal",
           "type": "text",
           "label": "Modal Box Shadow",
           "code": "modal_box_shadow",
@@ -1663,6 +1761,89 @@
           "label": "Tvp Logo",
           "code": "tvp_logo",
           "value": true
+        },
+        {
+          "for": "sidebar",
+          "type": "text",
+          "label": "Product Title Font Family Mobile",
+          "code": "product_title_font_family_mobile",
+          "value": "Helvetica"
+        },
+        {
+          "for": "sidebar",
+          "type": "text",
+          "label": "Product Title Font Weight Mobile",
+          "code": "product_title_font_weight_mobile",
+          "value": "initial"
+        },
+        {
+          "for": "sidebar",
+          "type": "text",
+          "label": "Product Title Font Size Mobile",
+          "code": "product_title_font_size_mobile",
+          "value": "12px"
+        },
+        {
+          "for": "sidebar",
+          "type": "text",
+          "label": "Product Title Font Color Mobile",
+          "code": "product_title_font_color_mobile",
+          "value": "#333"
+        },
+        {
+          "for": "sidebar",
+          "type": "text",
+          "label": "Product Title Text Decoration Mobile",
+          "code": "product_title_text_decoration_mobile",
+          "value": "none"
+        },
+        {
+          "for": "sidebar",
+          "type": "text",
+          "label": "Product Title Text Align Mobile",
+          "code": "product_title_text_align_mobile",
+          "value": "left"
+        },
+        {
+          "for": "sidebar",
+          "type": "text",
+          "label": "Product Title Margin Mobile",
+          "code": "product_title_margin_mobile",
+          "value": "0"
+        },
+        {
+          "for": "sidebar",
+          "type": "text",
+          "label": "Product Price Font Color Mobile",
+          "code": "product_price_font_color_mobile",
+          "value": "#333"
+        },
+        {
+          "for": "sidebar",
+          "type": "text",
+          "label": "Product Price Font Size Mobile",
+          "code": "product_price_font_size_mobile",
+          "value": "12px"
+        },        {
+          "for": "sidebar",
+          "type": "text",
+          "label": "Product Price Font Family Mobile",
+          "code": "product_price_font_family_mobile",
+          "value": "Helvetica"
+        },
+        {
+          "for": "sidebar",
+          "type": "text",
+          "label": "Product Price Font Weight Mobile",
+          "code": "product_price_font_weight_mobile",
+          "value": "initial"
+        },
+        {
+          "for": "sidebar",
+          "type": "text",
+          "label": "Product Price Text Align Mobile",
+          "code": "product_price_text_align_mobile",
+          "value": "left"
         }
     ]
 }

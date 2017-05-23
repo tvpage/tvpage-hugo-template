@@ -16,8 +16,11 @@
       '<a id="tvp-product-{id}" class="tvp-product" data-vd="{entityIdParent}" href="{linkUrl}">'+
         '<div class="tvp-product-image" style="background-image:url({imageUrl})"></div>' +
         '<div class="tvp-product-data">'+
-          '<p>{title}</p>' +
-          '<h2>{price}</h2>' +
+          '<p class="tvp-product-title">{title}</p>' +
+          {{ if ($.Scratch.Get "settings").product_sku_show }}
+          '<p class="tvp-product-sku">{{ ($.Scratch.Get "settings").product_sku_prefix | safeHTML }} {referenceId}</p>' +
+          {{ end }}
+          '<h2 class="tvp-product-price">{price}</h2>' +
           '<button class="tvp-product-cta">{{ ($.Scratch.Get "settings").product_popup_cta_text }}</button>' +
         '</div>' +
       '</a>',
