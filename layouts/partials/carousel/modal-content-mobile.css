@@ -195,6 +195,7 @@
   "font-weight:{{ ($.Scratch.Get "settings").mobile_products_headline_font_weight }};" +
   "text-transform:{{ ($.Scratch.Get "settings").mobile_products_headline_text_transform }};" +
   "color:{{ ($.Scratch.Get "settings").mobile_products_headline_text_color }};" +
+  "text-align:{{ ($.Scratch.Get "settings").mobile_products_headline_text_align }};" +
 "}" +
 
 ".tvp-slider-dots li button:before {" +

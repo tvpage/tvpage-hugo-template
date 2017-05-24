@@ -90,6 +90,27 @@
             "value": false
         },
         {
+            "for": "carousel",
+            "type": "boolean",
+            "label": "Mobile Navigation Bullets",
+            "code": "mobile_navigation_bullets",
+            "value": false
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Mobile Products Max Navigation Bullets",
+            "code": "mobile_products_max_navigation_bullets",
+            "value": "5"
+        },
+        {
+            "for": "modal",
+            "type": "boolean",
+            "label": "Mobile Products Navigation Bullets",
+            "code": "mobile_products_navigation_bullets",
+            "value": true
+        },
+        {
           "for": "carousel",
           "type": "text",
           "label": "Carousel Center Padding",
@@ -1866,6 +1887,13 @@
           "label": "Mobile Products Headline Text Color",
           "code": "mobile_products_headline_text_color",
           "value": "#333"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Products Headline Text Align",
+          "code": "mobile_products_headline_text_align",
+          "value": "left"
         },
         {
           "for": "mobile",
