@@ -113,7 +113,7 @@
                     that.el.querySelector('.slick-list').style.margin = "0 -" + ( parseInt(options.item_padding_right) + 1 ) + "px";
                     
                     var navBulletsHeight = 0;
-                    if (options.navigation_bullets) {
+                    if (options.navigation_bullets || options.mobile_navigation_bullets) {
                         navBulletsHeight = parseInt(options.navigation_bullets_margin_bottom,10);
                     }
 
@@ -140,6 +140,7 @@
                             settings: {
                                 arrows: false,
                                 slidesToShow: 1,
+                                dots: options.mobile_navigation_bullets,
                                 centerMode:true,
                                 centerPadding: carouselCenterPadding
                             }
@@ -149,6 +150,7 @@
                             settings:{
                                 slidesToShow: Number(options.items_to_show),
                                 slidesToScroll: Number(options.items_to_scroll),
+                                dots: options.mobile_navigation_bullets,
                                 arrows: false,
                                 centerMode:true,
                                 centerPadding: carouselCenterPadding
