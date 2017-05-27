@@ -338,6 +338,8 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
           maxAds: isset(advertisingOptions.maxAds) ? advertisingOptions.maxAds : "100",
           adInterval: isset(advertisingOptions.adInterval) ? String(advertisingOptions.adInterval) : "0"
         });
+
+        this.preload = isset(options.preload) ? options.preload : false;
         
         //Context reference for Methods.
         var that = this;
@@ -505,13 +507,14 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                 mediaProviders: isset(options.media_providers) ? options.media_providers : null,
                 divId: this.el.id,
                 preload: isset(options.preload) ? options.preload : null,
-                swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+that.version+'-flash.swf',
+                swf: '//cdnjs.tvpage.com/tvplayer/tvp-'+that.version+'.swf',
                 poster: isset(options.poster) ? options.poster : null,
                 onReady: that.onReady,
                 onStateChange: that.onStateChange,
                 controls: that.controls,
                 version: that.version,
-                advertising:that.advertising
+                advertising:that.advertising,
+                preload: that.preload
             };
 
             var extras = ["preload","poster"];

@@ -88,6 +88,7 @@
       adInterval: isset(advertisingOptions.adInterval) ? String(advertisingOptions.adInterval) : "0"
     });
 
+    this.preload = isset(options.preload) ? options.preload : false;
     this.onResize = isset(options.onResize) && isFunction(options.onResize) ? options.onResize : null;
     this.onNext = isset(options.onNext) && isFunction(options.onNext) ? options.onNext : null;
 
@@ -210,7 +211,7 @@
               tvpa: that.analytics
             },
             apiBaseUrl: that.apiBaseUrl,
-            swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-' + that.version + '-flash.swf',
+            swf: '//cdnjs.tvpage.com/tvplayer/tvp-'+that.version+'.swf',
             onReady: function(e, pl) {
               that.instance = pl;
               that.resize();
@@ -271,7 +272,8 @@
             divId: that.el.id,
             controls: that.controls,
             version: that.version,
-            advertising:that.advertising
+            advertising:that.advertising,
+            preload: that.preload
           };
 
           var extras = ["preload","poster","overlay"];
