@@ -88,7 +88,6 @@
       adInterval: isset(advertisingOptions.adInterval) ? String(advertisingOptions.adInterval) : "0"
     });
 
-    this.preload = isset(options.preload) ? options.preload : false;
     this.onResize = isset(options.onResize) && isFunction(options.onResize) ? options.onResize : null;
     this.onNext = isset(options.onNext) && isFunction(options.onNext) ? options.onNext : null;
 

@@ -105,8 +105,6 @@
           maxAds: isset(advertisingOptions.maxAds) ? advertisingOptions.maxAds : "100",
           adInterval: isset(advertisingOptions.adInterval) ? String(advertisingOptions.adInterval) : "0"
         });
-
-        this.preload = isset(options.preload) ? options.preload : false;
         
         //Context reference for Methods.
         var that = this;
@@ -280,8 +278,7 @@
                 onStateChange: that.onStateChange,
                 controls: that.controls,
                 version: that.version,
-                advertising:that.advertising,
-                preload: that.preload
+                advertising:that.advertising
             };
 
             var extras = ["preload","poster"];

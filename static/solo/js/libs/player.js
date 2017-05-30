@@ -84,7 +84,6 @@
       adInterval: isset(advertisingOptions.adInterval) ? String(advertisingOptions.adInterval) : "0"
     });
 
-    this.preload = isset(options.preload) ? options.preload : false;
     this.onNext = isset(options.onNext) && "function" === typeof options.onNext ? options.onNext : null;
     this.onPlayerReady = isset(options.onPlayerReady) && "function" === typeof options.onPlayerReady ? options.onPlayerReady : null;
     this.onFullscreenChange = isset(options.onFullscreenChange) && "function" === typeof options.onFullscreenChange ? options.onFullscreenChange : null;
