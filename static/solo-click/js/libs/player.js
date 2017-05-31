@@ -254,7 +254,7 @@
     var checks = 0;
     (function libsReady() {
       setTimeout(function() {
-        if ( (!isset(window,'TVPage') || !isset(window,'_tvpa')) && (++checks < 50) ) {
+        if ( (!isset(window,'TVPage') || !isset(window,'_tvpa')) && (++checks < 100) ) {
           libsReady();
         } else {
           that.player = new TVPage.player({
