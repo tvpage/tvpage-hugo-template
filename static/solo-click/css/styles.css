@@ -10,7 +10,7 @@ body {
   padding-bottom: 56.25%;
 }
 
-.mobile .tvp-player {
+.mobile.squared .tvp-player {
   padding-bottom: 100%;
 }
 
