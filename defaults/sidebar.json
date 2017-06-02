@@ -11,7 +11,7 @@
           "type": "text",
           "label": "Player Version",
           "code": "player_version",
-          "value": "3.1.0"
+          "value": "3.1.1"
         },
         {
           "for": "player",

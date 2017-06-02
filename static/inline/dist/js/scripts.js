@@ -505,7 +505,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                 mediaProviders: isset(options.media_providers) ? options.media_providers : null,
                 divId: this.el.id,
                 preload: isset(options.preload) ? options.preload : null,
-                swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+that.version+'-flash.swf',
+                swf: '//cdnjs.tvpage.com/tvplayer/tvp-'+that.version+'.swf',
                 poster: isset(options.poster) ? options.poster : null,
                 onReady: that.onReady,
                 onStateChange: that.onStateChange,

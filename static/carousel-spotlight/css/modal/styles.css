@@ -74,7 +74,6 @@ body  {
 }
 
 .tvp-product-image-overlay {
-  -webkit-transition: all .05s ease-in-out;
   transition: all .05s ease-in-out;
   display: none;
   top: 0;
@@ -99,7 +98,6 @@ body  {
 }
 
 .tvp-products-carousel {
-  -webkit-transition: all .05s ease-in-out;
   transition: all .05s ease-in-out;
   height: 0;
   opacity: 0;
@@ -133,7 +131,6 @@ body  {
   width: 70%;
   display: block;
   cursor: pointer;
-  -webkit-transition: all .05s ease-in-out;
   transition: all .05s ease-in-out;
 }
 
@@ -179,7 +176,6 @@ body  {
 }
 
 .tvp-products-carousel-arrow > svg {
-  -webkit-transition: all .05s ease-in-out;
   transition: all .05s ease-in-out;
   pointer-events: none;
 }
