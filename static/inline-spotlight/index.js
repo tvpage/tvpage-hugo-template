@@ -116,7 +116,7 @@ targetElement.insertAdjacentHTML('beforebegin', "<style>" + config.css["host-cus
 targetElement.parentNode.removeChild(targetElement);
 
 config.id = id;
-config.staticPath = config.baseUrl + "/inline";
+config.staticPath = config.baseUrl + "/inline-spotlight";
 config.mobilePath = utils.isMobile ? 'mobile/' : '';
 config.distPath = config.debug ? '/' : '/dist/';
 config.cssPath = config.staticPath + config.distPath + 'css/';

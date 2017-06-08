@@ -157,8 +157,9 @@ a {
         }
     }
     .tvp-player-product-section{
+        @include aspect-ratio(16,9);
+        margin-bottom: 2.70%;
         > .tvp-content{
-            padding: 0 25%;
             .tvp-player{
                 width:100%;
             }
@@ -196,11 +197,11 @@ a {
     h2{
         font-size: calc(12px + (32 - 12) * ((100vw - 300px) / (1600 - 300)));
         font-weight: normal;
-
+        text-align: center;
     }
     .tvp-row-player-title {
         display: inline-block;
-        width: 53.1165%;
+        width: 70%;
         white-space: nowrap;
         height: 100%;
         position: relative;
@@ -209,8 +210,7 @@ a {
     .tvp-row-featured-title {
         display: inline-block;
         height: 100%;
-        margin-left: 1.2195%;
-        width: 22.2222%;
+        width: 30%;
         position: relative;
         float: left;
     }
@@ -223,8 +223,7 @@ a {
 }
 
 .tvp-player-product-section{
-    @include aspect-ratio(1476,446);
-    margin-bottom: 2.70%;
+    @include aspect-ratio(7, 2.8);
     .tvp-mobile-product-title{display: none;}    
     #playerOverlay{
         z-index:10000;
@@ -236,7 +235,7 @@ a {
     @include aspect-ratio(16, 9);
     float: left;
     overflow: hidden;
-    width: 53.1165%;
+    width: 70%;
     .tvp-content {
         padding: 0;
     }
@@ -397,12 +396,11 @@ a {
     font-size: 100%;
 }
 .tvp-products-scroller{
-    box-sizing: border-box;
-    float: left;
-    position: relative;
-    margin-left: 1.2195%;
-    width: 22.2222%;
+    float: right;
+    padding: 0 2%;
+    width: 30%;
     height: 100%;
+    position: relative;
     .slick-arrow{
         bottom: 0;
         z-index: 10;
@@ -426,7 +424,7 @@ a {
     background-color: #D8D8D8;
     padding: 0;
     margin-bottom: 5px;
-    max-height: 28%;
+    height: 100%;
     position: relative;
     &:last-child {
         margin: 0;
@@ -468,8 +466,10 @@ a {
 
 .tvp-products-nav{
     position: absolute;
-    bottom: 0;
+    left: 0;
     width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
     .slick-dots{
         display: inline-block;
         margin: 0 auto;
@@ -502,8 +502,7 @@ a {
 }
 
 .tvp-videos-container{
-    @include aspect-ratio(1024, 200);
-    position: relative;
+    @include aspect-ratio(7, 2);
 }
 .tvp-videos-container-arrows {
     outline: none;
