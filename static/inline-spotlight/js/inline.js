@@ -141,6 +141,7 @@
     var renderProducts = function (vid, lid) {        
         var products =  document.getElementById('tvpProductsView');
         var deInitProd = function () {
+            if (!$('#productContent').hasClass('slick-initialized')) return;
             $('#productContent').slick('unslick');
             products.innerHTML = "";
         };
@@ -167,7 +168,7 @@
             }
 
             //product scroll nav
-            if (productData.length > 4) {
+            if (productData.length > 1) {
                 $(templates.productsNav).appendTo(_container);
             }
 

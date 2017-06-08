@@ -695,6 +695,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
     var renderProducts = function (vid, lid) {        
         var products =  document.getElementById('tvpProductsView');
         var deInitProd = function () {
+            if (!$('#productContent').hasClass('slick-initialized')) return;
             $('#productContent').slick('unslick');
             products.innerHTML = "";
         };
@@ -721,7 +722,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             }
 
             //product scroll nav
-            if (productData.length > 4) {
+            if (productData.length > 1) {
                 $(templates.productsNav).appendTo(_container);
             }
 
