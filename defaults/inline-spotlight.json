@@ -533,6 +533,13 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Product Item Title Text Align",
+            "code": "product_item_title_text_align",
+            "value": "center"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Product Item Background Color",
             "code": "product_item_background_color",
             "value": "#fff"
@@ -753,6 +760,13 @@
             "label": "Videos Carousel Item Title Transform",
             "code": "videos_carousel_item_title_transform",
             "value": "none"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Title Text Align",
+            "code": "videos_carousel_item_title_text_align",
+            "value": "center"
         },
         {
             "for": "inline",

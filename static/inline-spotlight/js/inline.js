@@ -185,7 +185,7 @@
                     $productItms[i].querySelector('.tvp-product-info-title').innerHTML = defaultTitle;
                 }
                 $('.tvp-product-info-title').ellipsis({
-                    row: 2
+                    row: 3
                 });  
             });
             addProductActiveState(productData[0].id);

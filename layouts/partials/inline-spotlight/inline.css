@@ -121,6 +121,7 @@
 	'color: {{- ($.Scratch.Get "settings").product_item_title_font_color -}};' +
 	'font-weight: {{- ($.Scratch.Get "settings").product_item_title_font_weight -}};' +
 	'line-height: {{- ($.Scratch.Get "settings").product_item_title_line_height -}};' +
+	'text-align:{{- ($.Scratch.Get "settings").product_item_title_text_align -}};' +
 '}' +
 
 '.tvp-product-info-view-details{' +
@@ -269,6 +270,7 @@
 	'opacity: {{- ($.Scratch.Get "settings").videos_carousel_item_title_inactive -}};'+
 	'-webkit-transform: {{- ($.Scratch.Get "settings").videos_carousel_item_title_transform -}};' +	
 	'transform: {{- ($.Scratch.Get "settings").videos_carousel_item_title_transform -}};' +
+	'text-align: {{- ($.Scratch.Get "settings").videos_carousel_item_title_text_align -}};' +
 '}' +
 
 '.tvp-video-item-active .tvp-video-item-title ' +
