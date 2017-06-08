@@ -177,19 +177,7 @@
                 nextArrow: document.querySelector('.tvp-products-next'),
                 slidesToShow: 1,
                 slidesToScroll: 1,
-                dots: false,
-                responsive:[
-                    {
-                        breakpoint: 769,
-                        settings: {
-                            arrows: false,
-                            centerPadding: '0px',
-                            slidesToShow: 1,
-                            slidesToScroll: 1,
-                            dots: false
-                        }
-                    }
-                ]
+                dots: false
             }).on('setPosition', function(s) {
                 var $productItms = $('.tvp-product-item');
                 for (var i = $productItms.length - 1; i >= 0; i--) {                    
@@ -249,7 +237,6 @@
             player.resize();
         }else{
             bodyEl.addClass(classType);
-            document.getElementById('tvpFeaturedProduct').innerHTML = '';
             player.resize();
         }
     };

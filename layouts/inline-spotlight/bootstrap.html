@@ -4,19 +4,19 @@
 	var bootstrap = {{ $.Scratch.Get "settings" | jsonify }};
 	bootstrap.baseUrl = "{{ $.Site.BaseURL }}";
 	bootstrap.templates = {
-		inline: {{- (partial (printf "%s/inline.html" .Type) .) -}},
-		inline_item: {{- (partial (printf "%s/inline-item.html" .Type) .) -}},
-		inline_carousel_next_arrow: {{- (partial (printf "%s/inline-carousel-next-arrow.html" .Type) .) -}},
-		inline_carousel_previous_arrow: {{- (partial (printf "%s/inline-carousel-previous-arrow.html" .Type) .) -}},
-		featured_product: {{- (partial (printf "%s/featured-product.html" .Type) .) -}},
-		product: {{- (partial (printf "%s/product-item.html" .Type) .) -}},
-		product_nav: {{- (partial (printf "%s/product-scroller-nav.html" .Type) .) -}},
-		play_icon: {{- (partial (printf "%s/play-icon.html" .Type) .) -}}
+		inline: {{- (partial (printf "%s/inline.html" .Type) .) | htmlUnescape | safeHTML -}},
+		inline_item: {{- (partial (printf "%s/inline-item.html" .Type) .) | htmlUnescape | safeHTML -}},
+		inline_carousel_next_arrow: {{- (partial (printf "%s/inline-carousel-next-arrow.html" .Type) .) | htmlUnescape | safeHTML -}},
+		inline_carousel_previous_arrow: {{- (partial (printf "%s/inline-carousel-previous-arrow.html" .Type) .) | htmlUnescape | safeHTML -}},
+		featured_product: {{- (partial (printf "%s/featured-product.html" .Type) .) | htmlUnescape | safeHTML -}},
+		product: {{- (partial (printf "%s/product-item.html" .Type) .) | htmlUnescape | safeHTML -}},
+		product_nav: {{- (partial (printf "%s/product-scroller-nav.html" .Type) .) | htmlUnescape | safeHTML -}},
+		play_icon: {{- (partial (printf "%s/play-icon.html" .Type) .) | htmlUnescape | safeHTML -}}
 	};
 	bootstrap.css = {
-		host: {{- (partial (printf "%s/host.css" .Type) .) -}},
-		'host-custom': {{- (partial (printf "%s/host-custom.css" .Type) .) -}},
-		inline: {{- (partial (printf "%s/inline.css" .Type) .) -}}
+		host: {{- (partial (printf "%s/host.css" .Type) .) | htmlUnescape | safeHTML -}},
+		'host-custom': {{- (partial (printf "%s/host-custom.css" .Type) .) | htmlUnescape | safeHTML -}},
+		inline: {{- (partial (printf "%s/inline.css" .Type) .) | htmlUnescape | safeHTML -}}
 	};
 
 	{{- (readFile "/themes/tvpage/static/inline-spotlight/index.js") | htmlUnescape | safeHTML -}}

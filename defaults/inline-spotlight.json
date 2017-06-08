@@ -437,7 +437,7 @@
             "type": "text",
             "label": "Product Holder Slider Arrow Button Color",
             "code": "product_holder_slide_arrow_button_color",
-            "value": "rgba(0,0,0,0.75)"
+            "value": "transparent"
         },
         {
             "for": "inline",
@@ -451,21 +451,21 @@
             "type": "text",
             "label": "Product Holder Slider Arrow Color",
             "code": "product_holder_slide_arrow_color",
-            "value": "#fff"
+            "value": "#333"
         },
         {
             "for": "inline",
             "type": "text",
             "label": "Product Holder Slider Arrow Width",
             "code": "product_holder_slide_arrow_width",
-            "value": "23"
+            "value": "24"
         },
         {
             "for": "inline",
             "type": "text",
             "label": "Product Holder Slider Arrow Height",
             "code": "product_holder_slide_arrow_height",
-            "value": "23"
+            "value": "24"
         },
         {
             "for": "inline",
@@ -535,7 +535,7 @@
             "type": "text",
             "label": "Product Item Background Color",
             "code": "product_item_background_color",
-            "value": "#D8D8D8"
+            "value": "#fff"
         },
         {
             "for": "inline",
@@ -626,7 +626,7 @@
             "type": "text",
             "label": "Videos Carousel Container Height",
             "code": "videos_carousel_container_height",
-            "value": "19.53125%"
+            "value": ""
         },
         {
             "for": "inline",
