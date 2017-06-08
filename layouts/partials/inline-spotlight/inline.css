@@ -124,6 +124,10 @@
 	'text-align:{{- ($.Scratch.Get "settings").product_item_title_text_align -}};' +
 '}' +
 
+'.tvp-product-image {' +
+	'border: {{- ($.Scratch.Get "settings").product_image_border -}};' +
+'}'+
+
 '.tvp-product-info-view-details{' +
 	'font-size: calc({{- ($.Scratch.Get "settings").product_item_view_button_font_size_min -}}px + ({{- ($.Scratch.Get "settings").product_item_view_button_font_size_max }} - {{ ($.Scratch.Get "settings").product_item_view_button_font_size_min -}}) * ((100vw - 300px) / (1600 - 300)));' +
 	'color: {{- ($.Scratch.Get "settings").product_item_view_button_font_color -}};' +
@@ -257,7 +261,7 @@
 	'border-width: {{- ($.Scratch.Get "settings").videos_carousel_item_thumbnail_border_width -}};' +
 '}' +
 
-'.tvp-video-item-title{' +
+'.tvp-video-item-title, .tvp-video-metadata {' +
 	'color: {{- ($.Scratch.Get "settings").videos_carousel_item_title_font_color -}};' +
 	'font-size: calc({{- ($.Scratch.Get "settings").videos_carousel_item_title_font_size_min -}}px + ({{- ($.Scratch.Get "settings").videos_carousel_item_title_font_size_max }} - {{ ($.Scratch.Get "settings").videos_carousel_item_title_font_size_min -}}) * ((100vw - 300px) / (1600 - 300)));' +
 	'font-weight: {{- ($.Scratch.Get "settings").videos_carousel_item_title_font_weight -}};' +

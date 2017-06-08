@@ -92,6 +92,13 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Product Image Border",
+            "code": "product_image_border",
+            "value": "1px solid"
+        }, 
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Hover State Border",
             "code": "hover_state_border",
             "value": "transparent"

@@ -286,6 +286,9 @@
                 rowEl.innerHTML = Utils.tmpl(templates.inlineItem, item);
                 
                 container.appendChild(rowEl);
+                if(!item.publishedDate){
+                    $(rowEl).find('.tvp-video-metadata').hide();
+                }
             }
 
             //insert custom arrow icon template
@@ -462,8 +465,8 @@
                 renderProducts(selectedVideo.id, selectedVideo.loginId);
                 $(inlineEl).find('#videoTitle').html(selectedVideo.title);                                
             }
-            else if (getTarget('tvp-featured-product')) {
-                pkTrack(this.querySelector('.tvp-featured-product').getAttribute('data-id'));
+            else if (getTarget('tvp-product-item')) {
+                pkTrack(this.querySelector('.tvp-product-item').getAttribute('data-id'));
             }
             else if (getTarget('tvp-video-play')) {
                 player.instance.play();
