@@ -632,7 +632,7 @@ a {
         padding: 0 10px!important;
     }
     .tvp-videos-container {
-        @include aspect-ratio(10, 4.1);
+        @include aspect-ratio(16, 9);
     }
     .tvp-row-titles{
         margin-bottom: 10px;
@@ -648,7 +648,7 @@ a {
     }
 
     .tvp-video-item {
-        @include aspect-ratio(4, 3);
+        @include aspect-ratio(1,1);
     }
 
     .tvp-player-product-section{
@@ -748,9 +748,6 @@ a {
 }
 
 @media only screen and (max-width: 375px){
-    .tvp-videos-container {
-        @include aspect-ratio(337,164);
-    }
     .tvp-player-product-section:before{
         padding-top: 95.7%;
     }
