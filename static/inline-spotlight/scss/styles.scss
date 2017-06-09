@@ -648,7 +648,7 @@ a {
     }
 
     .tvp-video-item {
-        @include aspect-ratio(1,1);
+        @include aspect-ratio(4,3);
     }
 
     .tvp-player-product-section{
