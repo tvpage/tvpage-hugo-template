@@ -242,11 +242,14 @@
         }
     };
 
-    var onNext = function (e) {
-        isProductsInitialized = false;
-        renderProducts(e.assetId, e.loginId); 
-        $(inlineEl).find('#videoTitle').html(e.assetTitle);
-        addVideoActiveState(e.assetId);
+    var showTitle = function(opts, title){
+        var showTitleOption = Utils.isset(opts, 'show_video_title') ? opts.show_video_title : true,
+            titleToShow = Utils.isset(opts, 'static_title') ? opts.static_title : title;
+        if (!showTitleOption) {
+            $(inlineEl).find('#videoTitle').hide();
+        } else {
+            $(inlineEl).find('#videoTitle').html(titleToShow);
+        }
     };
 
     function Inline(el, options) {
@@ -269,7 +272,14 @@
         templates.productItem = options.templates.product;
         templates.playIcon = options.templates.play_icon;
         templates.ratingsHtml = options.templates.featured_product.ratings;
-        
+
+        var onNext = function (e) {
+            isProductsInitialized = false;
+            renderProducts(e.assetId, e.loginId); 
+            showTitle(options, e.assetTitle);
+            addVideoActiveState(e.assetId);
+        };
+
         var render = function(data){
             var all = data.slice(0);
 
@@ -357,7 +367,7 @@
             s.data = data;
 
             player = new Player('tvp-player', s, selectedVideo.id);
-            $(inlineEl).find('#videoTitle').html(selectedVideo.title);
+            showTitle(options, selectedVideo.title);
             addVideoActiveState(selectedVideo.id);
             
             //render products  
@@ -464,7 +474,7 @@
                 addVideoActiveState(selectedVideo.id);
                 isProductsInitialized = false;
                 renderProducts(selectedVideo.id, selectedVideo.loginId);
-                $(inlineEl).find('#videoTitle').html(selectedVideo.title);                                
+                showTitle(options, selectedVideo.title);                        
             }
             else if (getTarget('tvp-product-item')) {
                 pkTrack(this.querySelector('.tvp-product-item').getAttribute('data-id'));
