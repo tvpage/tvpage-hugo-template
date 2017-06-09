@@ -481,8 +481,9 @@ a {
     position: absolute;
     left: 0;
     width: 100%;
-    top: 47%;
+    top: 40%;
     transform: translateY(-50%);
+    height:0;
     .slick-dots{
         display: inline-block;
         margin: 0 auto;
@@ -740,6 +741,7 @@ a {
         display: block;
     }
     .tvp-products-nav-button{
+        margin: 0 -15px;
         display: none;
     }
     .tvp-videos-container-arrows {

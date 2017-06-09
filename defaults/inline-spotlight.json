@@ -472,14 +472,14 @@
             "type": "text",
             "label": "Product Holder Slider Arrow Width",
             "code": "product_holder_slide_arrow_width",
-            "value": "24"
+            "value": "40"
         },
         {
             "for": "inline",
             "type": "text",
             "label": "Product Holder Slider Arrow Height",
             "code": "product_holder_slide_arrow_height",
-            "value": "24"
+            "value": "40"
         },
         {
             "for": "inline",
@@ -722,8 +722,29 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Videos Carousel Item Date Font Size Min",
+            "code": "videos_carousel_item_date_font_size_min",
+            "value": "10"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Date Font Size Max",
+            "code": "videos_carousel_item_date_font_size_max",
+            "value": "16"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Videos Carousel Item Title Font Weight",
             "code": "videos_carousel_item_title_font_weight",
+            "value": "normal"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Date Font Weight",
+            "code": "videos_carousel_item_date_font_weight",
             "value": "normal"
         },
         {

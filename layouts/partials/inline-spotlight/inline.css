@@ -273,6 +273,12 @@
 	'text-align: {{- ($.Scratch.Get "settings").videos_carousel_item_title_text_align -}};' +
 '}' +
 
+'.tvp-video-metadata {'+
+	'font-size: calc({{- ($.Scratch.Get "settings").videos_carousel_item_date_font_size_min -}}px + ({{- ($.Scratch.Get "settings").videos_carousel_item_date_font_size_max }} - {{ ($.Scratch.Get "settings").videos_carousel_item_date_font_size_min -}}) * ((100vw - 300px) / (1600 - 300)));' +
+	'font-weight: {{- ($.Scratch.Get "settings").videos_carousel_item_date_font_weight -}};' +
+
+'}'+
+
 '.tvp-video-item-active .tvp-video-item-title ' +
 ', .tvp-video-item:hover .tvp-video-item-title{' +
 	'opacity: {{- ($.Scratch.Get "settings").videos_carousel_item_title_active -}};'+

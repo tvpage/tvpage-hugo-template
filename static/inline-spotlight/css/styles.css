@@ -870,9 +870,10 @@ a {
   position: absolute;
   left: 0;
   width: 100%;
-  top: 47%;
+  top: 40%;
   -webkit-transform: translateY(-50%);
           transform: translateY(-50%);
+  height: 0;
 }
 .tvp-products-nav .slick-dots {
   display: inline-block;
@@ -1247,6 +1248,7 @@ a {
   }
 
   .tvp-products-nav-button {
+    margin: 0 -15px;
     display: none;
   }
 
