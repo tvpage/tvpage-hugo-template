@@ -750,6 +750,9 @@ a {
 }
 
 @media only screen and (max-width: 375px){
+    .tvp-video-item{
+        @include aspect-ratio(1,1);
+    }
     .tvp-player-product-section:before{
         padding-top: 95.7%;
     }

@@ -1257,6 +1257,23 @@ a {
   }
 }
 @media only screen and (max-width: 375px) {
+  .tvp-video-item {
+    position: relative;
+  }
+  .tvp-video-item:before {
+    display: block;
+    content: "";
+    width: 100%;
+    padding-top: 100%;
+  }
+  .tvp-video-item > .tvp-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
   .tvp-player-product-section:before {
     padding-top: 95.7%;
   }
