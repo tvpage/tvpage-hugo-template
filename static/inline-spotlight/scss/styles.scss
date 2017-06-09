@@ -546,7 +546,7 @@ a {
     }
 }
 .tvp-video-item {
-    @include aspect-ratio(4, 3);
+    @include aspect-ratio(1, 1);
     box-sizing: border-box;
     display: block;
     position: relative;
@@ -645,6 +645,10 @@ a {
                 padding: 27px 0 0 0;
             }
         }
+    }
+
+    .tvp-video-item {
+        @include aspect-ratio(4, 3);
     }
 
     .tvp-player-product-section{

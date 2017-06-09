@@ -962,7 +962,7 @@ a {
   display: block;
   content: "";
   width: 100%;
-  padding-top: 75%;
+  padding-top: 100%;
 }
 .tvp-video-item > .tvp-content {
   position: absolute;
@@ -1101,6 +1101,23 @@ a {
     font-weight: bold;
     line-height: 16px;
     padding: 27px 0 0 0;
+  }
+
+  .tvp-video-item {
+    position: relative;
+  }
+  .tvp-video-item:before {
+    display: block;
+    content: "";
+    width: 100%;
+    padding-top: 75%;
+  }
+  .tvp-video-item > .tvp-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
   }
 
   .tvp-player-product-section {
