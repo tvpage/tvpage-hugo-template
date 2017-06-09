@@ -293,13 +293,9 @@
                 }
 
                 item.className = className;
-
+                item.publishedDate = Utils.formatDate(item.date_created);
                 rowEl.innerHTML = Utils.tmpl(templates.inlineItem, item);
-                
                 container.appendChild(rowEl);
-                if(!item.publishedDate){
-                    $(rowEl).find('.tvp-video-metadata').hide();
-                }
             }
 
             //insert custom arrow icon template

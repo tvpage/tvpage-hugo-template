@@ -515,7 +515,7 @@ a {
 }
 
 .tvp-videos-container{
-    @include aspect-ratio(10, 2.5);
+    @include aspect-ratio(10, 2.6);
 }
 .tvp-videos-container-arrows {
     outline: none;
@@ -546,7 +546,7 @@ a {
     }
 }
 .tvp-video-item {
-    @include aspect-ratio(238, 176);
+    @include aspect-ratio(4, 3);
     box-sizing: border-box;
     display: block;
     position: relative;
@@ -632,10 +632,7 @@ a {
         padding: 0 10px!important;
     }
     .tvp-videos-container {
-        @include aspect-ratio(732,274);
-    }
-    .tvp-video-item{
-        @include aspect-ratio(351,222);
+        @include aspect-ratio(10, 4.1);
     }
     .tvp-row-titles{
         margin-bottom: 10px;
@@ -696,11 +693,7 @@ a {
     .tvp-product-image{
         @include aspect-ratio(1,1);
         display: inline-block;
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
         width: 18.6%;
-        height: auto;
     }
     .tvp-product-info{
         display: inline-block;
@@ -728,6 +721,7 @@ a {
         display: block;
         font-weight: 500;
         line-height: 14px;
+        text-align: center;
     }
     .tvp-product-info-view-details{
         border: 1px solid #DDDDDD;

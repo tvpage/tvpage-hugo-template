@@ -176,6 +176,16 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
       return 'undefined' !== typeof val;
     };
 
+    this.formatDate = function(unixTimestamp) {
+        var d = (new Date(Number(unixTimestamp) * 1000)),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+        return [month, day, year].join('/');
+    };
+
     this.debounce = function(func,wait,immediate){
       var timeout = null;  
       return function() {
@@ -847,13 +857,9 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                 }
 
                 item.className = className;
-
+                item.publishedDate = Utils.formatDate(item.date_created);
                 rowEl.innerHTML = Utils.tmpl(templates.inlineItem, item);
-                
                 container.appendChild(rowEl);
-                if(!item.publishedDate){
-                    $(rowEl).find('.tvp-video-metadata').hide();
-                }
             }
 
             //insert custom arrow icon template
