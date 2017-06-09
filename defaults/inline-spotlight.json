@@ -85,6 +85,13 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Thumbnail Play Button Icon Color",
+            "code": "thumbnail_play_button_icon_color",
+            "value": "#000"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Active State Border",
             "code": "active_state_border",
             "value": "transparent"

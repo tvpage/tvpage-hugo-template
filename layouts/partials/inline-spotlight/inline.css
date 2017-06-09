@@ -190,7 +190,7 @@
 '}' +
 
 '.tvp-video-play > polygon{' +
-	'fill: #{{- ($.Scratch.Get "settings").play_button_icon_color -}};' +
+	'fill: {{- ($.Scratch.Get "settings").thumbnail_play_button_icon_color -}};' +
 '}' +
 
 '.tvp-video-item-active .anim, ' +
