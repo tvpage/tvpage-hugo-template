@@ -1,7 +1,6 @@
 @import "mixins.scss";
 @import "vendor/slick.scss";
 @import "vendor/slick-theme.scss";
-@import "vendor/simple-scrollbar.scss";
 
 * {
   box-sizing: border-box;
@@ -496,9 +495,10 @@ a {
     position: absolute;
     left: 0;
     width: 100%;
-    top: 40%;
+    top: 50%;
     transform: translateY(-50%);
-    height:0;
+    height: 50%;
+    z-index: 9;
     .slick-dots{
         display: inline-block;
         margin: 0 auto;
@@ -520,8 +520,11 @@ a {
 .tvp-products-nav-button{
     cursor: pointer;
     display: inline-block;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
     &.tvp-products-next{
-        float: right;
+        right: 0;
     }
     .tvp-icon{
         width: 100%;
@@ -674,11 +677,11 @@ a {
     .tvp-player-product-section{
         @include aspect-ratio(355,310);
         .tvp-mobile-product-title{
-            margin: 5px 0;
+            margin: 10px 0 5px;
             display: block;
             h2{
                 font-weight: 500;
-                line-height: 14px;
+                line-height: 17px;
                 margin: 0;
                 padding: 0;
                 font-size: 14px;
@@ -748,7 +751,7 @@ a {
         display: block;
         font-weight: 500;
         line-height: 14px;
-        text-align: center;
+        text-align: left;
     }
     .tvp-product-info-view-details{
         border: 1px solid #DDDDDD;

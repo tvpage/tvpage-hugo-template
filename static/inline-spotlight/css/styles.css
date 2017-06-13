@@ -13,6 +13,7 @@
   -ms-touch-action: pan-y;
   touch-action: pan-y;
   -webkit-tap-highlight-color: transparent;
+  z-index: 10;
 }
 
 .slick-list {
@@ -235,53 +236,6 @@
 .slick-dots li.slick-active button:before {
   color: black;
   opacity: 1;
-}
-
-.ss-wrapper {
-  overflow: hidden;
-  width: 100%;
-  height: 100%;
-  position: relative;
-  z-index: 1;
-  float: left;
-}
-
-.ss-content {
-  height: 100%;
-  width: 110%;
-  padding: 0 25px 0 0;
-  right: -5px;
-  position: relative;
-  overflow: auto;
-  box-sizing: border-box;
-}
-
-.ss-scroll {
-  position: relative;
-  opacity: 0.2;
-  background: #000000;
-  border-radius: 100px;
-  width: 5px;
-  top: 0;
-  z-index: 2;
-  cursor: pointer;
-  transition: opacity 0.25s linear;
-}
-
-.ss-hidden {
-  display: none;
-}
-
-.ss-container:hover .ss-scroll {
-  opacity: 0.3;
-}
-
-.ss-grabbed {
-  -o-user-select: none;
-  -ms-user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  user-select: none;
 }
 
 * {
@@ -885,10 +839,11 @@ a {
   position: absolute;
   left: 0;
   width: 100%;
-  top: 40%;
+  top: 50%;
   -webkit-transform: translateY(-50%);
           transform: translateY(-50%);
-  height: 0;
+  height: 50%;
+  z-index: 9;
 }
 .tvp-products-nav .slick-dots {
   display: inline-block;
@@ -911,9 +866,13 @@ a {
 .tvp-products-nav-button {
   cursor: pointer;
   display: inline-block;
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
 }
 .tvp-products-nav-button.tvp-products-next {
-  float: right;
+  right: 0;
 }
 .tvp-products-nav-button .tvp-icon {
   width: 100%;
@@ -1157,12 +1116,12 @@ a {
     bottom: 0;
   }
   .tvp-player-product-section .tvp-mobile-product-title {
-    margin: 5px 0;
+    margin: 10px 0 5px;
     display: block;
   }
   .tvp-player-product-section .tvp-mobile-product-title h2 {
     font-weight: 500;
-    line-height: 14px;
+    line-height: 17px;
     margin: 0;
     padding: 0;
     font-size: 14px;
@@ -1253,7 +1212,7 @@ a {
     display: block;
     font-weight: 500;
     line-height: 14px;
-    text-align: center;
+    text-align: left;
   }
 
   .tvp-product-info-view-details {
