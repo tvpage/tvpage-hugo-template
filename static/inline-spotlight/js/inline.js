@@ -2,7 +2,6 @@
     var $videoSliderDesktop = null;
     var productData = [];
     var isProductsInitialized = false;
-    var isFeaturedProductRendered = false;
     var analytics = null;
     var breakpoint = 769;
     var currentApproach = '';
@@ -22,7 +21,6 @@
 
     var renderedApproach = function () {
         if (document.body.clientWidth < breakpoint) {
-            isFeaturedProductRendered = false;
             return 'mobile';
         }
         else{
@@ -69,8 +67,6 @@
         featuredProduct.innerHTML = Utils.tmpl(templates.featuredProduct, product);
         $(featuredProductContainer).children().remove();
         $(featuredProduct).appendTo(featuredProductContainer);
-
-        isFeaturedProductRendered = true;
 
         var productRating = 0;
         if (Utils.isset(product.rating) && null !== product.rating) {
@@ -248,13 +244,10 @@
                     $productItms[i].querySelector('.tvp-product-info-title').innerHTML = defaultTitle;
                 }
                 $('.tvp-product-info-title').ellipsis({
-                    row: 3
+                    row: renderedApproach() !== 'mobile' ? 3 : 2 
                 });  
                 });
                 addProductActiveState(productData[0].id);
-                $('.tvp-product-info-title').ellipsis({
-                    row: 3
-                });  
             };
 
             if(!isProductsInitialized){

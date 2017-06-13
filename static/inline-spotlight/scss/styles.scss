@@ -497,8 +497,8 @@ a {
     width: 100%;
     top: 50%;
     transform: translateY(-50%);
-    height: 50%;
-    z-index: 9;
+    height: 0;
+    z-index: 11;
     .slick-dots{
         display: inline-block;
         margin: 0 auto;

@@ -563,6 +563,13 @@
             "type": "text",
             "label": "Product Item Title Text Align",
             "code": "product_item_title_text_align",
+            "value": "center"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item Title Text Align Mobile",
+            "code": "product_item_title_text_align_mobile",
             "value": "left"
         },
         {

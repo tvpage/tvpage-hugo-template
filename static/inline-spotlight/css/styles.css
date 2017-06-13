@@ -842,8 +842,8 @@ a {
   top: 50%;
   -webkit-transform: translateY(-50%);
           transform: translateY(-50%);
-  height: 50%;
-  z-index: 9;
+  height: 0;
+  z-index: 11;
 }
 .tvp-products-nav .slick-dots {
   display: inline-block;

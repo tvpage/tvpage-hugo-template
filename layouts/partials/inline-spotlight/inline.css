@@ -121,6 +121,7 @@
 	'color: {{- ($.Scratch.Get "settings").product_item_title_font_color -}};' +
 	'font-weight: {{- ($.Scratch.Get "settings").product_item_title_font_weight -}};' +
 	'line-height: {{- ($.Scratch.Get "settings").product_item_title_line_height -}};' +
+	'text-align:{{- ($.Scratch.Get "settings").product_item_title_text_align -}};' +
 '}' +
 
 '.tvp-product-image {' +
@@ -315,6 +316,6 @@
 	'}'+
 
 	'.tvp-product-info-title { '+
-		'text-align:{{- ($.Scratch.Get "settings").product_item_title_text_align -}};' +
+		'text-align:{{- ($.Scratch.Get "settings").product_item_title_text_align_mobile -}};' +
 	'}' +
 '}'
