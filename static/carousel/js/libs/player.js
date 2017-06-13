@@ -298,7 +298,6 @@
                     }
                     
                     that.player = new TVPage.player(playerOptions);
-                    console.log(that.player)
                 }
             },150);
         })();
