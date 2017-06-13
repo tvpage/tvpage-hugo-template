@@ -189,6 +189,15 @@
             renderProducts(e.assetId, e.loginId); 
             showTitle(options, e.assetTitle);
             addVideoActiveState(e.assetId);
+            var slickSlides = $videoSliderDesktop.slick('getSlick').$slides,
+                slickIndex;
+            $(slickSlides).each(function(i, el) {
+                var itemChildren = el.childNodes;
+                if ($(itemChildren).hasClass('tvp-video-item-active')) {
+                    slickIndex = $(this).data('slickIndex');
+                }
+            });
+            $videoSliderDesktop.slick('slickGoTo', parseInt(slickIndex));
         };
 
         var renderProducts = function (vid, lid) {        
@@ -293,6 +302,7 @@
                 }
 
                 item.className = className;
+                item.mediaDuration = Utils.formatDuration(item.duration);
                 item.publishedDate = Utils.formatDate(item.date_created);
                 rowEl.innerHTML = Utils.tmpl(templates.inlineItem, item);
                 container.appendChild(rowEl);
@@ -328,7 +338,7 @@
                             }
                         }
                     ]
-                }).on('setPosition', function(s) {                    
+                }).on('setPosition', function(s) {               
                     if (renderedApproach() !== 'mobile') {
                         var item = s.currentTarget.querySelector('.slick-current');
                         var itemPadding = parseInt(window.getComputedStyle(item, null).paddingTop);

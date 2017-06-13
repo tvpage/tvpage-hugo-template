@@ -451,9 +451,24 @@ a {
   display: none;
 }
 
+.tvplayer-overlay-thumbnail {
+  top: 1px !important;
+}
+
+.tvp-media-duration {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  background-color: #000;
+  color: #fff;
+  padding: 5px;
+  font-size: 10px;
+  border: 1px solid #333;
+  display: none;
+}
+
 .no-products .tvp-row-titles .tvp-row-player-title {
   width: 100%;
-  text-align: center;
 }
 .no-products .tvp-row-titles .tvp-row-featured-title {
   display: none;
@@ -1100,8 +1115,12 @@ a {
   }
   .tvp-row-titles .tvp-row-player-title h1 {
     font-weight: bold;
-    line-height: 16px;
+    line-height: 27px;
     padding: 27px 0 0 0;
+  }
+
+  .tvp-media-duration {
+    display: block;
   }
 
   .tvp-video-item {

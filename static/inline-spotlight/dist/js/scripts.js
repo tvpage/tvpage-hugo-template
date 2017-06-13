@@ -186,6 +186,16 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
         return [month, day, year].join('/');
     };
 
+    this.formatDuration = function(secs) {
+        if ("undefined" === typeof secs) return;
+        var date = new Date(0, 0, 0);
+        date.setSeconds(Number(secs));
+        var hour = (date.getHours() ? date.getHours() : ''),
+            minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes(),
+            seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+        return (hour + minutes + ':' + seconds);
+    };
+
     this.debounce = function(func,wait,immediate){
       var timeout = null;  
       return function() {
@@ -753,6 +763,15 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             renderProducts(e.assetId, e.loginId); 
             showTitle(options, e.assetTitle);
             addVideoActiveState(e.assetId);
+            var slickSlides = $videoSliderDesktop.slick('getSlick').$slides,
+                slickIndex;
+            $(slickSlides).each(function(i, el) {
+                var itemChildren = el.childNodes;
+                if ($(itemChildren).hasClass('tvp-video-item-active')) {
+                    slickIndex = $(this).data('slickIndex');
+                }
+            });
+            $videoSliderDesktop.slick('slickGoTo', parseInt(slickIndex));
         };
 
         var renderProducts = function (vid, lid) {        
@@ -857,6 +876,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                 }
 
                 item.className = className;
+                item.mediaDuration = Utils.formatDuration(item.duration);
                 item.publishedDate = Utils.formatDate(item.date_created);
                 rowEl.innerHTML = Utils.tmpl(templates.inlineItem, item);
                 container.appendChild(rowEl);
@@ -892,7 +912,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                             }
                         }
                     ]
-                }).on('setPosition', function(s) {                    
+                }).on('setPosition', function(s) {               
                     if (renderedApproach() !== 'mobile') {
                         var item = s.currentTarget.querySelector('.slick-current');
                         var itemPadding = parseInt(window.getComputedStyle(item, null).paddingTop);
