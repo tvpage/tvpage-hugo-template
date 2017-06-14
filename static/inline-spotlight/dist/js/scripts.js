@@ -905,6 +905,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                     nextArrow: '.tvp-videos-arrow-next',
                     prevArrow: '.tvp-videos-arrow-prev',
                     dotsClass: 'tvp-slider-dots',
+                    dots: Utils.isset(options, 'video_slider_dots') ? options.video_slider_dots : false,
                     responsive:[
                         {
                             breakpoint: 769,
@@ -913,7 +914,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                                 centerPadding: '0px',
                                 slidesToShow: 2,
                                 slidesToScroll: 2,
-                                dots: true
+                                dots: Utils.isset(options, 'video_slider_dots_mobile') ? options.video_slider_dots_mobile : true
                             }
                         }
                     ]

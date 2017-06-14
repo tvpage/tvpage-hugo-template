@@ -16,15 +16,24 @@
 '.tvp-row-titles h1{' +
 	'font-size: calc({{- ($.Scratch.Get "settings").video_header_font_size_min -}}px + ({{- ($.Scratch.Get "settings").video_header_font_size_max }} - {{ ($.Scratch.Get "settings").video_header_font_size_min -}}) * ((100vw - 300px) / (1600 - 300)));' +
 	'font-weight: {{- ($.Scratch.Get "settings").video_header_font_weight -}};' +
+	'font-family: {{- ($.Scratch.Get "settings").video_header_font_family -}};' +
 	'line-height: {{- ($.Scratch.Get "settings").video_header_line_height -}};' +
 	'padding: {{- ($.Scratch.Get "settings").video_header_padding -}};' +
 	'text-transform: {{- ($.Scratch.Get "settings").video_header_case -}};' +
+	'text-align: {{- ($.Scratch.Get "settings").video_header_text_align -}};' +
+	'margin:{{- ($.Scratch.Get "settings").video_header_margin -}};' +
+	'color: {{- ($.Scratch.Get "settings").video_header_color -}};' +
 '}' +
 '.tvp-row-titles h2{' +
 	'font-size: calc({{- ($.Scratch.Get "settings").featured_product_header_font_size_min -}}px + ({{- ($.Scratch.Get "settings").featured_product_header_font_size_max }} - {{ ($.Scratch.Get "settings").featured_product_header_font_size_min -}}) * ((100vw - 300px) / (1600 - 300)));' +
 	'font-weight: {{- ($.Scratch.Get "settings").featured_product_header_font_weight -}};' +
+	'font-family: {{- ($.Scratch.Get "settings").featured_product_header_font_family -}};' +
 	'line-height: {{- ($.Scratch.Get "settings").featured_product_header_line_height -}};' +
 	'padding: {{- ($.Scratch.Get "settings").featured_product_header_padding -}};' +
+	'text-transform: {{- ($.Scratch.Get "settings").featured_product_header_text_transform -}};' +
+	'text-align: {{- ($.Scratch.Get "settings").featured_product_header_text_align -}};' +
+	'margin:{{- ($.Scratch.Get "settings").featured_product_header_margin -}};' +
+	'color: {{- ($.Scratch.Get "settings").featured_product_header_color -}};' +
 '}' +
 
 '.tvp-featured-product{' +
@@ -257,7 +266,7 @@
 	'border-width: {{- ($.Scratch.Get "settings").videos_carousel_item_thumbnail_border_width -}};' +
 '}' +
 
-'.tvp-video-item-title, .tvp-video-metadata {' +
+'.tvp-video-item-title {' +
 	'color: {{- ($.Scratch.Get "settings").videos_carousel_item_title_font_color -}};' +
 	'font-size: calc({{- ($.Scratch.Get "settings").videos_carousel_item_title_font_size_min -}}px + ({{- ($.Scratch.Get "settings").videos_carousel_item_title_font_size_max }} - {{ ($.Scratch.Get "settings").videos_carousel_item_title_font_size_min -}}) * ((100vw - 300px) / (1600 - 300)));' +
 	'font-weight: {{- ($.Scratch.Get "settings").videos_carousel_item_title_font_weight -}};' +
@@ -277,6 +286,19 @@
 	'font-size: calc({{- ($.Scratch.Get "settings").videos_carousel_item_date_font_size_min -}}px + ({{- ($.Scratch.Get "settings").videos_carousel_item_date_font_size_max }} - {{ ($.Scratch.Get "settings").videos_carousel_item_date_font_size_min -}}) * ((100vw - 300px) / (1600 - 300)));' +
 	'font-weight: {{- ($.Scratch.Get "settings").videos_carousel_item_date_font_weight -}};' +
 
+	'color: {{- ($.Scratch.Get "settings").videos_carousel_item_date_font_color -}};' +
+	'line-height: {{- ($.Scratch.Get "settings").videos_carousel_item_date_line_height -}};' +
+	'display: {{- ($.Scratch.Get "settings").videos_carousel_item_date_display -}};' +
+	'padding: {{- ($.Scratch.Get "settings").videos_carousel_item_date_padding -}};' +
+	'position: {{- ($.Scratch.Get "settings").videos_carousel_item_date_position -}};' +	
+	'top: {{- ($.Scratch.Get "settings").videos_carousel_item_date_top -}};' +	
+	'-webkit-transform: {{- ($.Scratch.Get "settings").videos_carousel_item_date_transform -}};' +	
+	'transform: {{- ($.Scratch.Get "settings").videos_carousel_item_date_transform -}};' +
+	'text-align: {{- ($.Scratch.Get "settings").videos_carousel_item_date_text_align -}};' +
+'}'+
+
+'.tvp-products-scroller{'+
+	'padding: {{- ($.Scratch.Get "settings").products_carousel_padding -}};' +
 '}'+
 
 '.tvp-video-item-active .tvp-video-item-title ' +
@@ -301,6 +323,11 @@
 '@media only screen and (max-width: 768px){' +
 	'.tvp-row-titles{' +	
 		'height: {{- ($.Scratch.Get "settings").header_height_320 -}};' +
+	'}' +
+
+	'.tvp-row-titles h1{' +
+		'padding: {{- ($.Scratch.Get "settings").video_header_padding_mobile -}};' +
+		'text-align: {{- ($.Scratch.Get "settings").video_header_text_align_mobile -}};' +
 	'}' +
 
 	'.tvp-product-image {' +

@@ -162,6 +162,13 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Video Header Line Family",
+            "code": "video_header_font_family",
+            "value": "Helvetica"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Video Header Padding",
             "code": "video_header_padding",
             "value": "0"
@@ -169,10 +176,59 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Video Header Padding Mobile",
+            "code": "video_header_padding_mobile",
+            "value": "10px 0 0"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Video Header Case",
             "code": "video_header_case",
             "value": "none"
-        },        
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Video Header Text Align",
+            "code": "video_header_text_align",
+            "value": "left"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Video Header Text Align Mobile",
+            "code": "video_header_text_align_mobile",
+            "value": "center"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Video Header Margin",
+            "code": "video_header_margin",
+            "value": "0"
+        },
+        {
+            "for": "inline",
+            "type": "boolean",
+            "label": "Video Slider Dots Mobile",
+            "code": "video_slider_dots_mobile",
+            "value": true
+        },
+        {
+            "for": "inline",
+            "type": "boolean",
+            "label": "Video Slider Dots",
+            "code": "video_slider_dots",
+            "value": false
+        }, 
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Video Header Color",
+            "code": "video_header_color",
+            "value": "#333"
+        },
         {
             "for": "inline",
             "type": "text",
@@ -214,6 +270,41 @@
             "label": "Featured Product Header Font Weight",
             "code": "featured_product_header_font_weight",
             "value": "normal"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Text Transform",
+            "code": "featured_product_header_text_transform",
+            "value": "uppercase"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Text Align",
+            "code": "featured_product_header_text_align",
+            "value": "center"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Margin",
+            "code": "featured_product_header_margin",
+            "value": "0"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Color",
+            "code": "featured_product_header_color",
+            "value": "#333"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Padding",
+            "code": "featured_product_header_padding",
+            "value": "20% 0 0"
         },
         {
             "for": "inline",
@@ -771,6 +862,14 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Videos Carousel Item Date Font Color",
+            "code": "videos_carousel_item_date_font_color",
+            "value": "#000"
+        },
+
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Videos Carousel Item Title Font Size Max",
             "code": "videos_carousel_item_title_font_size_max",
             "value": "16"
@@ -820,8 +919,22 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Videos Carousel Item Date Line Height",
+            "code": "videos_carousel_item_date_line_height",
+            "value": "normal"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Videos Carousel Item Title Padding",
             "code": "videos_carousel_item_title_padding",
+            "value": "10px 0 0 0"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Date Padding",
+            "code": "videos_carousel_item_date_padding",
             "value": "10px 0 0 0"
         },
         {
@@ -841,8 +954,22 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Videos Carousel Item Date Display",
+            "code": "videos_carousel_item_date_display",
+            "value": "block"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Videos Carousel Item Title Position",
             "code": "videos_carousel_item_title_position",
+            "value": "static"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Date Position",
+            "code": "videos_carousel_item_date_position",
             "value": "static"
         },
         {
@@ -855,6 +982,13 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Videos Carousel Item Date Top",
+            "code": "videos_carousel_item_date_top",
+            "value": "50%"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Videos Carousel Item Title Transform",
             "code": "videos_carousel_item_title_transform",
             "value": "none"
@@ -862,8 +996,29 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Products Carousel Padding",
+            "code": "products_carousel_padding",
+            "value": "0 19px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Date Transform",
+            "code": "videos_carousel_item_date_transform",
+            "value": "none"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Videos Carousel Item Title Text Align",
             "code": "videos_carousel_item_title_text_align",
+            "value": "center"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Date Text Align",
+            "code": "videos_carousel_item_date_text_align",
             "value": "center"
         },
         {
