@@ -809,12 +809,20 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             }
 
             $(productContent).slick({
-                arrows: true,
+                arrows: Utils.isset(options.products_slider_arrows) ? options.products_slider_arrows : true,
                 prevArrow: document.querySelector('.tvp-products-prev'),
                 nextArrow: document.querySelector('.tvp-products-next'),
                 slidesToShow: 1,
                 slidesToScroll: 1,
-                dots: false
+                dots: false,
+                responsive:[
+                        {
+                            breakpoint: 769,
+                            settings: {
+                                arrows: Utils.isset(options.products_slider_arrows_mobile) ? options.products_slider_arrows_mobile : true
+                            }
+                        }
+                    ]
             }).on('setPosition', function(s) {
                 var $productItms = $('.tvp-product-item');
                 for (var i = $productItms.length - 1; i >= 0; i--) {                    

@@ -749,6 +749,20 @@
         },
         {
             "for": "inline",
+            "type": "boolean",
+            "label": "Products Slider Arrows",
+            "code": "products_slider_arrows",
+            "value": true
+        },
+        {
+            "for": "inline",
+            "type": "boolean",
+            "label": "Products Slider Arrows Mobile",
+            "code": "products_slider_arrows_mobile",
+            "value": true
+        },
+        {
+            "for": "inline",
             "type": "text",
             "label": "Videos Carousel Item Title Font Color",
             "code": "videos_carousel_item_title_font_color",
