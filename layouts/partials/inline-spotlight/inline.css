@@ -218,7 +218,7 @@
 
 {{- with ($.Scratch.Get "settings").videos_carousel_item_space_inbetween -}}
 '.tvp-videos-scroller .slick-list{' +
-	'margin: 0 -{{- ($.Scratch.Get "settings").videos_carousel_item_space_inbetween -}}; ' +
+	'margin: 0 {{ ($.Scratch.Get "settings").videos_carousel_margin }}; ' +
 '}' +
 '.tvp-videos-scroller .slick-slide{' +
 	'margin: 0 {{ ($.Scratch.Get "settings").videos_carousel_item_space_inbetween -}};' +
@@ -317,5 +317,9 @@
 
 	'.tvp-product-info-title { '+
 		'text-align:{{- ($.Scratch.Get "settings").product_item_title_text_align_mobile -}};' +
+	'}' +
+
+	'.tvp-videos-scroller .slick-list{' +
+		'margin: 0 {{ ($.Scratch.Get "settings").videos_carousel_margin_mobile }}; ' +
 	'}' +
 '}'

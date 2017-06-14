@@ -736,6 +736,20 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Videos Carousel Margin",
+            "code": "videos_carousel_margin",
+            "value": "-20px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Margin Mobile",
+            "code": "videos_carousel_margin_mobile",
+            "value": "0"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Videos Carousel Item Title Font Color",
             "code": "videos_carousel_item_title_font_color",
             "value": "#000"
