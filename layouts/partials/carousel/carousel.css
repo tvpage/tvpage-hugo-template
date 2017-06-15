@@ -82,6 +82,8 @@
 "}" +
 
 ".tvp-carousel-arrow > svg {" +
+    "width:{{ ($.Scratch.Get "settings").arrow_width_480 }};" +
+    "height: {{ ($.Scratch.Get "settings").arrow_height_480 }};" +
     "background:{{ ($.Scratch.Get "settings").arrow_background_color }};" +
     "fill:{{ ($.Scratch.Get "settings").arrow_icon_color }};" +
     "border-radius:{{ ($.Scratch.Get "settings").arrow_border_radius }};" +
@@ -176,7 +178,8 @@
 
 "@media screen and (min-width: 448px){"+
     ".tvp-carousel-arrow {" +
-        "width:{{ ($.Scratch.Get "settings").arrow_size_480 }};" +
+        "width:{{ ($.Scratch.Get "settings").arrow_width_480 }};" +
+        "height: {{ ($.Scratch.Get "settings").arrow_height_480 }};" +
     "}" +
 "}"+
 
