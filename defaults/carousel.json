@@ -351,9 +351,16 @@
         {
             "for": "carousel",
             "type": "text",
-            "label": "Arrow Size 480",
-            "code": "arrow_size_480",
-            "value": "4.5%"
+            "label": "Arrow Height 480",
+            "code": "arrow_height_480",
+            "value": "40px"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Arrow Width 480",
+            "code": "arrow_width_480",
+            "value": "40px"
         },
         {
             "for": "carousel",
