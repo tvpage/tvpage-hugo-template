@@ -473,6 +473,10 @@ a {
   display: none;
 }
 
+.tvp-video-details {
+  position: relative;
+}
+
 .tvp-row-titles h1 {
   overflow: hidden;
   text-overflow: ellipsis;

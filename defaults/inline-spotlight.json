@@ -968,6 +968,13 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Videos Carousel Item Title Position Mobile",
+            "code": "videos_carousel_item_title_position_mobile",
+            "value": "absolute"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Videos Carousel Item Date Position",
             "code": "videos_carousel_item_date_position",
             "value": "static"
@@ -978,6 +985,13 @@
             "label": "Videos Carousel Item Title Top",
             "code": "videos_carousel_item_title_top",
             "value": "50%"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Title Top Mobile",
+            "code": "videos_carousel_item_title_top_mobile",
+            "value": "20px"
         },
         {
             "for": "inline",
