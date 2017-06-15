@@ -866,7 +866,13 @@
             "code": "videos_carousel_item_date_font_color",
             "value": "#000"
         },
-
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Date Font Color Mobile",
+            "code": "videos_carousel_item_date_font_color_mobile",
+            "value": "#000"
+        },
         {
             "for": "inline",
             "type": "text",

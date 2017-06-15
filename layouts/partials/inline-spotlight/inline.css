@@ -341,7 +341,11 @@
 		'position: {{- ($.Scratch.Get "settings").videos_carousel_item_title_position_mobile -}};' +	
 		'top: {{- ($.Scratch.Get "settings").videos_carousel_item_title_top_mobile -}};' +	
 	'}'+
-	
+
+	'.tvp-video-metadata {'+
+		'color: {{- ($.Scratch.Get "settings").videos_carousel_item_date_font_color_mobile -}};' +
+	'}'+
+
 	'.tvp-player-product-section .tvp-mobile-product-title h2 {'+
 		'text-align: {{- ($.Scratch.Get "settings").featured_product_header_text_align_mobile -}};'+
 	'}'+
