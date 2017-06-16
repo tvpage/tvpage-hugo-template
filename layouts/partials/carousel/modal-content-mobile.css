@@ -48,7 +48,7 @@
 "}" +
 
 ".tvp-product-image {" +
-    "background-size: {{ ($.Scratch.Get "settings").product_thumbnail_background_image_size }};" +
+    "background-size: {{ ($.Scratch.Get "settings").mobile_product_thumbnail_background_image_size }};" +
 "}" +
 
 ".tvp-product-image-overlay {" +
