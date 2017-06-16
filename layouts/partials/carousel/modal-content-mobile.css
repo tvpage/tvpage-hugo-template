@@ -13,7 +13,7 @@
 "}" +
 
 ".tvp-product {" +
-    "border: {{ ($.Scratch.Get "settings").product_thumbnail_border }};" +
+    "border: {{ ($.Scratch.Get "settings").product_thumbnail_border_mobile }};" +
     "margin: {{ ($.Scratch.Get "settings").product_thumbnail_margin_mobile }};" +
     "padding: {{ ($.Scratch.Get "settings").product_thumbnail_padding_mobile }};" +
     "z-index: {{ ($.Scratch.Get "settings").product_thumbnail_zindex_mobile }};" +
@@ -64,7 +64,7 @@
 "}" +
 
 ".tvp-product-popup-image {" +
-    "background-size: {{ ($.Scratch.Get "settings").product_thumbnail_background_image_size }};" +
+    "background-size: {{ ($.Scratch.Get "settings").mobile_product_thumbnail_background_image_size }};" +
 "}" +
 
 ".tvp-product-data .tvp-product-title {" +

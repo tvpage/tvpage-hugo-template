@@ -890,8 +890,22 @@
         {
           "for": "modal",
           "type": "text",
+          "label": "Mobile Product Thumbnail Background Image Size",
+          "code": "mobile_product_thumbnail_background_image_size",
+          "value": "cover"
+        },
+        {
+          "for": "modal",
+          "type": "text",
           "label": "Product Thumbnail Border",
           "code": "product_thumbnail_border",
+          "value": "1px solid black"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Thumbnail Border Mobile",
+          "code": "product_thumbnail_border_mobile",
           "value": "1px solid black"
         },
         {
