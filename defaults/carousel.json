@@ -661,7 +661,7 @@
           "type": "boolean",
           "label": "Product SKU Show",
           "code": "product_sku_show",
-          "value": true
+          "value": false
         },
         {
           "for": "modal",
