@@ -84,6 +84,20 @@
     {
       "for": "cta",
       "type": "text",
+      "label": "CTA Play Button Border Radius",
+      "code": "cta_play_button_border_radius",
+      "value": "0"
+    },
+    {
+      "for": "cta",
+      "type": "text",
+      "label": "CTA Play Button Border",
+      "code": "cta_play_button_border",
+      "value": "none"
+    },
+    {
+      "for": "cta",
+      "type": "text",
       "label": "CTA Play Button Icon Color",
       "code": "cta_play_button_icon_color",
       "value": "black"
@@ -171,6 +185,13 @@
       "label": "Modal Border",
       "code": "modal_border",
       "value": "none"
+    },
+    {
+      "for": "modal",
+      "type": "text",
+      "label": "Modal Border Right",
+      "code": "modal_border_radius",
+      "value": "0"
     },
     {
       "for": "modal",
