@@ -925,9 +925,30 @@
         {
           "for": "modal",
           "type": "text",
+          "label": "Modal Header Padding Mobile",
+          "code": "modal_header_padding_mobile",
+          "value": "20px"
+        },
+        {
+          "for": "modal",
+          "type": "text",
           "label": "Modal Title Font Size",
           "code": "modal_title_font_size",
           "value": "16px"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Modal Title Font Size Mobile",
+          "code": "modal_title_font_size_mobile",
+          "value": "14px"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Mobile Product Thumbnail Background Image Size",
+          "code": "mobile_product_thumbnail_background_image_size",
+          "value": "cover"
         },
         {
           "for": "modal",
@@ -948,6 +969,20 @@
           "type": "text",
           "label": "Modal Title Font Weight",
           "code": "modal_title_font_weight",
+          "value": "initial"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Modal Title Font Family mobile",
+          "code": "modal_title_font_family_mobile",
+          "value": "Helvetica"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Modal Title Font Weight Mobile",
+          "code": "modal_title_font_weight_mobile",
           "value": "initial"
         },
         {
@@ -1383,6 +1418,34 @@
             "label": "Product Popup CTA Height 480",
             "code": "product_popup_cta_height_480",
             "value": "22px"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Position 480",
+            "code": "product_popup_cta_position_480",
+            "value": "static"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Right 480",
+            "code": "product_popup_cta_right_480",
+            "value": "0"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Bottom 480",
+            "code": "product_popup_cta_bottom_480",
+            "value": "0"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "products Holder Padding Mobile",
+            "code": "products_holder_padding_mobile",
+            "value": "10px 0"
         },
         {
           "for": "modal",
@@ -1908,6 +1971,13 @@
           "label": "Mobile Products Headline Text Align",
           "code": "mobile_products_headline_text_align",
           "value": "left"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Products Headline Margin",
+          "code": "mobile_products_headline_margin",
+          "value": "0"
         },
         {
           "for": "mobile",
