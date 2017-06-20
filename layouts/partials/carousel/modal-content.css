@@ -19,6 +19,7 @@
 
 ".tvp-product {" +
     "border: {{ ($.Scratch.Get "settings").product_thumbnail_border }};" +
+    "border-radius: {{ ($.Scratch.Get "settings").product_thumbnail_border_radius }};" +
     "margin: {{ ($.Scratch.Get "settings").product_thumbnail_margin }};" +
 "}" +
 

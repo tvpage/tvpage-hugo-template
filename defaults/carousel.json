@@ -890,16 +890,9 @@
         {
           "for": "modal",
           "type": "text",
-          "label": "Mobile Product Thumbnail Background Image Size",
-          "code": "mobile_product_thumbnail_background_image_size",
-          "value": "cover"
-        },
-        {
-          "for": "modal",
-          "type": "text",
-          "label": "Product Thumbnail Border",
-          "code": "product_thumbnail_border",
-          "value": "1px solid black"
+          "label": "Product Thumbnail Border Radius",
+          "code": "product_thumbnail_border_radius",
+          "value": "0"
         },
         {
           "for": "modal",
