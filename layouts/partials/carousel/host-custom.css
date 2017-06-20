@@ -6,12 +6,12 @@
 
 ".tvp-modal-wrapper {" +
     "box-shadow: {{ ($.Scratch.Get "settings").modal_box_shadow }};" +
+    "border-radius:{{ ($.Scratch.Get "settings").modal_border_radius }};" +
 "}" +
 
 ".tvp-modal-header {" +
     "padding:{{ ($.Scratch.Get "settings").modal_header_padding }};" +
     "border-bottom:{{ ($.Scratch.Get "settings").modal_header_border_bottom }};" +
-    "border-radius:{{ ($.Scratch.Get "settings").modal_border_radius }};" +
 "}" +
 
 ".tvp-modal-content {" +
