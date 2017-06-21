@@ -140,8 +140,8 @@
                             settings: {
                                 arrows: false,
                                 slidesToShow: 1,
-                                dots: options.mobile_navigation_bullets,
-                                centerMode:true,
+                                dots: Object.keys(all).length < Number(options.carousel_max_bullets) ? options.navigation_bullets_480 : false,
+                                centerMode: options.carousel_center_mode_480,
                                 centerPadding: carouselCenterPadding
                             }
                         },
@@ -150,9 +150,9 @@
                             settings:{
                                 slidesToShow: Number(options.items_to_show),
                                 slidesToScroll: Number(options.items_to_scroll),
-                                dots: options.mobile_navigation_bullets,
+                                dots: Object.keys(all).length < Number(options.carousel_max_bullets) ? options.navigation_bullets_667 : false,
                                 arrows: false,
-                                centerMode:true,
+                                centerMode: options.carousel_center_mode_667,
                                 centerPadding: carouselCenterPadding
                             }
                         }
@@ -162,7 +162,6 @@
                 if (this.options.navigation_bullets_append_to) {
                     slickConfig.appendDots = this.options.navigation_bullets_append_to;
                 }
-
                 $carousel.slick(slickConfig);
             };
 
@@ -244,6 +243,13 @@
           
           that.emitMessage(postEvent, {});
         });
+
+
+        window.addEventListener("orientationchange", function() {
+            if($carousel){
+                $carousel.slick('slickGoTo', 0);
+            }
+        }, false);
     }
 
     window.Carousel = Carousel;

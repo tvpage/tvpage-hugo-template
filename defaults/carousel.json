@@ -92,9 +92,23 @@
         {
             "for": "carousel",
             "type": "boolean",
-            "label": "Mobile Navigation Bullets",
-            "code": "mobile_navigation_bullets",
+            "label": "Navigation Bullets 480",
+            "code": "navigation_bullets_480",
+            "value": true
+        },
+        {
+            "for": "carousel",
+            "type": "boolean",
+            "label": "Navigation Bullets 667",
+            "code": "navigation_bullets_667",
             "value": false
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Carousel Max Bullets",
+            "code": "carousel_max_bullets",
+            "value": "9"
         },
         {
             "for": "modal",
@@ -102,6 +116,20 @@
             "label": "Mobile Products Max Navigation Bullets",
             "code": "mobile_products_max_navigation_bullets",
             "value": "5"
+        },
+        {
+            "for": "carousel",
+            "type": "boolean",
+            "label": "Carousel Center Mode 480",
+            "code": "carousel_center_mode_480",
+            "value": true
+        },
+        {
+            "for": "carousel",
+            "type": "boolean",
+            "label": "Carousel Center Mode 667",
+            "code": "carousel_center_mode_667",
+            "value": true
         },
         {
             "for": "modal",
@@ -290,6 +318,13 @@
            "type": "text",
            "label": "Iframe Carousel Body Padding",
            "code": "iframe_carousel_body_padding",
+           "value": "0"
+        },
+        {
+           "for": "carousel",
+           "type": "text",
+           "label": "Iframe Carousel Body Padding 480",
+           "code": "iframe_carousel_body_padding_480",
            "value": "0"
         },
         {

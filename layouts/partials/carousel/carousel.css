@@ -177,6 +177,10 @@
 "}" +
 
 "@media screen and (min-width: 448px){"+
+    "body {" +
+        "padding: {{ ($.Scratch.Get "settings").iframe_carousel_body_padding_480 }};" +
+    "}" +
+    
     ".tvp-carousel-arrow {" +
         "width:{{ ($.Scratch.Get "settings").arrow_width_480 }};" +
         "height: {{ ($.Scratch.Get "settings").arrow_height_480 }};" +
