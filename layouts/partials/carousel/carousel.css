@@ -176,11 +176,13 @@
     "fill:{{ ($.Scratch.Get "settings").item_play_button_icon_hover_color }};" +
 "}" +
 
-"@media screen and (min-width: 448px){"+
+"@media screen and (max-width: 448px){"+
     "body {" +
         "padding: {{ ($.Scratch.Get "settings").iframe_carousel_body_padding_480 }};" +
     "}" +
-    
+"}"+
+
+"@media screen and (min-width: 448px){"+
     ".tvp-carousel-arrow {" +
         "width:{{ ($.Scratch.Get "settings").arrow_width_480 }};" +
         "height: {{ ($.Scratch.Get "settings").arrow_height_480 }};" +
