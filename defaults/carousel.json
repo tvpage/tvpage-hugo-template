@@ -519,6 +519,13 @@
         {
             "for": "carousel",
             "type": "text",
+            "label": "Item Play Button Background Size",
+            "code": "item_play_button_background_size",
+            "value": "initial"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
             "label": "Item Padding Left",
             "code": "item_padding_left",
             "value": "5px"
