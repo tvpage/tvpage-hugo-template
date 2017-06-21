@@ -194,7 +194,7 @@
         "background-color:{{ ($.Scratch.Get "settings").item_play_button_hover_color }} !important;" +
     "}" +
 
-    ".slick-center .tvp-video-play, .tvp-video-image-overlay {" +
+    ".slick-center .tvp-video-play {" +
         "opacity: 1;" +
         "visibility: visible;" +
     "}" +
