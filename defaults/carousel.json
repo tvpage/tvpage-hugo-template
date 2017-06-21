@@ -328,6 +328,13 @@
            "value": "0"
         },
         {
+           "for": "carousel",
+           "type": "text",
+           "label": "Iframe Carousel Body Padding 667",
+           "code": "iframe_carousel_body_padding_667",
+           "value": "0"
+        },
+        {
             "for": "carousel",
             "type": "text",
             "label": "Content Background",

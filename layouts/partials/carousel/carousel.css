@@ -190,6 +190,10 @@
 "}"+
 
 "@media screen and (max-width: 667px){" +
+    "body {" +
+        "padding: {{ ($.Scratch.Get "settings").iframe_carousel_body_padding_667 }};" +
+    "}" +
+
     ".slick-center .tvp-video-play {" +
         "background-color:{{ ($.Scratch.Get "settings").item_play_button_hover_color }} !important;" +
     "}" +

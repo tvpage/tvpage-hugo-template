@@ -140,6 +140,7 @@ if (config.modal_title_position.trim().length && "bottom" === config.modal_title
 }
 
 var holder = document.getElementById(config.id + "-holder");
+utils.isset(config, 'background') ? holder.style.cssText += 'background-color:'+ config.background +';' : null;
 var iframe = holder.querySelector("iframe");
 var iframeDocument = iframe.contentWindow.document;
 var iframeContent = utils.getIframeHtml({
