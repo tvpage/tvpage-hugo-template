@@ -73,6 +73,7 @@
             }
 
             this.container.appendChild(carouselFrag);
+            Utils.isset(options, 'background') ? this.container.style.cssText += 'background-color:'+ options.background +';' : null;
 
             if (this.itemMetaData) {
                 this.el.classList.add("metadata");
