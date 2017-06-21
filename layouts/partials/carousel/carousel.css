@@ -31,7 +31,7 @@
 "}" +
 
 ".tvp-video-play {" +
-    "background-color:{{ ($.Scratch.Get "settings").item_play_button_background_color }};" +
+    "background:{{ ($.Scratch.Get "settings").item_play_button_background_color }};" +
     "width:{{ ($.Scratch.Get "settings").item_play_button_width }};" +
     "height:{{ ($.Scratch.Get "settings").item_play_button_height }};" +
     "border: {{ ($.Scratch.Get "settings").item_play_button_border }};" +

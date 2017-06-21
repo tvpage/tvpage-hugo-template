@@ -108,7 +108,7 @@
             "type": "text",
             "label": "Carousel Max Bullets",
             "code": "carousel_max_bullets",
-            "value": "9"
+            "value": "6"
         },
         {
             "for": "modal",

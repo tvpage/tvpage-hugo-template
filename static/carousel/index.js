@@ -140,7 +140,6 @@ if (config.modal_title_position.trim().length && "bottom" === config.modal_title
 }
 
 var holder = document.getElementById(config.id + "-holder");
-utils.isset(config, 'background') ? holder.style.cssText += 'background-color:'+ config.background +';' : null;
 var iframe = holder.querySelector("iframe");
 var iframeDocument = iframe.contentWindow.document;
 var iframeContent = utils.getIframeHtml({
@@ -204,6 +203,15 @@ var getEventType = function (e) {
     return null;
 };
 
+var changeStylesRunTime = function() {
+  utils.isset(config, 'background') ? holder.style.cssText += 'background-color:'+ config.background +';' : null;
+  utils.isset(config, 'title_color') ? iframeDocument.getElementsByClassName('tvp-carousel-title')[0].style.cssText += 'color:'+ config.title_color +';' : null;
+  var videosTitle = iframeDocument.querySelectorAll('.tvp-video-title');
+  for (var i = videosTitle.length - 1; i >= 0; i--) {
+    utils.isset(config, 'title_color') ? videosTitle[i].style.cssText += 'color:'+ config.title_color +';' : null;
+  }
+};
+
 function handlePostMessages(e){
   var eventType = getEventType(e);
   switch (eventType) {
@@ -246,6 +254,7 @@ window.addEventListener("message", function(e){
 
 function handleRender(e){
   holder.classList.add("initialized");
+  changeStylesRunTime();
 }
 
 function handleVideoClick(e){

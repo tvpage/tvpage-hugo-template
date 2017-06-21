@@ -129,6 +129,8 @@
                 },100));
 
                 var carouselCenterPadding = options.carousel_center_padding,
+                    dots480 = Number(options.carousel_max_bullets) < Object.keys(all).length ? false : options.navigation_bullets_480,
+                    dots667 = Number(options.carousel_max_bullets) < Object.keys(all).length ? false : options.navigation_bullets_667,
                     slickConfig = {
                     slidesToShow: Number(options.items_to_show),
                     slidesToScroll: Number(options.items_to_scroll),
@@ -141,7 +143,7 @@
                             settings: {
                                 arrows: false,
                                 slidesToShow: 1,
-                                dots: Object.keys(all).length < Number(options.carousel_max_bullets) ? options.navigation_bullets_480 : false,
+                                dots: dots480,
                                 centerMode: options.carousel_center_mode_480,
                                 centerPadding: carouselCenterPadding
                             }
@@ -151,7 +153,7 @@
                             settings:{
                                 slidesToShow: Number(options.items_to_show),
                                 slidesToScroll: Number(options.items_to_scroll),
-                                dots: Object.keys(all).length < Number(options.carousel_max_bullets) ? options.navigation_bullets_667 : false,
+                                dots: dots667,
                                 arrows: false,
                                 centerMode: options.carousel_center_mode_667,
                                 centerPadding: carouselCenterPadding
