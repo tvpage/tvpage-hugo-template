@@ -208,7 +208,7 @@ var changeStylesRunTime = function() {
   utils.isset(config, 'title_color') ? iframeDocument.getElementsByClassName('tvp-carousel-title')[0].style.cssText += 'color:'+ config.title_color +';' : null;
   var videosTitle = iframeDocument.querySelectorAll('.tvp-video-title');
   for (var i = videosTitle.length - 1; i >= 0; i--) {
-    utils.isset(config, 'title_color') ? videosTitle[i].style.cssText += 'color:'+ config.title_color +';' : null;
+    utils.isset(config, 'item_title_font_color') ? videosTitle[i].style.cssText += 'color:'+ config.item_title_font_color +';' : null;
   }
 };
 
