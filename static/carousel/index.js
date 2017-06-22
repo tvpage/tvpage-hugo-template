@@ -236,6 +236,9 @@ function handlePostMessages(e){
     case 'render':
       handleRender(e);
       break;
+    case 'resize':
+      handleResize(e);
+      break;
     default: 
       // do nothing
   }
@@ -255,6 +258,13 @@ window.addEventListener("message", function(e){
 function handleRender(e){
   holder.classList.add("initialized");
   changeStylesRunTime();
+}
+
+function handleResize(e){
+  if (!e.data.width) return;
+  var iframeWidth = e.data.width;
+  console.log(iframeWidth)
+  iframe.style.width = iframeWidth;
 }
 
 function handleVideoClick(e){
