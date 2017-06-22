@@ -330,8 +330,8 @@
         {
            "for": "carousel",
            "type": "text",
-           "label": "Iframe Carousel Body Padding 667",
-           "code": "iframe_carousel_body_padding_667",
+           "label": "Iframe Carousel Body Padding 768",
+           "code": "iframe_carousel_body_padding_768",
            "value": "0"
         },
         {
