@@ -249,8 +249,6 @@
 
 
          window.addEventListener("orientationchange", function() {
-            var carouselWidht = document.body.clientWidth;
-            this.container.style.width = carouselWidht;
             if($carousel){
                 $carousel.slick('slickGoTo', 0);
             }
