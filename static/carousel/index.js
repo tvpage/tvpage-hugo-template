@@ -339,11 +339,13 @@ function handleModalInitialized(e){
 
   var onOrientationChange = function () {
     if (utils.isIOS && iframeModal && iframeModal.contentWindow) {
+      setTimeout(function(){
         var width = iframeModal.parentNode.offsetWidth;
         iframeModal.contentWindow.window.postMessage({
           event: config.eventPrefix + ':modal_holder_resize',
           size: [width, Math.floor(width * (9 / 16))]
         },'*');
+      },0);
     }
   };
   var orientationChangeEvent = 'onorientationchange' in window ? 'orientationchange' : 'resize';
