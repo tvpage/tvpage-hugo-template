@@ -4,6 +4,10 @@
   {{ end }}
 {{ end }}
 
+"html {" +
+    "-webkit-text-size-adjust:none;"+
+"}" +
+
 "body {" +
     "padding: {{ ($.Scratch.Get "settings").iframe_carousel_body_padding }};" +
 "}" +

@@ -4,6 +4,11 @@
   {{ end }}
 {{ end }}
 
+"html {" +
+    "-webkit-text-size-adjust:none;"+
+"}" +
+
+
 "*[class^=tvp-] {" +
     "box-sizing: border-box;" +
 "}" +
