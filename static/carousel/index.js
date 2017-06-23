@@ -345,7 +345,7 @@ function handleModalInitialized(e){
           event: config.eventPrefix + ':modal_holder_resize',
           size: [width, Math.floor(width * (9 / 16))]
         },'*');
-      },300);
+      },50);
     }
   };
   var orientationChangeEvent = 'onorientationchange' in window ? 'orientationchange' : 'resize';
