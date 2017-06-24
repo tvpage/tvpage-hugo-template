@@ -819,7 +819,8 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                         {
                             breakpoint: 769,
                             settings: {
-                                arrows: Utils.isset(options.products_slider_arrows_mobile) ? options.products_slider_arrows_mobile : true
+                                arrows: Utils.isset(options.products_slider_arrows_mobile) ? options.products_slider_arrows_mobile : true,
+                                slidesToShow: productData.length < 3 ? 2 : 3
                             }
                         }
                     ]
@@ -1067,6 +1068,23 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             }
             else if (getTarget('tvp-video-play')) {
                 player.instance.play();
+            }
+            else if (getTarget('tvp-slideUp')){
+                var prodsSection = $('.tvp-player-product-section');
+                var prodsScroller = prodsSection.find('.tvp-products-scroller');
+                var playerHeight = (prodsSection.find('.tvp-player').height() + prodsSection.find('.tvp-mobile-product-title').height() + 15);
+                var playerSlidebtn = prodsSection.find('.tvp-slideUp');
+                if (prodsScroller.is(':hidden')) {
+                    playerSlidebtn.html('-');
+                    prodsScroller.show();
+                    prodsSection.css('height', '');
+                }else{
+                    playerSlidebtn.html('+');
+                    prodsScroller.slideUp('ease');
+                    prodsSection.animate({
+                        'height' : playerHeight
+                    }, 'slow');
+                }
             }
         };
 

@@ -364,6 +364,17 @@ a {
   position: absolute;
 }
 
+.tvp-slideUp {
+  float: right;
+  height: 20px;
+  width: 20px;
+  background-color: #333;
+  color: #fff;
+  border-radius: 50%;
+  line-height: 20px;
+  cursor: pointer;
+}
+
 .tvp-animate, .tvp-product-item, .tvp-product-item:after, .tvp-videos-container-arrows, .tvp-video-item, .tvp-video-item:after, .tvp-video-item-image-overlay, .tvp-video-item-title {
   transition: border .5s ease-out, color .5s linear, opacity .3s ease-out;
 }
@@ -1099,7 +1110,7 @@ a {
     font-weight: 500;
     line-height: 17px;
     margin: 0;
-    padding: 0;
+    padding: 0 10px;
     font-size: 14px;
   }
 

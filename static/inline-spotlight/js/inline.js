@@ -241,7 +241,8 @@
                         {
                             breakpoint: 769,
                             settings: {
-                                arrows: Utils.isset(options.products_slider_arrows_mobile) ? options.products_slider_arrows_mobile : true
+                                arrows: Utils.isset(options.products_slider_arrows_mobile) ? options.products_slider_arrows_mobile : true,
+                                slidesToShow: productData.length < 3 ? 2 : 3
                             }
                         }
                     ]
@@ -489,6 +490,23 @@
             }
             else if (getTarget('tvp-video-play')) {
                 player.instance.play();
+            }
+            else if (getTarget('tvp-slideUp')){
+                var prodsSection = $('.tvp-player-product-section');
+                var prodsScroller = prodsSection.find('.tvp-products-scroller');
+                var playerHeight = (prodsSection.find('.tvp-player').height() + prodsSection.find('.tvp-mobile-product-title').height() + 15);
+                var playerSlidebtn = prodsSection.find('.tvp-slideUp');
+                if (prodsScroller.is(':hidden')) {
+                    playerSlidebtn.html('-');
+                    prodsScroller.show();
+                    prodsSection.css('height', '');
+                }else{
+                    playerSlidebtn.html('+');
+                    prodsScroller.slideUp('ease');
+                    prodsSection.animate({
+                        'height' : playerHeight
+                    }, 'slow');
+                }
             }
         };
 
