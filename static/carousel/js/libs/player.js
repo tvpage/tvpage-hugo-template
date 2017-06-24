@@ -1,6 +1,7 @@
 ;(function(window,document) {
 
-    var isset = function(o,p){
+    var isIOS = /iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream,
+        isset = function(o,p){
             var val = o;
             if (p) val = o[p];
             return 'undefined' !== typeof val;
@@ -218,7 +219,9 @@
                             //We don't want to resize the player here on fullscreen... we need the player be.
                             if (isset(window,'BigScreen')) {
                                 BigScreen.onchange = function(){
-                                    that.isFullScreen = !that.isFullScreen;
+                                    if (!isIOS) {
+                                        that.isFullScreen = !that.isFullScreen;
+                                    }
                                 };
                             }
 
