@@ -218,7 +218,7 @@
                             height: (el.offsetHeight + parseInt(data.runTime.iframe_modal_body_padding || '0')) + 'px'
                         }, '*');
                     }
-                }, 0);
+                }, 300);
             }
 
             s.onNext = function(next) {

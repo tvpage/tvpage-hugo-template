@@ -1,6 +1,7 @@
 ;(function(window, document) {
 
-    var $carousel = null;
+    var startSlick = null,
+        $carousel = null;
 
     var hasClass = function(obj,c) {
         if (!obj || !c) return;
@@ -79,7 +80,7 @@
                 this.el.classList.add("metadata");
             }
 
-            var startSlick = function () {
+                startSlick = function () {
                 $carousel = $(that.el.querySelector('.tvp-carousel-content'));
 
                 $carousel.on('setPosition', Utils.debounce(function (event, slick) {
@@ -225,6 +226,14 @@
                     that.onClick(selected,data);
                 }
 
+                if (Utils.isMobile) {
+                    $carousel.slick('unslick');
+                    $carousel.addClass('slick-initialized');
+                    $carousel.css({
+                        'height':target.clientHeight,
+                        'overflow' : 'hidden'
+                    });
+                }
             } else if (hasClass(target,'tvp-carousel-arrow')) {
                 if (hasClass(target,'next')) {
                     $carousel.slick('slickNext');
@@ -248,11 +257,15 @@
         });
 
 
-         window.addEventListener("orientationchange", function() {
-            if($carousel){
-                $carousel.slick('slickGoTo', 0);
-            }
-        }, false);
+        window.parent.addEventListener("message", function(e){
+            if (!e || !Utils.isset(e, 'data') || !Utils.isset(e.data, 'event') || 'tvp_' + options.id.replace(/-/g,'_') + ':modal_close' !== e.data.event || !Utils.isMobile) return;
+            $carousel.removeClass('slick-initialized');
+            $carousel.css({
+                'height': '',
+                'overflow' : ''
+            });
+            startSlick();
+        });
     }
 
     window.Carousel = Carousel;

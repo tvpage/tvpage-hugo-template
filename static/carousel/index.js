@@ -180,10 +180,6 @@ var updateModalTitle = function(title){
     document.getElementById('tvp-modal-title-' + config.id).innerHTML = title || "";
 };
 
-window.addEventListener("message", function(e){
-    if (!isEvent(e, ":resize")) return;
-    holder.style.height = e.data.height;
-});
 
 var clickData = {};
 var iframeModalHolder = document.getElementById('tvp-modal-iframe-holder-' + config.id);
@@ -261,10 +257,8 @@ function handleRender(e){
 }
 
 function handleResize(e){
-  if (!e.data.width) return;
-  var iframeWidth = e.data.width;
-  console.log(iframeWidth)
-  iframe.style.width = iframeWidth;
+  if (!e.data.height) return;
+  holder.style.height = e.data.height;
 }
 
 function handleVideoClick(e){
@@ -424,6 +418,10 @@ var removeBannerEl = function() {
 };
 
 var closeModal = function () {
+  window.postMessage({
+    event: config.eventPrefix + ':modal_close'
+  },'*');
+
   utils.addClass('tvp-modal-' + config.id,'tvp-hidden');
   utils.addClass('tvp-modal-overlay-' + config.id,'tvp-hidden');
 

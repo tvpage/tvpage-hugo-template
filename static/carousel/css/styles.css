@@ -152,6 +152,7 @@ body  {
   min-width: 100%;
   opacity: 0;
   visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .tvp-carousel-content.slick-initialized {
