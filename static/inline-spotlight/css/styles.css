@@ -1086,6 +1086,10 @@ a {
     bottom: 0;
   }
 
+  .tvp-videos-scroller {
+    padding: 0 !important;
+  }
+
   .tvp-player-product-section {
     position: relative;
   }

@@ -663,6 +663,10 @@ a {
         @include aspect-ratio(4,3);
     }
 
+    .tvp-videos-scroller { 
+        padding: 0 !important;
+    }
+
     .tvp-player-product-section{
         @include aspect-ratio(355,310);
         .tvp-mobile-product-title{
