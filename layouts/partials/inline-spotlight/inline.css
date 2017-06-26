@@ -143,6 +143,7 @@
 	'font-weight: {{- ($.Scratch.Get "settings").product_item_view_button_font_weight -}};' +
 	'border-color: {{- ($.Scratch.Get "settings").product_item_view_button_border_color -}};' +
 	'background: {{- ($.Scratch.Get "settings").product_item_view_button_border_background -}};' +
+	'display: {{- ($.Scratch.Get "settings").product_item_view_button_display -}};' +
 '}' +
 
 '.tvp-product-info-price{' +
@@ -331,6 +332,8 @@
 
 	'.tvp-product-image {' +
 		'border: {{- ($.Scratch.Get "settings").product_image_border_mobile -}};' +
+		'height: {{- ($.Scratch.Get "settings").product_image_height -}};' +
+		'width: {{- ($.Scratch.Get "settings").product_image_width -}};' +
 	'}'+
 
 	'.tvp-product-item {'+
@@ -357,4 +360,7 @@
 	'.tvp-videos-scroller .slick-list{' +
 		'margin: 0 {{ ($.Scratch.Get "settings").videos_carousel_margin_mobile }}; ' +
 	'}' +
+	'.tvp-product-info {'+
+    'display: {{- ($.Scratch.Get "settings").product_item_info_display_mobile -}};' +
+	'}'+
 '}'

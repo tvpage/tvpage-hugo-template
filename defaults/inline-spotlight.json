@@ -109,6 +109,20 @@
             "label": "Product Image Border Mobile",
             "code": "product_image_border_mobile",
             "value": "none"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Image Width",
+            "code": "product_image_width",
+            "value": "100%"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Image Height",
+            "code": "product_image_height",
+            "value": "99%"
         }, 
         {
             "for": "inline",
@@ -666,6 +680,13 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Product Item Info Display Mobile",
+            "code": "product_item_info_display_mobile",
+            "value": "none"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Product Item Background Color",
             "code": "product_item_background_color",
             "value": "#fff"
@@ -726,6 +747,14 @@
             "code": "product_item_view_button_border_background",
             "value": "#000"
         },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item View Button Display",
+            "code": "product_item_view_button_display",
+            "value": "none"
+        },
+
         {
             "for": "inline",
             "type": "text",
