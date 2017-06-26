@@ -213,7 +213,7 @@
             "type": "text",
             "label": "Video Header Text Align Mobile",
             "code": "video_header_text_align_mobile",
-            "value": "center"
+            "value": "left"
         },
         {
             "for": "inline",
@@ -689,7 +689,7 @@
             "type": "text",
             "label": "Product Item Background Color",
             "code": "product_item_background_color",
-            "value": "#fff"
+            "value": "transparent"
         },
         {
             "for": "inline",
@@ -774,7 +774,7 @@
             "type": "text",
             "label": "Featured Product Header Text Align Mobile",
             "code": "featured_product_header_text_align_mobile",
-            "value": "center"
+            "value": "left"
         },
         {
             "for": "inline",
