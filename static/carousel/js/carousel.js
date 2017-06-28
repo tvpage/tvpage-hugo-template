@@ -52,8 +52,7 @@
                 var item = all[i];
                 var rowEl = document.createElement('div');
                 var className = '';
-
-                item.title = Utils.trimText(item.title,50);
+                item.title = Utils.trimText(item.title,Number(this.options.video_item_max_chars));
                 if ('undefined' !== typeof item.entity) {
                     className += ' tvp-exchange';
                 }

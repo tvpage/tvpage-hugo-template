@@ -171,6 +171,10 @@
     "background-color:{{ ($.Scratch.Get "settings").item_play_button_hover_color }};" +
 "}" +
 
+".tvp-video:hover > .tvp-video-title {" +
+   "color:{{ ($.Scratch.Get "settings").item_title_font_color_hover }} !important;" +
+"}" +
+
 ".show-on-hover .tvp-video:hover .tvp-video-play {" +
     "background-color:{{ ($.Scratch.Get "settings").item_play_button_hover_color }};" +
     "opacity: 1;" +
