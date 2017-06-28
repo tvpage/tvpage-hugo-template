@@ -1,20 +1,9 @@
 ;(function(document) {
 
-  var random = function(){
-    return 'tvp_' + Math.floor(Math.random() * 50005);
-  },
-  isset = function(o,p){
+  var isset = function(o,p){
     var val = o;
     if (p) val = o[p];
     return 'undefined' !== typeof val;
-  },
-  jsonpCall = function(opts,callback){
-    var s = document.createElement('script');
-    s.src = opts.src;
-    if (!callback || 'function' !== typeof callback) return;
-    window[opts.cbName || 'callback'] = callback;
-    var b = opts.body || document.body;
-    b.appendChild(s);
   },
   extend = function(out) {
     out = out || {};
@@ -28,51 +17,6 @@
       }
     }
     return out;
-  },
-  getSettings = function(type){
-    var getConfig = function(g){
-      var c = {};
-      if (isset(g) && isset(g,'__TVPage__') && isset(g.__TVPage__, 'config')) {
-        c = g.__TVPage__.config;
-      } else {
-        return console.log('need config');
-      }
-      return c;
-    };
-    var s = {};
-    if ('dynamic' === type) {
-      var config = getConfig(parent);
-      var id = document.body.getAttribute('data-id');
-      if (!isset(config, id)) return console.log('need settings');
-      s = config[id];
-      s.name = id;
-      s.domain = document.body.getAttribute('data-domain') || '';
-    } else if ('inline' === type && type && type.length) {
-      var config = getConfig(parent);
-      s = config[type];
-      s.name = type;
-    } else if ('static' === type) {
-      var config = getConfig(window);
-      var id = document.body.getAttribute('data-id');
-      if (!isset(config, id)) return console.log('need settings');
-      s = config[id];
-      s.name = id;
-    }
-    return s;
-  },
-  loadChannelVideos = function(s,cbName,callback){
-    jsonpCall({
-      src: function(){
-        var channel = s.channel,
-            params = channel.parameters,
-            url = '//api.tvpage.com/v1/channels/' + channel.id + '/videos?X-login-id=' + s.loginid;
-
-        for (var p in params) { url += '&' + p + '=' + params[p];}
-        url += '&callback='+cbName;
-        return url;
-      }(),
-      cbName: cbName
-    },callback);
   };
 
   var render = function(idEl,target){
@@ -88,37 +32,51 @@
   //We need to know a few things before we can start a player. We need to know if we will render
   //this here or somehow the will be content (when used with iframe).
   function initialize(){
-    if (document.body.classList.contains('dynamic')) {
-      //We deal diff with some stuff on iframe.
-      (function(unique,settings){
-        render(unique,document.body);
-        loadChannelVideos(settings,unique,function(data){
-          settings.data = data || [];
+    parent = window.parent || {};
+    parent.__TVPage__ = parent.__TVPage__ || {};
 
-          jsonpCall({
-            src: settings.domain + '/solo-click/options.json',
-            cbName: 'tvpcallback'
-          },function(data){
-            if (!data) return;
-            var options = data.option;
-            var opts = {};
+    var s = {};
+    var config = parent.__TVPage__.config ? parent.__TVPage__.config : {};
+    var id = document.body.getAttribute('data-id');
+    
+    if (!isset(config, id))
+      return console.log('need settings');
+    
+    s = config[id];
+    s.name = id;
+    s.domain = document.body.getAttribute('data-domain') || '';
+    s = extend(s, {"player_version":"1.8.6","progressColor":"#243193","transcript":true,"removeControls":["tvplogo","hd"],"autoplay":false,"autonext":true,"analytics":true,"playButtonHeight":"65px","playButtonWidth":"65px","playButtonBackgroundColor":"eeeeee","playButtonBorderRadius":"50","playButtonBorderWidth":"1px","playButtonBorderColor":"000","playButtonIconColor":"273691","overlay":true,"overlayColor":"fff","overlayOpacity":"0.7","clickText":"Watch Video","playText":"Watch Video","playTextSize":"19px","playTextColor":"333","playTextFontFamily":"Helvetica"});
 
-            for (var key in options) {
-              var option = options[key];
-              opts[option.code] = option.value;
-            }
+    render('bbb',document.body);
 
-            settings = extend(settings, opts);
+    parent.addEventListener('message', function(e){
+      if (!e || !isset(e, 'data') || !isset(e.data, 'event') || 'tvp_solo_click:data' !== e.data.event)
+        return;
 
-            new Player('tvp-player-el-'+unique,settings);
-          });
+      s.data = e.data.response;      
 
-          // optsRequest.send();
-        });
-      }(random(),getSettings('dynamic')));
-    }
+      new Player('tvp-player-el-bbb',s);
+    });
+
+    parent.postMessage({
+      event: 'tvp_solo_click:initialized'
+    }, '*');
   };
 
-  initialize();
+  var not = function(obj){return 'undefined' === typeof obj};
+  if ('undefined' === typeof window.Player) {
+    var libsCheck = 0;
+    (function libsReady() {
+      setTimeout(function() {
+        if (not(window.Player)) {
+          (++libsCheck < 100) ? libsReady(): console.warn('limit reached');
+        } else {
+          initialize();
+        }
+      },50);
+    })();
+  } else {
+    initialize();
+  }
 
 }(document));
