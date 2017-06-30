@@ -269,7 +269,7 @@
             "type": "text",
             "label": "Featured Product Header Font Size Max",
             "code": "featured_product_header_font_size_max",
-            "value": "32"
+            "value": "14"
         },
         {
             "for": "inline",
@@ -332,7 +332,7 @@
             "type": "text",
             "label": "Featured Product Header Line Height",
             "code": "featured_product_header_line_height",
-            "value": "43px"
+            "value": "normal"
         },
         {
             "for": "inline",
@@ -585,6 +585,20 @@
             "label": "Product Holder Slider Arrow Color",
             "code": "product_holder_slide_arrow_color",
             "value": "#333"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Holder Slider Arrow Left",
+            "code": "product_holder_slide_arrow_left",
+            "value": "0"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Holder Slider Arrow Right",
+            "code": "product_holder_slide_arrow_right",
+            "value": "0"
         },
         {
             "for": "inline",

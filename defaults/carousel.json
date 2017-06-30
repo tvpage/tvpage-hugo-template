@@ -118,6 +118,13 @@
             "value": "5"
         },
         {
+            "for": "modal",
+            "type": "text",
+            "label": "Mobile Modal Products Slider Center Padding",
+            "code": "mobile_modal_products_slider_center_padding",
+            "value": "40px 0 0"
+        },
+        {
             "for": "carousel",
             "type": "boolean",
             "label": "Carousel Center Mode 480",

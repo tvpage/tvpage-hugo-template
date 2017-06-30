@@ -123,8 +123,7 @@
             setTimeout(function() {
                 var $el = $(carousel);
                 var centerMode = data.length > 1 ? true : false;
-                var centerPadding = hasData ? '20px' : "0px";
-
+                var centerPadding = Utils.isset(config, 'mobile_modal_products_slider_center_padding') ? config.mobile_modal_products_slider_center_padding : '0px';
                 var slickConfig = {
                     slidesToSlide: 1,
                     slidesToShow: 3,

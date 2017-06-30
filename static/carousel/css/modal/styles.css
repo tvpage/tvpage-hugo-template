@@ -139,28 +139,26 @@ body  {
 }
 
 .tvp-arrow-indicator {
-  pointer-events: none;
-  display: none;
-  width: 35px;
-  height: 35px;
-  position: absolute;
-  overflow: hidden;
-  z-index: 214748364;
-  top: 0;
-  left: -10px;
-  -webkit-transform: rotate(90deg);
-  transform: rotate(90deg);
+    width: 0;
+    height: 0;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    border-left: 20px solid #000;
+    position: absolute;
+    left: -10px;
+    display: none;
 }
 
-.tvp-arrow-indicator:after {
-  content: "";
-  position: absolute;
-  width: 44px;
-  height: 45px;
-  -webkit-transform: rotate(45deg);
-  transform: rotate(45deg);
-  top: 26px;
-  left: -5px;
+.tvp-inner-arrow-indicator{
+    position: absolute;
+    top: -19px;
+    left: -20px;
+    width: 0;
+    height: 0;
+    border-top: 19px solid transparent;
+    border-bottom: 19px solid transparent;
+    border-left: 19px solid #fff;
+    z-index: 21474837;
 }
 
 .tvp-product:last-of-type{

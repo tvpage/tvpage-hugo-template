@@ -225,13 +225,8 @@
                     that.onClick(selected,data);
                 }
 
-                if (Utils.isMobile) {
-                    $carousel.slick('unslick');
-                    $carousel.addClass('slick-initialized');
-                    $carousel.css({
-                        'height':target.clientHeight,
-                        'overflow' : 'hidden'
-                    });
+                if (Utils.isIOS) {
+                   $carousel.slick('getSlick').options.tvpModalopened = true;
                 }
             } else if (hasClass(target,'tvp-carousel-arrow')) {
                 if (hasClass(target,'next')) {
@@ -257,13 +252,8 @@
 
 
         window.parent.addEventListener("message", function(e){
-            if (!e || !Utils.isset(e, 'data') || !Utils.isset(e.data, 'event') || 'tvp_' + options.id.replace(/-/g,'_') + ':modal_close' !== e.data.event || !Utils.isMobile) return;
-            $carousel.removeClass('slick-initialized');
-            $carousel.css({
-                'height': '',
-                'overflow' : ''
-            });
-            startSlick();
+            if (!e || !Utils.isset(e, 'data') || !Utils.isset(e.data, 'event') || 'tvp_' + options.id.replace(/-/g,'_') + ':modal_close' !== e.data.event || !Utils.isIOS) return;
+            $carousel.slick('getSlick').options.tvpModalopened = false;
         });
     }
 

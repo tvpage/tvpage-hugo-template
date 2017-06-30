@@ -165,6 +165,13 @@
 	'width: calc(100% - ({{- ($.Scratch.Get "settings").product_holder_slide_arrow_width -}}px * 2));' +
 '}' +
 
+'.tvp-products-next{'+
+	'right: {{- ($.Scratch.Get "settings").product_holder_slide_arrow_right -}};' +
+'}'+
+
+'.tvp-products-prev{'+
+	'left: {{- ($.Scratch.Get "settings").product_holder_slide_arrow_left -}};' +
+'}'+
 
 // ### carousel section
 '.tvp-player .tvp-video-play{ ' +
