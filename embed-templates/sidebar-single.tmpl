@@ -1,0 +1,12 @@
+<div id="{{ name }}"></div>
+<script>
+  window.__TVPage__ = window.__TVPage__ || {};
+  __TVPage__.config = __TVPage__.config || {};
+  __TVPage__.config["{{ name }}"] = {
+    loginid: "{{ channel.loginId }}",
+    channel: {{ channel.config }},
+    targetEl : "{{ name }}",
+    api_base_url: "{{ env.apiBaseUrl }}"
+  };
+</script>
+<script async src="{{ baseUrl }}/tvpwidget/{{ name }}/index.js"></script>
