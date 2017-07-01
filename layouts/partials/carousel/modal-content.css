@@ -125,8 +125,10 @@
     "color: {{ ($.Scratch.Get "settings").product_popup_cta_font_color_hover }};" +
 "}" +
 
-".tvp-arrow-indicator:after {" +
-    "border: {{ ($.Scratch.Get "settings").product_popup_border }};" +
-    " box-shadow: {{ ($.Scratch.Get "settings").product_popup_box_shadow }};" +
-    "background: {{ ($.Scratch.Get "settings").product_popup_background }};" +
+".tvp-arrow-indicator {" +
+    "border-left: 20px solid {{ ($.Scratch.Get "settings").product_popup_arrow_indicator_border_color }};"+
+"}"+
+
+".tvp-inner-arrow-indicator{"+
+    "border-left: 19px solid {{ ($.Scratch.Get "settings").product_popup_background }};"+
 "}"

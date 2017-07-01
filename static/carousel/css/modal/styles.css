@@ -143,7 +143,6 @@ body  {
     height: 0;
     border-top: 20px solid transparent;
     border-bottom: 20px solid transparent;
-    border-left: 20px solid #000;
     position: absolute;
     left: -10px;
     display: none;
@@ -157,7 +156,6 @@ body  {
     height: 0;
     border-top: 19px solid transparent;
     border-bottom: 19px solid transparent;
-    border-left: 19px solid #fff;
     z-index: 21474837;
 }
 
