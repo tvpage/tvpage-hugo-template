@@ -234,6 +234,7 @@
                 $(templates.productsNav).appendTo(_container);
             }
 
+            var _centerMode = productData.length > 1 ? true : false;
             $(productContent).slick({
                 arrows: Utils.isset(options.products_slider_arrows) ? options.products_slider_arrows : true,
                 prevArrow: document.querySelector('.tvp-products-prev'),
@@ -245,6 +246,8 @@
                         {
                             breakpoint: 769,
                             settings: {
+                                centerMode: _centerMode,
+                                centerPadding: '60px 0 0',
                                 arrows: Utils.isset(options.products_slider_arrows_mobile) ? options.products_slider_arrows_mobile : true,
                                 slidesToShow: productData.length < 3 ? 2 : 3
                             }
@@ -338,7 +341,8 @@
                             breakpoint: 769,
                             settings: {
                                 arrows: false,
-                                centerPadding: '0px',
+                                centerMode: true,
+                                centerPadding: '40px 0 0',
                                 slidesToShow: 2,
                                 slidesToScroll: 2,
                                 dots: Utils.isset(options, 'video_slider_dots_mobile') ? options.video_slider_dots_mobile : true
@@ -352,8 +356,8 @@
                         var baseHeight = item.querySelector('.tvp-video-item-image').offsetHeight;
                         var arrowHeight = parseInt(s.currentTarget.slick.$nextArrow[0].offsetHeight);
 
-                        s.currentTarget.slick.$nextArrow[0].style.marginTop = ((baseHeight - arrowHeight) / 2) + itemPadding + "px";
-                        s.currentTarget.slick.$prevArrow[0].style.marginTop = ((baseHeight - arrowHeight) / 2) + itemPadding + "px";    
+                        s.currentTarget.slick.$nextArrow[0].style.marginTop = (baseHeight / 2) - (arrowHeight / 6) + "px";
+                        s.currentTarget.slick.$prevArrow[0].style.marginTop = (baseHeight / 2) - (arrowHeight / 6) + "px";
                     }
 
                     for (var i = s.currentTarget.slick.$slides.length - 1; i >= 0; i--) {

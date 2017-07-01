@@ -603,7 +603,6 @@ a {
     }    
 .tvp-video-item-title {                
     margin: 0;
-    max-height: 100%;
     overflow: hidden;
     @extend .tvp-animate;
 }
@@ -674,7 +673,7 @@ a {
                 font-weight: 500;
                 line-height: 17px;
                 margin: 0;
-                padding: 0 20px;
+                padding: 0 20px 0 6px;
                 font-size: 14px;
             }
         }

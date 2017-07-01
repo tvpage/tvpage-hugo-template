@@ -78,6 +78,13 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Play Button Background Size",
+            "code": "play_button_background_size",
+            "value": "contain"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Play Button Transform",
             "code": "play_button_transform",
             "value": "none"
@@ -591,14 +598,14 @@
             "type": "text",
             "label": "Product Holder Slider Arrow Left",
             "code": "product_holder_slide_arrow_left",
-            "value": "0"
+            "value": "-12px"
         },
         {
             "for": "inline",
             "type": "text",
             "label": "Product Holder Slider Arrow Right",
             "code": "product_holder_slide_arrow_right",
-            "value": "0"
+            "value": "-12px"
         },
         {
             "for": "inline",
@@ -893,7 +900,7 @@
             "type": "boolean",
             "label": "Products Slider Arrows Mobile",
             "code": "products_slider_arrows_mobile",
-            "value": true
+            "value": false
         },
         {
             "for": "inline",
@@ -1061,7 +1068,7 @@
             "type": "text",
             "label": "Products Carousel Padding",
             "code": "products_carousel_padding",
-            "value": "0 19px"
+            "value": "0 6px"
         },
         {
             "for": "inline",

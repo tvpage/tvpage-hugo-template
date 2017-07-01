@@ -180,7 +180,8 @@
 '}' +
 '.tvp-player .tvp-video-play, ' +
 '.tvp-video-item .tvp-video-play{' +
-	'background-color: {{- ($.Scratch.Get "settings").play_button_background_color_inactive -}};' +
+	'background: {{- ($.Scratch.Get "settings").play_button_background_color_inactive -}};' +
+	'background-size: {{- ($.Scratch.Get "settings").play_button_background_size -}};' +
 	'border: {{- ($.Scratch.Get "settings").play_icon_border -}};' +
 '}' +
 
