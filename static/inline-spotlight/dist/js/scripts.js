@@ -967,6 +967,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                 domain: Utils.isset(location,'hostname') ?  location.hostname : '',
                 loginId: loginId
             });
+            analytics.track('ci', {li: loginId});
 
             window.addEventListener('resize', Utils.debounce(function(){
                 if (isProductsInitialized) {
