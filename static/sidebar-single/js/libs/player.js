@@ -17,7 +17,7 @@
     compact = function(o){
       if (!o && "object" !== typeof o) return;
       for (var k in o) {
-        if (!o[k]) {
+        if (!o.hasOwnProperty(k)) {
           delete o[k];
         }
       }

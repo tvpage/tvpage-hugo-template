@@ -29,7 +29,7 @@
     gridSettings.onLoad = function(){el.classList.add('loading');};
     gridSettings.onLoadEnd = function(){el.classList.remove('loading');};
     
-    new Grid(name, gridSettings);
+    Grid(name, gridSettings);
   };
 
   var not = function(obj){return 'undefined' === typeof obj};

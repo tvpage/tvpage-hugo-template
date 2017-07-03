@@ -203,7 +203,6 @@
 
     //By default at Grid creation we load & render.
     this.load(function(data){
-      var postEvent = '';
       if (data.length) {
         that.render(data);
         
