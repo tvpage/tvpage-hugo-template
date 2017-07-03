@@ -266,7 +266,8 @@
 
                 var settings = data.runTime;
                 var loginId = settings.loginId || settings.loginid;
-
+                settings.loginId = loginId;
+                
                 channelId = Utils.isset(settings.channel) && Utils.isset(settings.channel.id) ? settings.channel.id : (settings.channelId || settings.channelid);
 
                 analytics = new Analytics();
