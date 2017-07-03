@@ -79,7 +79,7 @@ body  {
   bottom: 0;
   left: 0;
   margin: auto;
-  transition: all .2s ease;
+  /*transition: all .03s ease;*/
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
@@ -112,7 +112,7 @@ body  {
   margin: auto;
   cursor: pointer;
   z-index: 1000;
-  transition: all .05s ease-in-out;
+  transition: all .2s ease-in-out;
 }
 
 .tvp-exchange .tvp-video-play {
@@ -134,11 +134,13 @@ body  {
   line-height: 16px;
   margin: 0 0 5px 0;
   max-height: 30px;
+  overflow: hidden;
 }
 .tvp-video-views{
   font-size: 12px;
   line-height: 16px;
   margin: 0;
+  overflow: hidden;
 }
 .tvp-play-button {
     margin: 0px 11px;

@@ -32,27 +32,49 @@
         }
         switch (property){
           case "color":
-            document.getElementsByClassName(className).style.color = code;
+            var elements =document.getElementsByClassName(className);
+            for (var i = 0; i < elements.length; i++) {
+              elements[i].style.color = code;
+            }
+            
             break;
           case "font-size":
-            document.getElementsByClassName(className).style.fontSize = code;
+            var elements = document.getElementsByClassName(className);
+            for (var i = 0; i < elements.length; i++) {
+              elements[i].style.fontSize = code;
+            }
             break;
           case "font-weight":
-            document.getElementsByClassName(className).style.fontWeight = code;
+            var elements = document.getElementsByClassName(className);
+            for (var i = 0; i < elements.length; i++) {
+              elements[i].style.fontWeight = code;
+            }
             break;
           case "padding":
-            document.getElementsByClassName(className).style.padding = code;
+            var elements = document.getElementsByClassName(className);
+            for (var i = 0; i < elements.length; i++) {
+              elements[i].style.padding = code;
+            }
             break;
           case "font-family":
-            document.getElementsByClassName(className).style.fontFamily = code;
+            var elements = document.getElementsByClassName(className);
+            for (var i = 0; i < elements.length; i++) {
+              elements[i].style.fontFamily = code;
+            }
             break;
           case "background":
             if(code!=="none" && code!==undefined){
-              document.getElementsByClassName(className).style.background = code;
+              var elements = document.getElementsByClassName(className);
+              for (var i = 0; i < elements.length; i++) {
+                elements[i].style.background = code;
+              }
             }
             break;
           case "text-align":
-            document.getElementsByClassName(className).style.textAlign = code;
+            var elements = document.getElementsByClassName(className);
+            for (var i = 0; i < elements.length; i++) {
+              elements[i].style.textAlign = code;
+            }
             break;
         }
     }
@@ -145,7 +167,6 @@
         }
         for (option in this.options) {
           if(option in validOption){
-            console.log(options[option]);
             this.customStyle(validOption[option].class,validOption[option].property,options[option]);
           }
         }
@@ -203,10 +224,10 @@
           }
 
           pageFrag.appendChild(rowEl);
-          this.getCustomStyle();
         }
 
         this.container.appendChild(pageFrag);
+        this.getCustomStyle();
         if (window.parent) {
           window.parent.postMessage({
             event: this.eventPrefix + ':render',
