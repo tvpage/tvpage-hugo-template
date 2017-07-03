@@ -76,6 +76,8 @@
               elements[i].style.textAlign = code;
             }
             break;
+          default:
+          break;
         }
     }
     this.getCustomStyle = function(){
@@ -165,6 +167,7 @@
             property : "text-align"
           },
         }
+        var option;
         for (option in this.options) {
           if(option in validOption){
             this.customStyle(validOption[option].class,validOption[option].property,options[option]);
