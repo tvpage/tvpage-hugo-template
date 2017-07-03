@@ -21,6 +21,7 @@
           delete o[k];
         }
       }
+      
       return o;
     };
 

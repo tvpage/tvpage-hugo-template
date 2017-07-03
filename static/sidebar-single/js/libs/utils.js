@@ -74,7 +74,7 @@
     };
 
     this.tmpl = function(template, data) {
-      var processedTemplate;
+      var processedTemplate = "";
       if (template && 'object' == typeof data) {
           processedTemplate = template.replace(/\{([\w\.]*)\}/g, function(str, key) {
           var keys = key.split("."),
