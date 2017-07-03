@@ -17,11 +17,10 @@
     compact = function(o){
       if (!o && "object" !== typeof o) return;
       for (var k in o) {
-        if (!o.hasOwnProperty(k)) {
+        if (!o[k]) {
           delete o[k];
         }
       }
-      
       return o;
     };
 
