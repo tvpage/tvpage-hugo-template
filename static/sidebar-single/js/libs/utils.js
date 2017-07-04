@@ -42,7 +42,7 @@
     };
 
     this.debounce = function(func,wait,immediate){
-      var timeout = null;;  
+      var timeout = null;  
       return function() {
         var context = this, args = arguments;
         var later = function() {

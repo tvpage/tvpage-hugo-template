@@ -54,7 +54,7 @@
 ".tvp-video-title {" +
     "font-family: {{ ($.Scratch.Get "settings").item_title_font_family }};" +
     "font-weight: {{ ($.Scratch.Get "settings").item_title_font_weight }};" +
-    "font-size:{{ ($.Scratch.Get "settings").item_title_font_size }};" +
+    'font-size: calc({{ ($.Scratch.Get "settings").item_title_font_size }}  + ({{ replace ($.Scratch.Get "settings").item_title_font_size "px" "" }} - 6) * ((100vw - 350px) / (1200 - 350)));' +
     "text-align:{{ ($.Scratch.Get "settings").item_title_text_align }};" +
     "color:{{ ($.Scratch.Get "settings").item_title_color }};" +
     "padding:{{ ($.Scratch.Get "settings").item_title_padding }};" +
@@ -64,7 +64,7 @@
 ".tvp-video-author {" +
     "font-family: {{ ($.Scratch.Get "settings").item_author_font_family }};" +
     "font-weight: {{ ($.Scratch.Get "settings").item_author_font_weight }};" +
-    "font-size:{{ ($.Scratch.Get "settings").item_author_font_size }};" +
+    'font-size: calc({{ ($.Scratch.Get "settings").item_author_font_size }}  + ({{ replace ($.Scratch.Get "settings").item_author_font_size "px" "" }} - 6) * ((100vw - 350px) / (1200 - 350)));' +
     "text-align:{{ ($.Scratch.Get "settings").item_author_text_align }};" +
     "color:{{ ($.Scratch.Get "settings").item_author_color }};" +
     "padding:{{ ($.Scratch.Get "settings").item_author_padding }};" +
@@ -74,7 +74,7 @@
 ".tvp-video-views {" +
     "font-family: {{ ($.Scratch.Get "settings").item_views_font_family }};" +
     "font-weight: {{ ($.Scratch.Get "settings").item_views_font_weight }};" +
-    "font-size:{{ ($.Scratch.Get "settings").item_views_font_size }};" +
+    'font-size: calc({{ ($.Scratch.Get "settings").item_views_font_size }}  + ({{ replace ($.Scratch.Get "settings").item_views_font_size "px" "" }} - 6) * ((100vw - 350px) / (1200 - 350)));' +
     "text-align:{{ ($.Scratch.Get "settings").item_views_text_align }};" +
     "color:{{ ($.Scratch.Get "settings").item_views_color }};" +
     "padding:{{ ($.Scratch.Get "settings").item_views_padding }};" +

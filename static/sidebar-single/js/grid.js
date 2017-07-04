@@ -11,7 +11,7 @@
     this.eventPrefix = "tvp_" + (options.id || "").trim().replace(/-/g,'_');
     var isSmall = this.windowSize == 'small';
     this.itemsPerPage = isSmall ? 2 : (options.items_per_page || 6);
-    this.itemsPerRow = isSmall ? 1 : (options.items_per_row || 2);
+    this.itemsPerRow = 1;
     this.loginId = (options.loginId || options.loginid) || 0;
     this.channel = options.channel || {};
     this.channelId = (options.channelid || options.channelId) || null;
@@ -73,6 +73,8 @@
             var template = options.templates['sidebar-item'];
             if(item.asset){
               item.asset.views = item.asset.views ? (item.asset.views.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" Views") : "";
+            }else{
+              item.asset.views = "&nbsp;";
             }
             item.title = Utils.trimText(item.title,50);
             rowEl.innerHTML += Utils.tmpl(template, item);
@@ -147,7 +149,7 @@
         that.windowSize = newSize;
         var isSmall = newSize === 'small';
         that.itemsPerPage = isSmall ? 2 : (options.itemsPerPage || 6);
-        that.itemsPerRow = isSmall ? 1 : (options.itemsPerRow || 2);
+        that.itemsPerRow = 1;
         //reset page to 0 if we detect a resize, so we don't have trouble loading the grid
         that.page = 0;
         that.isLastPage = false;
