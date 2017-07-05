@@ -1487,7 +1487,7 @@
           "type": "text",
           "label": "Item Padding",
           "code": "item_padding",
-          "value": "0 5px 10px 5px"
+          "value": "0 5px 5px 5px"
         },
         {
           "for": "sidebar",
