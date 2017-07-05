@@ -65,7 +65,7 @@
             if (null !== productRating) {
               productRating = Number(productRating);
             }
-            var getStars = function(productRating){
+            var getStars = function(productRating, product){
                 var ratingReviewsHtml = "";
                 var fulls = 0;
                 var half = false;
@@ -108,7 +108,7 @@
             };
             var ratingReviewsHtml = "";
             if (productRating > 0) {
-              ratingReviewsHtml = getStars(productRating);
+              ratingReviewsHtml = getStars(productRating, product);
             }
 
             product.ratingReviews = ratingReviewsHtml;
