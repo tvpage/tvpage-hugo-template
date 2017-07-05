@@ -65,46 +65,50 @@
             if (null !== productRating) {
               productRating = Number(productRating);
             }
+            var getStars = function(productRating){
+                var ratingReviewsHtml = "";
+                var fulls = 0;
+                var half = false;
+                if (productRating % 1 != 0) {
+                  half = true;
+                  fulls = Math.floor(productRating);
+                } else {
+                  fulls = productRating;
+                }
 
+                var empties = 0;
+                if (4 === fulls && half) {
+                  empties = 0;
+                } else if (1 === fulls && half) {
+                  empties = 3;
+                } else if (half) {
+                  empties = (5 - fulls) - 1;
+                } else {
+                  empties = 5 - fulls;
+                }
+
+                ratingReviewsHtml = '<ul class="tvp-product-rating">';
+                for (var j = 0; j < fulls; j++) {
+                  ratingReviewsHtml += '<li class="tvp-rate full"></li>';
+                }
+                if (half) {
+                  ratingReviewsHtml += '<li class="tvp-rate half"></li>';
+                }
+                for (var k = 0; k < empties; k++) {
+                  ratingReviewsHtml += '<li class="tvp-rate empty"></li>';
+                }
+
+                var productReview = Utils.isset(product[config.product_review_attribute]) ? product[config.product_review_attribute] : 0;
+                if (null !== productReview && productReview > 0) {
+                  ratingReviewsHtml += '<li class="tvp-reviews">' + productReview + ' Reviews </li>';
+                }
+
+                ratingReviewsHtml += '</ul>';
+                return ratingReviewsHtml;
+            };
             var ratingReviewsHtml = "";
             if (productRating > 0) {
-              var fulls = 0;
-              var half = false;
-              if (productRating % 1 != 0) {
-                half = true;
-                fulls = Math.floor(productRating);
-              } else {
-                fulls = productRating;
-              }
-
-              var empties = 0;
-              if (4 === fulls && half) {
-                empties = 0;
-              } else if (1 === fulls && half) {
-                empties = 3;
-              } else if (half) {
-                empties = (5 - fulls) - 1;
-              } else {
-                empties = 5 - fulls;
-              }
-
-              ratingReviewsHtml = '<ul class="tvp-product-rating">';
-              for (var j = 0; j < fulls; j++) {
-                ratingReviewsHtml += '<li class="tvp-rate full"></li>';
-              }
-              if (half) {
-                ratingReviewsHtml += '<li class="tvp-rate half"></li>';
-              }
-              for (var k = 0; k < empties; k++) {
-                ratingReviewsHtml += '<li class="tvp-rate empty"></li>';
-              }
-
-              var productReview = Utils.isset(product[config.product_review_attribute]) ? product[config.product_review_attribute] : 0;
-              if (null !== productReview && productReview > 0) {
-                ratingReviewsHtml += '<li class="tvp-reviews">' + productReview + ' Reviews </li>';
-              }
-
-              ratingReviewsHtml += '</ul>';
+              ratingReviewsHtml = getStars(productRating);
             }
 
             product.ratingReviews = ratingReviewsHtml;
