@@ -189,7 +189,7 @@
 
             var channel = that.channel || {};
             var params = channel.parameters || {};
-            var src = this.options.api_base_url + '/channels/' + (channel.id || that.channelId) + '/videos?X-login-id=' + that.loginId + '&od=DESC&o=date_created';
+            var src = this.options.api_base_url + '/channels/' + (channel.id || that.channelId) + '/videos?X-login-id=' + that.loginId;
             for (var p in params) { src += '&' + p + '=' + params[p];}
             var cbName = options.callbackName || 'tvp_' + Math.floor(Math.random() * 555);
             src += '&p=' + that.page + '&n=' + that.itemsPerPage + '&callback='+cbName;
@@ -239,10 +239,23 @@
             }
         };
 
+        this.dynamicSort =function(property) {
+            var sortOrder = 1;
+            if(property[0] === "-") {
+                sortOrder = -1;
+                property = property.substr(1);
+            }
+            return function (a,b) {
+                var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+                return result * sortOrder;
+            }
+        };
+
         this.load(function(data){
           var postEvent = '';
           if (data.length) {
-            that.render(data);
+            var sortedData = data.sort(that.dynamicSort(Utils.isset(options, 'sort_videos_by') ? options.sort_videos_by : 'title'));
+            that.render(sortedData);
             postEvent = 'render';
           } else {
             postEvent = 'norender';

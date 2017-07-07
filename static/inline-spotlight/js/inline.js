@@ -410,7 +410,6 @@
                     }
                     renderProducts(selectedVideo.id, loginId);
                     var prodsSection = $('.tvp-player-product-section');
-                    var prodsScroller = prodsSection.find('.tvp-products-scroller');
                     var playerHeight = (prodsSection.find('.tvp-player').height() + prodsSection.find('.tvp-mobile-product-title').outerHeight(true));
                     if (isHidden && (renderedApproach() == 'desktop')) {
                         prodsSection.css('height','');
