@@ -257,13 +257,16 @@ function handleRender(e){
 }
 
 function handleResize(e){
+  if(window.modalOpened){
+    return;
+  }
   if (!e.data.height) return;
   holder.style.height = e.data.height;
 }
 
 function handleVideoClick(e){
     var eventData = e.data;
-
+    window.modalOpened = true;
     //performant way to clone object http://jsben.ch/#/bWfk9
     var configCopy = JSON.parse(JSON.stringify(config));
     delete configCopy.no_products_banner;
@@ -333,13 +336,16 @@ function handleModalInitialized(e){
 
   var onOrientationChange = function () {
     if (utils.isIOS && iframeModal && iframeModal.contentWindow) {
-      setTimeout(function(){
+      var tries = 0;
+      setInterval(function(){
+        if(tries===3) return;
+        tries=tries+1;
         var width = iframeModal.parentNode.offsetWidth;
         iframeModal.contentWindow.window.postMessage({
           event: config.eventPrefix + ':modal_holder_resize',
           size: [width, Math.floor(width * (9 / 16))]
         },'*');
-      },300);
+      },500);
     }
   };
   var orientationChangeEvent = 'onorientationchange' in window ? 'orientationchange' : 'resize';
@@ -418,6 +424,7 @@ var removeBannerEl = function() {
 };
 
 var closeModal = function () {
+  window.modalOpened = false;
   window.postMessage({
     event: config.eventPrefix + ':modal_close'
   },'*');

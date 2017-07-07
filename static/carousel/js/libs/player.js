@@ -175,16 +175,17 @@
         this.resize = function(){
             if (!that.instance || that.isFullScreen) return;
             var width, height;
-
             if (arguments.length > 1 && arguments[0] && arguments[1]) {
-                width = arguments[0];
-                height = arguments[1];
+                var parentEl = that.el.parentNode;
+                width = parentEl.offsetWidth;
+                height = parentEl.offsetHeight;
+                /*width = arguments[0];
+                height = arguments[1];*/
             } else {
                 var parentEl = that.el.parentNode;
-                width = parentEl.clientWidth;
-                height = parentEl.clientHeight;
+                width = parentEl.offsetWidth;
+                height = parentEl.offsetHeight;
             }
-
             that.instance.resize(width, height);
 
             if (!that.onResize) return;

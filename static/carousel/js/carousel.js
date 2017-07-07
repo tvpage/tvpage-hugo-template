@@ -227,6 +227,7 @@
 
                 if (Utils.isIOS) {
                    $carousel.slick('getSlick').options.tvpModalopened = true;
+                   window.modalOpened = true;
                 }
             } else if (hasClass(target,'tvp-carousel-arrow')) {
                 if (hasClass(target,'next')) {
@@ -254,6 +255,7 @@
         window.parent.addEventListener("message", function(e){
             if (!e || !Utils.isset(e, 'data') || !Utils.isset(e.data, 'event') || 'tvp_' + options.id.replace(/-/g,'_') + ':modal_close' !== e.data.event || !Utils.isIOS) return;
             $carousel.slick('getSlick').options.tvpModalopened = false;
+            window.modalOpened = false;
         });
     }
 
