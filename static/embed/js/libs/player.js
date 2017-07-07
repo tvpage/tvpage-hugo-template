@@ -20,7 +20,8 @@
             }
           }
           return o;
-        };
+        },
+        hostName = isset(location,'hostname') ?  location.hostname : '';
 
     //The player singleton. We basically create an instance from the tvpage
     //player and expose most utilities, helping to encapsualte what is required for a few players to co-exist.
@@ -142,21 +143,12 @@
                 }
             }
 
-            var analytics =  new Analytics(),
-                config = {
-                    domain: isset(location,'hostname') ?  location.hostname : '',
-                    loginId: asset.loginId
-                };
-
-            //Update tvpa analytics configuration depending on the video type
-            //(exhange or standard)
-            if (isset(asset,'analyticsLogUrl')) {
-                config.logUrl = asset.analyticsLogUrl;
-                analytics.initConfig(config);
-            } else {
-                config.logUrl = '\/\/api.tvpage.com\/v1\/__tvpa.gif';
-                analytics.initConfig(config);
-            }
+            //Update tvpa analytics configuration depending on the video type (exhange or standard)
+            this.analytics.initConfig({
+              domain: hostName,
+              logUrl: isset(asset,'analyticsLogUrl') ? asset.analyticsLogUrl : this.apiBaseUrl + '/__tvpa.gif',
+              loginId: asset.loginId
+            });
 
             if (willCue) {
                 this.instance.cueVideo(asset);
@@ -202,6 +194,17 @@
                 apiBaseUrl: that.apiBaseUrl,
                 swf: '//cdnjs.tvpage.com/tvplayer/tvp-'+that.version+'.swf',
                 onReady: function(e, pl) {
+                  that.analytics = new Analytics();
+
+                  var loginId = options.loginId || options.loginid;
+
+                  that.analytics.initConfig({
+                    domain: hostName,
+                    logUrl: that.apiBaseUrl + '/__tvpa.gif',
+                    loginId: loginId
+                  });
+                  that.analytics.track('ci', {li: loginId});
+
                   that.instance = pl;
                   that.resize();
 

@@ -401,6 +401,7 @@
                 domain: Utils.isset(location,'hostname') ?  location.hostname : '',
                 loginId: loginId
             });
+            analytics.track('ci', {li: loginId});
 
             window.addEventListener('resize', Utils.debounce(function(){
                 if (isProductsInitialized) {
