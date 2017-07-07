@@ -518,6 +518,34 @@
         },
         {
             "for": "carousel",
+            "type": "text",
+            "label": "Items To Show 667",
+            "code": "items_to_show_667",
+            "value": "1"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Items To Scroll 667",
+            "code": "items_to_scroll_667",
+            "value": "1"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Items To Show 480",
+            "code": "items_to_show_480",
+            "value": "1"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Items To Scroll 480",
+            "code": "items_to_scroll_480",
+            "value": "1"
+        },
+        {
+            "for": "carousel",
             "type": "boolean",
             "label": "Item Play Button Show On Hover",
             "code": "item_play_button_show_on_hover",

@@ -142,7 +142,8 @@
                             breakpoint: 480,
                             settings: {
                                 arrows: false,
-                                slidesToShow: 1,
+                                slidesToShow: Number(options.items_to_show_480),
+                                slidesToScroll: Number(options.items_to_scroll_480),
                                 dots: dots480,
                                 centerMode: options.carousel_center_mode_480,
                                 centerPadding: carouselCenterPadding
@@ -151,8 +152,8 @@
                         {
                             breakpoint: 667,
                             settings:{
-                                slidesToShow: Number(options.items_to_show),
-                                slidesToScroll: Number(options.items_to_scroll),
+                                slidesToShow: Number(options.items_to_show_667),
+                                slidesToScroll: Number(options.items_to_scroll_667),
                                 dots: dots667,
                                 arrows: false,
                                 centerMode: options.carousel_center_mode_667,
