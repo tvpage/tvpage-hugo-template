@@ -3,6 +3,8 @@
     var productData = [];
     var isProductsInitialized = false;
     var analytics = null;
+    var isHidden = false;
+    var scrollHeight;
     var breakpoint = 769;
     var currentApproach = '';
     var loginId = null;
@@ -247,9 +249,9 @@
                             breakpoint: 769,
                             settings: {
                                 centerMode: _centerMode,
-                                centerPadding: '60px 0 0',
+                                centerPadding: Utils.isset(options.products_slider_center_padding) ? options.products_slider_center_padding :'25% 0 0',
                                 arrows: Utils.isset(options.products_slider_arrows_mobile) ? options.products_slider_arrows_mobile : true,
-                                slidesToShow: productData.length < 3 ? 2 : 3
+                                slidesToShow: Utils.isset(options.products_slider_slides_to_show) ? options.products_slider_slides_to_show : 1,
                             }
                         }
                     ]
@@ -341,10 +343,10 @@
                             breakpoint: 769,
                             settings: {
                                 arrows: false,
-                                centerMode: true,
-                                centerPadding: '40px 0 0',
-                                slidesToShow: 2,
-                                slidesToScroll: 2,
+                                centerMode: Utils.isset(options, 'video_slider_center_mode_mobile') ? options.video_slider_center_mode_mobile : true,
+                                centerPadding: Utils.isset(options, 'video_slider_center_padding') ? options.video_slider_center_padding : '35% 0 0',
+                                slidesToShow: Utils.isset(options, 'videos_to_show_mobile') ? options.videos_to_show_mobile : 1,
+                                slidesToScroll: Utils.isset(options, 'videos_to_scroll_mobile') ? options.videos_to_scroll_mobile : 1,
                                 dots: Utils.isset(options, 'video_slider_dots_mobile') ? options.video_slider_dots_mobile : true
                             }
                         }
@@ -352,7 +354,6 @@
                 }).on('setPosition', function(s) {               
                     if (renderedApproach() !== 'mobile') {
                         var item = s.currentTarget.querySelector('.slick-current');
-                        var itemPadding = parseInt(window.getComputedStyle(item, null).paddingTop);
                         var baseHeight = item.querySelector('.tvp-video-item-image').offsetHeight;
                         var arrowHeight = parseInt(s.currentTarget.slick.$nextArrow[0].offsetHeight);
 
@@ -407,17 +408,33 @@
                         currentApproach = renderedApproach();
                     }
                     renderProducts(selectedVideo.id, loginId);
+                    var prodsSection = $('.tvp-player-product-section');
+                    var prodsScroller = prodsSection.find('.tvp-products-scroller');
+                    var playerHeight = (prodsSection.find('.tvp-player').height() + prodsSection.find('.tvp-mobile-product-title').outerHeight(true));
+                    if (isHidden && (renderedApproach() == 'desktop')) {
+                        prodsSection.css('height','');
+                        prodsSection.find('.tvp-slideUp').html('-');
+                        prodsSection.find('.tvp-products-scroller').fadeTo('fast', 1);
+                        isHidden = false;
+                    }else if(isHidden && (renderedApproach() == 'mobile')){
+                        prodsSection.animate({'height': playerHeight}, 'fast');
+                    }
                 }
                 checkProducts();
                 resizeParent();
             }, 85));
+            window.addEventListener('orientationchange',function(){
+                if(!isHidden && (renderedApproach() == 'mobile')){
+                    $('.tvp-player-product-section').css('height','');
+                }
+            },false);
         };
 
         var load = function(callback){
             var getChannelVideos = function(callback){
                 var channel_id = Utils.isEmpty(channel) ? channelId : channel.id;
                 var params = channel.parameters || {};
-                var src = options.api_base_url+ '/channels/' + channel_id + '/videos?X-login-id=' + loginId;
+                var src = options.api_base_url+ '/channels/' + channel_id + '/videos?X-login-id=' + loginId + '&od=DESC&o=date_created';
                 for (var p in params) { src += '&' + p + '=' + params[p];}
                 var cbName = options.callbackName || 'tvp_' + Math.floor(Math.random() * 555);
                 src += '&p=' + page + '&n=' + itemsPerPage + '&callback='+cbName;
@@ -502,20 +519,39 @@
                 player.instance.play();
             }
             else if (getTarget('tvp-slideUp')){
+                $(target).css("pointer-events", "none");
                 var prodsSection = $('.tvp-player-product-section');
                 var prodsScroller = prodsSection.find('.tvp-products-scroller');
-                var playerHeight = (prodsSection.find('.tvp-player').height() + prodsSection.find('.tvp-mobile-product-title').height() + 15);
-                var playerSlidebtn = prodsSection.find('.tvp-slideUp');
-                if (prodsScroller.is(':hidden')) {
-                    playerSlidebtn.html('-');
-                    prodsScroller.show();
-                    prodsSection.css('height', '');
+                var playerHeight = (prodsSection.find('.tvp-player').height() + prodsSection.find('.tvp-mobile-product-title').outerHeight(true));
+
+                if (isHidden) {
+                    prodsScroller.fadeTo('slow', 1);
+                    prodsSection.animate({
+                        'height' : (playerHeight + scrollHeight)
+                    }, {duration: 'slow',
+                        progress: function(){
+                            resizeParent();
+                        },
+                        done: function(){
+                            $(target).html('-').css("pointer-events", "auto");
+                            isHidden = false;
+                            prodsSection.css('height','');
+                        }
+                    });
                 }else{
-                    playerSlidebtn.html('+');
-                    prodsScroller.slideUp('ease');
+                    scrollHeight = prodsScroller.outerHeight(true);
+                    prodsScroller.fadeTo('slow', 0);
                     prodsSection.animate({
                         'height' : playerHeight
-                    }, 'slow');
+                    }, {duration: 'slow',
+                        progress: function(){
+                            resizeParent();
+                        },
+                        complete: function(){
+                            $(target).html('+').css("pointer-events", "auto");
+                            isHidden = true;
+                        }
+                    });
                 }
             }
         };

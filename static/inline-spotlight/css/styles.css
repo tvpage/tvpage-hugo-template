@@ -374,6 +374,7 @@ a {
   line-height: 20px;
   cursor: pointer;
   text-align: center;
+  font-weight: bold;
 }
 
 .tvp-animate, .tvp-product-item, .tvp-product-item:after, .tvp-videos-container-arrows, .tvp-video-item, .tvp-video-item:after, .tvp-video-item-image-overlay, .tvp-video-item-title {
@@ -1148,24 +1149,11 @@ a {
   }
 
   .tvp-product-image {
-    position: relative;
+    position: absolute;
     display: inline-block;
     width: 25%;
     height: 100%;
     margin-top: 0;
-  }
-  .tvp-product-image:before {
-    display: block;
-    content: "";
-    width: 100%;
-    padding-top: 100%;
-  }
-  .tvp-product-image > .tvp-content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
   }
 
   .tvp-product-info {
