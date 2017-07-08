@@ -265,16 +265,19 @@
                 initPlayer(data);
 
                 var settings = data.runTime;
-                settings.loginId = settings.loginId || settings.loginid;
-
+                var loginId = settings.loginId || settings.loginid;
+                settings.loginId = loginId;
+                
                 channelId = Utils.isset(settings.channel) && Utils.isset(settings.channel.id) ? settings.channel.id : (settings.channelId || settings.channelid);
 
                 analytics = new Analytics();
                 analytics.initConfig({
                     logUrl: settings.api_base_url + '/__tvpa.gif',
                     domain: Utils.isset(location, 'hostname') ? location.hostname : '',
-                    loginId: settings.loginId
+                    loginId: loginId
                 });
+
+                analytics.track('ci', {li: loginId });
 
                 var selectedVideo = data.selectedVideo;
                 if (Utils.isset(selectedVideo, 'products')) {

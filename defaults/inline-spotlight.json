@@ -129,8 +129,50 @@
             "type": "text",
             "label": "Product Image Height",
             "code": "product_image_height",
-            "value": "99%"
-        }, 
+            "value": "100%"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos To Show",
+            "code": "videos_to_show",
+            "value": "3"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos To Scroll",
+            "code": "videos_to_scroll",
+            "value": "3"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos To Show Mobile",
+            "code": "videos_to_show_mobile",
+            "value": "1"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos To scroll Mobile",
+            "code": "videos_to_scroll_mobile",
+            "value": "1"
+        },
+        {
+            "for": "inline",
+            "type": "boolean",
+            "label": "Video Slider Center Mode Mobile",
+            "code": "video_slider_center_mode_mobile",
+            "value": true
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Video Slider Center Padding Mobile",
+            "code": "video_slider_center_padding_mobile",
+            "value": "35% 0 0"
+        },
         {
             "for": "inline",
             "type": "text",
@@ -234,7 +276,7 @@
             "type": "boolean",
             "label": "Video Slider Dots Mobile",
             "code": "video_slider_dots_mobile",
-            "value": true
+            "value": false
         },
         {
             "for": "inline",
@@ -800,6 +842,41 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Featured Product Header Margin Mobile",
+            "code": "featured_product_header_margin_mobile",
+            "value": "24px 0 30px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Font Weight Mobile",
+            "code": "featured_product_header_font_weight_mobile",
+            "value": "normal"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Line Height Mobile",
+            "code": "featured_product_header_line_height_mobile",
+            "value": "17px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Padding Mobile",
+            "code": "featured_product_header_padding_mobile",
+            "value": "0 20px 0 6px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Font Size Mobile",
+            "code": "featured_product_header_font_size_mobile",
+            "value": "14px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Product Item View Button Font Size Min",
             "code": "product_item_view_button_font_size_min",
             "value": "12"
@@ -894,6 +971,20 @@
             "label": "Products Slider Arrows",
             "code": "products_slider_arrows",
             "value": true
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Products Slider Slides To Show",
+            "code": "products_slider_slides_to_show",
+            "value": "1"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Products Slider Center Padding",
+            "code": "products_slider_center_padding",
+            "value": "25% 0 0"
         },
         {
             "for": "inline",

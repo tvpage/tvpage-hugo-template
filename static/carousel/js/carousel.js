@@ -142,7 +142,8 @@
                             breakpoint: 480,
                             settings: {
                                 arrows: false,
-                                slidesToShow: 1,
+                                slidesToShow: Number(options.items_to_show_480),
+                                slidesToScroll: Number(options.items_to_scroll_480),
                                 dots: dots480,
                                 centerMode: options.carousel_center_mode_480,
                                 centerPadding: carouselCenterPadding
@@ -151,8 +152,8 @@
                         {
                             breakpoint: 667,
                             settings:{
-                                slidesToShow: Number(options.items_to_show),
-                                slidesToScroll: Number(options.items_to_scroll),
+                                slidesToShow: Number(options.items_to_show_667),
+                                slidesToScroll: Number(options.items_to_scroll_667),
                                 dots: dots667,
                                 arrows: false,
                                 centerMode: options.carousel_center_mode_667,
@@ -239,10 +240,23 @@
             }
         };
 
+        this.dynamicSort =function(property) {
+            var sortOrder = 1;
+            if(property[0] === "-") {
+                sortOrder = -1;
+                property = property.substr(1);
+            }
+            return function (a,b) {
+                var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+                return result * sortOrder;
+            }
+        };
+
         this.load(function(data){
           var postEvent = '';
           if (data.length) {
-            that.render(data);
+            var sortedData = data.sort(that.dynamicSort(Utils.isset(options, 'sort_videos_by') ? options.sort_videos_by : 'title'));
+            that.render(sortedData);
             postEvent = 'render';
           } else {
             postEvent = 'norender';

@@ -50,6 +50,13 @@
         {
             "for": "carousel",
             "type": "text",
+            "label": "Sort Videos By",
+            "code": "sort_videos_by",
+            "value": "title"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
             "label": "Title Text Font Family",
             "code": "title_text_font_family",
             "value": "Helvetica"
@@ -507,6 +514,34 @@
             "type": "text",
             "label": "Items To Scroll",
             "code": "items_to_scroll",
+            "value": "1"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Items To Show 667",
+            "code": "items_to_show_667",
+            "value": "1"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Items To Scroll 667",
+            "code": "items_to_scroll_667",
+            "value": "1"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Items To Show 480",
+            "code": "items_to_show_480",
+            "value": "1"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Items To Scroll 480",
+            "code": "items_to_scroll_480",
             "value": "1"
         },
         {

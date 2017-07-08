@@ -966,10 +966,12 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
 
             analytics =  new Analytics();
             analytics.initConfig({
-                logUrl: '\/\/api.tvpage.com\/v1\/__tvpa.gif',
+                logUrl: '//api.tvpage.com/v1/__tvpa.gif',
                 domain: Utils.isset(location,'hostname') ?  location.hostname : '',
                 loginId: loginId
             });
+
+            analytics.track('ci', {li: loginId});
 
             window.addEventListener('resize', Utils.debounce(function(){
                 if (isProductsInitialized) {

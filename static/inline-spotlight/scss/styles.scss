@@ -133,6 +133,7 @@ a {
     line-height: 20px;
     cursor: pointer;
     text-align: center;
+    font-weight: bold;
 }
 .tvp-animate {
     transition: border .5s ease-out, color .5s linear, opacity .3s ease-out;
@@ -426,7 +427,6 @@ a {
 .tvp-products-scroller{
     float: right;
     width: 25%;
-    height: 98.5%;
     position: relative;
     > div#productContent{
         margin-top: 20%;
@@ -643,6 +643,8 @@ a {
     }
     .tvp-videos-container {
         @include aspect-ratio(16, 9);
+        border-top: 1px dotted #979797;
+        margin-top: 20px;
     }
     .tvp-row-titles{
         margin-bottom: 10px;
@@ -665,17 +667,9 @@ a {
     }
 
     .tvp-player-product-section{
-        @include aspect-ratio(355,310);
-        .tvp-mobile-product-title{
-            margin: 15px 0 10px;
-            display: block;
-            h2{
-                font-weight: 500;
-                line-height: 17px;
-                margin: 0;
-                padding: 0 20px 0 6px;
-                font-size: 14px;
-            }
+        @include aspect-ratio(1,1);
+        .tvp-mobile-product-title{ 
+            display: block
         }
     }
     .tvp-player{
@@ -690,7 +684,6 @@ a {
         width: 100%;
         float: none;
         margin: 0;
-        height: auto;
          > div#productContent{
             margin-top: 0;
          }
@@ -708,7 +701,7 @@ a {
         max-height: 28%;
     }
     .tvp-product-image{
-        @include aspect-ratio(1,1);
+        position:absolute;
         display: inline-block;
         width: 25%;
         height: 100%;
@@ -766,8 +759,5 @@ a {
 @media only screen and (max-width: 414px){
     .tvp-video-item{
         @include aspect-ratio(1,1);
-    }
-    .tvp-player-product-section:before{
-        padding-top: 95.7%;
     }
 }

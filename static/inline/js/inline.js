@@ -412,10 +412,12 @@
 
             analytics =  new Analytics();
             analytics.initConfig({
-                logUrl: '\/\/api.tvpage.com\/v1\/__tvpa.gif',
+                logUrl: '//api.tvpage.com/v1/__tvpa.gif',
                 domain: Utils.isset(location,'hostname') ?  location.hostname : '',
                 loginId: loginId
             });
+
+            analytics.track('ci', {li: loginId});
 
             window.addEventListener('resize', Utils.debounce(function(){
                 if (isProductsInitialized) {
