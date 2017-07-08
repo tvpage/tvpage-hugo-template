@@ -35,7 +35,6 @@ var utils = {
         }
 
         html += '"><style>' + (options.style || '') + '</style>';
-
         var content = options.html || '';
         if ('function' === typeof content) {
             html += content();
@@ -283,13 +282,18 @@ function handleModalInitialized(e){
 
   if (utils.isIOS) {
     var onOrientationChange = function () {
-        if (iframeModal && iframeModal.contentWindow) {
-            var width = iframeModal.parentNode.offsetWidth;
-            iframeModal.contentWindow.window.postMessage({
-                event: config.eventPrefix + ':modal_holder_resize',
-                size: [width, Math.floor(width * (9 / 16))]
-            },'*');
-        }
+        var round = 0;
+        setInterval(function(){
+          if(round===3) return;
+          round = round+1;
+          if (iframeModal && iframeModal.contentWindow) {
+              var width = iframeModal.parentNode.offsetWidth;
+              iframeModal.contentWindow.window.postMessage({
+                  event: config.eventPrefix + ':modal_holder_resize',
+                  size: [width, Math.floor(width * (9 / 16))]
+              },'*');
+          }
+        },500);
     };
     var orientationChangeEvent = 'onorientationchange' in window ? 'orientationchange' : 'resize';
     window.removeEventListener(orientationChangeEvent,onOrientationChange, false);
