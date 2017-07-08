@@ -276,7 +276,7 @@
             "type": "boolean",
             "label": "Video Slider Dots Mobile",
             "code": "video_slider_dots_mobile",
-            "value": true
+            "value": false
         },
         {
             "for": "inline",
@@ -838,6 +838,41 @@
             "label": "Featured Product Header Text Align Mobile",
             "code": "featured_product_header_text_align_mobile",
             "value": "left"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Margin Mobile",
+            "code": "featured_product_header_margin_mobile",
+            "value": "24px 0 30px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Font Weight Mobile",
+            "code": "featured_product_header_font_weight_mobile",
+            "value": "normal"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Line Height Mobile",
+            "code": "featured_product_header_line_height_mobile",
+            "value": "17px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Padding Mobile",
+            "code": "featured_product_header_padding_mobile",
+            "value": "0 20px 0 6px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Font Size Mobile",
+            "code": "featured_product_header_font_size_mobile",
+            "value": "14px"
         },
         {
             "for": "inline",
