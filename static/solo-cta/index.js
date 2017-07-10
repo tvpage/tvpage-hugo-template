@@ -300,6 +300,8 @@ function handleModalInitialized(e){
             iframeModal.contentWindow.document.querySelector("body").style.paddingTop = (parseInt(clearValue)+4)+"px"; 
           }  
         }
+      }else{
+        iframeModal.contentWindow.document.querySelector("body").style.paddingTop = null;
       }
   };
   if (utils.isMobile) {
