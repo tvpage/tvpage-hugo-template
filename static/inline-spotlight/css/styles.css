@@ -418,10 +418,6 @@ a {
   display: none;
 }
 
-.tvplayer-overlay-thumbnail {
-  top: 1px !important;
-}
-
 .tvp-media-duration {
   position: absolute;
   bottom: 5px;
