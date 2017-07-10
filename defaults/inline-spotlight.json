@@ -1276,6 +1276,13 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Videos Carousel Item Date Text Transform",
+            "code": "videos_carousel_item_date_text_transform",
+            "value": "none"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Videos Carousel Item Title Inactive",
             "code": "videos_carousel_item_title_inactive",
             "value": "1"
