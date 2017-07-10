@@ -792,6 +792,13 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Product Item Title Font Family",
+            "code": "product_item_title_font_family",
+            "value": "Helvetica"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Product Item Title Line Height",
             "code": "product_item_title_line_height",
             "value": "normal"
@@ -1251,6 +1258,13 @@
             "label": "Videos Carousel Item Now Playing Text Align",
             "code": "videos_carousel_item_now_playing_text_align",
             "value": "center"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Now Playing Text Transform",
+            "code": "videos_carousel_item_now_playing_text_transform",
+            "value": "none"
         },
         {
             "for": "inline",

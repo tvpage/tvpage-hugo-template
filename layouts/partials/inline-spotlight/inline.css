@@ -129,6 +129,7 @@
 	'font-size: calc({{- ($.Scratch.Get "settings").product_item_title_font_size_min -}}px + ({{- ($.Scratch.Get "settings").product_item_title_font_size_max }} - {{ ($.Scratch.Get "settings").product_item_title_font_size_min -}}) * ((100vw - 300px) / (1600 - 300)));' +
 	'color: {{- ($.Scratch.Get "settings").product_item_title_font_color -}};' +
 	'font-weight: {{- ($.Scratch.Get "settings").product_item_title_font_weight -}};' +
+	'font-family: {{- ($.Scratch.Get "settings").product_item_title_font_family -}};' +
 	'line-height: {{- ($.Scratch.Get "settings").product_item_title_line_height -}};' +
 	'text-align:{{- ($.Scratch.Get "settings").product_item_title_text_align -}};' +
 '}' +
@@ -315,6 +316,7 @@
 	'font-style: {{- ($.Scratch.Get "settings").videos_carousel_item_now_playing_font_style -}};' +
 	'color: {{- ($.Scratch.Get "settings").videos_carousel_item_now_playing_font_color -}};' +
 	'text-align: {{- ($.Scratch.Get "settings").videos_carousel_item_now_playing_text_align -}};' +
+	'text-transform: {{- ($.Scratch.Get "settings").videos_carousel_item_now_playing_text_transform -}};' +
 '}' +
 
 '.tvp-products-scroller{'+
