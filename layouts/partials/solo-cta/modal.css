@@ -3,17 +3,6 @@
     "@import url('{{ . | htmlUnescape | safeHTML }}');" +
   {{ end }}
 {{ end }}
-
 "body {" +
     "padding: {{ ($.Scratch.Get "settings").iframe_modal_body_padding }};" +
-"}"+
-"@media screen and (orientation:landscape){"+
-{{- $paddingProperty := ($.Scratch.Get "settings").iframe_modal_body_padding -}}
-{{ if $paddingProperty }}
-	{{ $values := split $paddingProperty " " }}
-	{{ $number := replace (index $values 0) "px" "" }}
-	"body {"+
-	"padding-top:{{add (int $number) 5}}px;"+
-	"}"+
-{{ end }}
 "}"
