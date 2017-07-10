@@ -1234,6 +1234,13 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Products Carousel Padding Mobile",
+            "code": "products_carousel_padding_mobile",
+            "value": "0 6px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Videos Carousel Item Date Transform",
             "code": "videos_carousel_item_date_transform",
             "value": "none"

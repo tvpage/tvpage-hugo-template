@@ -352,6 +352,10 @@
 		'text-align: {{- ($.Scratch.Get "settings").video_header_text_align_mobile -}};' +
 	'}' +
 
+	'.tvp-products-scroller{'+
+		'padding: {{- ($.Scratch.Get "settings").products_carousel_padding_mobile -}};' +
+	'}'+
+
 	'.tvp-product-image {' +
 		'border: {{- ($.Scratch.Get "settings").product_image_border_mobile -}};' +
 		'height: {{- ($.Scratch.Get "settings").product_image_height -}};' +
