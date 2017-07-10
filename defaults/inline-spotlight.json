@@ -792,6 +792,13 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Product Item Title Font Family",
+            "code": "product_item_title_font_family",
+            "value": "Helvetica"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Product Item Title Line Height",
             "code": "product_item_title_line_height",
             "value": "normal"
@@ -1003,9 +1010,23 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Videos Carousel Item Title Font Family",
+            "code": "videos_carousel_item_title_font_family",
+            "value": "Helvetica"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Videos Carousel Item Date Font Color",
             "code": "videos_carousel_item_date_font_color",
             "value": "#000"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Now Playing Font Color",
+            "code": "videos_carousel_item_now_playing_font_color",
+            "value": "#fff"
         },
         {
             "for": "inline",
@@ -1038,6 +1059,20 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Videos Carousel Item Now Playing Font Size Max",
+            "code": "videos_carousel_item_now_playing_font_size_max",
+            "value": "16"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Now Playing Font Size Min",
+            "code": "videos_carousel_item_now_playing_font_size_min",
+            "value": "10"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Videos Carousel Item Date Font Size Max",
             "code": "videos_carousel_item_date_font_size_max",
             "value": "16"
@@ -1054,6 +1089,41 @@
             "type": "text",
             "label": "Videos Carousel Item Date Font Weight",
             "code": "videos_carousel_item_date_font_weight",
+            "value": "normal"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Now Playing Font Weight",
+            "code": "videos_carousel_item_now_playing_font_weight",
+            "value": "normal"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Date Font Family",
+            "code": "videos_carousel_item_date_font_family",
+            "value": "helvetica"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Now Playing Font Family",
+            "code": "videos_carousel_item_now_playing_font_family",
+            "value": "helvetica"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Date Font Style",
+            "code": "videos_carousel_item_date_font_style",
+            "value": "normal"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Now Playing Font Style",
+            "code": "videos_carousel_item_now_playing_font_style",
             "value": "normal"
         },
         {
@@ -1181,6 +1251,20 @@
             "label": "Videos Carousel Item Date Text Align",
             "code": "videos_carousel_item_date_text_align",
             "value": "center"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Now Playing Text Align",
+            "code": "videos_carousel_item_now_playing_text_align",
+            "value": "center"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Now Playing Text Transform",
+            "code": "videos_carousel_item_now_playing_text_transform",
+            "value": "none"
         },
         {
             "for": "inline",

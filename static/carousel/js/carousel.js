@@ -129,12 +129,13 @@
                 },100));
 
                 var carouselCenterPadding = options.carousel_center_padding,
+                    dotsDTop = Number(options.carousel_max_bullets) < Object.keys(all).length ? false : options.navigation_bullets,
                     dots480 = Number(options.carousel_max_bullets) < Object.keys(all).length ? false : options.navigation_bullets_480,
                     dots667 = Number(options.carousel_max_bullets) < Object.keys(all).length ? false : options.navigation_bullets_667,
                     slickConfig = {
                     slidesToShow: Number(options.items_to_show),
                     slidesToScroll: Number(options.items_to_scroll),
-                    dots: options.navigation_bullets,
+                    dots: dotsDTop,
                     infinite: options.infinite,
                     arrows: false,
                     responsive: [
