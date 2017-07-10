@@ -279,14 +279,37 @@ function handleModalInitialized(e){
           runTime: clickData.runTime
       }, '*');
   }
-
-  if (utils.isIOS) {
+  var detectOrientation = function(){
+      var orientation ="noDetected";
+      if(window.innerHeight > window.innerWidth){
+          orientation = "portrait"
+      }
+      if(window.innerWidth > window.innerHeight){
+          orientation = "landscape"
+      }
+      return orientation;
+  };
+  var fixPadding = function(){
+      var orientation = detectOrientation();
+      if(orientation === "landscape"){
+        if(config.hasOwnProperty("iframe_modal_body_padding")){
+          var paddingValue = config["iframe_modal_body_padding"];
+          paddingValue = paddingValue.split(" ");
+          if(paddingValue.length>0){
+            var clearValue = paddingValue[0].replace("px","");
+            iframeModal.contentWindow.document.querySelector("body").style.paddingTop = (parseInt(clearValue)+4)+"px"; 
+          }  
+        }
+      }
+  };
+  if (utils.isMobile) {
     var onOrientationChange = function () {
         var round = 0;
         setInterval(function(){
           if(round===3) return;
           round = round+1;
           if (iframeModal && iframeModal.contentWindow) {
+              fixPadding();
               var width = iframeModal.parentNode.offsetWidth;
               iframeModal.contentWindow.window.postMessage({
                   event: config.eventPrefix + ':modal_holder_resize',
@@ -299,6 +322,7 @@ function handleModalInitialized(e){
     window.removeEventListener(orientationChangeEvent,onOrientationChange, false);
     window.addEventListener(orientationChangeEvent,onOrientationChange, false);
   }
+  fixPadding();
 };
 
 function handlePlayerNext(e) {
