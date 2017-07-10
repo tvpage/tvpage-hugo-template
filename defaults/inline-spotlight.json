@@ -1318,6 +1318,20 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Videos Carousel Item Thumbnail Media Duration Display",
+            "code": "videos_carousel_item_thumbnail_media_duration_display",
+            "value": "none"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Thumbnail Media Duration Display Mobile",
+            "code": "videos_carousel_item_thumbnail_media_duration_display_mobile",
+            "value": "block"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Videos Carousel Item Thumbnail Active",
             "code": "videos_carousel_item_thumbnail_active",
             "value": "0.2"
