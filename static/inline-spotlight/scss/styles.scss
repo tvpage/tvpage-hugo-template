@@ -649,10 +649,6 @@ a {
         }
     }
 
-    .tvp-video-item {
-        @include aspect-ratio(4,3);
-    }
-
     .tvp-videos-scroller { 
         padding: 0 !important;
     }

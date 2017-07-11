@@ -1059,23 +1059,6 @@ a {
     width: 100%;
   }
 
-  .tvp-video-item {
-    position: relative;
-  }
-  .tvp-video-item:before {
-    display: block;
-    content: "";
-    width: 100%;
-    padding-top: 75%;
-  }
-  .tvp-video-item > .tvp-content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-  }
-
   .tvp-videos-scroller {
     padding: 0 !important;
   }
