@@ -130,7 +130,7 @@ a {
     background-color: #333;
     color: #fff;
     border-radius: 50%;
-    line-height: 20px;
+    line-height: 21px;
     cursor: pointer;
     text-align: center;
     font-weight: bold;
@@ -647,10 +647,6 @@ a {
         .tvp-row-player-title {            
             width: 100%;
         }
-    }
-
-    .tvp-video-item {
-        @include aspect-ratio(4,3);
     }
 
     .tvp-videos-scroller { 

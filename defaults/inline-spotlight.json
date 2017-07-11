@@ -849,6 +849,13 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Featured Product Header Text Transform Mobile",
+            "code": "featured_product_header_text_transform_mobile",
+            "value": "none"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Featured Product Header Margin Mobile",
             "code": "featured_product_header_margin_mobile",
             "value": "24px 0 30px"
@@ -880,6 +887,13 @@
             "label": "Featured Product Header Font Size Mobile",
             "code": "featured_product_header_font_size_mobile",
             "value": "14px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Font Family Mobile",
+            "code": "featured_product_header_font_family_mobile",
+            "value": "helvetica"
         },
         {
             "for": "inline",
