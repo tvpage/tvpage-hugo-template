@@ -849,6 +849,13 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Featured Product Header Text Transform Mobile",
+            "code": "featured_product_header_text_transform_mobile",
+            "value": "none"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Featured Product Header Margin Mobile",
             "code": "featured_product_header_margin_mobile",
             "value": "24px 0 30px"
