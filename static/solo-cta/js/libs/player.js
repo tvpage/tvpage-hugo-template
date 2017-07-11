@@ -22,7 +22,7 @@
           return o;
         },
         hostName = isset(location,'hostname') ?  location.hostname : '';
-
+    var isIOS = /iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream;
     //The player singleton. We basically create an instance from the tvpage
     //player and expose most utilities, helping to encapsualte what is required for a few players to co-exist.
     function Player(el, options, startWith) {
@@ -237,8 +237,9 @@
                                 window.removeEventListener('message', onWindowResize, false);
                                 window.addEventListener('resize', onWindowResize);
                             }
-
-                            that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progressColor;
+                            if(!isIOS){
+                              that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progressColor;
+                            }
                             var current = 0;
                             if (startWith && startWith.length) {
                                 for (var i = 0; i < that.assets.length; i++) {
