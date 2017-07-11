@@ -76,7 +76,7 @@
 {
     display: none;
     float: left;
-    min-height: 1px;
+    min-height: 110px;
 }
 .slick-slide:focus
 {
