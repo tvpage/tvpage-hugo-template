@@ -891,6 +891,13 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Featured Product Header Font Family Mobile",
+            "code": "featured_product_header_font_family_mobile",
+            "value": "helvetica"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Product Item View Button Font Size Min",
             "code": "product_item_view_button_font_size_min",
             "value": "12"

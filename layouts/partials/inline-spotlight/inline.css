@@ -395,6 +395,7 @@
 		'line-height: {{- ($.Scratch.Get "settings").featured_product_header_line_height_mobile -}};'+
 		'padding: {{- ($.Scratch.Get "settings").featured_product_header_padding_mobile -}};'+
 		'font-size: {{- ($.Scratch.Get "settings").featured_product_header_font_size_mobile -}};'+
+		'font-family: {{- ($.Scratch.Get "settings").featured_product_header_font_family_mobile -}};'+
 	'}'+
 
 	'.tvp-product-info-title { '+
