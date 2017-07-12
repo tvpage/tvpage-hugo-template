@@ -47,7 +47,6 @@
         this.preload = isset(options.preload) ? options.preload : null;
         this.poster = isset(options.poster) ? options.poster : null;
         this.overlay = isset(options.overlay) ? options.overlay : null;
-
         this.playbutton = compact({
           height: isset(options.play_button_height) ? options.play_button_height : null,
           width: isset(options.play_button_width) ? options.play_button_width : null,
@@ -56,7 +55,7 @@
           borderWidth: isset(options.play_button_border_width) ? options.play_button_border_width : null,
           borderColor: isset(options.play_button_border_color) ? options.play_button_border_color : null,
           borderStyle: isset(options.play_button_border_style) ? options.play_button_border_style : null,
-          iconColor: isset(options.play_button_icon_color) ? options.play_button_icon_color : null
+          iconColor: isset(options.play_button_icon_color) ? options.play_button_icon_color : null,
         });
 
         this.floater = compact({

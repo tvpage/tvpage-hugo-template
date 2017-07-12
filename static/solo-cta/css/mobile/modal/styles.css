@@ -198,3 +198,6 @@ body {
   bottom: 5px;
   padding: 0;
 }
+.tvplayer-playbutton{
+  opacity: 1 !important;
+}
