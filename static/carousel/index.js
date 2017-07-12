@@ -115,9 +115,8 @@ var targetElement = document.getElementById(config.targetEl);
 targetElement.insertAdjacentHTML('beforebegin', hostCssTag + '<style>' + config.css["host-custom" + (utils.isMobile ? "-mobile" : "")] + '</style><div id="' + id + '-holder" class="tvp-carousel-holder">'+
 '<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe></div>');
 targetElement.parentNode.removeChild(targetElement);
-
 config.id = id;
-config.staticPath = config.baseUrl + "/carousel";
+config.staticPath = config.baseUrl + "carousel";
 config.mobilePath = utils.isMobile ? 'mobile/' : '';
 config.distPath = config.debug ? '/' : '/dist/';
 config.cssPath = config.staticPath + config.distPath + 'css/';

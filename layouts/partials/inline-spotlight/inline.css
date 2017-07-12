@@ -307,6 +307,7 @@
 	'-webkit-transform: {{- ($.Scratch.Get "settings").videos_carousel_item_date_transform -}};' +	
 	'transform: {{- ($.Scratch.Get "settings").videos_carousel_item_date_transform -}};' +
 	'text-align: {{- ($.Scratch.Get "settings").videos_carousel_item_date_text_align -}};' +
+	'text-transform: {{- ($.Scratch.Get "settings").videos_carousel_item_date_text_transform -}};' +
 '}'+
 
 '.tvp-now-playing {' +
@@ -342,7 +343,15 @@
 	'opacity: {{- ($.Scratch.Get "settings").videos_carousel_item_thumbnail_inactive -}};'+
 '}' +
 
+'.tvp-media-duration {' +
+  'display: {{- ($.Scratch.Get "settings").videos_carousel_item_thumbnail_media_duration_display -}};'+
+'}'+
+
 '@media only screen and (max-width: 768px){' +
+	'.tvp-media-duration {' +
+	    'display: {{- ($.Scratch.Get "settings").videos_carousel_item_thumbnail_media_duration_display_mobile -}};'+
+	'}'+
+
 	'.tvp-row-titles{' +	
 		'height: {{- ($.Scratch.Get "settings").header_height_320 -}};' +
 	'}' +
@@ -351,6 +360,10 @@
 		'padding: {{- ($.Scratch.Get "settings").video_header_padding_mobile -}};' +
 		'text-align: {{- ($.Scratch.Get "settings").video_header_text_align_mobile -}};' +
 	'}' +
+
+	'.tvp-products-scroller{'+
+		'padding: {{- ($.Scratch.Get "settings").products_carousel_padding_mobile -}};' +
+	'}'+
 
 	'.tvp-product-image {' +
 		'border: {{- ($.Scratch.Get "settings").product_image_border_mobile -}};' +
@@ -377,10 +390,12 @@
 
 	'.tvp-player-product-section .tvp-mobile-product-title h2 {'+
 		'text-align: {{- ($.Scratch.Get "settings").featured_product_header_text_align_mobile -}};'+
+		'text-transform: {{- ($.Scratch.Get "settings").featured_product_header_text_transform_mobile -}};'+
 		'font-weight: {{- ($.Scratch.Get "settings").featured_product_header_font_weight_mobile -}};'+
 		'line-height: {{- ($.Scratch.Get "settings").featured_product_header_line_height_mobile -}};'+
 		'padding: {{- ($.Scratch.Get "settings").featured_product_header_padding_mobile -}};'+
 		'font-size: {{- ($.Scratch.Get "settings").featured_product_header_font_size_mobile -}};'+
+		'font-family: {{- ($.Scratch.Get "settings").featured_product_header_font_family_mobile -}};'+
 	'}'+
 
 	'.tvp-product-info-title { '+
