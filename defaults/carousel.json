@@ -652,6 +652,13 @@
         {
             "for": "carousel",
             "type": "text",
+            "label": "Play Button Opacity",
+            "code": "play_button_opacity",
+            "value": "0.9"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
             "label": "Item Title Font Size",
             "code": "item_title_font_size",
             "value": "12px"

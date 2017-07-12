@@ -131,4 +131,8 @@
 
 ".tvp-inner-arrow-indicator{"+
     "border-left: 19px solid {{ ($.Scratch.Get "settings").product_popup_background }};"+
+"}"+
+
+".tvplayer-playbutton{"+
+  "opacity: {{ ($.Scratch.Get "settings").play_button_opacity }} !important;" +
 "}"

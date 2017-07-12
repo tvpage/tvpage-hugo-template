@@ -110,6 +110,13 @@
       "value": "1px"
     },
     {
+      "for": "carousel",
+      "type": "text",
+      "label": "Play Button Opacity",
+      "code": "play_button_opacity",
+      "value": "0.9"
+    },
+    {
       "for": "cta",
       "type": "text",
       "label": "CTA Text Align",
