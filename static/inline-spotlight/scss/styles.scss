@@ -124,15 +124,18 @@ a {
 }
 
 .tvp-slideUp{
-    float: right;
-    height: 20px;
+    height: 100%;
     width: 20px;
     background-color: #333;
     color: #fff;
     border-radius: 50%;
-    line-height: 21px;
     cursor: pointer;
     text-align: center;
+    display: block;
+    margin: auto 0;
+    position: absolute;
+    top: 0;
+    right: 20px;
     font-weight: bold;
 }
 .tvp-animate {
@@ -190,7 +193,7 @@ a {
         }
     }
     .tvp-player-product-section{
-        @include aspect-ratio(16,9);
+        //@include aspect-ratio(16,9);
         margin-bottom: 2.70%;
         > .tvp-content{
             .tvp-player{
@@ -206,7 +209,7 @@ a {
     }
     &-mobile{
         .tvp-player-product-section{
-            @include aspect-ratio(16,9);
+            //@include aspect-ratio(16,9);
             .tvp-mobile-product-title{
                 display: none;
             }
@@ -247,7 +250,10 @@ a {
 }
 
 .tvp-player-product-section{
-    @include aspect-ratio(7, 2.8);
+    
+    position : relative;
+    overflow-y: auto;
+    overflow-x : hidden;
     .tvp-mobile-product-title{display: none;}    
     #playerOverlay{
         z-index:10000;
@@ -422,7 +428,8 @@ a {
 .tvp-products-scroller{
     float: right;
     width: 25%;
-    position: relative;
+    position: absolute;
+    right: 0;
     > div#productContent{
         margin-top: 20%;
     }
@@ -527,6 +534,7 @@ a {
 }
 
 .tvp-videos-container{
+    position : relative;
     @include aspect-ratio(10, 2.6);
 }
 .tvp-videos-container-arrows {
@@ -636,6 +644,9 @@ a {
     body{
         padding: 0 10px!important;
     }
+    .tvp-player-product-section .tvp-mobile-product-title h2 {
+        position:relative;
+    }
     .tvp-videos-container {
         @include aspect-ratio(16, 9);
         border-top: 1px dotted #979797;
@@ -654,7 +665,7 @@ a {
     }
 
     .tvp-player-product-section{
-        @include aspect-ratio(1,1);
+        //@include aspect-ratio(1,1);
         .tvp-mobile-product-title{ 
             display: block
         }
@@ -671,6 +682,7 @@ a {
         width: 100%;
         float: none;
         margin: 0;
+        position : relative;
          > div#productContent{
             margin-top: 0;
          }
@@ -685,7 +697,7 @@ a {
         border: 1px solid #333;                    
         padding: 0;
         opacity: 1;
-        max-height: 28%;
+        max-height: 17% !important;
     }
     .tvp-product-image{
         position:absolute;

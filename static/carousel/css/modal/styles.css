@@ -56,7 +56,7 @@ body  {
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  background-color: black;
+  background-color: transparent;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -88,8 +88,7 @@ body  {
 }
 
 .tvp-product-image-overlay {
-  -webkit-transition: all .05s ease-in-out;
-          transition: all .05s ease-in-out;
+  transition: all .05s ease-in-out;
   display: none;
   top: 0;
   bottom: 0;
@@ -129,8 +128,7 @@ body  {
   width: 100%;
   display: block;
   cursor: pointer;
-  -webkit-transition: all .05s ease-in-out;
-          transition: all .05s ease-in-out;
+  transition: all .05s ease-in-out;
   padding: 0;
 }
 

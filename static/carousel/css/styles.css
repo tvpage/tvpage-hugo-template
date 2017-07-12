@@ -47,8 +47,7 @@ body  {
   right: 0;
   position: absolute;
   margin: auto;
-  -webkit-transition: all .2s ease;
-          transition: all .2s ease;
+  transition: all .2s ease;
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
@@ -75,8 +74,7 @@ body  {
   margin: auto;
   cursor: pointer;
   z-index: 1000;
-  -webkit-transition: all .05s ease-in-out;
-          transition: all .05s ease-in-out;
+  transition: all .05s ease-in-out;
 }
 
 .show-on-hover .tvp-video-play {
@@ -86,8 +84,7 @@ body  {
 
 .tvp-video-play > polygon {
   pointer-events: none;
-  -webkit-transition: all .05s ease-in-out;
-          transition: all .05s ease-in-out;
+  transition: all .05s ease-in-out;
 }
 
 .tvp-video:hover .tvp-video-image-overlay {
@@ -113,8 +110,7 @@ body  {
 }
 
 .tvp-play > polygon {
-  -webkit-transition: all .05s ease-in-out;
-          transition: all .05s ease-in-out;
+  transition: all .05s ease-in-out;
   pointer-events: none;
 }
 
@@ -165,8 +161,7 @@ body  {
 }
 
 .tvp-carousel-arrow {
-  -webkit-transition: top .05s ease-in-out;
-          transition: top .05s ease-in-out;
+  transition: top .05s ease-in-out;
   position: absolute;
   margin: 0;
   padding: 0;
@@ -183,8 +178,7 @@ body  {
 }
 
 .tvp-carousel-arrow > svg {
-  -webkit-transition: all .05s ease-in-out;
-          transition: all .05s ease-in-out;
+  transition: all .05s ease-in-out;
   pointer-events: none;
   position: absolute;
   top: 0;

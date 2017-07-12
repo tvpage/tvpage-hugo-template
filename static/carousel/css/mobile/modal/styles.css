@@ -116,14 +116,14 @@ body {
   width: 100%;
   position: relative;
   padding-bottom: 56.25%;
-  background-color: black;
+  background-color: transparent;
 }
 
 #tvp-player-el {
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  background-color: black;
+  background-color: transparent;
   position: absolute;
   top: 0;
   bottom: 0;
