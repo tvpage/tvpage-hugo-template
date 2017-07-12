@@ -851,7 +851,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             if (renderedApproach() == 'mobile') {
                 if(firstRender){
                     var playerHeight = (prodsSection.find('.tvp-player').height() + prodsSection.find('.tvp-mobile-product-title').outerHeight(true));
-                    prodsSection.css('height', (scrollHeight + playerHeight));
+                    //prodsSection.css('height', (scrollHeight + playerHeight));
                     firstRender = false;
                 }
             }else {
@@ -1003,14 +1003,14 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                     var prodsSection = $('.tvp-player-product-section');
                     var playerHeight = (prodsSection.find('.tvp-player').height() + prodsSection.find('.tvp-mobile-product-title').outerHeight(true));
                     if (isHidden && (renderedApproach() == 'desktop')) {
-                        prodsSection.css('height','');
+                        //prodsSection.css('height','');
                         prodsSection.find('.tvp-slideUp').html('-');
                         prodsSection.find('.tvp-products-scroller').fadeTo('fast', 1);
                         isHidden = false;
                     }else if(isHidden && (renderedApproach() == 'mobile')){
-                        prodsSection.animate({'height': playerHeight}, 'fast');
+                        //prodsSection.animate({'height': playerHeight}, 'fast');
                     }else if(!isHidden && (renderedApproach() == 'mobile')){
-                        prodsSection.animate({'height':  (playerHeight + scrollHeight)}, 'fast');
+                        //prodsSection.animate({'height':  (playerHeight + scrollHeight)}, 'fast');
                     }
                 }
                 checkProducts();
@@ -1119,7 +1119,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                 if (isHidden) {
                     prodsScroller.fadeTo('slow', 1);
                     prodsSection.animate({
-                        'height' : (playerHeight + (scrollHeight * 1.39))
+                        /*'height' : (playerHeight + (scrollHeight * 1.39))*/
                     }, {duration: 'slow',
                         progress: function(){
                             resizeParent();
@@ -1129,10 +1129,11 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                             isHidden = false;
                         }
                     });
+                    prodsScroller.css("display","block");
                 }else{
                     prodsScroller.fadeTo('slow', 0);
                     prodsSection.animate({
-                        'height' : playerHeight
+                        /*'height' : playerHeight*/
                     }, {duration: 'slow',
                         progress: function(){
                             resizeParent();
@@ -1142,6 +1143,8 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                             isHidden = true;
                         }
                     });
+
+                    prodsScroller.css("display","none");
                 }
             }
         };

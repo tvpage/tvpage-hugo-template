@@ -78,8 +78,7 @@
   top: 0;
   left: 0;
   opacity:0;
-  -webkit-transition: all .05s ease-in-out;
-          transition: all .05s ease-in-out;
+  transition: all .05s ease-in-out;
 }
 
 .products .tvp-iframe-modal,
@@ -147,6 +146,5 @@
   right: -6px;
   position: absolute;
   top: -6px;
-  -webkit-transition: all .05s ease-in-out;
-          transition: all .05s ease-in-out;
+  transition: all .05s ease-in-out;
 }
