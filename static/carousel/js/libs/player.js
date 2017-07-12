@@ -140,11 +140,11 @@
                 isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
             if (ongoing) {
-                if (isMobile || (isset(this.autonext) && !this.autonext)) {
+                if ((isset(this.autonext) && !this.autonext)) {
                     willCue = true;
                 }
             } else {
-                if (isMobile || (isset(this.autoplay) && !this.autoplay)) {
+                if ((isset(this.autoplay) && !this.autoplay)) {
                     willCue = true;
                 }
             }

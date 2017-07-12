@@ -9,7 +9,7 @@ div[class^="tvp-"] {
   bottom: 0;
   left: 0;
   z-index: 1040;
-  background-color: black;
+  background-color: transparent;
   opacity: 0.5;
 }
 
