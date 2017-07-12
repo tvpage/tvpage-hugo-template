@@ -22,7 +22,6 @@
   display: block;
   margin: 0;
   padding: 0;
-  max-height: 29%;
 }
 .slick-list:focus {
   outline: none;
@@ -366,15 +365,18 @@ a {
 }
 
 .tvp-slideUp {
-  float: right;
-  height: 20px;
+  height: 100%;
   width: 20px;
   background-color: #333;
   color: #fff;
   border-radius: 50%;
-  line-height: 21px;
   cursor: pointer;
   text-align: center;
+  display: block;
+  margin: auto 0;
+  position: absolute;
+  top: 0;
+  right: 20px;
   font-weight: bold;
 }
 
@@ -990,6 +992,10 @@ a {
 @media only screen and (max-width: 769px) {
   body {
     padding: 0 10px !important;
+  }
+
+  .tvp-player-product-section .tvp-mobile-product-title h2 {
+    position: relative;
   }
 
   .tvp-videos-container {
