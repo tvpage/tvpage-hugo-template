@@ -61,7 +61,8 @@ div[class^="tvp-"] {
 .tvp-iframe-holder {
   height: 0;
   position: relative;
-  transition: height ease-out 0.0001s;
+  -webkit-transition: height ease-out 0.0001s;
+          transition: height ease-out 0.0001s;
 }
 
 /*This is the gallery iframe*/
