@@ -238,6 +238,9 @@
             }
 
             var _centerMode = productData.length > 1 ? true : false;
+            $(productContent).on('init' , function(){
+                $('.tvp-slideUp').css('pointer-events', 'auto');
+            });
             $(productContent).slick({
                 arrows: Utils.isset(options.products_slider_arrows) ? options.products_slider_arrows : true,
                 prevArrow: document.querySelector('.tvp-products-prev'),
@@ -268,17 +271,6 @@
                 row: renderedApproach() !== 'mobile' ? 3 : 2 
             }); 
             addProductActiveState(productData[0].id);
-            
-            var prodsSection = $('.tvp-player-product-section');
-            if (renderedApproach() == 'mobile') {
-                if(firstRender){
-                    var playerHeight = (prodsSection.find('.tvp-player').height() + prodsSection.find('.tvp-mobile-product-title').outerHeight(true));
-                    //prodsSection.css('height', (scrollHeight + playerHeight));
-                    firstRender = false;
-                }
-            }else {
-                prodsSection.css('height','');
-            }
         };
 
             if(!isProductsInitialized){
@@ -416,7 +408,7 @@
             });
             analytics.track('ci', {li: loginId});
 
-            var handleResize = function(){
+            var handleResize = function(e){
                 if (isProductsInitialized) {
                     if(currentApproach !== renderedApproach()){                        
                         currentApproach = renderedApproach();
@@ -425,22 +417,32 @@
                     var prodsSection = $('.tvp-player-product-section');
                     var playerHeight = (prodsSection.find('.tvp-player').height() + prodsSection.find('.tvp-mobile-product-title').outerHeight(true));
                     if (isHidden && (renderedApproach() == 'desktop')) {
-                        //prodsSection.css('height','');
-                        prodsSection.find('.tvp-slideUp').html('-');
+                        prodsSection.find('.tvp-slideUp > span').removeClass('tvp-plus').addClass('tvp-minus');
                         prodsSection.find('.tvp-products-scroller').fadeTo('fast', 1);
                         isHidden = false;
-                    }else if(isHidden && (renderedApproach() == 'mobile')){
-                        //prodsSection.animate({'height': playerHeight}, 'fast');
-                    }else if(!isHidden && (renderedApproach() == 'mobile')){
-                        //prodsSection.animate({'height':  (playerHeight + scrollHeight)}, 'fast');
+                    }else if(e.type == 'orientationchange' && (isHidden && (renderedApproach() == 'mobile'))){
+                       $('.tvp-player-product-section').find('.tvp-products-scroller').fadeTo('slow', 1, function(){
+                            renderProducts(selectedVideo.id, loginId);
+                            $('.tvp-slideUp').css("pointer-events", "auto")
+                                    .children()
+                                        .removeClass('tvp-plus')
+                                            .addClass('tvp-minus');
+                            $(this).show('slow');
+                            isHidden = false;
+                        });
                     }
                 }
                 checkProducts();
                 resizeParent();
             };
-
-            window.removeEventListener('resize', Utils.debounce(handleResize, 85));
-            window.addEventListener('resize', Utils.debounce(handleResize, 85));
+            var addListenerMulti = function(element, eventNames, listener) {
+              var events = eventNames.split(' ');
+              for (var i = 0, iLen = events.length; i < iLen; i++) {
+                element.removeEventListener(events[i], listener, false);
+                element.addEventListener(events[i], listener, false);
+              }
+            };
+            addListenerMulti(window,'resize orientationchange', handleResize)
         };
 
         var load = function(callback){
@@ -518,6 +520,17 @@
 
 
             if (getTarget('tvp-video-item')) {
+                if (isHidden) {
+                   $('.tvp-player-product-section').find('.tvp-products-scroller').fadeTo('slow', 1, function(){
+                        $('.tvp-slideUp').css("pointer-events", "auto")
+                                .children()
+                                    .removeClass('tvp-plus')
+                                        .addClass('tvp-minus');
+                        $(this).show('slow');
+                        isHidden = false;
+                    });
+                }
+
                 selectedVideo = getSelectedData(videosData, target.getAttribute('data-id'));
                 
                 player.load(selectedVideo.id);
@@ -537,36 +550,26 @@
                 $(target).css("pointer-events", "none");
                 var prodsSection = $('.tvp-player-product-section');
                 var prodsScroller = prodsSection.find('.tvp-products-scroller');
-                var playerHeight = (prodsSection.find('.tvp-player').height() + prodsSection.find('.tvp-mobile-product-title').outerHeight(true));
                 if (isHidden) {
-                    prodsScroller.fadeTo('slow', 1);
-                    prodsSection.animate({
-                        /*'height' : (playerHeight + (scrollHeight * 1.39))*/
-                    }, {duration: 'slow',
-                        progress: function(){
-                            resizeParent();
-                        },
-                        done: function(){
-                            $(target).html('-').css("pointer-events", "auto");
-                            isHidden = false;
-                        }
+                    prodsScroller.fadeTo('slow', 1, function(){
+                        renderProducts(selectedVideo.id, loginId);
+                        $(target).css("pointer-events", "auto")
+                                .children()
+                                    .removeClass('tvp-plus')
+                                        .addClass('tvp-minus');
+                        $(this).show('slow');
+                        isHidden = false;
+                        resizeParent();
                     });
-                    prodsScroller.css("display","block");
                 }else{
-                    prodsScroller.fadeTo('slow', 0);
-                    prodsSection.animate({
-                        /*'height' : playerHeight*/
-                    }, {duration: 'slow',
-                        progress: function(){
-                            resizeParent();
-                        },
-                        complete: function(){
-                            $(target).html('+').css("pointer-events", "auto");
-                            isHidden = true;
-                        }
+                    prodsScroller.fadeTo('slow', 0, function(){
+                        $(target).css("pointer-events", "auto")
+                                .children()
+                                    .removeClass('tvp-minus')
+                                        .addClass('tvp-plus');
+                        $(this).hide('slow');
+                        isHidden = true;
                     });
-
-                    prodsScroller.css("display","none");
                 }
             }
         };

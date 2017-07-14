@@ -872,7 +872,7 @@
             "type": "text",
             "label": "Featured Product Header Line Height Mobile",
             "code": "featured_product_header_line_height_mobile",
-            "value": "17px"
+            "value": "20px"
         },
         {
             "for": "inline",
