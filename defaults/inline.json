@@ -44,7 +44,7 @@
             "for": "inline",
             "type": "text",
             "label": "iFrame Holder Background Color",
-            "code": "body_padding",
+            "code": "body_background",
             "value": "transparent"
         },
         {

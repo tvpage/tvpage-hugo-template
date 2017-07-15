@@ -8,6 +8,7 @@
 	'font-family: {{- ($.Scratch.Get "settings").font_family -}};' +
 	'color: {{- ($.Scratch.Get "settings").font_color -}};' +
 	'padding: {{- ($.Scratch.Get "settings").body_padding -}};' +
+	'background: {{- ($.Scratch.Get "settings").body_background -}};' +
 '}' +
 // ### header section
 '.tvp-row-titles{' +	
