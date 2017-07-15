@@ -123,22 +123,6 @@ a {
         }        
     }
 }
-
-.tvp-slideUp{
-    height: 100%;
-    width: 20px;
-    background-color: #333;
-    color: #fff;
-    border-radius: 50%;
-    cursor: pointer;
-    text-align: center;
-    display: block;
-    margin: auto 0;
-    position: absolute;
-    top: 0;
-    right: 20px;
-    font-weight: bold;
-}
 .tvp-animate {
     transition: border .5s ease-out, color .5s linear, opacity .3s ease-out;
 }
@@ -647,6 +631,44 @@ a {
     }
     .tvp-player-product-section .tvp-mobile-product-title h2 {
         position:relative;
+        .tvp-slideUp {
+            display : block;
+            width : 20px;
+            height : 20px;
+            background : transparent;
+            border-radius : 50%;
+            float: right;
+            cursor: pointer;
+            pointer-events:none;
+            > span {
+                &.tvp-plus:before{
+                    content : "+";
+                    width : 100%;
+                    height : 100%;
+                    display : block;
+                    color : white;
+                    background : #333;
+                    text-align : center;
+                    line-height : 20px;
+                    border-radius : 50%;
+                    font-size: 20px;
+                    font-family: initial;
+                }
+                &.tvp-minus:before{
+                    content : "-";
+                    width : 100%;
+                    height : 100%;
+                    display : block;
+                    color : white;
+                    background : #333;
+                    text-align : center;
+                    line-height : 20px;
+                    border-radius : 50%;
+                    font-size: 20px;
+                    font-family: initial;
+                }
+            }
+        }
     }
     .tvp-videos-container {
         @include aspect-ratio(16, 9);
