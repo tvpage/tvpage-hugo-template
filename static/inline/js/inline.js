@@ -34,7 +34,7 @@
         if (window.parent) {
             window.parent.postMessage({
                 event: 'tvp_'+ inlineEl.id.replace(/-/g,'_') +':resize',
-                height: inlineEl.offsetHeight + 'px'
+                height: inlineEl.scrollHeight + 'px'
             }, '*');
         }
     }
