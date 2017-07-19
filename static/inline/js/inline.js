@@ -19,6 +19,7 @@
     var inlineEl = null;
     var productRatingEmptyIsBordered = false;
     var hasProducts = true;
+    var generalOptions = {};
 
     var renderedApproach = function () {
         if (document.body.clientWidth < breakpoint) {
@@ -219,7 +220,8 @@
                         breakpoint: 769,
                         settings: {
                             arrows: false,
-                            centerPadding: '0px',
+                            centerPadding: Utils.isset(generalOptions.product_holder_slide_center_padding) ? generalOptions.product_holder_slide_center_padding :'25% 0 0',
+                            centerMode : true,
                             slidesToShow: 1,
                             slidesToScroll: 1,
                             dots: false
@@ -298,6 +300,7 @@
     };
 
     function Inline(el, options) {
+        generalOptions = options;
         currentApproach = renderedApproach();
         xchg = options.xchg || false;
         loginId = (options.loginId || options.loginid) || 0;
@@ -360,7 +363,8 @@
                             breakpoint: 769,
                             settings: {
                                 arrows: false,
-                                centerPadding: '0px',
+                                centerPadding: Utils.isset(options, 'videos_carousel_center_padding') ? options.videos_carousel_center_padding : '35% 0 0',
+                                centerMode : true,
                                 slidesToShow: 2,
                                 slidesToScroll: 2,
                                 dots: true
