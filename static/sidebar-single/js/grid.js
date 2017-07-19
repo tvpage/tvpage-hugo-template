@@ -145,7 +145,7 @@
           }, '*');
         }
       };
-      var ajustElements = function(className,property,value){
+      var adjustElements = function(className,property,value){
           var elements =document.getElementsByClassName(className);
             for (var i = 0; i < elements.length; i++) {
               switch(property){
@@ -164,20 +164,19 @@
               }
             }
       };
-      var elementWidth = document.getElementsByClassName("tvp-sidebar-container");
-      var currentWidth = elementWidth.length>0 ? elementWidth[0].offsetWidth : 0;
+      var currentWidth = this.container.offsetWidth;
       if(currentWidth>0 && currentWidth <= 205){
-            ajustElements("tvp-video-image","width", "100%");
-            ajustElements("tvp-video-details","width", "100%");
-            ajustElements("tvp-video-views","display", "none");
-            ajustElements("tvp-video-author","display", "none");
-            ajustElements("tvp-video-details","padding", "5px 0 0 0");
+            adjustElements("tvp-video-image","width", "100%");
+            adjustElements("tvp-video-details","width", "100%");
+            adjustElements("tvp-video-views","display", "none");
+            adjustElements("tvp-video-author","display", "none");
+            adjustElements("tvp-video-details","padding", "5px 0 0 0");
       }else{
-            ajustElements("tvp-video-image","width", null);
-            ajustElements("tvp-video-details","width", null);
-            ajustElements("tvp-video-views","display", null);
-            ajustElements("tvp-video-author","display", null);
-            ajustElements("tvp-video-details","padding", null);
+            adjustElements("tvp-video-image","width", null);
+            adjustElements("tvp-video-details","width", null);
+            adjustElements("tvp-video-views","display", null);
+            adjustElements("tvp-video-author","display", null);
+            adjustElements("tvp-video-details","padding", null);
       }
       if (that.windowSize !== newSize) {
         that.windowSize = newSize;
