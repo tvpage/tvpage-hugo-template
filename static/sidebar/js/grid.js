@@ -259,7 +259,6 @@
       var params = that.channel.parameters || {};
       params.p = that.page;
       params.n = that.itemsPerPage;
-      params["X-login-id"] = that.loginId;
       
       if (this.campaign && that.options.video_spots_endpoint && 0 === that.page) {
         var xhr = new XMLHttpRequest();
@@ -273,6 +272,7 @@
             
             var itemsNeeded = params.n - videoSpots.length;
             params.n = itemsNeeded > 0 ? itemsNeeded : 10000;
+            params['X-login-id'] = that.loginId;
             
             jsonpCall(src, params, function(channelVideos){
               endWith(videoSpots.concat(channelVideos));
