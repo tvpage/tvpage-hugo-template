@@ -7,6 +7,8 @@ min_version = 0.17
 	uniqueName = "captivate"
 	path = "layouts/captivate"
 	preview = "https://www.goodlookingbean.com/tv"
+	channelPages = true
+	videoPages = false
 	[[tvp-templates.thumbnails]]
 		desktop = "https://s3-us-west-2.amazonaws.com/tvpage-a.tvpage.com/dev/site-templates/preview/dtop_preview_captivate.png"
 		mobile = "https://s3-us-west-2.amazonaws.com/tvpage-a.tvpage.com/dev/site-templates/preview/mobile_preview_captivate.png"
