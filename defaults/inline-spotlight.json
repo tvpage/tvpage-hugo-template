@@ -35,6 +35,13 @@
             "value": true
         },
         {
+            "for": "player",
+            "type": "boolean",
+            "label": "Immediate",
+            "code": "immediate",
+            "value": true
+        },
+        {
             "type": "array",
             "label": "Fonts",
             "code": "fonts",

@@ -22,6 +22,19 @@
     var hasProducts = true;
     var firstRender = true;
 
+
+    var dynamicSort = function(property) {
+        var sortOrder = 1;
+        if(property[0] === "-") {
+            sortOrder = -1;
+            property = property.substr(1);
+        }
+        return function (a,b) {
+            var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+            return result * sortOrder;
+        }
+    };
+
     var renderedApproach = function () {
         if (document.body.clientWidth < breakpoint) {
             return 'mobile';
@@ -533,7 +546,7 @@
 
                 selectedVideo = getSelectedData(videosData, target.getAttribute('data-id'));
                 
-                player.load(selectedVideo.id);
+                player.load(selectedVideo.id, options.immediate);
                 addVideoActiveState(selectedVideo.id);
                 isProductsInitialized = false;
                 renderProducts(selectedVideo.id, selectedVideo.loginId);
@@ -575,7 +588,8 @@
         };
 
         load(function(data){
-            render(data);
+            var sortedData = data.sort(dynamicSort(Utils.isset(options, 'sort_videos_by') ? options.sort_videos_by : 'title'));
+            render(sortedData);
         });
     }
 

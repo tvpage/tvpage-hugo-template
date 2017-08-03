@@ -113,7 +113,7 @@
         //Context reference for Methods.
         var that = this;
 
-        this.play = function(asset,ongoing){            
+        this.play = function(asset,ongoing,immediate){           
             if (!asset) return; // console.log('need asset');
             var willCue = false,
                 isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -143,7 +143,7 @@
                 config.logUrl = '\/\/api.tvpage.com\/v1\/__tvpa.gif';
                 analytics.initConfig(config);
             }
-            if (willCue) this.instance.cueVideo(asset);                
+            if (willCue && !immediate) this.instance.cueVideo(asset);                
             else this.instance.loadVideo(asset);
 
             // this will fix the continues loading of youtube type video on iOS (iPad/iPhone)            
@@ -215,7 +215,7 @@
               }
             }
 
-            this.play(this.assets[this.current], true);
+            this.play(this.assets[this.current], true, arguments[1]);
         }
 
         this.onReady = function(e, pl){            
