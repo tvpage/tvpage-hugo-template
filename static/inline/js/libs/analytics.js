@@ -13,11 +13,16 @@
         return; //console.log('need config');
       }
       
-      _tvpa.push(['config', {
+      var config = {
         logUrl: options.logUrl,
         li: options.loginId,
-        gaDomain: options.domain
-      }]);
+        gaDomain: options.domain,
+      };
+
+      if (options.cookieDomain)
+        config.firstPartyCookieDomain = options.cookieDomain;
+
+      _tvpa.push(['config', config]);
     };
 
     this.track = function(e,data){

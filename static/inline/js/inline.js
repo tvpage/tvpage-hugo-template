@@ -407,17 +407,23 @@
             
             //render products  
             renderProducts(selectedVideo.id, loginId);
-
             resizeParent();
 
             analytics =  new Analytics();
-            analytics.initConfig({
+
+            var analyticsConfig = {
                 logUrl: '//api.tvpage.com/v1/__tvpa.gif',
                 domain: Utils.isset(location,'hostname') ?  location.hostname : '',
                 loginId: loginId
-            });
+            };
 
-            analytics.track('ci', {li: loginId});
+            if (options.cookiedomain)
+                analyticsConfig.cookieDomain = options.cookiedomain;
+
+            analytics.initConfig(analyticsConfig);
+            analytics.track('ci', {
+                li: loginId
+            });
 
             window.addEventListener('resize', Utils.debounce(function(){
                 if (isProductsInitialized) {

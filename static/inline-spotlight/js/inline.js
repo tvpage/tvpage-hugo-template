@@ -384,12 +384,20 @@
             resizeParent();
 
             analytics =  new Analytics();
-            analytics.initConfig({
+
+            var analyticsConfig = {
                 logUrl: options.api_base_url + '/__tvpa.gif',
                 domain: Utils.isset(location,'hostname') ?  location.hostname : '',
                 loginId: loginId
+            };
+
+            if (options.cookiedomain)
+                analyticsConfig.cookieDomain = options.cookiedomain;
+
+            analytics.initConfig(analyticsConfig);
+            analytics.track('ci', {
+                li: loginId
             });
-            analytics.track('ci', {li: loginId});
 
             window.addEventListener('resize', Utils.debounce(function(){
                 if (isProductsInitialized) {

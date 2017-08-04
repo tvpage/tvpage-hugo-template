@@ -302,11 +302,16 @@
                 channelId = Utils.isset(settings.channel) && Utils.isset(settings.channel.id) ? settings.channel.id : (settings.channelId || settings.channelid);
                 analytics =  new Analytics();
 
-                analytics.initConfig({
+                var analyticsConfig = {
                     logUrl: settings.api_base_url + '/__tvpa.gif',
                     domain: Utils.isset(location,'hostname') ?  location.hostname : '',
                     loginId: settings.loginId
-                });
+                };
+
+                if (settings.cookiedomain)
+                    analyticsConfig.cookieDomain = settings.cookiedomain;
+
+                analytics.initConfig(analyticsConfig);
 
                 var selectedVideo = data.selectedVideo;
                 if (Utils.isset(selectedVideo,'products')) {
