@@ -575,6 +575,13 @@
         {
           "for": "modal",
           "type": "text",
+          "label": "Iframe Content Padding",
+          "code": "iframe_content_padding",
+          "value": "5px"
+        },
+        {
+          "for": "modal",
+          "type": "text",
           "label": "Product Thumbnail Margin Right",
           "code": "product_thumbnail_margin_right",
           "value": "10px"
