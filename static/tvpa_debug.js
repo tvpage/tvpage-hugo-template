@@ -2237,7 +2237,7 @@ tvpa.define('Configuration',["Configuration"], function () {
       console.log("IS ENABLED:", this.isFirstPartyCookiesEnabled())
       console.log("HOSTNAME:", window.location.hostname);
       console.log("COOKIE DOMAIN:", this.getFirstPartyCookieDomain());
-      console.log("FIRST PARTY VALID:", invalidDomain);
+      console.log("FIRST PARTY INVALID:", invalidDomain);
       console.log("COOKIE SUPPORT:", hasCookie);
       console.log("CID:", this.cid);
       console.groupEnd();
