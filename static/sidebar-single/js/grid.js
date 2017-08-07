@@ -18,7 +18,6 @@
     this.loading = false;
     this.isLastPage = false;
     this.page = 0;
-    this.firstRender = true;
 
     this.el = 'string' === typeof el ? document.getElementById(el) : el;
     this.loadBtn = this.el.querySelector('.tvp-sidebar-load');
@@ -35,20 +34,6 @@
         this.sidebarTitle.innerHTML = options.title_text;
       } else {
         this.sidebarTitle.parentNode.removeChild(this.sidebarTitle);
-      }
-
-      if (this.data.length > this.itemsPerPage) {
-        if(this.firstRender){
-          this.page = 1;
-          this.firstRender = false
-        }else{
-          this.page = this.page > Math.ceil(this.data.length / this.itemsPerPage) ? 1 : this.page;
-        }
-        var paginate = function(array, page_size, page_number) {
-          --page_number;
-          return array.slice(page_number * page_size, (page_number + 1) * page_size);
-        };
-        this.data = paginate(this.data, this.itemsPerPage, this.page);
       }
 
       var all = this.data.slice(0),
@@ -170,7 +155,6 @@
         //reset page to 0 if we detect a resize, so we don't have trouble loading the grid
         that.page = 0;
         that.isLastPage = false;
-        that.firstRender = true;
         
         that.load(function(){
           that.render();
