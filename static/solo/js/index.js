@@ -74,6 +74,9 @@
     if (document.body.classList.contains('dynamic')) {
       //We deal diff with some stuff on iframe.
       (function(unique,settings){
+
+        console.log(settings);
+
         var player = null,
             menu = null,
             playerSettings = JSON.parse(JSON.stringify(settings)),
