@@ -219,6 +219,8 @@
         if (options.cookiedomain)
           analyticsConfig.cookieDomain = options.cookiedomain;
 
+        console.log(analyticsConfig);
+
         that.analytics.initConfig(analyticsConfig);
         that.analytics.track('ci', {li: loginId});
 
