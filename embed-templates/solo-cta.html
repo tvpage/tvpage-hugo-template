@@ -1,12 +1,20 @@
 <div id="{{ name }}"></div>
 <script>
-  window.__TVPage__ = window.__TVPage__ || {};
+(function(d, s) {
+  __TVPage__ = window.__TVPage__ || {};
   __TVPage__.config = __TVPage__.config || {};
   __TVPage__.config["{{ name }}"] = {
-    loginid: "{{ channel.loginId }}",
-    channel: {{ channel.config }},
-    targetEl : "{{ name }}",
-    api_base_url: "{{ env.apiBaseUrl }}"
+  	loginid: "{{ channel.loginId }}",
+  	channel: {{ channel.config }},
+  	targetEl : "{{ name }}",
+  	api_base_url: "{{ env.apiBaseUrl }}"
   };
+
+	window.addEventListener("load", function() {
+	  var js = d.createElement(s),
+	  fjs = d.getElementsByTagName(s)[0];
+	  js.src = '{{ baseUrl }}/tvpwidget/{{ name }}/index.js';
+	  fjs.parentNode.insertBefore(js, fjs);
+	}, false);
+}(document, 'script'));
 </script>
-<script async src="{{ baseUrl }}/tvpwidget/{{ name }}/index.js"></script>
