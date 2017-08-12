@@ -286,7 +286,7 @@ function handleVideoClick(e){
       html: config.templates["modal-content" + (utils.isMobile ? "-mobile" : "")].body,
       js: [
           //"//a.tvpage.com/tvpa.min.js",
-          config.baseUrl + 'tvpa_debug.js',
+          config.baseUrl + '/tvpa_debug.js',
           '//imasdk.googleapis.com/js/sdkloader/ima3.js',
           playerUrl,
           config.debug ? config.jsPath + "/vendor/jquery.js" : "",
