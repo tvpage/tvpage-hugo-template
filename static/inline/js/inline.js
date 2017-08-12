@@ -410,17 +410,13 @@
             resizeParent();
 
             analytics =  new Analytics();
-
-            var analyticsConfig = {
+            analytics.initConfig({
                 logUrl: '//api.tvpage.com/v1/__tvpa.gif',
                 domain: Utils.isset(location,'hostname') ?  location.hostname : '',
-                loginId: loginId
-            };
-
-            if (options.cookiedomain)
-                analyticsConfig.cookieDomain = options.cookiedomain;
-
-            analytics.initConfig(analyticsConfig);
+                loginId: loginId,
+                firstPartyCookies: options.firstpartycookies,
+                cookieDomain: options.cookiedomain
+            });
             analytics.track('ci', {
                 li: loginId
             });

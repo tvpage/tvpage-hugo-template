@@ -140,7 +140,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
         gaDomain: options.domain,
       };
 
-      if (options.cookieDomain)
+      if (options.firstPartyCookies)
         config.firstPartyCookieDomain = options.cookieDomain;
 
       _tvpa.push(['config', config]);
@@ -952,17 +952,13 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             resizeParent();
 
             analytics =  new Analytics();
-
-            var analyticsConfig = {
+            analytics.initConfig({
                 logUrl: options.api_base_url + '/__tvpa.gif',
                 domain: Utils.isset(location,'hostname') ?  location.hostname : '',
-                loginId: loginId
-            };
-
-            if (options.cookiedomain)
-                analyticsConfig.cookieDomain = options.cookiedomain;
-
-            analytics.initConfig(analyticsConfig);
+                loginId: loginId,
+                firstPartyCookies: options.firstpartycookies,
+                cookieDomain: options.cookiedomain
+            });
             analytics.track('ci', {
                 li: loginId
             });

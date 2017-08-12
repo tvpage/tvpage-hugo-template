@@ -299,17 +299,15 @@
 
                 channelId = Utils.isset(settings.channel) && Utils.isset(settings.channel.id) ? settings.channel.id : (settings.channelId || settings.channelid);
                 analytics =  new Analytics();
-
-                var analyticsConfig = {
+                analytics.initConfig({
                     domain: Utils.isset(location,'hostname') ?  location.hostname : '',
                     logUrl: settings.api_base_url + '/__tvpa.gif',
-                    loginId: loginId
-                };
+                    loginId: loginId,
+                    firstPartyCookies: settings.firstpartycookies,
+                    cookieDomain: settings.cookiedomain
+                });
 
-                if (settings.cookiedomain)
-                    analyticsConfig.cookieDomain = settings.cookiedomain;
 
-                analytics.initConfig(analyticsConfig);
                 analytics.track('ci', {
                     li: loginId
                 });

@@ -131,18 +131,23 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
 
     this.initConfig = function(options){
       if (!isset(options) || !isset(options.loginId) || !isset(options.domain) || !isset(options.logUrl)) {
-        return; //console.log('need config');
+        return;
       }
       
-      _tvpa.push(['config', {
+      var config = {
         logUrl: options.logUrl,
         li: options.loginId,
-        gaDomain: options.domain
-      }]);
+        gaDomain: options.domain,
+      };
+
+      if (options.firstPartyCookies)
+        config.firstPartyCookieDomain = options.cookieDomain;
+
+      _tvpa.push(['config', config]);
     };
 
     this.track = function(e,data){
-      if (!e || !data || typeof _tvpa === "undefined") return; // console.log('no data');
+      if (!e || !data || typeof _tvpa === "undefined") return;
       _tvpa.push(['track', e, data]);
     };
     
@@ -357,22 +362,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                 }
             }
 
-            var analytics =  new Analytics(),
-                config = {
-                    domain: isset(location,'hostname') ?  location.hostname : '',
-                    loginId: asset.loginId
-                };
-
-            //Update tvpa analytics configuration depending on the video type
-            //(exhange or standard)
-            if (isset(asset,'analyticsLogUrl')) {
-                config.logUrl = asset.analyticsLogUrl;
-                analytics.initConfig(config);
-            } else {
-                config.logUrl = '\/\/api.tvpage.com\/v1\/__tvpa.gif';
-                analytics.initConfig(config);
-            }
-            if (willCue) this.instance.cueVideo(asset);                
+            if (willCue) this.instance.cueVideo(asset);
             else this.instance.loadVideo(asset);
 
             // this will fix the continues loading of youtube type video on iOS (iPad/iPhone)            
@@ -961,17 +951,19 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             
             //render products  
             renderProducts(selectedVideo.id, loginId);
-
             resizeParent();
 
             analytics =  new Analytics();
             analytics.initConfig({
                 logUrl: '//api.tvpage.com/v1/__tvpa.gif',
                 domain: Utils.isset(location,'hostname') ?  location.hostname : '',
-                loginId: loginId
+                loginId: loginId,
+                firstPartyCookies: options.firstpartycookies,
+                cookieDomain: options.cookiedomain
             });
-
-            analytics.track('ci', {li: loginId});
+            analytics.track('ci', {
+                li: loginId
+            });
 
             window.addEventListener('resize', Utils.debounce(function(){
                 if (isProductsInitialized) {

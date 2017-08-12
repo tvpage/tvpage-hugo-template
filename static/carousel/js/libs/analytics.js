@@ -19,7 +19,7 @@
         gaDomain: options.domain,
       };
 
-      if (options.cookieDomain)
+      if (options.firstPartyCookies)
         config.firstPartyCookieDomain = options.cookieDomain;
 
       _tvpa.push(['config', config]);

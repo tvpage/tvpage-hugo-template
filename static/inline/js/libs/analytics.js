@@ -10,7 +10,7 @@
 
     this.initConfig = function(options){
       if (!isset(options) || !isset(options.loginId) || !isset(options.domain) || !isset(options.logUrl)) {
-        return; //console.log('need config');
+        return;
       }
       
       var config = {
@@ -19,14 +19,14 @@
         gaDomain: options.domain,
       };
 
-      if (options.cookieDomain)
+      if (options.firstPartyCookies)
         config.firstPartyCookieDomain = options.cookieDomain;
 
       _tvpa.push(['config', config]);
     };
 
     this.track = function(e,data){
-      if (!e || !data || typeof _tvpa === "undefined") return; // console.log('no data');
+      if (!e || !data || typeof _tvpa === "undefined") return;
       _tvpa.push(['track', e, data]);
     };
     

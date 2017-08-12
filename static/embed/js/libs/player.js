@@ -190,16 +190,14 @@
                   that.analytics = new Analytics();
 
                   var loginId = options.loginId || options.loginid;
-                  var analyticsConfig = {
+
+                  that.analytics.initConfig({
                     domain: hostName,
                     logUrl: that.apiBaseUrl + '/__tvpa.gif',
-                    loginId: loginId
-                  };
-
-                  if (options.cookiedomain)
-                    analyticsConfig.cookieDomain = options.cookiedomain;
-
-                  that.analytics.initConfig(analyticsConfig);
+                    loginId: loginId,
+                    firstPartyCookies: options.firstpartycookies,
+                    cookieDomain: options.cookiedomain
+                  });
                   that.analytics.track('ci', {li: loginId});
 
                   that.instance = pl;

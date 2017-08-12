@@ -2284,6 +2284,9 @@ tvpa.define('trackers/BaseTracker',["Configuration", "Version"], function (Confi
       script.src=scriptUrl;
       script.async=true;
       document.getElementsByTagName('head')[0].appendChild(script);
+
+      if ("ci" === requestType)
+        console.log("CI cid: " + this.config.getCid());
     }
     
     return scriptUrl;

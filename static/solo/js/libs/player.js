@@ -210,19 +210,18 @@
         that.analytics = new Analytics();
         
         var loginId = options.loginId || options.loginid;
-        var analyticsConfig = {
+
+        that.analytics.initConfig({
           domain: hostName,
           logUrl: that.apiBaseUrl + '/__tvpa.gif',
-          loginId: loginId
-        };
+          loginId: loginId,
+          firstPartyCookies: options.firstpartycookies,
+          cookieDomain: options.cookiedomain
+        });
 
-        if (options.cookiedomain)
-          analyticsConfig.cookieDomain = options.cookiedomain;
-
-        console.log(analyticsConfig);
-
-        that.analytics.initConfig(analyticsConfig);
-        that.analytics.track('ci', {li: loginId});
+        that.analytics.track('ci', {
+          li: loginId
+        });
 
         that.instance = pl;
         that.resize();
