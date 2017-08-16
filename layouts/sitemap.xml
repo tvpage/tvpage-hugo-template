@@ -6,10 +6,12 @@
     {{- if eq .Layout "channelVideo" -}}
     <video:video>
     	{{ $video := index $.Site.Data.videos (printf "x%s" .Params.videoid)  }}
-    	<video:thumbnail_loc>{{- $video.asset.thumbnailUrl -}}</video:thumbnail_loc>
-        <video:title>{{- .Title -}}</video:title>
-        <video:description>{{- .Description -}}</video:description>
-        <video:duration>{{- $video.duration -}}</video:duration>
+    	{{- if and (isset $video "asset") (isset $video.asset "thumbnailUrl") -}}
+        <video:thumbnail_loc>{{- $video.asset.thumbnailUrl -}}</video:thumbnail_loc>
+      {{- end -}}
+      <video:title>{{- .Title -}}</video:title>
+      <video:description>{{- .Description -}}</video:description>
+      <video:duration>{{- $video.duration -}}</video:duration>
     </video:video>
     {{- end -}}
   </url>

@@ -8,7 +8,9 @@
 	{{- $.Scratch.Add "metaImg" ( printf "%s/%s/images/channel/%s.jpg" .Site.BaseURL .Type .Params.channelid ) -}}
 {{ else if eq .Layout "channelVideo" }}
 	{{- $video := index $.Site.Data.videos (printf "x%s" .Params.videoid ) -}}
+	{{- if and (isset $video "asset") (isset $video.asset "thumbnailUrl") -}}
 	{{- $.Scratch.Add "metaImg" $video.asset.thumbnailUrl -}}
+	{{- end -}}
 {{ end}}
 <meta charset="utf-8">
 <meta name="pinterest" content="nopin">
