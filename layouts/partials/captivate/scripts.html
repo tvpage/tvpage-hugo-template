@@ -25,8 +25,7 @@
         var ga = document.createElement("script");
         ga.type = "text/javascript";
         ga.async = true;
-        // ga.src = ("https:" == document.location.protocol ? "https" : "http") + "://a.tvpage.com/tvpa.min.js";
-        ga.src = {{ "tvpa_debug.js" | relURL }};
+        ga.src = ("https:" == document.location.protocol ? "https" : "http") + "://a.tvpage.com/tvpa.min.js";
         var s = document.getElementsByTagName('script')[0];
         s.parentNode.insertBefore(ga, s);
     })();
