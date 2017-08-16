@@ -31,11 +31,16 @@
     })();
 
     var _tvpa = _tvpa || [];
-    _tvpa.push(["config", {
+    var analyticsConfig = {
         "li": TVSite.loginId,
-        "gaDomain": "preview.bandh.tv",
         "logUrl": "\/\/api.tvpage.com\/v1\/__tvpa.gif"
-    }]);
+    };
+
+    {{- if and (isset $.Site.Params "firstpartycookies") (isset $.Site.Params "cookiedomain") -}}
+    analyticsConfig.firstPartyCookieDomain = {{- $.Site.Params.cookiedomain -}};
+    {{- end -}}
+    
+    _tvpa.push(["config", analyticsConfig]);
     _tvpa.push(["track", "ci", { li: TVSite.loginId }]);
 
 </script>

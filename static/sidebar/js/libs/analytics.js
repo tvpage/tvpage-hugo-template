@@ -9,12 +9,20 @@
   function Analytics() {
 
     this.initConfig = function(options){
-      if (!isset(options) || !isset(options.loginId) || !isset(options.domain) || !isset(options.logUrl)) return console.warn('Needs Config');
-      _tvpa.push(['config', {
+      if (!isset(options) || !isset(options.loginId) || !isset(options.domain) || !isset(options.logUrl)) {
+        return console.warn('need config');
+      }
+      
+      var config = {
         logUrl: options.logUrl,
         li: options.loginId,
-        gaDomain: options.domain
-      }]);
+        gaDomain: options.domain,
+      };
+
+      if (options.firstPartyCookies)
+        config.firstPartyCookieDomain = options.cookieDomain;
+
+      _tvpa.push(['config', config]);
     };
 
     this.track = function(e,data){

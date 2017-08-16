@@ -128,21 +128,6 @@
                 }
             }
 
-            var analytics =  new Analytics(),
-                config = {
-                    domain: isset(location,'hostname') ?  location.hostname : '',
-                    loginId: asset.loginId
-                };
-
-            //Update tvpa analytics configuration depending on the video type
-            //(exhange or standard)
-            if (isset(asset,'analyticsLogUrl')) {
-                config.logUrl = asset.analyticsLogUrl;
-                analytics.initConfig(config);
-            } else {
-                config.logUrl = '\/\/api.tvpage.com\/v1\/__tvpa.gif';
-                analytics.initConfig(config);
-            }
             if (willCue) this.instance.cueVideo(asset);                
             else this.instance.loadVideo(asset);
 
