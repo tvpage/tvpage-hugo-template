@@ -13,15 +13,22 @@
         return console.warn('need config');
       }
       
-      _tvpa.push(['config', {
+      var config = {
         logUrl: options.logUrl,
         li: options.loginId,
-        gaDomain: options.domain
-      }]);
+        gaDomain: options.domain,
+      };
+
+      if (options.firstPartyCookies)
+        config.firstPartyCookieDomain = options.cookieDomain;
+
+      _tvpa.push(['config', config]);
     };
 
     this.track = function(e,data){
-      if (!isset(e) || !isset(data) || !isset(window, '_tvpa')) return console.warn('No Data');
+      if (!isset(e) || !isset(data) || !isset(window, '_tvpa')) 
+        return console.warn('No Data');
+      
       _tvpa.push(['track', e, data]);
     };
     

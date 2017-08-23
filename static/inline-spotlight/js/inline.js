@@ -417,9 +417,13 @@
             analytics.initConfig({
                 logUrl: options.api_base_url + '/__tvpa.gif',
                 domain: Utils.isset(location,'hostname') ?  location.hostname : '',
-                loginId: loginId
+                loginId: loginId,
+                firstPartyCookies: options.firstpartycookies,
+                cookieDomain: options.cookiedomain
             });
-            analytics.track('ci', {li: loginId});
+            analytics.track('ci', {
+                li: loginId
+            });
 
             var handleResize = function(e){
                 if (isProductsInitialized) {

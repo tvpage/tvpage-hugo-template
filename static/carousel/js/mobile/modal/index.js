@@ -278,9 +278,10 @@
                 analytics.initConfig({
                     logUrl: settings.api_base_url + '/__tvpa.gif',
                     domain: Utils.isset(location, 'hostname') ? location.hostname : '',
-                    loginId: loginId
+                    loginId: loginId,
+                    firstPartyCookies: settings.firstpartycookies,
+                    cookieDomain: settings.cookiedomain
                 });
-
                 analytics.track('ci', {li: loginId});
 
                 var selectedVideo = data.selectedVideo;

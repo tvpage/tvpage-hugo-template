@@ -131,14 +131,19 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
 
     this.initConfig = function(options){
       if (!isset(options) || !isset(options.loginId) || !isset(options.domain) || !isset(options.logUrl)) {
-        return; //console.log('need config');
+        return console.warn('need config');
       }
       
-      _tvpa.push(['config', {
+      var config = {
         logUrl: options.logUrl,
         li: options.loginId,
-        gaDomain: options.domain
-      }]);
+        gaDomain: options.domain,
+      };
+
+      if (options.firstPartyCookies)
+        config.firstPartyCookieDomain = options.cookieDomain;
+
+      _tvpa.push(['config', config]);
     };
 
     this.track = function(e,data){
@@ -381,6 +386,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                 }
             }
 
+<<<<<<< HEAD
             var analytics =  new Analytics(),
                 config = {
                     domain: isset(location,'hostname') ?  location.hostname : '',
@@ -397,6 +403,9 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                 analytics.initConfig(config);
             }
             if (willCue && !immediate) this.instance.cueVideo(asset);                
+=======
+            if (willCue) this.instance.cueVideo(asset);                
+>>>>>>> b25115f99794ef5047967683dfa14bb945dcdef6
             else this.instance.loadVideo(asset);
 
             // this will fix the continues loading of youtube type video on iOS (iPad/iPhone)            
@@ -995,9 +1004,13 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             analytics.initConfig({
                 logUrl: options.api_base_url + '/__tvpa.gif',
                 domain: Utils.isset(location,'hostname') ?  location.hostname : '',
-                loginId: loginId
+                loginId: loginId,
+                firstPartyCookies: options.firstpartycookies,
+                cookieDomain: options.cookiedomain
             });
-            analytics.track('ci', {li: loginId});
+            analytics.track('ci', {
+                li: loginId
+            });
 
             var handleResize = function(e){
                 if (isProductsInitialized) {

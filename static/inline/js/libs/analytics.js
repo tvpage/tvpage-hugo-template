@@ -10,18 +10,23 @@
 
     this.initConfig = function(options){
       if (!isset(options) || !isset(options.loginId) || !isset(options.domain) || !isset(options.logUrl)) {
-        return; //console.log('need config');
+        return;
       }
       
-      _tvpa.push(['config', {
+      var config = {
         logUrl: options.logUrl,
         li: options.loginId,
-        gaDomain: options.domain
-      }]);
+        gaDomain: options.domain,
+      };
+
+      if (options.firstPartyCookies)
+        config.firstPartyCookieDomain = options.cookieDomain;
+
+      _tvpa.push(['config', config]);
     };
 
     this.track = function(e,data){
-      if (!e || !data || typeof _tvpa === "undefined") return; // console.log('no data');
+      if (!e || !data || typeof _tvpa === "undefined") return;
       _tvpa.push(['track', e, data]);
     };
     

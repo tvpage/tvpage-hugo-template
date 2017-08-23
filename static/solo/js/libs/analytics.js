@@ -1,31 +1,33 @@
 ;(function(root,doc) {
 
-  var isset = function(o,p){
-    var val = o;
-    if (p) val = o[p];
-    return 'undefined' !== typeof val;
+  function isset (o,p){
+    return p ? o.hasOwnProperty(p) : "undefined" !== typeof o;
   };
 
-  function Analytics() {
-
-    this.initConfig = function(options){
-      if (!isset(options) || !isset(options.loginId) || !isset(options.domain) || !isset(options.logUrl)) {
-        return console.log('need config');
-      }
-      
-      _tvpa.push(['config', {
-        logUrl: options.logUrl,
-        li: options.loginId,
-        gaDomain: options.domain
-      }]);
-    };
-
-    this.track = function(e,data){
-      if (!e || !data || !_tvpa) return console.log('no data');
-      _tvpa.push(['track', e, data]);
-    };
-    
+  function Analytics(){
   }
+
+  Analytics.prototype.initConfig = function(options) {
+    if (!isset(options) || !isset(options.loginId) || !isset(options.domain) || !isset(options.logUrl)) {
+      return console.warn('need config');
+    }
+
+    var config = {
+      logUrl: options.logUrl,
+      li: options.loginId,
+      gaDomain: options.domain,
+    };
+
+    if (options.firstPartyCookies)
+      config.firstPartyCookieDomain = options.cookieDomain;
+
+    _tvpa.push(['config', config]);
+  };
+
+  Analytics.prototype.track = function(e, data) {
+    if (!e || !data || !_tvpa) return console.log('no data');
+    _tvpa.push(['track', e, data]);
+  };
 
   root.Analytics = Analytics;
 
