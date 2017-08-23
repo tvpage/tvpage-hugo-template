@@ -260,6 +260,7 @@ function handlePostMessages(e){
       break;
     case 'onPlayerChange':
       handleOnPlayerChange(e);
+      break;
     default: 
       // do nothing
   }

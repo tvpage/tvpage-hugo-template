@@ -251,18 +251,21 @@
                       that.onNext(next);
                   }
               } 
-              var stateData = JSON.parse(JSON.stringify(that.assets[that.current]));
-              stateData.currentTime = that.instance.getCurrentTime();
-
-              if (that.onPlayerChange) {
-                  if (window.parent) {
-                      window.parent.postMessage({
-                          event: eventPrefix + ':onPlayerChange',
-                          e: e,
-                          stateData : stateData
-                      }, '*');
+              var handleOnPlayerChange = function(e){
+                  if (that.onPlayerChange) {
+                      if (window.parent) {
+                          var stateData = JSON.parse(JSON.stringify(that.assets[that.current]));
+                          stateData.currentTime = that.instance.getCurrentTime();
+                          window.parent.postMessage({
+                              event: eventPrefix + ':onPlayerChange',
+                              e: e,
+                              stateData : stateData
+                          }, '*');
+                      }
                   }
-              }
+              };
+              handleOnPlayerChange(e);
+              
             },
             divId: that.el.id,
             controls: that.controls,

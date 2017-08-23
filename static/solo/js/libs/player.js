@@ -264,31 +264,40 @@
     };
 
     that.onStateChange = function(e){
-        if ('tvp:media:videoended' === e) {
+
+        var checkOverlay = function(event){
+          if ('tvp:media:videoplaying' === e) {
+            var existing = that.el.querySelector('.tvp-overlay');
+            if (existing) {
+              existing.parentNode.removeChild(existing);
+            }
+          }
+        };
+        var handleVideoEnd = function(event){
+          if ('tvp:media:videoended' === event) {
             that.current++;
             if (!that.assets[that.current]) {
                 that.current = 0;
             }
 
             that.play(that.assets[that.current], true);
-        }
-
+          }
+        };
+        var handleOnPlayerChange = function(){
+          var stateData = JSON.parse(JSON.stringify(that.assets[that.current]));
+          stateData.currentTime = that.instance.getCurrentTime();
+          if (that.onPlayerChange) {
+              that.onPlayerChange(e, stateData);
+          }  
+        };
+        
+        handleVideoEnd();
         if ('tvp:media:videoplaying' === e && that.onNext){
             that.onNext(that.assets[that.current]);
         }
-
-        if ('tvp:media:videoplaying' === e) {
-          var existing = that.el.querySelector('.tvp-overlay');
-          if (existing) {
-            existing.parentNode.removeChild(existing);
-          }
-        }
-
-        var stateData = JSON.parse(JSON.stringify(that.assets[that.current]));
-        stateData.currentTime = that.instance.getCurrentTime();
-        if (that.onPlayerChange) {
-            that.onPlayerChange(e, stateData);
-        }
+        checkOverlay();
+        handleOnPlayerChange();
+        
     };
 
     var checks = 0;
