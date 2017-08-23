@@ -206,12 +206,18 @@ window[cbName] = function (data) {
       }
       
       overlayEl.innerHTML = template;
-
+      var configCopy = JSON.parse(JSON.stringify(config));
+      var onPlayerChange = "onPlayerChange" in config ? 'undefined' !== typeof config.onPlayerChange ? config.onPlayerChange :null : null;
+    
+      if(onPlayerChange){
+        configCopy.onPlayerChange = true;
+      }
       clickData = {
         data: data,
         selectedVideo: data[0],
-        runTime: config
+        runTime: configCopy
       };
+      
       
       overlayEl.removeEventListener("click",handleVideoClick,false);
       overlayEl.addEventListener("click",handleVideoClick,false);
@@ -255,12 +261,18 @@ function handlePostMessages(e){
     case 'player_next':
       handlePlayerNext(e);
       break;
+    case 'onPlayerChange':
+      handleOnPlayerChange(e);
     default: 
       // do nothing
   }
 
   handleCallback(e);
 };
+
+function handleOnPlayerChange(e){
+  config.onPlayerChange(e.data.e, e.data.stateData);
+}
 
 function handleCallback(e){
   if (__windowCallbackFunc__) 
