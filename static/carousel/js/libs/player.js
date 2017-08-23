@@ -1,6 +1,7 @@
 ;(function(window,document) {
 
-    var isset = function(o,p){
+    var isIOS = /iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream,
+        isset = function(o,p){
             var val = o;
             if (p) val = o[p];
             return 'undefined' !== typeof val;
@@ -148,6 +149,22 @@
                 }
             }
 
+            var analytics =  new Analytics(),
+                config = {
+                    domain: isset(location,'hostname') ?  location.hostname : '',
+                    loginId: asset.loginId
+                };
+
+            //Update tvpa analytics configuration depending on the video type
+            //(exhange or standard)
+            if (isset(asset,'analyticsLogUrl')) {
+                config.logUrl = asset.analyticsLogUrl;
+                analytics.initConfig(config);
+            } else {
+                config.logUrl = this.apiBaseUrl + '/__tvpa.gif';
+                analytics.initConfig(config);
+            }
+
             if (willCue) {
                 this.instance.cueVideo(asset);
             } else {
@@ -158,16 +175,17 @@
         this.resize = function(){
             if (!that.instance || that.isFullScreen) return;
             var width, height;
-
             if (arguments.length > 1 && arguments[0] && arguments[1]) {
-                width = arguments[0];
-                height = arguments[1];
+                var parentEl = that.el.parentNode;
+                width = parentEl.offsetWidth;
+                height = parentEl.offsetHeight;
+                /*width = arguments[0];
+                height = arguments[1];*/
             } else {
                 var parentEl = that.el.parentNode;
-                width = parentEl.clientWidth;
-                height = parentEl.clientHeight;
+                width = parentEl.offsetWidth;
+                height = parentEl.offsetHeight;
             }
-
             that.instance.resize(width, height);
 
             if (!that.onResize) return;
@@ -202,7 +220,9 @@
                             //We don't want to resize the player here on fullscreen... we need the player be.
                             if (isset(window,'BigScreen')) {
                                 BigScreen.onchange = function(){
-                                    that.isFullScreen = !that.isFullScreen;
+                                    if (!isIOS) {
+                                        that.isFullScreen = !that.isFullScreen;
+                                    }
                                 };
                             }
 

@@ -115,9 +115,8 @@ var targetElement = document.getElementById(config.targetEl);
 targetElement.insertAdjacentHTML('beforebegin', hostCssTag + '<style>' + config.css["host-custom" + (utils.isMobile ? "-mobile" : "")] + '</style><div id="' + id + '-holder" class="tvp-carousel-holder">'+
 '<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe></div>');
 targetElement.parentNode.removeChild(targetElement);
-
 config.id = id;
-config.staticPath = config.baseUrl + "/carousel";
+config.staticPath = config.baseUrl + "carousel";
 config.mobilePath = utils.isMobile ? 'mobile/' : '';
 config.distPath = config.debug ? '/' : '/dist/';
 config.cssPath = config.staticPath + config.distPath + 'css/';
@@ -180,10 +179,6 @@ var updateModalTitle = function(title){
     document.getElementById('tvp-modal-title-' + config.id).innerHTML = title || "";
 };
 
-window.addEventListener("message", function(e){
-    if (!isEvent(e, ":resize")) return;
-    holder.style.height = e.data.height;
-});
 
 var clickData = {};
 var iframeModalHolder = document.getElementById('tvp-modal-iframe-holder-' + config.id);
@@ -201,6 +196,15 @@ var getEventType = function (e) {
     }
     
     return null;
+};
+
+var changeStylesRunTime = function() {
+  utils.isset(config, 'background') ? holder.style.cssText += 'background-color:'+ config.background +';' : null;
+  utils.isset(config, 'title_color') ? iframeDocument.getElementsByClassName('tvp-carousel-title')[0].style.cssText += 'color:'+ config.title_color +';' : null;
+  var videosTitle = iframeDocument.querySelectorAll('.tvp-video-title');
+  for (var i = videosTitle.length - 1; i >= 0; i--) {
+    utils.isset(config, 'item_title_font_color') ? videosTitle[i].style.cssText += 'color:'+ config.item_title_font_color +';' : null;
+  }
 };
 
 function handlePostMessages(e){
@@ -227,6 +231,9 @@ function handlePostMessages(e){
     case 'render':
       handleRender(e);
       break;
+    case 'resize':
+      handleResize(e);
+      break;
     default: 
       // do nothing
   }
@@ -245,11 +252,20 @@ window.addEventListener("message", function(e){
 
 function handleRender(e){
   holder.classList.add("initialized");
+  changeStylesRunTime();
+}
+
+function handleResize(e){
+  if(window.modalOpened){
+    return;
+  }
+  if (!e.data.height) return;
+  holder.style.height = e.data.height;
 }
 
 function handleVideoClick(e){
     var eventData = e.data;
-
+    window.modalOpened = true;
     //performant way to clone object http://jsben.ch/#/bWfk9
     var configCopy = JSON.parse(JSON.stringify(config));
     delete configCopy.no_products_banner;
@@ -319,11 +335,16 @@ function handleModalInitialized(e){
 
   var onOrientationChange = function () {
     if (utils.isIOS && iframeModal && iframeModal.contentWindow) {
-      var width = iframeModal.parentNode.offsetWidth;
-      iframeModal.contentWindow.window.postMessage({
-        event: config.eventPrefix + ':modal_holder_resize',
-        size: [width, Math.floor(width * (9 / 16))]
-      },'*');
+      var tries = 0;
+      setInterval(function(){
+        if(tries===3) return;
+        tries=tries+1;
+        var width = iframeModal.parentNode.offsetWidth;
+        iframeModal.contentWindow.window.postMessage({
+          event: config.eventPrefix + ':modal_holder_resize',
+          size: [width, Math.floor(width * (9 / 16))]
+        },'*');
+      },500);
     }
   };
   var orientationChangeEvent = 'onorientationchange' in window ? 'orientationchange' : 'resize';
@@ -402,6 +423,11 @@ var removeBannerEl = function() {
 };
 
 var closeModal = function () {
+  window.modalOpened = false;
+  window.postMessage({
+    event: config.eventPrefix + ':modal_close'
+  },'*');
+
   utils.addClass('tvp-modal-' + config.id,'tvp-hidden');
   utils.addClass('tvp-modal-overlay-' + config.id,'tvp-hidden');
 
