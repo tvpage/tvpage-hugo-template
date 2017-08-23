@@ -258,11 +258,9 @@ function handleVideoClick(e){
     var eventData = e.data;
 
     //performant way to clone object http://jsben.ch/#/bWfk9
-    var onPlayerChange = "onPlayerChange" in config ? 'undefined' !== typeof config.onPlayerChange ? config.onPlayerChange :null : null;
     var configCopy = JSON.parse(JSON.stringify(config));
-    if(onPlayerChange){
-      configCopy.onPlayerChange = true;
-    }
+    configCopy.onPlayerChange = !!config.onPlayerChange;
+    
     delete configCopy.no_products_banner;
 
     clickData = {

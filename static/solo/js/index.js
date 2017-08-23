@@ -91,7 +91,7 @@
             }
 
             playerSettings.data = data || [];
-            var onPlayerChange = "onPlayerChange" in settings ? 'undefined' !== typeof settings.onPlayerChange ? settings.onPlayerChange :null : null;
+            var onPlayerChange = !!settings.onPlayerChange;
             if(onPlayerChange){
               playerSettings.onPlayerChange = settings.onPlayerChange;
             }

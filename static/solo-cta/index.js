@@ -207,11 +207,8 @@ window[cbName] = function (data) {
       
       overlayEl.innerHTML = template;
       var configCopy = JSON.parse(JSON.stringify(config));
-      var onPlayerChange = "onPlayerChange" in config ? 'undefined' !== typeof config.onPlayerChange ? config.onPlayerChange :null : null;
-    
-      if(onPlayerChange){
-        configCopy.onPlayerChange = true;
-      }
+      configCopy.onPlayerChange = !!config.onPlayerChange;
+      
       clickData = {
         data: data,
         selectedVideo: data[0],
