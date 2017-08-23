@@ -19,6 +19,9 @@
         }
         return o;
       },
+      isFunction = function(obj){
+          return 'undefined' !== typeof obj;
+      },
       hostName = isset(location,'hostname') ?  location.hostname : '';
 
   //The player singleton. We basically create an instance from the tvpage
@@ -36,7 +39,7 @@
     this.autoplay = isset(options.autoplay) ? Number(options.autoplay) : false;
     this.autonext = isset(options.autonext) ? Number(options.autonext) : true;
     this.version = isset(options.player_version) ? options.player_version : null;
-
+    this.onPlayerChange = isset(options.onPlayerChange) && isFunction(options.onPlayerChange) ? options.onPlayerChange : null;
     this.removeControls = isset(options.remove_controls) ? options.remove_controls : null;
     this.techOrder = isset(options.tech_order) ? options.tech_order : null;
     this.analytics = isset(options.analytics) ? options.analytics : null;
@@ -279,6 +282,12 @@
           if (existing) {
             existing.parentNode.removeChild(existing);
           }
+        }
+
+        var stateData = JSON.parse(JSON.stringify(that.assets[that.current]));
+        stateData.currentTime = that.instance.getCurrentTime();
+        if (that.onPlayerChange) {
+            that.onPlayerChange(e, stateData);
         }
     };
 

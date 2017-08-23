@@ -91,6 +91,10 @@
             }
 
             playerSettings.data = data || [];
+            var onPlayerChange = "onPlayerChange" in settings ? 'undefined' !== typeof settings.onPlayerChange ? settings.onPlayerChange :null : null;
+            if(onPlayerChange){
+              playerSettings.onPlayerChange = settings.onPlayerChange;
+            }
             player = new Player('tvp-player-el-'+unique,playerSettings);
 
             if (playlistOption === 'show' && playlistOption) {
