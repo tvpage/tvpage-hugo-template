@@ -265,7 +265,7 @@
 
     that.onStateChange = function(e){
 
-        var checkOverlay = function(event){
+        var checkOverlay = function(){
           if ('tvp:media:videoplaying' === e) {
             var existing = that.el.querySelector('.tvp-overlay');
             if (existing) {
@@ -291,7 +291,7 @@
           }  
         };
         
-        handleVideoEnd();
+        handleVideoEnd(e);
         if ('tvp:media:videoplaying' === e && that.onNext){
             that.onNext(that.assets[that.current]);
         }
