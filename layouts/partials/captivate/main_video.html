@@ -1,0 +1,55 @@
+<main id="main-content" class="main-content">
+  <div class="container">
+      <div class="row">
+        {{- partial (printf "%s/breadcrumbs.html" .Type) . -}}
+      </div>
+      {{- $videoDetails := index $.Site.Data.videos (printf "x%s" .Params.videoid) -}}
+      {{- $.Scratch.Add "videoDetails" $videoDetails -}}
+      <div class="row">
+        <div class="col-lg-10">
+          <h1 id="video-playing-title" class="video-title">{{ .Title }}</h1>              
+        </div>
+        <div class="col-lg-2">
+          <h1 class="products-title">Related Products</h1>            
+        </div>
+      </div>
+      <div class="row player-product">
+        <div class="col-lg-10 col-md-12">
+          {{- partial (printf "%s/player.html" .Type) . -}}
+        </div>
+        <div class="col-lg-2 col-md-12 player-product-products">
+          <div class="video-products-container">
+            {{- partial (printf "%s/products.html" .Type) . -}}
+          </div>
+        </div>
+      </div>
+      <div class="row container tvp-video-container-mobile">
+        <h1 class="video-title-mobile"><span class="title">{{ .Title }}</span> <div id="show-more-mobile" class="carret-container" data-toggle="collapse" data-target=".video-details-row.description .mobile" aria-expanded="false"><span class="caret" ></span></div> </h1>
+        <h2 class="section-header video-details-header">VIDEO DETAILS
+          <div class="social-share">                
+            SHARE: <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ .Permalink }}" class="
+            share-icon facebook"></a>
+            <a target="_blank" href="https://twitter.com/share?text={{ .Title }}&url={{ .Permalink }}" class="share-icon twitter"></a>
+          </div>
+        </h2>
+      </div>
+      <div class="row video-details">
+        <div class="col-sm-12 col-md-12 video-details-row">
+          <p class="video-details-meta">Published on: <span class="published-date">{{ $videoDetails.date_created }}</span></p>
+        </div>
+        <div class="col-sm-12 col-md-12 video-details-row duration">
+          <p class="video-details-meta">Duration: <span>{{ $videoDetails.asset.prettyDuration }}</span></p>
+        </div>
+        <div class="col-sm-12 col-md-12 video-details-row description">
+          <div class="desktop">{{ replace $videoDetails.description "\n" "<br/>" | safeHTML }}</div>
+          <div class="collapse mobile">{{ replace $videoDetails.description "\n" "<br/>" | safeHTML }}</div>
+        </div>
+        <div class="col-sm-12 col-md-12 video-details-row btn-more show-more">
+          <div class="btn-more-line"></div>
+          <div class="btn-more-btn-container">
+            <button type="button" class="btn btn-primary btn-more-button">SHOW MORE</button>
+          </div>
+        </div>
+      </div>
+  </div>
+</main>

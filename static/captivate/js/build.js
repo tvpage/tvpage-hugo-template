@@ -799,8 +799,9 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
             inTimeProducts.destroy();
             inTimeProducts.initialize({
                 videoId: video.id,
-                channelId: TVSite.channelId
+                channelId: TVSite.channelId || video.entityIdParent0
             });
+
             var data = tvp_Player.buildVideoData(video);
             
             if (isMobile) {
