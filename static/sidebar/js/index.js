@@ -50,8 +50,7 @@
   };
 
   loadJS((document.body.getAttribute('data-domain')+'sidebar/js/libs/analytics.js'));
-  loadJS("https://a.tvpage.com/tvpa.min.js");
-
+ 
   var not = function(obj){return 'undefined' === typeof obj};
   if (not(window.Grid) || not(window.Utils) || not(window._tvpa) || not(window.Analytics)) {
     var libsCheck = 0;
