@@ -220,7 +220,7 @@
                         breakpoint: 769,
                         settings: {
                             arrows: false,
-                            centerPadding: Utils.isset(generalOptions.product_holder_slide_center_padding) ? generalOptions.product_holder_slide_center_padding :'25% 0 0',
+                            centerPadding: generalOptions.product_holder_slide_center_padding,
                             centerMode : true,
                             slidesToShow: 1,
                             slidesToScroll: 1,
