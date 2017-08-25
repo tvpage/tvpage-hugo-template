@@ -205,7 +205,7 @@
                               firstPartyCookies: options.firstpartycookies,
                               cookieDomain: options.cookiedomain
                             });
-                            that.analytics.track('ci', {li: loginId});
+                            // ci analytics event removed from here
 
                             that.instance = pl;
                             that.resize();

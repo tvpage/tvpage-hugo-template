@@ -25,16 +25,34 @@ var initialize = function(){
             videos: videos
         }, '*');
     };
-
+    var analytics = new Analytics();
+    analytics.initConfig({
+        logUrl: settings.api_base_url + '/__tvpa.gif',
+        domain: Utils.isset(location, 'hostname') ? location.hostname : '',
+        firstPartyCookies: settings.firstpartycookies,
+        cookieDomain: settings.cookiedomain,
+        loginId: settings.loginid,
+    });
+    analytics.track('ci', {li: settings.loginid});
     Carousel(name, carouselSettings);
 };
 
+var loadJS = function(src){
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = src;
+    document.body.appendChild(script);
+};
+
+loadJS((document.body.getAttribute('data-domain')+'carousel/js/libs/analytics.js'));
+loadJS("https://a.tvpage.com/tvpa.min.js");
+
 var not = function(obj){return 'undefined' === typeof obj};
-if (not(window.jQuery) || not(window.Carousel) || not(window.Utils)) {
+if (not(window.jQuery) || not(window.Carousel) || not(window.Utils) || not(window._tvpa) || not(window.Analytics)) {
     var libsCheck = 0;
     (function libsReady() {
         setTimeout(function(){
-            if (not(window.jQuery) || not(window.Carousel) || not(window.Utils)) {
+            if (not(window.jQuery) || not(window.Carousel) || not(window.Utils) || not(window._tvpa) || not(window.Analytics)) {
                 (++libsCheck < 50) ? libsReady() : console.warn('limit reached');
             } else {
                 initialize();
