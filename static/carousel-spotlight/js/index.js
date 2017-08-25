@@ -48,7 +48,6 @@ var loadJS = function(src){
 };
 
 loadJS((document.body.getAttribute('data-domain')+'carousel-spotlight/js/libs/analytics.js'));
-loadJS("https://a.tvpage.com/tvpa.min.js");
 
 var not = function(obj){return 'undefined' === typeof obj};
 if (not(window.jQuery) || not(window.Carousel) || not(window.Utils) || not(window._tvpa) || not(window.Analytics)) {
