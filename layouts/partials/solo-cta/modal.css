@@ -3,7 +3,9 @@
     "@import url('{{ . | htmlUnescape | safeHTML }}');" +
   {{ end }}
 {{ end }}
-
 "body {" +
     "padding: {{ ($.Scratch.Get "settings").iframe_modal_body_padding }};" +
+"}"+
+".tvplayer-playbutton{"+
+  "opacity: {{ ($.Scratch.Get "settings").play_button_opacity }} !important;" +
 "}"
