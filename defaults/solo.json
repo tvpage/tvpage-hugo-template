@@ -4,7 +4,7 @@
       "type": "text",
       "label": "API Base Url",
       "code": "api_base_url",
-      "value": "//api.tvpage.com/v1"
+      "value": "//test.tvpage.com/api"
     },
     {
       "for": "player",
