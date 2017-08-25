@@ -42,15 +42,6 @@
     Grid(name, gridSettings);
   };
 
-  var loadJS = function(src){
-      var script = document.createElement("script");
-      script.type = "text/javascript";
-      script.src = src;
-      document.body.appendChild(script);
-  };
-
-  loadJS((document.body.getAttribute('data-domain')+'sidebar-single/js/libs/analytics.js'));
-
   var not = function(obj){return 'undefined' === typeof obj};
   if (not(window.Grid) || not(window.Utils) || not(window._tvpa) || not(window.Analytics)) {
     var libsCheck = 0;
