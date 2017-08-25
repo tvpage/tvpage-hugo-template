@@ -10,7 +10,7 @@
     {{ end }}
 "}" +
 
-"#{{ ($.Scratch.Get "settings").name }}.iframe-content{"+
+".iframe-content{"+
   "padding:{{ ($.Scratch.Get "settings").iframe_content_padding }};" +
 "}"+
 
