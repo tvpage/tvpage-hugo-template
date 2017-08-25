@@ -4,7 +4,7 @@
          '<h1 id="videoTitle"></h1>' +
       '</div>' +
       '<div class="tvp-row-featured-title">' +
-         '<h2>{{- ($.Scratch.Get "settings").product_header_title_text -}}</h2>' +
+         '<h2 id="featuredTitle">{{- ($.Scratch.Get "settings").product_header_title_text -}}</h2>' +
       '</div>' +
       '<div class="clear"></div>' +
    '</div>' +
@@ -19,7 +19,7 @@
             '</div>' +
          '</div>' +
          '<div class="tvp-mobile-product-title">' +
-            '<h2>{{- ($.Scratch.Get "settings").product_header_title_text_mobile -}}</h2>' +
+            '<h2>{{- ($.Scratch.Get "settings").product_header_title_text_mobile -}}<div class="tvp-slideUp"><span class="tvp-minus"></span></div></h2>' +
          '</div>' +
          '<div class="tvp-products-scroller" id="tvpProductsView">'+
             '<div class="tvp-content"></div>' +

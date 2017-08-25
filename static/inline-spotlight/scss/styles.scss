@@ -11,6 +11,7 @@ body {
     -webkit-font-smoothing: antialiased !important;
     -moz-osx-font-smoothing: grayscale !important;    
     font-family: Helvetica;
+    -webkit-tap-highlight-color: transparent;
 }
 html, body{
   margin: 0;
@@ -156,10 +157,6 @@ a {
     display: none;
 }
 
-.tvplayer-overlay-thumbnail{
-    top: 1px !important;
-}
-
 .tvp-media-duration {
     position: absolute;
     bottom: 5px;
@@ -169,7 +166,6 @@ a {
     padding: 5px;
     font-size: 10px;
     border: 1px solid #333;
-    display: none;
 }
 
 .no-products{
@@ -182,7 +178,7 @@ a {
         }
     }
     .tvp-player-product-section{
-        @include aspect-ratio(16,9);
+        //@include aspect-ratio(16,9);
         margin-bottom: 2.70%;
         > .tvp-content{
             .tvp-player{
@@ -198,7 +194,7 @@ a {
     }
     &-mobile{
         .tvp-player-product-section{
-            @include aspect-ratio(16,9);
+            //@include aspect-ratio(16,9);
             .tvp-mobile-product-title{
                 display: none;
             }
@@ -226,9 +222,9 @@ a {
     .tvp-row-featured-title {
         display: inline-block;
         height: 100%;
-        width: 30%;
+        width: 25%;
         position: relative;
-        float: left;
+        float: right;
     }
 }
 
@@ -239,7 +235,10 @@ a {
 }
 
 .tvp-player-product-section{
-    @include aspect-ratio(7, 2.8);
+    
+    position : relative;
+    overflow-y: auto;
+    overflow-x : hidden;
     .tvp-mobile-product-title{display: none;}    
     #playerOverlay{
         z-index:10000;
@@ -413,11 +412,11 @@ a {
 }
 .tvp-products-scroller{
     float: right;
-    width: 30%;
-    height: 98.5%;
-    position: relative;
+    width: 25%;
+    position: absolute;
+    right: 0;
     > div#productContent{
-        margin-top: 25%;
+        margin-top: 20%;
     }
     .slick-arrow{
         bottom: 0;
@@ -440,13 +439,13 @@ a {
     cursor: pointer;
     display: block;
     background-color: #fff;
-    padding: 10px;
+    padding: 0 10px;
     margin: 0 5px;
     height: 75%;
     position: relative;
     @extend .tvp-animate;
     &:after{
-        @include active-state(3);
+        @include active-state(0);
         @extend .tvp-animate;
     }
 }
@@ -512,9 +511,6 @@ a {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    &.tvp-products-next{
-        right: 0;
-    }
     .tvp-icon{
         width: 100%;
         height: 100%;
@@ -523,6 +519,7 @@ a {
 }
 
 .tvp-videos-container{
+    position : relative;
     @include aspect-ratio(10, 2.6);
 }
 .tvp-videos-container-arrows {
@@ -541,7 +538,7 @@ a {
 }
 
 .tvp-videos-scroller {
-    margin: 0 auto;
+    margin: 10px auto;
     position: absolute;
     top: 0;
     .slick-list{
@@ -594,7 +591,6 @@ a {
     }    
 .tvp-video-item-title {                
     margin: 0;
-    max-height: 100%;
     overflow: hidden;
     @extend .tvp-animate;
 }
@@ -633,8 +629,39 @@ a {
     body{
         padding: 0 10px!important;
     }
+    .tvp-player-product-section .tvp-mobile-product-title h2 {
+        position:relative;
+        .tvp-slideUp {
+            display : block;
+            width : 20px;
+            height : 20px;
+            background : transparent;
+            float: right;
+            cursor: pointer;
+            pointer-events:none;
+            > span {
+                width : 100%;
+                height : 100%;
+                display: block;
+                background-color: #ccc;
+                border-radius : 50%;
+                background-repeat: no-repeat;
+                background-position: center center;
+                background-size: contain;
+                filter: invert(100%);
+                &.tvp-plus{
+                    background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gICAgPHBhdGggZD0iTTE5IDEzaC02djZoLTJ2LTZINXYtMmg2VjVoMnY2aDZ2MnoiLz4gICAgPHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==);
+                }
+                &.tvp-minus{
+                    background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gICAgPHBhdGggZD0iTTE5IDEzSDV2LTJoMTR2MnoiLz4gICAgPHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==);
+                }
+            }
+        }
+    }
     .tvp-videos-container {
         @include aspect-ratio(16, 9);
+        border-top: 1px dotted #979797;
+        margin-top: 13px;
     }
     .tvp-row-titles{
         margin-bottom: 10px;
@@ -644,26 +671,14 @@ a {
         }
     }
 
-    .tvp-media-duration {
-        display: block;
-    }
-
-    .tvp-video-item {
-        @include aspect-ratio(4,3);
+    .tvp-videos-scroller { 
+        padding: 0 !important;
     }
 
     .tvp-player-product-section{
-        @include aspect-ratio(355,310);
-        .tvp-mobile-product-title{
-            margin: 10px 0 5px;
-            display: block;
-            h2{
-                font-weight: 500;
-                line-height: 17px;
-                margin: 0;
-                padding: 0;
-                font-size: 14px;
-            }
+        //@include aspect-ratio(1,1);
+        .tvp-mobile-product-title{ 
+            display: block
         }
     }
     .tvp-player{
@@ -678,7 +693,7 @@ a {
         width: 100%;
         float: none;
         margin: 0;
-        height: auto;
+        position : relative;
          > div#productContent{
             margin-top: 0;
          }
@@ -690,20 +705,19 @@ a {
         }
     }
     .tvp-product-item{
-        border: 1px solid #DDDDDD;                    
-        padding: 1px;
+        border: 1px solid #333;                    
+        padding: 0;
         opacity: 1;
-        max-height: 28%;
+        max-height: 17% !important;
     }
     .tvp-product-image{
-        @include aspect-ratio(1,1);
+        position:absolute;
         display: inline-block;
         width: 25%;
         height: 100%;
-        margin-top: -1px;
+        margin-top: 0;
     }
     .tvp-product-info{
-        display: inline-block;
         width: calc(75% - 10px);
         float: right;
         background-color: transparent;
@@ -755,8 +769,5 @@ a {
 @media only screen and (max-width: 414px){
     .tvp-video-item{
         @include aspect-ratio(1,1);
-    }
-    .tvp-player-product-section:before{
-        padding-top: 95.7%;
     }
 }
