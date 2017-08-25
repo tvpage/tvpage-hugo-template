@@ -193,8 +193,10 @@
             var params = channel.parameters || {};
             var src = this.options.api_base_url + '/channels/' + (channel.id || that.channelId) + '/videos?X-login-id=' + that.loginId;
             for (var p in params) { src += '&' + p + '=' + params[p];}
-            var cbName = options.callbackName || 'tvp_' + Math.floor(Math.random() * 555);
-            src += '&p=' + that.page + '&n=' + that.itemsPerPage + '&callback='+cbName;
+            var cbName = options.callbackName || 'tvp_' + Math.floor(Math.random() * 555),
+            sortedData = !Utils.isEmpty(options.sort_videos_by) ? '&o='+options.sort_videos_by+'&od='+options.sort_videos_order : '';
+            
+            src += '&p=' + that.page + '&n=' + that.itemsPerPage + 'status=approved'+sortedData+'&callback='+cbName;
             var script = document.createElement('script');
             script.src = src;
 
@@ -241,23 +243,10 @@
             }
         };
 
-        this.dynamicSort =function(property) {
-            var sortOrder = 1;
-            if(property[0] === "-") {
-                sortOrder = -1;
-                property = property.substr(1);
-            }
-            return function (a,b) {
-                var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
-                return result * sortOrder;
-            }
-        };
-
         this.load(function(data){
           var postEvent = '';
           if (data.length) {
-            var sortedData = data.sort(that.dynamicSort(Utils.isset(options, 'sort_videos_by') ? options.sort_videos_by : 'title'));
-            that.render(sortedData);
+            that.render(data);
             postEvent = 'render';
           } else {
             postEvent = 'norender';

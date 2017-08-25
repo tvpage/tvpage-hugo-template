@@ -57,6 +57,13 @@
         {
             "for": "carousel",
             "type": "text",
+            "label": "Sort Videos Order",
+            "code": "sort_videos_order",
+            "value": "ASC"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
             "label": "Title Text Font Family",
             "code": "title_text_font_family",
             "value": "Helvetica"
