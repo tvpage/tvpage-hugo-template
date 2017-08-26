@@ -279,16 +279,6 @@ function handleModalInitialized(e){
           runTime: clickData.runTime
       }, '*');
   }
-  var detectOrientation = function(){
-      var orientation ="noDetected";
-      if(window.innerHeight > window.innerWidth){
-          orientation = "portrait"
-      }
-      if(window.innerWidth > window.innerHeight){
-          orientation = "landscape"
-      }
-      return orientation;
-  };
 
   if (utils.isMobile) {
     var onOrientationChange = function () {
