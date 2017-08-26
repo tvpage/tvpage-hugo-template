@@ -150,7 +150,7 @@
       if (that.windowSize !== newSize) {
         that.windowSize = newSize;
         var isSmall = newSize === 'small';
-        that.itemsPerPage = isSmall ? 2 : (options.items_per_page || 6);
+        that.itemsPerPage = isSmall ? 2 : options.items_per_page;
         that.itemsPerRow = 1;
         //reset page to 0 if we detect a resize, so we don't have trouble loading the grid
         that.page = 0;
