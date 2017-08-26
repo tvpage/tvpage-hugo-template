@@ -128,7 +128,7 @@
                 }
             }
 
-            if (willCue) this.instance.cueVideo(asset);
+            if (willCue && !immediate) this.instance.cueVideo(asset);
             else this.instance.loadVideo(asset);
 
             // this will fix the continues loading of youtube type video on iOS (iPad/iPhone)            
