@@ -363,7 +363,7 @@
                             breakpoint: 769,
                             settings: {
                                 arrows: false,
-                                centerPadding: Utils.isset(options, 'videos_carousel_center_padding') ? options.videos_carousel_center_padding : '35% 0 0',
+                                centerPadding: options.videos_carousel_center_padding,
                                 centerMode : true,
                                 slidesToShow: 2,
                                 slidesToScroll: 2,
