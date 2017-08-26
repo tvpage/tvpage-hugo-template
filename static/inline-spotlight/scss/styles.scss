@@ -631,7 +631,7 @@ a {
     }
     .tvp-player-product-section .tvp-mobile-product-title h2 {
         position:relative;
-        .tvp-slideUp {
+        .tvp-slide-up {
             display : block;
             width : 20px;
             height : 20px;
@@ -708,7 +708,7 @@ a {
         border: 1px solid #333;                    
         padding: 0;
         opacity: 1;
-        max-height: 17% !important;
+        max-height: 17%;
     }
     .tvp-product-image{
         position:absolute;

@@ -28,6 +28,20 @@
             "value": false
         },
         {
+            "for": "carousel",
+            "type": "text",
+            "label": "Sort Videos By",
+            "code": "sort_videos_by",
+            "value": ""
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Sort Videos Order",
+            "code": "sort_videos_order",
+            "value": "ASC"
+        },
+        {
             "for": "player",
             "type": "boolean",
             "label": "Autonext",

@@ -22,19 +22,6 @@
     var hasProducts = true;
     var firstRender = true;
 
-
-    var dynamicSort = function(property) {
-        var sortOrder = 1;
-        if(property[0] === "-") {
-            sortOrder = -1;
-            property = property.substr(1);
-        }
-        return function (a,b) {
-            var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
-            return result * sortOrder;
-        }
-    };
-
     var renderedApproach = function () {
         if (document.body.clientWidth < breakpoint) {
             return 'mobile';
@@ -150,7 +137,7 @@
 
     var showTitle = function(opts, title){
         var $inlineVideoTitle = $(inlineEl).find('#videoTitle'),
-            $inlineFeaturedTitle = $(inlineEl).find('#featuredTitle'),
+            $inlineFeaturedTitle = $(inlineEl).find('#tvp-featured-title'),
             showTitleOption = Utils.isset(opts, 'show_video_title') ? opts.show_video_title : true,
             titleToShow = Utils.isset(opts, 'static_title') ? opts.static_title : title;
         if (!showTitleOption) {
@@ -250,12 +237,12 @@
                 $(templates.productsNav).appendTo(_container);
             }
 
-            var _centerMode = productData.length > 1 ? true : false;
+            var centerMode = productData.length > 1 ? true : false;
             $(productContent).on('init' , function(){
-                $('.tvp-slideUp').css('pointer-events', 'auto');
+                $('.tvp-slide-up').css('pointer-events', 'auto');
             });
             $(productContent).slick({
-                arrows: Utils.isset(options.products_slider_arrows) ? options.products_slider_arrows : true,
+                arrows: options.products_slider_arrows ,
                 prevArrow: document.querySelector('.tvp-products-prev'),
                 nextArrow: document.querySelector('.tvp-products-next'),
                 slidesToShow: 1,
@@ -265,10 +252,10 @@
                         {
                             breakpoint: 769,
                             settings: {
-                                centerMode: _centerMode,
-                                centerPadding: Utils.isset(options.products_slider_center_padding) ? options.products_slider_center_padding :'25% 0 0',
-                                arrows: Utils.isset(options.products_slider_arrows_mobile) ? options.products_slider_arrows_mobile : true,
-                                slidesToShow: Utils.isset(options.products_slider_slides_to_show) ? options.products_slider_slides_to_show : 1,
+                                centerMode: centerMode,
+                                centerPadding: options.products_slider_center_padding,
+                                arrows: options.products_slider_arrows_mobile,
+                                slidesToShow: options.products_slider_slides_to_show
                             }
                         }
                     ]
@@ -355,17 +342,17 @@
                     nextArrow: '.tvp-videos-arrow-next',
                     prevArrow: '.tvp-videos-arrow-prev',
                     dotsClass: 'tvp-slider-dots',
-                    dots: Utils.isset(options, 'video_slider_dots') ? options.video_slider_dots : false,
+                    dots: options.video_slider_dots,
                     responsive:[
                         {
                             breakpoint: 769,
                             settings: {
                                 arrows: false,
-                                centerMode: Utils.isset(options, 'video_slider_center_mode_mobile') ? options.video_slider_center_mode_mobile : true,
-                                centerPadding: Utils.isset(options, 'video_slider_center_padding') ? options.video_slider_center_padding : '35% 0 0',
-                                slidesToShow: Utils.isset(options, 'videos_to_show_mobile') ? options.videos_to_show_mobile : 1,
-                                slidesToScroll: Utils.isset(options, 'videos_to_scroll_mobile') ? options.videos_to_scroll_mobile : 1,
-                                dots: Utils.isset(options, 'video_slider_dots_mobile') ? options.video_slider_dots_mobile : true
+                                centerMode: options.video_slider_center_mode_mobile,
+                                centerPadding: options.video_slider_center_padding,
+                                slidesToShow: options.videos_to_show_mobile ,
+                                slidesToScroll: options.videos_to_scroll_mobile ,
+                                dots: options.video_slider_dots_mobile
                             }
                         }
                     ]
@@ -434,13 +421,13 @@
                     var prodsSection = $('.tvp-player-product-section');
                     var playerHeight = (prodsSection.find('.tvp-player').height() + prodsSection.find('.tvp-mobile-product-title').outerHeight(true));
                     if (isHidden && (renderedApproach() == 'desktop')) {
-                        prodsSection.find('.tvp-slideUp > span').removeClass('tvp-plus').addClass('tvp-minus');
+                        prodsSection.find('.tvp-slide-up > span').removeClass('tvp-plus').addClass('tvp-minus');
                         prodsSection.find('.tvp-products-scroller').fadeTo('fast', 1);
                         isHidden = false;
                     }else if(e.type == 'orientationchange' && (isHidden && (renderedApproach() == 'mobile'))){
                        $('.tvp-player-product-section').find('.tvp-products-scroller').fadeTo('slow', 1, function(){
                             renderProducts(selectedVideo.id, loginId);
-                            $('.tvp-slideUp').css("pointer-events", "auto")
+                            $('.tvp-slide-up').css("pointer-events", "auto")
                                     .children()
                                         .removeClass('tvp-plus')
                                             .addClass('tvp-minus');
@@ -466,10 +453,11 @@
             var getChannelVideos = function(callback){
                 var channel_id = Utils.isEmpty(channel) ? channelId : channel.id;
                 var params = channel.parameters || {};
-                var src = options.api_base_url+ '/channels/' + channel_id + '/videos?X-login-id=' + loginId + '&od=DESC&o=date_created';
+                var src = options.api_base_url+ '/channels/' + channel_id + '/videos?X-login-id=' + loginId;
                 for (var p in params) { src += '&' + p + '=' + params[p];}
-                var cbName = options.callbackName || 'tvp_' + Math.floor(Math.random() * 555);
-                src += '&p=' + page + '&n=' + itemsPerPage + '&callback='+cbName;
+                var cbName = options.callbackName || 'tvp_' + Math.floor(Math.random() * 555),
+                    sortedData = !Utils.isEmpty(options.sort_videos_by) ? '&o='+options.sort_videos_by+'&od='+options.sort_videos_order : '';
+                src += '&p=' + page + '&n=' + itemsPerPage + 'status=approved'+sortedData+'&callback='+cbName;
                 var script = document.createElement('script');
                 script.src = src;
                 window[cbName || 'callback'] = callback;
@@ -539,7 +527,7 @@
             if (getTarget('tvp-video-item')) {
                 if (isHidden) {
                    $('.tvp-player-product-section').find('.tvp-products-scroller').fadeTo('slow', 1, function(){
-                        $('.tvp-slideUp').css("pointer-events", "auto")
+                        $('.tvp-slide-up').css("pointer-events", "auto")
                                 .children()
                                     .removeClass('tvp-plus')
                                         .addClass('tvp-minus');
@@ -563,7 +551,7 @@
             else if (getTarget('tvp-video-play')) {
                 player.instance.play();
             }
-            else if (getTarget('tvp-slideUp')){
+            else if (getTarget('tvp-slide-up')){
                 $(target).css("pointer-events", "none");
                 var prodsSection = $('.tvp-player-product-section');
                 var prodsScroller = prodsSection.find('.tvp-products-scroller');
@@ -592,8 +580,7 @@
         };
 
         load(function(data){
-            var sortedData = data.sort(dynamicSort(Utils.isset(options, 'sort_videos_by') ? options.sort_videos_by : 'title'));
-            render(sortedData);
+            render(data);
         });
     }
 
