@@ -143,13 +143,6 @@
                 }
             }
 
-            //Update tvpa analytics configuration depending on the video type (exhange or standard)
-            this.analytics.initConfig({
-              domain: hostName,
-              logUrl: isset(asset,'analyticsLogUrl') ? asset.analyticsLogUrl : this.apiBaseUrl + '/__tvpa.gif',
-              loginId: asset.loginId
-            });
-
             if (willCue) {
                 this.instance.cueVideo(asset);
             } else {
@@ -201,7 +194,9 @@
                   that.analytics.initConfig({
                     domain: hostName,
                     logUrl: that.apiBaseUrl + '/__tvpa.gif',
-                    loginId: loginId
+                    loginId: loginId,
+                    firstPartyCookies: options.firstpartycookies,
+                    cookieDomain: options.cookiedomain
                   });
                   that.analytics.track('ci', {li: loginId});
 
