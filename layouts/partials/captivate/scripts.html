@@ -8,7 +8,7 @@
     TVSite = window.TVSite || {};
     var apiVersion = {{ getenv "HUGO_API_URL" }};
     TVSite.loginId = {{ .Site.Params.loginId }};
-    TVSite.apiUrl = apiVersion || "https:\/\/api.tvpage.com/v1/";
+    TVSite.apiUrl = apiVersion || "https:\/\/test.tvpage.com/api/";
     TVSite.baseUrl = {{- $baseUrl -}};
     //checking page type
     TVSite.isHomePage = ({{ .Params.videoid }} === "" && {{ .Params.channelid }} === "") ? true : false;
