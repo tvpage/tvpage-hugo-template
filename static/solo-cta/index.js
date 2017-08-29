@@ -362,7 +362,7 @@ var loadJS = function(src){
 };
 
 loadJS(bootstrap.baseUrl+'solo-cta/js/libs/analytics.js');
-loadJS("https://a.tvpage.com/tvpa.min.js");
+loadJS("https://test.tvpage.com/tvpa.min.js");
 
 var not = function(obj){return 'undefined' === typeof obj};
 if (not(window._tvpa) || not(window.Analytics)) {

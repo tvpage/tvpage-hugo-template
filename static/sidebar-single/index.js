@@ -147,7 +147,7 @@ var iframeContent = utils.getIframeHtml({
     domain: config.baseUrl,
     style: config.css.sidebar,
     js: [
-        "//a.tvpage.com/tvpa.min.js",
+        "//test.tvpage.com/tvpa.min.js",
         config.baseUrl+'sidebar-single/js/libs/analytics.js',
         config.debug ? config.jsPath + "libs/utils.js" : "",
         config.debug ? config.jsPath + "grid.js" : "",

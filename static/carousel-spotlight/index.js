@@ -148,7 +148,7 @@ var iframeContent = utils.getIframeHtml({
     domain: config.baseUrl,
     style: config.css.carousel,
     js: [
-        "//a.tvpage.com/tvpa.min.js",
+        "//test.tvpage.com/tvpa.min.js",
         config.baseUrl+'carousel-spotlight/js/libs/analytics.js',
         config.debug ? config.jsPath + "vendor/jquery.js" : "",
         config.debug ? config.jsPath + "libs/utils.js" : "",
