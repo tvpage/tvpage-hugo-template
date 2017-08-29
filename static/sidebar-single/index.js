@@ -147,6 +147,8 @@ var iframeContent = utils.getIframeHtml({
     domain: config.baseUrl,
     style: config.css.sidebar,
     js: [
+        "//a.tvpage.com/tvpa.min.js",
+        config.baseUrl+'sidebar-single/js/libs/analytics.js',
         config.debug ? config.jsPath + "libs/utils.js" : "",
         config.debug ? config.jsPath + "grid.js" : "",
         config.debug ? config.jsPath + "index.js" : "",
@@ -227,12 +229,19 @@ function handlePostMessages(e){
     case 'render':
       handleRender(e);
       break;
+    case 'onPlayerChange':
+      handleOnPlayerChange(e);
+      break;
     default: 
       // do nothing
   }
 
   handleCallback(e);
 };
+
+function handleOnPlayerChange(e){
+  config.onPlayerChange(e.data.e, e.data.stateData);
+}
 
 function handleCallback(e){
   if (__windowCallbackFunc__) 
@@ -252,6 +261,8 @@ function handleVideoClick(e){
 
     //performant way to clone object http://jsben.ch/#/bWfk9
     var configCopy = JSON.parse(JSON.stringify(config));
+    configCopy.onPlayerChange = !!config.onPlayerChange;
+    
     delete configCopy.no_products_banner;
 
     clickData = {

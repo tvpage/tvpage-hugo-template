@@ -91,6 +91,10 @@
             }
 
             playerSettings.data = data || [];
+            var onPlayerChange = !!settings.onPlayerChange;
+            if(onPlayerChange){
+              playerSettings.onPlayerChange = settings.onPlayerChange;
+            }
             player = new Player('tvp-player-el-'+unique,playerSettings);
 
             if (playlistOption === 'show' && playlistOption) {

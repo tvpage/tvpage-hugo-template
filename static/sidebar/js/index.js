@@ -29,15 +29,25 @@
     gridSettings.onLoad = function(){el.classList.add('loading');};
     gridSettings.onLoadEnd = function(){el.classList.remove('loading');};
     
+    var analytics = new Analytics();
+    analytics.initConfig({
+        logUrl: settings.api_base_url + '/__tvpa.gif',
+        domain: Utils.isset(location, 'hostname') ? location.hostname : '',
+        firstPartyCookies: settings.firstpartycookies,
+        cookieDomain: settings.cookiedomain,
+        loginId: settings.loginid,
+    });
+    analytics.track('ci', {li: settings.loginid});
+
     new Grid(name, gridSettings);
   };
-
+ 
   var not = function(obj){return 'undefined' === typeof obj};
-  if (not(window.Grid) || not(window.Utils)) {
+  if (not(window.Grid) || not(window.Utils) || not(window._tvpa) || not(window.Analytics)) {
     var libsCheck = 0;
     (function libsReady() {
       setTimeout(function(){
-        if ((not(window.Grid) || not(window.Utils)) && ++libsCheck < 50) {
+        if ((not(window.Grid) || not(window.Utils) || not(window._tvpa) || not(window.Analytics)) && ++libsCheck < 50) {
           libsReady();
         } else {
           initialize();
