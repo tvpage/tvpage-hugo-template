@@ -156,8 +156,6 @@
     };
 
     this.update = function(newData) {
-        var playlist = settings.data || [];
-
       if (that.noVideosContainer) {
         that.deleteDivs();
         for (var i = 0; i < newData.length; i++) {
@@ -193,7 +191,6 @@
             
             that.scrollMenu.appendChild(newDiv);
             if (Utils.isset(settings, 'menu_item_play_category_tag_attribute') && ("" + settings.menu_item_play_category_tag_attribute).trim().length) {
-                var tagAttribute = settings.menu_item_play_category_tag_attribute;
                 var tagAttributeValue = newData[i][settings.menu_item_play_category_tag_attribute];
                 if (tagAttributeValue) {
                     tagAttributeValue = tagAttributeValue.replace(/_/g,' ');
