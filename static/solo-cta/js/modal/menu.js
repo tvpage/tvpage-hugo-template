@@ -54,8 +54,7 @@
             menuItem.duration = Utils.formatDuration(menuItem.duration);
             menuItemEl.innerHTML += Utils.tmpl(settings.templates['menu-item'], menuItem);
             if (Utils.isset(settings, 'menu_item_play_category_tag_attribute') && ("" + settings.menu_item_play_category_tag_attribute).trim().length) {
-                var tagAttribute = settings.menu_item_play_category_tag_attribute;
-                var tagAttributeValue = menuItem[tagAttribute];
+                var tagAttributeValue = menuItem[settings.menu_item_play_category_tag_attribute];
                 if (tagAttributeValue) {
                     tagAttributeValue = tagAttributeValue.replace(/_/g,' ');
                     var categoryFrag = document.createDocumentFragment(),
@@ -157,13 +156,11 @@
     };
 
     this.update = function(newData) {
-        var playlist = settings.data || [],
-            menuItem;
+        var playlist = settings.data || [];
 
       if (that.noVideosContainer) {
         that.deleteDivs();
         for (var i = 0; i < newData.length; i++) {
-            menuItem = playlist[i];
             that.allVideos.push(newData[i]);
             settings.data.push(newData[i]);
             that.noVideosContainer.setAttribute('id', 'tvp-clearfix');
@@ -171,7 +168,6 @@
             that.noVideosContainer.innerHTML += Utils.tmpl(settings.templates['menu-item'], newData[i]);
             that.scrollMenu.appendChild(that.noVideosContainer);
             if (Utils.isset(settings, 'menu_item_play_category_tag_attribute') && ("" + settings.menu_item_play_category_tag_attribute).trim().length) {
-                var tagAttribute = settings.menu_item_play_category_tag_attribute;
                 var tagAttributeValue = newData[i][settings.menu_item_play_category_tag_attribute];
                 if (tagAttributeValue) {
                     tagAttributeValue = tagAttributeValue.replace(/_/g,' ');
@@ -188,7 +184,6 @@
         var newVivFrag = document.createDocumentFragment(),
             newDiv = document.createElement('div');
         for (var i = 0; i < newData.length; i++) {
-            menuItem = playlist[i];
             that.allVideos.push(newData[i]);
             settings.data.push(newData[i]);
             newDiv.setAttribute('id', 'tvp-clearfix');
