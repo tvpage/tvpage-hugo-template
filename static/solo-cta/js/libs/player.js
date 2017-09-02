@@ -89,6 +89,8 @@
 
         this.onResize = isset(options.onResize) && isFunction(options.onResize) ? options.onResize : null;
         this.onNext = isset(options.onNext) && isFunction(options.onNext) ? options.onNext : null;
+        this.onPlayerReady = isset(options.onPlayerReady) && isFunction(options.onPlayerReady)? options.onPlayerReady : null;
+        this.onFullscreenChange = isset(options.onFullscreenChange) && "function" === typeof options.onFullscreenChange ? options.onFullscreenChange : null;
 
         this.assets = (function(data){
             var assets = [];
@@ -133,7 +135,7 @@
           return null;
         }
 
-        this.play = function(asset,ongoing){
+        this.play = function(asset,ongoing,initial){
             if (!asset) return;
             var willCue = false,
                 isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -148,11 +150,55 @@
                 }
             }
 
+            if (!initial) {
+              this.current = this.getCurrentIndex(asset.assetId);
+            }
+
             if (willCue) {
                 this.instance.cueVideo(asset);
             } else {
                 this.instance.loadVideo(asset);
             }
+        };
+
+        this.createAsset = function(obj){
+            if (!obj || "object" !== typeof obj || isEmpty(obj) || !isset(obj,'asset')) return;
+
+            var asset = obj.asset;
+            asset.assetId = obj.id;
+            asset.assetTitle = obj.title;
+            asset.loginId = obj.loginId;
+
+            if (isset(obj,'events') && obj.events.length) {
+                asset.analyticsLogUrl = obj.analytics;
+                asset.analyticsObj = obj.events[1].data;
+            } else {
+              var channelId = isset(obj,'parentId') ? obj.parentId : ( isset(options,'channel') ? options.channel.id : 0 );
+              if (!channelId && (options.channelId || options.channelid)) {
+                channelId = options.channelId || options.channelid;
+              }
+
+              asset.analyticsObj = {
+                pg: channelId,
+                vd: obj.id,
+                li: obj.loginId
+              };
+            }
+
+            if (!asset.sources) asset.sources = [{ file: asset.videoId }];
+            asset.type = asset.type || 'youtube';
+
+            return asset;
+        };
+
+        this.addData = function(data){
+          if (!data || !data.length) return;
+          var newAssets = [];
+          for (var i = 0; i < data.length; i++) {
+            newAssets.push(this.createAsset(data[i]));
+          }
+
+          this.assets = this.assets.concat(newAssets);
         };
 
         this.resize = function(){
@@ -174,7 +220,17 @@
             that.onResize(that.initialResize, [width, height]);
 
             that.initialResize = false;
-        }
+        };
+
+        this.getCurrentIndex = function(id){
+          var current = 0;
+          for (var i = 0; i < this.assets.length; i++) {
+            if (this.assets[i].assetId === (id || '') ) {
+              current = i;
+            }
+          }
+          return current;
+        };
 
         var checks = 0;
         (function libsReady() {
@@ -214,6 +270,9 @@
                             if (isset(window,'BigScreen')) {
                                 BigScreen.onchange = function(){
                                     that.isFullScreen = !that.isFullScreen;
+                                    if (that.onFullscreenChange) {
+                                      that.onFullscreenChange();
+                                    }
                                 };
                             }
 
@@ -241,8 +300,12 @@
                                 }
                             }
 
-                            that.current = current;
-                            that.play(that.assets[that.current]);
+                            if (that.onPlayerReady) {
+                              that.onPlayerReady();
+                            }
+
+                            that.current = that.getCurrentIndex(startWith);
+                            that.play(that.assets[that.current],null,true); 
                         },
                         onStateChange: function(e){
                             if ('tvp:media:videoended' !== e) return;

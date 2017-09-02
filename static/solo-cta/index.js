@@ -160,15 +160,17 @@ var handleVideoClick = function(){
     id: config.id,
     domain: config.baseUrl,
     style: config.css.modal,
-    className: utils.isMobile ? " mobile" : "",
+    className: utils.isMobile ? " mobile" : "dynamic",
     html: config.templates["modal-content" + (utils.isMobile ? "-mobile" : "")],
     js: [
         "//a.tvpage.com/tvpa.min.js",
         '//imasdk.googleapis.com/js/sdkloader/ima3.js',
         playerUrl,
+        config.debug ? config.jsPath + "vendor/simple-scrollbar.min.js" : "",
         config.debug ? config.jsPath + "libs/utils.js" : "",
         config.debug ? config.jsPath + "libs/analytics.js" : "",
         config.debug ? config.jsPath + "libs/player.js" : "",
+        config.debug ? config.jsPath + "modal/menu.js" : "",
         config.debug ? config.jsPath + "modal/index.js" : "",
         config.debug ? "" : config.jsPath + "modal/scripts.min.js"
     ],
@@ -189,7 +191,7 @@ var jsonpScriptSrc = config.api_base_url + '/channels/' + channelId + '/videos?X
 var params = channel.parameters || {};
 for (var p in params) { jsonpScriptSrc += '&' + p + '=' + params[p];}
 
-jsonpScriptSrc += "&callback=" + cbName;
+jsonpScriptSrc += '&n=' + config.items_per_page + '&p=0&callback=' + cbName;
 jsonpScript.src = jsonpScriptSrc;
 
 window[cbName] = function (data) {
@@ -253,7 +255,7 @@ function handlePostMessages(e){
       handleModalInitialized(e);
       break;
     case 'player_next':
-      handlePlayerNext(e);
+      handlePlayerTitle(e);
       break;
     default: 
       // do nothing
@@ -297,8 +299,9 @@ function handleModalInitialized(e){
   }
 };
 
-function handlePlayerNext(e) {
-    updateModalTitle(e.data.next.assetTitle);
+function handlePlayerTitle(e) {
+  var title = e.data.next.assetTitle || e.data.next.title;
+  updateModalTitle(title);
 };
 
 var closeModal = function () {
