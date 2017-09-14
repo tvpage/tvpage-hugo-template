@@ -175,7 +175,9 @@
             var src = this.options.api_base_url + '/channels/' + (channel.id || that.channelId) + '/videos?X-login-id=' + that.loginId;
             for (var p in params) { src += '&' + p + '=' + params[p];}
             var cbName = options.callbackName || 'tvp_' + Math.floor(Math.random() * 555);
-            src += '&p=' + that.page + '&n=' + that.itemsPerPage + '&callback='+cbName;
+            src += '&p=' + that.page + '&n=' + that.itemsPerPage;
+            src += '&o=' + options.videos_order_by + '&od=' + options.videos_order_direction;
+            src += '&callback=' + cbName;
             var script = document.createElement('script');
             script.src = src;
 
