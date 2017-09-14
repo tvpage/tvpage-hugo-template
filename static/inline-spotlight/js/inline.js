@@ -18,6 +18,7 @@
     var inlineEl = null;
     var productRatingEmptyIsBordered = false;
     var hasProducts = true;
+    var allOptions = {};
 
     var renderedApproach = function () {
         if (document.body.clientWidth < breakpoint) {
@@ -143,6 +144,7 @@
     };
 
     function Inline(el, options) {
+        allOptions = options;
         currentApproach = renderedApproach();
         xchg = options.xchg || false;
         loginId = (options.loginId || options.loginid) || 0;
@@ -166,6 +168,7 @@
         var loadProducts = function(videoId, loginId, fn) {
             if (!videoId) return;
             var src = options.api_base_url +'/videos/' + videoId + '/products?X-login-id=' + loginId;
+            src += '&o=' + allOptions.products_order_by + '&od=' + allOptions.products_order_direction;
             var cbName = 'tvp_' + Math.floor(Math.random() * 555);
             src += '&callback=' + cbName;
             var script = document.createElement('script');
@@ -411,6 +414,8 @@
             var getChannelVideos = function(callback){
                 var channel_id = Utils.isEmpty(channel) ? channelId : channel.id;
                 var params = channel.parameters || {};
+                params.o = options.videos_order_by;
+                params.od = options.videos_order_direction;
                 var src = options.api_base_url+ '/channels/' + channel_id + '/videos?X-login-id=' + loginId;
                 for (var p in params) { src += '&' + p + '=' + params[p];}
                 var cbName = options.callbackName || 'tvp_' + Math.floor(Math.random() * 555);
