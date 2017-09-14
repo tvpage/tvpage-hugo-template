@@ -7,6 +7,18 @@
           "value": "//api.tvpage.com/v1"
         },
         {
+          "type": "text",
+          "label": "Videos Order By",
+          "code": "videos_order_by",
+          "value": "sortOrder"
+        },
+        {
+          "type": "text",
+          "label": "Videos Order Direction",
+          "code": "videos_order_direction",
+          "value": "ASC"
+        },
+        {
             "for": "player",
             "type": "text",
             "label": "Player Version",
@@ -95,6 +107,20 @@
             "label": "Mobile Navigation Bullets",
             "code": "mobile_navigation_bullets",
             "value": false
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Products Order By",
+          "code": "products_order_by",
+          "value": "sortOrder"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Products Order Direction",
+          "code": "products_order_direction",
+          "value": "ASC"
         },
         {
             "for": "modal",

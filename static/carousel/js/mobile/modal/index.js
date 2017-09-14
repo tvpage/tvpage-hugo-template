@@ -41,6 +41,7 @@
         if (!videoId) return;
         var src = settings.api_base_url + '/videos/' + videoId + '/products?X-login-id=' + settings.loginId;
         var cbName = 'tvp_' + Math.floor(Math.random() * 555);
+        src += '&o=' + settings.products_order_by + '&od=' + settings.products_order_direction;
         src += '&callback=' + cbName;
         var script = document.createElement('script');
         script.src = src;
