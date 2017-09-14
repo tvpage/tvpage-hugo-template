@@ -1121,9 +1121,9 @@
                 if(isIOS){
                   $('.analyticsClick').tap({
                     link : true,
-                    tap: function(){
+                    tap: function(options){
                         //e.stopPropagation();
-                        Analytics.registerProductClick($(this).data('id'));
+                        Analytics.registerProductClick($(options).data('id'));
                     }
                   });
                   
