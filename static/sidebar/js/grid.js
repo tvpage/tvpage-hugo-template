@@ -98,6 +98,9 @@
 
       var channel = that.channel || {};
       var params = channel.parameters || {};
+      params.o = options.videos_order_by;
+      params.od = options.videos_order_direction;
+
       var src = this.options.api_base_url + '/channels/' + (channel.id || that.channelId) + '/videos?X-login-id=' + that.loginId;
       for (var p in params) {
         src += '&' + p + '=' + params[p];
