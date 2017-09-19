@@ -24,34 +24,18 @@ var getIframeHtml = function(options) {
     'addJS = function(u){ var s = d.createElement(\'script\');s.src=u;d.body.appendChild(s);},' +
     'addCSS = function(h){ var l = d.createElement(\'link\');l.rel=\'stylesheet\';l.href=h;head.appendChild(l);};';
 
-  var js = options.js || [];
-  if ('function' === typeof js) {
-    js = js();
-  }
-
-  js = js.filter(Boolean);
+  var js = (options.js || []).filter(Boolean);
   for (var i = 0; i < js.length; i++) {
     html += 'addJS(\'' + js[i] + '\');';
   }
 
-  var css = options.css || [];
-  if ('function' === typeof css) {
-    css = css();
-  }
-
-  css = css.filter(Boolean);
+  var css = (options.css || []).filter(Boolean);
   for (var i = 0; i < css.length; i++) {
     html += 'addCSS(\'' + css[i] + '\');';
   }
-
+  
   html += '"><style>' + (options.style || '') + '</style>';
-
-  var content = options.html || '';
-  if ('function' === typeof content) {
-    html += content();
-  } else if (content.trim().length) {
-    html += content;
-  }
+  html += (options.html || '').trim();
 
   return html;
 };
@@ -95,10 +79,12 @@ if (!isObject(bootstrap) || !hasKey(bootstrap, "name") || bootstrap.name.length 
 
 var config = bootstrap;
 var id = bootstrap.name;
-var tvpage = __TVPage__ = window.__TVPage__ || {};
+var tvpage = window.__TVPage__ = window.__TVPage__ || {};
 
 if(hasKey(tvpage.config,id) && isObject(tvpage.config[id]))
   config = extend(config, tvpage.config[id]);
+
+config.id = id;
 
 var __windowCallbackFunc__ = null;
 if (hasKey(config,"onChange") && isFunction(config.onChange)){
@@ -108,71 +94,67 @@ if (hasKey(config,"onChange") && isFunction(config.onChange)){
 
 //We pass the updated merged config object to the tvpage global so the iframe files can retrieve
 //it from the parent global.
-__TVPage__.config[id] = config;
+window.__TVPage__.config[id] = config;
+
 
 //Initial render
 if (!hasKey(config,"targetEl") || !getById(config.targetEl))
   throw new Error("Must provide a targetEl");
 
-var hostCssTagId = "tvp-carousel-host-css";
-var hostCssTag = "";
-if (!getById(hostCssTagId)) {
-  hostCssTag = '<style id="' + hostCssTagId + '">' + config.css["host" + (isMobile ? "-mobile" : "")] + '</style>';
-}
+var type = config.type;
+var mobilePrefix = isMobile ? "-mobile" : "";
+var configCss = config.css;
+var getInitialHtml = function(){
+  var html = "";
+  
+  var hostId = "tvp-"+type+"-host";
+  if (!getById(hostId))
+    html += '<style id="'+hostId+'">' + configCss["host"+mobilePrefix] + '</style>';
+
+  html += '<style>' + configCss["host-custom"+mobilePrefix] + '</style>';
+  html += '<div id="' + id + '-holder" class="tvp-'+type+'-holder">';
+  html += '<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe></div>';
+
+  return html;
+};
 
 var targetElement = getById(config.targetEl);
-targetElement.insertAdjacentHTML('beforebegin', hostCssTag + '<style>' + config.css["host-custom" + (isMobile ? "-mobile" : "")] + '</style><div id="' + id + '-holder" class="tvp-carousel-holder">' +
-  '<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe></div>');
+targetElement.insertAdjacentHTML('beforebegin',getInitialHtml());
 targetElement.parentNode.removeChild(targetElement);
 
-config.id = id;
-config.staticPath = config.baseUrl + "carousel";
-config.mobilePath = isMobile ? 'mobile/' : '';
-config.distPath = config.debug ? '/' : '/dist/';
-config.cssPath = config.staticPath + config.distPath + 'css/';
-config.jsPath = config.staticPath + config.distPath + 'js/';
-config.eventPrefix = ("tvp_" + config.id).replace(/-/g, '_');
+var baseUrl = config.baseUrl;
+var staticPath = baseUrl + type;
+var debug = config.debug;
+var mobilePath = isMobile ? 'mobile/' : '';
+var distPath = debug ? '/' : '/dist/';
+var cssPath = staticPath + distPath + 'css/';
+var jsPath = staticPath + distPath + 'js/';
+var eventPrefix = ("tvp_" + id).replace(/-/g, '_');
+var templates = config.templates;
 
-var modalContainer = document.createElement("div");
-modalContainer.innerHTML = config.templates['modal'].modal;
-
-document.body.appendChild(modalContainer);
-
-var modal = getById("tvp-modal-" + config.id);
-
-modal.classList.add(isMobile ? "mobile" : "desktop");
-
-if (config.modal_title_position.trim().length && "bottom" === config.modal_title_position) {
-  var modalTitle = modal.querySelector("#tvp-modal-title-" + config.id);
-  modalTitle.classList.add("bottom");
-  modal.querySelector(".tvp-modal-body").appendChild(modalTitle);
-}
-
-var holder = getById(config.id + "-holder");
+var holder = getById(id + "-holder");
 var iframe = holder.querySelector("iframe");
 var iframeDocument = iframe.contentWindow.document;
 var iframeContent = getIframeHtml({
-  id: config.id,
+  id: id,
   className: "dynamic",
-  domain: config.baseUrl,
-  style: config.css.carousel,
+  domain: baseUrl,
+  style: configCss.carousel,
   js: [
-    config.debug ? config.jsPath + "vendor/jquery.js" : "",
-    config.debug ? config.jsPath + "libs/utils.js" : "",
-    config.debug ? config.jsPath + "carousel.js" : "",
-    config.debug ? config.jsPath + "index.js" : "",
-    config.debug ? "" : config.jsPath + "scripts.min.js"
+    debug ? jsPath + "vendor/jquery.js" : "",
+    debug ? jsPath + "libs/utils.js" : "",
+    debug ? jsPath + "carousel.js" : "",
+    debug ? jsPath + "index.js" : "",
+    debug ? "" : jsPath + "scripts.min.js"
   ],
   css: [
-    config.debug ? config.cssPath + "styles.css" : "",
-    config.debug ? config.cssPath + "vendor/slick.css" : "",
-    config.debug ? "" : config.cssPath + "styles.min.css"
+    debug ? cssPath + "styles.css" : "",
+    debug ? cssPath + "vendor/slick.css" : "",
+    debug ? "" : cssPath + "styles.min.css"
   ]
 });
 
-//Firefox does not add the iframe content using the onload method.
-//https://bugzilla.mozilla.org/show_bug.cgi?id=728151
-if (isFirefox) {
+if (isFirefox) {//https://bugzilla.mozilla.org/show_bug.cgi?id=728151
   iframe.contentWindow.contents = iframeContent;
   iframe.src = 'javascript:window["contents"]';
 } else {
@@ -181,12 +163,23 @@ if (isFirefox) {
   iframeDocument.close();
 }
 
-var updateModalTitle = function(title) {
-  getById('tvp-modal-title-' + config.id).innerHTML = title || "";
-};
+//Modal
+var modalContainer = document.createElement("div");
+modalContainer.innerHTML = templates['modal'].modal;
+document.body.appendChild(modalContainer);
+
+var modal = getById("tvp-modal-" + id);
+
+addClass(modal,isMobile ? "mobile" : "desktop");
+
+if (config.modal_title_position.trim().length && "bottom" === config.modal_title_position) {
+  var modalTitle = modal.querySelector("#tvp-modal-title-" + id);
+  modalTitle.classList.add("bottom");
+  modal.querySelector(".tvp-modal-body").appendChild(modalTitle);
+}
 
 var clickData = {};
-var iframeModalHolder = getById('tvp-modal-iframe-holder-' + config.id);
+var iframeModalHolder = getById('tvp-modal-iframe-holder-' + id);
 var iframeModal = null;
 var iframeModalDocument = null;
 
@@ -196,8 +189,8 @@ var getEventType = function(e) {
     evt = e.data.event;
   }
 
-  if (evt && evt.length && evt.substr(0, config.eventPrefix.length) === config.eventPrefix) {
-    return evt.substr(config.eventPrefix.length + 1);
+  if (evt && evt.length && evt.substr(0, eventPrefix.length) === eventPrefix) {
+    return evt.substr(eventPrefix.length + 1);
   }
 
   return null;
@@ -270,8 +263,9 @@ function handleResize(e) {
 
 function handleVideoClick(e) {
   var eventData = e.data;
+  
   window.modalOpened = true;
-  //performant way to clone object http://jsben.ch/#/bWfk9
+
   var configCopy = JSON.parse(JSON.stringify(config));
   delete configCopy.no_products_banner;
 
@@ -281,9 +275,9 @@ function handleVideoClick(e) {
     runTime: configCopy
   };
 
-  updateModalTitle(eventData.selectedVideo.title);
-  removeClass('tvp-modal-' + config.id, 'tvp-hidden');
-  removeClass('tvp-modal-overlay-' + config.id, 'tvp-hidden');
+  getById('tvp-modal-title-' + id).innerHTML = eventData.selectedVideo.title || "";
+  removeClass('tvp-modal-' + id, 'tvp-hidden');
+  removeClass('tvp-modal-overlay-' + id, 'tvp-hidden');
 
   if (config.fix_page_scroll) {
     addClass(document.body, 'tvp-modal-open');
@@ -300,28 +294,28 @@ function handleVideoClick(e) {
   }
 
   iframeModalDocument.open().write(getIframeHtml({
-    id: config.id,
-    domain: config.baseUrl,
+    id: id,
+    domain: baseUrl,
     style: config.css["modal-content" + (isMobile ? "-mobile" : "")],
     className: isMobile ? "mobile" : "",
-    html: config.templates["modal-content" + (isMobile ? "-mobile" : "")].body,
+    html: templates["modal-content" + (isMobile ? "-mobile" : "")].body,
     js: [
       "//a.tvpage.com/tvpa.min.js",
       '//imasdk.googleapis.com/js/sdkloader/ima3.js',
       playerUrl,
-      config.debug && isMobile ? config.jsPath + "/vendor/jquery.js" : "",
-      config.debug && !isMobile ? config.jsPath + "/vendor/perfect-scrollbar.min.js" : "",
-      config.debug ? config.jsPath + "/libs/utils.js" : "",
-      config.debug ? config.jsPath + "/libs/analytics.js" : "",
-      config.debug ? config.jsPath + "/libs/player.js" : "",
-      config.debug ? config.jsPath + "/" + config.mobilePath + "modal/index.js" : "",
-      config.debug ? "" : config.jsPath + config.mobilePath + "modal/scripts.min.js"
+      debug && isMobile ? jsPath + "/vendor/jquery.js" : "",
+      debug && !isMobile ? jsPath + "/vendor/perfect-scrollbar.min.js" : "",
+      debug ? jsPath + "/libs/utils.js" : "",
+      debug ? jsPath + "/libs/analytics.js" : "",
+      debug ? jsPath + "/libs/player.js" : "",
+      debug ? jsPath + "/" + mobilePath + "modal/index.js" : "",
+      debug ? "" : jsPath + mobilePath + "modal/scripts.min.js"
     ],
     css: [
-      config.debug ? config.cssPath + "/" + config.mobilePath + "modal/styles.css" : "",
-      config.debug && isMobile ? config.cssPath + "/vendor/slick.css" : "",
-      config.debug && !isMobile ? config.cssPath + "/vendor/perfect-scrollbar.min.css" : "",
-      config.debug ? "" : config.cssPath + "/" + config.mobilePath + "modal/styles.min.css"
+      debug ? cssPath + "/" + mobilePath + "modal/styles.css" : "",
+      debug && isMobile ? cssPath + "/vendor/slick.css" : "",
+      debug && !isMobile ? cssPath + "/vendor/perfect-scrollbar.min.css" : "",
+      debug ? "" : cssPath + "/" + mobilePath + "modal/styles.min.css"
     ]
   }));
 
@@ -331,7 +325,7 @@ function handleVideoClick(e) {
 function handleModalInitialized(e) {
   if (iframeModal.contentWindow) {
     iframeModal.contentWindow.postMessage({
-      event: config.eventPrefix + ':modal_data',
+      event: eventPrefix + ':modal_data',
       data: clickData.data,
       selectedVideo: clickData.selectedVideo,
       runTime: clickData.runTime
@@ -346,7 +340,7 @@ function handleModalInitialized(e) {
         tries = tries + 1;
         var width = iframeModal.parentNode.offsetWidth;
         iframeModal.contentWindow.window.postMessage({
-          event: config.eventPrefix + ':modal_holder_resize',
+          event: eventPrefix + ':modal_holder_resize',
           size: [width, Math.floor(width * (9 / 16))]
         }, '*');
       }, 500);
@@ -358,13 +352,13 @@ function handleModalInitialized(e) {
 };
 
 function handlePlayerNext(e) {
-  updateModalTitle(e.data.next.assetTitle);
+  getById('tvp-modal-title-' + id).innerHTML = e.data.next.assetTitle || "";
   removeBannerEl();
 };
 
 function handleModalNoProducts(e) {
   if (!isMobile) {
-    var label = getById('tvp-products-headline-' + config.id);
+    var label = getById('tvp-products-headline-' + id);
     if (label) {
       label.parentNode.removeChild(label);
     }
@@ -393,14 +387,14 @@ function handleModalResize(e) {
 };
 
 function handleModalProducts(e) {
-  if (!isMobile && !getById('tvp-products-headline-' + config.id) && config.products_headline_display) {
+  if (!isMobile && !getById('tvp-products-headline-' + id) && config.products_headline_display) {
     var label = document.createElement('div');
     label.className = 'tvp-products-headline';
-    label.id = 'tvp-products-headline-' + config.id;
+    label.id = 'tvp-products-headline-' + id;
     label.innerHTML = config.products_headline_text;
 
     if (config.products_info_tooltip && config.products_message.trim().length) {
-      var tooltipHtml = config.templates['modal'].tooltip;
+      var tooltipHtml = templates['modal'].tooltip;
       var tooltipDiv = document.createElement('div');
       tooltipDiv.classList.add('tvp-tooltip');
       tooltipDiv.innerHTML = tooltipHtml;
@@ -412,7 +406,7 @@ function handleModalProducts(e) {
       this.classList.contains('active') ? this.classList.remove('active') : this.classList.add('active');
     };
 
-    var modalHeader = getById('tvp-modal-header-' + config.id);
+    var modalHeader = getById('tvp-modal-header-' + id);
     modalHeader.appendChild(label);
   }
 
@@ -430,17 +424,17 @@ var removeBannerEl = function() {
 var closeModal = function() {
   window.modalOpened = false;
   window.postMessage({
-    event: config.eventPrefix + ':modal_close'
+    event: eventPrefix + ':modal_close'
   }, '*');
 
-  addClass('tvp-modal-' + config.id, 'tvp-hidden');
-  addClass('tvp-modal-overlay-' + config.id, 'tvp-hidden');
+  addClass('tvp-modal-' + id, 'tvp-hidden');
+  addClass('tvp-modal-overlay-' + id, 'tvp-hidden');
 
   if (config.fix_page_scroll) {
     removeClass(document.body, 'tvp-modal-open');
   }
 
-  var prodHeadline = getById('tvp-products-headline-' + config.id);
+  var prodHeadline = getById('tvp-products-headline-' + id);
   if (prodHeadline) {
     removeClass(prodHeadline, 'active');
   }
@@ -451,9 +445,9 @@ var closeModal = function() {
   iframeModal.parentNode.removeChild(iframeModal);
 };
 
-getById("tvp-modal-close-" + config.id).addEventListener('click', closeModal, false);
+getById("tvp-modal-close-" + id).addEventListener('click', closeModal, false);
 
-var modalEl = getById("tvp-modal-" + config.id);
+var modalEl = getById("tvp-modal-" + id);
 modalEl.addEventListener('click', function(e) {
   if (e.target === modalEl || !modalEl.contains(e.target)) {
     closeModal();
