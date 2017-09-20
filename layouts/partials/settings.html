@@ -1,13 +1,11 @@
-{{- range $i, $def := (getJSON (printf "themes/tvpage/defaults/%s.json" .Type)).option -}}
+{{- $type := .Type -}}
+{{- range (getJSON (printf "themes/tvpage/defaults/%s.json" $type)).option -}}
 {{- $.Scratch.SetInMap "settings" .code .value -}}
 {{- end -}}
-{{- $type := .Type -}}
 {{- range readDir "/" -}}
 	{{- if eq .Name "defaults" -}}
-		{{- $directory := "defaults/" -}}
-		{{- $filename := (printf "%s.json" $type) -}}
-		{{- if (where (readDir $directory) "Name" $filename) -}}
-			{{- range $i, $def := (getJSON (printf "defaults/%s.json" $type)).option -}}
+		{{- if (where (readDir "defaults/") "Name" (printf "%s.json" $type)) -}}
+			{{- range (getJSON (printf "defaults/%s.json" $type)).option -}}
 			{{- $.Scratch.SetInMap "settings" .code .value -}}
 			{{- end -}}
 		{{- end -}}
