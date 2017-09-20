@@ -49,7 +49,7 @@
         (function libsLoadingPoll() {
             setTimeout(function() {
                 if (isLoadingLibs()) {
-                    (++libsLoadingCheck < 150) ? libsLoadingPoll(): console.warn('limit reached');
+                    (++libsLoadingCheck < 200) ? libsLoadingPoll(): console.warn('limit reached');
                 } else {
                     initialize();
                 }

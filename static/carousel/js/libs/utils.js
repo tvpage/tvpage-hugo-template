@@ -8,6 +8,10 @@
 
   Utils.prototype.isIOS = (/iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(userAgent) && !window.MSStream);
 
+  Utils.prototype.getById = function(id) {
+    return document.getElementById(id);
+  };
+
   Utils.prototype.getByClass = function(c) {
     return document.getElementsByClassName(c || '')[0];
   };

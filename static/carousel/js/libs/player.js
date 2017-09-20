@@ -234,6 +234,7 @@
                             }
 
                             that.current = current;
+
                             that.play(that.assets[that.current]);
                         },
                         onStateChange: function(e){
@@ -284,7 +285,7 @@
                         playerOptions[o] = that.options[o];
                       }
                     }
-                    
+
                     that.player = new TVPage.player(playerOptions);
                 }
             },150);
