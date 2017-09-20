@@ -2,9 +2,13 @@
 {{- range (getJSON (printf "themes/tvpage/defaults/%s.json" $type)).option -}}
 {{- $.Scratch.SetInMap "settings" .code .value -}}
 {{- end -}}
+1
 {{- range readDir "/" -}}
+2
 	{{- if eq .Name "defaults" -}}
+	3
 		{{- if (where (readDir "defaults/") "Name" (printf "%s.json" $type)) -}}
+		4
 			{{- range (getJSON (printf "defaults/%s.json" $type)).option -}}
 			{{- $.Scratch.SetInMap "settings" .code .value -}}
 			{{- end -}}
