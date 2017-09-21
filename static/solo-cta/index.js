@@ -273,12 +273,14 @@ window.addEventListener("message", function(e){
 
 function handleModalInitialized(e){
   if (iframeModal.contentWindow) {
-      iframeModal.contentWindow.postMessage({
+    var obj = {
           event: config.eventPrefix + ':modal_data',
           data: clickData.data,
           selectedVideo: clickData.selectedVideo,            
           runTime: clickData.runTime
-      }, '*');
+      };
+      obj = JSON.parse(JSON.stringify(obj));
+      iframeModal.contentWindow.postMessage(obj, '*');
   }
 
   if (utils.isIOS) {
