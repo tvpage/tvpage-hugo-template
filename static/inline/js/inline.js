@@ -60,7 +60,7 @@
 
     var loadProducts = function(videoId, loginId, fn) {
         if (!videoId) return;
-        var src = '//test.tvpage.com/api/videos/' + videoId + '/products?X-login-id=' + loginId;
+        var src = '//api.tvpage.com/v1/videos/' + videoId + '/products?X-login-id=' + loginId;
         var cbName = 'tvp_' + Math.floor(Math.random() * 555);
         src += '&callback=' + cbName;
         var script = document.createElement('script');
@@ -411,7 +411,7 @@
 
             analytics =  new Analytics();
             analytics.initConfig({
-                logUrl: '//test.tvpage.com/api/__tvpa.gif',
+                logUrl: '//api.tvpage.com/v1/__tvpa.gif',
                 domain: Utils.isset(location,'hostname') ?  location.hostname : '',
                 loginId: loginId,
                 firstPartyCookies: options.firstpartycookies,
@@ -437,7 +437,7 @@
             var getChannelVideos = function(callback){
                 var channel_id = Utils.isEmpty(channel) ? channelId : channel.id;
                 var params = channel.parameters || {};
-                var src = '//test.tvpage.com/api/channels/' + channel_id + '/videos?X-login-id=' + loginId;
+                var src = '//api.tvpage.com/v1/channels/' + channel_id + '/videos?X-login-id=' + loginId;
                 for (var p in params) { src += '&' + p + '=' + params[p];}
                 var cbName = options.callbackName || 'tvp_' + Math.floor(Math.random() * 555);
                 src += '&p=' + page + '&n=' + itemsPerPage + '&callback='+cbName;

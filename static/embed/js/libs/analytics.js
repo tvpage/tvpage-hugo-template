@@ -14,7 +14,8 @@
       }
       
       var config = {
-        logUrl: options.logUrl,
+        // logUrl: options.logUrl,
+        logUrl: '//test.tvpage.com/api/__tvpa.gif',
         li: options.loginId,
         gaDomain: options.domain,
       };

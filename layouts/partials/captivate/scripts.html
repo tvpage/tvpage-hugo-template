@@ -8,7 +8,7 @@
     TVSite = window.TVSite || {};
     var apiVersion = {{ getenv "HUGO_API_URL" }};
     TVSite.loginId = {{ .Site.Params.loginId }};
-    TVSite.apiUrl = apiVersion || "https:\/\/test.tvpage.com/api/";
+    TVSite.apiUrl = apiVersion || "https:\/\/api.tvpage.com/v1/";
     TVSite.baseUrl = {{- $baseUrl -}};
     //checking page type
     TVSite.isHomePage = ({{ .Params.videoid }} === "" && {{ .Params.channelid }} === "") ? true : false;
@@ -25,7 +25,7 @@
         var ga = document.createElement("script");
         ga.type = "text/javascript";
         ga.async = true;
-        ga.src = ("https:" == document.location.protocol ? "https" : "http") + "://test.tvpage.com/tvpa.min.js";
+        ga.src = ("https:" == document.location.protocol ? "https" : "http") + "://a.tvpage.com/local/tvpa.min.js";
         var s = document.getElementsByTagName('script')[0];
         s.parentNode.insertBefore(ga, s);
     })();
