@@ -23,7 +23,7 @@
       }
       return o;
     };
-
+  var eventPrefix = "tvp_" + (document.body.getAttribute("data-id") || "").replace(/-/g,'_');
   //The player singleton. We basically create an instance from the tvpage
   //player and expose most utilities, helping to encapsualte what is required for a few players to co-exist.
   function Player(el, options, startWith) {
@@ -39,7 +39,7 @@
     this.autoplay = isset(options.autoplay) ? Number(options.autoplay) : false;
     this.autonext = isset(options.autonext) ? Number(options.autonext) : true;
     this.version = isset(options.player_version) ? options.player_version : null;
-    
+    this.onPlayerChange = isset(options.onPlayerChange) ? options.onPlayerChange : null;
     this.removeControls = isset(options.remove_controls) ? options.remove_controls : null;
     this.techOrder = isset(options.tech_order) ? options.tech_order : null;
     this.analytics = isset(options.analytics) ? options.analytics : null;
@@ -239,18 +239,31 @@
               that.play(that.assets[that.current]);
             },
             onStateChange: function(e) {
-              if ('tvp:media:videoended' !== e) return;
+              if ('tvp:media:videoended' === e){
+                  that.current++;
+                  if (!that.assets[that.current]) {
+                      that.current = 0;
+                  }
 
-              that.current++;
-              if (!that.assets[that.current]) {
-                that.current = 0;
-              }
-
-              var next = that.assets[that.current];
-              that.play(next, true);
-              if (that.onNext) {
-                that.onNext(next);
-              }
+                  var next = that.assets[that.current];
+                  that.play(next, true);
+                  if(that.onNext) {
+                      that.onNext(next);
+                  }
+              } 
+              var handleOnPlayerChange = function(e){
+                    if (that.onPlayerChange && window.parent) {
+                        var stateData = JSON.parse(JSON.stringify(that.assets[that.current]));
+                        stateData.currentTime = that.instance.getCurrentTime();
+                        window.parent.postMessage({
+                            event: eventPrefix + ':onPlayerChange',
+                            e: e,
+                            stateData : stateData
+                        }, '*');
+                    }
+              };
+              handleOnPlayerChange(e);
+              
             },
             divId: that.el.id,
             controls: that.controls,
