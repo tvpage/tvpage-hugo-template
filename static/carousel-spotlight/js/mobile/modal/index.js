@@ -270,17 +270,14 @@
                 settings.loginId = loginId;
 
                 channelId = Utils.isset(settings.channel) && Utils.isset(settings.channel.id) ? settings.channel.id : (settings.channelId || settings.channelid);
-
-                analytics = new Analytics();
+                analytics =  new Analytics();
                 analytics.initConfig({
+                    domain: Utils.isset(location,'hostname') ?  location.hostname : '',
                     logUrl: settings.api_base_url + '/__tvpa.gif',
-                    domain: Utils.isset(location, 'hostname') ? location.hostname : '',
                     loginId: loginId,
                     firstPartyCookies: settings.firstpartycookies,
                     cookieDomain: settings.cookiedomain
                 });
-                analytics.track('ci', {li: loginId});
-
                 var selectedVideo = data.selectedVideo;
                 if (Utils.isset(selectedVideo, 'products')) {
                     render(selectedVideo.products,settings);

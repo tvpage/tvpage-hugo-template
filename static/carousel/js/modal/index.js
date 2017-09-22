@@ -306,12 +306,7 @@
                     firstPartyCookies: settings.firstpartycookies,
                     cookieDomain: settings.cookiedomain
                 });
-
-
-                analytics.track('ci', {
-                    li: loginId
-                });
-
+                //here was removed the analytics tracking
                 var selectedVideo = data.selectedVideo;
                 if (Utils.isset(selectedVideo,'products')) {
                     render(selectedVideo.products,settings);

@@ -1,3 +1,5 @@
+(function(window, document){
+
 var utils = {
     isFirefox: /Firefox/i.test(navigator.userAgent),
     isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
@@ -76,21 +78,7 @@ var utils = {
     }
 };
 
-if (typeof bootstrap !== "object" || !bootstrap.hasOwnProperty('name') || bootstrap.name.length<=0 ) {
-  throw new Error('Must pass bootstrap and boostrap.name');
-}
-
-var id = bootstrap.name;
-
-//If there's config object for this specific widget, then we merged in... extend?
-window.__TVPage__ = window.__TVPage__ || {};
-__TVPage__.config = __TVPage__.config || {};
-
-if ("object" === typeof __TVPage__.config[id]) {
-    __TVPage__.config[id] = utils.extend(bootstrap, __TVPage__.config[id]);
-} else {
-    __TVPage__.config[id] = bootstrap;
-}
+var initialize = function(){
 
 var __windowCallbackFunc__ = null;
 if (   __TVPage__.config[id].hasOwnProperty('onChange') && typeof   __TVPage__.config[id].onChange == "function" ) {
@@ -332,3 +320,65 @@ modalEl.addEventListener('click', function(e){
       closeModal();
   }
 }, false);
+
+
+    var analytics = new Analytics();
+    analytics.initConfig({
+        logUrl: bootstrap.api_base_url + '/__tvpa.gif',
+        domain: utils.isset(location, 'hostname') ? location.hostname : '',
+        firstPartyCookies: bootstrap.firstpartycookies,
+        cookieDomain: bootstrap.cookiedomain,
+        loginId: bootstrap.loginid,
+    });
+    analytics.track('ci', {li: bootstrap.loginid});
+
+
+}
+
+
+if (typeof bootstrap !== "object" || !bootstrap.hasOwnProperty('name') || bootstrap.name.length<=0 ) {
+  throw new Error('Must pass bootstrap and boostrap.name');
+}
+
+var id = bootstrap.name;
+
+//If there's config object for this specific widget, then we merged in... extend?
+window.__TVPage__ = window.__TVPage__ || {};
+__TVPage__.config = __TVPage__.config || {};
+
+if ("object" === typeof __TVPage__.config[id]) {
+    __TVPage__.config[id] = utils.extend(bootstrap, __TVPage__.config[id]);
+} else {
+    __TVPage__.config[id] = bootstrap;
+}
+
+
+
+var loadJS = function(src){
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = src;
+    document.body.appendChild(script);
+};
+
+loadJS(bootstrap.baseUrl+'solo-cta/js/libs/analytics.js');
+loadJS("https://a.tvpage.com/tvpa.min.js");
+
+var not = function(obj){return 'undefined' === typeof obj};
+if (not(window._tvpa) || not(window.Analytics)) {
+  var libsCheck = 0;
+  (function libsReady() {
+    setTimeout(function(){
+      if ((not(window._tvpa) || not(window.Analytics)) && ++libsCheck < 50) {
+        libsReady();
+      } else {
+        initialize();
+      }
+    },150);
+  })();
+} else {
+  initialize();
+}
+
+
+}(window, document));

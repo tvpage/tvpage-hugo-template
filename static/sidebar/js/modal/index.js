@@ -307,10 +307,6 @@
                     firstPartyCookies: settings.firstpartycookies,
                     cookieDomain: settings.cookiedomain
                 });
-                analytics.track('ci', {
-                    li: loginId
-                });
-
                 var selectedVideo = data.selectedVideo;
                 if (Utils.isset(selectedVideo,'products')) {
                     render(selectedVideo.products,settings);
