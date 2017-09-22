@@ -113,7 +113,7 @@ if ( !config.hasOwnProperty('targetEl') ||  !document.getElementById(config.targ
 
 var targetElement = document.getElementById(config.targetEl);
 targetElement.insertAdjacentHTML('beforebegin', hostCssTag + '<style>' + config.css["host-custom" + (utils.isMobile ? "-mobile" : "")] + '</style><div id="' + id + '-holder" class="tvp-sidebar-holder">'+
-'<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe></div>');
+'<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe></div>');
 targetElement.parentNode.removeChild(targetElement);
 
 config.id = id;

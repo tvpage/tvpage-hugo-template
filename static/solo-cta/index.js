@@ -206,11 +206,12 @@ window[cbName] = function (data) {
       }
       
       overlayEl.innerHTML = template;
-
+      var configCopy = JSON.parse(JSON.stringify(config));
+      delete configCopy.onPlayerChange;
       clickData = {
         data: data,
         selectedVideo: data[0],
-        runTime: config
+        runTime: configCopy
       };
       
       overlayEl.removeEventListener("click",handleVideoClick,false);
@@ -273,14 +274,12 @@ window.addEventListener("message", function(e){
 
 function handleModalInitialized(e){
   if (iframeModal.contentWindow) {
-    var obj = {
-          event: config.eventPrefix + ':modal_data',
-          data: clickData.data,
-          selectedVideo: clickData.selectedVideo,            
-          runTime: clickData.runTime
-      };
-      obj = JSON.parse(JSON.stringify(obj));
-      iframeModal.contentWindow.postMessage(obj, '*');
+    iframeModal.contentWindow.postMessage({
+      event: config.eventPrefix + ':modal_data',
+      data: clickData.data,
+      selectedVideo: clickData.selectedVideo,            
+      runTime: clickData.runTime
+    }, '*');
   }
 
   if (utils.isIOS) {

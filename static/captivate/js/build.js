@@ -1249,9 +1249,9 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
                 if(isIOS){
                   $('.analyticsClick').tap({
                     link : true,
-                    tap: function(options){
+                    tap: function(el){
                         //e.stopPropagation();
-                        Analytics.registerProductClick($(options).data('id'));
+                        Analytics.registerProductClick($(el).data('id'));
                     }
                   });
                   
