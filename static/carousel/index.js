@@ -1,4 +1,5 @@
 //Helpers
+var body = document.body;
 var userAgent = navigator.userAgent;
 var isFirefox = /Firefox/i.test(userAgent);
 var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
@@ -71,6 +72,18 @@ var extend = function(out) {
 var getById = function(id){
   return document.getElementById(id);
 };
+var getEventType = function(e) {
+  var evt = null
+  if (e && isset(e, "data") && isset(e.data, "event")) {
+    evt = e.data.event;
+  }
+
+  if (evt && evt.length && evt.substr(0, eventPrefix.length) === eventPrefix) {
+    return evt.substr(eventPrefix.length + 1);
+  }
+
+  return null;
+};
 
 
 //Configuration
@@ -103,25 +116,7 @@ if (!hasKey(config,"targetEl") || !getById(config.targetEl))
 
 var type = config.type;
 var mobilePrefix = isMobile ? "-mobile" : "";
-var configCss = config.css;
-var getInitialHtml = function(){
-  var html = "";
-  
-  var hostId = "tvp-"+type+"-host";
-  if (!getById(hostId))
-    html += '<style id="'+hostId+'">' + configCss["host"+mobilePrefix] + '</style>';
-
-  html += '<style>' + configCss["host-custom"+mobilePrefix] + '</style>';
-  html += '<div id="' + id + '-holder" class="tvp-'+type+'-holder">';
-  html += '<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe></div>';
-
-  return html;
-};
-
-var targetElement = getById(config.targetEl);
-targetElement.insertAdjacentHTML('beforebegin',getInitialHtml());
-targetElement.parentNode.removeChild(targetElement);
-
+var css = config.css;
 var baseUrl = config.baseUrl;
 var staticPath = baseUrl + type;
 var debug = config.debug;
@@ -132,14 +127,32 @@ var jsPath = staticPath + distPath + 'js/';
 var eventPrefix = ("tvp_" + id).replace(/-/g, '_');
 var templates = config.templates;
 
+var getInitialHtml = function(){
+  var html = "";
+  
+  var hostId = "tvp-"+type+"-host";
+  if (!getById(hostId))
+    html += '<style id="'+hostId+'">' + css["host"+mobilePrefix] + '</style>';
+
+  html += '<style>' + css["host-custom"+mobilePrefix] + '</style>';
+  html += '<div id="' + id + '-holder" class="tvp-'+type+'-holder">';
+  html += '<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe></div>';
+
+  return html;
+};
+
+var targetElement = getById(config.targetEl);
+targetElement.insertAdjacentHTML('beforebegin',getInitialHtml());
+targetElement.parentNode.removeChild(targetElement);
+
 var holder = getById(id + "-holder");
 var iframe = holder.querySelector("iframe");
 var iframeDocument = iframe.contentWindow.document;
-var iframeContent = getIframeHtml({
+var iframeHtml = getIframeHtml({
   id: id,
   className: "dynamic",
   domain: baseUrl,
-  style: configCss.carousel,
+  style: css.carousel,
   js: [
     debug ? jsPath + "vendor/jquery.js" : "",
     debug ? jsPath + "libs/utils.js" : "",
@@ -154,60 +167,71 @@ var iframeContent = getIframeHtml({
   ]
 });
 
-if (isFirefox) {//https://bugzilla.mozilla.org/show_bug.cgi?id=728151
-  iframe.contentWindow.contents = iframeContent;
+//First iframe render (//https://bugzilla.mozilla.org/show_bug.cgi?id=728151)
+if (isFirefox) {
+  iframe.contentWindow.contents = iframeHtml;
   iframe.src = 'javascript:window["contents"]';
 } else {
-  var iframeDocument = iframe.contentWindow.document;
-  iframeDocument.open().write(iframeContent);
+  iframeDocument.open().write(iframeHtml);
   iframeDocument.close();
 }
 
 //Modal
 var modalContainer = document.createElement("div");
 modalContainer.innerHTML = templates['modal'].modal;
-document.body.appendChild(modalContainer);
-
-var modal = getById("tvp-modal-" + id);
-
-addClass(modal,isMobile ? "mobile" : "desktop");
-
-if (config.modal_title_position.trim().length && "bottom" === config.modal_title_position) {
-  var modalTitle = modal.querySelector("#tvp-modal-title-" + id);
-  modalTitle.classList.add("bottom");
-  modal.querySelector(".tvp-modal-body").appendChild(modalTitle);
-}
+body.appendChild(modalContainer);
 
 var clickData = {};
 var iframeModalHolder = getById('tvp-modal-iframe-holder-' + id);
 var iframeModal = null;
 var iframeModalDocument = null;
+var modal = getById("tvp-modal-" + id);
 
-var getEventType = function(e) {
-  var evt = null
-  if (e && isset(e, "data") && isset(e.data, "event")) {
-    evt = e.data.event;
-  }
+addClass(modal,isMobile ? "mobile" : "desktop");
 
-  if (evt && evt.length && evt.substr(0, eventPrefix.length) === eventPrefix) {
-    return evt.substr(eventPrefix.length + 1);
-  }
+if (config.modal_title_position.trim().length && "bottom" === config.modal_title_position) {
+  var modalTitleEl = modal.querySelector("#tvp-modal-title-" + id);
+  addClass(modalTitleEl,"bottom")
+  modal.querySelector(".tvp-modal-body").appendChild(modalTitleEl);
+}
 
-  return null;
-};
-
-var changeStylesRunTime = function() {
-  isset(config, 'background') ? holder.style.cssText += 'background-color:' + config.background + ';' : null;
-  isset(config, 'title_color') ? iframeDocument.getElementsByClassName('tvp-carousel-title')[0].style.cssText += 'color:' + config.title_color + ';' : null;
-  var videosTitle = iframeDocument.querySelectorAll('.tvp-video-title');
-  for (var i = videosTitle.length - 1; i >= 0; i--) {
-    isset(config, 'item_title_font_color') ? videosTitle[i].style.cssText += 'color:' + config.item_title_font_color + ';' : null;
+var removeBanner = function() {
+  var banner = modal.querySelector('.tvp-no-products-banner');
+  if (banner){
+    banner.parentNode.removeChild(banner);
   }
 };
 
-function handlePostMessages(e) {
-  var eventType = getEventType(e);
-  switch (eventType) {
+var closeModal = function() {
+  addClass(modal, 'tvp-hidden');
+  addClass('tvp-modal-overlay-' + id, 'tvp-hidden');
+
+  removeBanner();
+  removeClass(iframeModalHolder, 'products');
+  removeClass(iframeModalHolder, 'no-products');
+  removeClass(modal.querySelector('.tvp-products-headline'), 'active');
+
+  iframeModal.parentNode.removeChild(iframeModal);
+
+  if (config.fix_page_scroll)
+    removeClass(body, 'tvp-modal-open');
+
+  window.postMessage({
+    event: eventPrefix + ':modal_close'
+  }, '*');
+};
+
+getById("tvp-modal-close-" + id).addEventListener('click', closeModal, false);
+
+modal.addEventListener('click', function(e) {
+  if (e.target === modal || !modal.contains(e.target)) {
+    closeModal();
+  }
+}, false);
+
+//Listen and handle messages coming from the widget
+window.addEventListener("message", function(e) {
+  switch (getEventType(e)) {
     case 'video_click':
       handleVideoClick(e);
       break;
@@ -233,59 +257,52 @@ function handlePostMessages(e) {
       handleResize(e);
       break;
     default:
-      // do nothing
   }
 
-  handleCallback(e);
-};
-
-function handleCallback(e) {
   if (__windowCallbackFunc__)
     __windowCallbackFunc__(e);
-}
-
-window.addEventListener("message", function(e) {
-  handlePostMessages(e);
 });
 
 function handleRender(e) {
-  holder.classList.add("initialized");
-  changeStylesRunTime();
+  addClass(holder, "initialized");
+  isset(config, 'background') ? holder.style.cssText += 'background-color:' + config.background + ';' : null;
+  isset(config, 'title_color') ? iframeDocument.getElementsByClassName('tvp-carousel-title')[0].style.cssText += 'color:' + config.title_color + ';' : null;
+  var videosTitle = iframeDocument.querySelectorAll('.tvp-video-title');
+  for (var i = videosTitle.length - 1; i >= 0; i--) {
+    isset(config, 'item_title_font_color') ? videosTitle[i].style.cssText += 'color:' + config.item_title_font_color + ';' : null;
+  }
 }
 
 function handleResize(e) {
-  if (window.modalOpened) {
+  if (!modal.classList.contains("tvp-hidden") || !e.data.height)
     return;
-  }
-  if (!e.data.height) return;
+
   holder.style.height = e.data.height;
 }
 
 function handleVideoClick(e) {
-  var eventData = e.data;
-  
-  window.modalOpened = true;
+  if (!e || !e.data)
+    return;
 
   var configCopy = JSON.parse(JSON.stringify(config));
   delete configCopy.no_products_banner;
 
+  var eventData = e.data;
+  var clickedVideo = eventData.selectedVideo;
+
   clickData = {
     data: eventData.videos,
-    selectedVideo: eventData.selectedVideo,
+    selectedVideo: clickedVideo,
     runTime: configCopy
   };
 
-  getById('tvp-modal-title-' + id).innerHTML = eventData.selectedVideo.title || "";
-  removeClass('tvp-modal-' + id, 'tvp-hidden');
+  modal.querySelector('.tvp-modal-title').innerHTML = clickedVideo.title || "";
+  removeClass(modal, 'tvp-hidden');
   removeClass('tvp-modal-overlay-' + id, 'tvp-hidden');
 
   if (config.fix_page_scroll) {
-    addClass(document.body, 'tvp-modal-open');
+    addClass(body, 'tvp-modal-open');
   }
-
-  iframeModalHolder.innerHTML = '<iframe class="tvp-iframe-modal" src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe>';
-  iframeModal = iframeModalHolder.querySelector('.tvp-iframe-modal');
-  iframeModalDocument = iframeModal.contentWindow.document;
 
   //Some logic to include the player library.. we support diff things.
   var playerUrl = "https://cdnjs.tvpage.com/tvplayer/tvp-" + config.player_version + ".min.js";
@@ -293,6 +310,9 @@ function handleVideoClick(e) {
     playerUrl = config.player_url;
   }
 
+  iframeModalHolder.innerHTML = templates["modal-iframe"];
+  iframeModal = iframeModalHolder.querySelector('.tvp-iframe-modal');
+  iframeModalDocument = iframeModal.contentWindow.document;
   iframeModalDocument.open().write(getIframeHtml({
     id: id,
     domain: baseUrl,
@@ -353,33 +373,31 @@ function handleModalInitialized(e) {
 
 function handlePlayerNext(e) {
   getById('tvp-modal-title-' + id).innerHTML = e.data.next.assetTitle || "";
-  removeBannerEl();
+  removeBanner();
 };
 
 function handleModalNoProducts(e) {
-  if (!isMobile) {
-    var label = getById('tvp-products-headline-' + id);
-    if (label) {
-      label.parentNode.removeChild(label);
-    }
-  }
-
-  if (config.no_products_banner && config.merchandise) {
-    var bannerHtml = "";
-    if ("function" === typeof config.no_products_banner) {
-      bannerHtml = config.no_products_banner();
-    } else if (String(config.no_products_banner).trim().length) {
-      bannerHtml = config.no_products_banner.trim();
-    }
-
-    var bannerDiv = document.createElement('div');
-    addClass(bannerDiv, 'tvp-no-products-banner');
-    bannerDiv.innerHTML = bannerHtml;
-    modal.querySelector('.tvp-modal-content').appendChild(bannerDiv);
-  }
+  if (!config.merchandise)
+    return;
 
   removeClass(iframeModalHolder, 'products');
   addClass(iframeModalHolder, 'no-products');
+
+  if(isMobile || !config.products_headline_display)
+    return;
+  
+  var headlineEl = modal.querySelector('.tvp-products-headline');
+  if (headlineEl) {
+    headlineEl.parentNode.removeChild(headlineEl);
+  }
+
+  var banner = config.no_products_banner;
+  if (banner) {
+    var bannerEl = document.createElement('div');
+    bannerEl.className = 'tvp-no-products-banner';
+    bannerEl.innerHTML = isFunction(banner) ? banner() : banner.trim();
+    modal.querySelector('.tvp-modal-content').appendChild(bannerEl);
+  }
 };
 
 function handleModalResize(e) {
@@ -387,69 +405,30 @@ function handleModalResize(e) {
 };
 
 function handleModalProducts(e) {
-  if (!isMobile && !getById('tvp-products-headline-' + id) && config.products_headline_display) {
-    var label = document.createElement('div');
-    label.className = 'tvp-products-headline';
-    label.id = 'tvp-products-headline-' + id;
-    label.innerHTML = config.products_headline_text;
-
-    if (config.products_info_tooltip && config.products_message.trim().length) {
-      var tooltipHtml = templates['modal'].tooltip;
-      var tooltipDiv = document.createElement('div');
-      tooltipDiv.classList.add('tvp-tooltip');
-      tooltipDiv.innerHTML = tooltipHtml;
-      tooltipDiv.getElementsByClassName('tvp-products-message')[0].innerHTML = config.products_message;
-      label.appendChild(tooltipDiv);
-    }
-
-    label.onclick = function() {
-      this.classList.contains('active') ? this.classList.remove('active') : this.classList.add('active');
-    };
-
-    var modalHeader = getById('tvp-modal-header-' + id);
-    modalHeader.appendChild(label);
-  }
-
   removeClass(iframeModalHolder, 'no-products');
   addClass(iframeModalHolder, 'products');
+
+  if (isMobile || modal.querySelector('.tvp-products-headline') || !config.products_headline_display)
+    return;
+
+  var headlineEl = document.createElement('div');
+  headlineEl.className = 'tvp-products-headline';
+  headlineEl.innerHTML = config.products_headline_text;
+  headlineEl.addEventListener('click',function() {
+    if (this.classList.contains('active')) {
+      removeClass(this,'active')
+    } else {
+      addClass(this,'active')
+    }
+  });
+
+  if (config.products_info_tooltip && !!config.products_message) {
+    var tooltipEl = document.createElement('div');
+    tooltipEl.className = 'tvp-tooltip';
+    tooltipEl.innerHTML = templates['modal'].tooltip;
+    tooltipEl.querySelector('.tvp-products-message').innerHTML = config.products_message;
+    headlineEl.appendChild(tooltipEl);
+  }
+
+  modal.querySelector('.tvp-modal-header').appendChild(headlineEl);
 };
-
-var removeBannerEl = function() {
-  var noProductsBanner = modal.querySelector('.tvp-no-products-banner');
-  if (noProductsBanner) {
-    modal.querySelector('.tvp-modal-content').removeChild(noProductsBanner);
-  }
-};
-
-var closeModal = function() {
-  window.modalOpened = false;
-  window.postMessage({
-    event: eventPrefix + ':modal_close'
-  }, '*');
-
-  addClass('tvp-modal-' + id, 'tvp-hidden');
-  addClass('tvp-modal-overlay-' + id, 'tvp-hidden');
-
-  if (config.fix_page_scroll) {
-    removeClass(document.body, 'tvp-modal-open');
-  }
-
-  var prodHeadline = getById('tvp-products-headline-' + id);
-  if (prodHeadline) {
-    removeClass(prodHeadline, 'active');
-  }
-
-  removeBannerEl();
-  removeClass(iframeModalHolder, 'products');
-  removeClass(iframeModalHolder, 'no-products');
-  iframeModal.parentNode.removeChild(iframeModal);
-};
-
-getById("tvp-modal-close-" + id).addEventListener('click', closeModal, false);
-
-var modalEl = getById("tvp-modal-" + id);
-modalEl.addEventListener('click', function(e) {
-  if (e.target === modalEl || !modalEl.contains(e.target)) {
-    closeModal();
-  }
-}, false);
