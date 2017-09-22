@@ -247,7 +247,6 @@
                     }, '*');
                 }
             };
-
             s.onNext = function(next){
                 if (!next) return;
 

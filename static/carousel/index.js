@@ -227,12 +227,18 @@ function handlePostMessages(e){
     case 'render':
       handleRender(e);
       break;
+    case 'onPlayerChange':
+      handleOnPlayerChange(e);
+      break;
     default: 
       // do nothing
   }
 
   handleCallback(e);
 };
+function handleOnPlayerChange(e){
+  config.onPlayerChange(e.data.e, e.data.stateData);
+}
 
 function handleCallback(e){
   if (__windowCallbackFunc__) 
@@ -249,9 +255,11 @@ function handleRender(e){
 
 function handleVideoClick(e){
     var eventData = e.data;
-
     //performant way to clone object http://jsben.ch/#/bWfk9
+    
     var configCopy = JSON.parse(JSON.stringify(config));
+    configCopy.onPlayerChange = !!config.onPlayerChange;
+    
     delete configCopy.no_products_banner;
 
     clickData = {
