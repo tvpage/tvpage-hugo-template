@@ -90,6 +90,10 @@
 
         carousel.innerHTML = productsHtml;
 
+        if (data.length == 1) {
+            container.getElementsByClassName('tvp-product')[0].style.margin = '1px';
+        }
+
         var productsTitle = Utils.getByClass('tvp-products-text');
         productsTitle.innerHTML = "";
         if (hasData) {
@@ -123,8 +127,7 @@
             setTimeout(function() {
                 var $el = $(carousel);
                 var centerMode = data.length > 1 ? true : false;
-                var centerPadding = hasData ? '20px' : "0px";
-
+                var centerPadding = Utils.isset(config, 'mobile_modal_products_slider_center_padding') ? config.mobile_modal_products_slider_center_padding : '0px';
                 var slickConfig = {
                     slidesToSlide: 1,
                     slidesToShow: 3,
@@ -154,8 +157,7 @@
                 slickConfig.centerMode = centerMode;
                 slickConfig.centerPadding = centerPadding;
 
-                
-                if (data.length <= config.mobile_products_max_navigation_bullets) {
+                if (data.length <= config.mobile_products_max_navigation_bullets && data.length > 1) {
                     var dotsHolderClass = "tvp-slider-dots-holder";
                     var dotsHolderElement = container.querySelector("." + dotsHolderClass);
                     if (dotsHolderElement) {
@@ -218,7 +220,7 @@
                             height: (el.offsetHeight + parseInt(data.runTime.iframe_modal_body_padding || '0')) + 'px'
                         }, '*');
                     }
-                }, 0);
+                }, 300);
             }
 
             s.onNext = function(next) {
@@ -255,7 +257,7 @@
                 }, 0);
             };
 
-            new Player('tvp-player-el', s, data.selectedVideo.id);
+            (new Player('tvp-player-el', s, data.selectedVideo.id)).initialize();
         };
 
         window.addEventListener('message', function(e) {
