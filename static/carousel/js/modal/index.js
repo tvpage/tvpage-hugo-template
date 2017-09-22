@@ -269,6 +269,7 @@
         };
 
         player = new Player('tvp-player-el', playerConfig, data.selectedVideo.id);
+        player.initialize();
 
         window.addEventListener('resize', Utils.debounce(player.resize,85));
     };
