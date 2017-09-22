@@ -90,21 +90,12 @@
                         var arrows = document.querySelectorAll(".tvp-carousel-arrow");
                         for (var i = 0; i < arrows.length; i++) {
                             var arrow = arrows[i];
-                            if (i === 0) {
-                                if (slick.currentSlide === 0) {
-                                    arrow.classList.add('inactive');
-                                } else {
-                                    arrow.classList.remove('inactive');
-                                }
-
-                            } else if (i === 1) {
-                                if ((Number(slick.currentSlide) + Number(options.items_to_scroll)) - (Number(options.items_to_scroll) - 1) === Number(that.itemsPerPage)) {
-                                    arrow.classList.add('inactive');
-                                } else {
-                                    arrow.classList.remove('inactive');
-                                }
+                            if (!options.infinite && i === 0) {
+                               slick.currentSlide === 0 ? arrow.classList.add('inactive') : arrow.classList.remove('inactive');
+                            } else if (!options.infinite && i === 1) {
+                                var lastSlide = slick.currentSlide >= slick.slideCount - slick.options.slidesToShow;
+                                lastSlide ? arrow.classList.add('inactive') : arrow.classList.remove('inactive');
                             }
-
                             var arrowSvg = arrow.querySelector("svg");
                             arrow.style.top = Math.floor( playButtonCenter - ( (arrowSvg.clientHeight || arrowSvg.getBoundingClientRect().height) / 2) ) + "px";
                         }
