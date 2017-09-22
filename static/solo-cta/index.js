@@ -35,7 +35,6 @@ var utils = {
         }
 
         html += '"><style>' + (options.style || '') + '</style>';
-
         var content = options.html || '';
         if ('function' === typeof content) {
             html += content();
@@ -280,21 +279,52 @@ function handleModalInitialized(e){
           runTime: clickData.runTime
       }, '*');
   }
-
-  if (utils.isIOS) {
-    var onOrientationChange = function () {
-        if (iframeModal && iframeModal.contentWindow) {
-            var width = iframeModal.parentNode.offsetWidth;
-            iframeModal.contentWindow.window.postMessage({
-                event: config.eventPrefix + ':modal_holder_resize',
-                size: [width, Math.floor(width * (9 / 16))]
-            },'*');
+  var detectOrientation = function(){
+      var orientation ="noDetected";
+      if(window.innerHeight > window.innerWidth){
+          orientation = "portrait"
+      }
+      if(window.innerWidth > window.innerHeight){
+          orientation = "landscape"
+      }
+      return orientation;
+  };
+  var fixPadding = function(){
+      var orientation = detectOrientation();
+      if(orientation === "landscape"){
+        if(config.hasOwnProperty("iframe_modal_body_padding")){
+          var paddingValue = config["iframe_modal_body_padding"];
+          paddingValue = paddingValue.split(" ");
+          if(paddingValue.length>0){
+            var clearValue = paddingValue[0].replace("px","");
+            iframeModal.contentWindow.document.querySelector("body").style.paddingTop = (parseInt(clearValue)+4)+"px"; 
+          }  
         }
+      }else{
+        iframeModal.contentWindow.document.querySelector("body").style.paddingTop = null;
+      }
+  };
+  if (utils.isMobile) {
+    var onOrientationChange = function () {
+        var round = 0;
+        setInterval(function(){
+          if(round===3) return;
+          round = round+1;
+          if (iframeModal && iframeModal.contentWindow) {
+              fixPadding();
+              var width = iframeModal.parentNode.offsetWidth;
+              iframeModal.contentWindow.window.postMessage({
+                  event: config.eventPrefix + ':modal_holder_resize',
+                  size: [width, Math.floor(width * (9 / 16))]
+              },'*');
+          }
+        },500);
     };
     var orientationChangeEvent = 'onorientationchange' in window ? 'orientationchange' : 'resize';
     window.removeEventListener(orientationChangeEvent,onOrientationChange, false);
     window.addEventListener(orientationChangeEvent,onOrientationChange, false);
   }
+  fixPadding();
 };
 
 function handlePlayerNext(e) {

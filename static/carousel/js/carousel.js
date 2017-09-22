@@ -1,6 +1,7 @@
 ;(function(window, document) {
 
-    var $carousel = null;
+    var startSlick = null,
+        $carousel = null;
 
     var hasClass = function(obj,c) {
         if (!obj || !c) return;
@@ -51,8 +52,7 @@
                 var item = all[i];
                 var rowEl = document.createElement('div');
                 var className = '';
-
-                item.title = Utils.trimText(item.title,50);
+                item.title = Utils.trimText(item.title,Number(this.options.video_item_max_chars));
                 if ('undefined' !== typeof item.entity) {
                     className += ' tvp-exchange';
                 }
@@ -73,12 +73,13 @@
             }
 
             this.container.appendChild(carouselFrag);
+            Utils.isset(options, 'background') ? this.container.style.cssText += 'background-color:'+ options.background +';' : null;
 
             if (this.itemMetaData) {
                 this.el.classList.add("metadata");
             }
 
-            var startSlick = function () {
+                startSlick = function () {
                 $carousel = $(that.el.querySelector('.tvp-carousel-content'));
 
                 $carousel.on('setPosition', Utils.debounce(function (event, slick) {
@@ -128,10 +129,13 @@
                 },100));
 
                 var carouselCenterPadding = options.carousel_center_padding,
+                    dotsDTop = Number(options.carousel_max_bullets) < Object.keys(all).length ? false : options.navigation_bullets,
+                    dots480 = Number(options.carousel_max_bullets) < Object.keys(all).length ? false : options.navigation_bullets_480,
+                    dots667 = Number(options.carousel_max_bullets) < Object.keys(all).length ? false : options.navigation_bullets_667,
                     slickConfig = {
                     slidesToShow: Number(options.items_to_show),
                     slidesToScroll: Number(options.items_to_scroll),
-                    dots: options.navigation_bullets,
+                    dots: dotsDTop,
                     infinite: options.infinite,
                     arrows: false,
                     responsive: [
@@ -139,20 +143,21 @@
                             breakpoint: 480,
                             settings: {
                                 arrows: false,
-                                slidesToShow: 1,
-                                dots: options.mobile_navigation_bullets,
-                                centerMode:true,
+                                slidesToShow: Number(options.items_to_show_480),
+                                slidesToScroll: Number(options.items_to_scroll_480),
+                                dots: dots480,
+                                centerMode: options.carousel_center_mode_480,
                                 centerPadding: carouselCenterPadding
                             }
                         },
                         {
                             breakpoint: 667,
                             settings:{
-                                slidesToShow: Number(options.items_to_show),
-                                slidesToScroll: Number(options.items_to_scroll),
-                                dots: options.mobile_navigation_bullets,
+                                slidesToShow: Number(options.items_to_show_667),
+                                slidesToScroll: Number(options.items_to_scroll_667),
+                                dots: dots667,
                                 arrows: false,
-                                centerMode:true,
+                                centerMode: options.carousel_center_mode_667,
                                 centerPadding: carouselCenterPadding
                             }
                         }
@@ -162,7 +167,6 @@
                 if (this.options.navigation_bullets_append_to) {
                     slickConfig.appendDots = this.options.navigation_bullets_append_to;
                 }
-
                 $carousel.slick(slickConfig);
             };
 
@@ -223,6 +227,10 @@
                     that.onClick(selected,data);
                 }
 
+                if (Utils.isIOS) {
+                   $carousel.slick('getSlick').options.tvpModalopened = true;
+                   window.modalOpened = true;
+                }
             } else if (hasClass(target,'tvp-carousel-arrow')) {
                 if (hasClass(target,'next')) {
                     $carousel.slick('slickNext');
@@ -233,16 +241,36 @@
             }
         };
 
+        this.dynamicSort =function(property) {
+            var sortOrder = 1;
+            if(property[0] === "-") {
+                sortOrder = -1;
+                property = property.substr(1);
+            }
+            return function (a,b) {
+                var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+                return result * sortOrder;
+            }
+        };
+
         this.load(function(data){
           var postEvent = '';
           if (data.length) {
-            that.render(data);
+            var sortedData = data.sort(that.dynamicSort(Utils.isset(options, 'sort_videos_by') ? options.sort_videos_by : 'title'));
+            that.render(sortedData);
             postEvent = 'render';
           } else {
             postEvent = 'norender';
           }
           
           that.emitMessage(postEvent, {});
+        });
+
+
+        window.parent.addEventListener("message", function(e){
+            if (!e || !Utils.isset(e, 'data') || !Utils.isset(e.data, 'event') || 'tvp_' + options.id.replace(/-/g,'_') + ':modal_close' !== e.data.event || !Utils.isIOS) return;
+            $carousel.slick('getSlick').options.tvpModalopened = false;
+            window.modalOpened = false;
         });
     }
 

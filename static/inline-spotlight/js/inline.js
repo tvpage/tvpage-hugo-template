@@ -3,6 +3,8 @@
     var productData = [];
     var isProductsInitialized = false;
     var analytics = null;
+    var isHidden = false;
+    var scrollHeight;
     var breakpoint = 769;
     var currentApproach = '';
     var loginId = null;
@@ -18,6 +20,20 @@
     var inlineEl = null;
     var productRatingEmptyIsBordered = false;
     var hasProducts = true;
+    var firstRender = true;
+
+
+    var dynamicSort = function(property) {
+        var sortOrder = 1;
+        if(property[0] === "-") {
+            sortOrder = -1;
+            property = property.substr(1);
+        }
+        return function (a,b) {
+            var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+            return result * sortOrder;
+        }
+    };
 
     var renderedApproach = function () {
         if (document.body.clientWidth < breakpoint) {
@@ -133,12 +149,16 @@
     };
 
     var showTitle = function(opts, title){
-        var showTitleOption = Utils.isset(opts, 'show_video_title') ? opts.show_video_title : true,
+        var $inlineVideoTitle = $(inlineEl).find('#videoTitle'),
+            $inlineFeaturedTitle = $(inlineEl).find('#featuredTitle'),
+            showTitleOption = Utils.isset(opts, 'show_video_title') ? opts.show_video_title : true,
             titleToShow = Utils.isset(opts, 'static_title') ? opts.static_title : title;
         if (!showTitleOption) {
-            $(inlineEl).find('#videoTitle').hide();
+            $inlineVideoTitle.hide();
         } else {
-            $(inlineEl).find('#videoTitle').html(titleToShow);
+            $inlineVideoTitle.html(titleToShow);
+            Utils.isset(opts, 'video_header_color') ? $inlineVideoTitle.css('color',opts.video_header_color) : null;
+            Utils.isset(opts, 'featured_product_header_color') ? $inlineFeaturedTitle.css('color',opts.featured_product_header_color) : null;
         }
     };
 
@@ -230,6 +250,10 @@
                 $(templates.productsNav).appendTo(_container);
             }
 
+            var _centerMode = productData.length > 1 ? true : false;
+            $(productContent).on('init' , function(){
+                $('.tvp-slideUp').css('pointer-events', 'auto');
+            });
             $(productContent).slick({
                 arrows: Utils.isset(options.products_slider_arrows) ? options.products_slider_arrows : true,
                 prevArrow: document.querySelector('.tvp-products-prev'),
@@ -241,22 +265,26 @@
                         {
                             breakpoint: 769,
                             settings: {
-                                arrows: Utils.isset(options.products_slider_arrows_mobile) ? options.products_slider_arrows_mobile : true
+                                centerMode: _centerMode,
+                                centerPadding: Utils.isset(options.products_slider_center_padding) ? options.products_slider_center_padding :'25% 0 0',
+                                arrows: Utils.isset(options.products_slider_arrows_mobile) ? options.products_slider_arrows_mobile : true,
+                                slidesToShow: Utils.isset(options.products_slider_slides_to_show) ? options.products_slider_slides_to_show : 1,
                             }
                         }
                     ]
-            }).on('setPosition', function(s) {
-                var $productItms = $('.tvp-product-item');
-                for (var i = $productItms.length - 1; i >= 0; i--) {                    
-                    var defaultTitle = $productItms[i].getAttribute('data-title');
-                    $productItms[i].querySelector('.tvp-product-info-title').innerHTML = defaultTitle;
-                }
-                $('.tvp-product-info-title').ellipsis({
-                    row: renderedApproach() !== 'mobile' ? 3 : 2 
-                });  
-                });
-                addProductActiveState(productData[0].id);
-            };
+            });
+            var $productItms = $('.tvp-product-item');
+            for (var i = $productItms.length - 1; i >= 0; i--) {                    
+                var defaultTitle = $productItms[i].getAttribute('data-title');
+                $productItms[i].querySelector('.tvp-product-info-title').innerHTML = defaultTitle;
+                Utils.isset(options, 'product_item_title_font_color') ? $productItms[i].querySelector('.tvp-product-info-title').style.cssText += 'color:'+ options.product_item_title_font_color +';' : null;
+                scrollHeight = $($productItms[i]).outerHeight(true);
+            }
+            $('.tvp-product-info-title').ellipsis({
+                row: renderedApproach() !== 'mobile' ? 3 : 2 
+            }); 
+            addProductActiveState(productData[0].id);
+        };
 
             if(!isProductsInitialized){
                 loadProducts(vid, lid, 
@@ -333,9 +361,10 @@
                             breakpoint: 769,
                             settings: {
                                 arrows: false,
-                                centerPadding: '0px',
-                                slidesToShow: 2,
-                                slidesToScroll: 2,
+                                centerMode: Utils.isset(options, 'video_slider_center_mode_mobile') ? options.video_slider_center_mode_mobile : true,
+                                centerPadding: Utils.isset(options, 'video_slider_center_padding') ? options.video_slider_center_padding : '35% 0 0',
+                                slidesToShow: Utils.isset(options, 'videos_to_show_mobile') ? options.videos_to_show_mobile : 1,
+                                slidesToScroll: Utils.isset(options, 'videos_to_scroll_mobile') ? options.videos_to_scroll_mobile : 1,
                                 dots: Utils.isset(options, 'video_slider_dots_mobile') ? options.video_slider_dots_mobile : true
                             }
                         }
@@ -343,18 +372,19 @@
                 }).on('setPosition', function(s) {               
                     if (renderedApproach() !== 'mobile') {
                         var item = s.currentTarget.querySelector('.slick-current');
-                        var itemPadding = parseInt(window.getComputedStyle(item, null).paddingTop);
                         var baseHeight = item.querySelector('.tvp-video-item-image').offsetHeight;
                         var arrowHeight = parseInt(s.currentTarget.slick.$nextArrow[0].offsetHeight);
 
-                        s.currentTarget.slick.$nextArrow[0].style.marginTop = ((baseHeight - arrowHeight) / 2) + itemPadding + "px";
-                        s.currentTarget.slick.$prevArrow[0].style.marginTop = ((baseHeight - arrowHeight) / 2) + itemPadding + "px";    
+                        s.currentTarget.slick.$nextArrow[0].style.marginTop = (baseHeight / 2) - (arrowHeight / 6) + "px";
+                        s.currentTarget.slick.$prevArrow[0].style.marginTop = (baseHeight / 2) - (arrowHeight / 6) + "px";
                     }
 
                     for (var i = s.currentTarget.slick.$slides.length - 1; i >= 0; i--) {
                         var slideItem = s.currentTarget.slick.$slides[i];
-                        var defaultTitle = slideItem.querySelector('.tvp-video-item').getAttribute('data-title');                        
-                        slideItem.querySelector('.tvp-video-item-title').innerHTML = defaultTitle;
+                        var defaultTitle = slideItem.querySelector('.tvp-video-item');                        
+                        slideItem.querySelector('.tvp-video-item-title').innerHTML = defaultTitle.getAttribute('data-title');
+                        Utils.isset(options, 'videos_carousel_item_date_font_color') ? defaultTitle.querySelector('.tvp-video-item-title').style.cssText += 'color:'+ options.videos_carousel_item_date_font_color +';' : null;
+                        Utils.isset(options, 'videos_carousel_item_title_font_color') ? defaultTitle.querySelector('.tvp-video-metadata').style.cssText += 'color:'+ options.videos_carousel_item_title_font_color +';' : null;
                     }
 
                     $('.tvp-video-item-title').ellipsis({
@@ -395,23 +425,48 @@
                 li: loginId
             });
 
-            window.addEventListener('resize', Utils.debounce(function(){
+            var handleResize = function(e){
                 if (isProductsInitialized) {
                     if(currentApproach !== renderedApproach()){                        
                         currentApproach = renderedApproach();
                     }
                     renderProducts(selectedVideo.id, loginId);
+                    var prodsSection = $('.tvp-player-product-section');
+                    var playerHeight = (prodsSection.find('.tvp-player').height() + prodsSection.find('.tvp-mobile-product-title').outerHeight(true));
+                    if (isHidden && (renderedApproach() == 'desktop')) {
+                        prodsSection.find('.tvp-slideUp > span').removeClass('tvp-plus').addClass('tvp-minus');
+                        prodsSection.find('.tvp-products-scroller').fadeTo('fast', 1);
+                        isHidden = false;
+                    }else if(e.type == 'orientationchange' && (isHidden && (renderedApproach() == 'mobile'))){
+                       $('.tvp-player-product-section').find('.tvp-products-scroller').fadeTo('slow', 1, function(){
+                            renderProducts(selectedVideo.id, loginId);
+                            $('.tvp-slideUp').css("pointer-events", "auto")
+                                    .children()
+                                        .removeClass('tvp-plus')
+                                            .addClass('tvp-minus');
+                            $(this).show('slow');
+                            isHidden = false;
+                        });
+                    }
                 }
                 checkProducts();
                 resizeParent();
-            }, 85));
+            };
+            var addListenerMulti = function(element, eventNames, listener) {
+              var events = eventNames.split(' ');
+              for (var i = 0, iLen = events.length; i < iLen; i++) {
+                element.removeEventListener(events[i], listener, false);
+                element.addEventListener(events[i], listener, false);
+              }
+            };
+            addListenerMulti(window,'resize orientationchange', handleResize)
         };
 
         var load = function(callback){
             var getChannelVideos = function(callback){
                 var channel_id = Utils.isEmpty(channel) ? channelId : channel.id;
                 var params = channel.parameters || {};
-                var src = options.api_base_url+ '/channels/' + channel_id + '/videos?X-login-id=' + loginId;
+                var src = options.api_base_url+ '/channels/' + channel_id + '/videos?X-login-id=' + loginId + '&od=DESC&o=date_created';
                 for (var p in params) { src += '&' + p + '=' + params[p];}
                 var cbName = options.callbackName || 'tvp_' + Math.floor(Math.random() * 555);
                 src += '&p=' + page + '&n=' + itemsPerPage + '&callback='+cbName;
@@ -452,6 +507,7 @@
         };
         
         inlineEl.onclick = function(e) {
+            e.preventDefault();
             var target;
             
             var getTarget = function (name) {                
@@ -481,24 +537,63 @@
 
 
             if (getTarget('tvp-video-item')) {
+                if (isHidden) {
+                   $('.tvp-player-product-section').find('.tvp-products-scroller').fadeTo('slow', 1, function(){
+                        $('.tvp-slideUp').css("pointer-events", "auto")
+                                .children()
+                                    .removeClass('tvp-plus')
+                                        .addClass('tvp-minus');
+                        $(this).show('slow');
+                        isHidden = false;
+                    });
+                }
+
                 selectedVideo = getSelectedData(videosData, target.getAttribute('data-id'));
                 
-                player.load(selectedVideo.id);
+                player.load(selectedVideo.id, options.immediate);
                 addVideoActiveState(selectedVideo.id);
                 isProductsInitialized = false;
                 renderProducts(selectedVideo.id, selectedVideo.loginId);
                 showTitle(options, selectedVideo.title);                        
             }
             else if (getTarget('tvp-product-item')) {
-                pkTrack(this.querySelector('.tvp-product-item').getAttribute('data-id'));
+                pkTrack(target.getAttribute('data-id'));
+                window.open(target.getAttribute('href'),'_blank');
             }
             else if (getTarget('tvp-video-play')) {
                 player.instance.play();
             }
+            else if (getTarget('tvp-slideUp')){
+                $(target).css("pointer-events", "none");
+                var prodsSection = $('.tvp-player-product-section');
+                var prodsScroller = prodsSection.find('.tvp-products-scroller');
+                if (isHidden) {
+                    prodsScroller.fadeTo('slow', 1, function(){
+                        renderProducts(selectedVideo.id, loginId);
+                        $(target).css("pointer-events", "auto")
+                                .children()
+                                    .removeClass('tvp-plus')
+                                        .addClass('tvp-minus');
+                        $(this).show('slow');
+                        isHidden = false;
+                        resizeParent();
+                    });
+                }else{
+                    prodsScroller.fadeTo('slow', 0, function(){
+                        $(target).css("pointer-events", "auto")
+                                .children()
+                                    .removeClass('tvp-minus')
+                                        .addClass('tvp-plus');
+                        $(this).hide('slow');
+                        isHidden = true;
+                    });
+                }
+            }
         };
 
         load(function(data){
-            render(data);
+            var sortedData = data.sort(dynamicSort(Utils.isset(options, 'sort_videos_by') ? options.sort_videos_by : 'title'));
+            render(sortedData);
         });
     }
 
