@@ -146,7 +146,7 @@ var handleVideoClick = function(){
       utils.addClass(document.body, 'tvp-modal-open');
   }
 
-  iframeModalHolder.innerHTML =  '<iframe class="tvp-iframe-modal" src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe>';
+  iframeModalHolder.innerHTML =  '<iframe class="tvp-iframe-modal" src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe>';
   iframeModal = iframeModalHolder.querySelector('.tvp-iframe-modal');
   iframeModalDocument = iframeModal.contentWindow.document;
 
@@ -206,11 +206,12 @@ window[cbName] = function (data) {
       }
       
       overlayEl.innerHTML = template;
-
+      var configCopy = JSON.parse(JSON.stringify(config));
+      delete configCopy.onPlayerChange;
       clickData = {
         data: data,
         selectedVideo: data[0],
-        runTime: config
+        runTime: configCopy
       };
       
       overlayEl.removeEventListener("click",handleVideoClick,false);
@@ -273,12 +274,12 @@ window.addEventListener("message", function(e){
 
 function handleModalInitialized(e){
   if (iframeModal.contentWindow) {
-      iframeModal.contentWindow.postMessage({
-          event: config.eventPrefix + ':modal_data',
-          data: clickData.data,
-          selectedVideo: clickData.selectedVideo,            
-          runTime: clickData.runTime
-      }, '*');
+    iframeModal.contentWindow.postMessage({
+      event: config.eventPrefix + ':modal_data',
+      data: clickData.data,
+      selectedVideo: clickData.selectedVideo,            
+      runTime: clickData.runTime
+    }, '*');
   }
 
   if (utils.isIOS) {

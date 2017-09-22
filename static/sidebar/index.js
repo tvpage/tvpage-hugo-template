@@ -113,7 +113,7 @@ if ( !config.hasOwnProperty('targetEl') ||  !document.getElementById(config.targ
 
 var targetElement = document.getElementById(config.targetEl);
 targetElement.insertAdjacentHTML('beforebegin', hostCssTag + '<style>' + config.css["host-custom" + (utils.isMobile ? "-mobile" : "")] + '</style><div id="' + id + '-holder" class="tvp-sidebar-holder">'+
-'<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe></div>');
+'<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe></div>');
 targetElement.parentNode.removeChild(targetElement);
 
 config.id = id;
@@ -268,7 +268,7 @@ function handleVideoClick(e){
         utils.addClass(document.body, 'tvp-modal-open');
     }
 
-    iframeModalHolder.innerHTML =  '<iframe class="tvp-iframe-modal" src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe>';
+    iframeModalHolder.innerHTML =  '<iframe class="tvp-iframe-modal" src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe>';
     iframeModal = iframeModalHolder.querySelector('.tvp-iframe-modal');
     iframeModalDocument = iframeModal.contentWindow.document;
     
