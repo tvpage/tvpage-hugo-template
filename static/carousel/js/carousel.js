@@ -1,42 +1,36 @@
-;(function(window, document) {
+(function() {
 
-    var startSlick = null,
-        $carousel = null;
+    var startSlick = null;
+    var $carousel = null;
 
-    var hasClass = function(obj,c) {
-        if (!obj || !c) return;
-        return obj.classList.contains(c);
+    var hasClass = function(o,c) {
+        return o.classList.contains(c);
+    };
+
+    var sendMessage = function(msg){
+        if (window.parent){
+            window.parent.postMessage(msg, '*');
+        }
     };
 
     function Carousel(el, options) {
-        this.windowSize = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) <= 200 ? 'small' : 'medium';
-        this.initialResize = true;
         this.itemsPerPage = Utils.isset(options.items_per_page) ? options.items_per_page : null;
 
         this.loginId = (options.loginId || options.loginid) || 0;
         this.channel = options.channel || {};
         this.channelId = options.channelid || null;
         this.loading = false;
-        this.page = 0;
+        this.eventPrefix = ("tvp_" + options.id).replace(/-/g, '_');
 
         this.el = 'string' === typeof el ? document.getElementById(el) : el;
         this.el.querySelector(".tvp-carousel-title").innerHTML = options.title_text || "Watch Videos";
-
-        this.container = this.el.getElementsByClassName('tvp-carousel-content')[0];
+        this.container = this.el.querySelector('.tvp-carousel-content');
 
         this.itemMetaData = Utils.isset(options.item_meta_data) ? options.item_meta_data : null;
         this.onClick = Utils.isset(options.onClick) && Utils.isFunction(options.onClick) ? options.onClick : null;
         this.options = options;
 
         var that = this;
-
-        this.emitMessage = function(evt, message) {
-          if ( window.parent ) {
-            message = message || {};
-            message.event = 'tvp_' + options.id.replace(/-/g,'_') + ":" + evt;
-            window.parent.postMessage(message, '*');
-          }
-        }
 
         this.render = function(){
             this.container.innerHTML = '';
@@ -123,8 +117,9 @@
                         heightOffset = parseInt(options.height_offset,10);
                     }
 
-                    that.emitMessage('resize', {
-                      height: (that.el.offsetHeight + navBulletsHeight + heightOffset) + 'px'
+                    sendMessage({
+                        event: that.eventPrefix + ':resize',
+                        height: (that.el.offsetHeight + navBulletsHeight + heightOffset) + 'px'  
                     });
                 },100));
 
@@ -194,7 +189,7 @@
             var src = this.options.api_base_url + '/channels/' + (channel.id || that.channelId) + '/videos?X-login-id=' + that.loginId;
             for (var p in params) { src += '&' + p + '=' + params[p];}
             var cbName = options.callbackName || 'tvp_' + Math.floor(Math.random() * 555);
-            src += '&p=' + that.page + '&n=' + that.itemsPerPage;
+            src += '&p=0' + '&n=' + that.itemsPerPage;
             src += '&o=' + options.videos_order_by + '&od=' + options.videos_order_direction;
             src += '&callback='+cbName;
 
@@ -245,20 +240,20 @@
         };
 
         this.load(function(data){
-          var postEvent = '';
-          if (data.length) {
-            that.render(data);
-            postEvent = 'render';
-          } else {
-            postEvent = 'norender';
-          }
+          var hasData = data.length > 0;
           
-          that.emitMessage(postEvent, {});
+          if (hasData)
+            that.render(data);
+          
+          sendMessage({
+            event: that.eventPrefix + ":" + (hasData ? 'render' : 'norender')
+          });
         });
 
-
         window.parent.addEventListener("message", function(e){
-            if (!e || !Utils.isset(e, 'data') || !Utils.isset(e.data, 'event') || 'tvp_' + options.id.replace(/-/g,'_') + ':modal_close' !== e.data.event || !Utils.isIOS) return;
+            if (!e || !Utils.isset(e, 'data') || !Utils.isset(e.data, 'event') || that.eventPrefix + ':modal_close' !== e.data.event || !Utils.isIOS)
+                return;
+            
             $carousel.slick('getSlick').options.tvpModalopened = false;
             window.modalOpened = false;
         });
@@ -266,4 +261,4 @@
 
     window.Carousel = Carousel;
 
-}(window, document));
+}());
