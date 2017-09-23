@@ -572,7 +572,6 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
     var isProductsInitialized = false;
     var analytics = null;
     var isHidden = false;
-    var scrollHeight;
     var breakpoint = 769;
     var currentApproach = '';
     var loginId = null;
@@ -588,7 +587,6 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
     var inlineEl = null;
     var productRatingEmptyIsBordered = false;
     var hasProducts = true;
-    var firstRender = true;
 
     var renderedApproach = function () {
         if (document.body.clientWidth < breakpoint) {
@@ -833,7 +831,6 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                 var defaultTitle = $productItms[i].getAttribute('data-title');
                 $productItms[i].querySelector('.tvp-product-info-title').innerHTML = defaultTitle;
                 Utils.isset(options, 'product_item_title_font_color') ? $productItms[i].querySelector('.tvp-product-info-title').style.cssText += 'color:'+ options.product_item_title_font_color +';' : null;
-                scrollHeight = $($productItms[i]).outerHeight(true);
             }
             $('.tvp-product-info-title').ellipsis({
                 row: renderedApproach() !== 'mobile' ? 3 : 2 
@@ -987,7 +984,6 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                     }
                     renderProducts(selectedVideo.id, loginId);
                     var prodsSection = $('.tvp-player-product-section');
-                    var playerHeight = (prodsSection.find('.tvp-player').height() + prodsSection.find('.tvp-mobile-product-title').outerHeight(true));
                     if (isHidden && (renderedApproach() == 'desktop')) {
                         prodsSection.find('.tvp-slide-up > span').removeClass('tvp-plus').addClass('tvp-minus');
                         prodsSection.find('.tvp-products-scroller').fadeTo('fast', 1);

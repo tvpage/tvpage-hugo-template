@@ -1096,14 +1096,14 @@
             "type": "text",
             "label": "Videos Carousel Item Now Playing Font Size Max",
             "code": "videos_carousel_item_now_playing_font_size_max",
-            "value": "16"
+            "value": "18"
         },
         {
             "for": "inline",
             "type": "text",
             "label": "Videos Carousel Item Now Playing Font Size Min",
             "code": "videos_carousel_item_now_playing_font_size_min",
-            "value": "10"
+            "value": "20"
         },
         {
             "for": "inline",
