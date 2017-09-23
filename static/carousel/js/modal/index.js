@@ -1,10 +1,18 @@
-(function(window,document){
-    var analytics,
-        channelId,
-        eventName,
-        body = document.body;
+(function(){
 
-    var eventPrefix = "tvp_" + (body.getAttribute("data-id") || "").replace(/-/g,'_');
+    var body = document.body;
+    var id = body.getAttribute("data-id") || "";
+    var mainEl = null;
+    var productsEl = null;
+    var analytics = null;
+    var channelId = null;
+    var loginId = null;
+    var eventPrefix = "tvp_" + id.replace(/-/g,'_');
+
+    var sendMessage = function(msg){
+        if (window.parent)
+            window.parent.postMessage(msg, '*');
+    };
 
     var pkTrack = function(){
         analytics.track('pk',{
@@ -14,29 +22,27 @@
         });
     };
 
-    var checkProducts = function(data,el){
-        if (!data || !data.length) {
-            el.classList.add('tvp-no-products');
-            eventName = eventPrefix + ':modal_no_products';
-            notify();
-        }else{
+    var checkProductsData = function(data,el){
+        var status = "";
+        
+        if (data && data.length) {
             el.classList.remove('tvp-no-products');
-            eventName = eventPrefix + ':modal_products';
-            notify();
+            status = eventPrefix + ':modal_products';
+        } else{
+            el.classList.add('tvp-no-products');
+            status = eventPrefix + ':modal_no_products';
         }
-    };
 
-    var notify = function(argument) {
-        setTimeout(function(){
-            if (window.parent) {
-                window.parent.postMessage({event: eventName}, '*');
-            }
-        },0);
+        sendMessage({
+            event: status
+        });
     };
 
     var loadProducts = function(videoId,settings,fn){
-        if (!videoId) return;
-        var src = settings.api_base_url + '/videos/' + videoId + '/products?X-login-id=' + settings.loginId;
+        if (!videoId)
+            return;
+
+        var src = settings.api_base_url + '/videos/' + videoId + '/products?X-login-id=' + loginId;
         var cbName = 'tvp_' + Math.floor(Math.random() * 555);
         src += '&o=' + settings.products_order_by + '&od=' + settings.products_order_direction;
         src += '&callback='+cbName;
@@ -59,12 +65,13 @@
         for (var i = 0; i < data.length; i++) {
             var product = data[i];
             
-            product.title = !Utils.isEmpty(product.title) ? Utils.trimText(product.title, 50) : '';
-            product.price = !Utils.isEmpty(product.price) ? Utils.trimPrice(product.price) : '';
+            product.title = Utils.trimText(product.title || '',50);
+            product.price = Utils.trimPrice(product.price || '');
 
-            var productRating = Utils.isset(product[config.product_rating_attribute]) ? product[config.product_rating_attribute] : 0;
-            if (null !== productRating) {
-              productRating = Number(productRating);
+            var ratingAttrName = config.product_rating_attribute;
+            var productRating = 0;
+            if (!!product[ratingAttrName]) {
+              productRating = Number(product[ratingAttrName]);
             }
 
             var ratingReviewsHtml = "";
@@ -222,129 +229,129 @@
 
     };
 
-    var initialize = function(){
-        var el = Utils.getByClass('iframe-content');
-        var products = Utils.getByClass('tvp-products-holder');
-        var resizeProducts = function(height){
-            products.style.height = height + 'px';
+    var initializePlayer = function(data){
+        var playerConfig = Utils.copy(data.runTime);
+        var player = null;
+
+        playerConfig.data = data.data;
+
+        playerConfig.onResize = function(initial, size){
+            productsEl.style.height = size[1] + 'px';
+            sendMessage({
+                event: eventPrefix + ':modal_resize',
+                height: (mainEl.offsetHeight + 20) + 'px'
+            });
         };
 
-        var playerEl = Utils.getByClass('tvp-player-holder');
-        resizeProducts(playerEl.offsetHeight);
+        playerConfig.onNext = function(next){
+            if (!next) return;
 
-        var initPlayer = function(data){
-            var s = JSON.parse(JSON.stringify(data.runTime));
-            var player = null;
+            data.runTime.loginId = loginId;
 
-            s.data = data.data;
-
-            s.onResize = function(initial, size){
-                resizeProducts(size[1]);
-                if (window.parent) {
-                    window.parent.postMessage({
-                        event: eventPrefix + ':modal_resize',
-                        height: (el.offsetHeight + 20) + 'px'
-                    }, '*');
-                }
-            };
-            s.onNext = function(next){
-                if (!next) return;
-
-                data.runTime.loginId = data.runTime.loginId || data.runTime.loginid;
-
-                if (Utils.isset(next,'products')) {
-                    render(next.products,data.runTime);
-                } else {
-                  if (!data.runTime.merchandise) {
-                    el.classList.add('tvp-no-products');
-                    eventName = eventPrefix + ':modal_no_products';
-                    notify();
-                  } else {
-                    loadProducts(next.assetId,data.runTime,function(products){
-                      setTimeout(function(){
-                        checkProducts(products,el);
+            if (data.runTime.merchandise) {
+                loadProducts(next.assetId,data.runTime,function(products){
+                    setTimeout(function(){
+                        checkProductsData(products,mainEl);
                         render(products,data.runTime);
                         player.resize();
-                      },0);
-                    });
-                  }
-                }
+                    },0);
+                });
+            } else {
+                mainEl.classList.add('tvp-no-products');
+                sendMessage({
+                    event: eventPrefix + ':modal_no_products',
+                });
+            }
 
-                if (window.parent) {
-                    window.parent.postMessage({
-                        event: eventPrefix + ':player_next',
-                        next: next
-                    }, '*');
-                }
-            };
-
-            player = new Player('tvp-player-el',s,data.selectedVideo.id);
-            window.addEventListener('resize', Utils.debounce(function(){
-                player.resize();
-            },85));
+            sendMessage({
+                event: eventPrefix + ':player_next',
+                next: next
+            });
         };
 
+        player = new Player('tvp-player-el', playerConfig, data.selectedVideo.id);
+        player.initialize();
+
+        window.addEventListener('resize', Utils.debounce(player.resize,85));
+    };
+
+    var initialize = function(){
+        mainEl = Utils.getById(id);
+        productsEl = mainEl.querySelector('.tvp-products-holder');
+        
+        //We set the height of the player to the products element
+        productsEl.style.height = mainEl.querySelector('.tvp-player-holder').offsetHeight + 'px';
+
         window.addEventListener('message', function(e){
-            if (!e || !Utils.isset(e, 'data') || !Utils.isset(e.data, 'event')) return;
-            var data = e.data;
+            if (!e || !Utils.isset(e, 'data') || !Utils.isset(e.data, 'event')) 
+                return;
+            
+            var modalData = e.data;
 
-            if (eventPrefix + ':modal_data' === data.event) {
+            if (eventPrefix + ':modal_data' !== modalData.event)
+                return;
 
-                initPlayer(data);
+            initializePlayer(modalData);
+            
+            var config = modalData.runTime;
+            config.loginId = config.loginId || config.loginid;
+            
+            loginId = config.loginId;
+            channelId = Utils.isset(config.channel) && Utils.isset(config.channel.id) ? config.channel.id : (config.channelId || config.channelid);
 
-                var settings = data.runTime;
-                var loginId = settings.loginId || settings.loginid;
-                
-                settings.loginId = loginId;
+            analytics =  new Analytics();
+            analytics.initConfig({
+                domain: location.hostname || '',
+                logUrl: config.api_base_url + '/__tvpa.gif',
+                loginId: loginId,
+                firstPartyCookies: config.firstpartycookies,
+                cookieDomain: config.cookiedomain
+            });
 
-                channelId = Utils.isset(settings.channel) && Utils.isset(settings.channel.id) ? settings.channel.id : (settings.channelId || settings.channelid);
-                analytics =  new Analytics();
-                analytics.initConfig({
-                    domain: Utils.isset(location,'hostname') ?  location.hostname : '',
-                    logUrl: settings.api_base_url + '/__tvpa.gif',
-                    loginId: loginId,
-                    firstPartyCookies: settings.firstpartycookies,
-                    cookieDomain: settings.cookiedomain
+
+            analytics.track('ci', {
+                li: loginId
+            });
+
+            var selectedVideo = modalData.selectedVideo;
+            if (config.merchandise) {
+                loadProducts(selectedVideo.id, config,
+                    function(products){
+                    setTimeout(function(){
+                        checkProductsData(products,mainEl);
+                        render(products,config);
+                    },0);
                 });
-                //here was removed the analytics tracking
-                var selectedVideo = data.selectedVideo;
-                if (Utils.isset(selectedVideo,'products')) {
-                    render(selectedVideo.products,settings);
-                } else {
-                    if (!settings.merchandise) {
-                        el.classList.add('tvp-no-products');
-                        eventName = eventPrefix + ':modal_no_products';
-                        notify();
-                    }else{
-                        loadProducts(selectedVideo.id, settings,
-                            function(products){
-                            setTimeout(function(){
-                                checkProducts(products,el);
-                                render(products,settings);
-                            },0);
-                        });
-                    }
-                }
+            } else {
+                mainEl.classList.add('tvp-no-products');
+                sendMessage({
+                    event: eventPrefix + ':modal_no_products'
+                });
             }
         });
 
-        setTimeout(function(){
-            if (window.parent) {
-                window.parent.postMessage({
-                    event: eventPrefix + ':modal_initialized',
-                    height: (el.offsetHeight + 20) + 'px'
-                }, '*');
-            }
-        },0);
+        sendMessage({
+            event: eventPrefix + ':modal_initialized',
+            height: (mainEl.offsetHeight + 20) + 'px'
+        });
     };
 
-    var not = function(obj){return 'undefined' === typeof obj};
-    if (not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player) || not(window.Ps)) {
-        var libsCheck = 0;
-        (function libsReady() {
+    //We need to poll/check when the dependencies had been already loaded, this is because we 
+    //create the iframes asynchronously.
+    var isLoadingLibs = function(){
+        var libs = ['TVPage', '_tvpa', 'Utils', 'Analytics', 'Player', 'Ps'];
+        for (var i = 0; i < libs.length; i++)
+            if ('undefined' === typeof window[libs[i]])
+                return true;
+        return false;
+    };
+    
+    if (isLoadingLibs()) {
+        var libsLoadingCheck = 0;
+        (function libsLoadingPoll() {
             setTimeout(function(){
-                if (not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player) || not(window.Ps)) {
-                    (++libsCheck < 200) ? libsReady() : console.warn('limit reached');
+                if (isLoadingLibs()) {
+                    (++libsLoadingCheck < 200) ? libsLoadingPoll() : console.warn('limit reached');
                 } else {
                     initialize();
                 }
@@ -354,4 +361,4 @@
         initialize();
     }
 
-}(window, document));
+}());
