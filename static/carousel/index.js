@@ -154,8 +154,10 @@ var iframeHtml = getIframeHtml({
   domain: baseUrl,
   style: css.carousel,
   js: [
+    "//a.tvpage.com/tvpa.min.js",
     debug ? jsPath + "vendor/jquery.js" : "",
     debug ? jsPath + "libs/utils.js" : "",
+    debug ? jsPath + "/libs/analytics.js" : "",
     debug ? jsPath + "carousel.js" : "",
     debug ? jsPath + "index.js" : "",
     debug ? "" : jsPath + "scripts.min.js"

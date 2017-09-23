@@ -30,19 +30,25 @@
 
   Utils.prototype.isEmpty = function(obj) {
     for (var key in obj) {
-      if (obj.hasOwnProperty(key)) return false;
+      if (obj.hasOwnProperty(key))
+        return false;
     }
     return true;
   };
 
   Utils.prototype.formatDuration = function(secs) {
-    if ("undefined" === typeof secs) return;
+    if ("undefined" === typeof secs)
+      return;
+    
     var date = new Date(0, 0, 0);
+    
     date.setSeconds(Number(secs));
-    var hour = (date.getHours() ? date.getHours() : ''),
-      minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes(),
-      seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
-    return (hour + minutes + ':' + seconds);
+
+    var format = function(v){
+      return v < 10 ? '0' + v : v;
+    }
+
+    return ((date.getHours() || '') + format(date.getMinutes()) + ':' + format(date.getSeconds()));
   };
 
   Utils.prototype.formatDate = function(unixTimestamp) {

@@ -194,99 +194,6 @@
           };
         }
 
-<<<<<<< HEAD
-        var checks = 0;
-        (function libsReady() {
-            setTimeout(function() {
-                if ( !isset(window,'TVPage') || !isset(window,'_tvpa') ) {
-                    (++checks < 50) ? libsReady() : console.warn('limit reached');
-                } else {
-
-                var playerOptions = {
-                        techOrder: that.techOrder,
-                        mediaProviders: that.mediaProviders,
-                        analytics: { tvpa: that.analytics },
-                        apiBaseUrl: that.apiBaseUrl,
-                        swf: '//cdnjs.tvpage.com/tvplayer/tvp-'+that.version+'.swf',
-                        onReady: function(e, pl){
-                            that.instance = pl;
-                            that.resize();
-
-                            //Fix required to let popups be displayed on top of plauer overlay.
-                            var controlBar = that.el.querySelector("#ControlBarFloater");
-                            if (controlBar && controlBar.parentNode) {
-                                controlBar.parentNode.style.zIndex = "9999";
-                            }
-
-                            //We don't want to resize the player here on fullscreen... we need the player be.
-                            if (isset(window,'BigScreen')) {
-                                BigScreen.onchange = function(){
-                                    that.isFullScreen = !that.isFullScreen;
-                                };
-                            }
-
-                            //We can't resize using local references when we are inside an iframe. Alternative is to receive external
-                            //size from host.
-                            if (window.location !== window.parent.location && (/iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream)){
-                                var onHolderResize = function (e) {
-                                    if (!e || !isset(e, 'data') || !isset(e.data, 'event') || 'tvp_' + options.id.replace(/-/g,'_') + ':modal_holder_resize' !== e.data.event) return;
-                                    var size = e.data.size || [];
-                                    that.resize(size[0], size[1]);
-                                };
-                                window.removeEventListener('message', onHolderResize, false);
-                                window.addEventListener('message', onHolderResize, false);
-                            } else {
-                                var onWindowResize = that.resize;
-                                window.removeEventListener('message', onWindowResize, false);
-                                window.addEventListener('resize', onWindowResize, false);
-                            }
-
-                            var current = 0;
-                            if (startWith && startWith.length) {
-                                for (var i = 0; i < that.assets.length; i++) {
-                                    if (that.assets[i].assetId === startWith) current = i;
-                                }
-                            }
-
-                            that.current = current;
-                            that.play(that.assets[that.current]);
-                        },
-                        onStateChange: function(e){
-
-                            if ('tvp:media:videoended' === e){
-                                that.current++;
-                                if (!that.assets[that.current]) {
-                                    that.current = 0;
-                                }
-
-                                var next = that.assets[that.current];
-                                that.play(next, true);
-                                if(that.onNext) {
-                                    that.onNext(next);
-                                }
-                            } 
-                            var stateData = JSON.parse(JSON.stringify(that.assets[that.current]));
-                            stateData.currentTime = that.instance.getCurrentTime();
-
-                            if (that.onPlayerChange) {
-                                if (window.parent) {
-                                    window.parent.postMessage({
-                                        event: eventPrefix + ':onPlayerChange',
-                                        e: e,
-                                        stateData : stateData
-                                    }, '*');
-                                }
-                            }
-
-                        },
-                        divId: that.el.id,
-                        controls: that.controls,
-                        version: that.version,
-                        advertising:that.advertising,
-                        preload: that.preload
-
-                    };
-=======
         //We can't resize using local references when we are inside an iframe. Alternative is to receive external
         //size from host.
         if (window.location !== window.parent.location && iOS) {
@@ -304,7 +211,6 @@
           window.removeEventListener('message', onWindowResize, false);
           window.addEventListener('resize', onWindowResize, false);
         }
->>>>>>> origin/carousel-changes
 
         var current = 0;
         if (that.startWith) {

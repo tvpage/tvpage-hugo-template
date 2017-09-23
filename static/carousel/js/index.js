@@ -55,7 +55,7 @@
             return 'undefined' === typeof obj
         };
 
-        return not(window.jQuery) || not(window.Carousel) || not(window.Utils) || not(window._tvpa || not(window.Analytics);
+        return not(window.jQuery) || not(window.Carousel) || not(window.Utils) || not(window._tvpa) || not(window.Analytics);
     };
 
     if (isLoadingLibs()) {
