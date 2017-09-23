@@ -136,7 +136,7 @@ var getInitialHtml = function(){
 
   html += '<style>' + css["host-custom"+mobilePrefix] + '</style>';
   html += '<div id="' + id + '-holder" class="tvp-'+type+'-holder">';
-  html += '<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe></div>';
+  html += '<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe></div>';
 
   return html;
 };
