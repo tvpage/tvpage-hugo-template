@@ -229,6 +229,7 @@
       };
 
       player = new Player('tvp-player-el', s, data.selectedVideo.id);
+      player.initialize();
       window.addEventListener('resize', Utils.debounce(function() {
         player.resize();
       }, 85));
@@ -286,19 +287,27 @@
     }, 0);
   };
 
-  var not = function(obj) {
-    return 'undefined' === typeof obj
+  //We need to poll/check when the dependencies had been already loaded, this is because we 
+  //create the iframes asynchronously.
+  var isLoadingLibs = function(){
+    var libs = ['TVPage', '_tvpa', 'Utils', 'Analytics', 'Player', 'jQuery'];
+    for (var i = 0; i < libs.length; i++)
+      if ('undefined' === typeof window[libs[i]])
+        return true;
+    
+    return false;
   };
-  if (not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player)) {
-    var libsCheck = 0;
-    (function libsReady() {
-      setTimeout(function() {
-        if (not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player)) {
-          (++libsCheck < 200) ? libsReady(): console.warn('limit reached');
+
+  if (isLoadingLibs()) {
+    var libsLoadingCheck = 0;
+    (function libsLoadingPoll() {
+      setTimeout(function(){
+        if (isLoadingLibs()) {
+          (++libsLoadingCheck < 200) ? libsLoadingPoll() : console.warn('limit reached');
         } else {
           initialize();
         }
-      }, 150);
+      },150);
     })();
   } else {
     initialize();

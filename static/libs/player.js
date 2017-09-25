@@ -203,6 +203,7 @@
       }
 
       var next = this.assets[this.current];
+      console.log("jaja")
       this.play(next, true);
       if (this.onNext) {
         this.onNext(next);
@@ -236,10 +237,12 @@
     var extras = ["preload", "poster", "overlay"];
     for (var i = 0; i < extras.length; i++) {
       var option = extras[i];
-      if (this[option] !== null) {
+      if (this[option] !== undefined) {
         options[option] = this[option];
       }
     }
+
+    console.log(options)
 
     this.player = new TVPage.player(options);
   };
