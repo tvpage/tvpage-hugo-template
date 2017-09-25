@@ -18,7 +18,7 @@
   var compact = function(o) {
     if ('object' === typeof o) {
       for (var k in o) {
-        if (!o[k])
+        if (o.hasOwnProperty(k) && !o[k])
           delete o[k];
       }
     }
@@ -261,43 +261,38 @@
     this.player = new TVPage.player(options);
   };
 
+  Player.prototype.getChannelId = function() {
+    var channelId = 0;
+    var opts = this.options;
+    
+    if(opts.channel){
+      channelId = opts.channel.id;
+    }else if(opts.channelId){
+      channelId = opts.channelId;
+    }else if(opts.channelid){
+      channelId = opts.channelid;
+    }
+
+    return channelId;
+  };
+
   Player.prototype.buildAsset = function(obj) {
     if (isEmpty(obj))
-      return {};
+      return;
 
     var asset = obj.asset;
     asset.assetId = obj.id;
     asset.assetTitle = obj.title;
     asset.loginId = obj.loginId;
-
-    var channelId = 0;
-    var opts = this.options;
-
-    if(obj.parentId)
-      channelId = obj.parentId;
-
-    if(!channelId && opts.channel)
-      channelId = opts.channel.id;
-
-    if(!channelId && opts.channelId)
-      channelId = opts.channelId;
-
-    if(!channelId && opts.channelid)
-      channelId = opts.channelid;
-
-    asset.analyticsObj = {
-      pg: channelId,
-      vd: obj.id,
-      li: obj.loginId
-    };
-
-    if (!asset.sources) {
-      asset.sources = [{
-        file: asset.videoId
-      }];
-    }  
-    
     asset.type = asset.type || 'youtube';
+    asset.analyticsObj = {
+      pg: obj.parentId || this.getChannelId(),
+      vd: asset.assetId,
+      li: asset.loginId
+    };
+    asset.sources = asset.sources || [{
+      file: asset.videoId
+    }];
 
     return asset;
   };
