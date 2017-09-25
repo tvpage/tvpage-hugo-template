@@ -203,7 +203,7 @@
       }
 
       var next = this.assets[this.current];
-      console.log("jaja")
+      
       this.play(next, true);
       if (this.onNext) {
         this.onNext(next);
@@ -241,8 +241,6 @@
         options[option] = this[option];
       }
     }
-
-    console.log(options)
 
     this.player = new TVPage.player(options);
   };
