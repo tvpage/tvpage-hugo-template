@@ -19,7 +19,7 @@
     var inlineEl = null;
     var productRatingEmptyIsBordered = false;
     var hasProducts = true;
-    var allOptions = {};
+    var generalOptions = {};
 
     var renderedApproach = function () {
         if (document.body.clientWidth < breakpoint) {
@@ -35,7 +35,7 @@
         if (window.parent) {
             window.parent.postMessage({
                 event: 'tvp_'+ inlineEl.id.replace(/-/g,'_') +':resize',
-                height: inlineEl.offsetHeight + 'px'
+                height: inlineEl.scrollHeight + 'px'
             }, '*');
         }
     }
@@ -62,7 +62,7 @@
     var loadProducts = function(videoId, loginId, fn) {
         if (!videoId) return;
         var src = '//api.tvpage.com/v1/videos/' + videoId + '/products?X-login-id=' + loginId;
-        src += '&o=' + allOptions.products_order_by + '&od=' + allOptions.products_order_direction;
+        src += '&o=' + generalOptions.products_order_by + '&od=' + generalOptions.products_order_direction;
         var cbName = 'tvp_' + Math.floor(Math.random() * 555);
         src += '&callback=' + cbName;
         var script = document.createElement('script');
@@ -221,7 +221,8 @@
                         breakpoint: 769,
                         settings: {
                             arrows: false,
-                            centerPadding: '0px',
+                            centerPadding: generalOptions.product_holder_slide_center_padding,
+                            centerMode : true,
                             slidesToShow: 1,
                             slidesToScroll: 1,
                             dots: false
@@ -300,7 +301,7 @@
     };
 
     function Inline(el, options) {
-        allOptions = options;
+        generalOptions = options;
         currentApproach = renderedApproach();
         xchg = options.xchg || false;
         loginId = (options.loginId || options.loginid) || 0;
@@ -363,7 +364,8 @@
                             breakpoint: 769,
                             settings: {
                                 arrows: false,
-                                centerPadding: '0px',
+                                centerPadding: options.videos_carousel_center_padding,
+                                centerMode : true,
                                 slidesToShow: 2,
                                 slidesToScroll: 2,
                                 dots: true

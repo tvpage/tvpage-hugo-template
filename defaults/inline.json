@@ -56,7 +56,7 @@
             "for": "inline",
             "type": "text",
             "label": "iFrame Holder Background Color",
-            "code": "body_padding",
+            "code": "body_background",
             "value": "transparent"
         },
         {
@@ -503,6 +503,13 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Product Holder Slider Center Padding",
+            "code": "product_holder_slide_center_padding",
+            "value": "0"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Product Holder Slider Dots Color",
             "code": "product_holder_slide_dots_color_active",
             "value": "rgb(64, 64, 64)"
@@ -883,6 +890,13 @@
             "type": "text",
             "label": "Videos Carousel Padding",
             "code": "videos_carousel_padding",
+            "value": "0"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Padding",
+            "code": "videos_carousel_center_padding",
             "value": "0"
         },
         {
