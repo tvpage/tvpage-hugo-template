@@ -233,7 +233,6 @@
                                 window.addEventListener('resize', onWindowResize);
                             }
 
-                            that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progressColor;
                             var current = 0;
                             if (startWith && startWith.length) {
                                 for (var i = 0; i < that.assets.length; i++) {
