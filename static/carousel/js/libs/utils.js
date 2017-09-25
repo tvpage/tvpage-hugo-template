@@ -12,6 +12,15 @@
     return document.getElementById(id);
   };
 
+  Utils.prototype.hasClass = function(o,c) {
+    return o.classList.contains(c);
+  };
+
+  Utils.prototype.sendMessage = function(msg){
+    if (window.parent)
+      window.parent.postMessage(msg, '*');
+  };
+
   Utils.prototype.getByClass = function(c) {
     return document.getElementsByClassName(c || '')[0];
   };

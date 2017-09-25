@@ -47,7 +47,9 @@
             li: config.loginid
         });
 
-        Carousel(id, configCopy);
+        var carousel = new Carousel(id, configCopy);
+        
+        carousel.initialize();
     };
 
     var isLoadingLibs = function(){
