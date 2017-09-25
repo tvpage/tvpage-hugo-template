@@ -28,8 +28,8 @@
   //The player singleton. We basically create an instance from the tvpage
   //player and expose most utilities, helping to encapsualte what is required for a few players to co-exist.
   var Player = function(el, options, startWith) {
-    if (!el || !isset(options) || !isset(options.data) || options.data.length <= 0)
-      return console.warn('bad args');
+    if (!el || !options || !options.data || options.data.length <= 0)
+      return;
 
     this.options = options;
     this.el = 'string' === typeof el ? document.getElementById(el) : el;
@@ -41,12 +41,23 @@
     this.autoplay = !!this.options.autoplay;
     this.autonext = !!this.options.autonext;
     this.version = this.options.player_version || null;
-    this.poster = this.options.poster || null;
-    this.overlay = this.options.overlay || null;
-    this.onResize = !!this.options.onResize && isFunction(this.options.onResize) ? this.options.onResize : null;
-    this.onNext = !!this.options.onNext && isFunction(this.options.onNext) ? this.options.onNext : null;
+    this.onResize = isFunction(this.options.onResize) ? this.options.onResize : null;
+    this.onNext = isFunction(this.options.onNext) ? this.options.onNext : null;
     this.onPlayerChange = !!this.options.onPlayerChange;
-  }
+  };
+
+  Player.prototype.getPlayButtonOptions = function() {
+    return compact({
+      height: this.options.play_button_height || null,
+      width: this.options.play_button_width || null,
+      backgroundColor: this.options.play_button_background_color || null,
+      borderRadius: this.options.play_button_border_radius || null,
+      borderWidth: this.options.play_button_border_width || null,
+      borderColor: this.options.play_button_border_color || null,
+      borderStyle: this.options.play_button_border_style || null,
+      iconColor: this.options.play_button_icon_color || null
+    });
+  };
 
   Player.prototype.setControlsOptions = function() {
     this.controls = compact({
@@ -59,16 +70,7 @@
         iconColor: this.options.icon_color || null,
         removeControls: this.options.remove_controls || null
       }),
-      playbutton: compact({
-        height: this.options.play_button_height || null,
-        width: this.options.play_button_width || null,
-        backgroundColor: this.options.play_button_background_color || null,
-        borderRadius: this.options.play_button_border_radius || null,
-        borderWidth: this.options.play_button_border_width || null,
-        borderColor: this.options.play_button_border_color || null,
-        borderStyle: this.options.play_button_border_style || null,
-        iconColor: this.options.play_button_icon_color || null
-      }),
+      playbutton: this.getPlayButtonOptions(),
       overlayColor: this.options.overlay_color || null,
       overlayOpacity: this.options.overlay_opacity || null
     });
@@ -121,24 +123,17 @@
     if (!this.instance || this.isFullScreen)
       return;
     
-    var width,
-        height;
-    
-    if (arguments.length > 1 && arguments[0] && arguments[1]) {
-      width = arguments[0];
-      height = arguments[1];
-    } else {
-      var parentEl = this.el.parentNode;
-      width = parentEl.offsetWidth;
-      height = parentEl.offsetHeight;
-    }
+    var parentEl = this.el.parentNode;
+    var hasArgs = arguments.length > 1;
+    var width = hasArgs ? arguments[0] : parentEl.offsetWidth;
+    var height = hasArgs ? arguments[1] : parentEl.offsetHeight;
 
     this.instance.resize(width, height);
     this.initialResize = false;
     
     if (this.onResize)
-      this.onResize(this.initialResize, [width, height]);
-  }
+      this.onResize(this.initialResize,[width,height]);
+  };
 
   Player.prototype.controlBarZindex = function() {
     var controlBar = this.el.querySelector("#ControlBarFloater");
