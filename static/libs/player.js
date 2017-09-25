@@ -1,6 +1,8 @@
 (function() {
 
-  var iOS = /iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream;
+  var userAgent = navigator.userAgent;
+  var iOS = /iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(userAgent) && !window.MSStream;
+  var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
   var isset = function(o, p) {
     var val = o;
     if (p) val = o[p];
@@ -80,42 +82,28 @@
     if (!this.options.advertising || isEmpty(this.options.advertising))
       return;
 
-    var adOptions = this.options.advertising;
+    var options = this.options.advertising;
 
     this.advertising = compact({
-      enabled: !!adOptions.enabled,
-      adServerUrl: adOptions.adServerUrl || null,
-      adTimeout: adOptions.adTimeout || "2000",
-      maxAds: adOptions.maxAds || "100",
-      adInterval: isset(adOptions.adInterval) ? String(adOptions.adInterval) : "0"
+      enabled: !!options.enabled,
+      adServerUrl: options.adServerUrl || null,
+      adTimeout: options.adTimeout || "2000",
+      maxAds: options.maxAds || "100",
+      adInterval: isset(options.adInterval) ? String(options.adInterval) : "0"
     });
   };
 
-  Player.prototype.getOption = function(name) {
-    if (this.options.hasOwnProperty(name))
-      return this.options.hasOwnProperty(name);
-    return null;
-  }
-
   Player.prototype.play = function(asset, ongoing) {
-    if (!asset) return console.warn('need asset');
-    var willCue = false,
-      isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
-    if (ongoing) {
-      if (isMobile || (isset(this.autonext) && !this.autonext)) {
+    if (asset) {
+      var willCue = false;
+      if( (ongoing && (isMobile || !this.autonext)) || (isMobile || !this.autoplay) )
         willCue = true;
-      }
-    } else {
-      if (isMobile || (isset(this.autoplay) && !this.autoplay)) {
-        willCue = true;
-      }
-    }
 
-    if (willCue) {
-      this.instance.cueVideo(asset);
-    } else {
-      this.instance.loadVideo(asset);
+      if(willCue){
+        this.instance.cueVideo(asset);
+      }else{
+        this.instance.loadVideo(asset);
+      }
     }
   };
 
