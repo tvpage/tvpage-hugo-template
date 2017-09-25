@@ -9,7 +9,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "grunt-contrib-sass": "^1.0.0"
+    "grunt-contrib-sass": "^1.0.0",
+    "grunt-sass": "^2.0.0",
+    "node-sass": "^4.5.3",
+    "sass": "^1.0.0-beta.1"
   },
   "devDependencies": {
     "grunt": "^1.0.1",

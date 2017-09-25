@@ -330,11 +330,13 @@ function handleModalInitialized(e){
 
   var onOrientationChange = function () {
     if (utils.isIOS && iframeModal && iframeModal.contentWindow) {
-      var width = iframeModal.parentNode.offsetWidth;
-      iframeModal.contentWindow.window.postMessage({
-        event: config.eventPrefix + ':modal_holder_resize',
-        size: [width, Math.floor(width * (9 / 16))]
-      },'*');
+      setTimeout(function(){
+        var width = iframeModal.parentNode.offsetWidth;
+        iframeModal.contentWindow.window.postMessage({
+          event: config.eventPrefix + ':modal_holder_resize',
+          size: [width, Math.floor(width * (9 / 16))]
+        },'*');
+      },300);
     }
   };
   var orientationChangeEvent = 'onorientationchange' in window ? 'orientationchange' : 'resize';
