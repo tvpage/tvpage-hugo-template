@@ -20,7 +20,7 @@
         return;
   
       for (var k in o) {
-        if (!o[k])
+        if (o.hasOwnProperty(k) && !o[k])
           delete o[k];
       }
       return o;
@@ -34,6 +34,7 @@
   
       this.options = options;
       this.el = 'string' === typeof el ? document.getElementById(el) : el;
+      this.eventPrefix = ("tvp_" + this.options.id).replace(/-/g, '_');
       this.startWith = startWith || null;
       this.instance = null;
       this.isFullScreen = false;
@@ -45,6 +46,7 @@
       this.overlay = this.options.overlay || null;
       this.onResize = !!this.options.onResize && isFunction(this.options.onResize) ? this.options.onResize : null;
       this.onNext = !!this.options.onNext && isFunction(this.options.onNext) ? this.options.onNext : null;
+      this.onPlayerChange = !!this.options.onPlayerChange;
   
       this.assets = (function(data) {
         var assets = [];
@@ -198,7 +200,7 @@
         //size from host.
         if (window.location !== window.parent.location && iOS) {
           var onHolderResize = function(e) {
-            if (!e || !isset(e, 'data') || !isset(e.data, 'event') || 'tvp_' + that.options.id.replace(/-/g, '_') + ':modal_holder_resize' !== e.data.event)
+            if (!e || !isset(e, 'data') || !isset(e.data, 'event') || that.eventPrefix + ':modal_holder_resize' !== e.data.event)
               return;
             
             var size = e.data.size || [];
@@ -235,18 +237,30 @@
         swf: '//cdnjs.tvpage.com/tvplayer/tvp-' + this.version + '.swf',
         onReady: onReady,
         onStateChange: function(e) {
-          if ('tvp:media:videoended' !== e)
-            return;
+          var current = that.current;
+          
+          var stateData = JSON.parse(JSON.stringify(that.assets[current]));
+          stateData.currentTime = that.instance.getCurrentTime();
 
-          this.current++;
-          if (!this.assets[this.current]) {
-            this.current = 0;
+          if (that.onPlayerChange && window.parent) {
+            window.parent.postMessage({
+              event: that.eventPrefix + ':on_player_change',
+              e: e,
+              stateData : stateData
+            }, '*');
           }
-
-          var next = this.assets[this.current];
-          this.play(next, true);
-          if (this.onNext) {
-            this.onNext(next);
+          
+          if ('tvp:media:videoended' === e) {
+            that.current++;
+            if (!that.assets[that.current]) {
+              that.current = 0;
+            }
+  
+            var next = that.assets[that.current];
+            that.play(next, true);
+            if (that.onNext) {
+              that.onNext(next);
+            }
           }
         },
         divId: this.el.id,

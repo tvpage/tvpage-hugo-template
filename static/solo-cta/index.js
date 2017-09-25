@@ -194,8 +194,11 @@ window[cbName] = function (data) {
       }
       
       overlayEl.innerHTML = template;
+      
       var configCopy = JSON.parse(JSON.stringify(config));
-      delete configCopy.onPlayerChange;
+      
+      configCopy.onPlayerChange = !!config.onPlayerChange;
+
       clickData = {
         data: data,
         selectedVideo: data[0],

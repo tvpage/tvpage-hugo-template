@@ -258,12 +258,19 @@ window.addEventListener("message", function(e) {
     case 'resize':
       handleResize(e);
       break;
+    case 'on_player_change':
+      handleOnPlayerChange(e);
+      break;
     default:
   }
 
   if (__windowCallbackFunc__)
     __windowCallbackFunc__(e);
 });
+
+function handleOnPlayerChange(e){
+  config.onPlayerChange(e.data.e, e.data.stateData);
+}
 
 function handleRender(e) {
   addClass(holder, "initialized");
@@ -288,6 +295,8 @@ function handleVideoClick(e) {
 
   var configCopy = JSON.parse(JSON.stringify(config));
   delete configCopy.no_products_banner;
+  
+  configCopy.onPlayerChange = !!config.onPlayerChange;
 
   var eventData = e.data;
   var clickedVideo = eventData.selectedVideo;
