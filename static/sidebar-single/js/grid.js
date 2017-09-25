@@ -84,12 +84,14 @@
         }
 
         this.container.appendChild(pageFrag);
-        if (window.parent) {
-          window.parent.postMessage({
-            event: this.eventPrefix + ':render',
-            height: this.el.offsetHeight + 'px'
-          }, '*');
-        }
+        setTimeout(function(){
+          if (window.parent) {
+            window.parent.postMessage({
+              event: this.eventPrefix + ':render',
+              height: this.el.getBoundingClientRect().height + 'px'
+            }, '*');
+          }
+        },200);
       }
     };
 
@@ -151,7 +153,7 @@
       if (that.windowSize !== newSize) {
         that.windowSize = newSize;
         var isSmall = newSize === 'small';
-        that.itemsPerPage = isSmall ? 2 : (options.itemsPerPage || 6);
+        that.itemsPerPage = isSmall ? 2 : options.items_per_page;
         that.itemsPerRow = 1;
         //reset page to 0 if we detect a resize, so we don't have trouble loading the grid
         that.page = 0;
