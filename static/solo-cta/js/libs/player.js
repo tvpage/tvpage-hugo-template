@@ -22,7 +22,7 @@
           return o;
         },
         hostName = isset(location,'hostname') ?  location.hostname : '';
-    var isIOS = /iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream;
+
     //The player singleton. We basically create an instance from the tvpage
     //player and expose most utilities, helping to encapsualte what is required for a few players to co-exist.
     function Player(el, options, startWith) {
@@ -47,6 +47,7 @@
         this.preload = isset(options.preload) ? options.preload : null;
         this.poster = isset(options.poster) ? options.poster : null;
         this.overlay = isset(options.overlay) ? options.overlay : null;
+
         this.playbutton = compact({
           height: isset(options.play_button_height) ? options.play_button_height : null,
           width: isset(options.play_button_width) ? options.play_button_width : null,
@@ -55,7 +56,7 @@
           borderWidth: isset(options.play_button_border_width) ? options.play_button_border_width : null,
           borderColor: isset(options.play_button_border_color) ? options.play_button_border_color : null,
           borderStyle: isset(options.play_button_border_style) ? options.play_button_border_style : null,
-          iconColor: isset(options.play_button_icon_color) ? options.play_button_icon_color : null,
+          iconColor: isset(options.play_button_icon_color) ? options.play_button_icon_color : null
         });
 
         this.floater = compact({
@@ -157,11 +158,12 @@
         this.resize = function(){
             if (!that.instance || that.isFullScreen) return;
             var width, height;
-            var parentEl = that.el.parentNode;
+
             if (arguments.length > 1 && arguments[0] && arguments[1]) {
-                width = parentEl.clientWidth;
-                height = parentEl.clientHeight;
+                width = arguments[0];
+                height = arguments[1];
             } else {
+                var parentEl = that.el.parentNode;
                 width = parentEl.clientWidth;
                 height = parentEl.clientHeight;
             }
@@ -230,9 +232,7 @@
                                 window.removeEventListener('message', onWindowResize, false);
                                 window.addEventListener('resize', onWindowResize);
                             }
-                            if(!isIOS){
-                              that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progressColor;
-                            }
+
                             var current = 0;
                             if (startWith && startWith.length) {
                                 for (var i = 0; i < that.assets.length; i++) {
