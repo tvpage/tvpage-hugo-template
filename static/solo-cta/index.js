@@ -213,10 +213,6 @@ window[cbName] = function (data) {
 
 document.body.appendChild(jsonpScript);
 
-var isEvent = function (e, type) {
-    return (e && utils.isset(e, "data") && utils.isset(e.data, "event") && config.eventPrefix + type === e.data.event);
-};
-
 var updateModalTitle = function(title){
     document.getElementById('tvp-modal-title-' + config.id).innerHTML = title || "";
 };

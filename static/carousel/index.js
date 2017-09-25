@@ -156,8 +156,8 @@ var iframeHtml = getIframeHtml({
   js: [
     "//a.tvpage.com/tvpa.min.js",
     debug ? jsPath + "vendor/jquery.js" : "",
-    debug ? jsPath + "libs/utils.js" : "",
-    debug ? jsPath + "/libs/analytics.js" : "",
+    debug ? baseUrl + "libs/utils.js" : "",
+    debug ? baseUrl + "libs/analytics.js" : "",
     debug ? jsPath + "carousel.js" : "",
     debug ? jsPath + "index.js" : "",
     debug ? "" : jsPath + "scripts.min.js"
@@ -336,9 +336,9 @@ function handleVideoClick(e) {
       playerUrl,
       debug && isMobile ? jsPath + "/vendor/jquery.js" : "",
       debug && !isMobile ? jsPath + "/vendor/perfect-scrollbar.min.js" : "",
-      debug ? jsPath + "/libs/utils.js" : "",
-      debug ? jsPath + "/libs/analytics.js" : "",
-      debug ? jsPath + "/libs/player.js" : "",
+      debug ? baseUrl + "libs/utils.js" : "",
+      debug ? baseUrl + "libs/analytics.js" : "",
+      debug ? baseUrl + "libs/player.js" : "",
       debug ? jsPath + "/" + mobilePath + "modal/index.js" : "",
       debug ? "" : jsPath + mobilePath + "modal/scripts.min.js"
     ],

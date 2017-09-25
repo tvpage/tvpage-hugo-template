@@ -99,7 +99,7 @@ if (   __TVPage__.config[id].hasOwnProperty('onChange') && typeof   __TVPage__.c
 }
 
 var config = utils.isset(window.__TVPage__) && utils.isset(__TVPage__,"config") && utils.isset(__TVPage__.config,id) ? __TVPage__.config[id] : {};
-
+var baseUrl = config.baseUrl;
 var hostCssTagId = "tvp-sidebar-host-css";
 var hostCssTag = "";
 if (!document.getElementById(hostCssTagId)) {
@@ -148,8 +148,8 @@ var iframeContent = utils.getIframeHtml({
     style: config.css.sidebar,
     js: [
         "//a.tvpage.com/tvpa.min.js",
-        config.baseUrl+'sidebar/js/libs/analytics.js',
-        config.debug ? config.jsPath + "libs/utils.js" : "",
+        config.debug ? baseUrl + "libs/analytics.js" : "",
+        config.debug ? baseUrl + "libs/utils.js" : "",
         config.debug ? config.jsPath + "grid.js" : "",
         config.debug ? config.jsPath + "index.js" : "",
         config.debug ? "" : config.jsPath + "scripts.min.js"
@@ -272,7 +272,7 @@ function handleVideoClick(e){
     };
 
     updateModalTitle(eventData.selectedVideo.title);
-    utils.removeClass('tvp-modal-' + config.id,'tvp-hidden');
+    utils.removeClass(modal,'tvp-hidden');
     utils.removeClass('tvp-modal-overlay-' + config.id,'tvp-hidden');
     
     if (config.fix_page_scroll) {
@@ -301,9 +301,9 @@ function handleVideoClick(e){
           playerUrl,
           config.debug && utils.isMobile ? config.jsPath + "/vendor/jquery.js" : "",
           config.debug && !utils.isMobile ? config.jsPath + "/vendor/perfect-scrollbar.min.js" : "",
-          config.debug ? config.jsPath + "/libs/utils.js" : "",
-          config.debug ? config.jsPath + "/libs/analytics.js" : "",
-          config.debug ? config.jsPath + "/libs/player.js" : "",
+          config.debug ? baseUrl + "libs/utils.js" : "",
+          config.debug ? baseUrl + "libs/analytics.js" : "",
+          config.debug ? baseUrl + "libs/player.js" : "",
           config.debug ? config.jsPath + "/" + config.mobilePath + "modal/index.js" : "",
           config.debug ? "" : config.jsPath + config.mobilePath + "modal/scripts.min.js"
       ],

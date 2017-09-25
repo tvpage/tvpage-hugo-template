@@ -39,7 +39,8 @@
     });
     analytics.track('ci', {li: settings.loginid});
 
-    new Grid(name, gridSettings);
+    var grid = new Grid(name, gridSettings);
+    grid.initialize();
   };
  
   var not = function(obj){return 'undefined' === typeof obj};

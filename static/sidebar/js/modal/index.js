@@ -280,6 +280,8 @@
             };
 
             player = new Player('tvp-player-el',s,data.selectedVideo.id);
+            player.initialize();
+            
             window.addEventListener('resize', Utils.debounce(function(){
                 player.resize();
             },85));
