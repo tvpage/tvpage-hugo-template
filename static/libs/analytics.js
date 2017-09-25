@@ -1,31 +1,36 @@
 (function() {
 
-  function isset (o,p){
-    return p ? o.hasOwnProperty(p) : "undefined" !== typeof o;
+  var hasKey = function(o,p){
+    return o.hasOwnProperty(p);
+  };
+
+  var isUndefined = function(o){
+    return 'undefined' === typeof o;
   };
 
   function Analytics(){
   }
 
   Analytics.prototype.initConfig = function(options) {
-    if (!isset(options) || !isset(options.loginId) || !isset(options.domain) || !isset(options.logUrl)) {
-      return console.warn('need config');
-    }
+    if (isUndefined(options) || isUndefined(_tvpa) || !hasKey(options,'loginId') || !hasKey(options,'logUrl'))
+      return;
 
     var config = {
       logUrl: options.logUrl,
       li: options.loginId,
-      gaDomain: options.domain,
+      gaDomain: options.domain || '',
     };
 
-    if (options.firstPartyCookies)
+    if (options.firstPartyCookies && options.cookieDomain)
       config.firstPartyCookieDomain = options.cookieDomain;
 
     _tvpa.push(['config', config]);
   };
 
   Analytics.prototype.track = function(e, data) {
-    if (!e || !data || !_tvpa) return console.log('no data');
+    if(isUndefined(e) || isUndefined(data))
+      return;
+    
     _tvpa.push(['track', e, data]);
   };
 

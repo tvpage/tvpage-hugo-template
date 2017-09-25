@@ -16,12 +16,11 @@
     return 'undefined' !== typeof obj;
   };
   var compact = function(o) {
-    if (!o && "object" !== typeof o)
-      return;
-
-    for (var k in o) {
-      if (o.hasOwnProperty(k) && !o[k])
-        delete o[k];
+    if ('object' === typeof o) {
+      for (var k in o) {
+        if (!o[k])
+          delete o[k];
+      }
     }
     return o;
   };
@@ -47,39 +46,6 @@
     this.onResize = !!this.options.onResize && isFunction(this.options.onResize) ? this.options.onResize : null;
     this.onNext = !!this.options.onNext && isFunction(this.options.onNext) ? this.options.onNext : null;
     this.onPlayerChange = !!this.options.onPlayerChange;
-
-    this.assets = (function(data) {
-      var assets = [];
-      for (var i = 0; i < data.length; i++) {
-        var video = data[i];
-        if (isEmpty(video))
-          break;
-
-        var asset = video.asset;
-        asset.assetId = video.id;
-        asset.assetTitle = video.title;
-        asset.loginId = video.loginId;
-
-        var channelId = isset(video, 'parentId') ? video.parentId : (isset(options, 'channel') ? options.channel.id : 0);
-        if (!channelId && (options.channelId || options.channelid)) {
-          channelId = options.channelId || options.channelid;
-        }
-
-        asset.analyticsObj = {
-          pg: channelId,
-          vd: video.id,
-          li: video.loginId
-        };
-
-        if (!asset.sources) asset.sources = [{
-          file: asset.videoId
-        }];
-        asset.type = asset.type || 'youtube';
-        assets.push(asset);
-      }
-
-      return assets;
-    }(options.data));
   }
 
   Player.prototype.setControlsOptions = function() {
@@ -174,60 +140,96 @@
       this.onResize(this.initialResize, [width, height]);
   }
 
+  Player.prototype.controlBarZindex = function() {
+    var controlBar = this.el.querySelector("#ControlBarFloater");
+    if (controlBar && controlBar.parentNode) {
+      controlBar.parentNode.style.zIndex = "9999";
+    }
+  };
+
+  //We don't want to resize the player here on fullscreen... we need the player be.
+  Player.prototype.handleFullScreen = function() {
+    if(window.BigScreen){
+      BigScreen.onchange = function() {
+        if (!iOS) {
+          that.isFullScreen = !that.isFullScreen;
+        }
+      };
+    }
+  };
+
+  //We can't resize using local references when we are inside an iframe. Alternative is to receive external
+  //size from host.
+  Player.prototype.handleResize = function() {
+    var that = this;
+    if (window.location !== window.parent.location && iOS) {
+      var onHolderResize = function(e) {
+        if (!e || !isset(e, 'data') || !isset(e.data, 'event') || that.eventPrefix + ':modal_holder_resize' !== e.data.event)
+          return;
+        
+        var size = e.data.size || [];
+        that.resize(size[0], size[1]);
+      };
+      window.removeEventListener('message', onHolderResize, false);
+      window.addEventListener('message', onHolderResize, false);
+    } else {
+      window.removeEventListener('message', this.resize, false);
+      window.addEventListener('resize', this.resize, false);
+    }
+  };
+
+  Player.prototype.onReady = function(e, pl) {
+    this.instance = pl;
+    this.resize.call(this);
+
+    this.controlBarZindex();
+    this.handleFullScreen();
+    this.handleResize();
+
+    var current = 0;
+    var assets = this.assets;
+    if (this.startWith) {
+      for (var i = 0; i < assets.length; i++) {
+        if (assets[i].assetId === this.startWith)
+          current = i;
+      }
+    }
+
+    this.current = current;
+    this.play(assets[this.current]);
+  };
+
+  Player.prototype.onStateChange = function(e) {
+    var current = this.current;
+    var stateData = JSON.parse(JSON.stringify(this.assets[current]));
+
+    stateData.currentTime = this.instance.getCurrentTime();
+
+    if (this.onPlayerChange && window.parent) {
+      window.parent.postMessage({
+        event: this.eventPrefix + ':on_player_change',
+        e: e,
+        stateData : stateData
+      }, '*');
+    }
+    
+    if ('tvp:media:videoended' === e) {
+      this.current++;
+      if (!this.assets[this.current]) {
+        this.current = 0;
+      }
+
+      var next = this.assets[this.current];
+      this.play(next, true);
+      if (this.onNext) {
+        this.onNext(next);
+      }
+    }
+  };
+
   Player.prototype.startPlayer = function() {
     var that = this;
-
-    var onReady = function(e, pl) {
-      that.instance = pl;
-      that.resize.call(that);
-
-      //Fix required to let popups be displayed on top of plauer overlay.
-      var controlBar = that.el.querySelector("#ControlBarFloater");
-      if (controlBar && controlBar.parentNode) {
-        controlBar.parentNode.style.zIndex = "9999";
-      }
-
-      //We don't want to resize the player here on fullscreen... we need the player be.
-      if (isset(window, 'BigScreen')) {
-        BigScreen.onchange = function() {
-          if (!iOS) {
-            that.isFullScreen = !that.isFullScreen;
-          }
-        };
-      }
-
-      //We can't resize using local references when we are inside an iframe. Alternative is to receive external
-      //size from host.
-      if (window.location !== window.parent.location && iOS) {
-        var onHolderResize = function(e) {
-          if (!e || !isset(e, 'data') || !isset(e.data, 'event') || that.eventPrefix + ':modal_holder_resize' !== e.data.event)
-            return;
-          
-          var size = e.data.size || [];
-          that.resize(size[0], size[1]);
-        };
-        window.removeEventListener('message', onHolderResize, false);
-        window.addEventListener('message', onHolderResize, false);
-      } else {
-        var onWindowResize = that.resize;
-        window.removeEventListener('message', onWindowResize, false);
-        window.addEventListener('resize', onWindowResize, false);
-      }
-
-      var current = 0;
-      if (that.startWith) {
-        for (var i = 0; i < that.assets.length; i++) {
-          if (that.assets[i].assetId === that.startWith)
-            current = i;
-        }
-      }
-
-      that.current = current;
-
-      that.play(that.assets[that.current]);
-    };
-    
-    var playerOptions = {
+    var options = {
       techOrder: this.options.tech_order || null,
       mediaProviders: this.options.media_providers || null,
       analytics: {
@@ -235,33 +237,11 @@
       },
       apiBaseUrl: this.options.api_base_url || null,
       swf: '//cdnjs.tvpage.com/tvplayer/tvp-' + this.version + '.swf',
-      onReady: onReady,
+      onReady: function(e, pl){
+        that.onReady(e, pl);
+      },
       onStateChange: function(e) {
-        var current = that.current;
-        
-        var stateData = JSON.parse(JSON.stringify(that.assets[current]));
-        stateData.currentTime = that.instance.getCurrentTime();
-
-        if (that.onPlayerChange && window.parent) {
-          window.parent.postMessage({
-            event: that.eventPrefix + ':on_player_change',
-            e: e,
-            stateData : stateData
-          }, '*');
-        }
-        
-        if ('tvp:media:videoended' === e) {
-          that.current++;
-          if (!that.assets[that.current]) {
-            that.current = 0;
-          }
-
-          var next = that.assets[that.current];
-          that.play(next, true);
-          if (that.onNext) {
-            that.onNext(next);
-          }
-        }
+        that.onStateChange(e);
       },
       divId: this.el.id,
       controls: this.controls,
@@ -274,20 +254,66 @@
     for (var i = 0; i < extras.length; i++) {
       var option = extras[i];
       if (this[option] !== null) {
-        playerOptions[option] = this[option];
+        options[option] = this[option];
       }
     }
 
-    this.player = new TVPage.player(playerOptions);
+    this.player = new TVPage.player(options);
+  };
+
+  Player.prototype.buildAsset = function(obj) {
+    if (isEmpty(obj))
+      return {};
+
+    var asset = obj.asset;
+    asset.assetId = obj.id;
+    asset.assetTitle = obj.title;
+    asset.loginId = obj.loginId;
+
+    var channelId = 0;
+    var opts = this.options;
+
+    if(obj.parentId)
+      channelId = obj.parentId;
+
+    if(!channelId && opts.channel)
+      channelId = opts.channel.id;
+
+    if(!channelId && opts.channelId)
+      channelId = opts.channelId;
+
+    if(!channelId && opts.channelid)
+      channelId = opts.channelid;
+
+    asset.analyticsObj = {
+      pg: channelId,
+      vd: obj.id,
+      li: obj.loginId
+    };
+
+    if (!asset.sources) {
+      asset.sources = [{
+        file: asset.videoId
+      }];
+    }  
+    
+    asset.type = asset.type || 'youtube';
+
+    return asset;
   };
 
   Player.prototype.initialize = function() {
     this.setControlsOptions();
     this.setAdvertisingOptions();
+    
+    this.assets = [];
+    var data = this.options.data;
+    for (var i = 0; i < data.length; i++) {
+      this.assets.push(this.buildAsset(data[i]));
+    }
 
     var that = this;
     var checks = 0;
-    
     (function libsReady() {
       setTimeout(function() {
         if (!isset(window, 'TVPage') || !isset(window, '_tvpa')) {
