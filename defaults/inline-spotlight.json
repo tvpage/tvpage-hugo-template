@@ -40,10 +40,31 @@
             "value": false
         },
         {
+            "for": "carousel",
+            "type": "text",
+            "label": "Sort Videos By",
+            "code": "sort_videos_by",
+            "value": ""
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Sort Videos Order",
+            "code": "sort_videos_order",
+            "value": "ASC"
+        },
+        {
             "for": "player",
             "type": "boolean",
             "label": "Autonext",
             "code": "autonext",
+            "value": true
+        },
+        {
+            "for": "player",
+            "type": "boolean",
+            "label": "Immediate",
+            "code": "immediate",
             "value": true
         },
         {
@@ -90,6 +111,13 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Play Button Background Size",
+            "code": "play_button_background_size",
+            "value": "contain"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Play Button Transform",
             "code": "play_button_transform",
             "value": "none"
@@ -121,7 +149,63 @@
             "label": "Product Image Border Mobile",
             "code": "product_image_border_mobile",
             "value": "none"
-        }, 
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Image Width",
+            "code": "product_image_width",
+            "value": "100%"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Image Height",
+            "code": "product_image_height",
+            "value": "100%"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos To Show",
+            "code": "videos_to_show",
+            "value": "3"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos To Scroll",
+            "code": "videos_to_scroll",
+            "value": "3"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos To Show Mobile",
+            "code": "videos_to_show_mobile",
+            "value": "1"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos To scroll Mobile",
+            "code": "videos_to_scroll_mobile",
+            "value": "1"
+        },
+        {
+            "for": "inline",
+            "type": "boolean",
+            "label": "Video Slider Center Mode Mobile",
+            "code": "video_slider_center_mode_mobile",
+            "value": true
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Video Slider Center Padding Mobile",
+            "code": "video_slider_center_padding_mobile",
+            "value": "35% 0 0"
+        },
         {
             "for": "inline",
             "type": "text",
@@ -211,7 +295,7 @@
             "type": "text",
             "label": "Video Header Text Align Mobile",
             "code": "video_header_text_align_mobile",
-            "value": "center"
+            "value": "left"
         },
         {
             "for": "inline",
@@ -225,7 +309,7 @@
             "type": "boolean",
             "label": "Video Slider Dots Mobile",
             "code": "video_slider_dots_mobile",
-            "value": true
+            "value": false
         },
         {
             "for": "inline",
@@ -281,7 +365,7 @@
             "type": "text",
             "label": "Featured Product Header Font Size Max",
             "code": "featured_product_header_font_size_max",
-            "value": "32"
+            "value": "14"
         },
         {
             "for": "inline",
@@ -344,7 +428,7 @@
             "type": "text",
             "label": "Featured Product Header Line Height",
             "code": "featured_product_header_line_height",
-            "value": "43px"
+            "value": "normal"
         },
         {
             "for": "inline",
@@ -601,6 +685,20 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Product Holder Slider Arrow Left",
+            "code": "product_holder_slide_arrow_left",
+            "value": "-12px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Holder Slider Arrow Right",
+            "code": "product_holder_slide_arrow_right",
+            "value": "-12px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Product Holder Slider Arrow Width",
             "code": "product_holder_slide_arrow_width",
             "value": "40"
@@ -692,9 +790,16 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Product Item Info Display Mobile",
+            "code": "product_item_info_display_mobile",
+            "value": "none"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Product Item Background Color",
             "code": "product_item_background_color",
-            "value": "#fff"
+            "value": "transparent"
         },
         {
             "for": "inline",
@@ -734,6 +839,13 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Product Item Title Font Family",
+            "code": "product_item_title_font_family",
+            "value": "Helvetica"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Product Item Title Line Height",
             "code": "product_item_title_line_height",
             "value": "normal"
@@ -755,6 +867,14 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Product Item View Button Display",
+            "code": "product_item_view_button_display",
+            "value": "none"
+        },
+
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Product Item View Button Font Size Max",
             "code": "product_item_view_button_font_size_max",
             "value": "14"
@@ -771,7 +891,56 @@
             "type": "text",
             "label": "Featured Product Header Text Align Mobile",
             "code": "featured_product_header_text_align_mobile",
-            "value": "center"
+            "value": "left"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Text Transform Mobile",
+            "code": "featured_product_header_text_transform_mobile",
+            "value": "none"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Margin Mobile",
+            "code": "featured_product_header_margin_mobile",
+            "value": "24px 0 30px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Font Weight Mobile",
+            "code": "featured_product_header_font_weight_mobile",
+            "value": "normal"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Line Height Mobile",
+            "code": "featured_product_header_line_height_mobile",
+            "value": "20px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Padding Mobile",
+            "code": "featured_product_header_padding_mobile",
+            "value": "0 20px 0 6px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Font Size Mobile",
+            "code": "featured_product_header_font_size_mobile",
+            "value": "14px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Font Family Mobile",
+            "code": "featured_product_header_font_family_mobile",
+            "value": "helvetica"
         },
         {
             "for": "inline",
@@ -873,10 +1042,24 @@
         },
         {
             "for": "inline",
+            "type": "text",
+            "label": "Products Slider Slides To Show",
+            "code": "products_slider_slides_to_show",
+            "value": "1"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Products Slider Center Padding",
+            "code": "products_slider_center_padding",
+            "value": "25% 0 0"
+        },
+        {
+            "for": "inline",
             "type": "boolean",
             "label": "Products Slider Arrows Mobile",
             "code": "products_slider_arrows_mobile",
-            "value": true
+            "value": false
         },
         {
             "for": "inline",
@@ -888,9 +1071,23 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Videos Carousel Item Title Font Family",
+            "code": "videos_carousel_item_title_font_family",
+            "value": "Helvetica"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Videos Carousel Item Date Font Color",
             "code": "videos_carousel_item_date_font_color",
             "value": "#000"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Now Playing Font Color",
+            "code": "videos_carousel_item_now_playing_font_color",
+            "value": "#fff"
         },
         {
             "for": "inline",
@@ -923,6 +1120,20 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Videos Carousel Item Now Playing Font Size Max",
+            "code": "videos_carousel_item_now_playing_font_size_max",
+            "value": "18"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Now Playing Font Size Min",
+            "code": "videos_carousel_item_now_playing_font_size_min",
+            "value": "20"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Videos Carousel Item Date Font Size Max",
             "code": "videos_carousel_item_date_font_size_max",
             "value": "16"
@@ -939,6 +1150,41 @@
             "type": "text",
             "label": "Videos Carousel Item Date Font Weight",
             "code": "videos_carousel_item_date_font_weight",
+            "value": "normal"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Now Playing Font Weight",
+            "code": "videos_carousel_item_now_playing_font_weight",
+            "value": "normal"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Date Font Family",
+            "code": "videos_carousel_item_date_font_family",
+            "value": "helvetica"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Now Playing Font Family",
+            "code": "videos_carousel_item_now_playing_font_family",
+            "value": "helvetica"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Date Font Style",
+            "code": "videos_carousel_item_date_font_style",
+            "value": "normal"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Now Playing Font Style",
+            "code": "videos_carousel_item_now_playing_font_style",
             "value": "normal"
         },
         {
@@ -1044,7 +1290,14 @@
             "type": "text",
             "label": "Products Carousel Padding",
             "code": "products_carousel_padding",
-            "value": "0 19px"
+            "value": "0 6px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Products Carousel Padding Mobile",
+            "code": "products_carousel_padding_mobile",
+            "value": "0 6px"
         },
         {
             "for": "inline",
@@ -1066,6 +1319,27 @@
             "label": "Videos Carousel Item Date Text Align",
             "code": "videos_carousel_item_date_text_align",
             "value": "center"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Now Playing Text Align",
+            "code": "videos_carousel_item_now_playing_text_align",
+            "value": "center"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Now Playing Text Transform",
+            "code": "videos_carousel_item_now_playing_text_transform",
+            "value": "none"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Date Text Transform",
+            "code": "videos_carousel_item_date_text_transform",
+            "value": "none"
         },
         {
             "for": "inline",
@@ -1101,6 +1375,20 @@
             "label": "Videos Carousel Item Thumbnail InActive",
             "code": "videos_carousel_item_thumbnail_inactive",
             "value": "0"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Thumbnail Media Duration Display",
+            "code": "videos_carousel_item_thumbnail_media_duration_display",
+            "value": "none"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Thumbnail Media Duration Display Mobile",
+            "code": "videos_carousel_item_thumbnail_media_duration_display_mobile",
+            "value": "block"
         },
         {
             "for": "inline",
