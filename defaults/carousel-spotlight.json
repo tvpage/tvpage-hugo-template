@@ -103,6 +103,20 @@
         },
         {
           "for": "carousel",
+          "type": "boolean",
+          "label": "Navigation Bullets at 480",
+          "code": "navigation_bullets_480",
+          "value": false
+        },
+        {
+          "for": "carousel",
+          "type": "boolean",
+          "label": "Navigation Bullets at 667",
+          "code": "navigation_bullets_667",
+          "value": false
+        },
+        {
+          "for": "carousel",
           "type": "text",
           "label": "Navigation Bullets Append To",
           "code": "navigation_bullets_append_to",
@@ -149,6 +163,41 @@
            "label": "Iframe Width",
            "code": "iframe_width",
            "value": "100%"
+        },
+        {
+          "for": "carousel",
+          "type": "text",
+          "label": "Center Padding",
+          "code": "center_padding",
+          "value": "20px"
+        },
+        {
+          "for": "carousel",
+          "type": "text",
+          "label": "Center Padding at 480",
+          "code": "center_padding_480",
+          "value": "20px"
+        },
+        {
+          "for": "carousel",
+          "type": "text",
+          "label": "Center Padding at 667",
+          "code": "center_padding_667",
+          "value": "20px"
+        },
+        {
+          "for": "carousel",
+          "type": "text",
+          "label": "Center Mode at 480",
+          "code": "center_mode_480",
+          "value": false
+        },
+        {
+          "for": "carousel",
+          "type": "text",
+          "label": "Center Mode at 667",
+          "code": "center_mode_667",
+          "value": false
         },
         {
            "for": "carousel",
@@ -415,6 +464,34 @@
             "label": "Items To Show",
             "code": "items_to_show",
             "value": "3"
+        },
+        {
+          "for": "carousel",
+          "type": "text",
+          "label": "Items To Show at 480",
+          "code": "items_to_show_480",
+          "value": "1"
+        },
+        {
+          "for": "carousel",
+          "type": "text",
+          "label": "Items To Scroll at 480",
+          "code": "items_to_scroll_480",
+          "value": "1"
+        },
+        {
+          "for": "carousel",
+          "type": "text",
+          "label": "Items To Show at 667",
+          "code": "items_to_show_667",
+          "value": "1"
+        },
+        {
+          "for": "carousel",
+          "type": "text",
+          "label": "Items To Scroll at 667",
+          "code": "items_to_scroll_667",
+          "value": "1"
         },
         {
             "for": "carousel",

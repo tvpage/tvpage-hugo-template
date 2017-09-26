@@ -71,7 +71,7 @@
     };
   
     Carousel.prototype.getSlickConfig = function(){
-      var centerPadding = this.options.carousel_center_padding;
+      var centerPadding = this.options.center_padding;
       var reachMax = Number(this.options.carousel_max_bullets) < this.data.length;
       
       var config = {
@@ -87,7 +87,7 @@
             slidesToShow: Number(this.options.items_to_show_480),
             slidesToScroll: Number(this.options.items_to_scroll_480),
             dots: reachMax ? false : this.options.navigation_bullets_480,
-            centerMode: this.options.carousel_center_mode_480,
+            centerMode: this.options.center_mode_480,
             centerPadding: centerPadding
           }
         }, {
@@ -97,7 +97,7 @@
             slidesToScroll: Number(this.options.items_to_scroll_667),
             dots: reachMax ? false : this.options.navigation_bullets_667,
             arrows: false,
-            centerMode: this.options.carousel_center_mode_667,
+            centerMode: this.options.center_mode_667,
             centerPadding: centerPadding
           }
         }]
@@ -132,7 +132,6 @@
       var that = this;
       var startSlick = function() {
         that.$carousel = $(that.container);
-        
         that.$carousel.on('init', function(event, slick) {
           that.el.querySelector('.slick-list').style.margin = "0 -" + (parseInt(that.options.item_padding_right) + 1) + "px";
         });
@@ -163,27 +162,29 @@
   
     Carousel.prototype.load = function(callback) {
       this.loading = true;
+      
       if (this.onLoad) {
         this.onLoad();
       }
-  
+      
       var channel = this.channel || {};
-      var params = channel.parameters || {};
-      var src = this.options.api_base_url + '/channels/' + (channel.id || this.channelId) + '/videos?X-login-id=' + this.loginId;
-      for (var p in params) {
-        src += '&' + p + '=' + params[p];
-      }
-      var cbName = this.options.callbackName || 'tvp_' + Math.floor(Math.random() * 555);
-      src += '&p=0' + '&n=' + this.itemsPerPage;
-      src += '&o=' + this.options.videos_order_by + '&od=' + this.options.videos_order_direction;
-      src += '&callback=' + cbName;
-  
-      var script = document.createElement('script');
-      script.src = src;
-  
+      var channelId = channel.id || this.channelId;
+
+      Utils.loadScript({
+        base: this.options.api_base_url + '/channels/' + channelId + '/videos',
+        params: Utils.extend(channel.parameters || {}, {
+          'X-login-id': this.loginId,
+          p: 0,
+          n: this.itemsPerPage,
+          o: this.options.videos_order_by,
+          od: this.options.videos_order_direction,
+          callback: 'tvpcallback'
+        })
+      });
+      
       var that = this;
-  
-      window[cbName || 'callback'] = function(data) {
+
+      window['tvpcallback'] = function(data) {
         that.data = data;
         callback(data);
         that.loading = false;
@@ -191,7 +192,6 @@
           that.onLoadEnd();
         }
       };
-      body.appendChild(script);
     };
   
     Carousel.prototype.initialize = function() {

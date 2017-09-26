@@ -16,6 +16,23 @@
       return o.classList.contains(c);
     };
   
+    Utils.prototype.loadScript = function(o){
+      var script = document.createElement('script');
+      var src = o.base || '';
+      var prms = o.params || {};
+      var counter = 0;
+
+      for (var p in prms) {
+        if (prms.hasOwnProperty(p)) {
+          src += (counter > 0 ? '&' : '?') + p + '=' + prms[p];
+          ++counter;
+        }
+      }
+
+      script.src = src;
+      document.body.appendChild(script);
+    };
+
     Utils.prototype.sendMessage = function(msg){
       if (window.parent)
         window.parent.postMessage(msg, '*');
@@ -75,6 +92,20 @@
       var val = o;
       if (p) val = o[p];
       return 'undefined' !== typeof val;
+    };
+
+    Utils.prototype.extend = function(out) {
+      out = out || {};
+      for (var i = 1; i < arguments.length; i++) {
+        if (!arguments[i])
+          continue;
+    
+        for (var key in arguments[i]) {
+          if (arguments[i].hasOwnProperty(key))
+            out[key] = arguments[i][key];
+        }
+      }
+      return out;
     };
   
     Utils.prototype.debounce = function(func, wait, immediate) {
