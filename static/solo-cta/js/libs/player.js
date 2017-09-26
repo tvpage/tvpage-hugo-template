@@ -130,62 +130,65 @@
         //Context reference for Methods.
         var that = this;
         this.getOption = function (name) {
-          if (this.options.hasOwnProperty(name)){
+          if (this.options.hasOwnProperty(name))
             return this.options.hasOwnProperty(name);
-          }
           return null;
         }
 
         this.play = function(asset,ongoing,initial){
-          if (!asset) return;
-          var willCue = false,
-            isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            if (!asset) return;
+            var willCue = false,
+                isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-          if (ongoing) {
-            if (isMobile || (isset(this.autonext) && !this.autonext)) {
-              willCue = true;
+            if (ongoing) {
+                if (isMobile || (isset(this.autonext) && !this.autonext)) {
+                    willCue = true;
+                }
+            } else {
+                if (isMobile || (isset(this.autoplay) && !this.autoplay)) {
+                    willCue = true;
+                }
             }
-          } else {
-            if (isMobile || (isset(this.autoplay) && !this.autoplay)) {
-              willCue = true;
-            }
-          }
 
-          if (willCue) {
-            this.instance.cueVideo(asset);
-          } else {
-            this.instance.loadVideo(asset);
-          }
+            if (!initial) {
+              this.current = this.getCurrentIndex(asset.assetId);
+            }
+
+            if (willCue) {
+                this.instance.cueVideo(asset);
+            } else {
+                this.instance.loadVideo(asset);
+            }
         };
 
         this.createAsset = function(obj){
-          if (!obj || "object" !== typeof obj || isEmpty(obj) || !isset(obj,'asset')) return;
+            if (!obj || "object" !== typeof obj || isEmpty(obj) || !isset(obj,'asset')) return;
 
-          var asset = obj.asset;
-          asset.assetId = obj.id;
-          asset.assetTitle = obj.title;
-          asset.loginId = obj.loginId;
+            var asset = obj.asset;
+            asset.assetId = obj.id;
+            asset.assetTitle = obj.title;
+            asset.loginId = obj.loginId;
 
-          if (isset(obj,'events') && obj.events.length) {
-            asset.analyticsLogUrl = obj.analytics;
-            asset.analyticsObj = obj.events[1].data;
-          } else {
-            var channelId = isset(obj,'parentId') ? obj.parentId : ( isset(options,'channel') ? options.channel.id : 0 );
-            if (!channelId && (options.channelId || options.channelid)) {
-              channelId = options.channelId || options.channelid;
+            if (isset(obj,'events') && obj.events.length) {
+                asset.analyticsLogUrl = obj.analytics;
+                asset.analyticsObj = obj.events[1].data;
+            } else {
+              var channelId = isset(obj,'parentId') ? obj.parentId : ( isset(options,'channel') ? options.channel.id : 0 );
+              if (!channelId && (options.channelId || options.channelid)) {
+                channelId = options.channelId || options.channelid;
+              }
+
+              asset.analyticsObj = {
+                pg: channelId,
+                vd: obj.id,
+                li: obj.loginId
+              };
             }
 
-            asset.analyticsObj = {
-              pg: channelId,
-              vd: obj.id,
-              li: obj.loginId
-            };
-          }
+            if (!asset.sources) asset.sources = [{ file: asset.videoId }];
+            asset.type = asset.type || 'youtube';
 
-          if (!asset.sources) asset.sources = [{ file: asset.videoId }];
-          asset.type = asset.type || 'youtube';
-
-          return asset;
+            return asset;
         };
 
         this.addData = function(data){
