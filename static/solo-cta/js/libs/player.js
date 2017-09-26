@@ -136,7 +136,7 @@
           return null;
         }
 
-        this.play = function(asset,ongoing,initial){
+        this.play = function(asset,ongoing){
             if (!asset) return;
             var willCue = false,
                 isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -145,14 +145,11 @@
                 if (isMobile || (isset(this.autonext) && !this.autonext)) {
                     willCue = true;
                 }
+                this.current = this.getCurrentIndex(asset.assetId);
             } else {
                 if (isMobile || (isset(this.autoplay) && !this.autoplay)) {
                     willCue = true;
                 }
-            }
-
-            if (!initial) {
-              this.current = this.getCurrentIndex(asset.assetId);
             }
 
             if (willCue) {

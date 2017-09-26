@@ -257,7 +257,7 @@ function handlePostMessages(e){
       handleModalInitialized(e);
       break;
     case 'player_next':
-      handlePlayerTitle(e);
+      handlePlayerNext(e);
       break;
     default: 
       // do nothing
@@ -301,7 +301,7 @@ function handleModalInitialized(e){
   }
 };
 
-function handlePlayerTitle(e) {
+function handlePlayerNext(e) {
   var title = e.data.next.assetTitle || e.data.next.title;
   updateModalTitle(title);
 };
