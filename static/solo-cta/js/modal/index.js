@@ -1,18 +1,12 @@
 ;(function(window,document){
-  var testInterval,
-      timeInterval,
-      playerEl,
-      plIframe,
-      qaTagEl,
-      endEl,
-      player,
-      menu,
-      eventPrefix = "tvp_" + (document.body.getAttribute("data-id") || "").replace(/-/g,'_');
-
-  var channelVideosPage = 0,
-    itemsPerPage = 6,
-    lastPage = false,
-    isFetching = false;
+  var util = {
+      playerEl: null,
+      player: null,
+      menu: null,
+      itemsPerPage: 6,
+      lastPage: false,
+      isFetching: false
+  };
 
   function initialize(){
     (function(win,doc,unique,settings){
@@ -32,43 +26,43 @@
 
         if (playlistOpt) {
           playerSettings.onFullscreenChange = function(){
-              menu.hideMenu();
+              util.menu.hideMenu();
           };
-          player = new Player('tvp-player-el-'+unique,playerSettings);
-          playerEl = player.el;
+          util.player = new Player('tvp-player-el-'+unique,playerSettings);
+          util.playerEl = util.player.el;
 
           var menuSettings = JSON.parse(JSON.stringify(settings));
               menuSettings.data = data || [],
               menuSettings.channelVideosPage = 0;
-          menu = new Menu(player,menuSettings);
+          util.menu = new Menu(util.player,menuSettings);
 
           Menu.prototype.loadMore = function(){
-              if (!lastPage && !isFetching) {
+              if (!util.lastPage && !util.isFetching) {
                   menuSettings.channelVideosPage++;
-                  isFetching = true;
+                  util.isFetching = true;
                   Utils.loadData(menuSettings,unique,function(newData){
-                      if(newData.length > itemsPerPage){
-                        menu.deleteDivs();
+                      if(newData.length > util.itemsPerPage){
+                        util.menu.deleteDivs();
                         return;
                       }
-                      isFetching = false;
-                      lastPage = (!newData.length || newData.length < itemsPerPage) ? true : false;
-                      player.addData(newData);
-                      menu.render(newData);
+                      util.isFetching = false;
+                      util.lastPage = (!newData.length || newData.length < util.itemsPerPage) ? true : false;
+                      util.player.addData(newData);
+                      util.menu.render(newData);
                   });
               }
           };
           var menuInterval = setInterval(function(){
-            initMenu(player, settings);
+            initMenu(util.player, settings);
           },500);
 
           var initMenu = function(pl, settings){
             if(!pl.isReady || !settings) return;
             clearInterval(menuInterval);
-            menu.init();
+            util.menu.init();
           };
         }else{
-          player = new Player('tvp-player-el-'+unique,playerSettings);
+          util.player = new Player('tvp-player-el-'+unique,playerSettings);
         }
       });
     }(window,document,Utils.random(),Utils.getSettings()));
