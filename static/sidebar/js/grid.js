@@ -12,9 +12,7 @@
     this.eventPrefix = "tvp_" + (options.id || "").trim().replace(/-/g,'_');
     this.itemsPerPage = this.windowSize === 'small' ? 2 : (options.items_per_page || 6);
     this.itemsPerRow = this.windowSize === 'small' ? 1 : (options.items_per_row || 2);
-    this.loginId = (options.loginId || options.loginid) || 0;
     this.channel = options.channel || {};
-    this.channelId = (options.channelid || options.channelId) || null;
     this.loading = false;
     this.isLastPage = false;
     this.page = 0;
@@ -92,38 +90,41 @@
 
   Grid.prototype.load = function(callback){
     this.loading = true;
+
     if (this.onLoad) {
       this.onLoad();
     }
 
     var channel = this.channel || {};
-    var params = channel.parameters || {};
-    params.o = this.options.videos_order_by;
-    params.od = this.options.videos_order_direction;
+    var channelId = channel.id || this.options.channelid || this.options.channelId;
 
-    var src = this.options.api_base_url + '/channels/' + (channel.id || this.channelId) + '/videos?X-login-id=' + this.loginId;
-    for (var p in params) {
-      src += '&' + p + '=' + params[p];
-    }
-    var cbName = this.options.callbackName || 'tvp_' + Math.floor(Math.random() * 555);
-    src += '&p=' + this.page + '&n=' + this.itemsPerPage + '&callback='+cbName;
-    var script = document.createElement('script');
-    script.src = src;
+    Utils.loadScript({
+      base: this.options.api_base_url + '/channels/' + channelId + '/videos',
+      params: Utils.extend(channel.parameters || {},{
+        'X-login-id': this.options.loginId || this.options.loginid,
+        p: this.page,
+        n: this.itemsPerPage,
+        o: this.options.videos_order_by,
+        od: this.options.videos_order_direction,
+        callback: 'tvpcallback'
+      })
+    });
     
     var that = this;
-    window[cbName || 'callback'] = function(data){
+
+    window['tvpcallback'] = function(data){
       if ( !data.length || (data.length < that.itemsPerPage) ) {
         that.isLastPage = true;
       }
 
+      that.loading = false;
       that.data = data;
       callback(data);
-      that.loading = false;
+      
       if (that.onLoadEnd) {
         that.onLoadEnd();
       }
     };
-    body.appendChild(script);
   };
 
   Grid.prototype.next = function(){
@@ -184,7 +185,7 @@
       }
       
       Utils.sendMessage({
-        runTime: 'undefined' !== typeof window.__TVPage__ ? __TVPage__ : null,
+        runTime: !Utils.isUndefined(window.__TVPage__) ? __TVPage__ : null,
         event: that.eventPrefix + ':video_click',
         selectedVideo: selected,
         videos: data
