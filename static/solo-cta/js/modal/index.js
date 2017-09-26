@@ -21,8 +21,8 @@
         }
 
         var playerSettings = JSON.parse(JSON.stringify(settings));
-            playerSettings.data = data || [],
-            playlistOpt = Utils.isset(settings,'playlist') ? settings.playlist : false;
+        playerSettings.data = data || [];
+        var playlistOpt = Utils.isset(settings,'playlist') ? settings.playlist : false;
 
         if (playlistOpt) {
           playerSettings.onFullscreenChange = function(){

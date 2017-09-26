@@ -13,7 +13,9 @@
           if (!immediate) func.apply(context, args);
         },
         callNow = immediate && !timeout;
-        clearTimeout(timeout);
+        if(timeout){
+          clearTimeout(timeout);
+        }
         timeout = setTimeout(later, wait);
         if (callNow) func.apply(context, args);
       };      
@@ -73,19 +75,16 @@
 
     this.getSettings = function(){
       var getConfig = function(g){
-        var c = {};
         if (_this.isset(g) && _this.isset(g,'__TVPage__') && _this.isset(g.__TVPage__, 'config')) {
-          c = g.__TVPage__.config;
+          return g.__TVPage__.config;
         } else {
           return;
         }
-        return c;
       };
-      var settings = {};
       var config = getConfig(parent);
       var id = document.body.getAttribute('data-id');
       if (!_this.isset(config, id)) return;
-      settings = config[id];
+      var settings = config[id];
       settings.name = id;
       return settings;
     };
@@ -138,7 +137,9 @@
               url = settings.api_base_url + '/channels/' + (channel.id || (settings.channelid || settings.channelId)) + '/videos?X-login-id=' + (settings.loginid || settings.loginId);
 
           for (var p in params) {
-            url += '&' + p + '=' + params[p];
+            if(params.hasOwnProperty(p)){
+              url += '&' + p + '=' + params[p];
+            }
           }
           url += '&n=' + (_this.isset(settings,'items_per_page') ? settings.items_per_page : 6) + '&p=' + (_this.isset(settings,'channelVideosPage') ? settings.channelVideosPage : 0);
           url += '&callback=' + cbName;
