@@ -56,33 +56,8 @@ var removeClass = function(obj, c) {
     obj.classList.remove(c);
   }
 };
-var extend = function(out) {
-  out = out || {};
-  for (var i = 1; i < arguments.length; i++) {
-    if (!arguments[i])
-      continue;
-
-    for (var key in arguments[i]) {
-      if (arguments[i].hasOwnProperty(key))
-        out[key] = arguments[i][key];
-    }
-  }
-  return out;
-};
 var getById = function(id){
   return document.getElementById(id);
-};
-var getEventType = function(e) {
-  var evt = null
-  if (e && isset(e, "data") && isset(e.data, "event")) {
-    evt = e.data.event;
-  }
-
-  if (evt && evt.length && evt.substr(0, eventPrefix.length) === eventPrefix) {
-    return evt.substr(eventPrefix.length + 1);
-  }
-
-  return null;
 };
 
 
@@ -94,8 +69,13 @@ var config = bootstrap;
 var id = bootstrap.name;
 var tvpage = window.__TVPage__ = window.__TVPage__ || {};
 
-if(hasKey(tvpage.config,id) && isObject(tvpage.config[id]))
-  config = extend(config, tvpage.config[id]);
+if(hasKey(tvpage.config,id) && isObject(tvpage.config[id])){
+  var runTime = tvpage.config[id];
+  for (var key in runTime) {
+    if (runTime.hasOwnProperty(key))
+      config[key] = runTime[key];
+  }
+}
 
 config.id = id;
 
@@ -184,8 +164,8 @@ if (isFirefox) {
 }
 
 window.addEventListener("message", function(e){
-  if (e && isset(e.data) && isset(e.data.event) && e.data.event === eventPrefix + ":render") {
-    holder.classList.add("initialized");
+  if(e && e.data && hasKey(e.data,'event') && e.data.event === eventPrefix + ':render') {
+    addClass(holder,'initialized')
   }
 });
 
