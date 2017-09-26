@@ -106,17 +106,17 @@
       this.page++;
       this.isFetching = true;
 
-      var that = this;
-      var src = settings.api_base_url + '/channels/' + settings.channelId + '/videos?X-login-id=' + settings.loginId;
       var channel = settings.channel || {}; 
-      var params = channel.parameters;
-      for (var p in params) {
-        src += '&' + p + '=' + params[p];
-      }
-      src += '&p='+this.page+'&n='+this.itemsPerPage+'&callback=tvpcallback';
-  
-      var script = document.createElement('script');
-      script.src = src;
+
+      Utils.loadScript({
+        base: settings.api_base_url + '/channels/' + settings.channelId + '/videos',
+        params: Utils.extend(channel.parameters || {}, {
+            'X-login-id': settings.loginId,
+            p: this.page,
+            n: this.itemsPerPage,
+            callback: 'tvpcallback'
+        })
+      });
 
       window['tvpcallback'] = function(data){
         that.isFetching = false;
@@ -124,8 +124,6 @@
         player.addAssets(data);
         that.update(data);
       };
-
-      body.appendChild(script);
     };
 
     this.bindLoadMoreEvent = function(e){

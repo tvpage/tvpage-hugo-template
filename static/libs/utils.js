@@ -42,21 +42,25 @@
       return document.getElementsByClassName(c || '')[0];
     };
   
-    Utils.prototype.isFunction = function(obj) {
-      return 'function' === typeof obj;
+    Utils.prototype.isUndefined = function(o) {
+      return 'undefined' === typeof o;
+    };
+
+    Utils.prototype.isFunction = function(o) {
+      return 'function' === typeof o;
     };
   
-    Utils.prototype.copy = function(obj) {
-      return JSON.parse(JSON.stringify(obj));
+    Utils.prototype.copy = function(o) {
+      return JSON.parse(JSON.stringify(o));
     };
   
     Utils.prototype.hasKey = function(o, key) {
       return o.hasOwnProperty(key);
     };
   
-    Utils.prototype.isEmpty = function(obj) {
-      for (var key in obj) {
-        if (obj.hasOwnProperty(key))
+    Utils.prototype.isEmpty = function(o) {
+      for (var key in o) {
+        if (o.hasOwnProperty(key))
           return false;
       }
       return true;
