@@ -3,8 +3,13 @@
   function Menu(player, settings) {
 
     var that = this;
-    this.dataMethod = (document.body.classList.contains('dynamic')) ? 'dynamic' : 'static';
+    var body = document.body;
+    this.dataMethod = (body.classList.contains('dynamic')) ? 'dynamic' : 'static';
     this.allVideos = [];
+    this.page = 0;
+    this.lastPage = false;
+    this.isFetching = false;
+    this.itemsPerPage = 6;
 
     this.init = function(){
         that.render();
@@ -92,6 +97,35 @@
             that.toggleMenu();
         };
       }
+    };
+
+    this.loadMore = function(){
+      if(this.lastPage || this.isFetching)
+        return;
+
+      this.page++;
+      this.isFetching = true;
+
+      var that = this;
+      var src = settings.api_base_url + '/channels/' + settings.channelId + '/videos?X-login-id=' + settings.loginId;
+      var channel = settings.channel || {}; 
+      var params = channel.parameters;
+      for (var p in params) {
+        src += '&' + p + '=' + params[p];
+      }
+      src += '&p='+this.page+'&n='+this.itemsPerPage+'&callback=tvpcallback';
+  
+      var script = document.createElement('script');
+      script.src = src;
+
+      window['tvpcallback'] = function(data){
+        that.isFetching = false;
+        that.lastPage = (!data.length || data.length < that.itemsPerPage) ? true : false;
+        player.addAssets(data);
+        that.update(data);
+      };
+
+      body.appendChild(script);
     };
 
     this.bindLoadMoreEvent = function(e){
@@ -250,7 +284,8 @@
 
             var id = this.id.split('-').pop(),
                 selected = that.allVideos.filter(function(v){return v.id === id});
-            player.play(player.createAsset(selected[0]));
+
+            player.play(player.buildAsset(selected[0]));
             that.toggleMenu();
         };
     };

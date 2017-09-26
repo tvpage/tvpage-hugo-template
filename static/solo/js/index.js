@@ -1,156 +1,111 @@
-;(function(document) {
+(function() {
+  
+  var body = document.body;
+  var id = body.getAttribute('data-id');
+  var config = null;
 
-  var channelVideosPage = 0,
-      itemsPerPage = 6,
-      lastPage = false,
-      isFetching = false,
+  var getConfig = function(){
+    if (!Utils.hasKey(window, 'parent') || !Utils.hasKey(parent, '__TVPage__'))
+      throw new Error("Can't access window parent");
 
-  jsonpCall = function(opts,callback){
-      var s = document.createElement('script');
-      s.src = opts.src;
-      if (!callback || 'function' !== typeof callback) return;
-      window[opts.cbName || 'callback'] = callback;
-      var b = opts.body || document.body;
-      b.appendChild(s);
-  },
-  getSettings = function(type){
-    var getConfig = function(g){
-      var c = {};
-      if (Utils.isset(g) && Utils.isset(g,'__TVPage__') && Utils.isset(g.__TVPage__, 'config')) {
-        c = g.__TVPage__.config;
-      } else {
-        return;
-      }
-      return c;
-    };
-    var s = {};
-    if ('dynamic' === type) {
-      var config = getConfig(parent);
-      var id = document.body.getAttribute('data-id');
-      if (!Utils.isset(config, id)) return;
-      s = config[id];
-      s.name = id;
-    } else if ('inline' === type && type && type.length) {
-      var config = getConfig(parent);
-      s = config[type];
-      s.name = type;
-    } else if ('static' === type) {
-      var config = getConfig(window);
-      var id = document.body.getAttribute('data-id');
-      if (!Utils.isset(config, id)) return;
-      s = config[id];
-      s.name = id;
+    if (!Utils.hasKey(parent.__TVPage__, 'config') || !Utils.hasKey(parent.__TVPage__.config, id))
+      throw new Error("Missing widget configuration");
+    
+    var obj = parent.__TVPage__.config[id];
+    var channel = obj.channel || {};
+    
+    obj.channelId = channel.id || obj.channelId || obj.channelid;
+    obj.loginId = obj.loginId || obj.loginid;
+
+    return obj;
+  };
+
+  var renderPlayer = function(){
+    var el = document.createElement('div');
+    el.className ='tvp-player';
+    el.innerHTML =  '<div id="tvp-player-el-'+id+'" class="tvp-player-el"></div></div>';
+    body.appendChild(el);
+  };
+
+  var getPlayerConfig = function(data){
+    var obj = Utils.copy(config);
+    
+    obj.ciTrack = true;
+    obj.onPlayerChange = !!config.onPlayerChange;
+    obj.data = data || [];
+
+    if(!!config.playlist && 'show' === config.playlist){
+      obj.onPlayerReady = function(playerInstance){
+        var menuConfig = Utils.copy(config);
+        menuConfig.data = data;
+        (new Menu(playerInstance,menuConfig)).init();
+      };
+
+      obj.onNext = function(next){
+        menu.setActiveItem(next.assetId);
+        menu.hideMenu();
+      };
+
+      obj.onFullscreenChange = function(){
+        menu.hideMenu();
+      };
     }
-    return s;
-  },
-  loadData = function(s,cbName,callback){
-   return jsonpCall({
-      src: function(){
-        var channel = s.channel || {},
-            params = channel.parameters || {},
-            url = s.api_base_url + '/channels/' + (channel.id || (s.channelid || s.channelId)) + '/videos?X-login-id=' + (s.loginid || s.loginId);
 
-        for (var p in params) { url += '&' + p + '=' + params[p];}
-        url += '&n=' + itemsPerPage + '&p=' + channelVideosPage;
-        url += '&callback='+cbName;
-        return url;
-      }(),
-      cbName: cbName
-    },callback);
-  },
-  render = function(idEl,target){
-    if (!idEl || !target) return;
-    var frag = document.createDocumentFragment(),
-    main = document.createElement('div');
-    main.classList.add('tvp-player');
-    main.innerHTML =  '<div id="tvp-player-el-'+idEl+'" class="tvp-player-el"></div></div>';
-    frag.appendChild(main);
-    target.appendChild(frag);
+    return obj;
   };
   
-  //We need to know a few things before we can start a player. We need to know if we will render
-  //this here or somehow the will be content (when used with iframe).
   function initialize(){
-    if (document.body.classList.contains('dynamic')) {
-      //We deal diff with some stuff on iframe.
-      (function(unique,settings){
-        var player = null,
-            menu = null,
-            playerSettings = JSON.parse(JSON.stringify(settings)),
-            menuSettings = JSON.parse(JSON.stringify(settings)),
-            playlistOption = Utils.isset(settings,'playlist') ? settings.playlist: null;
+    renderPlayer();
 
-        render(unique,document.body);
+    config = getConfig();
 
-        loadData(settings,unique,function(data){
-          if (data.length) {
-            if (window.parent) {
-              window.parent.postMessage({
-                event: ("tvp_" + settings.id).replace(/-/g,'_') + ':render'
-              }, '*');
-            }
-
-            playerSettings.data = data || [];
-            var onPlayerChange = !!settings.onPlayerChange;
-            if(onPlayerChange){
-              playerSettings.onPlayerChange = settings.onPlayerChange;
-            }
-            player = new Player('tvp-player-el-'+unique,playerSettings);
-
-            if (playlistOption === 'show' && playlistOption) {
-              menuSettings.data = data || [];
-              menu = new Menu(player,menuSettings);        
-            }
-          }
-        });
-
-        if (playlistOption === 'show' && playlistOption) {
-
-          playerSettings.onPlayerReady = function(){
-            menu.init();
-          };
-
-          playerSettings.onNext = function(){
-            var playerAsset = player.assets[player.current];
-            menu.setActiveItem(playerAsset.assetId);
-            menu.hideMenu();
-          };
-
-          playerSettings.onFullscreenChange = function(){
-            menu.hideMenu();
-          };
-
-          Menu.prototype.loadMore = function(){
-            if (!lastPage && !isFetching) {
-              channelVideosPage++;
-              isFetching = true;
-              loadData(settings,unique,function(newData){
-                isFetching = false;
-                lastPage = (!newData.length || newData.length < itemsPerPage) ? true : false;
-                player.addData(newData);
-                menu.update(newData);
-              });
-            }
-          };
-        }
-      }(Utils.random(),getSettings('dynamic')));
+    var channel = config.channel || {};
+    var params = channel.parameters || {};
+    var src = config.api_base_url + '/channels/' + config.channelId + '/videos?X-login-id=' + config.loginId;
+    
+    for (var p in params) {
+      src += '&' + p + '=' + params[p];
     }
+
+    src += '&p=0&n=6&callback=tvpcallback';
+
+    var script = document.createElement('script');
+    script.src = src;
+    
+    window['tvpcallback'] = function(data) {
+      if (data.length) {
+        Utils.sendMessage({
+          event: ("tvp_" + id).replace(/-/g,'_') + ':render'
+        });
+  
+        (new Player('tvp-player-el-' + id, getPlayerConfig(data))).initialize();
+      }
+    };
+
+    body.appendChild(script);
   };
 
-  var not = function(obj){return 'undefined' === typeof obj};
-  if (not(window.Utils) || not(window.Player) || not(window.Menu) || not(window.SimpleScrollbar)) {
-      var libsCheck = 0;
-      (function libsReady() {
-          setTimeout(function(){
-              if ( (not(window.Utils) || not(window.Player) || not(window.Menu) || not(window.SimpleScrollbar)) && (++libsCheck < 50) ) {
-                  libsReady();
-              } else {
-                  initialize();
-              }
-          },150);
-      })();
+  var isLoadingLibs = function(){
+    var not = function(obj) {
+      return 'undefined' === typeof obj
+    };
+
+    return not(window.Utils) || not(window.Player) || not(window.Menu) || not(window.SimpleScrollbar);
+  };
+
+  if (isLoadingLibs()) {
+    var libsLoadingCheck = 0;
+    (function libsLoadingPoll() {
+      setTimeout(function() {
+        if (isLoadingLibs()) {
+          (++libsLoadingCheck < 200) ? libsLoadingPoll(): console.warn('limit reached');
+        } else {
+          initialize();
+        }
+      },150);
+    })();
   } else {
-      initialize();
+    initialize();
   }
 
-}(document));
+}());

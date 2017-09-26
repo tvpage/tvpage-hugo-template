@@ -3,19 +3,17 @@
   var userAgent = navigator.userAgent;
   var iOS = /iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(userAgent) && !window.MSStream;
   var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
-  var isset = function(o, p) {
-    var val = o;
-    if (p) val = o[p];
-    return 'undefined' !== typeof val;
-  };
-  var isEmpty = function(obj) {
-    for (var key in obj) {
-      if (obj.hasOwnProperty(key)) return false;
+  var isEmpty = function(o) {
+    for (var key in o) {
+      if (o.hasOwnProperty(key)) return false;
     }
     return true;
   };
-  var isFunction = function(obj) {
-    return 'undefined' !== typeof obj;
+  var isFunction = function(o) {
+    return 'function' === typeof o;
+  };
+  var isUndefined = function(o) {
+    return 'undefined' === typeof o;
   };
   var compact = function(o) {
     if ('object' === typeof o) {
@@ -27,8 +25,7 @@
     return o;
   };
 
-  //The player singleton. We basically create an instance from the tvpage
-  //player and expose most utilities, helping to encapsualte what is required for a few players to co-exist.
+  //The player singleton. A small layer on top of tvpage library
   var Player = function(el, options, startWith) {
     if (!el || !options || !options.data || options.data.length <= 0)
       return;
@@ -38,13 +35,13 @@
     this.eventPrefix = ("tvp_" + this.options.id).replace(/-/g, '_');
     this.startWith = startWith || null;
     this.instance = null;
-    this.isFullScreen = false;
     this.initialResize = true;
     this.autoplay = !!this.options.autoplay;
     this.autonext = !!this.options.autonext;
     this.version = this.options.player_version || null;
     this.onResize = isFunction(this.options.onResize) ? this.options.onResize : null;
     this.onNext = isFunction(this.options.onNext) ? this.options.onNext : null;
+    this.onPlayerReady = isFunction(this.options.onPlayerReady) ? this.options.onPlayerReady : null;
     this.onPlayerChange = !!this.options.onPlayerChange;
   };
 
@@ -89,7 +86,7 @@
       adServerUrl: options.adServerUrl || null,
       adTimeout: options.adTimeout || "2000",
       maxAds: options.maxAds || "100",
-      adInterval: isset(options.adInterval) ? String(options.adInterval) : "0"
+      adInterval: !isUndefined(options.adInterval) ? String(options.adInterval) : "0"
     });
   };
 
@@ -107,8 +104,15 @@
     }
   };
 
+  Player.prototype.controlBarZindex = function() {
+    var controlBar = this.el.querySelector("#ControlBarFloater");
+    if (controlBar && controlBar.parentNode) {
+      controlBar.parentNode.style.zIndex = "9999";
+    }
+  };
+
   Player.prototype.resize = function() {
-    if (!this.instance || this.isFullScreen)
+    if (!this.instance)
       return;
     
     var parentEl = this.el.parentNode;
@@ -123,54 +127,55 @@
       this.onResize(this.initialResize,[width,height]);
   };
 
-  Player.prototype.controlBarZindex = function() {
-    var controlBar = this.el.querySelector("#ControlBarFloater");
-    if (controlBar && controlBar.parentNode) {
-      controlBar.parentNode.style.zIndex = "9999";
-    }
-  };
-
-  //We don't want to resize the player here on fullscreen... we need the player be.
-  Player.prototype.handleFullScreen = function() {
-    if(window.BigScreen){
-      BigScreen.onchange = function() {
-        if (!iOS) {
-          that.isFullScreen = !that.isFullScreen;
-        }
-      };
-    }
-  };
-
   //We can't resize using local references when we are inside an iframe. Alternative is to receive external
   //size from host.
   Player.prototype.handleResize = function() {
     var that = this;
     if (window.location !== window.parent.location && iOS) {
       var onHolderResize = function(e) {
-        if (!e || !isset(e, 'data') || !isset(e.data, 'event') || that.eventPrefix + ':modal_holder_resize' !== e.data.event)
+        if(!e || !e.data || !e.data.event || that.eventPrefix + ':holder_resize' !== e.data.event)
           return;
         
         var size = e.data.size || [];
+
         that.resize(size[0], size[1]);
       };
+
       window.removeEventListener('message', onHolderResize, false);
       window.addEventListener('message', onHolderResize, false);
     } else {
-      window.removeEventListener('message', this.resize, false);
-      window.addEventListener('resize', this.resize, false);
+      var onResize = function(){
+        that.resize();
+      };
+      
+      window.removeEventListener('resize', onResize, false);
+      window.addEventListener('resize', onResize, false);
     }
   };
 
-  Player.prototype.onReady = function(e, pl) {
-    this.instance = pl;
-    this.resize.call(this);
+  Player.prototype.analytics = function() {
+    var analytics = new Analytics();
+    var loginId = this.options.loginId || this.options.loginid;
+  
+    analytics.initConfig({
+      domain: location.hostname || '',
+      logUrl: this.options.api_base_url + '/__tvpa.gif',
+      loginId: loginId,
+      firstPartyCookies: this.options.firstpartycookies,
+      cookieDomain: this.options.cookiedomain
+    });
+  
+    if (this.options.ciTrack) {
+      analytics.track('ci',{
+        li: loginId
+      });
+    }
+  };
 
-    this.controlBarZindex();
-    this.handleFullScreen();
-    this.handleResize();
-
+  Player.prototype.getCurrentAsset = function() {
     var current = 0;
     var assets = this.assets;
+
     if (this.startWith) {
       for (var i = 0; i < assets.length; i++) {
         if (assets[i].assetId === this.startWith)
@@ -179,7 +184,22 @@
     }
 
     this.current = current;
-    this.play(assets[this.current]);
+
+    return assets[this.current];
+  };
+
+  Player.prototype.onReady = function(e, pl) {
+    this.instance = pl;
+    this.resize.call(this);
+    
+    this.analytics();
+    this.controlBarZindex();
+    this.handleResize();
+    if(this.onPlayerReady){
+      this.onPlayerReady(this);
+    }
+
+    this.play(this.getCurrentAsset());
   };
 
   Player.prototype.onStateChange = function(e) {
@@ -213,7 +233,7 @@
 
   Player.prototype.startPlayer = function() {
     var that = this;
-    var options = {
+    var config = {
       techOrder: this.options.tech_order || null,
       mediaProviders: this.options.media_providers || null,
       analytics: {
@@ -237,12 +257,12 @@
     var extras = ["preload", "poster", "overlay"];
     for (var i = 0; i < extras.length; i++) {
       var option = extras[i];
-      if (this[option] !== undefined) {
-        options[option] = this[option];
+      if (!isUndefined(this[option]) && this[option] !== null) {
+        config[option] = this[option];
       }
     }
 
-    this.player = new TVPage.player(options);
+    this.player = new TVPage.player(config);
   };
 
   Player.prototype.getChannelId = function() {
@@ -262,7 +282,7 @@
 
   Player.prototype.buildAsset = function(obj) {
     if (isEmpty(obj))
-      return;
+      return {};
 
     var asset = obj.asset;
     asset.assetId = obj.id;
@@ -274,11 +294,20 @@
       vd: asset.assetId,
       li: asset.loginId
     };
+
     asset.sources = asset.sources || [{
       file: asset.videoId
     }];
 
     return asset;
+  };
+
+  Player.prototype.addAssets = function(objs){
+    if (objs && objs.length) {
+      for (var i = 0; i < objs.length; i++) {
+        this.assets.push(this.buildAsset(objs[i]));
+      }
+    }
   };
 
   Player.prototype.initialize = function() {
@@ -295,7 +324,7 @@
     var checks = 0;
     (function libsReady() {
       setTimeout(function() {
-        if (!isset(window, 'TVPage') || !isset(window, '_tvpa')) {
+        if (isUndefined(window.TVPage) || isUndefined(window._tvpa)) {
           (++checks < 50) ? libsReady(): console.warn('limit reached');
         } else {
           that.startPlayer.call(that);
