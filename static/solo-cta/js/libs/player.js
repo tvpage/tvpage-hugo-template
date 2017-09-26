@@ -167,21 +167,16 @@
             asset.assetTitle = obj.title;
             asset.loginId = obj.loginId;
 
-            if (isset(obj,'events') && obj.events.length) {
-                asset.analyticsLogUrl = obj.analytics;
-                asset.analyticsObj = obj.events[1].data;
-            } else {
-              var channelId = isset(obj,'parentId') ? obj.parentId : ( isset(options,'channel') ? options.channel.id : 0 );
-              if (!channelId && (options.channelId || options.channelid)) {
-                channelId = options.channelId || options.channelid;
-              }
-
-              asset.analyticsObj = {
-                pg: channelId,
-                vd: obj.id,
-                li: obj.loginId
-              };
+            var channelId = isset(obj,'parentId') ? obj.parentId : ( isset(options,'channel') ? options.channel.id : 0 );
+            if (!channelId && (options.channelId || options.channelid)) {
+              channelId = options.channelId || options.channelid;
             }
+
+            asset.analyticsObj = {
+              pg: channelId,
+              vd: obj.id,
+              li: obj.loginId
+            };
 
             if (!asset.sources) asset.sources = [{ file: asset.videoId }];
             asset.type = asset.type || 'youtube';
