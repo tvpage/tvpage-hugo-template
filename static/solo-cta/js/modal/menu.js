@@ -39,14 +39,7 @@
             var menuItem = playlist[i];
             menuItem.title = Utils.trimText(menuItem.title, 100);
             menuItem.duration = Utils.formatDuration(menuItem.duration);
-
-            if (Utils.isset(settings, 'menu_item_play_category_tag_attribute')) {
-                var tagAttributeValue = menuItem[settings.menu_item_play_category_tag_attribute];
-                if (tagAttributeValue) {
-                    tagAttributeValue = tagAttributeValue.replace(/_/g,' ');
-                    menuItem.menuTagAttr = tagAttributeValue;
-                }
-            }
+            menuItem = that.setTagAttribute(settings,menuItem);
             if (!lastPage) {
                 noVideosEl += '<div class="tvp-no-videos"></div>' 
             }
@@ -62,6 +55,17 @@
             that.setActiveItem(that.allVideos[0].id)
             Ps.initialize(that.hiddenMenu);
         }
+    };
+
+    this.setTagAttribute = function(settings,menuItem){
+        if (Utils.isset(settings, 'menu_item_play_category_tag_attribute')) {
+            var tagAttributeValue = menuItem[settings.menu_item_play_category_tag_attribute];
+            if (tagAttributeValue) {
+                tagAttributeValue = tagAttributeValue.replace(/_/g,' ');
+                menuItem.menuTagAttr = tagAttributeValue;
+            }
+        }
+        return menuItem;
     };
 
     this.bindLoadMoreEvent = function(e){

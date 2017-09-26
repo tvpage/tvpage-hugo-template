@@ -21,7 +21,6 @@
       };      
     };
 
-
     this.formatDuration = function(secs) {
       if ("undefined" === typeof secs) return;
       var date = new Date(0, 0, 0);
@@ -31,21 +30,6 @@
           seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
       return (hour + minutes + ':' + seconds);
     };
-
-    this.getByClass = function(c){
-      return document.getElementsByClassName(c || '')[0];
-    };
-
-    this.hasClass = function(obj,arr) {
-        if (!obj || !arr || !arr.length) return;
-        var has = false;
-        for (var i = 0; i < arr.length; i++) {
-          if(has) break;
-          has = obj.classList.contains(arr[i]);
-        }
-        return has;
-    };
-
 
     this.addEvent = function(element, event, arr, func) {
       element.removeEventListener(event, clickHandler, false);
@@ -72,14 +56,12 @@
       }
     };
 
-
     this.getSettings = function(){
       var getConfig = function(g){
         if (_this.isset(g) && _this.isset(g,'__TVPage__') && _this.isset(g.__TVPage__, 'config')) {
           return g.__TVPage__.config;
-        } else {
-          return;
         }
+        return null;
       };
       var config = getConfig(parent);
       var id = document.body.getAttribute('data-id');
@@ -102,11 +84,6 @@
       return 'tvp_' + Math.floor(Math.random() * 50005);
     };
 
-    this.removeExisting = function(doc, el){
-      var existing = doc.getElementsByClassName(el)[0];
-      if (existing) existing.parentElement.removeChild(existing);
-    };
-
     this.render = function(idEl,target){
       if (!idEl || !target) return;
       var frag = document.createDocumentFragment(),
@@ -116,10 +93,6 @@
       main.innerHTML =  '<div id="tvp-player-el-'+idEl+'" class="tvp-player-el"></div></div>';
       frag.appendChild(main);
       target.appendChild(frag);
-    };
-
-    this.isFunction = function(obj){
-        return 'undefined' !== typeof obj;
     };
 
     this.isset = function(o,p){
