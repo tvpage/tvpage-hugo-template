@@ -6,13 +6,13 @@
         lastPage = false,
         isFetching = false;
 
-    var loadData = function(s,callback){
+    var loadData = function(settings,callback){
         var cbName = 'tvp_' + Math.floor(Math.random() * 50005);
         return jsonpCall({
             src: function(){
-            var channel = s.channel || {},
+            var channel = settings.channel || {},
                 params = channel.parameters || {},
-                url = s.api_base_url + '/channels/' + (channel.id || (s.channelid || s.channelId)) + '/videos?X-login-id=' + (s.loginid || s.loginId);
+                url = settings.api_base_url + '/channels/' + (channel.id || (settings.channelid || settings.channelId)) + '/videos?X-login-id=' + (settings.loginid || settings.loginId);
 
             for (var p in params) { url += '&' + p + '=' + params[p];}
             url += '&n=' + itemsPerPage + '&p=' + channelVideosPage;
@@ -38,25 +38,25 @@
         var initPlayer = function(data) {
             var player = null,
                 menu = null,
-                s = JSON.parse(JSON.stringify(data.runTime)),
+                settings = JSON.parse(JSON.stringify(data.runTime)),
                 menuSettings = JSON.parse(JSON.stringify(data.runTime)),
                 playlistOption = Utils.isset(data.runTime,'playlist') ? data.runTime.playlist: null;
 
-            s.data = data.data;
-            itemsPerPage= s.items_per_page || 6;
+            settings.data = data.data;
+            itemsPerPage= settings.items_per_page || 6;
 
-            s.onResize = function() {
+            settings.onResize = function() {
                Utils.sendPost(eventPrefix,':modal_resize',{
                     height: el.offsetHeight + 'px'
                 });
             }
 
             if (playlistOption === 'show' && playlistOption) {
-                s.onPlayerReady = function(){
+                settings.onPlayerReady = function(){
                     menu.init();
                 };
 
-                s.onNext = function(){
+                settings.onNext = function(){
                     var playerAsset = player.assets[player.current];
                     menu.setActiveItem(playerAsset.assetId);
                     menu.hideMenu();
@@ -65,11 +65,11 @@
                     });
                 };
 
-                s.onFullscreenChange = function(){
+                settings.onFullscreenChange = function(){
                     menu.hideMenu();
                 };
  
-                player = new Player('tvp-player-el', s, data.selectedVideo.id);
+                player = new Player('tvp-player-el', settings, data.selectedVideo.id);
 
                 menuSettings.data = data.data || [];
                 menu = new Menu(player,menuSettings);
@@ -77,7 +77,7 @@
                     if (!lastPage && !isFetching) {
                         channelVideosPage++;
                         isFetching = true;
-                        loadData(s,function(newData){
+                        loadData(settings,function(newData){
                             isFetching = false;
                             lastPage = (!newData.length || newData.length < itemsPerPage) ? true : false;
                             player.addData(newData);
@@ -86,14 +86,14 @@
                     }
                 };
             }else{
-                s.onNext = function(next) {
+                settings.onNext = function(next) {
                     if (!next) return;
                     Utils.sendPost(eventPrefix,':player_next',{
                         next: next
                     });
                 };
 
-                player = new Player('tvp-player-el', s, data.selectedVideo.id);
+                player = new Player('tvp-player-el', settings, data.selectedVideo.id);
             }
         };
 
