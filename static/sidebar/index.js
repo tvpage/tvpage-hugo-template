@@ -117,7 +117,7 @@ targetElement.insertAdjacentHTML('beforebegin', hostCssTag + '<style>' + config.
 targetElement.parentNode.removeChild(targetElement);
 
 config.id = id;
-config.staticPath = config.baseUrl + "/sidebar";
+config.staticPath = baseUrl + "/sidebar";
 config.mobilePath = utils.isMobile ? 'mobile/' : '';
 config.distPath = config.debug ? '/' : '/dist/';
 config.cssPath = config.staticPath + config.distPath + 'css/';
