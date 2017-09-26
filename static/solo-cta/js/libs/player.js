@@ -34,6 +34,7 @@
 
         this.isFullScreen = false;
         this.initialResize = true;
+        this.isReady = false;
 
         this.autoplay = isset(options.autoplay) ? Number(options.autoplay) : false;
         this.autonext = isset(options.autonext) ? Number(options.autonext) : true;
@@ -270,6 +271,7 @@
                             if (isset(window,'BigScreen')) {
                                 BigScreen.onchange = function(){
                                     that.isFullScreen = !that.isFullScreen;
+                                    that.resize();
                                     if (that.onFullscreenChange) {
                                       that.onFullscreenChange();
                                     }
@@ -303,7 +305,7 @@
                             if (that.onPlayerReady) {
                               that.onPlayerReady();
                             }
-
+                            that.isReady = true;
                             that.current = that.getCurrentIndex(startWith);
                             that.play(that.assets[that.current],null,true); 
                         },

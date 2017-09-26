@@ -166,7 +166,7 @@ var handleVideoClick = function(){
         "//a.tvpage.com/tvpa.min.js",
         '//imasdk.googleapis.com/js/sdkloader/ima3.js',
         playerUrl,
-        config.debug ? config.jsPath + "vendor/simple-scrollbar.min.js" : "",
+        config.debug ? config.jsPath + "vendor/perfect-scrollbar.min.js" : "",
         config.debug ? config.jsPath + "libs/utils.js" : "",
         config.debug ? config.jsPath + "libs/analytics.js" : "",
         config.debug ? config.jsPath + "libs/player.js" : "",
@@ -176,6 +176,8 @@ var handleVideoClick = function(){
     ],
     css: [
         config.debug ? config.cssPath + config.mobilePath + "modal/styles.css" : "",
+        config.debug ? config.cssPath + "modal/vendor/normalize.css" : "",
+        config.debug ? config.cssPath + "modal/vendor/perfect-scrollbar.min.css" : "",
         config.debug ? "" : config.cssPath + config.mobilePath + "modal/styles.min.css"
     ]
   }));

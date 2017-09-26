@@ -1,136 +1,108 @@
-(function(window, document) {
+;(function(window,document){
+  var testInterval,
+      timeInterval,
+      playerEl,
+      plIframe,
+      qaTagEl,
+      endEl,
+      player,
+      menu,
+      eventPrefix = "tvp_" + (document.body.getAttribute("data-id") || "").replace(/-/g,'_');
 
-    var eventPrefix = "tvp_" + (document.body.getAttribute("data-id") || "").replace(/-/g,'_'),
-        channelVideosPage = 0,
-        itemsPerPage,
-        lastPage = false,
-        isFetching = false;
+  var channelVideosPage = 0,
+    itemsPerPage = 6,
+    lastPage = false,
+    isFetching = false;
 
-    var loadData = function(s,callback){
-        var cbName = 'tvp_' + Math.floor(Math.random() * 50005);
-        return jsonpCall({
-            src: function(){
-            var channel = s.channel || {},
-                params = channel.parameters || {},
-                url = s.api_base_url + '/channels/' + (channel.id || (s.channelid || s.channelId)) + '/videos?X-login-id=' + (s.loginid || s.loginId);
+  function initialize(){
+    (function(win,doc,unique,settings){
+      Utils.render(unique,doc.body);
+      Utils.loadData(settings,unique,function(data){
+        if (!data || !data.length) return;
+        if (win.parent) {
+          win.parent.postMessage({
+            event: ("tvp_" + settings.id).replace(/-/g,'_') + ':handle_init',
+            data: data
+          }, '*');
+        }
 
-            for (var p in params) { url += '&' + p + '=' + params[p];}
-            url += '&n=' + itemsPerPage + '&p=' + channelVideosPage;
-            url += '&callback='+cbName;
-                return url;
-            }(),
-            cbName: cbName
-        },callback);
-    };
+        var playerSettings = JSON.parse(JSON.stringify(settings));
+            playerSettings.data = data || [],
+            playlistOpt = Utils.isset(settings,'playlist') ? settings.playlist : false;
 
-    var jsonpCall = function(opts,callback){
-        var s = document.createElement('script');
-        s.src = opts.src;
-        if (!callback || 'function' !== typeof callback) return;
-        window[opts.cbName || 'callback'] = callback;
-        var b = opts.body || document.body;
-        b.appendChild(s);
-    };
+        if (playlistOpt) {
+          playerSettings.onFullscreenChange = function(){
+              menu.hideMenu();
+          };
+          player = new Player('tvp-player-el-'+unique,playerSettings);
 
-    var initialize = function() {
-        var el = Utils.getByClass('iframe-content');
+          var menuSettings = JSON.parse(JSON.stringify(settings));
+              menuSettings.data = data || [],
+              menuSettings.channelVideosPage = 0;
+          menu = new Menu(player,menuSettings);
 
-        var initPlayer = function(data) {
-            var player = null,
-                menu = null,
-                s = JSON.parse(JSON.stringify(data.runTime)),
-                menuSettings = JSON.parse(JSON.stringify(data.runTime)),
-                playlistOption = Utils.isset(data.runTime,'playlist') ? data.runTime.playlist: null;
+          Menu.prototype.loadMore = function(){
+              if (!lastPage && !isFetching) {
+                  menuSettings.channelVideosPage++;
+                  isFetching = true;
+                  Utils.loadData(menuSettings,unique,function(newData){
+                      if(newData.length > itemsPerPage){
+                        menu.deleteDivs();
+                        return;
+                      }
+                      isFetching = false;
+                      lastPage = (!newData.length || newData.length < itemsPerPage) ? true : false;
+                      player.addData(newData);
+                      menu.render(newData);
+                  });
+              }
+          };
+          var menuInterval = setInterval(function(){
+            initMenu(player, settings);
+          },500);
 
-            s.data = data.data;
-            itemsPerPage= s.items_per_page || 6;
+          var initMenu = function(pl, settings){
+            if(!pl.isReady || !settings) return;
+            clearInterval(menuInterval);
+            menu.init();
+          };
+        }else{
+          player = new Player('tvp-player-el-'+unique,playerSettings);
+        }
+      });
+    }(window,document,Utils.random(),Utils.getSettings()));
+  }
 
-            s.onResize = function() {
-               Utils.sendPost(eventPrefix,':modal_resize',{
-                    height: el.offsetHeight + 'px'
-                });
-            }
+    window.addEventListener('message', function(e) {
+        console.log(e.data)
+        if (!e || !Utils.isset(e, 'data') || !Utils.isset(e.data, 'event')) return;
 
-            if (playlistOption === 'show' && playlistOption) {
-                s.onPlayerReady = function(){
-                    menu.init();
-                };
+        var data = e.data;
 
-                s.onNext = function(){
-                    var playerAsset = player.assets[player.current];
-                    menu.setActiveItem(playerAsset.assetId);
-                    menu.hideMenu();
-                    Utils.sendPost(eventPrefix,':player_next',{
-                        next: playerAsset
-                    });
-                };
+        if (eventPrefix + ':modal_data' === data.event) {
+            console.log(data)
+            // initPlayer(data);
+        }
+    });
 
-                s.onFullscreenChange = function(){
-                    menu.hideMenu();
-                };
- 
-                player = new Player('tvp-player-el', s, data.selectedVideo.id);
-
-                menuSettings.data = data.data || [];
-                menu = new Menu(player,menuSettings);
-                Menu.prototype.loadMore = function(){
-                    if (!lastPage && !isFetching) {
-                        channelVideosPage++;
-                        isFetching = true;
-                        loadData(s,function(newData){
-                            isFetching = false;
-                            lastPage = (!newData.length || newData.length < itemsPerPage) ? true : false;
-                            player.addData(newData);
-                            menu.update(newData);
-                        });
-                    }
-                };
-            }else{
-                s.onNext = function(next) {
-                    if (!next) return;
-                    Utils.sendPost(eventPrefix,':player_next',{
-                        next: next
-                    });
-                };
-
-                player = new Player('tvp-player-el', s, data.selectedVideo.id);
-            }
-        };
-
-        window.addEventListener('message', function(e) {
-            if (!e || !Utils.isset(e, 'data') || !Utils.isset(e.data, 'event')) return;
-            
-            var data = e.data;
-
-            if (eventPrefix + ':modal_data' === data.event) {
-                initPlayer(data);
-            }
-        });
-
-        //Notify when the widget has been initialized.
         Utils.sendPost(eventPrefix,':modal_initialized',{
-            height: (el.offsetHeight + 20) + 'px'
+            height: (playerEl.offsetHeight + 20) + 'px'
         });
-    };
 
-    var not = function(obj) {
-        return 'undefined' === typeof obj
-    };
-    if (not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player) || not(window.Menu) || not(window.SimpleScrollbar)) {
-        var libsCheck = 0;
-        (function libsReady() {
-            setTimeout(function() {
-                if (not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player) || not(window.Menu) || not(window.SimpleScrollbar)) {
-                    if (++libsCheck < 50) {
-                        libsReady();
-                    }
-                } else {
-                    initialize();
-                }
-            }, 150);
-        })();
-    } else {
-        initialize();
-    }
+  var not = function(obj){return 'undefined' === typeof obj};
+  if (not(window.Utils) || not(window.Player)) {
+      var libsCheck = 0;
+      (function libsReady() {
+          setTimeout(function(){
+              if ((not(window.Utils) || not(window.Player)) && (++libsCheck < 50)) {
+                  libsReady();
+              } else {
+                  initialize();
+              }
+          },150);
+      })();
+  } else {
+      initialize();
+  }
 
-}(window, document));
+}(window,document));

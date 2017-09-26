@@ -1,6 +1,7 @@
 ;(function(window,document) {
 
   function Utils() {
+    var _this = this;
 
     this.debounce = function(func,wait,immediate){
       var timeout;  
@@ -18,9 +19,6 @@
       };      
     };
 
-    this.getByClass = function(c){
-      return document.getElementsByClassName(c || '')[0];
-    };
 
     this.formatDuration = function(secs) {
       if ("undefined" === typeof secs) return;
@@ -32,6 +30,99 @@
       return (hour + minutes + ':' + seconds);
     };
 
+    this.getByClass = function(c){
+      return document.getElementsByClassName(c || '')[0];
+    };
+
+    this.hasClass = function(obj,arr) {
+        if (!obj || !arr || !arr.length) return;
+        var has = false;
+        for (var i = 0; i < arr.length; i++) {
+          if(has) break;
+          has = obj.classList.contains(arr[i]);
+        }
+        return has;
+    };
+
+
+    this.addEvent = function(element, event, arr, func) {
+      element.removeEventListener(event, clickHandler, false);
+      element.addEventListener(event, clickHandler, false);
+      function clickHandler(e){
+        var that = this;
+        var type;
+        var checkEl = function (el) {
+          if (el && el !== that) {
+            for (var i = 0; i < arr.length; i++) {
+              if (el.classList.contains(arr[i])) {
+                type = arr[i]
+                return el;
+              }
+            }
+            return checkEl(el.parentNode);
+          }
+          return false;
+        }
+        var el = checkEl(e.target);
+        if (el !== false) {
+          func.call(this, type, el, e);
+        }
+      }
+    };
+
+
+    this.getSettings = function(){
+      var getConfig = function(g){
+        var c = {};
+        if (_this.isset(g) && _this.isset(g,'__TVPage__') && _this.isset(g.__TVPage__, 'config')) {
+          c = g.__TVPage__.config;
+        } else {
+          return;
+        }
+        return c;
+      };
+      var settings = {};
+      var config = getConfig(parent);
+      var id = document.body.getAttribute('data-id');
+      if (!_this.isset(config, id)) return;
+      settings = config[id];
+      settings.name = id;
+      return settings;
+    };
+
+    this.jsonpCall = function(opts,callback){
+        var script = document.createElement('script');
+        script.src = opts.src;
+        if (!callback || 'function' !== typeof callback) return;
+        window[opts.cbName || 'callback'] = callback;
+        var b = opts.body || document.body;
+        b.appendChild(script);
+    };
+
+    this.random = function(){
+      return 'tvp_' + Math.floor(Math.random() * 50005);
+    };
+
+    this.removeExisting = function(doc, el){
+      var existing = doc.getElementsByClassName(el)[0];
+      if (existing) existing.parentElement.removeChild(existing);
+    };
+
+    this.render = function(idEl,target){
+      if (!idEl || !target) return;
+      var frag = document.createDocumentFragment(),
+          main = document.createElement('div');
+
+      main.classList.add('tvp-player');
+      main.innerHTML =  '<div id="tvp-player-el-'+idEl+'" class="tvp-player-el"></div></div>';
+      frag.appendChild(main);
+      target.appendChild(frag);
+    };
+
+    this.isFunction = function(obj){
+        return 'undefined' !== typeof obj;
+    };
+
     this.isset = function(o,p){
       if (!arguments.length) return;
       var val = o;
@@ -39,14 +130,22 @@
       return 'undefined' !== typeof val;
     };
 
-    this.sendPost = function(evtPrefix ,evt, message){
-        setTimeout(function(){
-            if ( window.parent ) {
-                message = message || {};
-                message.event = evtPrefix + evt;
-                window.parent.postMessage(message, '*');
-            }
-        },0);    
+    this.loadData = function(settings,cbName,callback){
+     return _this.jsonpCall({
+        src: function(){
+          var channel = settings.channel || {},
+              params = channel.parameters || {},
+              url = settings.api_base_url + '/channels/' + (channel.id || (settings.channelid || settings.channelId)) + '/videos?X-login-id=' + (settings.loginid || settings.loginId);
+
+          for (var p in params) {
+            url += '&' + p + '=' + params[p];
+          }
+          url += '&n=' + (_this.isset(settings,'items_per_page') ? settings.items_per_page : 6) + '&p=' + (_this.isset(settings,'channelVideosPage') ? settings.channelVideosPage : 0);
+          url += '&callback=' + cbName;
+          return url;
+        }(),
+        cbName: cbName
+      },callback);
     };
 
     this.tmpl = function(template, data) {
@@ -67,7 +166,6 @@
       }
       return t;
     };
-    
   }
 
   window.Utils = new Utils();
