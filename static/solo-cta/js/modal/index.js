@@ -35,6 +35,7 @@
               menu.hideMenu();
           };
           player = new Player('tvp-player-el-'+unique,playerSettings);
+          playerEl = player.el;
 
           var menuSettings = JSON.parse(JSON.stringify(settings));
               menuSettings.data = data || [],
@@ -72,22 +73,6 @@
       });
     }(window,document,Utils.random(),Utils.getSettings()));
   }
-
-    window.addEventListener('message', function(e) {
-        console.log(e.data)
-        if (!e || !Utils.isset(e, 'data') || !Utils.isset(e.data, 'event')) return;
-
-        var data = e.data;
-
-        if (eventPrefix + ':modal_data' === data.event) {
-            console.log(data)
-            // initPlayer(data);
-        }
-    });
-
-        Utils.sendPost(eventPrefix,':modal_initialized',{
-            height: (playerEl.offsetHeight + 20) + 'px'
-        });
 
   var not = function(obj){return 'undefined' === typeof obj};
   if (not(window.Utils) || not(window.Player)) {
