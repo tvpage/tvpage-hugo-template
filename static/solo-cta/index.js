@@ -160,7 +160,7 @@ var handleVideoClick = function(){
     id: config.id,
     domain: config.baseUrl,
     style: config.css.modal,
-    className: utils.isMobile ? " mobile" : "dynamic",
+    className: utils.isMobile ? " mobile" : "",
     html: config.templates["modal-content" + (utils.isMobile ? "-mobile" : "")],
     js: [
         "//a.tvpage.com/tvpa.min.js",
