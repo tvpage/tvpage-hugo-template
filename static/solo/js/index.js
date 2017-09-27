@@ -38,7 +38,7 @@
       obj.onPlayerReady = function(playerInstance){
         var menuConfig = Utils.copy(config);
         menuConfig.data = data;
-        (new Menu(playerInstance,menuConfig)).init();
+        (new Menu(playerInstance,menuConfig)).initialize();
       };
 
       obj.onNext = function(next){
