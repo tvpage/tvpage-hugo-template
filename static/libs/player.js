@@ -30,19 +30,38 @@
     if (!el || !options || !options.data || options.data.length <= 0)
       return;
 
+    var getOption = function(s){
+      return isUndefined(options[s]) ? null : options[s];
+    };
+    var getCallable = function(s){
+      return isFunction(options[s]) ? null : options[s];
+    };
+
+    this.getCallable = 
     this.options = options;
     this.el = 'string' === typeof el ? document.getElementById(el) : el;
     this.eventPrefix = ("tvp_" + this.options.id).replace(/-/g, '_');
-    this.startWith = startWith || null;
+    this.assets = [];
     this.instance = null;
     this.initialResize = true;
-    this.autoplay = !!this.options.autoplay;
-    this.autonext = !!this.options.autonext;
-    this.version = this.options.player_version || null;
-    this.onResize = isFunction(this.options.onResize) ? this.options.onResize : null;
-    this.onNext = isFunction(this.options.onNext) ? this.options.onNext : null;
-    this.onPlayerReady = isFunction(this.options.onPlayerReady) ? this.options.onPlayerReady : null;
-    this.onPlayerChange = !!this.options.onPlayerChange;
+    this.startWith = startWith || null;
+    this.apiBaseUrl = getOption('api_base_url');
+    this.techOrder = getOption('tech_order');
+    this.mediaProviders = getOption('media_providers');
+    this.version = getOption('player_version');
+    this.preload = getOption('preload');
+    this.poster = getOption('poster');
+    this.overlay = getOption('overlay');
+    this.analytics = {
+      tvpa: getOption('analytics')
+    };
+    this.flashUrl = '//cdnjs.tvpage.com/tvplayer/tvp-' + this.version + '.swf';
+    this.autoplay = getOption('autoplay');
+    this.autonext = getOption('autonext');
+    this.onPlayerChange = getOption('onPlayerChange');
+    this.onResize = getCallable('onResize');
+    this.onNext = getCallable('onNext');
+    this.onPlayerReady = getCallable('onPlayerReady');
   };
 
   Player.prototype.getPlayButtonOptions = function() {
@@ -153,7 +172,7 @@
     }
   };
 
-  Player.prototype.analytics = function() {
+  Player.prototype.analyticsConfig = function() {
     var analytics = new Analytics();
     var loginId = this.options.loginId || this.options.loginid;
   
@@ -192,7 +211,7 @@
     this.instance = pl;
     this.resize.call(this);
     
-    this.analytics();
+    this.analyticsConfig();
     this.controlBarZindex();
     this.handleResize();
     if(this.onPlayerReady){
@@ -231,53 +250,57 @@
     }
   };
 
-  Player.prototype.startPlayer = function() {
+  Player.prototype.getConfig = function(){
     var that = this;
-    var config = {
-      techOrder: this.options.tech_order || null,
-      mediaProviders: this.options.media_providers || null,
-      analytics: {
-        tvpa: this.options.analytics || null
-      },
-      apiBaseUrl: this.options.api_base_url || null,
-      swf: '//cdnjs.tvpage.com/tvplayer/tvp-' + this.version + '.swf',
+    return compact({
+      techOrder: this.techOrder,
+      mediaProviders: this.mediaProviders,
+      analytics: this.analytics,
+      apiBaseUrl: this.apiBaseUrl,
+      swf: this.flashUrl,
+      divId: this.el.id,
+      controls: this.controls,
+      version: this.version,
+      advertising: this.advertising,
+      preload: this.preload,
+      poster: this.poster,
+      overlay: this.overlay,
       onReady: function(e, pl){
         that.onReady(e, pl);
       },
       onStateChange: function(e) {
         that.onStateChange(e);
       },
-      divId: this.el.id,
-      controls: this.controls,
-      version: this.version,
-      advertising: this.advertising,
-      preload: this.options.preload || null
-    };
+    });
+  }
 
-    var extras = ["preload", "poster", "overlay"];
-    for (var i = 0; i < extras.length; i++) {
-      var option = extras[i];
-      if (!isUndefined(this[option]) && this[option] !== null) {
-        config[option] = this[option];
-      }
-    }
-
-    this.player = new TVPage.player(config);
+  Player.prototype.startPlayer = function() {
+    var depsChecks = 0;
+    var that = this;
+    (function depsReady() {
+      setTimeout(function() {
+        if (isUndefined(window.TVPage) || isUndefined(window._tvpa)) {
+          (++depsChecks < 50) ? depsReady(): console.warn('can\'t load deps');
+        } else {
+          that.player = new TVPage.player(that.getConfig());
+        }
+      }, 150);
+    })();
   };
 
   Player.prototype.getChannelId = function() {
-    var channelId = 0;
+    var id = 0;
     var opts = this.options;
     
     if(opts.channel){
-      channelId = opts.channel.id;
+      id = opts.channel.id;
     }else if(opts.channelId){
-      channelId = opts.channelId;
+      id = opts.channelId;
     }else if(opts.channelid){
-      channelId = opts.channelid;
+      id = opts.channelid;
     }
 
-    return channelId;
+    return id;
   };
 
   Player.prototype.buildAsset = function(obj) {
@@ -313,24 +336,8 @@
   Player.prototype.initialize = function() {
     this.setControlsOptions();
     this.setAdvertisingOptions();
-    
-    this.assets = [];
-    var data = this.options.data;
-    for (var i = 0; i < data.length; i++) {
-      this.assets.push(this.buildAsset(data[i]));
-    }
-
-    var that = this;
-    var checks = 0;
-    (function libsReady() {
-      setTimeout(function() {
-        if (isUndefined(window.TVPage) || isUndefined(window._tvpa)) {
-          (++checks < 50) ? libsReady(): console.warn('limit reached');
-        } else {
-          that.startPlayer.call(that);
-        }
-      }, 150);
-    })();
+    this.addAssets(this.options.data);
+    this.startPlayer();
   };
 
   window.Player = Player;

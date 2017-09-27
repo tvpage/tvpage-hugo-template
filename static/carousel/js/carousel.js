@@ -194,6 +194,7 @@
   };
 
   Carousel.prototype.handleClick = function() {
+    var that = this;
     this.el.addEventListener('click',function(e) {
       var target = e.target;
 
