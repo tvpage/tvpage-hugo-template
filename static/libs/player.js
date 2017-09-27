@@ -257,7 +257,6 @@
   };
 
   Player.prototype.getConfig = function(){
-    var that = this;
     return compact({
       techOrder: this.getOption('tech_order'),
       mediaProviders: this.getOption('media_providers'),
@@ -272,13 +271,7 @@
       advertising: this.advertising,
       preload: this.getOption('preload'),
       poster: this.getOption('poster'),
-      overlay: this.getOption('overlay'),
-      onReady: function(e, pl){
-        that.onReady(e, pl);
-      },
-      onStateChange: function(e) {
-        that.onStateChange(e);
-      },
+      overlay: this.getOption('overlay')
     });
   }
 
@@ -290,7 +283,17 @@
         if (isUndefined(window.TVPage) || isUndefined(window._tvpa)) {
           (++depsChecks < 50) ? depsReady(): console.warn('can\'t load deps');
         } else {
-          that.player = new TVPage.player(that.getConfig());
+          var config = that.getConfig();
+
+          config.onReady = function(e, pl){
+            that.onReady(e, pl);
+          };
+
+          config.onStateChange = function(e) {
+            that.onStateChange(e);
+          };
+
+          that.player = new TVPage.player(config);
         }
       }, 150);
     })();
