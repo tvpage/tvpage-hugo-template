@@ -22,14 +22,21 @@
     }
     return o;
   };
+  var optionsCheck = function(el,o){
+    if (!el || !o || !o.data || o.data.length <= 0) {
+      throw new Error('missing options');
+    }
+  };
+  var getElement = function(el){
+    return 'string' === typeof el ? document.getElementById(el) : el;
+  };
 
   //The player singleton. A small layer on top of tvpage library
   var Player = function(el, options, startWith) {
-    if (!el || !options || !options.data || options.data.length <= 0)
-      return;
+    optionsCheck(el,options);
 
     this.options = options;
-    this.el = 'string' === typeof el ? document.getElementById(el) : el;
+    this.el = getElement(el);
     this.eventPrefix = ("tvp_" + this.options.id).replace(/-/g, '_');
     this.assets = [];
     this.instance = null;
@@ -82,17 +89,16 @@
     });
   };
 
-  Player.prototype.getPlaybackAction = function(ongoing){
-    var action = 'loadVideo';
-    if(isMobile || (ongoing && !this.autonext) || !this.autoplay)
-      action = 'cueVideo';
-
-    return action;
+  Player.prototype.shallCue = function(auto){
+    return isMobile || (auto && !this.autonext) || !this.autoplay;
   };
 
   Player.prototype.play = function(asset, ongoing) {
-    if (asset)
-      this.instance[ this.getPlaybackAction(ongoing) ](asset);
+    if(this.shallCue(ongoing)){
+      this.instance.cueVideo(asset);
+    } else {
+      this.instance.loadVideo(asset);
+    }
   };
 
   Player.prototype.controlBarZindex = function() {
