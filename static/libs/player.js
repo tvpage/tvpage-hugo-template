@@ -29,28 +29,12 @@
       return;
 
     this.options = options;
-    
-    this.getOption = function(s){
-      return isUndefined(this.options[s]) ? null : this.options[s];
-    };
-    this.getCallable = function(s){
-      return isFunction(this.options[s]) ? null : this.options[s];
-    };
-
     this.el = 'string' === typeof el ? document.getElementById(el) : el;
     this.eventPrefix = ("tvp_" + this.options.id).replace(/-/g, '_');
     this.assets = [];
     this.instance = null;
     this.initialResize = true;
     this.startWith = startWith || null;
-    this.version = this.getOption('player_version');
-    this.flashUrl = '//cdnjs.tvpage.com/tvplayer/tvp-' + this.version + '.swf';
-    this.autoplay = this.getOption('autoplay');
-    this.autonext = this.getOption('autonext');
-    this.onPlayerChange = this.getOption('onPlayerChange');
-    this.onResize = this.getCallable('onResize');
-    this.onNext = this.getCallable('onNext');
-    this.onPlayerReady = this.getCallable('onPlayerReady');
   };
 
   Player.prototype.getPlayButtonOptions = function() {
@@ -347,9 +331,29 @@
     }
   };
 
+  Player.prototype.getOption = function(s){
+    return isUndefined(this.options[s]) ? null : this.options[s];
+  };
+
+  Player.prototype.getCallable = function(s){
+    return isFunction(this.options[s]) ? null : this.options[s];
+  };
+
+  Player.prototype.setConfig = function(s){
+    this.version = this.getOption('player_version');
+    this.flashUrl = '//cdnjs.tvpage.com/tvplayer/tvp-' + this.version + '.swf';
+    this.autoplay = this.getOption('autoplay');
+    this.autonext = this.getOption('autonext');
+    this.onPlayerChange = this.getOption('onPlayerChange');
+    this.onResize = this.getCallable('onResize');
+    this.onNext = this.getCallable('onNext');
+    this.onPlayerReady = this.getCallable('onPlayerReady');
+  };
+
   Player.prototype.initialize = function() {
     this.setControlsOptions();
     this.setAdvertisingOptions();
+    this.setConfig();
     this.addAssets(this.options.data);
     this.startPlayer();
   };
