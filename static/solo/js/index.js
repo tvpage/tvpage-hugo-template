@@ -50,7 +50,11 @@
             params = channel.parameters || {},
             url = s.api_base_url + '/channels/' + (channel.id || (s.channelid || s.channelId)) + '/videos?X-login-id=' + (s.loginid || s.loginId);
 
-        for (var p in params) { url += '&' + p + '=' + params[p];}
+        for (var p in params) {
+          if(params.hasOwnProperty(p)){
+            url += '&' + p + '=' + params[p];
+          }
+        }
         url += '&n=' + itemsPerPage + '&p=' + channelVideosPage;
         url += '&callback='+cbName;
         return url;
