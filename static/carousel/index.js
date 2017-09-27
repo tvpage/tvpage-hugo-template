@@ -289,25 +289,74 @@ function handleResize(e) {
   holder.style.height = e.data.height;
 }
 
-function handleVideoClick(e) {
+var getPlayerUrl = function(){
+  var url = "https://cdnjs.tvpage.com/tvplayer/tvp-" + config.player_version + ".min.js";
+  if (config.player_url && (config.player_url + "").trim().length) {
+    url = config.player_url;
+  }
+  return url;
+};
+
+var setClickData = function(e){
   if (!e || !e.data)
     return;
 
   var configCopy = JSON.parse(JSON.stringify(config));
   delete configCopy.no_products_banner;
-  
   configCopy.onPlayerChange = !!config.onPlayerChange;
 
-  var eventData = e.data;
-  var clickedVideo = eventData.selectedVideo;
+  var data = e.data;
 
   clickData = {
-    data: eventData.videos,
-    selectedVideo: clickedVideo,
+    data: data.videos,
+    selectedVideo: data.selectedVideo,
     runTime: configCopy
   };
+};
 
-  modal.querySelector('.tvp-modal-title').innerHTML = clickedVideo.title || "";
+var iframeModalJs = [
+  "//a.tvpage.com/tvpa.min.js",
+  '//imasdk.googleapis.com/js/sdkloader/ima3.js',
+  getPlayerUrl(),
+  debug && isMobile ? jsPath + "/vendor/jquery.js" : "",
+  debug && !isMobile ? jsPath + "/vendor/perfect-scrollbar.min.js" : "",
+  debug ? baseUrl + "libs/utils.js" : "",
+  debug ? baseUrl + "libs/analytics.js" : "",
+  debug ? baseUrl + "libs/player.js" : "",
+  debug ? jsPath + "/" + mobilePath + "modal/index.js" : "",
+  debug ? "" : jsPath + mobilePath + "modal/scripts.min.js"
+];
+
+var iframeModalCss = [
+  debug ? cssPath + "/" + mobilePath + "modal/styles.css" : "",
+  debug && isMobile ? cssPath + "/vendor/slick.css" : "",
+  debug && !isMobile ? cssPath + "/vendor/perfect-scrollbar.min.css" : "",
+  debug ? "" : cssPath + "/" + mobilePath + "modal/styles.min.css"
+];
+
+var iframeModalHtml = getIframeHtml({
+  id: id,
+  domain: baseUrl,
+  style: config.css["modal-content" + mobilePrefix],
+  className: isMobile ? "mobile" : "",
+  html: templates["modal-content" + mobilePrefix].body,
+  js: iframeModalJs,
+  css: iframeModalCss
+});
+
+var renderIframeModal = function(){
+  iframeModalHolder.innerHTML = templates["modal-iframe"];
+  iframeModal = iframeModalHolder.querySelector('.tvp-iframe-modal');
+  iframeModalDocument = iframeModal.contentWindow.document;
+  iframeModalDocument.open().write(iframeModalHtml);
+  iframeModalDocument.close();
+};
+
+function handleVideoClick(e) {
+  setClickData(e);
+
+  modal.querySelector('.tvp-modal-title').innerHTML = clickData.selectedVideo.title || "";
+
   removeClass(modal, 'tvp-hidden');
   removeClass('tvp-modal-overlay-' + id, 'tvp-hidden');
 
@@ -315,42 +364,7 @@ function handleVideoClick(e) {
     addClass(body, 'tvp-modal-open');
   }
 
-  //Some logic to include the player library.. we support diff things.
-  var playerUrl = "https://cdnjs.tvpage.com/tvplayer/tvp-" + config.player_version + ".min.js";
-  if (config.player_url && (config.player_url + "").trim().length) {
-    playerUrl = config.player_url;
-  }
-
-  iframeModalHolder.innerHTML = templates["modal-iframe"];
-  iframeModal = iframeModalHolder.querySelector('.tvp-iframe-modal');
-  iframeModalDocument = iframeModal.contentWindow.document;
-  iframeModalDocument.open().write(getIframeHtml({
-    id: id,
-    domain: baseUrl,
-    style: config.css["modal-content" + (isMobile ? "-mobile" : "")],
-    className: isMobile ? "mobile" : "",
-    html: templates["modal-content" + (isMobile ? "-mobile" : "")].body,
-    js: [
-      "//a.tvpage.com/tvpa.min.js",
-      '//imasdk.googleapis.com/js/sdkloader/ima3.js',
-      playerUrl,
-      debug && isMobile ? jsPath + "/vendor/jquery.js" : "",
-      debug && !isMobile ? jsPath + "/vendor/perfect-scrollbar.min.js" : "",
-      debug ? baseUrl + "libs/utils.js" : "",
-      debug ? baseUrl + "libs/analytics.js" : "",
-      debug ? baseUrl + "libs/player.js" : "",
-      debug ? jsPath + "/" + mobilePath + "modal/index.js" : "",
-      debug ? "" : jsPath + mobilePath + "modal/scripts.min.js"
-    ],
-    css: [
-      debug ? cssPath + "/" + mobilePath + "modal/styles.css" : "",
-      debug && isMobile ? cssPath + "/vendor/slick.css" : "",
-      debug && !isMobile ? cssPath + "/vendor/perfect-scrollbar.min.css" : "",
-      debug ? "" : cssPath + "/" + mobilePath + "modal/styles.min.css"
-    ]
-  }));
-
-  iframeModalDocument.close();
+  renderIframeModal();
 };
 
 function handleModalInitialized(e) {
