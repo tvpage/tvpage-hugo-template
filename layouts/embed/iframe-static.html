@@ -98,12 +98,12 @@
   {{ with .Params.channelid }}{{ . }}{{ else }}''{{ end }}));</script>
 
   {{- if (getenv "HUGO_DEBUG") -}}
-  <script src="{{ (printf "%s/js/libs/analytics.js" .Type ) | absURL }}"></script>
-  <script src="{{ (printf "%s/js/libs/player.js" .Type ) | absURL }}"></script>
+  <script src="{{ (printf "libs/analytics.js" ) | absURL }}"></script>
+  <script src="{{ (printf "libs/player.js" ) | absURL }}"></script>
   {{- else -}}
   <script src="{{ (printf "%s/dist/js/scripts.min.js" .Type ) | absURL }}"></script>
   {{- end -}}
 
-  <script>new Player('tvp-player-el', config);</script>
+  <script>var player = new Player('tvp-player-el', config); player.initialize();</script>
 </body>
 </html>
