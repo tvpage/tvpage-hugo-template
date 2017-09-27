@@ -41,7 +41,7 @@
     "right: 0;" +
     "bottom: 0;" +
     "left: 0;" +
-    "z-index: 110000;" +
+    "z-index: 1040;" +
     "background-color: #000;" +
     "opacity: .5;" +
 "}" +
@@ -74,7 +74,7 @@
     "-webkit-justify-content: center;" +
     "-ms-flex-pack: center;" +
     "justify-content: center;" +
-    "z-index: 110001;" +
+    "z-index: 1050;" +
 "}" +
 
 ".tvp-modal-wrapper {" +
