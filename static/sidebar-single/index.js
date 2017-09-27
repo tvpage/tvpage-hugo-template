@@ -301,9 +301,9 @@ function handleVideoClick(e){
           playerUrl,
           config.debug && utils.isMobile ? config.jsPath + "/vendor/jquery.js" : "",
           config.debug && !utils.isMobile ? config.jsPath + "/vendor/perfect-scrollbar.min.js" : "",
-          config.debug ? config.jsPath + "/libs/utils.js" : "",
-          config.debug ? config.jsPath + "/libs/analytics.js" : "",
-          config.debug ? config.jsPath + "/libs/player.js" : "",
+          config.debug ? config.baseUrl + "libs/utils.js" : "",
+          config.debug ? config.baseUrl + "libs/analytics.js" : "",
+          config.debug ? config.baseUrl + "libs/player.js" : "",
           config.debug ? config.jsPath + "/" + config.mobilePath + "modal/index.js" : "",
           config.debug ? "" : config.jsPath + config.mobilePath + "modal/scripts.min.js"
       ],
