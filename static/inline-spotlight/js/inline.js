@@ -412,7 +412,11 @@
                 var channel_id = Utils.isEmpty(channel) ? channelId : channel.id;
                 var params = channel.parameters || {};
                 var src = options.api_base_url+ '/channels/' + channel_id + '/videos?X-login-id=' + loginId;
-                for (var p in params) { src += '&' + p + '=' + params[p];}
+                for (var p in params) {
+                    if(params.hasOwnProperty(p)){
+                        src += '&' + p + '=' + params[p];
+                    }
+                }
                 var cbName = options.callbackName || 'tvp_' + Math.floor(Math.random() * 555);
                 src += '&p=' + page + '&n=' + itemsPerPage + '&callback='+cbName;
                 var script = document.createElement('script');
