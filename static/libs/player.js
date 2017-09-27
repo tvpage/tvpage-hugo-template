@@ -16,13 +16,14 @@
     return 'undefined' === typeof o;
   };
   var compact = function(o) {
-    if ('object' === typeof o) {
-      for (var k in o) {
-        if (o.hasOwnProperty(k) && !o[k])
-          delete o[k];
-      }
+    for (var k in o) {
+      if (o.hasOwnProperty(k) && !o[k])
+        delete o[k];
     }
     return o;
+  };
+  var getCallable = function(o,name){
+    return isFunction(o[name]) ? o[name] : null;
   };
 
   //The player singleton. A small layer on top of tvpage library
@@ -32,17 +33,21 @@
 
     this.options = options;
     this.el = 'string' === typeof el ? document.getElementById(el) : el;
-    this.eventPrefix = ("tvp_" + this.options.id).replace(/-/g, '_');
+    this.eventPrefix = ("tvp_" + options.id).replace(/-/g, '_');
     this.startWith = startWith || null;
     this.instance = null;
     this.initialResize = true;
-    this.autoplay = !!this.options.autoplay;
-    this.autonext = !!this.options.autonext;
-    this.version = this.options.player_version || null;
-    this.onResize = isFunction(this.options.onResize) ? this.options.onResize : null;
-    this.onNext = isFunction(this.options.onNext) ? this.options.onNext : null;
-    this.onPlayerReady = isFunction(this.options.onPlayerReady) ? this.options.onPlayerReady : null;
-    this.onPlayerChange = !!this.options.onPlayerChange;
+    this.version = options.player_version || null;
+    this.flashUrl = '//cdnjs.tvpage.com/tvplayer/tvp-' + this.version + '.swf';
+    this.analytics = {
+      tvpa: options.analytics || null
+    };
+    this.autoplay = !!options.autoplay;
+    this.autonext = !!options.autonext;
+    this.onPlayerChange = !!options.onPlayerChange;
+    this.onResize = getCallable(options,'onResize');
+    this.onNext = getCallable(options,'onNext');
+    this.onPlayerReady = getCallable(options,'onPlayerReady');
   };
 
   Player.prototype.getPlayButtonOptions = function() {
@@ -90,17 +95,18 @@
     });
   };
 
+  Player.prototype.getPlaybackAction = function(ongoing){
+    var willCue = false;
+    
+    if( (ongoing && (isMobile || !this.autonext)) || (isMobile || !this.autoplay) )
+      willCue = true;
+
+    return willCue ? 'cueVideo' : 'loadVideo';
+  };
+
   Player.prototype.play = function(asset, ongoing) {
     if (asset) {
-      var willCue = false;
-      if( (ongoing && (isMobile || !this.autonext)) || (isMobile || !this.autoplay) )
-        willCue = true;
-
-      if(willCue){
-        this.instance.cueVideo(asset);
-      }else{
-        this.instance.loadVideo(asset);
-      }
+      this.instance[ this.getPlaybackAction(ongoing) ](asset);
     }
   };
 
@@ -161,7 +167,7 @@
     }
   };
 
-  Player.prototype.analytics = function() {
+  Player.prototype.analyticsConfig = function() {
     var analytics = new Analytics();
     var loginId = this.options.loginId || this.options.loginid;
   
@@ -200,7 +206,7 @@
     this.instance = pl;
     this.resize.call(this);
     
-    this.analytics();
+    this.analyticsConfig();
     this.controlBarZindex();
     this.handleResize();
     if(this.onPlayerReady){
@@ -210,12 +216,9 @@
     this.play(this.getCurrentAsset());
   };
 
-  Player.prototype.onStateChange = function(e) {
-    var current = this.current;
-    var stateData = JSON.parse(JSON.stringify(this.assets[current]));
-
+  Player.prototype.notifyState = function(e){
+    var stateData = JSON.parse(JSON.stringify(this.assets[this.current]));
     stateData.currentTime = this.instance.getCurrentTime();
-
     if (this.onPlayerChange && window.parent) {
       window.parent.postMessage({
         event: this.eventPrefix + ':on_player_change',
@@ -223,32 +226,49 @@
         stateData : stateData
       }, '*');
     }
-    
-    if ('tvp:media:videoended' === e) {
-      this.current++;
-      if (!this.assets[this.current]) {
-        this.current = 0;
-      }
+  };
 
-      var next = this.assets[this.current];
-      
-      this.play(next, true);
-      if (this.onNext) {
-        this.onNext(next);
-      }
+  Player.prototype.handleVideoEnded = function(){
+    this.current++;
+    if (!this.assets[this.current]) {
+      this.current = 0;
+    }
+
+    var next = this.assets[this.current];
+    
+    this.play(next, true);
+    if (this.onNext) {
+      this.onNext(next);
     }
   };
 
-  Player.prototype.startPlayer = function() {
+  Player.prototype.onStateChange = function(e) {
+    this.notifyState(e);
+    
+    if ('tvp:media:videoended' === e)
+      this.handleVideoEnded();
+  };
+
+  Player.prototype.addExtraConfig = function(config){
+    config = config || {};
+    var extras = ["preload", "poster", "overlay"];
+    for (var i = 0; i < extras.length; i++) {
+      var option = extras[i];
+      if (!isUndefined(this[option]) && this[option] !== null) {
+        config[option] = this[option];
+      }
+    }
+    return config;
+  };
+
+  Player.prototype.startPlayer = function(){
     var that = this;
     var config = {
       techOrder: this.options.tech_order || null,
       mediaProviders: this.options.media_providers || null,
-      analytics: {
-        tvpa: this.options.analytics || null
-      },
+      analytics: this.analytics,
       apiBaseUrl: this.options.api_base_url || null,
-      swf: '//cdnjs.tvpage.com/tvplayer/tvp-' + this.version + '.swf',
+      swf: this.flashUrl,
       onReady: function(e, pl){
         that.onReady(e, pl);
       },
@@ -262,13 +282,7 @@
       preload: this.options.preload || null
     };
 
-    var extras = ["preload", "poster", "overlay"];
-    for (var i = 0; i < extras.length; i++) {
-      var option = extras[i];
-      if (!isUndefined(this[option]) && this[option] !== null) {
-        config[option] = this[option];
-      }
-    }
+    config = this.addExtraConfig(config);
 
     this.player = new TVPage.player(config);
   };
