@@ -204,6 +204,7 @@
     this.analyticsConfig();
     this.controlBarZindex();
     this.handleResize();
+
     if(this.onPlayerReady){
       this.onPlayerReady(this);
     }
@@ -349,7 +350,7 @@
   };
 
   Player.prototype.getCallable = function(s){
-    return isFunction(this.options[s]) ? null : this.options[s];
+    return isFunction(this.options[s]) ? this.options[s] : null;
   };
 
   Player.prototype.setConfig = function(s){

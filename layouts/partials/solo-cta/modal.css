@@ -9,7 +9,7 @@
 
 ".tvplayer-playbutton{"+
   "opacity: {{ ($.Scratch.Get "settings").play_button_opacity }} !important;" +
-"}"
+"}"+
 
 ".tvp-video-play {" +
   "width: {{ ($.Scratch.Get "settings").menu_item_play_button_width }};" +
