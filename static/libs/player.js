@@ -111,16 +111,24 @@
     }
   };
 
-  Player.prototype.resize = function() {
-    if (!this.instance)
-      return;
-    
-    var parentEl = this.el.parentNode;
-    var hasArgs = arguments.length > 1;
-    var width = hasArgs ? arguments[0] : parentEl.offsetWidth;
-    var height = hasArgs ? arguments[1] : parentEl.offsetHeight;
+  Player.prototype.getParentSize = function(param){
+    var el = this.el.parentNode;
+    var size = null;
+    if('width' === param){
+      size = el.offsetWidth;
+    } else if('height' === param){
+      size = el.offsetHeight;
+    }
+    return size;
+  };
 
-    this.instance.resize(width, height);
+  Player.prototype.resize = function(){
+    if (this.instance)
+      this.instance.resize(
+        arguments[0] || this.getParentSize('width'),
+        arguments[1] || this.getParentSize('height')
+      );
+
     this.initialResize = false;
     
     if (this.onResize)
