@@ -28,14 +28,6 @@
     if (!el || !options || !options.data || options.data.length <= 0)
       return;
 
-    var getOption = function(s){
-      return isUndefined(options[s]) ? null : options[s];
-    };
-    var getCallable = function(s){
-      return isFunction(options[s]) ? null : options[s];
-    };
-
-    this.getCallable = 
     this.options = options;
     this.el = 'string' === typeof el ? document.getElementById(el) : el;
     this.eventPrefix = ("tvp_" + this.options.id).replace(/-/g, '_');
@@ -43,35 +35,18 @@
     this.instance = null;
     this.initialResize = true;
     this.startWith = startWith || null;
-    this.apiBaseUrl = getOption('api_base_url');
-    this.techOrder = getOption('tech_order');
-    this.mediaProviders = getOption('media_providers');
-    this.version = getOption('player_version');
-    this.preload = getOption('preload');
-    this.poster = getOption('poster');
-    this.overlay = getOption('overlay');
-    this.analytics = {
-      tvpa: getOption('analytics')
-    };
-    this.flashUrl = '//cdnjs.tvpage.com/tvplayer/tvp-' + this.version + '.swf';
-    this.autoplay = getOption('autoplay');
-    this.autonext = getOption('autonext');
-    this.onPlayerChange = getOption('onPlayerChange');
-    this.onResize = getCallable('onResize');
-    this.onNext = getCallable('onNext');
-    this.onPlayerReady = getCallable('onPlayerReady');
   };
 
   Player.prototype.getPlayButtonOptions = function() {
     return compact({
-      height: this.options.play_button_height || null,
-      width: this.options.play_button_width || null,
-      backgroundColor: this.options.play_button_background_color || null,
-      borderRadius: this.options.play_button_border_radius || null,
-      borderWidth: this.options.play_button_border_width || null,
-      borderColor: this.options.play_button_border_color || null,
-      borderStyle: this.options.play_button_border_style || null,
-      iconColor: this.options.play_button_icon_color || null
+      height: this.getOption('play_button_height'),
+      width: this.getOption('play_button_width'),
+      backgroundColor: this.getOption('play_button_background_color'),
+      borderRadius: this.getOption('play_button_border_radius'),
+      borderWidth: this.getOption('play_button_border_width'),
+      borderColor: this.getOption('play_button_border_color'),
+      borderStyle: this.getOption('play_button_border_style'),
+      iconColor: this.getOption('play_button_icon_color')
     });
   };
 
@@ -79,16 +54,16 @@
     this.controls = compact({
       active: true,
       seekBar: compact({
-        progressColor: this.options.progress_color || null
+        progressColor: this.getOption('progress_color')
       }),
       floater: compact({
-        controlbarColor: this.options.control_bar_color || null,
-        iconColor: this.options.icon_color || null,
-        removeControls: this.options.remove_controls || null
+        controlbarColor: this.getOption('control_bar_color'),
+        iconColor: this.getOption('icon_color'),
+        removeControls: this.getOption('remove_controls')
       }),
       playbutton: this.getPlayButtonOptions(),
-      overlayColor: this.options.overlay_color || null,
-      overlayOpacity: this.options.overlay_opacity || null
+      overlayColor: this.getOption('overlay_color'),
+      overlayOpacity: this.getOption('overlay_opacity')
     });
   };
 
@@ -108,18 +83,16 @@
   };
 
   Player.prototype.getPlaybackAction = function(ongoing){
-    var willCue = false;
-    
-    if( (ongoing && (isMobile || !this.autonext)) || (isMobile || !this.autoplay) )
-      willCue = true;
+    var action = 'loadVideo';
+    if(isMobile || (ongoing && !this.autonext) || !this.autoplay)
+      action = 'cueVideo';
 
-    return willCue ? 'cueVideo' : 'loadVideo';
+    return action;
   };
 
   Player.prototype.play = function(asset, ongoing) {
-    if (asset) {
+    if (asset)
       this.instance[ this.getPlaybackAction(ongoing) ](asset);
-    }
   };
 
   Player.prototype.controlBarZindex = function() {
@@ -276,18 +249,20 @@
   Player.prototype.getConfig = function(){
     var that = this;
     return compact({
-      techOrder: this.techOrder,
-      mediaProviders: this.mediaProviders,
-      analytics: this.analytics,
-      apiBaseUrl: this.apiBaseUrl,
+      techOrder: this.getOption('tech_order'),
+      mediaProviders: this.getOption('media_providers'),
+      analytics: {
+        tvpa: this.getOption('analytics')
+      },
+      apiBaseUrl: this.getOption('api_base_url'),
       swf: this.flashUrl,
       divId: this.el.id,
       controls: this.controls,
       version: this.version,
       advertising: this.advertising,
-      preload: this.preload,
-      poster: this.poster,
-      overlay: this.overlay,
+      preload: this.getOption('preload'),
+      poster: this.getOption('poster'),
+      overlay: this.getOption('overlay'),
       onReady: function(e, pl){
         that.onReady(e, pl);
       },
@@ -356,9 +331,29 @@
     }
   };
 
+  Player.prototype.getOption = function(s){
+    return isUndefined(this.options[s]) ? null : this.options[s];
+  };
+
+  Player.prototype.getCallable = function(s){
+    return isFunction(this.options[s]) ? null : this.options[s];
+  };
+
+  Player.prototype.setConfig = function(s){
+    this.version = this.getOption('player_version');
+    this.flashUrl = '//cdnjs.tvpage.com/tvplayer/tvp-' + this.version + '.swf';
+    this.autoplay = this.getOption('autoplay');
+    this.autonext = this.getOption('autonext');
+    this.onPlayerChange = this.getOption('onPlayerChange');
+    this.onResize = this.getCallable('onResize');
+    this.onNext = this.getCallable('onNext');
+    this.onPlayerReady = this.getCallable('onPlayerReady');
+  };
+
   Player.prototype.initialize = function() {
     this.setControlsOptions();
     this.setAdvertisingOptions();
+    this.setConfig();
     this.addAssets(this.options.data);
     this.startPlayer();
   };
