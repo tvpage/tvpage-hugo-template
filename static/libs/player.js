@@ -16,11 +16,9 @@
     return 'undefined' === typeof o;
   };
   var compact = function(o) {
-    if ('object' === typeof o) {
-      for (var k in o) {
-        if (o.hasOwnProperty(k) && !o[k])
-          delete o[k];
-      }
+    for (var k in o) {
+      if (o.hasOwnProperty(k) && !o[k])
+        delete o[k];
     }
     return o;
   };
@@ -109,17 +107,18 @@
     });
   };
 
+  Player.prototype.getPlaybackAction = function(ongoing){
+    var willCue = false;
+    
+    if( (ongoing && (isMobile || !this.autonext)) || (isMobile || !this.autoplay) )
+      willCue = true;
+
+    return willCue ? 'cueVideo' : 'loadVideo';
+  };
+
   Player.prototype.play = function(asset, ongoing) {
     if (asset) {
-      var willCue = false;
-      if( (ongoing && (isMobile || !this.autonext)) || (isMobile || !this.autoplay) )
-        willCue = true;
-
-      if(willCue){
-        this.instance.cueVideo(asset);
-      }else{
-        this.instance.loadVideo(asset);
-      }
+      this.instance[ this.getPlaybackAction(ongoing) ](asset);
     }
   };
 
@@ -130,16 +129,24 @@
     }
   };
 
-  Player.prototype.resize = function() {
-    if (!this.instance)
-      return;
-    
-    var parentEl = this.el.parentNode;
-    var hasArgs = arguments.length > 1;
-    var width = hasArgs ? arguments[0] : parentEl.offsetWidth;
-    var height = hasArgs ? arguments[1] : parentEl.offsetHeight;
+  Player.prototype.getParentSize = function(param){
+    var el = this.el.parentNode;
+    var size = null;
+    if('width' === param){
+      size = el.offsetWidth;
+    } else if('height' === param){
+      size = el.offsetHeight;
+    }
+    return size;
+  };
 
-    this.instance.resize(width, height);
+  Player.prototype.resize = function(){
+    if (this.instance)
+      this.instance.resize(
+        arguments[0] || this.getParentSize('width'),
+        arguments[1] || this.getParentSize('height')
+      );
+
     this.initialResize = false;
     
     if (this.onResize)
@@ -221,12 +228,9 @@
     this.play(this.getCurrentAsset());
   };
 
-  Player.prototype.onStateChange = function(e) {
-    var current = this.current;
-    var stateData = JSON.parse(JSON.stringify(this.assets[current]));
-
+  Player.prototype.notifyState = function(e){
+    var stateData = JSON.parse(JSON.stringify(this.assets[this.current]));
     stateData.currentTime = this.instance.getCurrentTime();
-
     if (this.onPlayerChange && window.parent) {
       window.parent.postMessage({
         event: this.eventPrefix + ':on_player_change',
@@ -234,20 +238,39 @@
         stateData : stateData
       }, '*');
     }
-    
-    if ('tvp:media:videoended' === e) {
-      this.current++;
-      if (!this.assets[this.current]) {
-        this.current = 0;
-      }
+  };
 
-      var next = this.assets[this.current];
-      
-      this.play(next, true);
-      if (this.onNext) {
-        this.onNext(next);
+  Player.prototype.handleVideoEnded = function(){
+    this.current++;
+    if (!this.assets[this.current]) {
+      this.current = 0;
+    }
+
+    var next = this.assets[this.current];
+    
+    this.play(next, true);
+    if (this.onNext) {
+      this.onNext(next);
+    }
+  };
+
+  Player.prototype.onStateChange = function(e) {
+    this.notifyState(e);
+    
+    if ('tvp:media:videoended' === e)
+      this.handleVideoEnded();
+  };
+
+  Player.prototype.addExtraConfig = function(config){
+    config = config || {};
+    var extras = ["preload", "poster", "overlay"];
+    for (var i = 0; i < extras.length; i++) {
+      var option = extras[i];
+      if (!isUndefined(this[option]) && this[option] !== null) {
+        config[option] = this[option];
       }
     }
+    return config;
   };
 
   Player.prototype.getConfig = function(){
