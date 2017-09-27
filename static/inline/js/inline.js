@@ -445,7 +445,11 @@
                 params.o = options.videos_order_by;
                 params.od = options.videos_order_direction;
                 var src = '//api.tvpage.com/v1/channels/' + channel_id + '/videos?X-login-id=' + loginId;
-                for (var p in params) { src += '&' + p + '=' + params[p];}
+                for (var p in params) {
+                    if(params.hasOwnProperty(p)){
+                        src += '&' + p + '=' + params[p];
+                    }
+                }
                 var cbName = options.callbackName || 'tvp_' + Math.floor(Math.random() * 555);
                 src += '&p=' + page + '&n=' + itemsPerPage + '&callback='+cbName;
                 var script = document.createElement('script');

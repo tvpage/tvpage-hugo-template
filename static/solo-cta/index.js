@@ -153,14 +153,18 @@ var handleVideoClick = function(){
         "//a.tvpage.com/tvpa.min.js",
         '//imasdk.googleapis.com/js/sdkloader/ima3.js',
         playerUrl,
+        config.debug ? config.jsPath + "vendor/perfect-scrollbar.min.js" : "",
         config.debug ? config.jsPath + "libs/utils.js" : "",
         config.debug ? config.jsPath + "libs/analytics.js" : "",
         config.debug ? config.jsPath + "libs/player.js" : "",
+        config.debug ? config.jsPath + "modal/menu.js" : "",
         config.debug ? config.jsPath + "modal/index.js" : "",
         config.debug ? "" : config.jsPath + "modal/scripts.min.js"
     ],
     css: [
         config.debug ? config.cssPath + config.mobilePath + "modal/styles.css" : "",
+        config.debug ? config.cssPath + "modal/vendor/normalize.css" : "",
+        config.debug ? config.cssPath + "modal/vendor/perfect-scrollbar.min.css" : "",
         config.debug ? "" : config.cssPath + config.mobilePath + "modal/styles.min.css"
     ]
   }));
@@ -174,9 +178,13 @@ var cbName = 'tvp_' + Math.floor(Math.random() * 50005);
 var jsonpScriptSrc = config.api_base_url + '/channels/' + channelId + '/videos?X-login-id=' + (config.loginId || config.loginid);
 
 var params = channel.parameters || {};
-for (var p in params) { jsonpScriptSrc += '&' + p + '=' + params[p];}
+for (var p in params) {
+  if(params.hasOwnProperty(p)){
+    jsonpScriptSrc += '&' + p + '=' + params[p];
+  }
+}
 
-jsonpScriptSrc += "&callback=" + cbName;
+jsonpScriptSrc += '&n=' + config.items_per_page + '&p=0&callback=' + cbName;
 jsonpScript.src = jsonpScriptSrc;
 
 window[cbName] = function (data) {
@@ -293,7 +301,8 @@ function handleModalInitialized(e){
 };
 
 function handlePlayerNext(e) {
-    updateModalTitle(e.data.next.assetTitle);
+  var title = e.data.next.assetTitle || e.data.next.title;
+  updateModalTitle(title);
 };
 
 var closeModal = function () {
