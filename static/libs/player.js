@@ -22,18 +22,22 @@
     }
     return o;
   };
-  var optionsCheck = function(el,o){
-    if (!el || !o || !o.data || o.data.length <= 0) {
+  var optionsCheck = function(o){
+    if (!o || !o.data || o.data.length <= 0) {
       throw new Error('missing options');
     }
   };
   var getElement = function(el){
+    if(!el) {
+      throw new Error('missing el');
+    }
+    
     return 'string' === typeof el ? document.getElementById(el) : el;
   };
 
   //The player singleton. A small layer on top of tvpage library
   var Player = function(el, options, startWith) {
-    optionsCheck(el,options);
+    optionsCheck(options);
 
     this.options = options;
     this.el = getElement(el);
