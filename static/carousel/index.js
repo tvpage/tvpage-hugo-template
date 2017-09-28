@@ -320,6 +320,7 @@ var iframeModalJs = [
   getPlayerUrl(),
   debug && isMobile ? jsPath + "/vendor/jquery.js" : "",
   debug && !isMobile ? jsPath + "/vendor/perfect-scrollbar.min.js" : "",
+  //debug ? baseUrl + "sdk/tvpage.min.js" : "",
   debug ? baseUrl + "libs/utils.js" : "",
   debug ? baseUrl + "libs/analytics.js" : "",
   debug ? baseUrl + "libs/player.js" : "",

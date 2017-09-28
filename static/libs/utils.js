@@ -1,6 +1,9 @@
 (function() {
   
     var userAgent = navigator.userAgent;
+    var hasKey = function(o,k){
+      return o.hasOwnProperty(k);
+    };
   
     function Utils() {}
   
@@ -54,9 +57,7 @@
       return JSON.parse(JSON.stringify(o));
     };
   
-    Utils.prototype.hasKey = function(o, key) {
-      return o.hasOwnProperty(key);
-    };
+    Utils.prototype.hasKey = hasKey;
   
     Utils.prototype.isEmpty = function(o) {
       for (var key in o) {
@@ -135,6 +136,16 @@
         t = t.substring(0, Number(l)) + '...';
       }
       return t;
+    };
+
+    Utils.prototype.getParentConfig = function(id) {
+      if (!hasKey(window, 'parent') || !hasKey(parent, '__TVPage__'))
+        throw new Error("can't access parent");
+    
+      if (!hasKey(parent.__TVPage__, 'config') || !hasKey(parent.__TVPage__.config, id))
+        throw new Error("missing config");
+    
+      return parent.__TVPage__.config[id];
     };
   
     Utils.prototype.trimPrice = function(p) {
