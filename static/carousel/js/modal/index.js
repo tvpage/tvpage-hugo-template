@@ -269,10 +269,10 @@
             });
         };
 
-        player = new Player('tvp-player-el', playerConfig, data.selectedVideo.id);
+        player = new Player('tvp-player-el', playerConfig, data.video.id);
         player.initialize();
 
-        window.addEventListener('resize', Utils.debounce(player.resize,85));
+        window.addEventListener('resize', player.resize);
     };
 
     var initialize = function(){
@@ -313,9 +313,8 @@
                 li: loginId
             });
 
-            var selectedVideo = modalData.selectedVideo;
             if (config.merchandise) {
-                loadProducts(selectedVideo.id, config,
+                loadProducts(modalData.video.id, config,
                     function(products){
                     setTimeout(function(){
                         checkProductsData(products,mainEl);

@@ -309,7 +309,7 @@ var setClickData = function(e){
 
   clickData = {
     data: data.videos,
-    selectedVideo: data.selectedVideo,
+    video: data.video,
     runTime: configCopy
   };
 };
@@ -355,7 +355,7 @@ var renderIframeModal = function(){
 function handleVideoClick(e) {
   setClickData(e);
 
-  modal.querySelector('.tvp-modal-title').innerHTML = clickData.selectedVideo.title || "";
+  modal.querySelector('.tvp-modal-title').innerHTML = clickData.video.title || "";
 
   removeClass(modal, 'tvp-hidden');
   removeClass('tvp-modal-overlay-' + id, 'tvp-hidden');
@@ -372,7 +372,7 @@ function handleModalInitialized(e) {
     iframeModal.contentWindow.postMessage({
       event: eventPrefix + ':modal_data',
       data: clickData.data,
-      selectedVideo: clickData.selectedVideo,
+      video: clickData.video,
       runTime: clickData.runTime
     }, '*');
   }

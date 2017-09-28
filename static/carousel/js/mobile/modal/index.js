@@ -258,7 +258,7 @@
                 }, 0);
             };
 
-            (new Player('tvp-player-el', s, data.selectedVideo.id)).initialize();
+            (new Player('tvp-player-el', s, data.video.id)).initialize();
         };
 
         window.addEventListener('message', function(e) {
@@ -284,7 +284,7 @@
                 });
                 //analytics for ci was removed here
 
-                var selectedVideo = data.selectedVideo;
+                var selectedVideo = data.video;
                 if (Utils.isset(selectedVideo, 'products')) {
                     render(selectedVideo.products,settings);
                 } else {

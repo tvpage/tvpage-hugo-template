@@ -4,40 +4,32 @@
     var id = body.getAttribute('data-id');
     var config = {};
 
-    var initialize = function() {
+    var initialRender = function(){
+        var el = document.createElement('div');
+        el.id = id;
+        el.className = 'iframe-content' + (Utils.isMobile ? " mobile" : "");
+        el.innerHTML = config.templates.carousel;
+        body.appendChild(el);
+    };
 
-        if (!Utils.hasKey(window, 'parent') || !Utils.hasKey(parent, '__TVPage__'))
-            throw new Error("Can't access window parent");
-
-        if (!Utils.hasKey(parent.__TVPage__, 'config') || !Utils.hasKey(parent.__TVPage__.config, id))
-            throw new Error("Missing widget configuration");
-
-        config = parent.__TVPage__.config[id];
-
-        var mainEl = document.createElement('div');
-        mainEl.id = id;
-        mainEl.className = 'iframe-content' + (Utils.isMobile ? " mobile" : "");
-
-        if(Utils.hasKey(config,'templates'))
-            mainEl.innerHTML = config.templates.carousel;
-
-        body.appendChild(mainEl);
-
-        var configCopy = Utils.copy(config);
-        configCopy.onClick = function(clicked, videos) {
-            window.parent.postMessage({
-                runTime: 'undefined' !== typeof window.__TVPage__ ? __TVPage__ : null,
+    var startCarousel = function(){
+        var carouselConfig = Utils.copy(config);
+        carouselConfig.onClick = function(video, videos) {
+            Utils.sendMessage({
                 event: "tvp_" + (id || "").replace(/-/g, '_') + ":video_click",
-                selectedVideo: clicked,
+                video: video,
                 videos: videos
-            }, '*');
+            });
         };
 
-        var analytics = new Analytics();
+        (new Carousel(id, carouselConfig)).initialize();
+    };
 
+    var startAnalytics = function(){
+        var analytics = new Analytics();
         analytics.initConfig({
             logUrl: config.api_base_url + '/__tvpa.gif',
-            domain: Utils.isset(location, 'hostname') ? location.hostname : '',
+            domain: location.hostname || '',
             firstPartyCookies: config.firstpartycookies,
             cookieDomain: config.cookiedomain,
             loginId: config.loginid,
@@ -46,10 +38,14 @@
         analytics.track('ci', {
             li: config.loginid
         });
+    };
 
-        var carousel = new Carousel(id, configCopy);
-        
-        carousel.initialize();
+    var initialize = function() {
+        config = Utils.getParentConfig(id);
+
+        initialRender();
+        startCarousel();
+        startAnalytics();
     };
 
     var isLoadingLibs = function(){
