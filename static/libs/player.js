@@ -46,6 +46,7 @@
     this.instance = null;
     this.initialResize = true;
     this.startWith = startWith || null;
+    this.isFullScreen = false;
   };
 
   Player.prototype.getPlayButtonOptions = function() {
@@ -124,11 +125,11 @@
   };
 
   Player.prototype.resize = function(){
-    if (this.instance)
-      this.instance.resize(
-        arguments[0] || this.getParentSize('width'),
-        arguments[1] || this.getParentSize('height')
-      );
+    var width = arguments[0] || this.getParentSize('width');
+    var height = arguments[1] || this.getParentSize('height');
+    
+    if (this.instance && !this.isFullScreen)
+      this.instance.resize(width,height);
 
     this.initialResize = false;
     
@@ -200,6 +201,13 @@
   Player.prototype.onReady = function(e, pl) {
     this.instance = pl;
     this.resize.call(this);
+
+    if (window.BigScreen) {
+      var that = this;
+      BigScreen.onchange = function(){
+          that.isFullScreen = !that.isFullScreen;
+      };
+    }
     
     this.analyticsConfig();
     this.controlBarZindex();
