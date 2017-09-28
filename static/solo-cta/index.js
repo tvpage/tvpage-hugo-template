@@ -211,7 +211,8 @@ var loadVideos = function(fn){
 
   var params = channel.parameters || {};
   for (var p in params) {
-    src += '&' + p + '=' + params[p];
+    if (params.hasOwnProperty(p))
+      src += '&' + p + '=' + params[p];
   }
   
   src += "&callback=" + cbName;
