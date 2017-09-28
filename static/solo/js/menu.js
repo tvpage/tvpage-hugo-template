@@ -3,9 +3,6 @@
     var Menu = function(player, options) {
       this.options = options || {};
       this.player = player;
-      
-      var body = document.body;
-
       this.allVideos = [];
       this.page = 0;
       this.lastPage = false;
@@ -171,10 +168,10 @@
     };
 
     Menu.prototype.listenToResize = function() {
-      window.removeEventListener('resize', resizingEvetns, false);
-      window.addEventListener('resize', resizingEvetns, false);
+      window.removeEventListener('resize', resizingEvents, false);
+      window.addEventListener('resize', resizingEvents, false);
 
-      function resizingEvetns() {
+      function resizingEvents() {
         var newSize = (this.payerCont.clientHeight - 40) + 'px;';
         this.hiddenMenu.style.cssText = 'height:' + newSize;
         var totalHeight = this.scrollMenu.scrollHeight,
@@ -185,60 +182,42 @@
     };
 
     Menu.prototype.update = function(newData) {
-      var playlist = this.options.data || [],
-        menuItem;
-
+      var newDataLength = newData.length;
+      var that = this;
+      var addNewItem = function(item){
+        that.allVideos.push(item);
+        that.options.data.push(item);
+      };
+      var renderItem = function(item){
+        return Utils.tmpl(that.options.templates['menu-item'], item);
+      };
       if (this.noVideosContainer) {
         this.deleteDivs();
-        for (var i = 0; i < newData.length; i++) {
-          menuItem = playlist[i];
-          this.allVideos.push(newData[i]);
-          this.options.data.push(newData[i]);
-          this.noVideosContainer.setAttribute('id', 'tvp-clearfix');
-          newData[i].duration = Utils.formatDuration(newData[i].duration);
-          this.noVideosContainer.innerHTML += Utils.tmpl(this.options.templates['menu-item'], newData[i]);
+        for (var i = 0; i < newDataLength; i++) {
+          var newItem = newData[i];
+          newItem.duration = Utils.formatDuration(newItem.duration);
+          
+          addNewItem(newItem);
+
+          this.noVideosContainer.innerHTML += renderItem(newItem);
           this.scrollMenu.appendChild(this.noVideosContainer);
-          if (Utils.isset(this.options, 'menu_item_play_category_tag_attribute') && ("" + this.options.menu_item_play_category_tag_attribute).trim().length) {
-            var tagAttribute = this.options.menu_item_play_category_tag_attribute;
-            var tagAttributeValue = newData[i][this.options.menu_item_play_category_tag_attribute];
-            if (tagAttributeValue) {
-              tagAttributeValue = tagAttributeValue.replace(/_/g, ' ');
-              var categoryFrag = document.createDocumentFragment(),
-                categoryDiv = document.createElement('div');
-              categoryDiv.classList.add('tvp-category-tag');
-              categoryDiv.innerHTML += tagAttributeValue;
-              categoryFrag.appendChild(categoryDiv);
-              this.noVideosContainer.getElementsByClassName('tvp-video-details')[i].appendChild(categoryFrag);
-            }
-          }
+          
+          this.renderCategoryValue(newItem,this.noVideosContainer.getElementsByClassName('tvp-video-details')[i]);
         }
       } else {
-        var newVivFrag = document.createDocumentFragment(),
-          newDiv = document.createElement('div');
-        for (var i = 0; i < newData.length; i++) {
-          menuItem = playlist[i];
-          this.allVideos.push(newData[i]);
-          this.options.data.push(newData[i]);
-          newDiv.setAttribute('id', 'tvp-clearfix');
-          newData[i].duration = Utils.formatDuration(newData[i].duration);
-          newDiv.innerHTML += Utils.tmpl(this.options.templates['menu-item'], newData[i]);
-          newVivFrag.appendChild(newDiv);
+        var newDiv = document.createElement('div');
+        newDiv.className = 'tvp-clearfix';
+        for (var i = 0; i < newDataLength; i++) {
+          var newItem = newData[i];
+          newItem.duration = Utils.formatDuration(newItem.duration);
+          
+          addNewItem(newItem);
 
-          this.scrollMenu.appendChild(newDiv);
-          if (Utils.isset(this.options, 'menu_item_play_category_tag_attribute') && ("" + this.options.menu_item_play_category_tag_attribute).trim().length) {
-            var tagAttribute = this.options.menu_item_play_category_tag_attribute;
-            var tagAttributeValue = newData[i][this.options.menu_item_play_category_tag_attribute];
-            if (tagAttributeValue) {
-              tagAttributeValue = tagAttributeValue.replace(/_/g, ' ');
-              var categoryFrag = document.createDocumentFragment(),
-                categoryDiv = document.createElement('div');
-              categoryDiv.classList.add('tvp-category-tag');
-              categoryDiv.innerHTML += tagAttributeValue;
-              categoryFrag.appendChild(categoryDiv);
-              newDiv.getElementsByClassName('tvp-video-details')[i].appendChild(categoryFrag);
-            }
-          }
+          newDiv.innerHTML += renderItem(newItem);
+          
+          this.renderCategoryValue(newItem,newDiv.getElementsByClassName('tvp-video-details')[i]);
         }
+        this.scrollMenu.appendChild(newDiv);
       }
       this.cacheDOM();
       this.bindClickEvent();
