@@ -177,7 +177,7 @@ if (iOS) {
     if (iframe && iframe.contentWindow) {
       var width = iframe.parentNode.offsetWidth;
       iframe.contentWindow.window.postMessage({
-        event: eventPrefix + ':holder_resize',
+        event: eventPrefix + ':modal_holder_resize',
         size: [width, Math.floor(width * (9 / 16))]
       },'*');
     }
