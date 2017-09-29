@@ -68,9 +68,9 @@
     "margin: 10px;" +
 "}" +
 
-"@media (min-width :900px) {" +
+"@media (min-width :768px) {" +
     ".tvp-modal-wrapper {" +
-        "width: 890px;" +
+        "width: 728px;" +
         "margin: 30px auto;" +
     "}" +
 "}" +
