@@ -1,5 +1,5 @@
 {{- $channels := $.Site.Data.channels -}}
-{{- if $channels -}}
+{{- if isset $channels -}}
   {{- $channel := index $channels (printf "x%s" .Params.channelid ) -}}
   {{- $.Scratch.SetInMap "settings" "channelData" $channel -}}
 {{- end -}}

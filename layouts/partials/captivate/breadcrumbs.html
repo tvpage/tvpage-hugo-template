@@ -10,18 +10,18 @@
 		{{- $channels := $.Site.Data.channels -}}
 		{{- if not (eq .Layout "home") -}}
 			{{- if eq .Layout "channel" -}}
-				{{- if $channels -}}
+				{{- if isset $channels -}}
 					{{- $channel := index $.Site.Data.channels (printf "x%s" .Params.channelid ) -}}
 					<li id="breadcrumb-1" itemscope itemtype="http://data-vocabulary.org/Breadcrumb" class="active"><a href='{{$baseUrl}}/c/{{lower $channel.titleTextEncoded}}/{{$channel.id}}/' itemprop="url"><span itemprop="title">{{ $channel.title }}</span></a></li>
 				{{ end }}
 			{{- else -}}
-				{{- if $channels -}}
+				{{- if isset $channels -}}
 					{{- $channel := index $.Site.Data.channels (printf "x%s" .Params.channelid ) -}}
 					<li id="breadcrumb-1" itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href='{{$baseUrl}}/c/{{lower $channel.titleTextEncoded}}/{{$channel.id}}/' itemprop="url"><span itemprop="title">{{ $channel.title }}</span></a></li>
 				{{ end }}
 			{{ end }}
 			{{- if eq .Layout "channelVideo" -}}
-				{{- if $channels -}}
+				{{- if isset $channels -}}
 					{{- $channel := index $.Site.Data.channels (printf "x%s" .Params.channelid ) -}}
 					{{- $video := index $.Site.Data.videos (printf "x%s" .Params.videoid ) -}}
 					<li id="breadcrumb-2" itemscope itemtype="http://data-vocabulary.org/Breadcrumb" class="active">
