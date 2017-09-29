@@ -125,6 +125,9 @@
   };
 
   Player.prototype.resize = function(){
+    if(!this.getParentSize){
+      return;
+    }
     var width = arguments[0] || this.getParentSize('width');
     var height = arguments[1] || this.getParentSize('height');
     

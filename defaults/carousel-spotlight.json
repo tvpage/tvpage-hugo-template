@@ -454,6 +454,13 @@
         {
             "for": "carousel",
             "type": "text",
+            "label": "Video Item Max Chars",
+            "code": "video_item_max_chars",
+            "value": "64"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
             "label": "Item Background Image Size",
             "code": "item_background_image_size",
             "value": "cover"
@@ -1269,6 +1276,146 @@
           "label": "Product Price Font Color",
           "code": "product_price_font_color",
           "value": "#333"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Font Size 480",
+            "code": "product_popup_cta_font_size_480",
+            "value": "12px"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Height 480",
+            "code": "product_popup_cta_height_480",
+            "value": "22px"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Position 480",
+            "code": "product_popup_cta_position_480",
+            "value": "static"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Right 480",
+            "code": "product_popup_cta_right_480",
+            "value": "0"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Bottom 480",
+            "code": "product_popup_cta_bottom_480",
+            "value": "0"
+        },
+        {
+          "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Border Radius",
+            "code": "product_popup_cta_border_radius",
+            "value": "0"
+        },
+        {
+          "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Margin",
+            "code": "product_popup_cta_margin",
+            "value": "10px 0 0 0"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Popup CTA Background",
+          "code": "product_popup_cta_background",
+          "value": "#333"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Popup CTA Font Color Hover",
+          "code": "product_popup_cta_font_color_hover",
+          "value": "#fff"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Popup CTA Background Hover",
+          "code": "product_popup_cta_background_hover",
+          "value": "#000"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Popup CTA Border",
+          "code": "product_popup_cta_border",
+          "value": "none"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Popup CTA Font Color",
+          "code": "product_popup_cta_font_color",
+          "value": "#fff"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Popup CTA Font Family",
+          "code": "product_popup_cta_font_family",
+          "value": "Helvetica"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Popup CTA Font Weight",
+          "code": "product_popup_cta_font_weight",
+          "value": "initial"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Popup CTA Text",
+          "code": "product_popup_cta_text",
+          "value": "View Details"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Popup CTA Text Transform",
+          "code": "product_popup_cta_text_transform",
+          "value": "uppercase"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Popup CTA Border Bottom",
+          "code": "product_popup_cta_border_bottom",
+          "value": "none"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Popup CTA Font Size",
+          "code": "product_popup_cta_font_size",
+          "value": "14px"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Popup CTA Height",
+          "code": "product_popup_cta_height",
+          "value": "40px"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Width 480",
+            "code": "product_popup_cta_width_480",
+            "value": "110px"
         },
         {
           "for": "modal",

@@ -255,7 +255,8 @@
                 }, 0);
             };
 
-            Player('tvp-player-el', s, data.selectedVideo.id);
+            player = new Player('tvp-player-el', s, data.selectedVideo.id);
+            player.initialize();
         };
 
         window.addEventListener('message', function(e) {
