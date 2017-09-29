@@ -1,5 +1,6 @@
-{{- $channel := index $.Site.Data.channels (printf "x%s" ($.Scratch.Get "settings").homechannelid ) -}}
-{{- if $channel -}}
+{{- $channels := $.Site.Data.channels -}}
+{{- if $channels -}}
+  {{- $channel := index $channels (printf "x%s" ($.Scratch.Get "settings").homechannelid ) -}}
   {{- $.Scratch.SetInMap "settings" "channelData" $channel -}}
 {{ end }}
 {{- $baseUrl := .Site.BaseURL -}}
@@ -9,20 +10,22 @@
 			{{- partial (printf "%s/breadcrumbs.html" .Type) . -}}
 		</div>
 		<div class="row">
-				{{- range where .Site.Pages "Layout" "channel" -}}
-					{{- if in ($.Scratch.Get "settings").channelgalleryids .Params.channelid -}}
-					{{- $currentPage := index $.Site.Data.channels (printf "x%s" .Params.channelid ) -}}
-						<div class="col-xs-12 col-sm-6 col-md-6 featured-channel">
-							<article class="channel-items">
-								<a href="{{$baseUrl}}/{{ slicestr .URL 1}}/" class="content" >
-									<img src="{{$baseUrl}}/{{ $.Type }}/images/channel/{{.Params.channelid}}.jpg" alt="{{ .Title }}">
-									<span class="featured-channel-container">
-										<span class="featured-channel-title">{{ .Title }}</span>
-									</span>
-								</a>
-							</article>
-						</div>
-					{{ end }}
+				{{- if $channels -}}
+					{{- range where .Site.Pages "Layout" "channel" -}}
+						{{- if in ($.Scratch.Get "settings").channelgalleryids .Params.channelid -}}
+						{{- $currentPage := index $.Site.Data.channels (printf "x%s" .Params.channelid ) -}}
+							<div class="col-xs-12 col-sm-6 col-md-6 featured-channel">
+								<article class="channel-items">
+									<a href="{{$baseUrl}}/{{ slicestr .URL 1}}/" class="content" >
+										<img src="{{$baseUrl}}/{{ $.Type }}/images/channel/{{.Params.channelid}}.jpg" alt="{{ .Title }}">
+										<span class="featured-channel-container">
+											<span class="featured-channel-title">{{ .Title }}</span>
+										</span>
+									</a>
+								</article>
+							</div>
+						{{ end }}
+					{{- end -}}
 				{{- end -}}
 		</div>
 		<h2 class="section-header">BRANDS</h2>
@@ -45,6 +48,7 @@
 		</div>
 		<h2 class="section-header">LATEST VIDEOS</h2>
 		<div id="tvp-video-container" class="row">
+			{{- if $channels -}}
 			{{- $page := index $.Site.Data.channelVideos (printf "x%s_page_0" ($.Scratch.Get "settings").homechannelid) -}}
 			{{- with $page.data -}}
 				{{ $i := 0 }}
@@ -65,6 +69,7 @@
 					</div>
 					{{- if eq (mod (add $i 2) 3) 0 -}}<!--<div class="col-sm-12"></div>-->{{- end -}}
 				{{- end -}}
+			{{- end -}}
 			{{- end -}}
 		</div>
 		<div class="row container btn-more load-more">

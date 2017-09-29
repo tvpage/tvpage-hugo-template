@@ -1,12 +1,13 @@
-{{- $channel := index $.Site.Data.channels (printf "x%s" .Params.channelid ) -}}
-{{- if $channel -}}
+{{- $channels := $.Site.Data.channels -}}
+{{- if $channels -}}
+  {{- $channel := index $channels (printf "x%s" .Params.channelid ) -}}
   {{- $.Scratch.SetInMap "settings" "channelData" $channel -}}
 {{- end -}}
 {{- $qty := (len $.Site.Data.channelVideos) -}}
 {{- $numbers := (seq 0 $qty ) -}}
 {{- range $numbers -}}
   {{- $working := . -}}
-  {{- $page := index $.Site.Data.channelVideos (printf "x%s_page_%d" $channel.id $working  ) -}}
+  {{- $page := index $.Site.Data.channelVideos (printf "x%s_page_%d" ($.Scratch.Get "channelData").id $working  ) -}}
   {{- if (isset $page "data") -}}
     {{- $.Scratch.Add "total" (len $page.data ) -}}
   {{ end }}
@@ -34,7 +35,7 @@
       </div>
       <div class="main-channel-banner">
         <div class="main-channel-banner-title">
-          {{- $channel.title -}}
+          {{- ($.Scratch.Get "channelData").title -}}
         </div>
         <div class="main-channel-banner-total-videos">
           {{- $channelVideosQty -}}&nbsp;videos
