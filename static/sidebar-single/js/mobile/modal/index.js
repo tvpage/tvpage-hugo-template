@@ -40,6 +40,7 @@
     var loadProducts = function(videoId, settings, fn) {
         if (!videoId) return;
         var src = settings.api_base_url + '/videos/' + videoId + '/products?X-login-id=' + settings.loginId;
+        src += '&o=' + settings.products_order_by + '&od=' + settings.products_order_direction;
         var cbName = 'tvp_' + Math.floor(Math.random() * 555);
         src += '&callback=' + cbName;
         var script = document.createElement('script');
@@ -254,7 +255,8 @@
                 }, 0);
             };
 
-            Player('tvp-player-el', s, data.selectedVideo.id);
+            player = new Player('tvp-player-el', s, data.selectedVideo.id);
+            player.initialize();
         };
 
         window.addEventListener('message', function(e) {
@@ -277,10 +279,6 @@
                     firstPartyCookies: settings.firstpartycookies,
                     cookieDomain: settings.cookiedomain
                 });
-                analytics.track('ci', {
-                    li: settings.loginId
-                });
-
                 var selectedVideo = data.selectedVideo;
                 if (Utils.isset(selectedVideo, 'products')) {
                     render(selectedVideo.products,settings);

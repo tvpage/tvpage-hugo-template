@@ -84,12 +84,14 @@
         }
 
         this.container.appendChild(pageFrag);
-        if (window.parent) {
-          window.parent.postMessage({
-            event: this.eventPrefix + ':render',
-            height: this.el.offsetHeight + 'px'
-          }, '*');
-        }
+        setTimeout(function(){
+          if (window.parent) {
+            window.parent.postMessage({
+              event: this.eventPrefix + ':render',
+              height: this.el.getBoundingClientRect().height + 'px'
+            }, '*');
+          }
+        },200);
       }
     };
 
@@ -102,6 +104,9 @@
 
       var channel = that.channel || {};
       var params = channel.parameters || {};
+      params.o = options.videos_order_by;
+      params.od = options.videos_order_direction;
+
       var src = this.options.api_base_url + '/channels/' + (channel.id || that.channelId) + '/videos?X-login-id=' + that.loginId;
       for (var p in params) {
         src += '&' + p + '=' + params[p];
@@ -148,7 +153,7 @@
       if (that.windowSize !== newSize) {
         that.windowSize = newSize;
         var isSmall = newSize === 'small';
-        that.itemsPerPage = isSmall ? 2 : (options.itemsPerPage || 6);
+        that.itemsPerPage = isSmall ? 2 : options.items_per_page;
         that.itemsPerRow = 1;
         //reset page to 0 if we detect a resize, so we don't have trouble loading the grid
         that.page = 0;

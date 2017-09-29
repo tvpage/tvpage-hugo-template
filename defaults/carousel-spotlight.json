@@ -7,6 +7,18 @@
           "value": "//api.tvpage.com/v1"
         },
         {
+          "type": "text",
+          "label": "Videos Order By",
+          "code": "videos_order_by",
+          "value": "sortOrder"
+        },
+        {
+          "type": "text",
+          "label": "Videos Order Direction",
+          "code": "videos_order_direction",
+          "value": "ASC"
+        },
+        {
             "for": "player",
             "type": "text",
             "label": "Player Version",
@@ -91,6 +103,20 @@
         },
         {
           "for": "carousel",
+          "type": "boolean",
+          "label": "Navigation Bullets at 480",
+          "code": "navigation_bullets_480",
+          "value": false
+        },
+        {
+          "for": "carousel",
+          "type": "boolean",
+          "label": "Navigation Bullets at 667",
+          "code": "navigation_bullets_667",
+          "value": false
+        },
+        {
+          "for": "carousel",
           "type": "text",
           "label": "Navigation Bullets Append To",
           "code": "navigation_bullets_append_to",
@@ -137,6 +163,41 @@
            "label": "Iframe Width",
            "code": "iframe_width",
            "value": "100%"
+        },
+        {
+          "for": "carousel",
+          "type": "text",
+          "label": "Center Padding",
+          "code": "center_padding",
+          "value": "20px"
+        },
+        {
+          "for": "carousel",
+          "type": "text",
+          "label": "Center Padding at 480",
+          "code": "center_padding_480",
+          "value": "20px"
+        },
+        {
+          "for": "carousel",
+          "type": "text",
+          "label": "Center Padding at 667",
+          "code": "center_padding_667",
+          "value": "20px"
+        },
+        {
+          "for": "carousel",
+          "type": "text",
+          "label": "Center Mode at 480",
+          "code": "center_mode_480",
+          "value": false
+        },
+        {
+          "for": "carousel",
+          "type": "text",
+          "label": "Center Mode at 667",
+          "code": "center_mode_667",
+          "value": false
         },
         {
            "for": "carousel",
@@ -393,6 +454,13 @@
         {
             "for": "carousel",
             "type": "text",
+            "label": "Video Item Max Chars",
+            "code": "video_item_max_chars",
+            "value": "64"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
             "label": "Item Background Image Size",
             "code": "item_background_image_size",
             "value": "cover"
@@ -403,6 +471,34 @@
             "label": "Items To Show",
             "code": "items_to_show",
             "value": "3"
+        },
+        {
+          "for": "carousel",
+          "type": "text",
+          "label": "Items To Show at 480",
+          "code": "items_to_show_480",
+          "value": "1"
+        },
+        {
+          "for": "carousel",
+          "type": "text",
+          "label": "Items To Scroll at 480",
+          "code": "items_to_scroll_480",
+          "value": "1"
+        },
+        {
+          "for": "carousel",
+          "type": "text",
+          "label": "Items To Show at 667",
+          "code": "items_to_show_667",
+          "value": "1"
+        },
+        {
+          "for": "carousel",
+          "type": "text",
+          "label": "Items To Scroll at 667",
+          "code": "items_to_scroll_667",
+          "value": "1"
         },
         {
             "for": "carousel",
@@ -585,6 +681,20 @@
             "label": "Component",
             "code": "component",
             "value": "modal"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Products Order By",
+          "code": "products_order_by",
+          "value": "sortOrder"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Products Order Direction",
+          "code": "products_order_direction",
+          "value": "ASC"
         },
         {
           "for": "modal",
@@ -1166,6 +1276,146 @@
           "label": "Product Price Font Color",
           "code": "product_price_font_color",
           "value": "#333"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Font Size 480",
+            "code": "product_popup_cta_font_size_480",
+            "value": "12px"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Height 480",
+            "code": "product_popup_cta_height_480",
+            "value": "22px"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Position 480",
+            "code": "product_popup_cta_position_480",
+            "value": "static"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Right 480",
+            "code": "product_popup_cta_right_480",
+            "value": "0"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Bottom 480",
+            "code": "product_popup_cta_bottom_480",
+            "value": "0"
+        },
+        {
+          "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Border Radius",
+            "code": "product_popup_cta_border_radius",
+            "value": "0"
+        },
+        {
+          "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Margin",
+            "code": "product_popup_cta_margin",
+            "value": "10px 0 0 0"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Popup CTA Background",
+          "code": "product_popup_cta_background",
+          "value": "#333"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Popup CTA Font Color Hover",
+          "code": "product_popup_cta_font_color_hover",
+          "value": "#fff"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Popup CTA Background Hover",
+          "code": "product_popup_cta_background_hover",
+          "value": "#000"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Popup CTA Border",
+          "code": "product_popup_cta_border",
+          "value": "none"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Popup CTA Font Color",
+          "code": "product_popup_cta_font_color",
+          "value": "#fff"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Popup CTA Font Family",
+          "code": "product_popup_cta_font_family",
+          "value": "Helvetica"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Popup CTA Font Weight",
+          "code": "product_popup_cta_font_weight",
+          "value": "initial"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Popup CTA Text",
+          "code": "product_popup_cta_text",
+          "value": "View Details"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Popup CTA Text Transform",
+          "code": "product_popup_cta_text_transform",
+          "value": "uppercase"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Popup CTA Border Bottom",
+          "code": "product_popup_cta_border_bottom",
+          "value": "none"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Popup CTA Font Size",
+          "code": "product_popup_cta_font_size",
+          "value": "14px"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Product Popup CTA Height",
+          "code": "product_popup_cta_height",
+          "value": "40px"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Width 480",
+            "code": "product_popup_cta_width_480",
+            "value": "110px"
         },
         {
           "for": "modal",
