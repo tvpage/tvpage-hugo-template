@@ -1,5 +1,4 @@
-(function() {
-
+(function(){
   var userAgent = navigator.userAgent;
   var iOS = /iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(userAgent) && !window.MSStream;
   var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
@@ -24,21 +23,21 @@
   };
   var optionsCheck = function(o){
     if (!o || !o.data || o.data.length <= 0) {
-      throw new Error('missing options');
+      throw new Error('need options');
     }
   };
   var getElement = function(el){
     if(!el) {
-      throw new Error('missing el');
+      throw new Error('need el');
     }
     
     return 'string' === typeof el ? document.getElementById(el) : el;
   };
-
+  
   //The player singleton. A small layer on top of tvpage library
   var Player = function(el, options, startWith) {
     optionsCheck(options);
-
+  
     this.options = options;
     this.el = getElement(el);
     this.eventPrefix = ("tvp_" + this.options.id).replace(/-/g, '_');
@@ -48,7 +47,7 @@
     this.startWith = startWith || null;
     this.isFullScreen = false;
   };
-
+  
   Player.prototype.getPlayButtonOptions = function() {
     return compact({
       height: this.getOption('play_button_height'),
@@ -61,7 +60,7 @@
       iconColor: this.getOption('play_button_icon_color')
     });
   };
-
+  
   Player.prototype.setControlsOptions = function() {
     this.controls = compact({
       active: true,
@@ -78,13 +77,13 @@
       overlayOpacity: this.getOption('overlay_opacity')
     });
   };
-
+  
   Player.prototype.setAdvertisingOptions = function() {
     if (!this.options.advertising || isEmpty(this.options.advertising))
       return;
-
+  
     var options = this.options.advertising;
-
+  
     this.advertising = compact({
       enabled: !!options.enabled,
       adServerUrl: options.adServerUrl || null,
@@ -93,11 +92,11 @@
       adInterval: !isUndefined(options.adInterval) ? String(options.adInterval) : "0"
     });
   };
-
+  
   Player.prototype.shallCue = function(auto){
     return isMobile || (auto && !this.autonext) || !this.autoplay;
   };
-
+  
   Player.prototype.play = function(asset, ongoing) {
     if(this.shallCue(ongoing)){
       this.instance.cueVideo(asset);
@@ -105,14 +104,14 @@
       this.instance.loadVideo(asset);
     }
   };
-
+  
   Player.prototype.controlBarZindex = function() {
     var controlBar = this.el.querySelector("#ControlBarFloater");
     if (controlBar && controlBar.parentNode) {
       controlBar.parentNode.style.zIndex = "9999";
     }
   };
-
+  
   Player.prototype.getParentSize = function(param){
     var el = this.el.parentNode;
     var size = null;
@@ -123,20 +122,23 @@
     }
     return size;
   };
-
+  
   Player.prototype.resize = function(){
+    if(!this.getParentSize)
+      return;
+  
     var width = arguments[0] || this.getParentSize('width');
     var height = arguments[1] || this.getParentSize('height');
     
     if (this.instance && !this.isFullScreen)
       this.instance.resize(width,height);
-
+  
     this.initialResize = false;
     
     if (this.onResize)
       this.onResize(this.initialResize,[width,height]);
   };
-
+  
   //We can't resize using local references when we are inside an iframe. Alternative is to receive external
   //size from host.
   Player.prototype.handleResize = function() {
@@ -147,61 +149,63 @@
           return;
         
         var size = e.data.size || [];
-
+  
         that.resize(size[0], size[1]);
       };
-
+  
       window.removeEventListener('message', onHolderResize, false);
       window.addEventListener('message', onHolderResize, false);
     } else {
       var onResize = function(){
-        that.resize();
+        that.resize.call(that);
       };
       
       window.removeEventListener('resize', onResize, false);
       window.addEventListener('resize', onResize, false);
     }
   };
-
+  
   Player.prototype.analyticsConfig = function() {
-    var analytics = new Analytics();
-    var loginId = this.options.loginId || this.options.loginid;
-  
-    analytics.initConfig({
+    var opts = this.options;
+    var loginId = opts.loginId || opts.loginid;
+    var config = {
       domain: location.hostname || '',
-      logUrl: this.options.api_base_url + '/__tvpa.gif',
-      loginId: loginId,
-      firstPartyCookies: this.options.firstpartycookies,
-      cookieDomain: this.options.cookiedomain
-    });
+      logUrl: opts.api_base_url + '/__tvpa.gif',
+      loginId: loginId
+    };
   
-    if (this.options.ciTrack) {
-      analytics.track('ci',{
+    if (opts.firstPartyCookies && opts.cookieDomain)
+      config.firstPartyCookieDomain = opts.cookieDomain;
+  
+    _tvpa.push(['config', config]);
+  
+    if(this.options.ciTrack){
+      _tvpa.push(['track', 'ci', {
         li: loginId
-      });
+      }]);
     }
   };
-
+  
   Player.prototype.getCurrentAsset = function() {
     var current = 0;
     var assets = this.assets;
-
+  
     if (this.startWith) {
       for (var i = 0; i < assets.length; i++) {
         if (assets[i].assetId === this.startWith)
           current = i;
       }
     }
-
+  
     this.current = current;
-
+  
     return assets[this.current];
   };
-
+  
   Player.prototype.onReady = function(e, pl) {
     this.instance = pl;
     this.resize.call(this);
-
+  
     if (window.BigScreen) {
       var that = this;
       BigScreen.onchange = function(){
@@ -212,14 +216,14 @@
     this.analyticsConfig();
     this.controlBarZindex();
     this.handleResize();
-
+  
     if(this.onPlayerReady){
       this.onPlayerReady(this);
     }
-
+  
     this.play(this.getCurrentAsset());
   };
-
+  
   Player.prototype.notifyState = function(e){
     var stateData = JSON.parse(JSON.stringify(this.assets[this.current]));
     stateData.currentTime = this.instance.getCurrentTime();
@@ -231,13 +235,13 @@
       }, '*');
     }
   };
-
+  
   Player.prototype.handleVideoEnded = function(){
     this.current++;
     if (!this.assets[this.current]) {
       this.current = 0;
     }
-
+  
     var next = this.assets[this.current];
     
     this.play(next, true);
@@ -245,14 +249,14 @@
       this.onNext(next);
     }
   };
-
+  
   Player.prototype.onStateChange = function(e) {
     this.notifyState(e);
     
     if ('tvp:media:videoended' === e)
       this.handleVideoEnded();
   };
-
+  
   Player.prototype.addExtraConfig = function(config){
     config = config || {};
     var extras = ["preload", "poster", "overlay"];
@@ -264,7 +268,7 @@
     }
     return config;
   };
-
+  
   Player.prototype.getConfig = function(){
     return compact({
       techOrder: this.getOption('tech_order'),
@@ -283,7 +287,7 @@
       overlay: this.getOption('overlay')
     });
   }
-
+  
   Player.prototype.startPlayer = function() {
     var depsChecks = 0;
     var that = this;
@@ -293,21 +297,21 @@
           (++depsChecks < 50) ? depsReady(): console.warn('can\'t load deps');
         } else {
           var config = that.getConfig();
-
+  
           config.onReady = function(e, pl){
             that.onReady(e, pl);
           };
-
+  
           config.onStateChange = function(e) {
             that.onStateChange(e);
           };
-
+  
           that.player = new TVPage.player(config);
         }
       }, 150);
     })();
   };
-
+  
   Player.prototype.getChannelId = function() {
     var id = 0;
     var opts = this.options;
@@ -319,14 +323,14 @@
     }else if(opts.channelid){
       id = opts.channelid;
     }
-
+  
     return id;
   };
-
+  
   Player.prototype.buildAsset = function(obj) {
     if (isEmpty(obj))
       return {};
-
+  
     var asset = obj.asset;
     asset.assetId = obj.id;
     asset.assetTitle = obj.title;
@@ -337,14 +341,14 @@
       vd: asset.assetId,
       li: asset.loginId
     };
-
+  
     asset.sources = asset.sources || [{
       file: asset.videoId
     }];
-
+  
     return asset;
   };
-
+  
   Player.prototype.addAssets = function(objs){
     if (objs && objs.length) {
       for (var i = 0; i < objs.length; i++) {
@@ -352,15 +356,15 @@
       }
     }
   };
-
+  
   Player.prototype.getOption = function(s){
     return isUndefined(this.options[s]) ? null : this.options[s];
   };
-
+  
   Player.prototype.getCallable = function(s){
     return isFunction(this.options[s]) ? this.options[s] : null;
   };
-
+  
   Player.prototype.setConfig = function(s){
     this.version = this.getOption('player_version');
     this.flashUrl = '//cdnjs.tvpage.com/tvplayer/tvp-' + this.version + '.swf';
@@ -371,7 +375,7 @@
     this.onNext = this.getCallable('onNext');
     this.onPlayerReady = this.getCallable('onPlayerReady');
   };
-
+  
   Player.prototype.initialize = function() {
     this.setControlsOptions();
     this.setAdvertisingOptions();
@@ -379,7 +383,6 @@
     this.addAssets(this.options.data);
     this.startPlayer();
   };
-
+  
   window.Player = Player;
-
-}());
+}())

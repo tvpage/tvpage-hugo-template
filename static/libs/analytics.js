@@ -1,39 +1,38 @@
-(function() {
-
-  var hasKey = function(o,p){
-    return o.hasOwnProperty(p);
-  };
-
+(function(){
   var isUndefined = function(o){
     return 'undefined' === typeof o;
   };
-
+  
   function Analytics(){
+    this.config = null;
   }
-
-  Analytics.prototype.initConfig = function(options) {
-    if (isUndefined(options) || isUndefined(_tvpa) || !hasKey(options,'loginId') || !hasKey(options,'logUrl'))
-      return;
-
-    var config = {
-      logUrl: options.logUrl,
-      li: options.loginId,
-      gaDomain: options.domain || '',
+  
+  Analytics.prototype.getConfigBase = function(options){
+    var opts = options || {};
+    return {
+      logUrl: opts.logUrl || '',
+      li: opts.loginId || '',
+      gaDomain: opts.domain || ''
     };
-
-    if (options.firstPartyCookies && options.cookieDomain)
-      config.firstPartyCookieDomain = options.cookieDomain;
-
-    _tvpa.push(['config', config]);
   };
-
-  Analytics.prototype.track = function(e, data) {
-    if(isUndefined(e) || isUndefined(data))
+  
+  Analytics.prototype.initConfig = function(options){
+    if(isUndefined(window._tvpa))
       return;
-    
-    _tvpa.push(['track', e, data]);
+  
+    this.config = this.getConfigBase(options);
+  
+    if (options.firstPartyCookies && options.cookieDomain)
+      this.config.firstPartyCookieDomain = options.cookieDomain;
+  
+    _tvpa.push(['config', this.config]);
   };
-
+  
+  Analytics.prototype.track = function(e, data){
+    if(!isUndefined(e) && !isUndefined(data)){
+      _tvpa.push(['track', e, data]);
+    }
+  };
+  
   window.Analytics = Analytics;
-
-}());
+}())
