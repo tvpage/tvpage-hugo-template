@@ -27,16 +27,17 @@ checks:
 build:
     dependencies:
         before:
-            - npm install istanbul   # or add it as part of your package.json
+            - npm install
 
     tests:
         override:
             -  jshint-run
-            -
-                command: 'istanbul cover --report clover test.js'
-                coverage:
-                    file: 'coverage/clover.xml'
-                    format: 'clover'
+            - command: 'karma start'
+            # -
+            #     command: 'istanbul cover --report clover test.js'
+            #     coverage:
+            #         file: 'coverage/clover.xml'
+            #         format: 'clover'
 
 build_failure_conditions:
     # No new classes/methods with a rating of D or worse
