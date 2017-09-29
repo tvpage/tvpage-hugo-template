@@ -209,6 +209,7 @@
       var that = this;
       BigScreen.onchange = function(){
           that.isFullScreen = !that.isFullScreen;
+          that.resize();
       };
     }
     
