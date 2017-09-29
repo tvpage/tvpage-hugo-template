@@ -24,6 +24,13 @@ checks:
         check_too_many_arguments: true
         no_loop_var_assign: true
 
+build:
+    environment:
+             node: '5.1.0'
+    tests:
+        override:
+            -  jshint-run
+
 build_failure_conditions:
     # No new classes/methods with a rating of D or worse
     - 'elements.rating(<= D).new.exists'
