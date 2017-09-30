@@ -1,6 +1,4 @@
 filter:
-    paths:
-        - 'static/*'
     excluded_paths:
         - '*.min.js'
         - '*/vendor/*'
