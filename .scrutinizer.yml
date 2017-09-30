@@ -35,12 +35,11 @@ build:
     tests:
         override:
             -  jshint-run
-            # - command: 'karma start'
-            # -
-            #     command: 'istanbul cover --report clover test.js'
-            #     coverage:
-            #         file: 'coverage/clover.xml'
-            #         format: 'clover'
+            -
+            command: 'istanbul cover --report clover static/sdk/test/*'
+            coverage:
+                file: 'coverage/clover.xml'
+                format: 'clover'
 
 build_failure_conditions:
     # No new classes/methods with a rating of D or worse
