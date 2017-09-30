@@ -30,7 +30,7 @@ checks:
 build:
     dependencies:
         before:
-            - ls -la
+            - cd static && ls -la
 
     tests:
         override:
