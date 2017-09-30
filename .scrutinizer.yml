@@ -1,4 +1,6 @@
 filter:
+    paths:
+        - 'static/sdk'
     excluded_paths:
         - '*.min.js'
         - '*/vendor/*'
@@ -28,12 +30,12 @@ checks:
 build:
     dependencies:
         before:
-            - npm install
+            - ls -lah
 
     tests:
         override:
             -  jshint-run
-            - command: 'karma start'
+            # - command: 'karma start'
             # -
             #     command: 'istanbul cover --report clover test.js'
             #     coverage:
