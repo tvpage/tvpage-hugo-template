@@ -1,6 +1,6 @@
 filter:
     paths:
-        - 'static/sdk'
+        - 'static/*'
     excluded_paths:
         - '*.min.js'
         - '*/vendor/*'
