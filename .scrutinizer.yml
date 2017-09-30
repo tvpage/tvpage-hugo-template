@@ -30,7 +30,7 @@ checks:
 build:
     dependencies:
         before:
-            - ls -lah
+            - npm install
 
     tests:
         override:
