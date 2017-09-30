@@ -30,7 +30,7 @@ checks:
 build:
     dependencies:
         before:
-            - cd static && ls -la
+            - cd static && npm install
 
     tests:
         override:
