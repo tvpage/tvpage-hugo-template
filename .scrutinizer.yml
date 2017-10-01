@@ -35,7 +35,7 @@ build:
             -
                 command: 'npm test'
             -
-                command: 'ls -la'
+                command: 'cd coverage && ls -la'
                 #command: 'istanbul cover --report clover test/*'
                 #coverage:
                     #file: 'coverage/clover.xml'
