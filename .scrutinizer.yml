@@ -35,7 +35,7 @@ build:
             -
                 command: 'npm test'
             -
-                command: 'istanbul cover --report clover test.js'
+                command: 'istanbul cover --report clover test/*'
                 coverage:
                     file: 'coverage/clover.xml'
                     format: 'clover'
