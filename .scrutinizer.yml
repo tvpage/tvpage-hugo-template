@@ -35,11 +35,10 @@ build:
             -
                 command: 'npm test'
             -
-                command: 'cd coverage && ls -la'
-                #command: 'istanbul cover --report clover test/*'
-                #coverage:
-                    #file: 'coverage/clover.xml'
-                    #format: 'clover'
+                command: 'cd static && istanbul cover --report clover test/**/*.js'
+                coverage:
+                    file: 'coverage/clover.xml'
+                    format: 'clover'
 
 build_failure_conditions:
     # No new classes/methods with a rating of D or worse
