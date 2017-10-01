@@ -28,7 +28,7 @@ checks:
 build:
     dependencies:
         before:
-            - npm install
+            - cd static && npm install
 
     tests:
         override:
