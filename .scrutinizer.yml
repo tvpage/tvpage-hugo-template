@@ -39,7 +39,7 @@ build:
                     format: 'clover'
 
             -
-                command: 'npm static/check.js'
+                command: 'npm run check'
 
 build_failure_conditions:
     # No new classes/methods with a rating of D or worse
