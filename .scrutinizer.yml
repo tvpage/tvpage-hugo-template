@@ -35,7 +35,7 @@ build:
             -
                 command: 'cd static && npm test'
                 coverage:
-                    file: 'coverage/cobertura/cobertura.xml'
+                    file: 'static/coverage/cobertura/cobertura.xml'
                     format: 'cobertura'
 
 build_failure_conditions:
