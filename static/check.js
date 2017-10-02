@@ -1,8 +1,24 @@
 var fs = require("fs");
 
 fs.readdir(__dirname + '/../../artifacts', function(err, items) {
-  if(err)
-    console.log(err)
+  if(err) {
+    return console.log(err);
+  }
+  
+  for (var i=0; i<items.length; i++) {
+    
+    console.log(items[i])
+    
+    // if (fs.existsSync(filePath)) {
+    //     var newFilePath = replaceExt(filePath, '.js');
+    //     console.log("replacing ", filePath);
+    //     fs.rename(filePath, newFilePath, function(err) {
+    //         if (err) console.log('Something went bad ' + err);
+    //     });
+    // }	else {
+    //   console.warn("no html file found ", filePath);
+    // }
+  };
 });
 
 var branch   = process.env.SCRUTINIZER_BRANCH;
