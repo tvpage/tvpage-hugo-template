@@ -1,6 +1,8 @@
 var path = require("path");
 var fs = require("fs");
 
+console.log(__dirname)
+
 fs.readdir('../artifacts', function(err, items) {
   if(err)
     console.log(err)
