@@ -28,7 +28,7 @@ checks:
 build:
     dependencies:
         before:
-            - cd static && npm install
+            - cd static && npm install && cd ~/home/scrutinizer/artifacts && ls -la
 
     tests:
         override:
