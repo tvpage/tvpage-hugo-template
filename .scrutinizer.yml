@@ -35,7 +35,7 @@ build:
             -
                 command: 'npm test'
                 coverage:
-                    file: 'coverage/clover.xml'
+                    file: 'static/coverage/clover.xml'
                     format: 'clover'
 
 build_failure_conditions:
