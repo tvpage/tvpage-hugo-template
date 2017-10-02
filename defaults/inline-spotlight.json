@@ -846,6 +846,41 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Product Item Show Hide Feature Mobile Display",
+            "code": "product_item_show_hide_feature_mobile_display",
+            "value": "none"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item Show Hide Feature Mobile Arrow Down",
+            "code": "product_item_show_hide_feature_mobile_arrow_down",
+            "value": "url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gICAgPHBhdGggZD0iTTcuNDEgNy44NEwxMiAxMi40Mmw0LjU5LTQuNThMMTggOS4yNWwtNiA2LTYtNnoiLz4gICAgPHBhdGggZD0iTTAtLjc1aDI0djI0SDB6IiBmaWxsPSJub25lIi8+PC9zdmc+);"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item Show Hide Feature Mobile Arrow Up",
+            "code": "product_item_show_hide_feature_mobile_arrow_up",
+            "value": "url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gICAgPHBhdGggZD0iTTcuNDEgMTUuNDFMMTIgMTAuODNsNC41OSA0LjU4TDE4IDE0bC02LTYtNiA2eiIvPiAgICA8cGF0aCBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+PC9zdmc+);"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item Show Hide Feature Mobile Background Color",
+            "code": "product_item_show_hide_feature_mobile_background_color",
+            "value": "#ccc"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item Show Hide Feature Mobile Background Radius",
+            "code": "product_item_show_hide_feature_mobile_background_radius",
+            "value": "50%"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Product Item Price Text Align Mobile",
             "code": "product_item_price_text_align_mobile",
             "value": "left"
