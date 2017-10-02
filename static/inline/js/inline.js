@@ -222,7 +222,6 @@
                         settings: {
                             arrows: false,
                             centerPadding: generalOptions.product_holder_slide_center_padding,
-                            centerMode : true,
                             slidesToShow: 1,
                             slidesToScroll: 1,
                             dots: false

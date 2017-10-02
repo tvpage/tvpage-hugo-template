@@ -766,7 +766,6 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                         settings: {
                             arrows: false,
                             centerPadding: generalOptions.product_holder_slide_center_padding,
-                            centerMode : true,
                             slidesToShow: 1,
                             slidesToScroll: 1,
                             dots: false
