@@ -106,6 +106,14 @@
     "margin: 10px;" +
 "}" +
 
+".tvp-modal-wrapper.centered {" +
+    "position: absolute;" +
+    "top: 50%;" +
+    "left: 0;" +
+    "right: 0;" +
+    "transform: translateY(-50%);" +
+"}" +
+
 ".tvp-modal-content {" +
      "position: relative;" +
      "background-clip: padding-box;" +

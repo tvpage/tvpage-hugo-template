@@ -68,6 +68,14 @@
     "margin: 10px;" +
 "}" +
 
+".tvp-modal-wrapper.centered {" +
+    "position: absolute;" +
+    "top: 50%;" +
+    "left: 0;" +
+    "right: 0;" +
+    "transform: translateY(-50%);" +
+"}" +
+
 "@media (min-width :768px) {" +
     ".tvp-modal-wrapper {" +
         "width: 728px;" +

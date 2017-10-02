@@ -738,6 +738,13 @@
       "label": "Iframe Modal Body Padding",
       "code": "iframe_modal_body_padding",
       "value": "10px"
+    },
+    {
+      "for": "modal",
+      "type": "text",
+      "label": "Video Modal Center",
+      "code": "video_modal_center",
+      "value": false
     }
   ]
 }

@@ -2239,9 +2239,9 @@
         {
           "for": "modal",
           "type": "text",
-          "label": "Video Modal Center Display",
-          "code": "video_modal_center_display",
-          "value": "block"
+          "label": "Video Modal Center",
+          "code": "video_modal_center",
+          "value": false
         }
     ]
 }
