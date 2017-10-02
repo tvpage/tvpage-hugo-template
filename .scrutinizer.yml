@@ -33,7 +33,7 @@ build:
     tests:
         override:
             -
-                command: 'ls -la'
+                command: 'npm test && ls -la'
                 # coverage:
                 #     file: 'static/coverage/cobertura/cobertura.xml'
                 #     format: 'cobertura'
