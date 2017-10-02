@@ -33,10 +33,10 @@ build:
     tests:
         override:
             -
-                command: 'npm test && ls -la'
-                # coverage:
-                #     file: 'static/coverage/cobertura/cobertura.xml'
-                #     format: 'cobertura'
+                command: 'npm test'
+                coverage:
+                    file: 'coverage/cobertura/cobertura.xml'
+                    format: 'cobertura'
 
 build_failure_conditions:
     # No new classes/methods with a rating of D or worse
