@@ -1,6 +1,10 @@
 var fs = require("fs");
 
 fs.readdir(__dirname + '/../../artifacts', function(err, items) {
+
+  console.log(err)
+  console.log(items)
+
   if(err) {
     return console.log(err);
   }
