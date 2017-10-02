@@ -155,7 +155,7 @@
             "type": "text",
             "label": "Product Image Width",
             "code": "product_image_width",
-            "value": "100%"
+            "value": "25%"
         },
         {
             "for": "inline",
@@ -841,7 +841,7 @@
             "type": "text",
             "label": "Product Item Info Display Mobile",
             "code": "product_item_info_display_mobile",
-            "value": "none"
+            "value": "inline-block"
         },
         {
             "for": "inline",
