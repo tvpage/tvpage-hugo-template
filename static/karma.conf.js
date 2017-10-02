@@ -34,12 +34,23 @@ module.exports = function(karma) {
 
     autoWatch: false,
 
-    coverageReporter: [
-      {
-        dir: 'coverage/',
-        type : 'html'
-      }
-    ],
+    coverageReporter:{
+      dir: 'coverage/',
+      reporters: [
+        {
+          type: 'text-summary'
+        },
+        {
+          subdir: 'html',
+          type : 'html'
+        },
+        {
+          subdir: 'cobertura',
+          file: 'cobertura.xml',
+          type : 'cobertura'
+        }
+      ]
+    },
 
     jsonFixturesPreprocessor: {
       variableName: '__json__'

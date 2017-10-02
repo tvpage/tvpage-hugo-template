@@ -33,12 +33,10 @@ build:
     tests:
         override:
             -
-                command: 'npm test'
-            -
-                command: 'cd static && istanbul cover --report clover test/**/*.js'
+                command: 'cd static && npm test'
                 coverage:
-                    file: 'coverage/clover.xml'
-                    format: 'clover'
+                    file: 'coverage/cobertura/cobertura.xml'
+                    format: 'cobertura'
 
 build_failure_conditions:
     # No new classes/methods with a rating of D or worse
