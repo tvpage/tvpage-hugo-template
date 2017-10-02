@@ -28,7 +28,7 @@ checks:
 build:
     dependencies:
         before:
-            - cd static && npm install && cd ~/home/scrutinizer/artifacts && ls -la
+            - cd static && npm install
 
     tests:
         override:
@@ -37,6 +37,9 @@ build:
                 coverage:
                     file: 'static/coverage/clover.xml'
                     format: 'clover'
+
+            -
+                command: 'ls -la'
 
 build_failure_conditions:
     # No new classes/methods with a rating of D or worse
