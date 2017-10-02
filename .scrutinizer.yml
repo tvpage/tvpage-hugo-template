@@ -38,9 +38,7 @@ build:
                     file: 'static/coverage/clover.xml'
                     format: 'clover'
             -
-                command: 'cd g/tvpage/tvpage-hugo-template'
-            # -
-            #     command: 'npm run check'
+                command: 'cd ~/g/tvpage/tvpage-hugo-template'
 
 build_failure_conditions:
     # No new classes/methods with a rating of D or worse
