@@ -51,11 +51,5 @@ build_failure_conditions:
     # New issues of major or higher severity
     - 'issues.severity(>= MAJOR).new.exists'
 
-    # More than 5 new coding style issues.
-    #    - 'issues.label("coding-style").new.count > 5'
-    
-    # No coding style issues allowed
-    #    - 'issues.label("coding-style").exists'
-
-    # No classes/methods with a rating of D or worse
-    #- 'elements.rating(<= D).exists'
+    # Code Coverage drops below 60%
+    - 'project.metric("scrutinizer.test_coverage", < 0.60)'
