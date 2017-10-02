@@ -34,7 +34,7 @@
 "}" +
 
 ".tvp-hidden {" +
-    "display: none;" +
+    "display: none !important;" +
 "}" +
 
 ".tvp-modal-open {" +
@@ -66,6 +66,10 @@
     "overflow-y: auto;" +
     "opacity: 1;" +
     "visibility: visible;" +
+    "align-items: center;" +
+    "align-content: center;" +
+    "justify-content: center;" +
+    "display: {{ ($.Scratch.Get "settings").video_modal_center_display }};" +
 "}" +
 
 ".tvp-modal-wrapper {" +

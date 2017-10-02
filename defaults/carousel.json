@@ -2235,6 +2235,13 @@
           "label": "Mobile Product CTA Padding",
           "code": "mobile_product_cta_padding",
           "value": 0
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Video Modal Center Display",
+          "code": "video_modal_center_display",
+          "value": "block"
         }
     ]
 }
