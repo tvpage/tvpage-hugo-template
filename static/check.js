@@ -1,9 +1,6 @@
-var path = require("path");
 var fs = require("fs");
 
-console.log(__dirname)
-
-fs.readdir('../artifacts', function(err, items) {
+fs.readdir(__dirname + '/../../artifacts', function(err, items) {
   if(err)
     console.log(err)
 });
