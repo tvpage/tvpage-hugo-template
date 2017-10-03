@@ -295,7 +295,7 @@ function handleModalInitialized(e) {
       if (iframeModal && iframeModal.contentWindow) {
         var width = iframeModal.parentNode.offsetWidth;
         iframeModal.contentWindow.window.postMessage({
-          event: eventPrefix + ':modal_holder_resize',
+          event: eventPrefix + ':external_resize',
           size: [width, Math.floor(width * (9 / 16))]
         }, '*');
       }

@@ -471,12 +471,7 @@ a {
     align-items: center;
     justify-content: center;
     .tvp-row{
-        width: calc(75% - 10px);
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        margin: auto;
-        height: 36px;
+        width: 100%;
     }
     &-title{
         text-overflow: ellipsis;
@@ -736,6 +731,10 @@ a {
         padding-right: 10px;
         margin-left: 10px;
         height: 100%;
+        .tvp-row{
+            width: calc(75% - 10px);
+            padding-top: 16%;
+        }
     }
     .tvp-product-info-title{
         font-weight: 500;

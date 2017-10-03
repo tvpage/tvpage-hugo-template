@@ -333,7 +333,7 @@ function handleModalInitialized(e){
       setTimeout(function(){
         var width = iframeModal.parentNode.offsetWidth;
         iframeModal.contentWindow.window.postMessage({
-          event: config.eventPrefix + ':modal_holder_resize',
+          event: config.eventPrefix + ':external_resize',
           size: [width, Math.floor(width * (9 / 16))]
         },'*');
       },300);

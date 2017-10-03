@@ -146,7 +146,7 @@
     var that = this;
     if (window.location !== window.parent.location && iOS) {
       var onHolderResize = function(e) {
-        if(!e || !e.data || !e.data.event || that.eventPrefix + ':modal_holder_resize' !== e.data.event)
+        if(!e || !e.data || !e.data.event || that.eventPrefix + ':external_resize' !== e.data.event)
           return;
         
         var size = e.data.size || [];

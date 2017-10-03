@@ -135,7 +135,7 @@
   Grid.prototype.resize = function(){
     var that = this;
     var notify = function(){
-      if (!that.initialResize){
+      if (!this.initialResize){
         Utils.sendMessage({
           event: that.eventPrefix + ':resize',
           height: that.el.offsetHeight + 'px'
@@ -147,8 +147,8 @@
 
     if (this.windowSize !== newSize) {
       this.windowSize = newSize;
-      this.itemsPerPage = newSize === 'small' ? 2 : (options.itemsPerPage || 6);
-      this.itemsPerRow = newSize === 'small' ? 1 : (options.itemsPerRow || 2);
+      this.itemsPerPage = newSize === 'small' ? 2 : (this.options.itemsPerPage || 6);
+      this.itemsPerRow = newSize === 'small' ? 1 : (this.options.itemsPerRow || 2);
       this.page = 0;
       this.isLastPage = false;
 
@@ -236,7 +236,7 @@
     });
 
     window.addEventListener('resize', function(){
-      Utils.debounce(that.resize,100)
+      Utils.debounce(that.resize.call(that),100)
     });
   };
 
