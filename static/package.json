@@ -1,0 +1,26 @@
+{
+  "name": "tvpage-sdk",
+  "version": "0.0.0",
+  "description": "",
+  "main": "",
+  "scripts": {
+    "test": "karma start",
+    "test:watch": "karma start --no-single-run --auto-watch",
+    "check": "node ci/"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "",
+  "devDependencies": {
+    "exit": "^0.1.2",
+    "github": "^11.0.0",
+    "karma": "^0.13.0",
+    "karma-coverage": "^1.1.1",
+    "karma-fixture": "^0.2.6",
+    "karma-html2js-preprocessor": "^1.1.0",
+    "karma-jasmine": "^0.1.5",
+    "karma-json-fixtures-preprocessor": "0.0.6",
+    "karma-phantomjs-launcher": "^0.1.4",
+    "xml2js": "^0.4.19"
+  }
+}

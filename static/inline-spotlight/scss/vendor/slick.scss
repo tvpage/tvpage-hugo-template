@@ -21,7 +21,7 @@
     display: block;
     margin: 0;
     padding: 0;
-
+    
     &:focus {
         outline: none;
     }
@@ -45,7 +45,6 @@
     left: 0;
     top: 0;
     display: block;
-
     &:before,
     &:after {
         content: "";
