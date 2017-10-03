@@ -34,7 +34,7 @@
 "}" +
 
 ".tvp-hidden {" +
-    "display: none;" +
+    "display: none !important;" +
 "}" +
 
 ".tvp-modal-open {" +
@@ -72,6 +72,14 @@
     "position: relative;" +
     "width: auto;" +
     "margin: 10px;" +
+"}" +
+
+".tvp-modal-wrapper.centered {" +
+    "position: absolute;" +
+    "top: 50%;" +
+    "left: 0;" +
+    "right: 0;" +
+    "transform: translateY(-50%);" +
 "}" +
 
 "@media (min-width :768px) {" +

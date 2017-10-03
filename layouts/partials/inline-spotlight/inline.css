@@ -419,4 +419,17 @@
 	'.tvp-product-info {'+
     'display: {{- ($.Scratch.Get "settings").product_item_info_display_mobile -}};' +
 	'}'+
+	'.tvp-slide-up {'+
+    'display: {{- ($.Scratch.Get "settings").product_item_show_hide_feature_mobile_display -}};' +
+	'}'+
+	'.tvp-slide-up > .tvp-minus {'+
+    'background-image: {{- ($.Scratch.Get "settings").product_item_show_hide_feature_mobile_arrow_down -}};' +
+    'background-color: {{- ($.Scratch.Get "settings").product_item_show_hide_feature_mobile_background_color -}};' +
+    'border-radius: {{- ($.Scratch.Get "settings").product_item_show_hide_feature_mobile_background_radius -}};' +
+	'}'+
+	'.tvp-slide-up > .tvp-plus {'+
+    'background-image: {{- ($.Scratch.Get "settings").product_item_show_hide_feature_mobile_arrow_up -}};' +
+    'background-color: {{- ($.Scratch.Get "settings").product_item_show_hide_feature_mobile_background_color -}};' +
+    'border-radius: {{- ($.Scratch.Get "settings").product_item_show_hide_feature_mobile_background_radius -}};' +
+	'}'+
 '}'

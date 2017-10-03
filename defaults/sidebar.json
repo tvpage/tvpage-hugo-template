@@ -1870,6 +1870,13 @@
           "label": "Product Price Text Align Mobile",
           "code": "product_price_text_align_mobile",
           "value": "left"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Video Modal Center",
+          "code": "video_modal_center",
+          "value": false
         }
     ]
 }

@@ -115,7 +115,6 @@ if (!hasKey(config,"targetEl") || !getById(config.targetEl))
   throw new Error("Must provide a targetEl");
 
 var type = config.type;
-var mobilePrefix = isMobile ? "-mobile" : "";
 var css = config.css;
 var baseUrl = config.baseUrl;
 var staticPath = baseUrl + type;
@@ -129,12 +128,11 @@ var templates = config.templates;
 
 var getInitialHtml = function(){
   var html = "";
-  
   var hostId = "tvp-"+type+"-host";
   if (!getById(hostId))
-    html += '<style id="'+hostId+'">' + css["host"+mobilePrefix] + '</style>';
+    html += '<style id="'+hostId+'">' + css["host"] + '</style>';
 
-  html += '<style>' + css["host-custom"+mobilePrefix] + '</style>';
+  html += '<style>' + css["host-custom"] + '</style>';
   html += '<div id="' + id + '-holder" class="tvp-'+type+'-holder">';
 
   return html;
@@ -297,7 +295,7 @@ function handleModalInitialized(e) {
       if (iframeModal && iframeModal.contentWindow) {
         var width = iframeModal.parentNode.offsetWidth;
         iframeModal.contentWindow.window.postMessage({
-          event: eventPrefix + ':modal_holder_resize',
+          event: eventPrefix + ':external_resize',
           size: [width, Math.floor(width * (9 / 16))]
         }, '*');
       }

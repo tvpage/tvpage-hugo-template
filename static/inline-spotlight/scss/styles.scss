@@ -651,18 +651,13 @@ a {
                 width : 100%;
                 height : 100%;
                 display: block;
-                background-color: #ccc;
-                border-radius : 50%;
                 background-repeat: no-repeat;
                 background-position: center center;
                 background-size: contain;
                 filter: invert(100%);
-                &.tvp-plus{
-                    background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gICAgPHBhdGggZD0iTTE5IDEzaC02djZoLTJ2LTZINXYtMmg2VjVoMnY2aDZ2MnoiLz4gICAgPHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==);
-                }
-                &.tvp-minus{
-                    background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gICAgPHBhdGggZD0iTTE5IDEzSDV2LTJoMTR2MnoiLz4gICAgPHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==);
-                }
+            }
+            > .tvp-minus{
+                background-position: 0px 1px;
             }
         }
     }
@@ -724,6 +719,7 @@ a {
         width: 25%;
         height: 100%;
         margin-top: 0;
+        margin-left: 16px;
     }
     .tvp-product-info{
         width: calc(75% - 10px);
@@ -734,8 +730,11 @@ a {
         padding-top: 5px;
         padding-right: 10px;
         margin-left: 10px;
-        position: absolute;
         height: 100%;
+        .tvp-row{
+            width: calc(75% - 10px);
+            padding-top: 16%;
+        }
     }
     .tvp-product-info-title{
         font-weight: 500;

@@ -160,7 +160,7 @@
                 config.centerMode = centerMode;
                 config.centerPadding = centerPadding;
                 
-                if (data.length <= 5) {
+                if (data.length <= 5 && data.length > 1) {
                     var dotsHolderClass = "tvp-slider-dots-holder";
                     var dotsHolderElement = container.querySelector("." + dotsHolderClass);
                     if (dotsHolderElement) {
