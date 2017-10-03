@@ -6,6 +6,10 @@ github.authenticate({
   token: process.env.GITHUB_ACCESS_TOKEN || '9ede241bba93a159da7ec81ebad5cd76f13f3633'
 });
 
+console.log(process.env.GITHUB_ACCESS_TOKEN);
+
+debugger;
+
 var fs = require('fs');
 var xml2js = require('xml2js')
 var parser = new xml2js.Parser();
@@ -43,6 +47,8 @@ function whenFilesLoaded(files){
     return 'modified' === file.status;
   });
 
+  console.log("here")
+
   fs.readFile(__dirname + '/coverage/clover.xml', function(err, data) {
     parser.parseString(data, function (err, result) {
       var coverage = result.coverage;
@@ -66,6 +72,7 @@ function whenFilesLoaded(files){
         var addedFile = addedFiles[i];
         
         console.log(addedFile.filename)
+
       }
 
     });
@@ -84,6 +91,9 @@ var allFiles = [];
     per_page: perPage,
     page: page
   }, function(e, res) {
+
+    console.log(e)
+
     if (e) {
       return;
     }
