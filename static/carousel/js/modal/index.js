@@ -269,7 +269,7 @@
             });
         };
 
-        player = new Player('tvp-player-el', playerConfig, data.video.id);
+        var player = new Player('tvp-player-el', playerConfig, data.video.id);
         player.initialize();
 
         window.addEventListener('resize', player.resize);
