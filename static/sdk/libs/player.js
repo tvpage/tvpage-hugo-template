@@ -145,7 +145,7 @@
     var that = this;
     if (window.location !== window.parent.location && iOS) {
       var onHolderResize = function(e) {
-        if(!e || !e.data || !e.data.event || that.eventPrefix + ':external_resize' !== e.data.event)
+        if(!e || !e.data || !e.data.event || that.eventPrefix + ':holder_resize' !== e.data.event)
           return;
         
         var size = e.data.size || [];
@@ -210,7 +210,6 @@
       var that = this;
       BigScreen.onchange = function(){
           that.isFullScreen = !that.isFullScreen;
-          that.resize();
       };
     }
     
