@@ -1,5 +1,6 @@
 var GitHubApi = require('github');
 var github = new GitHubApi();
+var exit = require('exit');
 
 github.authenticate({
   type: "basic",
@@ -101,11 +102,16 @@ function whenFilesLoaded(files){
           files[i].filename
         );
         
-        if(!coverageFile || !checkCoverageFileMetrics(coverageFile))
-          process.exit(1);
+        if(!coverageFile){
+          console.error("The file doesn't have coverage data. \n");
+          exit(1);
+        } else if(!checkCoverageFileMetrics(coverageFile)){
+          console.error("File's coverage is under 75%. \n");
+          exit(1);
+        }
       }
 
-      process.exit(0);
+      exit(0);
     });
   });
 };
