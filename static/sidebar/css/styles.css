@@ -69,8 +69,7 @@ body  {
   bottom: 0;
   left: 0;
   margin: auto;
-  -webkit-transition: all .2s ease;
-          transition: all .2s ease;
+  transition: all .2s ease;
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
@@ -103,8 +102,7 @@ body  {
   margin: auto;
   cursor: pointer;
   z-index: 1000;
-  -webkit-transition: all .05s ease-in-out;
-          transition: all .05s ease-in-out;
+  transition: all .05s ease-in-out;
 }
 
 .tvp-exchange .tvp-video-play {
