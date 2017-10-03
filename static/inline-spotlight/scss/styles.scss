@@ -471,7 +471,12 @@ a {
     align-items: center;
     justify-content: center;
     .tvp-row{
-        width: 100%;
+        width: calc(75% - 10px);
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        height: 36px;
     }
     &-title{
         text-overflow: ellipsis;
@@ -656,6 +661,9 @@ a {
                 background-size: contain;
                 filter: invert(100%);
             }
+            > .tvp-minus{
+                background-position: 0px 1px;
+            }
         }
     }
     .tvp-videos-container {
@@ -716,6 +724,7 @@ a {
         width: 25%;
         height: 100%;
         margin-top: 0;
+        margin-left: 16px;
     }
     .tvp-product-info{
         width: calc(75% - 10px);

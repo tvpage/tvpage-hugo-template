@@ -646,7 +646,12 @@ a {
       -ms-flex-pack: center;
           justify-content: center; }
   .tvp-product-info .tvp-row {
-    width: 100%; }
+    width: calc(75% - 10px);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    height: 36px; }
   .tvp-product-info-title {
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -851,6 +856,8 @@ a {
         background-size: contain;
         -webkit-filter: invert(100%);
                 filter: invert(100%); }
+      .tvp-player-product-section .tvp-mobile-product-title h2 .tvp-slide-up > .tvp-minus {
+        background-position: 0px 1px; }
   .tvp-videos-container {
     position: relative;
     border-top: 1px dotted #979797;
@@ -902,7 +909,8 @@ a {
     display: inline-block;
     width: 25%;
     height: 100%;
-    margin-top: 0; }
+    margin-top: 0;
+    margin-left: 16px; }
   .tvp-product-info {
     width: calc(75% - 10px);
     float: right;

@@ -155,7 +155,7 @@
             "type": "text",
             "label": "Product Image Width",
             "code": "product_image_width",
-            "value": "25%"
+            "value": "calc(25% - 16px)"
         },
         {
             "for": "inline",
@@ -911,7 +911,7 @@
             "type": "text",
             "label": "Product Item Title Font Size Min",
             "code": "product_item_title_font_size_min",
-            "value": "12"
+            "value": "14"
         },
         {
             "for": "inline",
