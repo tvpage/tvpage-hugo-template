@@ -6,20 +6,20 @@ module.exports = function(karma) {
     frameworks: [ 'jasmine', 'fixture' ],
 
     files: [
-      'vendor/tvp-3.1.2.min.js',
-      'vendor/tvpa.min.js',
+      'test/vendor/tvp-3.1.2.min.js',
+      'test/vendor/tvpa.min.js',
 
-      'sdk/libs/**/*.js',
+      'libs/**/*.js',
 
       'test/**/*Spec.js',
       'test/**/*.html',
       'test/**/*.json'
     ],
 
-    reporters: [ 'coverage' ],
+    reporters: [ 'progress', 'coverage' ],
 
     preprocessors: {
-      'sdk/libs/**/*.js': 'coverage',      
+      'libs/**/*.js': 'coverage',
       'test/**/*.html' : 'html2js',
       'test/**/*.json' : 'json_fixtures'
     },
@@ -37,6 +37,7 @@ module.exports = function(karma) {
     coverageReporter: {
       reporters: [
           {type: 'text-summary'},
+          {type: 'html', dir: 'coverage', subdir: 'html'},
           {type: 'clover', dir: 'coverage', subdir: '.', file: 'clover.xml'}
       ]
     },

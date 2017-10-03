@@ -14,12 +14,10 @@ var parser = new xml2js.Parser();
 
 var filterExcludes = function(files){
   var excludes = [
-    'static/sdk/karma.conf.js',
-    'static/sdk/package.json',
-    'static/sdk/package-lock.json',
-    'static/sdk/vendor',
-    'static/sdk/vendor',
-    'static/sdk/test'
+    'static/karma.conf.js',
+    'static/package.json',
+    'static/package-lock.json',
+    'static/test'
   ];
 
   return files.filter(function(file){

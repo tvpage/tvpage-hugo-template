@@ -1,4 +1,6 @@
 describe('Player', function() {
+  var player;
+
   beforeEach(function(){
     fixture.setBase('test/fixtures');
     fixture.load('html/player.html', 'json/playerConfig.json', 'json/videos.json');

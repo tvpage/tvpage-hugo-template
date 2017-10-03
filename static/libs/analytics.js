@@ -17,12 +17,12 @@
   };
   
   Analytics.prototype.initConfig = function(options){
-    if(isUndefined(window._tvpa))
-      return;
+    if(isUndefined(window._tvpa) || !_tvpa)
+      throw new Error('need _tvpa');
   
     this.config = this.getConfigBase(options);
   
-    if (options.firstPartyCookies && options.cookieDomain)
+    if (options && options.firstPartyCookies && options.cookieDomain)
       this.config.firstPartyCookieDomain = options.cookieDomain;
   
     _tvpa.push(['config', this.config]);
