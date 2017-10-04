@@ -704,7 +704,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
         var products =  document.getElementById('tvpProductsView');
         var deInitProd = function () {
             if(products.length > 1){
-                $('#productContent').slick('unslick');                
+                $('#productContent').slick('unslick');   
             }
             products.innerHTML = "";
         };

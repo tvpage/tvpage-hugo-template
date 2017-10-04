@@ -117,7 +117,7 @@ if (!hasKey(config,"targetEl") || !getById(config.targetEl))
 var type = config.type;
 var css = config.css;
 var baseUrl = config.baseUrl;
-var staticPath = baseUrl + type;
+var staticPath = baseUrl + '/' + type;
 var debug = config.debug;
 var mobilePath = isMobile ? 'mobile/' : '';
 var distPath = debug ? '/' : '/dist/';
