@@ -7,7 +7,7 @@ filter:
         - '*/ci/*'
         - '*/test/*'
         - '*/captivate/*'
-        - 'karma.conf.js'
+        - '*karma.conf.js*'
         - '*package.json*'
         - '*package-lock.json*'
         - '*build.min.js*'

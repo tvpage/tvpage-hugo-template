@@ -6,7 +6,7 @@
   };
 
   var getGlobalFromParent = function(){
-    return window.parent && hasKey(parent, '__TVPage__') ? parent.__TVPage__ : null;
+    return window.parent && hasKey(window.parent, '__TVPage__') ? window.parent.__TVPage__ : null;
   };
   
   var Utils = {};

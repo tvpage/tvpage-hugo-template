@@ -5,14 +5,8 @@
     var config = {};
 
     var initialize = function() {
-
-        if (!Utils.hasKey(window, 'parent') || !Utils.hasKey(parent, '__TVPage__'))
-            throw new Error("Can't access window parent");
-
-        if (!Utils.hasKey(parent.__TVPage__, 'config') || !Utils.hasKey(parent.__TVPage__.config, id))
-            throw new Error("Missing widget configuration");
-
-        config = parent.__TVPage__.config[id];
+        
+        config = Utils.getParentConfig(id);
 
         var mainEl = document.createElement('div');
         mainEl.id = id;

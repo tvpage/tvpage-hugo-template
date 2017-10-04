@@ -4,22 +4,6 @@
   var id = body.getAttribute('data-id');
   var config = null;
 
-  var getConfig = function(){
-    if (!Utils.hasKey(window, 'parent') || !Utils.hasKey(parent, '__TVPage__'))
-      throw new Error("Can't access window parent");
-
-    if (!Utils.hasKey(parent.__TVPage__, 'config') || !Utils.hasKey(parent.__TVPage__.config, id))
-      throw new Error("Missing widget configuration");
-    
-    var obj = parent.__TVPage__.config[id];
-    var channel = obj.channel || {};
-    
-    obj.channelId = channel.id || obj.channelId || obj.channelid;
-    obj.loginId = obj.loginId || obj.loginid;
-
-    return obj;
-  };
-
   var renderPlayer = function(){
     var el = document.createElement('div');
     el.className ='tvp-player';
@@ -57,9 +41,13 @@
   function initialize(){
     renderPlayer();
 
-    config = getConfig();
-
+    config = Utils.getParentConfig(id);
+    
     var channel = config.channel || {};
+    
+    config.channelId = channel.id || config.channelId || config.channelid;
+    config.loginId = config.loginId || config.loginid;
+    
     var params = channel.parameters || {};
     var src = config.api_base_url + '/channels/' + config.channelId + '/videos?X-login-id=' + config.loginId;
     
