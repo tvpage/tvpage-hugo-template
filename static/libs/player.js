@@ -148,8 +148,6 @@
           return;
         
         var size = e.data.size || [];
-
-        console.log(size)
   
         that.resize(size[0], size[1]);
       };

@@ -161,16 +161,8 @@ var iframeContent = utils.getIframeHtml({
     ]
 });
 
-//Firefox does not add the iframe content using the onload method.
-//https://bugzilla.mozilla.org/show_bug.cgi?id=728151
-if (utils.isFirefox) {
-    iframe.contentWindow.contents = iframeContent;
-    iframe.src = 'javascript:window["contents"]';
-} else {
-    var iframeDocument = iframe.contentWindow.document;
-    iframeDocument.open().write(iframeContent);
-    iframeDocument.close();
-}
+iframeDocument.open().write(iframeContent);
+iframeDocument.close();
 
 var isEvent = function (e, type) {
     return (e && utils.isset(e, "data") && utils.isset(e.data, "event") && config.eventPrefix + type === e.data.event);

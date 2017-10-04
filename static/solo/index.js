@@ -154,14 +154,8 @@ var iframeHtml = getIframeHtml({
   ]
 });
 
-//First iframe render (//https://bugzilla.mozilla.org/show_bug.cgi?id=728151)
-if (isFirefox) {
-  iframe.contentWindow.contents = iframeHtml;
-  iframe.src = 'javascript:window["contents"]';
-} else {
-  iframeDocument.open().write(iframeHtml);
-  iframeDocument.close();
-}
+iframeDocument.open().write(iframeHtml);
+iframeDocument.close();
 
 window.addEventListener("message", function(e){
   if(e && e.data && hasKey(e.data,'event') && e.data.event === eventPrefix + ':render') {
