@@ -56,19 +56,6 @@ var removeClass = function(obj, c) {
     obj.classList.remove(c);
   }
 };
-var extend = function(out) {
-  out = out || {};
-  for (var i = 1; i < arguments.length; i++) {
-    if (!arguments[i])
-      continue;
-
-    for (var key in arguments[i]) {
-      if (arguments[i].hasOwnProperty(key))
-        out[key] = arguments[i][key];
-    }
-  }
-  return out;
-};
 var getById = function(id){
   return document.getElementById(id);
 };
@@ -94,8 +81,13 @@ var config = bootstrap;
 var id = bootstrap.name;
 var tvpage = window.__TVPage__ = window.__TVPage__ || {};
 
-if(hasKey(tvpage.config,id) && isObject(tvpage.config[id]))
-  config = extend(config, tvpage.config[id]);
+if(hasKey(tvpage.config,id) && isObject(tvpage.config[id])){
+  var runTime = tvpage.config[id];
+  for (var key in runTime) {
+    if (runTime.hasOwnProperty(key))
+      config[key] = runTime[key];
+  }
+}
 
 config.id = id;
 
@@ -274,11 +266,20 @@ function handleOnPlayerChange(e){
 
 function handleRender(e) {
   addClass(holder, "initialized");
-  isset(config, 'background') ? holder.style.cssText += 'background-color:' + config.background + ';' : null;
-  isset(config, 'title_color') ? iframeDocument.getElementsByClassName('tvp-carousel-title')[0].style.cssText += 'color:' + config.title_color + ';' : null;
-  var videosTitle = iframeDocument.querySelectorAll('.tvp-video-title');
-  for (var i = videosTitle.length - 1; i >= 0; i--) {
-    isset(config, 'item_title_font_color') ? videosTitle[i].style.cssText += 'color:' + config.item_title_font_color + ';' : null;
+  
+  if(config.background){
+    holder.style.cssText += 'background-color:' + config.background + ';';
+  }
+
+  if(config.title_color){
+    iframeDocument.querySelector('.tvp-carousel-title').style.cssText += 'color:' + config.title_color + ';';
+  }
+
+  if(config.item_title_font_color){
+    var titles = iframeDocument.querySelectorAll('.tvp-video-title');
+    for (var i = 0; i < titles.length; i++) {
+      titles[i].style.cssText += 'color:' + config.item_title_font_color + ';';
+    }
   }
 }
 
@@ -380,18 +381,14 @@ function handleModalInitialized(e) {
 
   var onOrientationChange = function() {
     if (iOS && iframeModal && iframeModal.contentWindow) {
-      var tries = 0;
-      setInterval(function() {
-        if (tries === 3) return;
-        tries = tries + 1;
-        var width = iframeModal.parentNode.offsetWidth;
-        iframeModal.contentWindow.window.postMessage({
-          event: eventPrefix + ':external_resize',
-          size: [width, Math.floor(width * (9 / 16))]
-        }, '*');
-      }, 500);
+      var width = iframeModal.parentNode.offsetWidth;
+      iframeModal.contentWindow.window.postMessage({
+        event: eventPrefix + ':external_resize',
+        size: [width, Math.floor(width * (9 / 16))]
+      }, '*');
     }
   };
+  
   var orientationChangeEvent = 'onorientationchange' in window ? 'orientationchange' : 'resize';
   window.removeEventListener(orientationChangeEvent, onOrientationChange, false);
   window.addEventListener(orientationChangeEvent, onOrientationChange, false);
