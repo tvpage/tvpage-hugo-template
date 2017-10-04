@@ -1,6 +1,5 @@
 describe('Analytics', function() {
   var analytics;
-  var _tvpaBackup = window._tvpa;
 
   beforeEach(function(){
     analytics = new Analytics();
@@ -10,9 +9,22 @@ describe('Analytics', function() {
     analytics = null;
   });
 
-  it('should break if the global _tvpa doesn\'t exists', function(){
-    window._tvpa = null;
+  it('should create a config object', function(){
+    analytics.initConfig();
 
-    expect(analytics.initConfig).toThrow(new Error('need _tvpa'));
+    expect(analytics.config).toBeDefined();
+  });
+
+  it('should add special config options', function(){
+    analytics.initConfig({
+      logUrl:"//test.tvpage.com/api/__tvpa.gif",
+      domain:"localhost",
+      firstPartyCookies:true,
+      cookieDomain:"goodlookingbean.com",
+      loginId:"1758799"
+    });
+
+    expect(analytics.config.logUrl).toBe("//test.tvpage.com/api/__tvpa.gif");
+    expect(analytics.config.firstPartyCookieDomain).toBe("goodlookingbean.com");
   });
 });

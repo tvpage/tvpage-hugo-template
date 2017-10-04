@@ -1,6 +1,6 @@
 'use strict';
 
-describe('analytics', function() {
+describe('Utils', function() {
   it('should equal fixture contents', function() {
     expect(true).toEqual(true);
   });

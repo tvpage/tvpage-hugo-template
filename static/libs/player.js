@@ -1,45 +1,44 @@
 (function(){
-  var userAgent = navigator.userAgent;
-  var iOS = /iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(userAgent) && !window.MSStream;
-  var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
-  var isEmpty = function(o) {
-    for (var key in o) {
-      if (o.hasOwnProperty(key)) return false;
+
+  var PlayerUtils = {
+    iOS: /iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream,
+    isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
+    isEmpty: function(o) {
+      for (var key in o) {
+        if (o.hasOwnProperty(key)) return false;
+      }
+      return true;
+    },
+    isUndefined: function(o) {
+      return 'undefined' === typeof o;
+    },
+    compact: function(o) {
+      for (k in o) {
+        if (o.hasOwnProperty(k) && !o[k])
+          delete o[k];
+      }
+      return o;
+    },
+    optionsCheck: function(o){
+      if (!o || !o.data || o.data.length <= 0) {
+        throw new Error('need options');
+      }
+    },
+    getElement: function(el){
+      if(!el) {
+        throw new Error('need el');
+      }
+      
+      return 'string' === typeof el ? document.getElementById(el) : el;
     }
-    return true;
-  };
-  var isFunction = function(o) {
-    return 'function' === typeof o;
-  };
-  var isUndefined = function(o) {
-    return 'undefined' === typeof o;
-  };
-  var compact = function(o) {
-    for (var k in o) {
-      if (o.hasOwnProperty(k) && !o[k])
-        delete o[k];
-    }
-    return o;
-  };
-  var optionsCheck = function(o){
-    if (!o || !o.data || o.data.length <= 0) {
-      throw new Error('need options');
-    }
-  };
-  var getElement = function(el){
-    if(!el) {
-      throw new Error('need el');
-    }
-    
-    return 'string' === typeof el ? document.getElementById(el) : el;
   };
   
   //The player singleton. A small layer on top of tvpage library
   var Player = function(el, options, startWith) {
-    optionsCheck(options);
+    PlayerUtils.optionsCheck(options);
   
     this.options = options;
-    this.el = getElement(el);
+    this.el = PlayerUtils.getElement(el);
     this.eventPrefix = ("tvp_" + this.options.id).replace(/-/g, '_');
     this.assets = [];
     this.instance = null;
@@ -49,7 +48,7 @@
   };
   
   Player.prototype.getPlayButtonOptions = function() {
-    return compact({
+    return PlayerUtils.compact({
       height: this.getOption('play_button_height'),
       width: this.getOption('play_button_width'),
       backgroundColor: this.getOption('play_button_background_color'),
@@ -62,12 +61,12 @@
   };
   
   Player.prototype.setControlsOptions = function() {
-    this.controls = compact({
+    this.controls = PlayerUtils.compact({
       active: true,
-      seekBar: compact({
+      seekBar: PlayerUtils.compact({
         progressColor: this.getOption('progress_color')
       }),
-      floater: compact({
+      floater: PlayerUtils.compact({
         controlbarColor: this.getOption('control_bar_color'),
         iconColor: this.getOption('icon_color'),
         removeControls: this.getOption('remove_controls')
@@ -79,22 +78,22 @@
   };
   
   Player.prototype.setAdvertisingOptions = function() {
-    if (!this.options.advertising || isEmpty(this.options.advertising))
+    if (!this.options.advertising || PlayerUtils.isEmpty(this.options.advertising))
       return;
   
     var options = this.options.advertising;
   
-    this.advertising = compact({
+    this.advertising = PlayerUtils.compact({
       enabled: !!options.enabled,
       adServerUrl: options.adServerUrl || null,
       adTimeout: options.adTimeout || "2000",
       maxAds: options.maxAds || "100",
-      adInterval: !isUndefined(options.adInterval) ? String(options.adInterval) : "0"
+      adInterval: !PlayerUtils.isUndefined(options.adInterval) ? String(options.adInterval) : "0"
     });
   };
   
   Player.prototype.shallCue = function(auto){
-    return isMobile || (auto && !this.autonext) || !this.autoplay;
+    return PlayerUtils.isMobile || (auto && !this.autonext) || !this.autoplay;
   };
   
   Player.prototype.play = function(asset, ongoing) {
@@ -143,7 +142,7 @@
   //size from host.
   Player.prototype.handleResize = function() {
     var that = this;
-    if (window.location !== window.parent.location && iOS) {
+    if (window.location !== window.parent.location && PlayerUtils.iOS) {
       var onHolderResize = function(e) {
         if(!e || !e.data || !e.data.event || that.eventPrefix + ':external_resize' !== e.data.event)
           return;
@@ -263,7 +262,7 @@
     var extras = ["preload", "poster", "overlay"];
     for (var i = 0; i < extras.length; i++) {
       var option = extras[i];
-      if (!isUndefined(this[option]) && this[option] !== null) {
+      if (!PlayerUtils.isUndefined(this[option]) && this[option] !== null) {
         config[option] = this[option];
       }
     }
@@ -271,7 +270,7 @@
   };
   
   Player.prototype.getConfig = function(){
-    return compact({
+    return PlayerUtils.compact({
       techOrder: this.getOption('tech_order'),
       mediaProviders: this.getOption('media_providers'),
       analytics: {
@@ -294,7 +293,7 @@
     var that = this;
     (function depsReady() {
       setTimeout(function() {
-        if (isUndefined(window.TVPage) || isUndefined(window._tvpa)) {
+        if (PlayerUtils.isUndefined(window.TVPage) || PlayerUtils.isUndefined(window._tvpa)) {
           (++depsChecks < 50) ? depsReady(): console.warn('can\'t load deps');
         } else {
           var config = that.getConfig();
@@ -329,7 +328,7 @@
   };
   
   Player.prototype.buildAsset = function(obj) {
-    if (isEmpty(obj))
+    if (PlayerUtils.isEmpty(obj))
       return {};
   
     var asset = obj.asset;
@@ -359,11 +358,11 @@
   };
   
   Player.prototype.getOption = function(s){
-    return isUndefined(this.options[s]) ? null : this.options[s];
+    return PlayerUtils.isUndefined(this.options[s]) ? null : this.options[s];
   };
   
   Player.prototype.getCallable = function(s){
-    return isFunction(this.options[s]) ? this.options[s] : null;
+    return 'function' === typeof this.options[s] ? this.options[s] : null;
   };
   
   Player.prototype.setConfig = function(s){
