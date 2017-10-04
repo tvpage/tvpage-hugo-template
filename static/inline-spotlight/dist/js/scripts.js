@@ -362,11 +362,13 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
         var advertisingOptions = isset(options.advertising) && "object" === typeof options.advertising && !isEmpty(options.advertising) ? options.advertising : {};
         this.advertising = compact({
           enabled: isset(advertisingOptions.enabled) ? advertisingOptions.enabled : false,
-          adServerUrl: isset(advertisingOptions.adServerUrl) ? advertisingOptions.adServerUrl : null,
-          adTimeout: isset(advertisingOptions.adTimeout) ? advertisingOptions.adTimeout : "2000",
-          maxAds: isset(advertisingOptions.maxAds) ? advertisingOptions.maxAds : "100",
-          adInterval: isset(advertisingOptions.adInterval) ? String(advertisingOptions.adInterval) : "0"
+          adServerUrl: isset(advertisingOptions.adserverurl) ? advertisingOptions.adserverurl : null,
+          adTimeout: isset(advertisingOptions.adtimeout) ? advertisingOptions.adtimeout : "2000",
+          maxAds: isset(advertisingOptions.maxads) ? advertisingOptions.maxads : "100",
+          adInterval: isset(advertisingOptions.adinterval) ? String(advertisingOptions.adinterval) : "0"
         });
+
+        console.log("asdfbas;kdfj",this.advertising);
         
         //Context reference for Methods.
         var that = this;

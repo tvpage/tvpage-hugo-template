@@ -104,6 +104,6 @@
   <script src="{{ (printf "%s/dist/js/scripts.min.js" .Type ) | absURL }}"></script>
   {{- end -}}
 
-  <script>var player = new Player('tvp-player-el', config);</script>
+  <script>var player = new Player('tvp-player-el', config); player.initialize();</script>
 </body>
 </html>

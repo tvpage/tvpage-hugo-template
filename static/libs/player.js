@@ -85,10 +85,10 @@
   
     this.advertising = PlayerUtils.compact({
       enabled: !!options.enabled,
-      adServerUrl: options.adServerUrl || null,
-      adTimeout: options.adTimeout || "2000",
-      maxAds: options.maxAds || "100",
-      adInterval: !PlayerUtils.isUndefined(options.adInterval) ? String(options.adInterval) : "0"
+      adServerUrl: options.adserverurl || null,
+      adTimeout: options.adtimeout || "2000",
+      maxAds: options.maxads || "100",
+      adInterval: !PlayerUtils.isUndefined(options.adinterval) ? String(options.adinterval) : "0"
     });
   };
   
