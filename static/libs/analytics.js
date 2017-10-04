@@ -21,7 +21,7 @@
       throw new Error('need _tvpa');
   
     this.config = this.getConfigBase(options);
-  
+
     if (options && options.firstPartyCookies && options.cookieDomain)
       this.config.firstPartyCookieDomain = options.cookieDomain;
   
