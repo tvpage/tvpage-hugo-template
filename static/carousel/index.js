@@ -114,7 +114,9 @@ window.__TVPage__.config[id] = config;
 if (!hasKey(config,"targetEl") || !getById(config.targetEl))
   throw new Error("Must provide a targetEl");
 
+console.log(config);
 var type = config.type;
+console.log(type);
 var mobilePrefix = isMobile ? "-mobile" : "";
 var css = config.css;
 var baseUrl = config.baseUrl;
