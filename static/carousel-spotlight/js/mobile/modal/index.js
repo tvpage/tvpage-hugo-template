@@ -96,6 +96,10 @@
 
         carousel.innerHTML = productsHtml;
 
+        if (data.length == 1) {
+            container.getElementsByClassName('tvp-product')[0].style.margin = '1px';
+        }
+
         var productsTitle = Utils.getByClass('tvp-products-text');
         productsTitle.innerHTML = "";
         if (hasData) {
@@ -129,9 +133,9 @@
             setTimeout(function() {
                 var $el = $(carousel);
                 var centerMode = data.length > 1 ? true : false;
-                var centerPadding = hasData ? '20px' : "0px";
+                var centerPadding = Utils.isset(config, 'mobile_modal_products_slider_center_padding') ? config.mobile_modal_products_slider_center_padding : '0px';
 
-                var config = {
+                var slickConfig = {
                     slidesToSlide: 1,
                     slidesToShow: 3,
                     arrows: false,
@@ -157,8 +161,8 @@
                     ]
                 };
 
-                config.centerMode = centerMode;
-                config.centerPadding = centerPadding;
+                slickConfig.centerMode = centerMode;
+                slickConfig.centerPadding = centerPadding;
                 
                 if (data.length <= 5 && data.length > 1) {
                     var dotsHolderClass = "tvp-slider-dots-holder";
@@ -171,9 +175,9 @@
                     dotsHolderElement.className = dotsHolderClass;
                     container.querySelector(".tvp-products-headline").appendChild(dotsHolderElement);
 
-                    config.appendDots = dotsHolderElement;
-                    config.dots = true;
-                    config.dotsClass = "tvp-slider-dots";
+                    slickConfig.appendDots = dotsHolderElement;
+                    slickConfig.dots = true;
+                    slickConfig.dotsClass = "tvp-slider-dots";
                 }
 
                 $el.on('init', function() {
@@ -191,7 +195,7 @@
                     }, 0);
                 });
                 
-                $el.slick(config);
+                $el.slick(slickConfig);
 
             }, 10);
         };

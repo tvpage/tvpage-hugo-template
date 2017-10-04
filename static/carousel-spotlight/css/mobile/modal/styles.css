@@ -135,7 +135,7 @@ body {
 }
 
 .tvp-products.enabled {
-  padding: 15px 0;
+  padding: 10px 0;
   background-color: white;
 }
 
@@ -197,17 +197,4 @@ body {
 .tvp-product-data {
   float: right;
   width: 58%;
-}
-
-.tvp-product-data > p {
-  height: 29px;
-  overflow: hidden;
-  margin: 0;
-  font-size: 12px;
-  color: #1F1D26;
-}
-
-.tvp-product-data > h2 {
-  margin: 5px 0;
-  font-size: 16px;
 }
