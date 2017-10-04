@@ -17,7 +17,7 @@
   };
   
   Analytics.prototype.initConfig = function(options){
-    if(isUndefined(window._tvpa) || !_tvpa)
+    if(isUndefined(window._tvpa))
       throw new Error('need _tvpa');
   
     this.config = this.getConfigBase(options);

@@ -1,7 +1,12 @@
 (function(){
   var userAgent = navigator.userAgent;
+  
   var hasKey = function(o,k){
     return o.hasOwnProperty(k);
+  };
+
+  var getGlobalFromParent = function(){
+    return window.parent && hasKey(parent, '__TVPage__') ? parent.__TVPage__ : null;
   };
   
   var Utils = {};
@@ -144,15 +149,14 @@
     price = price > 0 ? ('$' + price) : '';
     return price;
   };
-  
+
   Utils.getParentConfig = function(id) {
-    if (!hasKey(window, 'parent') || !hasKey(parent, '__TVPage__'))
-      throw new Error("can't access parent");
+    var parentGlobal = getGlobalFromParent();
+
+    if (!parentGlobal || !parentGlobal.config || !hasKey(parentGlobal.config, id))
+      throw new Error("no config");
   
-    if (!hasKey(parent.__TVPage__, 'config') || !hasKey(parent.__TVPage__.config, id))
-      throw new Error("missing config");
-  
-    return parent.__TVPage__.config[id];
+    return parentGlobal.config[id];
   };
   
   Utils.tmpl = function(template, data) {

@@ -13,7 +13,7 @@
       return 'undefined' === typeof o;
     },
     compact: function(o) {
-      for (k in o) {
+      for (var k in o) {
         if (o.hasOwnProperty(k) && !o[k])
           delete o[k];
       }
