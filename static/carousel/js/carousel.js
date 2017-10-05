@@ -65,41 +65,58 @@
     }
   };
 
-  Carousel.prototype.getSlickConfig = function(){
-    var centerPadding = this.options.carousel_center_padding;
-    var reachMax = Number(this.options.carousel_max_bullets) < this.data.length;
+  Carousel.prototype.reachedBulletsMax = function(){
+    return Number(this.options.carousel_max_bullets) < this.data.length;
+  };
+
+  Carousel.prototype.getSlickConfig480 = function(){
+    var options = this.options;
+
+    return {
+      breakpoint: 480,
+      settings: {
+        arrows: false,
+        slidesToShow: Number(options.items_to_show_480),
+        slidesToScroll: Number(options.items_to_scroll_480),
+        dots: this.reachedBulletsMax() ? false : options.navigation_bullets_480,
+        centerMode: options.carousel_center_mode_480,
+        centerPadding: options.carousel_center_padding
+      }
+    };
+  };
+
+  Carousel.prototype.getSlickConfig667 = function(){
+    var options = this.options;
     
+    return {
+      breakpoint: 667,
+      settings: {
+        slidesToShow: Number(options.items_to_show_667),
+        slidesToScroll: Number(options.items_to_scroll_667),
+        dots: this.reachedBulletsMax() ? false : options.navigation_bullets_667,
+        arrows: false,
+        centerMode: options.carousel_center_mode_667,
+        centerPadding: options.carousel_center_padding
+      }
+    };
+  };
+
+  Carousel.prototype.getSlickConfig = function(){
+    var options = this.options;
     var config = {
-      slidesToShow: Number(this.options.items_to_show),
-      slidesToScroll: Number(this.options.items_to_scroll),
-      dots: reachMax ? false : this.options.navigation_bullets,
-      infinite: this.options.infinite,
+      slidesToShow: Number(options.items_to_show),
+      slidesToScroll: Number(options.items_to_scroll),
+      dots: this.reachedBulletsMax() ? false : options.navigation_bullets,
+      infinite: options.infinite,
       arrows: false,
-      responsive: [{
-        breakpoint: 480,
-        settings: {
-          arrows: false,
-          slidesToShow: Number(this.options.items_to_show_480),
-          slidesToScroll: Number(this.options.items_to_scroll_480),
-          dots: reachMax ? false : this.options.navigation_bullets_480,
-          centerMode: this.options.carousel_center_mode_480,
-          centerPadding: centerPadding
-        }
-      }, {
-        breakpoint: 667,
-        settings: {
-          slidesToShow: Number(this.options.items_to_show_667),
-          slidesToScroll: Number(this.options.items_to_scroll_667),
-          dots: reachMax ? false : this.options.navigation_bullets_667,
-          arrows: false,
-          centerMode: this.options.carousel_center_mode_667,
-          centerPadding: centerPadding
-        }
-      }]
+      responsive: [
+        this.getSlickConfig480(),
+        this.getSlickConfig667()
+      ]
     };
 
-    if (this.options.navigation_bullets_append_to) {
-      config.appendDots = this.options.navigation_bullets_append_to;
+    if (options.navigation_bullets_append_to) {
+      config.appendDots = options.navigation_bullets_append_to;
     }
 
     return config;
