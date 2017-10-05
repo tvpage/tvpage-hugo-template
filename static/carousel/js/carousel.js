@@ -30,27 +30,38 @@
     return (this.el.offsetHeight + navBulletsHeight + heightOffset) + 'px';
   };
 
-  Carousel.prototype.centerArrows = function(slick) {
-    var playButtonRect = this.el.querySelector('.tvp-video-play').getBoundingClientRect();
-    var playButtonCenter = Math.ceil(playButtonRect.top + (playButtonRect.height / 2));
-    var arrows = document.querySelectorAll(".tvp-carousel-arrow");
-    
-    for (var i = 0; i < arrows.length; i++) {
-      var arrow = arrows[i];
+  Carousel.prototype.getItemPlayButtonCenter = function(){
+    var buttonRect = this.el.querySelector('.tvp-video-play').getBoundingClientRect();
+    return Math.ceil(buttonRect.top + (buttonRect.height / 2));
+  };
 
-      var arrowSvg = arrow.querySelector("svg");
-      arrow.style.top = Math.floor(playButtonCenter - ((arrowSvg.clientHeight || arrowSvg.getBoundingClientRect().height) / 2)) + "px";
+  Carousel.prototype.getArrowTopValue = function(arrow){
+    var arrowSvg = arrow.querySelector("svg");
+    var arrowSvgHeight = arrowSvg.clientHeight || arrowSvg.getBoundingClientRect().height;
+    return Math.floor(this.getItemPlayButtonCenter() - (arrowSvgHeight / 2));
+  };
 
-      if (i === 0) {
-        if (slick.currentSlide === 0) {
-          arrow.classList.add('inactive');
-        } else {
-          arrow.classList.remove('inactive');
-        }
-      } else if (!this.options.infinite && i === 1) {
-        var lastSlide = slick.currentSlide >= slick.slideCount - slick.options.slidesToShow;
-        lastSlide ? arrow.classList.add('inactive') : arrow.classList.remove('inactive');
-      }
+  Carousel.prototype.updatePrevArrow = function(slick){
+    var arrow = this.el.querySelector('.tvp-carousel-arrow.prev');
+
+    arrow.style.top = this.getArrowTopValue(arrow) + "px";
+
+    if(0 === slick.currentSlide){
+      arrow.classList.add('inactive');
+    }else{
+      arrow.classList.remove('inactive');
+    }
+  };
+
+  Carousel.prototype.updateNextArrow = function(slick){
+    var arrow = this.el.querySelector('.tvp-carousel-arrow.next');
+
+    arrow.style.top = this.getArrowTopValue(arrow) + "px";
+
+    if (!slick.options.infinite && slick.currentSlide >= (slick.slideCount - slick.options.slidesToShow)){
+      arrow.classList.add('inactive');
+    } else {
+      arrow.classList.remove('inactive');
     }
   };
 
@@ -122,7 +133,8 @@
       });
 
       that.$carousel.on('setPosition', Utils.debounce(function(event, slick) {
-        that.centerArrows(slick);
+        that.updatePrevArrow(slick);
+        that.updateNextArrow(slick);
         Utils.sendMessage({
           event: that.eventPrefix + ':resize',
           height: that.getHeight()
