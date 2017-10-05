@@ -1002,7 +1002,7 @@
           "type": "text",
           "label": "Product Thumbnail Margin Mobile",
           "code": "product_thumbnail_margin_mobile",
-          "value": "0 10px 10px 0"
+          "value": "0 10px 0px 0"
         },
         {
           "for": "modal",
@@ -1884,7 +1884,7 @@
           "type": "text",
           "label": "Mobile Modal Body Padding",
           "code": "mobile_modal_body_padding",
-          "value": "10px"
+          "value": "0px"
         },
         {
           "for": "mobile",
@@ -1926,14 +1926,14 @@
           "type": "text",
           "label": "Mobile Modal Close Button Top",
           "code": "mobile_modal_close_button_top",
-          "value": 0
+          "value": "4px"
         },
         {
           "for": "mobile",
           "type": "text",
           "label": "Mobile Modal Close Button Right",
           "code": "mobile_modal_close_button_right",
-          "value": 0
+          "value": "4px"
         },
         {
           "for": "mobile",
@@ -2017,7 +2017,7 @@
           "type": "text",
           "label": "Mobile Product Price Font Size",
           "code": "mobile_product_price_font_size",
-          "value": "16px"
+          "value": "12px"
         },
         {
           "for": "mobile",
