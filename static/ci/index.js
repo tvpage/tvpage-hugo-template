@@ -5,12 +5,6 @@ var xml2js = require('xml2js')
 var parser = new xml2js.Parser();
 var colors = require('colors/safe');
 
-console.log(process.env.repo)
-console.log(process.env.excludes)
-console.log(process.env.includes)
-
-exit(1);
-
 var fail = function(m,e){
   console.log(colors.red(m),e || '');
   exit(1);
@@ -21,11 +15,29 @@ var pass = function(){
   exit(0);
 };
 
+var repo = {
+  name: 'tvpage-hugo-template',
+  owner: 'tvpage'
+};
+
+var includes = [
+  'static/'
+];
+
+var excludes = [
+  'karma.conf.js',
+  'package.json',
+  'package-lock.json',
+  'gruntfile.js',
+  'Gruntfile.js',
+  'test/',
+  'dist/',
+  'css/'
+];
+
 //Removes the file paths that we don't need to run the check against. This
 //is based in the includes/excludes options.
 function filter(files){
-  var includes = process.env.includes;
-  var excludes = process.env.excludes;
 
   return files.filter(function(file){
     var path = file.filename;
@@ -42,6 +54,7 @@ function filter(files){
   }).filter(Boolean);
 };
 
+//Checks that the metrics of the passed file are covered 75 & up.
 var checkCoverageFileMetrics = function(file){
   var metrics = file.metrics;
   var params = [
@@ -60,6 +73,8 @@ var checkCoverageFileMetrics = function(file){
   return true;
 };
 
+//Retrieves & parses the coverage report in XML, it returns a JSON representation
+//of the report.
 var getCoverageFiles = function(cback){
   fs.readFile(__dirname + '/../coverage/clover.xml', function(error, data) {
     if(error){
@@ -127,7 +142,6 @@ var pullRequestFiles = [];
 
 (function loadPullRequestFiles() {
   var github = new GitHubApi();
-  var repo = process.env.repo;
   
   github.authenticate({
     type: "basic",

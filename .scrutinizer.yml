@@ -32,9 +32,9 @@ checks:
 build:
     environment:
         variables:
-            repo:
-                name: 'tvpage-hugo-template'
-                owner: 'tvpage'
+            # repo:
+            #     name: 'tvpage-hugo-template'
+            #     owner: 'tvpage'
 
             includes:
                 - 'static/'
