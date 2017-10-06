@@ -30,6 +30,25 @@ checks:
         no_loop_var_assign: true
 
 build:
+    environment:
+        variables:
+            repo:
+                name: 'tvpage-hugo-template'
+                owner: 'tvpage'
+
+            includes:
+                - 'static/'
+
+            excludes:
+                - 'karma.conf.js'
+                - 'package.json'
+                - 'package-lock.json'
+                - 'gruntfile.js'
+                - 'Gruntfile.js'
+                - 'test/'
+                - 'dist/'
+                - 'css/'
+            
     dependencies:
         before:
             - cd static && npm install
