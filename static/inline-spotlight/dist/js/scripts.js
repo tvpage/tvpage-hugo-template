@@ -367,8 +367,6 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
           maxAds: isset(advertisingOptions.maxads) ? advertisingOptions.maxads : "100",
           adInterval: isset(advertisingOptions.adinterval) ? String(advertisingOptions.adinterval) : "0"
         });
-
-        console.log("asdfbas;kdfj",this.advertising);
         
         //Context reference for Methods.
         var that = this;
