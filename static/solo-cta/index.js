@@ -163,7 +163,7 @@ var handleVideoClick = function(){
     className: utils.isMobile ? " mobile" : "",
     html: config.templates["modal-content" + (utils.isMobile ? "-mobile" : "")],
     js: [
-        "//a.tvpage.com/tvpa.min.js",
+        "//a.tvpage.com/local/tvpa-alpha.min.js",
         '//imasdk.googleapis.com/js/sdkloader/ima3.js',
         playerUrl,
         config.debug ? config.jsPath + "libs/utils.js" : "",
