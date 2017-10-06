@@ -170,7 +170,7 @@
     var config = {
       domain: location.hostname || '',
       logUrl: opts.api_base_url + '/__tvpa.gif',
-      loginId: loginId
+      li: loginId
     };
   
     if (opts.firstPartyCookies && opts.cookieDomain)
