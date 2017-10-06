@@ -32,22 +32,27 @@ checks:
 build:
     environment:
         variables:
+
+            INCLUDES: "SOME"
+            
+            EXCLUDES: ["SOME"]
+
             # repo:
             #     name: 'tvpage-hugo-template'
             #     owner: 'tvpage'
 
-            includes:
-                - 'static/'
+            # includes:
+            #     - 'static/'
 
-            excludes:
-                - 'karma.conf.js'
-                - 'package.json'
-                - 'package-lock.json'
-                - 'gruntfile.js'
-                - 'Gruntfile.js'
-                - 'test/'
-                - 'dist/'
-                - 'css/'
+            # excludes:
+            #     - 'karma.conf.js'
+            #     - 'package.json'
+            #     - 'package-lock.json'
+            #     - 'gruntfile.js'
+            #     - 'Gruntfile.js'
+            #     - 'test/'
+            #     - 'dist/'
+            #     - 'css/'
             
     dependencies:
         before:
