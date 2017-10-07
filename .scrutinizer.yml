@@ -32,27 +32,13 @@ checks:
 build:
     environment:
         variables:
-
-            INCLUDES: "SOME"
-            
-            EXCLUDES: ["SOME"]
-
-            # repo:
-            #     name: 'tvpage-hugo-template'
-            #     owner: 'tvpage'
-
-            # includes:
-            #     - 'static/'
-
-            # excludes:
-            #     - 'karma.conf.js'
-            #     - 'package.json'
-            #     - 'package-lock.json'
-            #     - 'gruntfile.js'
-            #     - 'Gruntfile.js'
-            #     - 'test/'
-            #     - 'dist/'
-            #     - 'css/'
+            CI_INCLUDES: "static/"
+            CI_EXCLUDES: "karma.conf.js,package.json,package-lock.json,gruntfile.js,Gruntfile.js,test/,dist/,css/"
+            GB_USERNAME: "tvpage-application",
+            GB_PASSWORD: "z8z8ETuxrfD4Fyct"
+            REPO_NAME: "tvpage-hugo-template"
+            REPO_OWNER: "tvpage"
+            COVERAGE_REPORT_PATH: "/../coverage/clover.xml"
             
     dependencies:
         before:

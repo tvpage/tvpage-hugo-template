@@ -11,33 +11,15 @@ var fail = function(m,e){
 };
 
 var pass = function(){
-  console.log(colors.green("check passed"));
+  console.log(colors.green("Check passed.\n"));
   exit(0);
 };
-
-var repo = {
-  name: 'tvpage-hugo-template',
-  owner: 'tvpage'
-};
-
-var includes = [
-  'static/'
-];
-
-var excludes = [
-  'karma.conf.js',
-  'package.json',
-  'package-lock.json',
-  'gruntfile.js',
-  'Gruntfile.js',
-  'test/',
-  'dist/',
-  'css/'
-];
 
 //Removes the file paths that we don't need to run the check against. This
 //is based in the includes/excludes options.
 function filter(files){
+  var includes = (process.env.CI_INCLUDES + "").split(",");
+  var excludes = (process.env.CI_EXCLUDES + "").split(",");
 
   return files.filter(function(file){
     var path = file.filename;
@@ -76,7 +58,7 @@ var checkCoverageFileMetrics = function(file){
 //Retrieves & parses the coverage report in XML, it returns a JSON representation
 //of the report.
 var getCoverageFiles = function(cback){
-  fs.readFile(__dirname + '/../coverage/clover.xml', function(error, data) {
+  fs.readFile(__dirname + process.env.COVERAGE_REPORT_PATH, function(error, data) {
     if(error){
       fail("Can't read coverage report.\n", error);
     }
@@ -136,22 +118,23 @@ function checkFiles(files){
   });
 };
 
+//We will first load all the pull request files page by page, we trigger the check
+//once all files are loaded.
 var filesPerPage = 10;
 var filesPage = 0;
 var pullRequestFiles = [];
-
 (function loadPullRequestFiles() {
   var github = new GitHubApi();
-  
+
   github.authenticate({
     type: "basic",
-    username: 'rfornes',
-    password: 'Jrfp030685311'
+    username: process.env.GB_USERNAME,
+    password: process.env.GB_PASSWORD
   });
 
   github.pullRequests.getFiles({
-    owner: repo.owner,
-    repo: repo.name,
+    owner: process.env.REPO_OWNER,
+    repo: process.env.REPO_NAME,
     number: process.env.SCRUTINIZER_PR_NUMBER || 78,
     per_page: filesPerPage,
     page: filesPage
@@ -169,6 +152,7 @@ var pullRequestFiles = [];
       loadPullRequestFiles();
     }else{
       console.log(colors.yellow("Pull request with: "+ pullRequestFiles.length +" files.\n"));
+      debugger
       checkFiles(pullRequestFiles);
     }
   });
