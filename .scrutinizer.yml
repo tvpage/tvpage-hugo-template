@@ -31,6 +31,7 @@ checks:
 
 build:
     environment:
+
         variables:
             CI_INCLUDES: "static/"
             CI_EXCLUDES: "karma.conf.js,package.json,package-lock.json,gruntfile.js,Gruntfile.js,test/,dist/,css/"
