@@ -12,6 +12,7 @@
   "author": "",
   "license": "",
   "devDependencies": {
+    "colors": "^1.1.0",
     "exit": "^0.1.2",
     "github": "^11.0.0",
     "karma": "^0.13.0",
