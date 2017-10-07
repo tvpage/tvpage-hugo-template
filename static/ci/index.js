@@ -152,7 +152,6 @@ var pullRequestFiles = [];
       loadPullRequestFiles();
     }else{
       console.log(colors.yellow("Pull request with: "+ pullRequestFiles.length +" files.\n"));
-      debugger
       checkFiles(pullRequestFiles);
     }
   });
