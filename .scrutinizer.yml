@@ -34,7 +34,7 @@ build:
         variables:
             CI_INCLUDES: "static/"
             CI_EXCLUDES: "karma.conf.js,package.json,package-lock.json,gruntfile.js,Gruntfile.js,test/,dist/,css/"
-            GB_USERNAME: "tvpage-application",
+            GB_USERNAME: "tvpage-application"
             GB_PASSWORD: "z8z8ETuxrfD4Fyct"
             REPO_NAME: "tvpage-hugo-template"
             REPO_OWNER: "tvpage"
