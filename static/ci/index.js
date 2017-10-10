@@ -18,6 +18,7 @@ var pass = function(){
 //Removes the file paths that we don't need to run the check against. This
 //is based in the includes/excludes options.
 function filter(files){
+
   var includes = (process.env.CI_INCLUDES + "").split(",");
   var excludes = (process.env.CI_EXCLUDES + "").split(",");
 
@@ -37,7 +38,12 @@ function filter(files){
 };
 
 //Checks that the metrics of the passed file are covered 75 & up.
-var checkCoverageFileMetrics = function(file){
+var getFileMetrics = function(file){
+  if(!file.metrics){
+    return null;
+  }
+
+  var obj = {};
   var metrics = file.metrics;
   var params = [
     'statements',
@@ -48,11 +54,10 @@ var checkCoverageFileMetrics = function(file){
   for (var k = 0; k < params.length; k++) {
     var param = params[k];
     var count = metrics[param];
-    if (count > 0 && ( (metrics['covered' + param] * 100) / count ) < 75)
-      return false;
+    obj[param] = count <= 0 ? 100 : (metrics['covered' + param] * 100) / count;
   }
 
-  return true;
+  return obj;
 };
 
 //Retrieves & parses the coverage report in XML, it returns a JSON representation
@@ -75,10 +80,12 @@ var getCoverageFiles = function(cback){
           project = coverage.project[0];
         
         var files = [];
-        var package = project.package[0];
-      
-        if(package && package.file)
-          files = package.file;
+        var packages = project.package || [];
+        for (var i = 0; i < packages.length; i++) {
+          var package = packages[i];
+          if(package.file)
+            files = files.concat(package.file);
+        }
       
         files = files.map(function(f){
           return {
@@ -96,7 +103,7 @@ var getCoverageFiles = function(cback){
 function checkFiles(files){
   getCoverageFiles(function(coverageFiles){
     files = filter(files);
-    
+
     for (var i = 0; i < files.length; i++) {
       var path = files[i].filename;
       var matchFile = null;
@@ -107,10 +114,27 @@ function checkFiles(files){
           matchFile = coverageFile;
       }
       
-      if(matchFile && checkCoverageFileMetrics(matchFile)){
-        pass();
-      }else{
-        fail("File: "+ path +" coverage is less than 75 or null.\n");
+      var fileMsg = "File: " + path;
+      if(matchFile === null){
+        fail(fileMsg + " has zero coverage.\n");
+      }
+
+      var fileMetrics = getFileMetrics(matchFile);
+      var failMsg = "coverage is: ";
+
+      var statements = fileMetrics.statements;
+      if (statements < 75) {
+        fail(fileMsg + " statements " + failMsg + statements);
+      }
+
+      var conditionals = fileMetrics.conditionals;
+      if (conditionals < 75) {
+        fail(fileMsg + " conditionals " + failMsg + conditionals);
+      }
+
+      var methods = fileMetrics.methods;
+      if (methods < 75) {
+        fail(fileMsg + " methods " + failMsg + methods);
       }
     }
 
@@ -135,7 +159,7 @@ var pullRequestFiles = [];
   github.pullRequests.getFiles({
     owner: process.env.REPO_OWNER,
     repo: process.env.REPO_NAME,
-    number: process.env.SCRUTINIZER_PR_NUMBER || 78,
+    number: process.env.SCRUTINIZER_PR_NUMBER,
     per_page: filesPerPage,
     page: filesPage
   }, function(error, response) {
