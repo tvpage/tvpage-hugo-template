@@ -13,22 +13,33 @@
 "}" +
 
 ".tvp-product {" +
-    "border: {{ ($.Scratch.Get "settings").product_thumbnail_border }};" +
-    "margin-right: {{ ($.Scratch.Get "settings").product_thumbnail_margin_right }};" +
-    "margin-bottom: {{ ($.Scratch.Get "settings").product_thumbnail_margin_bottom }};" +
+    "border: {{ ($.Scratch.Get "settings").product_thumbnail_border_mobile }};" +
+    "margin: {{ ($.Scratch.Get "settings").product_thumbnail_margin_mobile }};" +
 "}" +
 
-".tvp-product-title {" +
-    "margin: {{ ($.Scratch.Get "settings").product_title_margin_mobile }};" +
-    "font-family: {{ ($.Scratch.Get "settings").product_title_font_family_mobile }};" +
-    "font-weight: {{ ($.Scratch.Get "settings").product_title_font_weight_mobile }};" +
-    "font-size: {{ ($.Scratch.Get "settings").product_title_font_size_mobile }};" +
-    "color: {{ ($.Scratch.Get "settings").product_title_font_color_mobile }};" +
-    "text-decoration: {{ ($.Scratch.Get "settings").product_title_text_decoration_mobile }};" +
-    "text-align: {{ ($.Scratch.Get "settings").product_title_text_align_mobile }};" +
+".tvp-product-data .tvp-product-title {" +
+  "height: {{ ($.Scratch.Get "settings").mobile_product_title_height }};" +
+  "overflow: hidden;" +
+  "margin: {{ ($.Scratch.Get "settings").mobile_product_title_margin }};" +
+  "font-size: {{ ($.Scratch.Get "settings").mobile_product_title_font_size }};" +
+  "font-weight: {{ ($.Scratch.Get "settings").mobile_product_title_font_weight }};" +
+  "font-family: {{ ($.Scratch.Get "settings").mobile_product_title_font_family }};" +
+  "color: {{ ($.Scratch.Get "settings").mobile_product_title_font_color }};" +
+  "text-align: {{ ($.Scratch.Get "settings").mobile_product_title_text_align }};" +
+  "text-transform: {{ ($.Scratch.Get "settings").mobile_product_title_text_transform }};" +
+  "line-height: {{ ($.Scratch.Get "settings").mobile_product_title_line_height }};" +
 "}" +
 
-".tvp-product-sku {" +
+".tvp-product-data .tvp-product-price {" +
+  "margin: {{ ($.Scratch.Get "settings").mobile_product_price_margin }};" +
+  "font-size: {{ ($.Scratch.Get "settings").mobile_product_price_font_size }};" +
+  "font-weight: {{ ($.Scratch.Get "settings").mobile_product_price_font_weight }};" +
+  "font-family: {{ ($.Scratch.Get "settings").mobile_product_price_font_family }};" +
+  "color: {{ ($.Scratch.Get "settings").mobile_product_price_font_color }};" +
+  "text-align: {{ ($.Scratch.Get "settings").mobile_product_price_text_align }};" +
+"}" +
+
+".tvp-product-data .tvp-product-sku {" +
     "color: {{ ($.Scratch.Get "settings").product_sku_font_color_mobile }};" +
     "font-size: {{ ($.Scratch.Get "settings").product_sku_font_size_mobile }};" +
     "font-family: {{ ($.Scratch.Get "settings").product_sku_font_family_mobile }};" +
@@ -37,12 +48,25 @@
     "margin: {{ ($.Scratch.Get "settings").product_sku_margin_mobile }};" +
 "}" +
 
-".tvp-product-price {" +
-    "color: {{ ($.Scratch.Get "settings").product_price_font_color_mobile }};" +
-    "font-size: {{ ($.Scratch.Get "settings").product_price_font_size_mobile }};" +
-    "font-family: {{ ($.Scratch.Get "settings").product_price_font_family_mobile }};" +
-    "font-weight: {{ ($.Scratch.Get "settings").product_price_font_weight_mobile }};" +
-    "text-align: {{ ($.Scratch.Get "settings").product_price_text_align_mobile }};" +
+".tvp-product-cta {" +
+    "width: {{ ($.Scratch.Get "settings").product_popup_cta_width_480 }};" +
+    "border-radius: {{ ($.Scratch.Get "settings").product_popup_cta_border_radius_480 }};" +
+    "background: {{ ($.Scratch.Get "settings").product_popup_cta_background }};" +
+    "border: {{ ($.Scratch.Get "settings").product_popup_cta_border }};" +
+    "border-bottom: {{ ($.Scratch.Get "settings").product_popup_cta_border_bottom }};" +
+    "color: {{ ($.Scratch.Get "settings").product_popup_cta_font_color }};" +
+    "text-transform: {{ ($.Scratch.Get "settings").product_popup_cta_text_transform }};" +
+    "font-size: {{ ($.Scratch.Get "settings").product_popup_cta_font_size_480 }};" +
+    "font-family: {{ ($.Scratch.Get "settings").product_popup_cta_font_family }};" +
+    "font-weight: {{ ($.Scratch.Get "settings").product_popup_cta_font_weight }};" +
+    "height: {{ ($.Scratch.Get "settings").product_popup_cta_height_480 }};" +
+    "position: {{ ($.Scratch.Get "settings").product_popup_cta_position_480 }};" +
+    "right: {{ ($.Scratch.Get "settings").product_popup_cta_right_480 }};" +
+    "bottom: {{ ($.Scratch.Get "settings").product_popup_cta_bottom_480 }};" +
+"}" +
+
+".tvp-product-cta:hover {" +
+    "background: {{ ($.Scratch.Get "settings").product_popup_cta_background_hover }};" +
 "}" +
 
 ".tvp-reviews {" +
@@ -91,24 +115,6 @@
 
 ".tvp-product-popup-image {" +
     "background-size: {{ ($.Scratch.Get "settings").product_thumbnail_background_image_size }};" +
-"}" +
-
-".tvp-product-cta {" +
-    "width: {{ ($.Scratch.Get "settings").product_popup_cta_width_480 }};" +
-    "border-radius: {{ ($.Scratch.Get "settings").product_popup_cta_border_radius_480 }};" +
-    "background: {{ ($.Scratch.Get "settings").product_popup_cta_background }};" +
-    "border: {{ ($.Scratch.Get "settings").product_popup_cta_border }};" +
-    "border-bottom: {{ ($.Scratch.Get "settings").product_popup_cta_border_bottom }};" +
-    "color: {{ ($.Scratch.Get "settings").product_popup_cta_font_color }};" +
-    "text-transform: {{ ($.Scratch.Get "settings").product_popup_cta_text_transform }};" +
-    "font-size: {{ ($.Scratch.Get "settings").product_popup_cta_font_size_480 }};" +
-    "font-family: {{ ($.Scratch.Get "settings").product_popup_cta_font_family }};" +
-    "font-weight: {{ ($.Scratch.Get "settings").product_popup_cta_font_weight }};" +
-    "height: {{ ($.Scratch.Get "settings").product_popup_cta_height_480 }};" +
-"}" +
-
-".tvp-product-cta:hover {" +
-    "background: {{ ($.Scratch.Get "settings").product_popup_cta_background_hover }};" +
 "}" +
 
 ".tvp-arrow-indicator:before {" +
@@ -189,6 +195,8 @@
   "font-weight:{{ ($.Scratch.Get "settings").mobile_products_headline_font_weight }};" +
   "text-transform:{{ ($.Scratch.Get "settings").mobile_products_headline_text_transform }};" +
   "color:{{ ($.Scratch.Get "settings").mobile_products_headline_text_color }};" +
+  "text-align:{{ ($.Scratch.Get "settings").mobile_products_headline_text_align }};" +
+  "margin:{{ ($.Scratch.Get "settings").mobile_products_headline_margin }};" +
 "}" +
 
 ".tvp-slider-dots li button:before {" +

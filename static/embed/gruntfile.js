@@ -31,7 +31,7 @@ module.exports = function(grunt) {
         },
         scripts: {
           files: {
-            'dist/js/scripts.min.js': ['js/libs/analytics.js','js/libs/player.js', 'js/index.js']
+            'dist/js/scripts.min.js': ['../libs/analytics.js','../libs/player.js', 'js/index.js']
           }
         }
       }

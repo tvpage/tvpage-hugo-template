@@ -35,20 +35,26 @@
     };
 
     var loadProducts = function(videoId,settings,fn){
-        if (!videoId) return;
-        var src = settings.api_base_url + '/videos/' + videoId + '/products?X-login-id=' + settings.loginId;
-        var cbName = 'tvp_' + Math.floor(Math.random() * 555);
-        src += '&callback='+cbName;
-        var script = document.createElement('script');
-        script.src = src;
-        window[cbName || 'callback'] = function(data){
+        if (!videoId)
+            return;
+
+        Utils.loadScript({
+            base: settings.api_base_url + '/videos/' + videoId + '/products',
+            params: {
+                'X-login-id': settings.loginId,
+                o: settings.products_order_by,
+                od: settings.products_order_direction,
+                callback: 'tvpcallback'
+            }
+        });
+
+        window['tvpcallback'] = function(data){
             if (data && data.length && 'function' === typeof fn) {
                 fn(data);
             } else {
                 fn([]);
             }
         };
-        body.appendChild(script);
     };
 
     var render = function(data, config){
@@ -278,7 +284,9 @@
                 }
             };
 
-            player = new Player('tvp-player-el',s,data.selectedVideo.id);
+            var player = new Player('tvp-player-el',s,data.selectedVideo.id);
+            player.initialize();
+            
             window.addEventListener('resize', Utils.debounce(function(){
                 player.resize();
             },85));
@@ -306,10 +314,6 @@
                     firstPartyCookies: settings.firstpartycookies,
                     cookieDomain: settings.cookiedomain
                 });
-                analytics.track('ci', {
-                    li: loginId
-                });
-
                 var selectedVideo = data.selectedVideo;
                 if (Utils.isset(selectedVideo,'products')) {
                     render(selectedVideo.products,settings);

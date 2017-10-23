@@ -1,6 +1,7 @@
-{{- $channel := index $.Site.Data.channels (printf "x%s" .Params.channelid ) -}}
-{{- $.Scratch.Add "channelData" $channel -}}
-{{- if $channel -}}
+{{- $channels := $.Site.Data.channels -}}
+{{- if not (eq $channels nil) -}}
+  {{- $channel := index $.Site.Data.channels (printf "x%s" .Params.channelid ) -}}
+  {{- $.Scratch.Add "channelData" $channel -}}
   {{- $.Scratch.SetInMap "settings" "channelData" $channel -}}
 {{- end -}}
 {{- $baseUrl := .Site.BaseURL -}}
