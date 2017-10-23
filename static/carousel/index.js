@@ -285,7 +285,7 @@ function handleResize(e) {
 }
 
 var getPlayerUrl = function(){
-  var url = "https://cdnjs.tvpage.com/tvplayer/tvp-" + config.player_version + ".min.js";
+  var url = "https://cdnjs.tvpage.com/tvplayer/local/tvp-3.1.3.min.js";
   if (config.player_url && (config.player_url + "").trim().length) {
     url = config.player_url;
   }

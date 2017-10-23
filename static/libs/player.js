@@ -220,8 +220,6 @@
     if(this.onPlayerReady){
       this.onPlayerReady(this);
     }
-  
-    this.play(this.getCurrentAsset());
   };
   
   Player.prototype.notifyState = function(e){
@@ -243,7 +241,7 @@
     }
   
     var next = this.assets[this.current];
-    
+
     this.play(next, true);
     if (this.onNext) {
       this.onNext(next);
@@ -256,7 +254,7 @@
     if ('tvp:media:videoended' === e)
       this.handleVideoEnded();
   };
-  
+
   Player.prototype.addExtraConfig = function(config){
     config = config || {};
     var extras = ["preload", "poster", "overlay"];
@@ -307,6 +305,8 @@
           };
   
           that.player = new TVPage.player(config);
+          that.instance = that.player;
+          that.play(that.getCurrentAsset());
         }
       }, 150);
     })();
