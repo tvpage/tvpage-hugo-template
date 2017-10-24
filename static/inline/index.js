@@ -114,7 +114,7 @@ if ( !config.hasOwnProperty('targetEl') ||  !document.getElementById(config.targ
 
 var targetElement = document.getElementById(config.targetEl);
 targetElement.insertAdjacentHTML('beforebegin', "<style>" + config.css["host-custom"] + "</style>" + hostCssTag + '<div id="' + id + '-holder" class="tvp-inline-holder">'+
-'<iframe class="tvp-iframe" src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe><div id="tvp_widget_loader">'+config.templates.inline['loader']+'</div></div>');
+'<iframe class="tvp-iframe" src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe><div id="tvp_widget_loader">'+config.templates.inline['loader']+'</div></div>');
 targetElement.parentNode.removeChild(targetElement);
 
 config.id = id;
