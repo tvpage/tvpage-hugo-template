@@ -16,7 +16,9 @@
     <div id="tvp-player-el"></div>
   </div>
   <script async src="//a.tvpage.com/tvpa.min.js"></script>
-  <script async src='//cdnjs.tvpage.com/tvplayer/tvp-{{ ($.Scratch.Get "settings").player_version }}.min.js'></script>
+  <!-- <script async src='//cdnjs.tvpage.com/tvplayer/tvp-{{ ($.Scratch.Get "settings").player_version }}.min.js'></script> -->
+  <!-- <script async src='http://local.tvpage.com/tvplayer/dist/debug/lib.js'></script> -->
+  <script async src='//cdnjs.tvpage.com/tvplayer/lib.js'></script>
   {{ if (getenv "HUGO_DEBUG") }}
   <script src="{{ (printf "%s/js/libs/utils.js" .Type ) | absURL }}"></script>
   <script src="{{ (printf "%s/js/libs/analytics.js" .Type ) | absURL }}"></script>

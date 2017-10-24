@@ -253,8 +253,9 @@
             window.addEventListener('resize', that.resize,false);
         }
 
-        that.current = that.getCurrentIndex(startWith);
-        that.play(that.assets[that.current],null,true);
+        // that.current = that.getCurrentIndex(startWith);
+        // that.play(that.assets[that.current],null,true);
+
         if (that.onPlayerReady) {
           that.onPlayerReady();
         }
@@ -335,7 +336,9 @@
           }
 
           that.player = new TVPage.player(playerOptions);
-          
+          that.instance = that.player;
+          that.current = that.getCurrentIndex(startWith);
+          that.play(that.assets[that.current],null,true);      
         }
       },150);
     })();
