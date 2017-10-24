@@ -335,6 +335,7 @@
           }
 
           that.player = new TVPage.player(playerOptions);
+          
         }
       },150);
     })();
