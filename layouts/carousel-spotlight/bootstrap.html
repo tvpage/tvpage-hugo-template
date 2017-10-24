@@ -2,6 +2,7 @@
 (function(){
 
 	var bootstrap = {{ $.Scratch.Get "settings" | jsonify }};
+	bootstrap.type = "{{ .Type }}";
 	bootstrap.baseUrl = "{{ $.Site.BaseURL }}";
 	bootstrap.templates = {
 		carousel: {{- (partial (printf "%s/carousel.html" .Type) .) -}},
