@@ -29,6 +29,7 @@
 
         this.isFullScreen = false;
         this.initialResize = true;
+        this.isReady = false;
         this.version = isset(options.player_version) ? options.player_version : null;
         this.onResize = isset(options.onResize) && isFunction(options.onResize) ? options.onResize : null;
         this.onNext = isset(options.onNext) && isFunction(options.onNext) ? options.onNext : null;
@@ -220,6 +221,7 @@
 
             that.current = current;                            
             that.play(that.assets[that.current]);
+            that.isReady = true;
             if (window.DEBUG) {
                 console.debug("endTime = " + performance.now());
             }

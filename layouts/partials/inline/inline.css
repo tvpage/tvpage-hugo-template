@@ -8,8 +8,24 @@
 	'font-family: {{- ($.Scratch.Get "settings").font_family -}};' +
 	'color: {{- ($.Scratch.Get "settings").font_color -}};' +
 	'padding: {{- ($.Scratch.Get "settings").body_padding -}};' +
-	'background: {{- ($.Scratch.Get "settings").body_background -}};' +
 '}' +
+
+'.tvp_player_dummy_overlay{'+
+	'position: relative;'+
+	'padding-top: 56.25%;'+
+'}'+
+
+'.tvp_player_dummy_overlay > div{'+
+	'position: absolute;'+
+	'background-position: center;'+
+	'background-repeat: no-repeat;'+
+	'background-size: cover;'+
+	'top:0;'+
+	'bottom: 0;'+
+	'left: 0;'+
+	'right: 0;'+
+'}'+
+
 // ### header section
 '.tvp-row-titles{' +	
 	'height: {{- ($.Scratch.Get "settings").header_height -}};' +
@@ -119,9 +135,12 @@
 
 '.tvp-product-info-title { '+
 	'font-size: calc({{- ($.Scratch.Get "settings").product_item_title_font_size_min -}}px + ({{- ($.Scratch.Get "settings").product_item_title_font_size_max }} - {{ ($.Scratch.Get "settings").product_item_title_font_size_min -}}) * ((100vw - 300px) / (1600 - 300)));' +
+	'max-height: calc(({{- ($.Scratch.Get "settings").product_item_title_font_size_min -}}px + ({{- ($.Scratch.Get "settings").product_item_title_font_size_max }} - {{ ($.Scratch.Get "settings").product_item_title_font_size_min -}}) * ((100vw - 300px) / (1600 - 300))) * 2);'+
 	'color: {{- ($.Scratch.Get "settings").product_item_title_font_color -}};' +
 	'font-weight: {{- ($.Scratch.Get "settings").product_item_title_font_weight -}};' +
-	'line-height: {{- ($.Scratch.Get "settings").product_item_title_line_height -}};' +
+	'overflow: hidden;'+
+	'padding-bottom: 2px;'+
+	'line-height: calc({{- ($.Scratch.Get "settings").product_item_title_font_size_min -}}px + ({{- ($.Scratch.Get "settings").product_item_title_font_size_max }} - {{ ($.Scratch.Get "settings").product_item_title_font_size_min -}}) * ((100vw - 300px) / (1600 - 300)));' +
 '}' +
 
 '.tvp-product-info-view-details{' +
