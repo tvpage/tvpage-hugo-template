@@ -2,6 +2,31 @@
 
   function Utils() {
 
+    this.addEvent = function(element, event, arr, func) {
+      element.removeEventListener(event, clickHandler, false);
+      element.addEventListener(event, clickHandler, false);
+      function clickHandler(e){
+        var that = this;
+        var type;
+        var checkEl = function (el) {
+          if (el && el !== that) {
+            for (var i = 0; i < arr.length; i++) {
+              if (el.classList.contains(arr[i])) {
+                type = arr[i]
+                return el;
+              }
+            }
+            return checkEl(el.parentNode);
+          }
+          return false;
+        }
+        var el = checkEl(e.target);
+        if (el !== false) {
+          func.call(this, type, el, e);
+        }
+      }
+    };
+
     this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     this.isIOS = /iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream;
     this.getByClass = function(c){
@@ -13,8 +38,13 @@
     };
 
     this.isEmpty = function(obj) {
-      for(var key in obj) { if (obj.hasOwnProperty(key)) return false;}
-      return true;
+      if (!obj || typeof obj == 'undefined') return;
+      for(var prop in obj) {
+          if(obj.hasOwnProperty(prop))
+              return false;
+      }
+
+      return JSON.stringify(obj) === JSON.stringify({});
     };
 
     this.isset = function(o,p){
@@ -74,6 +104,38 @@
             if(obj.classList[i] === c) return true;
         }
         return false;
+    };
+
+    this.loadProducts = function(videoId, loginId, fn) {
+        if (!videoId) return;
+        var src = '//api.tvpage.com/v1/videos/' + videoId + '/products?X-login-id=' + loginId;
+        var cbName = 'tvp_' + Math.floor(Math.random() * 555);
+        src += '&callback=' + cbName;
+        var script = document.createElement('script');
+        script.src = src;
+        window[cbName || 'callback'] = function(data) {
+            if (data && data.length && 'function' === typeof fn) {
+                fn(data);
+            } else {
+                fn([]);
+            }
+        };
+        document.body.appendChild(script);
+    };
+
+    this.dataCheck = function(obj, prop, callback){
+      var tries = 0,
+          that = this,
+      checkData = setInterval(function() {
+          if (tries > 100) {
+              clearInterval(checkData);
+              console.warn('No data');
+          }else if (!that.isEmpty(obj[prop])) {
+            clearInterval(checkData);
+            callback();
+          }else return;
+          tries++
+      }, 10);
     };
   }
 

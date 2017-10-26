@@ -7,6 +7,18 @@
             "value": "//api.tvpage.com/v1"
         },
         {
+            "type": "text",
+            "label": "Videos Order By",
+            "code": "videos_order_by",
+            "value": "sortOrder"
+        },
+        {
+            "type": "text",
+            "label": "Videos Order Direction",
+            "code": "videos_order_direction",
+            "value": "ASC"
+        },
+        {
             "for": "player",
             "type": "text",
             "label": "Player Version",
@@ -44,7 +56,7 @@
             "for": "inline",
             "type": "text",
             "label": "iFrame Holder Background Color",
-            "code": "body_padding",
+            "code": "body_background",
             "value": "transparent"
         },
         {
@@ -151,7 +163,21 @@
             "label": "Video Header Case",
             "code": "video_header_case",
             "value": "none"
-        },        
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Products Order By",
+            "code": "products_order_by",
+            "value": "sortOrder"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Products Order Direction",
+            "code": "products_order_direction",
+            "value": "ASC"
+        },
         {
             "for": "inline",
             "type": "text",
@@ -473,6 +499,13 @@
             "label": "Product Holder Slider Dots Color",
             "code": "product_holder_slide_dots_color",
             "value": "#D8D8D8"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Holder Slider Center Padding",
+            "code": "product_holder_slide_center_padding",
+            "value": "0"
         },
         {
             "for": "inline",
@@ -862,6 +895,13 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Videos Carousel Padding",
+            "code": "videos_carousel_center_padding",
+            "value": "0"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Videos Carousel Arrow Left",
             "code": "videos_carousel_arrow_left",
             "value": "0"
@@ -914,7 +954,13 @@
             "label": "Videos Carousel Arrow Active Opacity",
             "code": "videos_carousel_arrow_active_opacity",
             "value": "1"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Player Thumbnail",
+            "code": "player_thumbnail",
+            "value": " "
         }
-
     ]
 }

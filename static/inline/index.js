@@ -6,6 +6,21 @@ var utils = {
         if (p) val = o[p];
         return "undefined" !== typeof val;
     },
+    isEvent: function (e, type) {    
+        return (e && utils.isset(e, "data") && utils.isset(e.data, "event") && config.eventPrefix + type === e.data.event);
+    },
+    getEventType: function (e) {
+      var evt = null
+        if (e && utils.isset(e, "data") && utils.isset(e.data, "event") ) {
+          evt= e.data.event;
+        }
+        
+        if (evt && evt.length && evt.substr(0, config.eventPrefix.length) === config.eventPrefix) {
+          return evt.substr(config.eventPrefix.length + 1);
+        }
+        
+        return null;
+    },
     getIframeHtml: function(options) {
         var html = '<head><base target="_blank" /></head><body class="' + (options.className || '') + '" data-domain="' +
             (options.domain || '') + '" data-id="' + (options.id || '') + '" onload="' +
@@ -72,6 +87,11 @@ var utils = {
             }
         }
         return out;
+    },
+    setAttributes: function (el, attrs) {
+      for(var key in attrs) {
+        el.setAttribute(key, attrs[key]);
+      }
     }
 };
 
@@ -92,7 +112,7 @@ if ("object" === typeof __TVPage__.config[id]) {
 }
 
 var __windowCallbackFunc__ = null;
-if (   __TVPage__.config[id].hasOwnProperty('onChange') && typeof   __TVPage__.config[id].onChange == "function" ) {
+if (   __TVPage__.config[id].hasOwnProperty('onChange') && typeof __TVPage__.config[id].onChange == "function" ) {
   __windowCallbackFunc__ = __TVPage__.config[id].onChange;
   delete __TVPage__.config[id].onChange;
 }
@@ -105,17 +125,16 @@ if (!document.getElementById(hostCssTagId)) {
   hostCssTag = '<style id="' + hostCssTagId + '">' + config.css.host + '</style>';
 }
 
-var targetElement;
 if ( !config.hasOwnProperty('targetEl') ||  !document.getElementById(config.targetEl) ) {
   throw new Error ( "Must provide a targetEl");
 } 
 
 var targetElement = document.getElementById(config.targetEl);
-targetElement.insertAdjacentHTML('beforebegin', "<style>" + config.css["host-custom"] + "</style>" + hostCssTag + '<div id="' + id + '-holder" class="tvp-inline-holder">'+
-'<iframe class="tvp-iframe" src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe></div>');
-targetElement.parentNode.removeChild(targetElement);
+targetElement.insertAdjacentHTML('beforeend', "<style>" + config.css["host-custom"] + "</style>" + hostCssTag +
+'<iframe class="tvp-iframe tvp-hidden" src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe>');
 
 config.id = id;
+config.productsFirstData = {};
 config.staticPath = config.baseUrl + "/inline";
 config.mobilePath = utils.isMobile ? 'mobile/' : '';
 config.distPath = config.debug ? '/' : '/dist/';
@@ -124,8 +143,7 @@ config.jsPath = config.staticPath  + '/dist/js/';
 config.eventPrefix = ("tvp_" + config.id).replace(/-/g,'_');
 
 var playerUrl = "https://cdnjs.tvpage.com/tvplayer/tvp-" + config.player_version + ".min.js";
-var holder = document.getElementById(config.id + "-holder");
-utils.isset(config, 'iframe_holder_background_color') ? holder.style.cssText += 'background-color:'+ config.iframe_holder_background_color +';' : null;
+var holder = document.getElementById(config.id);
 var iframe = holder.querySelector("iframe");
 var iframeDocument = iframe.contentWindow.document;
 
@@ -148,26 +166,40 @@ iframeDocument.open().write(utils.getIframeHtml({
 }));
 iframeDocument.close();
 
-var isEvent = function (e, type) {    
-    return (e && utils.isset(e, "data") && utils.isset(e.data, "event") && config.eventPrefix + type === e.data.event);
+function handlePostMessages(e){
+  var eventType = utils.getEventType(e);
+  switch (eventType) {
+    case 'initialize':
+      handleInitialize();
+      break;
+    case 'resize':
+      handleResize(e);
+      break;
+    default: 
+  }
 };
+
+function handleInitialize(){
+    var loader = targetElement.querySelector('#tvp-widget-loader'),
+        loaderStyles = document.querySelector('#tvp-loader-styles');
+    if (loaderStyles && loader) {
+        loaderStyles.parentNode.removeChild(loaderStyles);
+        loader.parentNode.removeChild(loader);
+    }
+    utils.setAttributes(targetElement,{
+        'id': id + '-holder',
+        'class': 'tvp-inline-holder'
+
+    })
+    iframe.classList.remove('tvp-hidden');
+    utils.isset(config, 'iframe_holder_background_color') ? holder.style.cssText += 'background-color:'+ config.iframe_holder_background_color +';' : null;
+}
+
+function handleResize(e){
+    if (!e.data.height) return;
+    holder.style.cssText += 'height:'+e.data.height;
+}
 
 window.addEventListener("message", function(e){
-    if (!isEvent(e, ":resize")) return;
-    holder.style.height = e.data.height;
+  handlePostMessages(e);
 });
-
-var clickData = {};
-
-var getEventType = function (e) {
-  var evt = null
-    if (e && utils.isset(e, "data") && utils.isset(e.data, "event") ) {
-      evt= e.data.event;
-    }
-    
-    if (evt && evt.length && evt.substr(0, config.eventPrefix.length) === config.eventPrefix) {
-      return evt.substr(config.eventPrefix.length + 1);
-    }
-    
-    return null;
-};

@@ -12,14 +12,15 @@
       '<div class="tvp-content">' +
          '<div class="tvp-player" id="tvpPlayerView">' +
             '<div class="tvp-content">' +
-               '<div id="tvp-player"></div>' +
+               '<div id="tvp-player">'+
+                  '<div class="tvp-player-dummy-overlay"><div><div class="tvplayer-playbutton first"><div class="tvplayer-playbutton-icon"></div></div></div></div>'+
+               '</div>' +
                '<div id="tvp-controls" class="tvp-not-active"> ' +
                   '<span class="tvp-icon tvp-icon-play"></span> <span class="tvp-icon tvp-icon-play anim"></span>' +
                '</div>' +
             '</div>' +
          '</div>' +
          '<div class="tvp-featured" id="tvpFeaturedProduct">' +
-            '<h2>{{- ($.Scratch.Get "settings").product_header_title_text -}}</h2>' +
          '</div>' +
          '<div class="tvp-mobile-product-title">' +
             '<h2>Products</h2>' +

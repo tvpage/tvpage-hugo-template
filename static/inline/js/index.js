@@ -1,50 +1,50 @@
 ;(function(window,document) {
-    var render = function(target,data){
-        if (!target) return;
-        var frag = document.createDocumentFragment();
-        var main = document.createElement('div');
-        var d = data || {};
-
-        main.id = d.id || '';
-        main.classList.add('iframe-content');
-        main.innerHTML = data.inlineTemplate;
-
-        frag.appendChild(main);
-        target.appendChild(frag);
-    },
-    isset = function(o,p){
-            var val = o;
-            if (p) val = o[p];
-            return 'undefined' !== typeof val;
-        };
-
-    var body = document.body;
-
-    var initialize = function(){       
-        var settings = {};
-
-        if (Utils.isset(parent) && Utils.isset(parent,'__TVPage__') && Utils.isset(parent.__TVPage__, 'config')) {
-            settings = parent.__TVPage__.config[body.getAttribute('data-id')];
+    var utils = {
+        dBody: document.body,
+        render: function(data){
+            if (!this.dBody || !data) return;
+            var frag = document.createDocumentFragment(),
+                main = document.createElement('div'),
+                d = data || {},
+                settings = d.settings || {},
+                videoData = settings.videoData || {};
+            main.id = d.id || '';
+            main.classList.add('iframe-content');
+            main.innerHTML = data.inlineTemplate;
+            frag.appendChild(main);
+            this.dBody.appendChild(frag);
+            main.querySelector('.tvp-player-dummy-overlay').firstChild.style.backgroundImage = 'url('+(videoData.length?videoData[0].asset.thumbnailUrl:"")+')';
         }
-
-        render(body,{
+    },
+    initialize = function(settings){
+        if ((!Utils.isset(parent) || !Utils.isset(parent,'__TVPage__') || !Utils.isset(parent.__TVPage__, 'config'))) return;
+        utils.render({
             id: settings.name,
             title: settings.title || 'Recommended Videos',
-            inlineTemplate: settings.templates.inline
+            inlineTemplate: settings.templates.inline,
+            settings: settings
         });
 
-        var checks = 0;
-        (function libsReady(){
+        var libChecks = 0;
+        (function libChecker(){
             setTimeout(function(){
-                if ( (!isset(window,'TVPage') || !isset(window,'_tvpa')) && (++checks < 200) ) {
-                    libsReady();
+                if ((!Utils.isset(window,'TVPage') || !Utils.isset(window,'_tvpa') || !Utils.isset(window,'Inline')) && (++libChecks < 200) ) {
+                    libChecker();
                 }
-                else{
-                    Inline(settings.name, settings);
+                else{                    
+                    var inline = new Inline(settings);
+                    inline.init();
                 }
-            }, 150);
+            }, 100);
         })();
     };
-    
-    initialize();
+    var settings = parent.__TVPage__.config[utils.dBody.getAttribute('data-id')];
+    Utils.dataCheck(settings,'videoData',function(){
+        Utils.loadProducts(settings.videoData[0].id, settings.videoData[0].loginId,function(data){
+            if (data || data.length){
+                settings.productsFirstData = data || [];
+            }
+            initialize(settings);
+        });
+    });
 }(window, document));

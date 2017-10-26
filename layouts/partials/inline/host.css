@@ -3,12 +3,22 @@
 '}' +
 '.tvp-inline-holder {' +
   'position: relative;' +
+  'padding-top: 56.25%;' +
+  'height: 0;'+
 '}' +
 
-'.tvp-inline-holder > iframe {' +
+'.tvp-iframe {' +
   'top: 0;' +
   'left: 0;' +
+  'bottom: 0;' +
+  'right: 0;' +
   'width: 100%;' +
   'height: 100%;' +
   'position: absolute;' +
+'}'+
+
+'.tvp-iframe.tvp-hidden {' +
+  'visibility: hidden;' +
+  'opacity: 0;' +
 '}'
+
