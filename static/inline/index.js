@@ -131,7 +131,7 @@ if ( !config.hasOwnProperty('targetEl') ||  !document.getElementById(config.targ
 
 var targetElement = document.getElementById(config.targetEl);
 targetElement.insertAdjacentHTML('beforeend', "<style>" + config.css["host-custom"] + "</style>" + hostCssTag +
-'<iframe class="tvp-iframe hiiiiiiden" src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe>');
+'<iframe class="tvp-iframe tvp-hidden" src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe>');
 
 config.id = id;
 config.productsFirstData = {};
@@ -191,7 +191,7 @@ function handleInitialize(){
         'class': 'tvp-inline-holder'
 
     })
-    iframe.classList.remove('hiiiiiiden');
+    iframe.classList.remove('tvp-hidden');
     utils.isset(config, 'iframe_holder_background_color') ? holder.style.cssText += 'background-color:'+ config.iframe_holder_background_color +';' : null;
 }
 

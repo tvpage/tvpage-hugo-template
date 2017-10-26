@@ -41,9 +41,9 @@
     var settings = parent.__TVPage__.config[utils.dBody.getAttribute('data-id')];
     Utils.dataCheck(settings,'videoData',function(){
         Utils.loadProducts(settings.videoData[0].id, settings.videoData[0].loginId,function(data){
-            settings.productsFirstData = data || [];
-        });
-        Utils.dataCheck(settings,'productsFirstData',function(){
+            if (data || data.length){
+                settings.productsFirstData = data || [];
+            }
             initialize(settings);
         });
     });

@@ -769,11 +769,18 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             }
             container.innerHTML = rowEl;
 
-
-             selectedVideo = data[0];
-
             //render products 
+            selectedVideo = data[0];
+            analytics =  new Analytics();
+            analytics.initConfig({
+                domain: location.hostname || '',
+                logUrl: options.api_base_url + '/__tvpa.gif',
+                loginId: loginId,
+                firstPartyCookies: options.firstpartycookies,
+                cookieDomain: options.cookiedomain
+            });
             _this.renderProducts(selectedVideo.id, loginId); 
+
             if (helpers.renderedApproach() == 'mobile') {
                 helpers.emitMessage('resize',el,{
                     height: (helpers.renderedApproach() == 'mobile' ? inlineEl.offsetHeight + 'px !important': '0px !important')
@@ -850,7 +857,6 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             $(inlineEl).find('#videoTitle').html(selectedVideo.title);
             helpers.addActiveState(selectedVideo.id,true);
             
-            analytics =  new Analytics();
             analytics.initConfig({
                 logUrl: '//api.tvpage.com/v1/__tvpa.gif',
                 domain: Utils.isset(location,'hostname') ?  location.hostname : '',
@@ -951,7 +957,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             });  
         };
 
-        this.renderProducts = function (vid, lid) {    
+        this.renderProducts = function (vid, lid) {
             var products =  document.getElementById('tvpProductsView'),
 
             deInitProd = function () {
@@ -981,6 +987,11 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                     var row = '', page = pages[i];
                     for (var j = 0; j < page.length; j++) {
                         var item = page[j];
+                        analytics.track('pi',{
+                            vd: item.entityIdParent,
+                            ct: item.id,
+                            pg: channelId
+                        });
                         item.trimTitle = Utils.trimText(item.title, 42);
                         item.price = Utils.trimPrice(item.price);
                         row += '<a class="tvp-product-item" '+ 
@@ -1041,14 +1052,6 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                         if (data.length) {
                             hasProducts = true;
                             helpers.checkProducts();
-                            for (var i = data.length - 1; i >= 0; i--) {
-                                analytics.track('pi',{
-                                    vd: data[i].entityIdParent,
-                                    ct: data[i].id,
-                                    pg: channelId
-                                });
-                            }
-
                             productData = data || [];
                             isProductsInitialized = true; 
                             layoutProducts();
@@ -1131,9 +1134,9 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
     var settings = parent.__TVPage__.config[utils.dBody.getAttribute('data-id')];
     Utils.dataCheck(settings,'videoData',function(){
         Utils.loadProducts(settings.videoData[0].id, settings.videoData[0].loginId,function(data){
-            settings.productsFirstData = data || [];
-        });
-        Utils.dataCheck(settings,'productsFirstData',function(){
+            if (data || data.length){
+                settings.productsFirstData = data || [];
+            }
             initialize(settings);
         });
     });

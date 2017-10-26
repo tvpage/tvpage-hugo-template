@@ -17,7 +17,7 @@
   'position: absolute;' +
 '}'+
 
-'.tvp-iframe.hiiiiiiden {' +
+'.tvp-iframe.tvp-hidden {' +
   'visibility: hidden;' +
   'opacity: 0;' +
 '}'
