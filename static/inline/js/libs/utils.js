@@ -38,8 +38,13 @@
     };
 
     this.isEmpty = function(obj) {
-      for(var key in obj) { if (obj.hasOwnProperty(key)) return false;}
-      return true;
+      if (!obj || typeof obj == 'undefined') return;
+      for(var prop in obj) {
+          if(obj.hasOwnProperty(prop))
+              return false;
+      }
+
+      return JSON.stringify(obj) === JSON.stringify({});
     };
 
     this.isset = function(o,p){
@@ -116,6 +121,21 @@
             }
         };
         document.body.appendChild(script);
+    };
+
+    this.dataCheck = function(obj, prop, callback){
+      var tries = 0,
+          that = this,
+      checkData = setInterval(function() {
+          if (tries > 100) {
+              clearInterval(checkData);
+              console.warn('No data');
+          }else if (!that.isEmpty(obj[prop])) {
+            clearInterval(checkData);
+            callback();
+          }else return;
+          tries++
+      }, 10);
     };
   }
 

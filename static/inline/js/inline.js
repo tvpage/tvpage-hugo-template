@@ -16,7 +16,7 @@
     var videosData = null;
     var inlineEl = null;
     var productRatingEmptyIsBordered = false;
-    var hasProducts = true;
+    var hasProducts = false;
     var firstRender = true;
 
     var helpers = {
@@ -81,15 +81,15 @@
         var el = options.name || '',
             _this = this,
             templates = {
-            productsNav:options.templates.product_nav,
-            inlineItem:options.templates.inline_item,
-            videosCarouselNextArrow:options.templates.inline_carousel_next_arrow,
-            videosCarouselPreviousArrow:options.templates.inline_carousel_previous_arrow,
-            featuredProduct:options.templates.featured_product.product,
-            productItem:options.templates.product,
-            playIcon:options.templates.play_icon,
-            ratingsHtml:options.templates.featured_product.ratings
-        };
+                productsNav:options.templates.product_nav,
+                inlineItem:options.templates.inline_item,
+                videosCarouselNextArrow:options.templates.inline_carousel_next_arrow,
+                videosCarouselPreviousArrow:options.templates.inline_carousel_previous_arrow,
+                featuredProduct:options.templates.featured_product.product,
+                productItem:options.templates.product,
+                playIcon:options.templates.play_icon,
+                ratingsHtml:options.templates.featured_product.ratings
+            };
 
         currentApproach = helpers.renderedApproach();
         loginId = (options.loginId || options.loginid) || 0;
@@ -139,9 +139,9 @@
         
         this.render = function(data){
             var playerInt = setInterval(function(){
-                if (!player.isReady) return;
+                if (!player || !player.isReady) return;
                 clearInterval(playerInt);
-                $('.tvp_player_dummy_overlay').remove();
+                $('.tvp-player-dummy-overlay').remove();
             },10);
 
             var all = data,
@@ -256,7 +256,9 @@
             window.removeEventListener('resize', Utils.debounce(function(){_this.handleResize();},85),false);
             window.addEventListener('resize', Utils.debounce(function(){_this.handleResize();},85),false);
             $videoSliderDesktop.slick('setPosition');
-            helpers.emitMessage('initialize',el);
+            setTimeout(function(){
+                helpers.emitMessage('initialize',el);
+            },10);
         };
 
         this.handleResize = function(){
@@ -340,7 +342,7 @@
             });  
         };
 
-        this.renderProducts = function (vid, lid) {        
+        this.renderProducts = function (vid, lid) {    
             var products =  document.getElementById('tvpProductsView'),
 
             deInitProd = function () {
@@ -348,16 +350,17 @@
                 $(products).empty();
             },
 
-            layoutProducts = function () {          
+            layoutProducts = function () {
+                if (!productData || !productData.length) return;         
                 deInitProd();
 
-                var itemTemplate = templates.productItem,
+                var allData = productData,
+                    itemTemplate = templates.productItem,
                     _container = $('.tvp-products-scroller'),
                     productContent = document.createElement('div');
                     productContent.id = "productContent";
 
-                var allData = productData,
-                    rowEl = '',
+                var rowEl = '',
                     all = allData.slice(0),
                     pages = [];
 
@@ -437,7 +440,7 @@
                                 });
                             }
 
-                            productData = data;
+                            productData = data || [];
                             isProductsInitialized = true; 
                             layoutProducts();
                             _this.renderFeaturedProduct(data[0]);                                               
@@ -456,12 +459,15 @@
             }
             else{
                 if (firstRender) {
-                    productData = options.productsFirstData;
+                    productData = options.productsFirstData || [];
+                    hasProducts = (productData.length?true:false);
                     firstRender = false;
                 }
-                isProductsInitialized = true; 
-                layoutProducts();
-                _this.renderFeaturedProduct(productData[0]);
+                if (hasProducts) {
+                    isProductsInitialized = true; 
+                    layoutProducts();
+                    _this.renderFeaturedProduct(productData[0]);
+                }
             }
         };
 

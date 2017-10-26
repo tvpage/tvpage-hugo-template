@@ -10,12 +10,12 @@
 	'padding: {{- ($.Scratch.Get "settings").body_padding -}};' +
 '}' +
 
-'.tvp_player_dummy_overlay{'+
+'.tvp-player-dummy-overlay{'+
 	'position: relative;'+
 	'padding-top: 56.25%;'+
 '}'+
 
-'.tvp_player_dummy_overlay > div{'+
+'.tvp-player-dummy-overlay > div{'+
 	'position: absolute;'+
 	'background-position: center;'+
 	'background-repeat: no-repeat;'+
@@ -25,6 +25,11 @@
 	'left: 0;'+
 	'right: 0;'+
 '}'+
+
+'.tvplayer-playbutton.first{'+
+	'opacity: 0.5;'+
+'}'+
+
 
 // ### header section
 '.tvp-row-titles{' +	

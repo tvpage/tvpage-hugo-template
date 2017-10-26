@@ -954,7 +954,13 @@
             "label": "Videos Carousel Arrow Active Opacity",
             "code": "videos_carousel_arrow_active_opacity",
             "value": "1"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Player Thumbnail",
+            "code": "player_thumbnail",
+            "value": " "
         }
-
     ]
 }

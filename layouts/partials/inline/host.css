@@ -7,7 +7,7 @@
   'height: 0;'+
 '}' +
 
-'.tvp-inline-holder > iframe {' +
+'.tvp-iframe {' +
   'top: 0;' +
   'left: 0;' +
   'bottom: 0;' +
@@ -17,124 +17,8 @@
   'position: absolute;' +
 '}'+
 
-// ### Loader
-'#tvp_widget_loader {'+
-  'top: 0;'+
-  'bottom: 0;'+
-  'left: 0;'+
-  'right: 0;'+
-  'position: absolute;'+
-  'background: #eaeaea;'+
-  'padding: 50px;'+
-'}'+
-
-'.tvp-dummy-slider {'+
-  'height: 35%;'+
-'}'+
-
-'.tvp-dummy-wrapper {'+
-  'height: 65%;'+
-'}'+
-
-'.tvp-dummy-wrapper,'+
-'.tvp-dummy-slider {'+
-  'display: flex;'+
-  'justify-content: center;'+
-  'align-items: center;'+
-  'width: 100%;'+
-  'height: 100%;'+
-'}'+
-
-'.tvp-dummy-video-item {'+
-  'height: 100%;'+
-  'width: 33%;'+
-'}'+
-
-'.tvp-dummy-player {'+
-  'height: 100%;'+
-  'width: 50%;'+
-'}'+
-
-'.tvp-dummy-title {'+
-  'height: 100%;'+
-  'width: 50%;'+
-'}'+
-
-'.tvp-dummy-product-header {'+
-  'height: 100%;'+
-  'width: 22.5%;'+
-'}'+
-
-'.tvp-dummy-featured {'+
-  'height: 100%;'+
-  'width: 22.5%;'+
-'}'+
-
-'.tvp-dummy-products {'+
-  'height: 100%;'+
-  'width: 22.2222%;'+
-'}'+
-
-'.tvp-loader-wrapper {'+
-  'height: 5%;'+
-'}'+
-
-'.tvp-loader-wrapper1 {'+
-  'height: 52.5%;'+
-'}'+
-
-'.tvp-loader-wrapper2 {'+
-  'height: 32.5%;'+
-'}'+
-
-'.tvp-loader-wrapper,'+
-'.tvp-loader-wrapper1,'+
-'.tvp-loader-wrapper2 {'+
-  'animation-duration: 2.5s;'+
-  'animation-fill-mode: forwards;'+
-  'animation-iteration-count: infinite;'+
-  'animation-name: placeHolderShimmer;'+
-  'animation-timing-function: linear;'+
-  'background: linear-gradient(-250deg, rgba(210, 210, 210,0.5) 5%, rgba(210, 210, 210,1) 50%, rgba(210, 210, 210,0.5) 95%);'+
-  'background-size: 1800px 100%;'+
-  'position: relative;'+
-'}'+
-
-'.tvp-dummy-filler {'+
-  'background: #eaeaea;'+
-'}'+
-
-'.tvp-dummy-filler.filler-1 {'+
-  'height: 5%;'+
-  'width: 100%;'+
-'}'+
-
-'.tvp-dummy-filler.filler-2,'+
-'.tvp-dummy-filler.filler-3 {'+
-  'height: 100%;'+
-  'width: 2.5%;'+
-'}'+
-
-'.tvp-dummy-filler.filler-4 {'+
-  'height: 5%;'+
-  'width: 100%;'+
-'}'+
-
-'.tvp-dummy-filler.filler-title {'+
-  'height: 100%;'+
-  'width: 2.5%;'+
-'}'+
-
-'.tvp-dummy-filler.filler-prodcut-header {'+
-  'height: 100%;'+
-  'width: 25%;'+
-'}'+
-
-'@keyframes placeHolderShimmer {'+
-  '0% {'+
-    'background-position: -1800px 0;'+
-  '}'+
-  '100% {'+
-    'background-position: 1800px 0;'+
-  '}'+
+'.tvp-iframe.hiiiiiiden {' +
+  'visibility: hidden;' +
+  'opacity: 0;' +
 '}'
+
