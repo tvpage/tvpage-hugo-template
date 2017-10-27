@@ -61,6 +61,7 @@
         var libsLoadingCheck = 0;
         (function libsLoadingPoll() {
             setTimeout(function() {
+                console.log('carouse/index.js dependencies poll...');
                 if (isLoadingLibs()) {
                     (++libsLoadingCheck < 200) ? libsLoadingPoll(): console.warn('limit reached');
                 } else {
