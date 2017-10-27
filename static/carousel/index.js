@@ -107,8 +107,6 @@ window.__TVPage__.config[id] = config;
 if (!hasKey(config,"targetEl") || !getById(config.targetEl))
   throw new Error("Must provide a targetEl");
 
-console.log('main file is injected to the page', performance.now() - startTime);
-
 var type = config.type;
 var mobilePrefix = isMobile ? "-mobile" : "";
 var css = config.css;
