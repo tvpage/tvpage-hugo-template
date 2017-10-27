@@ -67,7 +67,7 @@
                 } else {
                     initialize();
                 }
-            },150);
+            },5);
         })();
     } else {
         initialize();
