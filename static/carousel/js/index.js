@@ -1,5 +1,4 @@
 (function() {
-
     var body = document.body;
     var id = body.getAttribute('data-id');
     var config = {};
@@ -10,6 +9,8 @@
         el.className = 'iframe-content' + (Utils.isMobile ? " mobile" : "");
         el.innerHTML = config.templates.carousel;
         body.appendChild(el);
+        
+        console.log('iframe renders initial html for carousel', performance.now() - startTime);
     };
 
     var startCarousel = function(){

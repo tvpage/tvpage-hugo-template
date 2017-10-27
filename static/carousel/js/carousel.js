@@ -140,12 +140,13 @@
     this.container.innerHTML = '';
     this.container.appendChild(frag);
 
-    //Start slick carousel
+    //Start slick cSlickarousel
     var that = this;
     var startSlick = function() {
       that.$carousel = $(that.container);
       
       that.$carousel.on('init', function(event, slick) {
+        console.log('iframe carousel has been initialized', performance.now() - startTime);
         that.el.querySelector('.slick-list').style.margin = "0 -" + (parseInt(that.options.item_padding_right) + 1) + "px";
       });
 
@@ -259,6 +260,8 @@
     var that = this;
 
     this.load(function(data) {
+      console.log('iframe loads videos (api call #1)', performance.now() - startTime);
+
       var hasData = data.length > 0;
       if (hasData)
         that.render(data);
