@@ -4,7 +4,7 @@ var userAgent = navigator.userAgent;
 var isFirefox = /Firefox/i.test(userAgent);
 var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
 var iOS = /iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(userAgent) && !window.MSStream;
-var iframeBaseHtml = '<head><base target="_blank"/></head><link rel="preload" as="script" href="https://deploy-preview-20--www-goodlookingbean-com.netlify.com/carousel/dist/js/scripts.min.js"><body class="{className}"' +
+var iframeBaseHtml = '<head><base target="_blank"/></head><body class="{className}"' +
 'data-domain="{domain}" data-id="{id}" onload="startTime={startTime};' + 
 'var d=document,h=d.head,' +
 'loadJS = function(u){var s=d.createElement(\'script\');s.src=u;h.appendChild(s);},' +
