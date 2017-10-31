@@ -10,13 +10,7 @@
 
 ".tvp-carousel-holder {" +
     "position: relative;" +
-    "visibility: hidden;" +
-    "opacity: 0;" +
-"}" +
-
-".tvp-carousel-holder.initialized {" +
-    "visibility: visible;" +
-    "opacity: 1;" +
+    "overflow: hidden;" +
 "}" +
 
 ".tvp-carousel-holder > iframe {" +

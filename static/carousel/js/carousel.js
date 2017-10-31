@@ -3,15 +3,15 @@
 
   var Carousel = function(el, options) {
     this.options = options || {};
-    this.itemsPerPage = Utils.isUndefined(this.options.items_per_page) ? null : this.options.items_per_page;
-    this.channel = this.options.channel || {};
-    this.loading = false;
-    this.eventPrefix = ("tvp_" + this.options.id).replace(/-/g, '_');
-    this.el = 'string' === typeof el ? document.getElementById(el) : el;
-    this.container = this.el.querySelector('.tvp-carousel-content');
-    this.$carousel = null;
+    this.itemsPerPage = this.options.items_per_page || null;
     this.itemMetaData = this.options.item_meta_data || null;
     this.onClick = Utils.isFunction(this.options.onClick) ? this.options.onClick : null;
+    this.channel = this.options.channel || {};
+    this.loading = false;
+    this.eventPrefix = options.eventPrefix;
+    this.el = 'string' === typeof el ? document.getElementById(el) : el;
+    this.container = this.el.querySelector('.carousel-content');
+    this.$carousel = null;
   }
   
   Carousel.prototype.getHeight = function() {
@@ -128,31 +128,38 @@
 
     for (var i = 0; i < all.length; i++) {
       var item = all[i];
+
       item.title = Utils.trimText(item.title, Number(this.options.video_item_max_chars));
       item.mediaDuration = Utils.formatDuration(item.duration);
       item.publishedDate = Utils.formatDate(item.date_created);
 
       var rowEl = document.createElement('div');
       rowEl.innerHTML += Utils.tmpl(this.options.templates["carousel-item"], item);
+
       frag.appendChild(rowEl);
     }
 
     this.container.innerHTML = '';
     this.container.appendChild(frag);
 
-    //Start slick cSlickarousel
     var that = this;
     var startSlick = function() {
       that.$carousel = $(that.container);
       
       that.$carousel.on('init', function(event, slick) {
-        console.log('iframe carousel has been initialized', performance.now() - startTime);
         that.el.querySelector('.slick-list').style.margin = "0 -" + (parseInt(that.options.item_padding_right) + 1) + "px";
+
+        //Clear the skeleton
+        var skeleton = document.getElementById('skeleton');
+        if(skeleton)
+          skeleton.parentNode.removeChild(skeleton);
+        
+        that.el.classList.remove('hide');
       });
 
       that.$carousel.on('setPosition', Utils.debounce(function(event, slick) {
-        that.updatePrevArrow(slick);
-        that.updateNextArrow(slick);
+        // that.updatePrevArrow(slick);
+        // that.updateNextArrow(slick);
         Utils.sendMessage({
           event: that.eventPrefix + ':resize',
           height: that.getHeight()
@@ -168,10 +175,10 @@
         cache: true,
         url: body.getAttribute('data-domain') + '/carousel/js/vendor/slick-min.js'
       }).done(function() {
-        setTimeout(startSlick, 100);
+        startSlick();
       });
     } else {
-      setTimeout(startSlick, 100);
+      startSlick();
     }
   };
 
@@ -208,8 +215,6 @@
   };
 
   Carousel.prototype.runTimeUpdates = function() {
-    this.el.querySelector(".tvp-carousel-title").innerHTML = this.options.title_text || "Watch Videos";
-    
     if (!!this.options.item_play_button_show_on_hover) {
       this.container.classList.add("show-on-hover");
     }
@@ -258,18 +263,28 @@
     this.handleClick();
 
     var that = this;
-
-    this.load(function(data) {
-      console.log('iframe loads videos (api call #1)', performance.now() - startTime);
-
-      var hasData = data.length > 0;
-      if (hasData)
-        that.render(data);
+    var start = function(d){
+      that.data = d;
+      that.render();
 
       Utils.sendMessage({
-        event: that.eventPrefix + ":" + (hasData ? 'render' : 'norender')
+        event: that.eventPrefix + ":render"
       });
-    });
+    };
+
+    if(Utils.hasKey(this.channel,'videos') && this.channel.videos.length) {
+      start(this.channel.videos);
+    } else {
+      this.load(function(data) {
+        if(data.length > 0){
+          start(data);
+        } else {
+          Utils.sendMessage({
+            event: that.eventPrefix + ":norender"
+          });
+        }
+      });
+    }
   };
 
   window.Carousel = Carousel;

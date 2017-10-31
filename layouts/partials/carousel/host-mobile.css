@@ -8,20 +8,19 @@
     "-webkit-text-size-adjust:none;"+
 "}" +
 
-
 "*[class^=tvp-] {" +
     "box-sizing: border-box;" +
 "}" +
 
 ".tvp-carousel-holder {" +
     "position: relative;" +
-    "visibility: hidden;" +
-    "opacity: 0;" +
 "}" +
 
-".tvp-carousel-holder.initialized {" +
-    "visibility: visible;" +
-    "opacity: 1;" +
+".tvp-carousel-holder:before {" +
+    "display: block;" +
+    "content: \"\";" +
+    "width: 100%;" +
+    "padding-top: 87%;" +
 "}" +
 
 ".tvp-carousel-holder > iframe {" +
@@ -30,7 +29,7 @@
     "width: 1px;" +
     "min-width: 100%;" +
     "height: 100%;" +
-    "position: relative;" +
+    "position: absolute;" +
 "}" +
 
 ".tvp-hidden {" +

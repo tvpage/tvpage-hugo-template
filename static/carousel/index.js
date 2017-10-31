@@ -4,6 +4,19 @@ var userAgent = navigator.userAgent;
 var isFirefox = /Firefox/i.test(userAgent);
 var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
 var iOS = /iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(userAgent) && !window.MSStream;
+var iframeBaseHtml = '<head><base target="_blank"/></head><body class="{className}"' +
+'data-domain="{domain}" data-id="{id}" onload="startTime={startTime};' + 
+'var d=document,h=d.head,' +
+'loadJS = function(u){var s=d.createElement(\'script\');s.src=u;h.appendChild(s);},' +
+'loadCSS = function(u){var l=d.createElement(\'link\');l.rel=\'stylesheet\';l.href=u;h.appendChild(l);};';
+var tmpl = function(t,d){
+  return t.replace(/\{([\w\.]*)\}/g, function(str, key) {
+    var keys = key.split("."),
+      v = d[keys.shift()];
+    for (var i = 0, l = keys.length; i < l; i++) v = v[keys[i]];
+    return (typeof v !== "undefined" && v !== null) ? v : "";
+  });
+};
 var isFunction = function(o) {
   return "function" === typeof o;
 };
@@ -18,26 +31,30 @@ var isset = function(o, p) {
   if (p) val = o[p];
   return "undefined" !== typeof val;
 };
-var getIframeHtml = function(options) {
-  var html = '<head><base target="_blank" /></head><body class="' + (options.className || '') + '" data-domain="' +
-    (options.domain || '') + '" data-id="' + (options.id || '') + '" onload="' +
-    'startTime = ' + startTime + ';'+
-    'var d = document, head = d.getElementsByTagName(\'head\')[0],' +
-    'addJS = function(u){ var s = d.createElement(\'script\');s.src=u;d.body.appendChild(s);},' +
-    'addCSS = function(h){ var l = d.createElement(\'link\');l.rel=\'stylesheet\';l.href=h;head.appendChild(l);};';
+var getIframeHtml = function(o) {
+  o.startTime = startTime;
 
-  var js = (options.js || []).filter(Boolean);
-  for (var i = 0; i < js.length; i++) {
-    html += 'addJS(\'' + js[i] + '\');';
-  }
+  var html = tmpl(iframeBaseHtml,o);
 
-  var css = (options.css || []).filter(Boolean);
-  for (var i = 0; i < css.length; i++) {
-    html += 'addCSS(\'' + css[i] + '\');';
-  }
+  html += "window.parent.addEventListener('message',function(e){";
+  html += "if(!e || !e.data || !e.data.event || '" + o.eventPrefix + ":start' !== e.data.event){";
+  html += "  return;";
+  html += "}";
   
-  html += '"><style>' + (options.style || '') + '</style>';
-  html += (options.html || '').trim();
+  var js = (o.js || []).filter(Boolean);
+  for (var i = 0; i < js.length; i++) {
+    html += 'loadJS(\'' + js[i] + '\');';
+  }
+
+  var css = (o.css || []).filter(Boolean);
+  for (var i = 0; i < css.length; i++) {
+    html += 'loadCSS(\'' + css[i] + '\');';
+  }
+
+  html += "})";
+
+  html += '"><style>' + (o.style || '') + '</style>';
+  html += tmpl((o.html || '').trim(),o.context);
 
   return html;
 };
@@ -74,7 +91,8 @@ var getEventType = function(e) {
 };
 
 
-//Configuration
+//We pass the updated merged config object to the tvpage global so the iframe files can retrieve
+//it from the parent global.
 if (!isObject(bootstrap) || !hasKey(bootstrap, "name") || bootstrap.name.length <= 0)
   throw new Error('Widget must have a bootstrap and name (id)');
 
@@ -91,6 +109,7 @@ if(hasKey(tvpage.config,id) && isObject(tvpage.config[id])){
 }
 
 config.id = id;
+config.eventPrefix = ("tvp_" + id).replace(/-/g, '_');
 
 var __windowCallbackFunc__ = null;
 if (hasKey(config,"onChange") && isFunction(config.onChange)){
@@ -98,12 +117,10 @@ if (hasKey(config,"onChange") && isFunction(config.onChange)){
   delete config.onChange;
 }
 
-//We pass the updated merged config object to the tvpage global so the iframe files can retrieve
-//it from the parent global.
 window.__TVPage__.config[id] = config;
 
 
-//Initial render
+//Initial rendering
 if (!hasKey(config,"targetEl") || !getById(config.targetEl))
   throw new Error("Must provide a targetEl");
 
@@ -117,7 +134,7 @@ var mobilePath = isMobile ? 'mobile/' : '';
 var distPath = debug ? '/' : '/dist/';
 var cssPath = staticPath + distPath + 'css/';
 var jsPath = staticPath + distPath + 'js/';
-var eventPrefix = ("tvp_" + id).replace(/-/g, '_');
+var eventPrefix = config.eventPrefix;
 var templates = config.templates;
 
 var getInitialHtml = function(){
@@ -143,9 +160,11 @@ var iframe = holder.querySelector("iframe");
 var iframeDocument = iframe.contentWindow.document;
 var iframeHtml = getIframeHtml({
   id: id,
-  className: "dynamic",
   domain: baseUrl,
   style: css.carousel,
+  html: config.templates.base,
+  context: config,
+  eventPrefix: eventPrefix,
   js: [
     "//a.tvpage.com/tvpa.min.js",
     debug ? jsPath + "vendor/jquery.js" : "",
@@ -166,288 +185,342 @@ iframeDocument.open().write(iframeHtml);
 iframeDocument.close();
 console.log('renders initial dom', performance.now() - startTime);
 
-//Modal
-var modalContainer = document.createElement("div");
-modalContainer.innerHTML = templates['modal'].modal;
-body.appendChild(modalContainer);
 
-var clickData = {};
-var iframeModalHolder = getById('tvp-modal-iframe-holder-' + id);
-var iframeModal = null;
-var iframeModalDocument = null;
-var modal = getById("tvp-modal-" + id);
+//API calls/loading, is here were we call the most important api(s)
+if(!hasKey(config,'channel'))
+  throw new Error('Widget config missing channel obj');
 
-addClass(modal,isMobile ? "mobile" : "desktop");
+window.tvpcallback = function(data){
+  
+  //Preload data images.. this can be done smarter depending on the template, for example
+  //carousel on mobile will need to preload first image only whilst desktop needs
+  //same qty as the items_per_page setting.
+  config.toPreload = isMobile ? 1 : config.items_per_page;
 
-if (config.modal_title_position.trim().length && "bottom" === config.modal_title_position) {
-  var modalTitleEl = modal.querySelector("#tvp-modal-title-" + id);
-  addClass(modalTitleEl,"bottom")
-  modal.querySelector(".tvp-modal-body").appendChild(modalTitleEl);
-}
-
-var removeBanner = function() {
-  var banner = modal.querySelector('.tvp-no-products-banner');
-  if (banner){
-    banner.parentNode.removeChild(banner);
+  for (var i = 0; i < data.length; i++) {
+    if(hasKey(data[i],'asset'))
+      (new Image()).src = data[i].asset.thumbnailUrl;
+    
+    if(i + 1 === config.toPreload)
+      break;
   }
-};
 
-var closeModal = function() {
-  addClass(modal, 'tvp-hidden');
-  addClass('tvp-modal-overlay-' + id, 'tvp-hidden');
-
-  removeBanner();
-  removeClass(iframeModalHolder, 'products');
-  removeClass(iframeModalHolder, 'no-products');
-  removeClass(modal.querySelector('.tvp-products-headline'), 'active');
-
-  iframeModal.parentNode.removeChild(iframeModal);
-
-  if (config.fix_page_scroll)
-    removeClass(body, 'tvp-modal-open');
+  //We then add the data to the tvp global and then we fire the event that will start
+  //things in the widget side.
+  config.channel.videos = data;
 
   window.postMessage({
-    event: eventPrefix + ':modal_close'
+    event: eventPrefix + ':start'
   }, '*');
 };
 
-getById("tvp-modal-close-" + id).addEventListener('click', closeModal, false);
+var channel = config.channel;
+var channelId = channel.id || config.channelid;
+var src = config.api_base_url + '/channels/' + channelId + '/videos';
 
-modal.addEventListener('click', function(e) {
-  if (e.target === modal || !modal.contains(e.target)) {
-    closeModal();
-  }
-}, false);
+if(channel.parameters){
+  var channelParams = channel.parameters;
+  channelParams.n = config.items_per_page;
+  channelParams.p = 0;
+  channelParams.o = config.videos_order_by;
+  channelParams.od = config.videos_order_direction;
+  channelParams['X-login-id'] = config.loginId || config.loginid;
+  channelParams.callback = 'tvpcallback';
 
-//Listen and handle messages coming from the widget
-window.addEventListener("message", function(e) {
-  switch (getEventType(e)) {
-    case 'video_click':
-      handleVideoClick(e);
-      break;
-    case 'modal_initialized':
-      handleModalInitialized(e);
-      break;
-    case 'modal_no_products':
-      handleModalNoProducts(e);
-      break;
-    case 'modal_products':
-      handleModalProducts(e);
-      break;
-    case 'player_next':
-      handlePlayerNext(e);
-      break;
-    case 'modal_resize':
-      handleModalResize(e);
-      break;
-    case 'render':
-      handleRender(e);
-      break;
-    case 'resize':
-      handleResize(e);
-      break;
-    case 'on_player_change':
-      handleOnPlayerChange(e);
-      break;
-    default:
-  }
-
-  if (__windowCallbackFunc__)
-    __windowCallbackFunc__(e);
-});
-
-function handleOnPlayerChange(e){
-  config.onPlayerChange(e.data.e, e.data.stateData);
-}
-
-function handleRender(e) {
-  addClass(holder, "initialized");
-  
-  if(config.background){
-    holder.style.cssText += 'background-color:' + config.background + ';';
-  }
-
-  if(config.title_color){
-    iframeDocument.querySelector('.tvp-carousel-title').style.cssText += 'color:' + config.title_color + ';';
-  }
-
-  if(config.item_title_font_color){
-    var titles = iframeDocument.querySelectorAll('.tvp-video-title');
-    for (var i = 0; i < titles.length; i++) {
-      titles[i].style.cssText += 'color:' + config.item_title_font_color + ';';
-    }
+  var counter = 0;
+  for (var key in channelParams) {
+    src += (counter > 0 ? '&' : '?') + key + '=' + channelParams[key];
+    ++counter;
   }
 }
 
-function handleResize(e) {
-  if (!modal.classList.contains("tvp-hidden") || !e.data.height)
-    return;
+var jsonpScript = document.createElement('script');
+jsonpScript.src = src;
+body.appendChild(jsonpScript);
 
-  holder.style.height = e.data.height;
-}
 
-var getPlayerUrl = function(){
-  var url = "https://cdnjs.tvpage.com/tvplayer/tvp-" + config.player_version + ".min.js";
-  if (config.player_url && (config.player_url + "").trim().length) {
-    url = config.player_url;
-  }
-  return url;
-};
+//Modal
+// var modalContainer = document.createElement("div");
+// modalContainer.innerHTML = templates['modal'].modal;
+// body.appendChild(modalContainer);
 
-var setClickData = function(e){
-  if (!e || !e.data)
-    return;
+// var clickData = {};
+// var iframeModalHolder = getById('tvp-modal-iframe-holder-' + id);
+// var iframeModal = null;
+// var iframeModalDocument = null;
+// var modal = getById("tvp-modal-" + id);
 
-  var configCopy = JSON.parse(JSON.stringify(config));
-  delete configCopy.no_products_banner;
-  configCopy.onPlayerChange = !!config.onPlayerChange;
+// addClass(modal,isMobile ? "mobile" : "desktop");
 
-  var data = e.data;
+// if (config.modal_title_position.trim().length && "bottom" === config.modal_title_position) {
+//   var modalTitleEl = modal.querySelector("#tvp-modal-title-" + id);
+//   addClass(modalTitleEl,"bottom")
+//   modal.querySelector(".tvp-modal-body").appendChild(modalTitleEl);
+// }
 
-  clickData = {
-    data: data.videos,
-    video: data.video,
-    runTime: configCopy
-  };
-};
+// var removeBanner = function() {
+//   var banner = modal.querySelector('.tvp-no-products-banner');
+//   if (banner){
+//     banner.parentNode.removeChild(banner);
+//   }
+// };
 
-var iframeModalJs = [
-  "//a.tvpage.com/tvpa.min.js",
-  '//imasdk.googleapis.com/js/sdkloader/ima3.js',
-  getPlayerUrl(),
-  debug && isMobile ? jsPath + "/vendor/jquery.js" : "",
-  debug && !isMobile ? jsPath + "/vendor/perfect-scrollbar.min.js" : "",
-  //debug ? baseUrl + "sdk/tvpage.min.js" : "",
-  debug ? baseUrl + "libs/utils.js" : "",
-  debug ? baseUrl + "libs/analytics.js" : "",
-  debug ? baseUrl + "libs/player.js" : "",
-  debug ? jsPath + "/" + mobilePath + "modal/index.js" : "",
-  debug ? "" : jsPath + mobilePath + "modal/scripts.min.js"
-];
+// var closeModal = function() {
+//   addClass(modal, 'tvp-hidden');
+//   addClass('tvp-modal-overlay-' + id, 'tvp-hidden');
 
-var iframeModalCss = [
-  debug ? cssPath + "/" + mobilePath + "modal/styles.css" : "",
-  debug && isMobile ? cssPath + "/vendor/slick.css" : "",
-  debug && !isMobile ? cssPath + "/vendor/perfect-scrollbar.min.css" : "",
-  debug ? "" : cssPath + "/" + mobilePath + "modal/styles.min.css"
-];
+//   removeBanner();
+//   removeClass(iframeModalHolder, 'products');
+//   removeClass(iframeModalHolder, 'no-products');
+//   removeClass(modal.querySelector('.tvp-products-headline'), 'active');
 
-var iframeModalHtml = getIframeHtml({
-  id: id,
-  domain: baseUrl,
-  style: config.css["modal-content" + mobilePrefix],
-  className: isMobile ? "mobile" : "",
-  html: templates["modal-content" + mobilePrefix].body,
-  js: iframeModalJs,
-  css: iframeModalCss
-});
+//   iframeModal.parentNode.removeChild(iframeModal);
 
-var renderIframeModal = function(){
-  iframeModalHolder.innerHTML = templates["modal-iframe"];
-  iframeModal = iframeModalHolder.querySelector('.tvp-iframe-modal');
-  iframeModalDocument = iframeModal.contentWindow.document;
-  iframeModalDocument.open().write(iframeModalHtml);
-  iframeModalDocument.close();
-};
+//   if (config.fix_page_scroll)
+//     removeClass(body, 'tvp-modal-open');
 
-function handleVideoClick(e) {
-  setClickData(e);
+//   window.postMessage({
+//     event: eventPrefix + ':modal_close'
+//   }, '*');
+// };
 
-  modal.querySelector('.tvp-modal-title').innerHTML = clickData.video.title || "";
+// getById("tvp-modal-close-" + id).addEventListener('click', closeModal, false);
 
-  removeClass(modal, 'tvp-hidden');
-  removeClass('tvp-modal-overlay-' + id, 'tvp-hidden');
+// modal.addEventListener('click', function(e) {
+//   if (e.target === modal || !modal.contains(e.target)) {
+//     closeModal();
+//   }
+// }, false);
 
-  if (config.fix_page_scroll) {
-    addClass(body, 'tvp-modal-open');
-  }
+// //Listen and handle messages coming from the widget
+// window.addEventListener("message", function(e) {
+//   switch (getEventType(e)) {
+//     case 'video_click':
+//       handleVideoClick(e);
+//       break;
+//     case 'modal_initialized':
+//       handleModalInitialized(e);
+//       break;
+//     case 'modal_no_products':
+//       handleModalNoProducts(e);
+//       break;
+//     case 'modal_products':
+//       handleModalProducts(e);
+//       break;
+//     case 'player_next':
+//       handlePlayerNext(e);
+//       break;
+//     case 'modal_resize':
+//       handleModalResize(e);
+//       break;
+//     case 'render':
+//       handleRender(e);
+//       break;
+//     case 'resize':
+//       handleResize(e);
+//       break;
+//     case 'on_player_change':
+//       handleOnPlayerChange(e);
+//       break;
+//     default:
+//   }
 
-  renderIframeModal();
-};
+//   if (__windowCallbackFunc__)
+//     __windowCallbackFunc__(e);
+// });
 
-function handleModalInitialized(e) {
-  if (iframeModal.contentWindow) {
-    iframeModal.contentWindow.postMessage({
-      event: eventPrefix + ':modal_data',
-      data: clickData.data,
-      video: clickData.video,
-      runTime: clickData.runTime
-    }, '*');
-  }
+// function handleOnPlayerChange(e){
+//   config.onPlayerChange(e.data.e, e.data.stateData);
+// }
 
-  var onOrientationChange = function() {
-    if (iOS && iframeModal && iframeModal.contentWindow) {
-      var width = iframeModal.parentNode.offsetWidth;
-      iframeModal.contentWindow.window.postMessage({
-        event: eventPrefix + ':external_resize',
-        size: [width, Math.floor(width * (9 / 16))]
-      }, '*');
-    }
-  };
+// function handleRender(e) {
+//   addClass(holder, "initialized");
   
-  var orientationChangeEvent = 'onorientationchange' in window ? 'orientationchange' : 'resize';
-  window.removeEventListener(orientationChangeEvent, onOrientationChange, false);
-  window.addEventListener(orientationChangeEvent, onOrientationChange, false);
-};
+//   if(config.background){
+//     holder.style.cssText += 'background-color:' + config.background + ';';
+//   }
 
-function handlePlayerNext(e) {
-  getById('tvp-modal-title-' + id).innerHTML = e.data.next.assetTitle || "";
-  removeBanner();
-};
+//   if(config.title_color){
+//     iframeDocument.querySelector('.tvp-carousel-title').style.cssText += 'color:' + config.title_color + ';';
+//   }
 
-function handleModalNoProducts(e) {
-  if (!config.merchandise)
-    return;
+//   if(config.item_title_font_color){
+//     var titles = iframeDocument.querySelectorAll('.tvp-video-title');
+//     for (var i = 0; i < titles.length; i++) {
+//       titles[i].style.cssText += 'color:' + config.item_title_font_color + ';';
+//     }
+//   }
+// }
 
-  removeClass(iframeModalHolder, 'products');
-  addClass(iframeModalHolder, 'no-products');
+// function handleResize(e) {
+//   if (!modal.classList.contains("tvp-hidden") || !e.data.height)
+//     return;
 
-  if(isMobile || !config.products_headline_display)
-    return;
+//   holder.style.height = e.data.height;
+// }
+
+// var getPlayerUrl = function(){
+//   var url = "https://cdnjs.tvpage.com/tvplayer/tvp-" + config.player_version + ".min.js";
+//   if (config.player_url && (config.player_url + "").trim().length) {
+//     url = config.player_url;
+//   }
+//   return url;
+// };
+
+// var setClickData = function(e){
+//   if (!e || !e.data)
+//     return;
+
+//   var configCopy = JSON.parse(JSON.stringify(config));
+//   delete configCopy.no_products_banner;
+//   configCopy.onPlayerChange = !!config.onPlayerChange;
+
+//   var data = e.data;
+
+//   clickData = {
+//     data: data.videos,
+//     video: data.video,
+//     runTime: configCopy
+//   };
+// };
+
+// var iframeModalJs = [
+//   "//a.tvpage.com/tvpa.min.js",
+//   '//imasdk.googleapis.com/js/sdkloader/ima3.js',
+//   getPlayerUrl(),
+//   debug && isMobile ? jsPath + "/vendor/jquery.js" : "",
+//   debug && !isMobile ? jsPath + "/vendor/perfect-scrollbar.min.js" : "",
+//   //debug ? baseUrl + "sdk/tvpage.min.js" : "",
+//   debug ? baseUrl + "libs/utils.js" : "",
+//   debug ? baseUrl + "libs/analytics.js" : "",
+//   debug ? baseUrl + "libs/player.js" : "",
+//   debug ? jsPath + "/" + mobilePath + "modal/index.js" : "",
+//   debug ? "" : jsPath + mobilePath + "modal/scripts.min.js"
+// ];
+
+// var iframeModalCss = [
+//   debug ? cssPath + "/" + mobilePath + "modal/styles.css" : "",
+//   debug && isMobile ? cssPath + "/vendor/slick.css" : "",
+//   debug && !isMobile ? cssPath + "/vendor/perfect-scrollbar.min.css" : "",
+//   debug ? "" : cssPath + "/" + mobilePath + "modal/styles.min.css"
+// ];
+
+// var iframeModalHtml = getIframeHtml({
+//   id: id,
+//   domain: baseUrl,
+//   style: config.css["modal-content" + mobilePrefix],
+//   className: isMobile ? "mobile" : "",
+//   html: templates["modal-content" + mobilePrefix].body,
+//   js: iframeModalJs,
+//   css: iframeModalCss
+// });
+
+// var renderIframeModal = function(){
+//   iframeModalHolder.innerHTML = templates["modal-iframe"];
+//   iframeModal = iframeModalHolder.querySelector('.tvp-iframe-modal');
+//   iframeModalDocument = iframeModal.contentWindow.document;
+//   iframeModalDocument.open().write(iframeModalHtml);
+//   iframeModalDocument.close();
+// };
+
+// function handleVideoClick(e) {
+//   setClickData(e);
+
+//   modal.querySelector('.tvp-modal-title').innerHTML = clickData.video.title || "";
+
+//   removeClass(modal, 'tvp-hidden');
+//   removeClass('tvp-modal-overlay-' + id, 'tvp-hidden');
+
+//   if (config.fix_page_scroll) {
+//     addClass(body, 'tvp-modal-open');
+//   }
+
+//   renderIframeModal();
+// };
+
+// function handleModalInitialized(e) {
+//   if (iframeModal.contentWindow) {
+//     iframeModal.contentWindow.postMessage({
+//       event: eventPrefix + ':modal_data',
+//       data: clickData.data,
+//       video: clickData.video,
+//       runTime: clickData.runTime
+//     }, '*');
+//   }
+
+//   var onOrientationChange = function() {
+//     if (iOS && iframeModal && iframeModal.contentWindow) {
+//       var width = iframeModal.parentNode.offsetWidth;
+//       iframeModal.contentWindow.window.postMessage({
+//         event: eventPrefix + ':external_resize',
+//         size: [width, Math.floor(width * (9 / 16))]
+//       }, '*');
+//     }
+//   };
   
-  var headlineEl = modal.querySelector('.tvp-products-headline');
-  if (headlineEl) {
-    headlineEl.parentNode.removeChild(headlineEl);
-  }
+//   var orientationChangeEvent = 'onorientationchange' in window ? 'orientationchange' : 'resize';
+//   window.removeEventListener(orientationChangeEvent, onOrientationChange, false);
+//   window.addEventListener(orientationChangeEvent, onOrientationChange, false);
+// };
 
-  var banner = config.no_products_banner;
-  if (banner) {
-    var bannerEl = document.createElement('div');
-    bannerEl.className = 'tvp-no-products-banner';
-    bannerEl.innerHTML = isFunction(banner) ? banner() : banner.trim();
-    modal.querySelector('.tvp-modal-content').appendChild(bannerEl);
-  }
-};
+// function handlePlayerNext(e) {
+//   getById('tvp-modal-title-' + id).innerHTML = e.data.next.assetTitle || "";
+//   removeBanner();
+// };
 
-function handleModalResize(e) {
-  iframeModal.style.height = e.data.height;
-};
+// function handleModalNoProducts(e) {
+//   if (!config.merchandise)
+//     return;
 
-function handleModalProducts(e) {
-  removeClass(iframeModalHolder, 'no-products');
-  addClass(iframeModalHolder, 'products');
+//   removeClass(iframeModalHolder, 'products');
+//   addClass(iframeModalHolder, 'no-products');
 
-  if (isMobile || modal.querySelector('.tvp-products-headline') || !config.products_headline_display)
-    return;
+//   if(isMobile || !config.products_headline_display)
+//     return;
+  
+//   var headlineEl = modal.querySelector('.tvp-products-headline');
+//   if (headlineEl) {
+//     headlineEl.parentNode.removeChild(headlineEl);
+//   }
 
-  var headlineEl = document.createElement('div');
-  headlineEl.className = 'tvp-products-headline';
-  headlineEl.innerHTML = config.products_headline_text;
-  headlineEl.addEventListener('click',function() {
-    if (this.classList.contains('active')) {
-      removeClass(this,'active')
-    } else {
-      addClass(this,'active')
-    }
-  });
+//   var banner = config.no_products_banner;
+//   if (banner) {
+//     var bannerEl = document.createElement('div');
+//     bannerEl.className = 'tvp-no-products-banner';
+//     bannerEl.innerHTML = isFunction(banner) ? banner() : banner.trim();
+//     modal.querySelector('.tvp-modal-content').appendChild(bannerEl);
+//   }
+// };
 
-  if (config.products_info_tooltip && !!config.products_message) {
-    var tooltipEl = document.createElement('div');
-    tooltipEl.className = 'tvp-tooltip';
-    tooltipEl.innerHTML = templates['modal'].tooltip;
-    tooltipEl.querySelector('.tvp-products-message').innerHTML = config.products_message;
-    headlineEl.appendChild(tooltipEl);
-  }
+// function handleModalResize(e) {
+//   iframeModal.style.height = e.data.height;
+// };
 
-  modal.querySelector('.tvp-modal-header').appendChild(headlineEl);
-};
+// function handleModalProducts(e) {
+//   removeClass(iframeModalHolder, 'no-products');
+//   addClass(iframeModalHolder, 'products');
+
+//   if (isMobile || modal.querySelector('.tvp-products-headline') || !config.products_headline_display)
+//     return;
+
+//   var headlineEl = document.createElement('div');
+//   headlineEl.className = 'tvp-products-headline';
+//   headlineEl.innerHTML = config.products_headline_text;
+//   headlineEl.addEventListener('click',function() {
+//     if (this.classList.contains('active')) {
+//       removeClass(this,'active')
+//     } else {
+//       addClass(this,'active')
+//     }
+//   });
+
+//   if (config.products_info_tooltip && !!config.products_message) {
+//     var tooltipEl = document.createElement('div');
+//     tooltipEl.className = 'tvp-tooltip';
+//     tooltipEl.innerHTML = templates['modal'].tooltip;
+//     tooltipEl.querySelector('.tvp-products-message').innerHTML = config.products_message;
+//     headlineEl.appendChild(tooltipEl);
+//   }
+
+//   modal.querySelector('.tvp-modal-header').appendChild(headlineEl);
+// };

@@ -344,7 +344,7 @@
            "type": "text",
            "label": "Items Per Page",
            "code": "items_per_page",
-           "value": "25"
+           "value": "4"
         },
         {
            "for": "carousel",
@@ -360,6 +360,13 @@
            "code": "background",
            "value": "white"
         },
+        {
+          "for": "carousel",
+          "type": "text",
+          "label": "Iframe Carousel Body Margin",
+          "code": "iframe_carousel_body_margin",
+          "value": "0"
+       },
         {
            "for": "carousel",
            "type": "text",
@@ -521,6 +528,13 @@
             "code": "arrow_icon_color_hover",
             "value": "#000"
         },
+        {
+          "for": "carousel",
+          "type": "text",
+          "label": "Item Image Background Color",
+          "code": "item_image_background_color",
+          "value": "#efefef"
+      },
         {
             "for": "carousel",
             "type": "text",
