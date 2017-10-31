@@ -1,7 +1,7 @@
 (function() {
   var body = document.body;
 
-  var Carousel = function(el, options) {
+  function Carousel(el, options) {
     this.options = options || {};
     this.itemsPerPage = this.options.items_per_page || null;
     this.itemMetaData = this.options.item_meta_data || null;
@@ -76,10 +76,10 @@
       breakpoint: 480,
       settings: {
         arrows: false,
-        slidesToShow: Number(options.items_to_show_480),
-        slidesToScroll: Number(options.items_to_scroll_480),
+        // slidesToShow: Number(options.items_to_show_480),
+        // slidesToScroll: Number(options.items_to_scroll_480),
+        //centerMode: options.carousel_center_mode_480,
         dots: this.reachedBulletsMax() ? false : options.navigation_bullets_480,
-        centerMode: options.carousel_center_mode_480,
         centerPadding: options.carousel_center_padding
       }
     };
@@ -91,12 +91,12 @@
     return {
       breakpoint: 667,
       settings: {
-        slidesToShow: Number(options.items_to_show_667),
-        slidesToScroll: Number(options.items_to_scroll_667),
+        // slidesToShow: Number(options.items_to_show_667),
+        // slidesToScroll: Number(options.items_to_scroll_667),
+        // centerMode: options.carousel_center_mode_667,
+        // centerPadding: options.carousel_center_padding
         dots: this.reachedBulletsMax() ? false : options.navigation_bullets_667,
-        arrows: false,
-        centerMode: options.carousel_center_mode_667,
-        centerPadding: options.carousel_center_padding
+        arrows: false
       }
     };
   };
@@ -104,7 +104,7 @@
   Carousel.prototype.getSlickConfig = function(){
     var options = this.options;
     var config = {
-      slidesToShow: Number(options.items_to_show),
+      slidesToShow: Number(options.items_per_page),
       slidesToScroll: Number(options.items_to_scroll),
       dots: this.reachedBulletsMax() ? false : options.navigation_bullets,
       infinite: options.infinite,

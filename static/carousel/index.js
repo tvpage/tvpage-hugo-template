@@ -127,6 +127,7 @@ if (!hasKey(config,"targetEl") || !getById(config.targetEl))
 var type = config.type;
 var mobilePrefix = isMobile ? "-mobile" : "";
 var css = config.css;
+var cssMobile = config.css.mobile;
 var baseUrl = config.baseUrl;
 var staticPath = baseUrl + '/' + type;
 var debug = config.debug;
@@ -136,15 +137,16 @@ var cssPath = staticPath + distPath + 'css/';
 var jsPath = staticPath + distPath + 'js/';
 var eventPrefix = config.eventPrefix;
 var templates = config.templates;
+var mobileTemplates = templates.mobile;
 
 var getInitialHtml = function(){
   var html = "";
-  
-  var hostId = "tvp-"+type+"-host";
-  if (!getById(hostId))
-    html += '<style id="'+hostId+'">' + css["host"+mobilePrefix] + '</style>';
+  var hostId = "tvp-" + type + "-host";
 
-  html += '<style>' + css["host-custom"+mobilePrefix] + '</style>';
+  if (!getById(hostId))
+    html += '<style id="'+hostId+'">' + (isMobile ? cssMobile.host : css.host) + '</style>';
+
+  html += '<style>' + (isMobile ? cssMobile['host-custom'] : css['host-custom']) + '</style>';
   html += '<div id="' + id + '-holder" class="tvp-'+type+'-holder">';
   html += '<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe></div>';
 
@@ -162,7 +164,7 @@ var iframeHtml = getIframeHtml({
   id: id,
   domain: baseUrl,
   style: css.carousel,
-  html: config.templates.base,
+  html: isMobile ? mobileTemplates.skeleton : templates.skeleton,
   context: config,
   eventPrefix: eventPrefix,
   js: [
@@ -209,6 +211,7 @@ window.tvpcallback = function(data){
   //things in the widget side.
   config.channel.videos = data;
 
+  //This is the first event that start things out
   window.postMessage({
     event: eventPrefix + ':start'
   }, '*');
@@ -217,21 +220,25 @@ window.tvpcallback = function(data){
 var channel = config.channel;
 var channelId = channel.id || config.channelid;
 var src = config.api_base_url + '/channels/' + channelId + '/videos';
+var callParams = {
+  p: 0,
+  n: config.items_per_page,
+  o: config.videos_order_by,
+  od:config.videos_order_direction,
+  'X-login-id': config.loginId || config.loginid,
+  callback: 'tvpcallback'
+};
+
+var c = 0;
+for (var param in callParams) {
+  src += (c > 0 ? '&' : '?') + param + '=' + callParams[param];
+  ++c;
+}
 
 if(channel.parameters){
   var channelParams = channel.parameters;
-  channelParams.n = config.items_per_page;
-  channelParams.p = 0;
-  channelParams.o = config.videos_order_by;
-  channelParams.od = config.videos_order_direction;
-  channelParams['X-login-id'] = config.loginId || config.loginid;
-  channelParams.callback = 'tvpcallback';
-
-  var counter = 0;
-  for (var key in channelParams) {
-    src += (counter > 0 ? '&' : '?') + key + '=' + channelParams[key];
-    ++counter;
-  }
+  for (var channelParam in channelParams)
+    src += '&' + channelParam + '=' + channelParams[channelParam];
 }
 
 var jsonpScript = document.createElement('script');

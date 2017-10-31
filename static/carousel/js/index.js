@@ -10,17 +10,17 @@
   //Render image and title for preloaded elements
   for (var i = 0; i < channelVideos.length; i++) {
     var video = channelVideos[i];
-    var videoEl = skeletonEl.querySelector('.video-' + i);
+    var videoEl = skeletonEl.querySelector('.video-' + (i + 1));
 
     videoEl.querySelector('.video-image').style.backgroundImage = "url('" + video.asset.thumbnailUrl + "')";
-    videoEl.querySelector('.video-title').innerHTML = video.title;
+
+    var videoTitleEl = videoEl.querySelector('.video-title');
+    videoTitleEl.classList.add('ready');
+    videoTitleEl.innerHTML = video.title;
 
     if (i + 1 === config.toPreload)
       break;
   }
-
-  //And remove the skeleton mode
-  skeletonEl.classList.remove('skeleton');
 
   //The global deps of the carousel have to be present before executing its logic.
   var depsCheck = 0;

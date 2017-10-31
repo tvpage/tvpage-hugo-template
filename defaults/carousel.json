@@ -204,14 +204,14 @@
           "type": "text",
           "label": "Navigation Bullets Position",
           "code": "navigation_bullets_position",
-          "value": "absolute"
+          "value": "relative"
         },
         {
           "for": "carousel",
           "type": "text",
           "label": "Navigation Bullets Bottom",
           "code": "navigation_bullets_bottom",
-          "value": "-25px"
+          "value": "0"
         },
         {
           "for": "carousel",
@@ -240,6 +240,20 @@
            "label": "Iframe Width",
            "code": "iframe_width",
            "value": "100%"
+        },
+        {
+          "for": "carousel",
+          "type": "text",
+          "label": "Carousel Holder Padding Top Mobile",
+          "code": "carousel_holder_padding_top_mobile",
+          "value": "90%"
+        },
+        {
+          "for": "carousel",
+          "type": "text",
+          "label": "Carousel Holder Padding Top",
+          "code": "carousel_holder_padding_top",
+          "value": "30%"
         },
         {
            "for": "carousel",

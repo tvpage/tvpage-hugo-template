@@ -4,10 +4,6 @@
   {{ end }}
 {{ end }}
 
-"html {" +
-    "-webkit-text-size-adjust:none;"+
-"}" +
-
 "*[class^=tvp-] {" +
     "box-sizing: border-box;" +
 "}" +
@@ -20,7 +16,7 @@
     "display: block;" +
     "content: \"\";" +
     "width: 100%;" +
-    "padding-top: 87%;" +
+    "padding-top: {{ ($.Scratch.Get "settings").carousel_holder_padding_top_mobile }};" +
 "}" +
 
 ".tvp-carousel-holder > iframe {" +
