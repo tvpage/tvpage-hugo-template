@@ -245,6 +245,12 @@ var jsonpScript = document.createElement('script');
 jsonpScript.src = src;
 body.appendChild(jsonpScript);
 
+var js_script = document.createElement('script');
+js_script.type = "text/javascript";
+js_script.src = jsPath + "scripts.min.js";
+js_script.async = true;
+document.getElementsByTagName('head')[0].appendChild(js_script);
+
 
 //Modal
 // var modalContainer = document.createElement("div");
