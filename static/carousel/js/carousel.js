@@ -37,6 +37,8 @@
     }else{
       arrow.classList.remove('inactive');
     }
+
+    arrow.classList.remove('hide');
   };
 
   Carousel.prototype.updateNextArrow = function(slick){
@@ -49,6 +51,8 @@
     } else {
       arrow.classList.remove('inactive');
     }
+
+    arrow.classList.remove('hide');
   };
 
   Carousel.prototype.reachedBulletsMax = function(){
@@ -133,6 +137,7 @@
       that.$carousel = $(that.container);
       
       that.$carousel.on('init', function(event, slick) {
+        console.log('carousel has been initialized', performance.now() - startTime);
         that.el.querySelector('.slick-list').style.margin = "0 -" + (parseInt(that.options.item_padding_right) + 1) + "px";
 
         //Clear the skeleton

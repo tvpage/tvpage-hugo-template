@@ -12,6 +12,9 @@
     var video = channelVideos[i];
     var videoEl = skeletonEl.querySelector('.video-' + (i + 1));
 
+    if(!videoEl)
+      continue;
+
     videoEl.querySelector('.video-image').style.backgroundImage = "url('" + video.asset.thumbnailUrl + "')";
 
     var videoTitleEl = videoEl.querySelector('.video-title');

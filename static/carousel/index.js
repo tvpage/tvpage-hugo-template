@@ -191,7 +191,7 @@ var iframeHtml = getIframeHtml({
 
 iframeDocument.open().write(iframeHtml);
 iframeDocument.close();
-console.log('renders initial dom', performance.now() - startTime);
+console.log('renders initial dom (iframe w/skeleton)', performance.now() - startTime);
 
 
 //API calls/loading, is here were we call the most important api(s)
@@ -199,6 +199,7 @@ if(!hasKey(config,'channel'))
   throw new Error('Widget config missing channel obj');
 
 window.tvpcallback = function(data){
+  console.log('call to api completed', performance.now() - startTime);
   
   //Preload data images.. this can be done smarter depending on the template, for example
   //carousel on mobile will need to preload first image only whilst desktop needs
@@ -212,6 +213,7 @@ window.tvpcallback = function(data){
     if(i + 1 === config.toPreload)
       break;
   }
+  console.log('first page of video images preloaded', performance.now() - startTime);
 
   //We then add the data to the tvp global and then we fire the event that will start
   //things in the widget side.
@@ -228,7 +230,7 @@ var channelId = channel.id || config.channelid;
 var src = config.api_base_url + '/channels/' + channelId + '/videos';
 var callParams = {
   p: 0,
-  n: config.items_per_page,
+  n: config.items_per_page + 1,
   o: config.videos_order_by,
   od:config.videos_order_direction,
   'X-login-id': config.loginId || config.loginid,
