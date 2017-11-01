@@ -362,10 +362,10 @@ function handleRender(e) {
 }
 
 function handleResize(e) {
-  // if (!modal.classList.contains("tvp-hidden") || !e.data.height)
-  //   return;
+  if (!modal.classList.contains("tvp-hidden") || !e.data.height)
+    return;
 
-  // holder.style.height = e.data.height;
+  holder.style.height = e.data.height;
 }
 
 var getPlayerUrl = function(){
@@ -376,32 +376,15 @@ var getPlayerUrl = function(){
   return url;
 };
 
-var setClickData = function(e){
-  if (!e || !e.data)
-    return;
-
-  var configCopy = JSON.parse(JSON.stringify(config));
-  delete configCopy.no_products_banner;
-  configCopy.onPlayerChange = !!config.onPlayerChange;
-
-  var data = e.data;
-
-  clickData = {
-    data: data.videos,
-    video: data.video,
-    runTime: configCopy
-  };
-};
-
 var iframeModalJs = [
   "//a.tvpage.com/tvpa.min.js",
   '//imasdk.googleapis.com/js/sdkloader/ima3.js',
   getPlayerUrl(),
   debug && isMobile ? jsPath + "/vendor/jquery.js" : "",
   debug && !isMobile ? jsPath + "/vendor/perfect-scrollbar.min.js" : "",
-  debug ? baseUrl + "libs/utils.js" : "",
-  debug ? baseUrl + "libs/analytics.js" : "",
-  debug ? baseUrl + "libs/player.js" : "",
+  debug ? baseUrl + "/libs/utils.js" : "",
+  debug ? baseUrl + "/libs/analytics.js" : "",
+  debug ? baseUrl + "/libs/player.js" : "",
   debug ? jsPath + "/" + mobilePath + "modal/index.js" : "",
   debug ? "" : jsPath + mobilePath + "modal/scripts.min.js"
 ];
@@ -431,37 +414,38 @@ var renderIframeModal = function(){
   iframeModalDocument = iframeModal.contentWindow.document;
   iframeModalDocument.open().write(iframeModalHtml);
   iframeModalDocument.close();
-};
-
-function handleVideoClick(e) {
-  setClickData(e);
-
-  modal.querySelector('.tvp-modal-title').innerHTML = clickData.video.title || "";
-
-  removeClass(modal, 'tvp-hidden');
-  removeClass('tvp-modal-overlay-' + id, 'tvp-hidden');
-
-  if (config.fix_page_scroll) {
-    addClass(body, 'tvp-modal-open');
-  }
-
-  renderIframeModal();
-
+  
+  //start things out inside the iframe modal
   window.postMessage({
     event: eventPrefix + ':start'
   }, '*');
 };
 
-function handleModalInitialized(e) {
-  if (iframeModal.contentWindow) {
-    iframeModal.contentWindow.postMessage({
-      event: eventPrefix + ':modal_data',
-      data: clickData.data,
-      video: clickData.video,
-      runTime: clickData.runTime
-    }, '*');
-  }
+function handleVideoClick(e) {
+  var videos = config.channel.videos;
+  var selected = null;
+  var clicked = e.data.clicked;
 
+  for (var i = 0; i < videos.length; i++)
+    if (videos[i].id === clicked)
+      selected = videos[i];
+
+  if(!selected)
+    return;
+
+  config.clicked = clicked;
+
+  modal.querySelector('.tvp-modal-title').innerHTML = selected.title || "";
+
+  removeClass(modal, 'tvp-hidden');
+  removeClass('tvp-modal-overlay-' + id, 'tvp-hidden');
+  renderIframeModal();
+  
+  if (config.fix_page_scroll)
+    addClass(body, 'tvp-modal-open');
+};
+
+function handleModalInitialized(e) {
   var onOrientationChange = function() {
     if (iOS && iframeModal && iframeModal.contentWindow) {
       var width = iframeModal.parentNode.offsetWidth;
@@ -473,6 +457,7 @@ function handleModalInitialized(e) {
   };
   
   var orientationChangeEvent = 'onorientationchange' in window ? 'orientationchange' : 'resize';
+  
   window.removeEventListener(orientationChangeEvent, onOrientationChange, false);
   window.addEventListener(orientationChangeEvent, onOrientationChange, false);
 };

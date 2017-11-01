@@ -1,5 +1,6 @@
 (function(){
   var userAgent = navigator.userAgent;
+  var body = document.body;
   
   var hasKey = function(o,k){
     return o.hasOwnProperty(k);
@@ -15,6 +16,10 @@
   
   Utils.isIOS = (/iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(userAgent) && !window.MSStream);
   
+  Utils.getWidgetHeight = function() {
+    return body.scrollHeight;
+  };
+
   Utils.getById = function(id) {
     return document.getElementById(id);
   };
@@ -37,7 +42,7 @@
     }
   
     script.src = src;
-    document.body.appendChild(script);
+    body.appendChild(script);
   };
   
   Utils.sendMessage = function(msg){

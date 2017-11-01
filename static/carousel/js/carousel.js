@@ -13,23 +13,8 @@
     this.el = 'string' === typeof el ? document.getElementById(el) : el;
     this.container = this.el.querySelector('.carousel-content');
     this.$carousel = null;
+    this.firstResize = true;
   }
-  
-  Carousel.prototype.getHeight = function() {
-    var opts = this.options;
-    
-    var navBulletsHeight = 0;
-    if (opts.navigation_bullets || opts.mobile_navigation_bullets) {
-      navBulletsHeight = parseInt(opts.navigation_bullets_margin_bottom, 10);
-    }
-
-    var heightOffset = 0;
-    if (Utils.isset(opts.height_offset)) {
-      heightOffset = parseInt(opts.height_offset, 10);
-    }
-
-    return (this.el.offsetHeight + navBulletsHeight + heightOffset) + 'px';
-  };
 
   Carousel.prototype.getItemPlayButtonCenter = function(){
     var buttonRect = this.el.querySelector('.video-image-icon').getBoundingClientRect();
@@ -161,10 +146,15 @@
       that.$carousel.on('setPosition', Utils.debounce(function(event, slick) {
         that.updatePrevArrow(slick);
         that.updateNextArrow(slick);
-        Utils.sendMessage({
-          event: that.eventPrefix + ':resize',
-          height: that.getHeight()
-        });
+
+        if(!that.firstResize){
+          Utils.sendMessage({
+            event: that.eventPrefix + ':resize',
+            height: Utils.getWidgetHeight()
+          });
+        }
+
+        that.firstResize = false;
       },100));
 
       that.$carousel.slick(that.getSlickConfig());
@@ -236,22 +226,14 @@
 
       if (Utils.hasClass(target, 'video')) {
         var id = target.getAttribute('data-id');
-        var selected = {};
-        var data = that.data;
-        
-        for (var i = 0; i < data.length; i++) {
-          if (data[i].id === id)
-            selected = data[i];
-        }
         
         if (that.onClick) {
-          that.onClick(selected, data);
+          that.onClick(id);
         }
 
         Utils.sendMessage({
           event: that.eventPrefix + ":video_click",
-          video: selected,
-          videos: data
+          clicked: id
         });
       }
 
@@ -289,7 +271,7 @@
 
     if(Utils.hasKey(this.channel,'videos') && this.channel.videos.length) {
       start(this.channel.videos);
-      this.getNextPage();
+      //this.getNextPage();
     } else {
       this.load(function(data) {
         if(data.length > 0){

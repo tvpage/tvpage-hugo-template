@@ -2,6 +2,7 @@
 
     var body = document.body;
     var id = body.getAttribute("data-id") || "";
+    var config = window.parent.__TVPage__.config[id];
     var mainEl = null;
     var productsEl = null;
     var analytics = null;
@@ -229,12 +230,11 @@
 
     };
 
-    var initializePlayer = function(data){
-        var playerConfig = Utils.copy(data.runTime);
+    var initializePlayer = function(){
         var player = null;
+        var playerConfig = Utils.copy(config);
 
-        playerConfig.data = data.data;
-
+        playerConfig.data = config.channel.videos;
         playerConfig.onResize = function(initial, size){
             productsEl.style.height = size[1] + 'px';
             sendMessage({
@@ -242,19 +242,15 @@
                 height: (mainEl.offsetHeight + 20) + 'px'
             });
         };
-
         playerConfig.onNext = function(next){
-            if (!next) return;
+            if (!next)
+                return;
 
-            data.runTime.loginId = loginId;
-
-            if (data.runTime.merchandise) {
-                loadProducts(next.assetId,data.runTime,function(products){
-                    setTimeout(function(){
-                        checkProductsData(products,mainEl);
-                        render(products,data.runTime);
-                        player.resize();
-                    },0);
+            if (config.merchandise) {
+                loadProducts(next.assetId, config, function(products){
+                    checkProductsData(products, mainEl);
+                    render(products, config);
+                    player.resize();
                 });
             } else {
                 mainEl.classList.add('tvp-no-products');
@@ -269,95 +265,72 @@
             });
         };
 
-        var player = new Player('tvp-player-el', playerConfig, data.video.id);
+        player = new Player('tvp-player-el', playerConfig, config.clicked);
         player.initialize();
-
-        window.addEventListener('resize', player.resize);
     };
 
     var initialize = function(){
         mainEl = Utils.getById(id);
-        productsEl = mainEl.querySelector('.tvp-products-holder');
-        
+
         //We set the height of the player to the products element
+        productsEl = mainEl.querySelector('.tvp-products-holder');
         productsEl.style.height = mainEl.querySelector('.tvp-player-holder').offsetHeight + 'px';
 
-        window.addEventListener('message', function(e){
-            if (!e || !Utils.isset(e, 'data') || !Utils.isset(e.data, 'event')) 
-                return;
-            
-            var modalData = e.data;
+        initializePlayer();
 
-            if (eventPrefix + ':modal_data' !== modalData.event)
-                return;
+        loginId = config.loginId || config.loginid;
+        channelId = Utils.isset(config.channel) && Utils.isset(config.channel.id) ? config.channel.id : (config.channelId || config.channelid);
 
-            initializePlayer(modalData);
-            
-            var config = modalData.runTime;
-            config.loginId = config.loginId || config.loginid;
-            
-            loginId = config.loginId;
-            channelId = Utils.isset(config.channel) && Utils.isset(config.channel.id) ? config.channel.id : (config.channelId || config.channelid);
-
-            analytics =  new Analytics();
-            analytics.initConfig({
-                domain: location.hostname || '',
-                logUrl: config.api_base_url + '/__tvpa.gif',
-                loginId: loginId,
-                firstPartyCookies: config.firstpartycookies,
-                cookieDomain: config.cookiedomain
-            });
-
-
-            analytics.track('ci', {
-                li: loginId
-            });
-
-            if (config.merchandise) {
-                loadProducts(modalData.video.id, config,
-                    function(products){
-                    setTimeout(function(){
-                        checkProductsData(products,mainEl);
-                        render(products,config);
-                    },0);
-                });
-            } else {
-                mainEl.classList.add('tvp-no-products');
-                sendMessage({
-                    event: eventPrefix + ':modal_no_products'
-                });
-            }
+        analytics =  new Analytics();
+        analytics.initConfig({
+            domain: location.hostname || '',
+            logUrl: config.api_base_url + '/__tvpa.gif',
+            loginId: loginId,
+            firstPartyCookies: config.firstpartycookies,
+            cookieDomain: config.cookiedomain
         });
+        analytics.track('ci', {
+            li: loginId
+        });
+
+        if (config.merchandise) {
+            loadProducts(config.clicked, config, function(products){
+                checkProductsData(products, mainEl);
+                render(products, config);
+            });
+        } else {
+            mainEl.classList.add('tvp-no-products');
+            sendMessage({
+                event: eventPrefix + ':modal_no_products'
+            });
+        }
 
         sendMessage({
             event: eventPrefix + ':modal_initialized',
             height: (mainEl.offsetHeight + 20) + 'px'
         });
     };
-
-    //We need to poll/check when the dependencies had been already loaded, this is because we 
-    //create the iframes asynchronously.
-    var isLoadingLibs = function(){
-        var libs = ['TVPage', '_tvpa', 'Utils', 'Analytics', 'Player', 'Ps'];
-        for (var i = 0; i < libs.length; i++)
-            if ('undefined' === typeof window[libs[i]])
-                return true;
-        return false;
-    };
     
-    if (isLoadingLibs()) {
-        var libsLoadingCheck = 0;
-        (function libsLoadingPoll() {
-            setTimeout(function(){
-                if (isLoadingLibs()) {
-                    (++libsLoadingCheck < 200) ? libsLoadingPoll() : console.warn('limit reached');
-                } else {
-                    initialize();
-                }
-            },150);
-        })();
-    } else {
-        initialize();
-    }
+    var depsCheck = 0;
+    var deps = ['TVPage', '_tvpa', 'Utils', 'Analytics', 'Player', 'Ps'];
+
+    (function initModal() {
+        setTimeout(function() {
+        console.log('deps poll...');
+        
+        var ready = true;
+        for (var i = 0; i < deps.length; i++)
+            if ('undefined' === typeof window[deps[i]])
+            ready = false;
+
+        if(ready){
+
+            initialize();
+
+        }else if(++depsCheck < 200){
+            initModal()
+        }
+        },10);
+    })();
 
 }());

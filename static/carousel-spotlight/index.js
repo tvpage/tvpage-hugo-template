@@ -329,9 +329,9 @@ function handleVideoClick(e) {
       '//imasdk.googleapis.com/js/sdkloader/ima3.js',
       playerUrl,
       debug ? jsPath + "/vendor/jquery.js" : "",
-      debug ? baseUrl + "libs/utils.js" : "",
-      debug ? baseUrl + "libs/analytics.js" : "",
-      debug ? baseUrl + "libs/player.js" : "",
+      debug ? baseUrl + "/libs/utils.js" : "",
+      debug ? baseUrl + "/libs/analytics.js" : "",
+      debug ? baseUrl + "/libs/player.js" : "",
       debug ? jsPath + "/" + mobilePath + "modal/index.js" : "",
       debug ? "" : jsPath + mobilePath + "modal/scripts.min.js"
     ],
