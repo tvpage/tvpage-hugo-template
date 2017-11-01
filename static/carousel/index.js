@@ -209,8 +209,8 @@ window.tvpcallback = function(data){
   for (var i = 0; i < data.length; i++) {
     if(hasKey(data[i],'asset'))
       (new Image()).src = data[i].asset.thumbnailUrl;
-    
-    if(i + 1 === config.toPreload)
+
+    if(i + 1 == config.toPreload)
       break;
   }
   console.log('first page of video images preloaded', performance.now() - startTime);
