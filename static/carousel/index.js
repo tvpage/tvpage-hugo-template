@@ -31,33 +31,6 @@ var isset = function(o, p) {
   if (p) val = o[p];
   return "undefined" !== typeof val;
 };
-var getIframeHtml = function(o) {
-  o.startTime = startTime;
-
-  var html = tmpl(iframeBaseHtml,o);
-
-  html += "window.parent.addEventListener('message',function(e){";
-  html += "if(!e || !e.data || !e.data.event || '" + o.eventPrefix + ":start' !== e.data.event){";
-  html += "  return;";
-  html += "}";
-  
-  var js = (o.js || []).filter(Boolean);
-  for (var i = 0; i < js.length; i++) {
-    html += 'loadJS(\'' + js[i] + '\');';
-  }
-
-  var css = (o.css || []).filter(Boolean);
-  for (var i = 0; i < css.length; i++) {
-    html += 'loadCSS(\'' + css[i] + '\');';
-  }
-
-  html += "})";
-
-  html += '"><style>' + (o.style || '') + '</style>';
-  html += tmpl((o.html || '').trim(),o.context);
-
-  return html;
-};
 var addClass = function(obj, c) {
   if (!obj || !c) return;
   if ('string' === typeof obj) {
@@ -88,6 +61,39 @@ var getEventType = function(e) {
   }
 
   return null;
+};
+
+//Builds the document for iframes.
+function getIframeHtml(o) {
+  o.startTime = startTime;
+
+  var html = tmpl(iframeBaseHtml,o);
+  var clean = function(s){
+    return (s || []).filter(Boolean);
+  };
+
+  html += "function onStart(e){";
+  html += "  if(!e || !e.data || !e.data.event || '" + o.eventPrefix + ":start' !== e.data.event){";
+  html += "    return; ";
+  html += "  }";
+  
+  var js = clean(o.js);
+  for (var i = 0; i < js.length; i++)
+    html += 'loadJS(\'' + js[i] + '\');';
+
+  var css = clean(o.css);
+  for (var i = 0; i < css.length; i++)
+    html += 'loadCSS(\'' + css[i] + '\');';
+
+  html += "  parent.removeEventListener('message', onStart, false);";
+  html += "};";
+
+  html += "parent.addEventListener('message', onStart);";
+
+  html += '"><style>' + (o.style || '') + '</style>';
+  html += tmpl((o.html || '').trim(),o.context);
+
+  return html;
 };
 
 
@@ -247,287 +253,288 @@ body.appendChild(jsonpScript);
 
 
 //Modal
-// var modalContainer = document.createElement("div");
-// modalContainer.innerHTML = templates['modal'].modal;
-// body.appendChild(modalContainer);
+var modalContainer = document.createElement("div");
+modalContainer.innerHTML = templates.modal.modal;
+body.appendChild(modalContainer);
 
-// var clickData = {};
-// var iframeModalHolder = getById('tvp-modal-iframe-holder-' + id);
-// var iframeModal = null;
-// var iframeModalDocument = null;
-// var modal = getById("tvp-modal-" + id);
+var clickData = {};
+var iframeModalHolder = getById('tvp-modal-iframe-holder-' + id);
+var iframeModal = null;
+var iframeModalDocument = null;
+var modal = getById("tvp-modal-" + id);
 
-// addClass(modal,isMobile ? "mobile" : "desktop");
+addClass(modal,isMobile ? "mobile" : "desktop");
 
-// if (config.modal_title_position.trim().length && "bottom" === config.modal_title_position) {
-//   var modalTitleEl = modal.querySelector("#tvp-modal-title-" + id);
-//   addClass(modalTitleEl,"bottom")
-//   modal.querySelector(".tvp-modal-body").appendChild(modalTitleEl);
-// }
+if (config.modal_title_position.trim().length && "bottom" === config.modal_title_position) {
+  var modalTitleEl = modal.querySelector("#tvp-modal-title-" + id);
+  addClass(modalTitleEl,"bottom")
+  modal.querySelector(".tvp-modal-body").appendChild(modalTitleEl);
+}
 
-// var removeBanner = function() {
-//   var banner = modal.querySelector('.tvp-no-products-banner');
-//   if (banner){
-//     banner.parentNode.removeChild(banner);
-//   }
-// };
+var removeBanner = function() {
+  var banner = modal.querySelector('.tvp-no-products-banner');
+  if (banner){
+    banner.parentNode.removeChild(banner);
+  }
+};
 
-// var closeModal = function() {
-//   addClass(modal, 'tvp-hidden');
-//   addClass('tvp-modal-overlay-' + id, 'tvp-hidden');
+var closeModal = function() {
+  addClass(modal, 'tvp-hidden');
+  addClass('tvp-modal-overlay-' + id, 'tvp-hidden');
 
-//   removeBanner();
-//   removeClass(iframeModalHolder, 'products');
-//   removeClass(iframeModalHolder, 'no-products');
-//   removeClass(modal.querySelector('.tvp-products-headline'), 'active');
+  removeBanner();
+  removeClass(iframeModalHolder, 'products');
+  removeClass(iframeModalHolder, 'no-products');
+  removeClass(modal.querySelector('.tvp-products-headline'), 'active');
 
-//   iframeModal.parentNode.removeChild(iframeModal);
+  iframeModal.parentNode.removeChild(iframeModal);
 
-//   if (config.fix_page_scroll)
-//     removeClass(body, 'tvp-modal-open');
+  if (config.fix_page_scroll)
+    removeClass(body, 'tvp-modal-open');
 
-//   window.postMessage({
-//     event: eventPrefix + ':modal_close'
-//   }, '*');
-// };
+  window.postMessage({
+    event: eventPrefix + ':modal_close'
+  }, '*');
+};
 
-// getById("tvp-modal-close-" + id).addEventListener('click', closeModal, false);
+getById("tvp-modal-close-" + id).addEventListener('click', closeModal, false);
 
-// modal.addEventListener('click', function(e) {
-//   if (e.target === modal || !modal.contains(e.target)) {
-//     closeModal();
-//   }
-// }, false);
+modal.addEventListener('click', function(e) {
+  if (e.target === modal || !modal.contains(e.target)) {
+    closeModal();
+  }
+}, false);
 
-// //Listen and handle messages coming from the widget
-// window.addEventListener("message", function(e) {
-//   switch (getEventType(e)) {
-//     case 'video_click':
-//       handleVideoClick(e);
-//       break;
-//     case 'modal_initialized':
-//       handleModalInitialized(e);
-//       break;
-//     case 'modal_no_products':
-//       handleModalNoProducts(e);
-//       break;
-//     case 'modal_products':
-//       handleModalProducts(e);
-//       break;
-//     case 'player_next':
-//       handlePlayerNext(e);
-//       break;
-//     case 'modal_resize':
-//       handleModalResize(e);
-//       break;
-//     case 'render':
-//       handleRender(e);
-//       break;
-//     case 'resize':
-//       handleResize(e);
-//       break;
-//     case 'on_player_change':
-//       handleOnPlayerChange(e);
-//       break;
-//     default:
-//   }
+//Listen and handle messages coming from the widget
+window.addEventListener("message", function(e) {
+  switch (getEventType(e)) {
+    case 'video_click':
+      handleVideoClick(e);
+      break;
+    case 'modal_initialized':
+      handleModalInitialized(e);
+      break;
+    case 'modal_no_products':
+      handleModalNoProducts(e);
+      break;
+    case 'modal_products':
+      handleModalProducts(e);
+      break;
+    case 'player_next':
+      handlePlayerNext(e);
+      break;
+    case 'modal_resize':
+      handleModalResize(e);
+      break;
+    case 'render':
+      handleRender(e);
+      break;
+    case 'resize':
+      handleResize(e);
+      break;
+    case 'on_player_change':
+      handleOnPlayerChange(e);
+      break;
+    default:
+  }
 
-//   if (__windowCallbackFunc__)
-//     __windowCallbackFunc__(e);
-// });
+  if (__windowCallbackFunc__)
+    __windowCallbackFunc__(e);
+});
 
-// function handleOnPlayerChange(e){
-//   config.onPlayerChange(e.data.e, e.data.stateData);
-// }
+function handleOnPlayerChange(e){
+  config.onPlayerChange(e.data.e, e.data.stateData);
+}
 
-// function handleRender(e) {
-//   addClass(holder, "initialized");
+function handleRender(e) {
+  addClass(holder, "initialized");
   
-//   if(config.background){
-//     holder.style.cssText += 'background-color:' + config.background + ';';
-//   }
+  if(config.background){
+    holder.style.cssText += 'background-color:' + config.background + ';';
+  }
 
-//   if(config.title_color){
-//     iframeDocument.querySelector('.tvp-carousel-title').style.cssText += 'color:' + config.title_color + ';';
-//   }
+  if(config.item_title_font_color){
+    var titles = iframeDocument.querySelectorAll('.tvp-video-title');
+    for (var i = 0; i < titles.length; i++) {
+      titles[i].style.cssText += 'color:' + config.item_title_font_color + ';';
+    }
+  }
+}
 
-//   if(config.item_title_font_color){
-//     var titles = iframeDocument.querySelectorAll('.tvp-video-title');
-//     for (var i = 0; i < titles.length; i++) {
-//       titles[i].style.cssText += 'color:' + config.item_title_font_color + ';';
-//     }
-//   }
-// }
+function handleResize(e) {
+  // if (!modal.classList.contains("tvp-hidden") || !e.data.height)
+  //   return;
 
-// function handleResize(e) {
-//   if (!modal.classList.contains("tvp-hidden") || !e.data.height)
-//     return;
+  // holder.style.height = e.data.height;
+}
 
-//   holder.style.height = e.data.height;
-// }
+var getPlayerUrl = function(){
+  var url = "https://cdnjs.tvpage.com/tvplayer/tvp-" + config.player_version + ".min.js";
+  if (config.player_url && (config.player_url + "").trim().length) {
+    url = config.player_url;
+  }
+  return url;
+};
 
-// var getPlayerUrl = function(){
-//   var url = "https://cdnjs.tvpage.com/tvplayer/tvp-" + config.player_version + ".min.js";
-//   if (config.player_url && (config.player_url + "").trim().length) {
-//     url = config.player_url;
-//   }
-//   return url;
-// };
+var setClickData = function(e){
+  if (!e || !e.data)
+    return;
 
-// var setClickData = function(e){
-//   if (!e || !e.data)
-//     return;
+  var configCopy = JSON.parse(JSON.stringify(config));
+  delete configCopy.no_products_banner;
+  configCopy.onPlayerChange = !!config.onPlayerChange;
 
-//   var configCopy = JSON.parse(JSON.stringify(config));
-//   delete configCopy.no_products_banner;
-//   configCopy.onPlayerChange = !!config.onPlayerChange;
+  var data = e.data;
 
-//   var data = e.data;
+  clickData = {
+    data: data.videos,
+    video: data.video,
+    runTime: configCopy
+  };
+};
 
-//   clickData = {
-//     data: data.videos,
-//     video: data.video,
-//     runTime: configCopy
-//   };
-// };
+var iframeModalJs = [
+  "//a.tvpage.com/tvpa.min.js",
+  '//imasdk.googleapis.com/js/sdkloader/ima3.js',
+  getPlayerUrl(),
+  debug && isMobile ? jsPath + "/vendor/jquery.js" : "",
+  debug && !isMobile ? jsPath + "/vendor/perfect-scrollbar.min.js" : "",
+  debug ? baseUrl + "libs/utils.js" : "",
+  debug ? baseUrl + "libs/analytics.js" : "",
+  debug ? baseUrl + "libs/player.js" : "",
+  debug ? jsPath + "/" + mobilePath + "modal/index.js" : "",
+  debug ? "" : jsPath + mobilePath + "modal/scripts.min.js"
+];
 
-// var iframeModalJs = [
-//   "//a.tvpage.com/tvpa.min.js",
-//   '//imasdk.googleapis.com/js/sdkloader/ima3.js',
-//   getPlayerUrl(),
-//   debug && isMobile ? jsPath + "/vendor/jquery.js" : "",
-//   debug && !isMobile ? jsPath + "/vendor/perfect-scrollbar.min.js" : "",
-//   //debug ? baseUrl + "sdk/tvpage.min.js" : "",
-//   debug ? baseUrl + "libs/utils.js" : "",
-//   debug ? baseUrl + "libs/analytics.js" : "",
-//   debug ? baseUrl + "libs/player.js" : "",
-//   debug ? jsPath + "/" + mobilePath + "modal/index.js" : "",
-//   debug ? "" : jsPath + mobilePath + "modal/scripts.min.js"
-// ];
+var iframeModalCss = [
+  debug ? cssPath + "/" + mobilePath + "modal/styles.css" : "",
+  debug && isMobile ? cssPath + "/vendor/slick.css" : "",
+  debug && !isMobile ? cssPath + "/vendor/perfect-scrollbar.min.css" : "",
+  debug ? "" : cssPath + "/" + mobilePath + "modal/styles.min.css"
+];
 
-// var iframeModalCss = [
-//   debug ? cssPath + "/" + mobilePath + "modal/styles.css" : "",
-//   debug && isMobile ? cssPath + "/vendor/slick.css" : "",
-//   debug && !isMobile ? cssPath + "/vendor/perfect-scrollbar.min.css" : "",
-//   debug ? "" : cssPath + "/" + mobilePath + "modal/styles.min.css"
-// ];
+var iframeModalHtml = getIframeHtml({
+  id: id,
+  domain: baseUrl,
+  context: config,
+  eventPrefix: eventPrefix,
+  style: config.css["modal-content" + mobilePrefix],
+  className: isMobile ? "mobile" : "",
+  html: templates["modal-content" + mobilePrefix].body,
+  js: iframeModalJs,
+  css: iframeModalCss
+});
 
-// var iframeModalHtml = getIframeHtml({
-//   id: id,
-//   domain: baseUrl,
-//   style: config.css["modal-content" + mobilePrefix],
-//   className: isMobile ? "mobile" : "",
-//   html: templates["modal-content" + mobilePrefix].body,
-//   js: iframeModalJs,
-//   css: iframeModalCss
-// });
+var renderIframeModal = function(){
+  iframeModalHolder.innerHTML = templates["modal-iframe"];
+  iframeModal = iframeModalHolder.querySelector('.tvp-iframe-modal');
+  iframeModalDocument = iframeModal.contentWindow.document;
+  iframeModalDocument.open().write(iframeModalHtml);
+  iframeModalDocument.close();
+};
 
-// var renderIframeModal = function(){
-//   iframeModalHolder.innerHTML = templates["modal-iframe"];
-//   iframeModal = iframeModalHolder.querySelector('.tvp-iframe-modal');
-//   iframeModalDocument = iframeModal.contentWindow.document;
-//   iframeModalDocument.open().write(iframeModalHtml);
-//   iframeModalDocument.close();
-// };
+function handleVideoClick(e) {
+  setClickData(e);
 
-// function handleVideoClick(e) {
-//   setClickData(e);
+  modal.querySelector('.tvp-modal-title').innerHTML = clickData.video.title || "";
 
-//   modal.querySelector('.tvp-modal-title').innerHTML = clickData.video.title || "";
+  removeClass(modal, 'tvp-hidden');
+  removeClass('tvp-modal-overlay-' + id, 'tvp-hidden');
 
-//   removeClass(modal, 'tvp-hidden');
-//   removeClass('tvp-modal-overlay-' + id, 'tvp-hidden');
+  if (config.fix_page_scroll) {
+    addClass(body, 'tvp-modal-open');
+  }
 
-//   if (config.fix_page_scroll) {
-//     addClass(body, 'tvp-modal-open');
-//   }
+  renderIframeModal();
 
-//   renderIframeModal();
-// };
+  window.postMessage({
+    event: eventPrefix + ':start'
+  }, '*');
+};
 
-// function handleModalInitialized(e) {
-//   if (iframeModal.contentWindow) {
-//     iframeModal.contentWindow.postMessage({
-//       event: eventPrefix + ':modal_data',
-//       data: clickData.data,
-//       video: clickData.video,
-//       runTime: clickData.runTime
-//     }, '*');
-//   }
+function handleModalInitialized(e) {
+  if (iframeModal.contentWindow) {
+    iframeModal.contentWindow.postMessage({
+      event: eventPrefix + ':modal_data',
+      data: clickData.data,
+      video: clickData.video,
+      runTime: clickData.runTime
+    }, '*');
+  }
 
-//   var onOrientationChange = function() {
-//     if (iOS && iframeModal && iframeModal.contentWindow) {
-//       var width = iframeModal.parentNode.offsetWidth;
-//       iframeModal.contentWindow.window.postMessage({
-//         event: eventPrefix + ':external_resize',
-//         size: [width, Math.floor(width * (9 / 16))]
-//       }, '*');
-//     }
-//   };
+  var onOrientationChange = function() {
+    if (iOS && iframeModal && iframeModal.contentWindow) {
+      var width = iframeModal.parentNode.offsetWidth;
+      iframeModal.contentWindow.window.postMessage({
+        event: eventPrefix + ':external_resize',
+        size: [width, Math.floor(width * (9 / 16))]
+      }, '*');
+    }
+  };
   
-//   var orientationChangeEvent = 'onorientationchange' in window ? 'orientationchange' : 'resize';
-//   window.removeEventListener(orientationChangeEvent, onOrientationChange, false);
-//   window.addEventListener(orientationChangeEvent, onOrientationChange, false);
-// };
+  var orientationChangeEvent = 'onorientationchange' in window ? 'orientationchange' : 'resize';
+  window.removeEventListener(orientationChangeEvent, onOrientationChange, false);
+  window.addEventListener(orientationChangeEvent, onOrientationChange, false);
+};
 
-// function handlePlayerNext(e) {
-//   getById('tvp-modal-title-' + id).innerHTML = e.data.next.assetTitle || "";
-//   removeBanner();
-// };
+function handlePlayerNext(e) {
+  getById('tvp-modal-title-' + id).innerHTML = e.data.next.assetTitle || "";
+  removeBanner();
+};
 
-// function handleModalNoProducts(e) {
-//   if (!config.merchandise)
-//     return;
+function handleModalNoProducts(e) {
+  if (!config.merchandise)
+    return;
 
-//   removeClass(iframeModalHolder, 'products');
-//   addClass(iframeModalHolder, 'no-products');
+  removeClass(iframeModalHolder, 'products');
+  addClass(iframeModalHolder, 'no-products');
 
-//   if(isMobile || !config.products_headline_display)
-//     return;
+  if(isMobile || !config.products_headline_display)
+    return;
   
-//   var headlineEl = modal.querySelector('.tvp-products-headline');
-//   if (headlineEl) {
-//     headlineEl.parentNode.removeChild(headlineEl);
-//   }
+  var headlineEl = modal.querySelector('.tvp-products-headline');
+  if (headlineEl) {
+    headlineEl.parentNode.removeChild(headlineEl);
+  }
 
-//   var banner = config.no_products_banner;
-//   if (banner) {
-//     var bannerEl = document.createElement('div');
-//     bannerEl.className = 'tvp-no-products-banner';
-//     bannerEl.innerHTML = isFunction(banner) ? banner() : banner.trim();
-//     modal.querySelector('.tvp-modal-content').appendChild(bannerEl);
-//   }
-// };
+  var banner = config.no_products_banner;
+  if (banner) {
+    var bannerEl = document.createElement('div');
+    bannerEl.className = 'tvp-no-products-banner';
+    bannerEl.innerHTML = isFunction(banner) ? banner() : banner.trim();
+    modal.querySelector('.tvp-modal-content').appendChild(bannerEl);
+  }
+};
 
-// function handleModalResize(e) {
-//   iframeModal.style.height = e.data.height;
-// };
+function handleModalResize(e) {
+  iframeModal.style.height = e.data.height;
+};
 
-// function handleModalProducts(e) {
-//   removeClass(iframeModalHolder, 'no-products');
-//   addClass(iframeModalHolder, 'products');
+function handleModalProducts(e) {
+  removeClass(iframeModalHolder, 'no-products');
+  addClass(iframeModalHolder, 'products');
 
-//   if (isMobile || modal.querySelector('.tvp-products-headline') || !config.products_headline_display)
-//     return;
+  if (isMobile || modal.querySelector('.tvp-products-headline') || !config.products_headline_display)
+    return;
 
-//   var headlineEl = document.createElement('div');
-//   headlineEl.className = 'tvp-products-headline';
-//   headlineEl.innerHTML = config.products_headline_text;
-//   headlineEl.addEventListener('click',function() {
-//     if (this.classList.contains('active')) {
-//       removeClass(this,'active')
-//     } else {
-//       addClass(this,'active')
-//     }
-//   });
+  var headlineEl = document.createElement('div');
+  headlineEl.className = 'tvp-products-headline';
+  headlineEl.innerHTML = config.products_headline_text;
+  headlineEl.addEventListener('click',function() {
+    if (this.classList.contains('active')) {
+      removeClass(this,'active')
+    } else {
+      addClass(this,'active')
+    }
+  });
 
-//   if (config.products_info_tooltip && !!config.products_message) {
-//     var tooltipEl = document.createElement('div');
-//     tooltipEl.className = 'tvp-tooltip';
-//     tooltipEl.innerHTML = templates['modal'].tooltip;
-//     tooltipEl.querySelector('.tvp-products-message').innerHTML = config.products_message;
-//     headlineEl.appendChild(tooltipEl);
-//   }
+  if (config.products_info_tooltip && !!config.products_message) {
+    var tooltipEl = document.createElement('div');
+    tooltipEl.className = 'tvp-tooltip';
+    tooltipEl.innerHTML = templates['modal'].tooltip;
+    tooltipEl.querySelector('.tvp-products-message').innerHTML = config.products_message;
+    headlineEl.appendChild(tooltipEl);
+  }
 
-//   modal.querySelector('.tvp-modal-header').appendChild(headlineEl);
-// };
+  modal.querySelector('.tvp-modal-header').appendChild(headlineEl);
+};

@@ -38,17 +38,7 @@
       if(ready){
 
         //Now we build the carousel in the background.
-        var configCopy = Utils.copy(config);
-
-        configCopy.onClick = function(video, videos) {
-          Utils.sendMessage({
-            event: config.eventPrefix + ":video_click",
-            video: video,
-            videos: videos
-          });
-        };
-
-        (new Carousel('carousel', configCopy)).initialize();
+        (new Carousel('carousel', config)).initialize();
 
       }else if(++depsCheck < 200){
         initCarousel()

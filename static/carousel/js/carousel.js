@@ -3,6 +3,7 @@
 
   function Carousel(el, options) {
     this.options = options || {};
+    this.page = 0;
     this.itemsPerPage = this.options.items_per_page || null;
     this.itemMetaData = this.options.item_meta_data || null;
     this.onClick = Utils.isFunction(this.options.onClick) ? this.options.onClick : null;
@@ -31,7 +32,7 @@
   };
 
   Carousel.prototype.getItemPlayButtonCenter = function(){
-    var buttonRect = this.el.querySelector('.tvp-video-play').getBoundingClientRect();
+    var buttonRect = this.el.querySelector('.video-image-icon').getBoundingClientRect();
     return Math.ceil(buttonRect.top + (buttonRect.height / 2));
   };
 
@@ -158,8 +159,8 @@
       });
 
       that.$carousel.on('setPosition', Utils.debounce(function(event, slick) {
-        // that.updatePrevArrow(slick);
-        // that.updateNextArrow(slick);
+        that.updatePrevArrow(slick);
+        that.updateNextArrow(slick);
         Utils.sendMessage({
           event: that.eventPrefix + ':resize',
           height: that.getHeight()
@@ -195,7 +196,7 @@
       base: this.options.api_base_url + '/channels/' + channelId + '/videos',
       params: Utils.extend(channel.parameters || {}, {
         'X-login-id': this.options.loginId || this.options.loginid || 0,
-        p: 0,
+        p: this.page,
         n: this.itemsPerPage,
         o: this.options.videos_order_by,
         od: this.options.videos_order_direction,
@@ -233,7 +234,7 @@
     this.el.addEventListener('click',function(e) {
       var target = e.target;
 
-      if (Utils.hasClass(target, 'tvp-video')) {
+      if (Utils.hasClass(target, 'video')) {
         var id = target.getAttribute('data-id');
         var selected = {};
         var data = that.data;
@@ -246,8 +247,14 @@
         if (that.onClick) {
           that.onClick(selected, data);
         }
+
+        Utils.sendMessage({
+          event: that.eventPrefix + ":video_click",
+          video: selected,
+          videos: data
+        });
       }
-      
+
       if (Utils.hasClass(target, 'tvp-carousel-arrow')) {
         if (Utils.hasClass(target, 'next')) {
           that.$carousel.slick('slickNext');
@@ -255,6 +262,14 @@
           that.$carousel.slick('slickPrev');
         }
       }
+    });
+  };
+
+  Carousel.prototype.getNextPage = function() {
+    ++this.page;
+    
+    this.load(function(data){
+      console.log(data)
     });
   };
 
@@ -274,6 +289,7 @@
 
     if(Utils.hasKey(this.channel,'videos') && this.channel.videos.length) {
       start(this.channel.videos);
+      this.getNextPage();
     } else {
       this.load(function(data) {
         if(data.length > 0){
