@@ -21,6 +21,7 @@ var isset = function(o, p) {
 var getIframeHtml = function(options) {
   var html = '<head><base target="_blank" /></head><body class="' + (options.className || '') + '" data-domain="' +
     (options.domain || '') + '" data-id="' + (options.id || '') + '" onload="' +
+    'startTime = ' + startTime  + ';' +
     'var d = document, head = d.getElementsByTagName(\'head\')[0],' +
     'addJS = function(u){ var s = d.createElement(\'script\');s.src=u;d.body.appendChild(s);},' +
     'addCSS = function(h){ var l = d.createElement(\'link\');l.rel=\'stylesheet\';l.href=h;head.appendChild(l);};';
@@ -163,6 +164,7 @@ var iframeHtml = getIframeHtml({
 
 iframeDocument.open().write(iframeHtml);
 iframeDocument.close();
+console.log('renders initial dom (iframe w/skeleton)', performance.now() - startTime);
 
 //Modal
 var modalContainer = document.createElement("div");

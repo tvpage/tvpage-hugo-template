@@ -146,6 +146,7 @@
       that.$carousel = $(that.container);
       
       that.$carousel.on('init', function(event, slick) {
+        console.log('carousel has been initialized', performance.now() - startTime);
         that.el.querySelector('.slick-list').style.margin = "0 -" + (parseInt(that.options.item_padding_right) + 1) + "px";
       });
 
@@ -197,6 +198,7 @@
 
     var that = this;
     window['tvpcallback'] = function(data) {
+      console.log('call to api completed', performance.now() - startTime);
       that.data = data;
       callback(data);
       that.loading = false;
