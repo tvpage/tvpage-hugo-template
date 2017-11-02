@@ -4,18 +4,6 @@
   {{ end }}
 {{ end }}
 
-".tvp-modal-title.bottom {" +
-  "padding: {{ ($.Scratch.Get "settings").modal_tile_bottom_padding }};" +
-"}" +
-
-".tvp-posted {" +
-  "padding: {{ ($.Scratch.Get "settings").modal_posted_padding }};" +
-"}" +
-
-".tvp-description {" +
-  "padding: {{ ($.Scratch.Get "settings").modal_description_padding }};" +
-"}" +
-
 ".tvp-solo-cta-holder.initialized {" +
     "padding-top: {{ ($.Scratch.Get "settings").padding_top }};" +
 "}" +

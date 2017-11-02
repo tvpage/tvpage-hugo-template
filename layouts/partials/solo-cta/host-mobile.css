@@ -106,6 +106,13 @@
     "margin: 10px;" +
 "}" +
 
+"@media (min-width :900px) {" +
+    ".tvp-modal-wrapper {" +
+        "width: 890px;" +
+        "margin: 30px auto;" +
+    "}" +
+"}" +
+
 ".tvp-modal-content {" +
      "position: relative;" +
      "background-clip: padding-box;" +
@@ -117,12 +124,14 @@
     "border: 0;" +
     "width: 100%;" +
     "height: 100%;" +
-    "position: absolute;" +
-    "top: 0;" +
-    "left: 0;" +
     "opacity: 0;" +
-    "-webkit-transition: all .05s ease-in-out;" +
-    "transition: all .05s ease-in-out;" +
+    "position: relative;" +
+    "top: auto;" +
+    "left: auto;" +
+"}" +
+
+".no-products .tvp-iframe-modal," +
+".products .tvp-iframe-modal {" +
     "opacity: 1;" +
 "}" +
 
@@ -137,26 +146,9 @@
     "float: left;" +
 "}" +
 
-
-".tvp-video-info{"+
-  "width: 66%;"+
-  "padding: 0 0 10px 0;"+
-"}"+
-
-".tvp-description{"+
-  "overflow: hidden;"+
-  "display: block;"+
-"}"+
-
 ".tvp-modal-title.bottom {" +
   "float: none;" +
-"}" +
-
-".tvp-modal-iframe-holder {" +
-    "height: 0;" +
-    "width: 100%;" +
-    "position: relative;" +
-    "padding-bottom: 38.6%;" +
+  "padding: 0 0 30px 10px;" +
 "}" +
 
 ".tvp-products-headline {" +
@@ -165,18 +157,33 @@
     "position: relative;" +
 "}" +
 
-'.products .tvp-iframe-modal,'+
-'.no-products .tvp-iframe-modal {'+
-  'opacity:1;'+
-'}'+
+".tvp-modal-iframe-holder {" +
+    "height: 0;" +
+    "width: 100%;" +
+    "position: relative;" +
+    "padding-bottom: 46.47%;" +
+"}" +
 
-'.tvp-modal-iframe-holder.no-products {'+
-  'padding-bottom: 57.40%;'+
-'}'+
+".tvp-modal-iframe-holder.no-products {" +
+    "padding-bottom: 59.5%;" +
+"}" +
+
+".tvp-modal-iframe-holder.products {" +
+    "padding-bottom: 0;" +
+    "height: auto;" +
+"}" +
+
+".tvp-title {" +
+    "height: 22px;" +
+"}" +
 
 ".tvp-modal-body {" +
     "position: relative;" +
     "padding: 0;" +
+"}" +
+
+".tvp-modal-close-svg > path:nth-child(2){ " +
+  "fill: none;" +
 "}" +
 
 ".tvp-modal-close {" +
@@ -188,15 +195,4 @@
     "background-position: 0 0;" +
     "background-repeat: no-repeat;" +
     "background-size: contain;" +
-"}" +
-
-".tvp-modal-close-svg > path:nth-child(2){ " +
-  "fill: none;" +
-"}" +
-
-"@media (min-width :900px) {" +
-    ".tvp-modal-wrapper {" +
-        "width: 890px;" +
-        "margin: 30px auto;" +
-    "}" +
 "}"

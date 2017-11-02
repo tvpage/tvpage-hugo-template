@@ -100,6 +100,7 @@
                 var asset = video.asset;
                 asset.assetId = video.id;
                 asset.assetTitle = video.title;
+                asset.date_created = video.date_created;
                 asset.loginId = video.loginId;
 
                 if (isset(video,'events') && video.events.length) {
