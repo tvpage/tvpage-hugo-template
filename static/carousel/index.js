@@ -169,7 +169,7 @@ var iframeDocument = iframe.contentWindow.document;
 var iframeHtml = getIframeHtml({
   id: id,
   domain: baseUrl,
-  style: css.carousel,
+  style: isMobile ? cssMobile.carousel : css.carousel,
   html: isMobile ? mobileTemplates.skeleton : templates.skeleton,
   context: config,
   eventPrefix: eventPrefix,
@@ -220,9 +220,11 @@ window.tvpcallback = function(data){
   config.channel.videos = data;
 
   //This is the first event that start things out
-  window.postMessage({
-    event: eventPrefix + ':start'
-  }, '*');
+  setTimeout(function(){
+    window.postMessage({
+      event: eventPrefix + ':start'
+    }, '*');
+  },0);
 };
 
 var channel = config.channel;

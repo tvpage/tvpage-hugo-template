@@ -59,6 +59,11 @@
   "margin-right:{{ ($.Scratch.Get "settings").item_margin_right }};" +
 "}" +
 
+".skeleton .video {" +
+  "padding-left:0;" +
+  "padding-right:0;" +
+"}" +
+
 ".video:focus {" +
   "outline:0;" +
 "}" +
@@ -134,11 +139,11 @@
   "padding:{{ ($.Scratch.Get "settings").item_title_padding }};" +
 "}" +
 
-".skeleton .video-title {" +
+".skeleton .video-title:not(.ready) {" +
   "background-color: {{ ($.Scratch.Get "settings").item_image_background_color }};" +
 "}" +
 
-".skeleton .video-title:before {" +
+".skeleton .video-title:not(.ready):before {" +
   "content: \"...\";" +
   "color: transparent;" +
 "}" +

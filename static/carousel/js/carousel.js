@@ -94,7 +94,7 @@
   Carousel.prototype.getSlickConfig = function(){
     var options = this.options;
     var config = {
-      slidesToShow: Number(options.items_per_page),
+      slidesToShow: Utils.isMobile ? 1 : Number(options.items_per_page),
       slidesToScroll: Number(options.items_to_scroll),
       dots: this.reachedBulletsMax() ? false : options.navigation_bullets,
       infinite: options.infinite,

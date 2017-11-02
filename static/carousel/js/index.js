@@ -46,7 +46,7 @@
       }else if(++depsCheck < 200){
         initCarousel()
       }
-    },10);
+    },5);
   })();
 
 }());

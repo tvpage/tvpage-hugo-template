@@ -2,11 +2,7 @@
 '<div id="skeleton" class="skeleton">' +
   {{ range (seq ($.Scratch.Get "settings").items_per_page) }}
     '<div class="video video-{{ . }}">' +
-      '<div class="video-image">' +
-      '<svg class="video-image-icon" viewBox="0 0 200 200" alt="Play video">' +
-        '<polygon points="70, 55 70, 145 145, 100"></polygon>' +
-      '</svg>' +
-      '</div>' +
+      '<div class="video-image"></div>' +
       '<p class="video-title"></p>' +
     '</div>' +
   {{ end }}
