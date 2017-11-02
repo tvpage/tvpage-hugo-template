@@ -7,23 +7,11 @@
     '</div>' +
     '<div class="tvp-products-holder">' +
       '<div class="tvp-products"></div>' +
-      '<div class="tvp-arrow-indicator"></div>' +
-      '<div class="tvp-popups"></div>' +
     '</div>' +
   '</div>',
   'product':'<a class="tvp-product" id="tvp-product-{id}" data-vd="{entityIdParent}" href="{linkUrl}">' +
     '<div class="tvp-product-image" style="background-image:url({imageUrl});">' +
       '<div class="tvp-product-image-overlay"></div>' +
     '</div>' +
-  '</a>',
-  'popup':'<a class="tvp-product-popup" id="tvp-product-popup-{id}" data-vd="{entityIdParent}" href="{linkUrl}">' +
-    '<div class="tvp-product-popup-image" style="background-image:url({imageUrl});"></div>'+
-    '<p class="tvp-product-title">{title}</p>' +
-    {{ if ($.Scratch.Get "settings").product_sku_show }}
-    '<p class="tvp-product-sku">{{ ($.Scratch.Get "settings").product_sku_prefix | safeHTML }} {referenceId}</p>' +
-    {{ end }}
-    '<p class="tvp-product-price">{price}</p>' +
-    '{ratingReviews}' +
-    '<button class="tvp-product-cta">{{ ($.Scratch.Get "settings").product_popup_cta_text | safeHTML }}</button>' +
   '</a>'
 }

@@ -53,6 +53,24 @@ var utils = {
             obj.classList.add(c);
         }
     },
+    formatDate: function(unixTimestamp) {
+      if (!unixTimestamp)return;
+      var d = (new Date(Number(unixTimestamp) * 1000)),
+          month = '' + (d.getMonth() + 1),
+          day = '' + d.getDate(),
+          year = d.getFullYear();
+      if (month.length < 2) month = '0' + month;
+      if (day.length < 2) day = '0' + day;
+      return [month, day, year].join('/');
+    },
+    trimText: function(value, max, tail){
+      if (!value) return '';
+      max = parseInt(max, 10);
+      if (!max) return value;
+      if (value.length <= max) return value;
+      value = value.substr(0, max);
+      return value + (tail || ' …');
+    },
     removeClass: function(obj,c){
         if (!obj || !c) return;
         if ('string' === typeof obj) {
@@ -137,7 +155,8 @@ if (!channelId) {
 var clickData = {};
 
 var handleVideoClick = function(){
-  updateModalTitle(clickData.selectedVideo.title);
+  handleVideoInfo(clickData.selectedVideo);
+  updateInfo(clickData.selectedVideo);
   utils.removeClass('tvp-modal-' + config.id,'tvp-hidden');
   utils.removeClass('tvp-modal-overlay-' + config.id,'tvp-hidden');
   
@@ -168,7 +187,7 @@ var handleVideoClick = function(){
         config.debug ? config.jsPath + "libs/utils.js" : "",
         config.debug ? config.jsPath + "libs/analytics.js" : "",
         config.debug ? config.jsPath + "libs/player.js" : "",
-        config.debug && utils.isMobile ? config.jsPath + "/vendor/jquery.js" : "",
+        config.debug ? config.jsPath + "/vendor/jquery.js" : "",
         config.debug ? config.jsPath + "/vendor/perfect-scrollbar.min.js" : "",
         config.debug ? config.jsPath + "/" + config.mobilePath + "modal/index.js" : "",
         config.debug ? "" : config.jsPath + config.mobilePath + "modal/scripts.min.js"
@@ -176,7 +195,7 @@ var handleVideoClick = function(){
     css: [
         config.debug ? config.cssPath + "/vendor/perfect-scrollbar.min.css" : "",
         config.debug ? config.cssPath + "/" + config.mobilePath + "modal/styles.css" : "",
-        config.debug && utils.isMobile ? config.cssPath + "/vendor/slick.css" : "",
+        config.debug ? config.cssPath + "/vendor/slick.css" : "",
         config.debug ? "" : config.cssPath + config.mobilePath + "modal/styles.min.css"
     ]
   }));
@@ -228,8 +247,35 @@ var isEvent = function (e, type) {
     return (e && utils.isset(e, "data") && utils.isset(e.data, "event") && config.eventPrefix + type === e.data.event);
 };
 
-var updateModalTitle = function(title){
-    document.getElementById('tvp-modal-title-' + config.id).innerHTML = title || "";
+var updateInfo = function(video){
+  var vInfo = modalContainer.querySelector('.tvp-video-info');
+      document.getElementById('tvp-modal-title-' + config.id).innerHTML = video.title || video.assetTitle || "";
+      if (!utils.isMobile) {
+        vInfo.querySelector('.tvp-posted').innerHTML = 'Posted ' + utils.formatDate(video.date_created);
+        vInfo.querySelector('.tvp-description').innerHTML = utils.trimText(video.description, 180);
+      }
+};
+
+var handleVideoInfo = function(video){
+    var vInfo = modalContainer.querySelector('.tvp-video-info');
+    if (config.modal_title_position.trim().length && 'bottom' === config.modal_title_position && !vInfo  && !utils.isMobile) {
+    var modalVideoInfo = document.createElement('div'),
+        modalTitle = modalContainer.querySelector('#tvp-modal-title-' + config.id);
+    modalTitle.classList.add('bottom');
+    modalVideoInfo.classList.add('tvp-video-info');
+    modalVideoInfo.appendChild(modalTitle);
+    if (config.modal_video_description && !utils.isMobile) {
+      var posted = document.createElement('div'),
+          videoDsc = document.createElement('div');
+      posted.classList.add('tvp-posted');
+      videoDsc.classList.add('tvp-description');
+      posted.innerHTML = 'Posted ' + utils.formatDate(video.date_created);
+      videoDsc.innerHTML = utils.trimText(video.description, 180);
+      modalVideoInfo.appendChild(posted);
+      modalVideoInfo.appendChild(videoDsc);
+    }
+    modalContainer.querySelector('.tvp-modal-body').appendChild(modalVideoInfo);
+  }
 };
 
 var iframeModalHolder = document.getElementById('tvp-modal-iframe-holder-' + config.id);
@@ -368,7 +414,7 @@ function handleModalNoProducts(e) {
 };
 
 function handlePlayerNext(e) {
-    updateModalTitle(e.data.next.assetTitle);
+    updateInfo(e.data.next);
 };
 
 var closeModal = function () {

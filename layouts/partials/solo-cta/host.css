@@ -137,16 +137,26 @@
     "float: left;" +
 "}" +
 
+
+".tvp-video-info{"+
+  "width: 66%;"+
+  "padding: 0 0 10px 0;"+
+"}"+
+
+".tvp-description{"+
+  "overflow: hidden;"+
+  "display: block;"+
+"}"+
+
 ".tvp-modal-title.bottom {" +
   "float: none;" +
-  "padding: 0 0 30px 10px;" +
 "}" +
 
 ".tvp-modal-iframe-holder {" +
     "height: 0;" +
     "width: 100%;" +
     "position: relative;" +
-    "padding-bottom: 46.47%;" +
+    "padding-bottom: 38.6%;" +
 "}" +
 
 ".tvp-products-headline {" +

@@ -44,6 +44,23 @@
       return 'undefined' !== typeof val;
     };
 
+    this.loadScript = function(o){
+      var script = document.createElement('script');
+      var src = o.base || '';
+      var prms = o.params || {};
+      var counter = 0;
+    
+      for (var p in prms) {
+        if (prms.hasOwnProperty(p)) {
+          src += (counter > 0 ? '&' : '?') + p + '=' + prms[p];
+          ++counter;
+        }
+      }
+    
+      script.src = src;
+      document.body.appendChild(script);
+    };
+
     this.debounce = function(func,wait,immediate){
       var timeout = null;
       return function() {

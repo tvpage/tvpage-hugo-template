@@ -11,10 +11,9 @@
     {{ end }}
 "}" +
 
-".tvp-products-holder {" +
-    "padding-left: 1.3%;" +
-    "padding-right: 1.3%;" +
-    "right: -10px;" +
+".tvp-product-content {" +
+    "padding: {{ ($.Scratch.Get "settings").product_content_padding }};" +
+    "border: {{ ($.Scratch.Get "settings").product_content_border }};" +
 "}" +
 
 ".tvp-product {" +
@@ -124,8 +123,31 @@
     "color: {{ ($.Scratch.Get "settings").product_popup_cta_font_color_hover }};" +
 "}" +
 
-".tvp-arrow-indicator:after {" +
-    "border: {{ ($.Scratch.Get "settings").product_popup_border }};" +
-    " box-shadow: {{ ($.Scratch.Get "settings").product_popup_box_shadow }};" +
-    "background: {{ ($.Scratch.Get "settings").product_popup_background }};" +
+".tvp-products-carousel-arrow {" +
+  "bottom: {{ ($.Scratch.Get "settings").products_carousel_arrow_bottom }};" +
+  "margin: {{ ($.Scratch.Get "settings").products_carousel_arrow_margin }};" +
+  "padding: {{ ($.Scratch.Get "settings").products_carousel_arrow_padding }};" +
+  "z-index: {{ ($.Scratch.Get "settings").products_carousel_arrow_zindex }};" +
+  "top: {{ ($.Scratch.Get "settings").products_carousel_arrow_top }};" +
+  "width: {{ ($.Scratch.Get "settings").products_carousel_arrow_width }};" +
+  "height: {{ ($.Scratch.Get "settings").products_carousel_arrow_height }};" +
+  "border: {{ ($.Scratch.Get "settings").products_carousel_arrow_border }};" +
+"}" +
+
+".tvp-products-carousel-arrow.prev {" +
+    "left: {{ ($.Scratch.Get "settings").products_carousel_arrow_prev_left }};" +
+"}" +
+
+".tvp-products-carousel-arrow.next {" +
+    "right: {{ ($.Scratch.Get "settings").products_carousel_arrow_next_right }};" +
+"}" +
+
+".tvp-products-carousel-arrow > svg {" +
+    "background-color: {{ ($.Scratch.Get "settings").products_carousel_arrow_svg_background_color }};" +
+    "fill: {{ ($.Scratch.Get "settings").products_carousel_arrow_svg_fill }};" +
+"}" +
+
+".tvp-products-carousel-arrow:hover > svg {" +
+    "background-color: {{ ($.Scratch.Get "settings").products_carousel_arrow_svg_background_color_hover }};" +
+    "fill: {{ ($.Scratch.Get "settings").products_carousel_arrow_svg_fill_hover }};" +
 "}"

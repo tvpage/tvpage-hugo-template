@@ -53,7 +53,21 @@
       "type":"boolean",
       "label":"Merchandise",
       "code":"merchandise",
-      "value":false
+      "value":true
+    },
+    {
+      "for": "modal",
+      "type": "text",
+      "label": "Products Order Direction",
+      "code": "products_order_direction",
+      "value": "ASC"
+    },
+    {
+      "for": "modal",
+      "type": "text",
+      "label": "Products Order By",
+      "code": "products_order_by",
+      "value": "sortOrder"
     },
     {  
       "for":"mobile",
@@ -487,7 +501,7 @@
       "type":"text",
       "label":"Product Price Margin",
       "code":"product_price_margin",
-      "value":"0 0 10px 0"
+      "value":"3% auto"
     },
     {  
       "for":"modal",
@@ -522,7 +536,112 @@
       "type":"text",
       "label":"Product Popup CTA Margin",
       "code":"product_popup_cta_margin",
-      "value":"10px 0 0 0"
+      "value":"0 auto"
+    },
+    {
+      "for": "modal",
+      "type": "text",
+      "label": "Products Carousel Arrow Height",
+      "code": "products_carousel_arrow_height",
+      "value": "28px"
+    },
+    {
+      "for": "modal",
+      "type": "text",
+      "label": "Products Carousel Arrow Widht",
+      "code": "products_carousel_arrow_width",
+      "value": "28px"
+    },
+    {
+      "for": "modal",
+      "type": "text",
+      "label": "Products Carousel Arrow SVG Background Color",
+      "code": "products_carousel_arrow_svg_background_color",
+      "value": "#333"
+    },
+    {
+      "for": "modal",
+      "type": "text",
+      "label": "Products Carousel Arrow SVG Background Color Hover",
+      "code": "products_carousel_arrow_svg_background_color_hover",
+      "value": "#000"
+    },
+    {
+      "for": "modal",
+      "type": "text",
+      "label": "Products Carousel Arrow SVG Fill",
+      "code": "products_carousel_arrow_svg_fill",
+      "value": "#fff"
+    },
+    {
+      "for": "modal",
+      "type": "text",
+      "label": "Products Carousel Arrow SVG Fill Hover",
+      "code": "products_carousel_arrow_svg_fill_hover",
+      "value": "#fff"
+    },
+    {
+      "for": "modal",
+      "type": "text",
+      "label": "Products Info Icon Size",
+      "code": "products_info_icon_size",
+      "value": "16px"
+    },
+    {
+      "for": "modal",
+      "type": "text",
+      "label": "Products Carousel Arrow Top",
+      "code": "products_carousel_arrow_top",
+      "value": "0"
+    },
+    {
+      "for": "modal",
+      "type": "text",
+      "label": "Products Carousel Arrow Bottom",
+      "code": "products_carousel_arrow_bottom",
+      "value": "0"
+    },
+    {
+      "for": "modal",
+      "type": "text",
+      "label": "Products Carousel Arrow Border",
+      "code": "products_carousel_arrow_border",
+      "value": "none"
+    },
+    {
+      "for": "modal",
+      "type": "text",
+      "label": "Products Carousel Arrow Margin",
+      "code": "products_carousel_arrow_margin",
+      "value": "auto 0"
+    },
+    {
+      "for": "modal",
+      "type": "text",
+      "label": "Products Carousel Arrow Padding",
+      "code": "products_carousel_arrow_padding",
+      "value": "0"
+    },
+    {
+      "for": "modal",
+      "type": "text",
+      "label": "Products Carousel Arrow Z-Index",
+      "code": "products_carousel_arrow_zindex",
+      "value": "1000"
+    },
+    {
+      "for": "modal",
+      "type": "text",
+      "label": "Products Carousel Arrow Prev Left",
+      "code": "products_carousel_arrow_prev_left",
+      "value": "10px"
+    },
+    {
+      "for": "modal",
+      "type": "text",
+      "label": "Products Carousel Arrow Next Right",
+      "code": "products_carousel_arrow_next_right",
+      "value": "10px"
     },
     {  
       "for":"modal",
@@ -578,14 +697,14 @@
       "type":"text",
       "label":"Product Title Text Transform",
       "code":"product_title_text_transform",
-      "value":"uppercase"
+      "value":"none"
     },
     {  
       "for":"modal",
       "type":"text",
       "label":"Product Title Margin",
       "code":"product_title_margin",
-      "value":"10px 0"
+      "value":"2% auto"
     },
     {  
       "for":"modal",
@@ -1145,7 +1264,21 @@
       "type":"text",
       "label":"Product Thumbnail Margin",
       "code":"product_thumbnail_margin",
-      "value":"0 10px 10px 0"
+      "value":"0"
+    },
+    {
+      "for": "modal",
+      "type": "text",
+      "label": "Product Content Border",
+      "code": "product_content_border",
+      "value": "1px solid black"
+    },
+    {
+      "for": "modal",
+      "type": "text",
+      "label": "Product Content Padding",
+      "code": "product_content_padding",
+      "value": "5%"
     },
     {  
       "for":"modal",
@@ -1166,7 +1299,7 @@
       "type":"text",
       "label":"Product Thumbnail Border",
       "code":"product_thumbnail_border",
-      "value":"1px solid black"
+      "value":"0"
     },
     {  
       "for":"modal",
@@ -1215,7 +1348,35 @@
       "type":"text",
       "label":"Modal Title Position",
       "code":"modal_title_position",
-      "value":"top"
+      "value":"bottom"
+    },
+    {  
+      "for":"modal",
+      "type":"text",
+      "label":"Modal Title Bottom Padding",
+      "code":"modal_tile_bottom_padding",
+      "value":"0 10px 10px"
+    },
+    {  
+      "for":"modal",
+      "type":"text",
+      "label":"Modal Posted Padding",
+      "code":"modal_posted_padding",
+      "value":"0 10px 10px"
+    },
+    {  
+      "for":"modal",
+      "type":"text",
+      "label":"Modal Description Padding",
+      "code":"modal_description_padding",
+      "value":"0 0 0 10px"
+    },
+    {
+      "for":"modal",
+      "type":"text",
+      "label":"Modal Video Description",
+      "code":"modal_video_description",
+      "value":true
     },
     {  
       "for":"modal",
