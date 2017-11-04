@@ -9,6 +9,10 @@
   var getGlobalFromParent = function(){
     return window.parent && hasKey(window.parent, '__TVPage__') ? window.parent.__TVPage__ : null;
   };
+
+  var isFunction = function(o) {
+    return 'function' === typeof o;
+  };
   
   var Utils = {};
   
@@ -20,6 +24,18 @@
     return body.scrollHeight;
   };
 
+  Utils.attr = function(el,a) {
+    return el.getAttribute(a);
+  };
+
+  Utils.addClass = function(el,c) {
+    el.classList.add(c);
+  };
+
+  Utils.removeClass = function(el,c) {
+    el.classList.remove(c);
+  };
+
   Utils.getById = function(id) {
     return document.getElementById(id);
   };
@@ -28,7 +44,7 @@
     return o.classList.contains(c);
   };
   
-  Utils.loadScript = function(o){
+  Utils.loadScript = function(o, cback){
     var script = document.createElement('script');
     var src = o.base || '';
     var prms = o.params || {};
@@ -41,7 +57,16 @@
       }
     }
   
+    var cBackName = 'tvp_callback_' + Math.random().toString(36).substring(7);
+
+    window[cBackName] = function(data){
+      if(isFunction(cback))
+        cback(data);
+    };
+
+    src += '&callback=' + cBackName;
     script.src = src;
+
     body.appendChild(script);
   };
   
@@ -58,9 +83,7 @@
     return 'undefined' === typeof o;
   };
   
-  Utils.isFunction = function(o) {
-    return 'function' === typeof o;
-  };
+  Utils.isFunction = isFunction;
   
   Utils.copy = function(o) {
     return JSON.parse(JSON.stringify(o));

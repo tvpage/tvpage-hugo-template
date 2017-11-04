@@ -1,116 +1,133 @@
 (function(){
 
     var body = document.body;
-    var id = body.getAttribute("data-id") || "";
+    var id = Utils.attr(body,'data-id');
     var config = window.parent.__TVPage__.config[id];
-    var mainEl = null;
+    var eventPrefix = config.eventPrefix;
+    var mainEl = Utils.getById(id);
     var productsEl = null;
     var analytics = null;
-    var channelId = null;
-    var loginId = null;
-    var eventPrefix = "tvp_" + id.replace(/-/g,'_');
-
-    var sendMessage = function(msg){
-        if (window.parent)
-            window.parent.postMessage(msg, '*');
-    };
 
     var pkTrack = function(){
         analytics.track('pk',{
             vd: this.getAttribute('data-vd'),
             ct: this.id.split('-').pop(),
-            pg: channelId
+            pg: config.channelId
         });
     };
 
-    var checkProductsData = function(data,el){
-        var status = "";
+    var onNoProducts = function(){
+        Utils.addClass(mainEl,'tvp-no-products');
+        Utils.sendMessage({
+            event: eventPrefix + ':modal_no_products'
+        });
+    };
+
+    var onProducts = function(){
+        Utils.removeClass(mainEl,'tvp-no-products');
+        Utils.sendMessage({
+            event: eventPrefix + ':modal_products'
+        });
+    };
+
+    var onLoadProducts = function(data) {
+        data.length ? onProducts() : onNoProducts();
+        render(data);
+    };
+
+    var loadProducts = function(vid, cback) {
+        if (!vid || !cback) {
+            return;
+        }
         
-        if (data && data.length) {
-            el.classList.remove('tvp-no-products');
-            status = eventPrefix + ':modal_products';
-        } else{
-            el.classList.add('tvp-no-products');
-            status = eventPrefix + ':modal_no_products';
+        Utils.loadScript({
+            base: config.api_base_url + '/videos/' + vid + '/products',
+            params: {
+                'X-login-id': config.loginId,
+                o: config.products_order_by,
+                od: config.products_order_direction
+            }
+        }, cback);
+    };
+
+    var getProductRating = function(product){
+        var attr = config.product_rating_attribute;
+        var rating = 0;
+        
+        if (!!product[attr]) {
+          rating = Number(product[attr]);
         }
 
-        sendMessage({
-            event: status
-        });
+        return rating;
     };
 
-    var loadProducts = function(videoId,settings,fn){
-        if (!videoId)
-            return;
+    var getProductReview = function(product){
+        var attr = config.product_review_attribute;
+        var review = 0;
+        
+        if (!!product[attr]) {
+          review = Number(product[attr]);
+        }
 
-        var src = settings.api_base_url + '/videos/' + videoId + '/products?X-login-id=' + loginId;
-        var cbName = 'tvp_' + Math.floor(Math.random() * 555);
-        src += '&o=' + settings.products_order_by + '&od=' + settings.products_order_direction;
-        src += '&callback='+cbName;
-        var script = document.createElement('script');
-        script.src = src;
-        window[cbName || 'callback'] = function(data){
-            if (data && data.length && 'function' === typeof fn) {
-                fn(data);
-            } else {
-                fn([]);
-            }
-        };
-        body.appendChild(script);
+        return review;
     };
 
-    var render = function(data, config){
+    function render(data){
         var productsHtml = "";
         var popupsHtml = "";
+        var dataLength = data.length;
 
-        for (var i = 0; i < data.length; i++) {
+        var piTrack = function(p){
+            analytics.track('pi',{
+                vd: p.entityIdParent,
+                ct: p.id,
+                pg: config.channelId
+            });
+        };
+
+        for (var i = 0; i < dataLength; i++) {
             var product = data[i];
             
             product.title = Utils.trimText(product.title || '',50);
             product.price = Utils.trimPrice(product.price || '');
 
-            var ratingAttrName = config.product_rating_attribute;
-            var productRating = 0;
-            if (!!product[ratingAttrName]) {
-              productRating = Number(product[ratingAttrName]);
-            }
-
+            var rating = getProductRating(product);
             var ratingReviewsHtml = "";
-            if (productRating > 0) {
-              var fulls = 0;
-              var half = false;
-              if (productRating % 1 != 0) {
-                half = true;
-                fulls = Math.floor(productRating);
-              } else {
-                fulls = productRating;
-              }
+
+            if (rating > 0) {
+              
+              var hasFrac = rating % 1 != 0;
+              var fulls = hasFrac ? Math.floor(rating) : rating;
 
               var empties = 0;
-              if (4 === fulls && half) {
+              if (4 === fulls && hasFrac) {
                 empties = 0;
-              } else if (1 === fulls && half) {
+              } else if (1 === fulls && hasFrac) {
                 empties = 3;
-              } else if (half) {
+              } else if (hasFrac) {
                 empties = (5 - fulls) - 1;
               } else {
                 empties = 5 - fulls;
               }
 
               ratingReviewsHtml = '<ul class="tvp-product-rating">';
+              
               for (var j = 0; j < fulls; j++) {
                 ratingReviewsHtml += '<li class="tvp-rate full"></li>';
               }
-              if (half) {
+              
+              if (hasFrac) {
                 ratingReviewsHtml += '<li class="tvp-rate half"></li>';
               }
+
               for (var k = 0; k < empties; k++) {
                 ratingReviewsHtml += '<li class="tvp-rate empty"></li>';
               }
 
-              var productReview = Utils.isset(product[config.product_review_attribute]) ? product[config.product_review_attribute] : 0;
-              if (null !== productReview && productReview > 0) {
-                ratingReviewsHtml += '<li class="tvp-reviews">' + productReview + ' Reviews </li>';
+
+              var review = getProductReview(product);
+              if (review > 0) {
+                ratingReviewsHtml += '<li class="tvp-reviews">' + review + ' Reviews </li>';
               }
 
               ratingReviewsHtml += '</ul>';
@@ -118,14 +135,12 @@
 
             product.ratingReviews = ratingReviewsHtml;
 
-            productsHtml += Utils.tmpl(config.templates["modal-content"].product, product);
-            popupsHtml += Utils.tmpl(config.templates["modal-content"].popup, product);
+            var template = config.templates["modal-content"];
 
-            analytics.track('pi',{
-                vd: product.entityIdParent,
-                ct: product.id,
-                pg: channelId
-            });
+            productsHtml += Utils.tmpl(template.product, product);
+            popupsHtml += Utils.tmpl(template.popup, product);
+
+            piTrack(product);
         }
 
         var holder = Utils.getByClass('tvp-products-holder');
@@ -230,84 +245,73 @@
 
     };
 
+    var onPlayerResize = function(initial, size){
+        productsEl.style.height = size[1] + 'px';
+
+        Utils.sendMessage({
+            event: eventPrefix + ':modal_resize',
+            height: Utils.getWidgetHeight() + 'px'
+        });
+    };
+
+    var onPlayerNext = function(next){
+        if (config.merchandise && next) {
+            loadProducts(next.assetId, onLoadProducts);
+        } else {
+            onNoProducts();
+        }
+
+        Utils.sendMessage({
+            event: eventPrefix + ':player_next',
+            next: next
+        });
+    };
+
     var initializePlayer = function(){
-        var player = null;
         var playerConfig = Utils.copy(config);
 
         playerConfig.data = config.channel.videos;
-        playerConfig.onResize = function(initial, size){
-            productsEl.style.height = size[1] + 'px';
-            sendMessage({
-                event: eventPrefix + ':modal_resize',
-                height: (mainEl.offsetHeight + 20) + 'px'
-            });
-        };
-        playerConfig.onNext = function(next){
-            if (!next)
-                return;
+        playerConfig.onResize = onPlayerResize;
+        playerConfig.onNext = onPlayerNext;
 
-            if (config.merchandise) {
-                loadProducts(next.assetId, config, function(products){
-                    checkProductsData(products, mainEl);
-                    render(products, config);
-                    player.resize();
-                });
-            } else {
-                mainEl.classList.add('tvp-no-products');
-                sendMessage({
-                    event: eventPrefix + ':modal_no_products',
-                });
-            }
-
-            sendMessage({
-                event: eventPrefix + ':player_next',
-                next: next
-            });
-        };
-
-        player = new Player('tvp-player-el', playerConfig, config.clicked);
+        var player = new Player('tvp-player-el', playerConfig, config.clicked);
+        
         player.initialize();
     };
 
-    var initialize = function(){
-        mainEl = Utils.getById(id);
-
-        //We set the height of the player to the products element
-        productsEl = mainEl.querySelector('.tvp-products-holder');
-        productsEl.style.height = mainEl.querySelector('.tvp-player-holder').offsetHeight + 'px';
-
-        initializePlayer();
-
-        loginId = config.loginId || config.loginid;
-        channelId = Utils.isset(config.channel) && Utils.isset(config.channel.id) ? config.channel.id : (config.channelId || config.channelid);
-
+    var initializeAnalytics = function(){
         analytics =  new Analytics();
         analytics.initConfig({
             domain: location.hostname || '',
             logUrl: config.api_base_url + '/__tvpa.gif',
-            loginId: loginId,
+            loginId: config.loginId,
             firstPartyCookies: config.firstpartycookies,
             cookieDomain: config.cookiedomain
         });
         analytics.track('ci', {
-            li: loginId
+            li: config.loginId
         });
+    };
+
+    var initialize = function(){
+
+        //We set the height of the player to the products element, we also do this on player resize, we
+        //want the products scroller to have the same height as the player.
+        productsEl = mainEl.querySelector('.tvp-products-holder');
+        productsEl.style.height = mainEl.querySelector('.tvp-player-holder').offsetHeight + 'px';
+
+        initializePlayer();
+        initializeAnalytics();
 
         if (config.merchandise) {
-            loadProducts(config.clicked, config, function(products){
-                checkProductsData(products, mainEl);
-                render(products, config);
-            });
+            loadProducts(config.clicked, onLoadProducts);
         } else {
-            mainEl.classList.add('tvp-no-products');
-            sendMessage({
-                event: eventPrefix + ':modal_no_products'
-            });
+            onNoProducts();
         }
 
-        sendMessage({
+        Utils.sendMessage({
             event: eventPrefix + ':modal_initialized',
-            height: (mainEl.offsetHeight + 20) + 'px'
+            height: Utils.getWidgetHeight() + 'px'
         });
     };
     
@@ -316,7 +320,9 @@
 
     (function initModal() {
         setTimeout(function() {
-        console.log('deps poll...');
+            if(config.debug){
+                console.log('deps poll...');
+            }
         
         var ready = true;
         for (var i = 0; i < deps.length; i++)
@@ -324,9 +330,7 @@
             ready = false;
 
         if(ready){
-
             initialize();
-
         }else if(++depsCheck < 200){
             initModal()
         }

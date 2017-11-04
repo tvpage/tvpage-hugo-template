@@ -47,6 +47,41 @@
             "value": true
         },
         {
+            "for": "inline",
+            "type": "text",
+            "label": "inline Holder Padding Top",
+            "code": "inline_holder_padding_top",
+            "value": "80%"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Iframe Carousel Body Padding",
+            "code": "iframe_carousel_body_padding",
+            "value": "0"
+         },
+         {
+            "for": "carousel",
+            "type": "text",
+            "label": "Iframe Carousel Body Padding 480",
+            "code": "iframe_carousel_body_padding_480",
+            "value": "0"
+         },
+         {
+            "for": "carousel",
+            "type": "text",
+            "label": "Iframe Carousel Body Margin",
+            "code": "iframe_carousel_body_margin",
+            "value": "0"
+         },
+         {
+            "for": "carousel",
+            "type": "text",
+            "label": "Iframe Carousel Body Padding 768",
+            "code": "iframe_carousel_body_padding_768",
+            "value": "0"
+         },
+        {
             "type": "array",
             "label": "Fonts",
             "code": "fonts",
@@ -954,7 +989,13 @@
             "label": "Videos Carousel Arrow Active Opacity",
             "code": "videos_carousel_arrow_active_opacity",
             "value": "1"
-        }
-
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Skeleton Background Color",
+            "code": "skeleton_background_color",
+            "value": "#efefef"
+          }
     ]
 }

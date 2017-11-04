@@ -85,10 +85,11 @@ function getIframeHtml(o) {
   for (var i = 0; i < css.length; i++)
     html += 'loadCSS(\'' + css[i] + '\');';
 
-  html += "  parent.removeEventListener('message', onStart, false);";
+  html += "  if(parent)";
+  html += "    parent.removeEventListener('message', onStart, false);";
   html += "};";
 
-  html += "parent.addEventListener('message', onStart);";
+  html += "  parent.addEventListener('message', onStart);";
 
   html += '"><style>' + (o.style || '') + '</style>';
   html += tmpl((o.html || '').trim(),o.context);
@@ -97,8 +98,7 @@ function getIframeHtml(o) {
 };
 
 
-//We pass the updated merged config object to the tvpage global so the iframe files can retrieve
-//it from the parent global.
+//We merge the defaults, the .md file's params and the runtime input into one config object.
 if (!isObject(bootstrap) || !hasKey(bootstrap, "name") || bootstrap.name.length <= 0)
   throw new Error('Widget must have a bootstrap and name (id)');
 
@@ -116,6 +116,8 @@ if(hasKey(tvpage.config,id) && isObject(tvpage.config[id])){
 
 config.id = id;
 config.eventPrefix = ("tvp_" + id).replace(/-/g, '_');
+config.loginId = config.loginId || config.loginid;
+config.channelId = (config.channelId || config.channelid) || config.channel.id;
 
 var __windowCallbackFunc__ = null;
 if (hasKey(config,"onChange") && isFunction(config.onChange)){
@@ -124,7 +126,6 @@ if (hasKey(config,"onChange") && isFunction(config.onChange)){
 }
 
 window.__TVPage__.config[id] = config;
-
 
 //Initial rendering
 if (!hasKey(config,"targetEl") || !getById(config.targetEl))
@@ -159,9 +160,11 @@ var getInitialHtml = function(){
   return html;
 };
 
-var targetElement = getById(config.targetEl);
-targetElement.insertAdjacentHTML('beforebegin',getInitialHtml());
-targetElement.parentNode.removeChild(targetElement);
+//Here's the first HTML write we do to the host page, this is the fastest way to do it
+//refer to https://jsperf.com/insertadjacenthtml-perf/3
+var targetEl = getById(config.targetEl);
+targetEl.insertAdjacentHTML('beforebegin',getInitialHtml());
+targetEl.parentNode.removeChild(targetEl);
 
 var holder = getById(id + "-holder");
 var iframe = holder.querySelector("iframe");
@@ -183,8 +186,8 @@ var iframeHtml = getIframeHtml({
     debug ? "" : jsPath + "scripts.min.js"
   ],
   css: [
-    debug ? cssPath + "styles.css" : "",
     debug ? cssPath + "vendor/slick.css" : "",
+    debug ? cssPath + "styles.css" : "",
     debug ? "" : cssPath + "styles.min.css"
   ]
 });
@@ -261,7 +264,6 @@ var modalContainer = document.createElement("div");
 modalContainer.innerHTML = templates.modal.modal;
 body.appendChild(modalContainer);
 
-var clickData = {};
 var iframeModalHolder = getById('tvp-modal-iframe-holder-' + id);
 var iframeModal = null;
 var iframeModalDocument = null;
@@ -380,36 +382,33 @@ var getPlayerUrl = function(){
   return url;
 };
 
-var iframeModalJs = [
-  "//a.tvpage.com/tvpa.min.js",
-  '//imasdk.googleapis.com/js/sdkloader/ima3.js',
-  getPlayerUrl(),
-  debug && isMobile ? jsPath + "/vendor/jquery.js" : "",
-  debug && !isMobile ? jsPath + "/vendor/perfect-scrollbar.min.js" : "",
-  debug ? baseUrl + "/libs/utils.js" : "",
-  debug ? baseUrl + "/libs/analytics.js" : "",
-  debug ? baseUrl + "/libs/player.js" : "",
-  debug ? jsPath + "/" + mobilePath + "modal/index.js" : "",
-  debug ? "" : jsPath + mobilePath + "modal/scripts.min.js"
-];
-
-var iframeModalCss = [
-  debug ? cssPath + "/" + mobilePath + "modal/styles.css" : "",
-  debug && isMobile ? cssPath + "/vendor/slick.css" : "",
-  debug && !isMobile ? cssPath + "/vendor/perfect-scrollbar.min.css" : "",
-  debug ? "" : cssPath + "/" + mobilePath + "modal/styles.min.css"
-];
-
+var modalContentTemplate = (isMobile ? mobileTemplates['modal-content'] : templates['modal-content']);
 var iframeModalHtml = getIframeHtml({
   id: id,
   domain: baseUrl,
   context: config,
   eventPrefix: eventPrefix,
-  style: config.css["modal-content" + mobilePrefix],
+  style: isMobile ? cssMobile['modal-content'] : css['modal-content'],
   className: isMobile ? "mobile" : "",
-  html: templates["modal-content" + mobilePrefix].body,
-  js: iframeModalJs,
-  css: iframeModalCss
+  html: modalContentTemplate.body,
+  js: [
+    "//a.tvpage.com/tvpa.min.js",
+    '//imasdk.googleapis.com/js/sdkloader/ima3.js',
+    getPlayerUrl(),
+    debug && isMobile ? jsPath + "/vendor/jquery.js" : "",
+    debug && !isMobile ? jsPath + "/vendor/perfect-scrollbar.min.js" : "",
+    debug ? baseUrl + "/libs/utils.js" : "",
+    debug ? baseUrl + "/libs/analytics.js" : "",
+    debug ? baseUrl + "/libs/player.js" : "",
+    debug ? jsPath + "/" + mobilePath + "modal/index.js" : "",
+    debug ? "" : jsPath + mobilePath + "modal/scripts.min.js"
+  ],
+  css: [
+    debug ? cssPath + "/" + mobilePath + "modal/styles.css" : "",
+    debug && isMobile ? cssPath + "/vendor/slick.css" : "",
+    debug && !isMobile ? cssPath + "/vendor/perfect-scrollbar.min.css" : "",
+    debug ? "" : cssPath + "/" + mobilePath + "modal/styles.min.css"
+  ]
 });
 
 var renderIframeModal = function(){
@@ -516,14 +515,6 @@ function handleModalProducts(e) {
       addClass(this,'active')
     }
   });
-
-  if (config.products_info_tooltip && !!config.products_message) {
-    var tooltipEl = document.createElement('div');
-    tooltipEl.className = 'tvp-tooltip';
-    tooltipEl.innerHTML = templates['modal'].tooltip;
-    tooltipEl.querySelector('.tvp-products-message').innerHTML = config.products_message;
-    headlineEl.appendChild(tooltipEl);
-  }
 
   modal.querySelector('.tvp-modal-header').appendChild(headlineEl);
 };

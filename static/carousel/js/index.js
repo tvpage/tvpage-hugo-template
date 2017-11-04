@@ -5,24 +5,31 @@
   var id = body.getAttribute('data-id');
   var config = window.parent.__TVPage__.config[id];
   var channelVideos = config.channel.videos;
-  var skeletonEl = document.getElementById('skeleton');
+  var skeleton = true;
 
   //Render image and title for preloaded elements
-  for (var i = 0; i < channelVideos.length; i++) {
-    var video = channelVideos[i];
-    var videoEl = skeletonEl.querySelector('.video-' + (i + 1));
+  if(skeleton){
+    var skeletonEl = document.getElementById('skeleton');
+    var itemsLength = channelVideos.length;
+    
+    for (var i = 0; i < itemsLength; i++) {
+      var video = channelVideos[i];
+      var videoEl = skeletonEl.querySelector('.video-' + (i + 1));
 
-    if(!videoEl)
-      continue;
+      if(!videoEl)
+        continue;
 
-    videoEl.querySelector('.video-image').style.backgroundImage = "url('" + video.asset.thumbnailUrl + "')";
+      videoEl.querySelector('.video-image').style.backgroundImage = "url('" + video.asset.thumbnailUrl + "')";
 
-    var videoTitleEl = videoEl.querySelector('.video-title');
-    videoTitleEl.classList.add('ready');
-    videoTitleEl.innerHTML = video.title;
+      var videoTitleEl = videoEl.querySelector('.video-title');
+      videoTitleEl.classList.add('ready');
+      videoTitleEl.innerHTML = video.title;
 
-    if (i + 1 === config.toPreload)
-      break;
+      if (i + 1 === config.toPreload)
+        break;
+    }
+
+    skeletonEl.classList.add('updated');
   }
 
   //The global deps of the carousel have to be present before executing its logic.

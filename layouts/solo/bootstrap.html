@@ -2,18 +2,29 @@
 (function(){
 
   var bootstrap = {{ $.Scratch.Get "settings" | jsonify }};
+
   bootstrap.type = "{{ .Type }}";
   bootstrap.baseUrl = "{{ $.Site.BaseURL }}";
+  
   bootstrap.templates = {
-    menu: {{- (partial (printf "%s/menu.html" .Type) .) -}},
-    "menu-item": {{- (partial (printf "%s/menu-item.html" .Type) .) -}}
+    base: {{- (partial (printf "%s/templates/base.html" .Type) .) | htmlUnescape | safeHTML -}},
+    menu: {{- (partial (printf "%s/templates/menu.html" .Type) .) | htmlUnescape | safeHTML -}},
+    "menu-item": {{- (partial (printf "%s/templates/menu-item.html" .Type) .) | htmlUnescape | safeHTML -}}
   };
   
   bootstrap.css = {
-    host: {{- (partial (printf "%s/host.css" .Type) .) | htmlUnescape | safeHTML -}},
-    "host-custom": {{- (partial (printf "%s/host-custom.css" .Type) .) | htmlUnescape | safeHTML -}}
+    base: {{- (partial (printf "%s/css/base.css" .Type) .) | htmlUnescape | safeHTML -}},
+    host: {{- (partial (printf "%s/css/host.css" .Type) .) | htmlUnescape | safeHTML -}},
+    "host-custom": {{- (partial (printf "%s/css/host-custom.css" .Type) .) | htmlUnescape | safeHTML -}}
   };
 
   {{- (readFile "/themes/tvpage/static/solo/index.js") | htmlUnescape | safeHTML -}}
+
+
+  
+
+  
+
+
 
 }());

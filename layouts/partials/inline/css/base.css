@@ -1,0 +1,40 @@
+{{ with ($.Scratch.Get "settings").fonts }}
+{{ range . }}
+  "@import url('{{ . | htmlUnescape | safeHTML }}');" +
+{{ end }}
+{{ end }}
+
+"* {" +
+  "box-sizing: border-box;" +
+"}" +
+
+"html," +
+"body {" +
+"height: 100%;" +
+"-webkit-text-size-adjust:none;" +
+"}" +
+
+"body {" +
+  "font-family: Helvetica;" +
+  "-webkit-font-smoothing: antialiased;" +
+  "-moz-osx-font-smoothing: grayscale;" +
+  "text-rendering: optimizeLegibility;" +
+  "padding: {{ ($.Scratch.Get "settings").iframe_carousel_body_padding }};" +
+  "margin: {{ ($.Scratch.Get "settings").iframe_carousel_body_margin }};" +
+"}" +
+
+'.player-holder {' +
+  'height: 0;' +
+  'width: 100%;' +
+  'position: relative;' +
+  'padding-bottom: 56.25%;' +
+'}' +
+
+'.skeleton .player-holder > div {' +
+  'position: absolute;' +
+  'top: 0;' +
+  'bottom: 0;' +
+  'left: 0;' +
+  'right: 0;' +
+  "background-color: {{ ($.Scratch.Get "settings").skeleton_background_color }};" +
+'}'

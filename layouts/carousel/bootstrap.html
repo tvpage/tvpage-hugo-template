@@ -1,4 +1,5 @@
 {{- partial "settings.html" . -}}
+
 (function(){
 
 	var bootstrap = {{ $.Scratch.Get "settings" | jsonify }};
@@ -12,28 +13,28 @@
 	
 	bootstrap.templates = {
 		mobile: {
-			skeleton: {{- (partial (printf "%s/mobile/skeleton.html" .Type) .) -}}
+			skeleton: {{- (partial (printf "%s/mobile/templates/skeleton.html" .Type) .) -}},
+			"modal-content": {{- (partial (printf "%s/mobile/templates/modal-content.html" .Type) .) -}}
 		},
-		skeleton: {{- (partial (printf "%s/skeleton.html" .Type) .) -}},
-		carousel: {{- (partial (printf "%s/carousel.html" .Type) .) -}},
-		"carousel-item": {{- (partial (printf "%s/carousel-item.html" .Type) .) -}},
-		modal: {{- (partial (printf "%s/modal.html" .Type) .) -}},
-		"modal-content": {{- (partial (printf "%s/modal-content.html" .Type) .) -}},
-		"modal-content-mobile": {{- (partial (printf "%s/modal-content-mobile.html" .Type) .) -}},
+		skeleton: {{- (partial (printf "%s/templates/skeleton.html" .Type) .) -}},
+		carousel: {{- (partial (printf "%s/templates/carousel.html" .Type) .) -}},
+		"carousel-item": {{- (partial (printf "%s/templates/carousel-item.html" .Type) .) -}},
+		modal: {{- (partial (printf "%s/templates/modal.html" .Type) .) -}},
+		"modal-content": {{- (partial (printf "%s/templates/modal-content.html" .Type) .) -}},
 		"modal-iframe": '<iframe class="tvp-iframe-modal" src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe>'
 	};
 
 	bootstrap.css = {
 		mobile: {
-			host: {{- (partial (printf "%s/mobile/host.css" .Type) .) | htmlUnescape | safeHTML -}},
-			"host-custom": {{- (partial (printf "%s/mobile/host-custom.css" .Type) .) | htmlUnescape | safeHTML -}},
-			carousel: {{- (partial (printf "%s/mobile/carousel.css" .Type) .) | htmlUnescape | safeHTML -}}
+			host: {{- (partial (printf "%s/mobile/css/host.css" .Type) .) | htmlUnescape | safeHTML -}},
+			"host-custom": {{- (partial (printf "%s/mobile/css/host-custom.css" .Type) .) | htmlUnescape | safeHTML -}},
+			carousel: {{- (partial (printf "%s/mobile/css/carousel.css" .Type) .) | htmlUnescape | safeHTML -}},
+			"modal-content": {{- (partial (printf "%s/mobile/css/modal-content.css" .Type) .) | htmlUnescape | safeHTML -}}
 		},
-		host: {{- (partial (printf "%s/host.css" .Type) .) | htmlUnescape | safeHTML -}},
-		"host-custom": {{- (partial (printf "%s/host-custom.css" .Type) .) | htmlUnescape | safeHTML -}},
-		carousel: {{- (partial (printf "%s/carousel.css" .Type) .) | htmlUnescape | safeHTML -}},
-		"modal-content": {{- (partial (printf "%s/modal-content.css" .Type) .) | htmlUnescape | safeHTML -}},
-		"modal-content-mobile": {{- (partial (printf "%s/modal-content-mobile.css" .Type) .) | htmlUnescape | safeHTML -}}
+		host: {{- (partial (printf "%s/css/host.css" .Type) .) | htmlUnescape | safeHTML -}},
+		"host-custom": {{- (partial (printf "%s/css/host-custom.css" .Type) .) | htmlUnescape | safeHTML -}},
+		carousel: {{- (partial (printf "%s/css/carousel.css" .Type) .) | htmlUnescape | safeHTML -}},
+		"modal-content": {{- (partial (printf "%s/css/modal-content.css" .Type) .) | htmlUnescape | safeHTML -}}
 	};
 
 	{{- (readFile "/themes/tvpage/static/carousel/index.js") | htmlUnescape | safeHTML -}}

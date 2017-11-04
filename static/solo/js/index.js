@@ -1,99 +1,68 @@
 (function() {
-  
+
+  //We did all the possible checks in the widget's index.js file, no need to check more here.
   var body = document.body;
   var id = body.getAttribute('data-id');
-  var config = null;
+  var config = window.parent.__TVPage__.config[id];
 
-  var renderPlayer = function(){
-    var el = document.createElement('div');
-    el.className ='tvp-player';
-    el.innerHTML =  '<div id="tvp-player-el-'+id+'" class="tvp-player-el"></div></div>';
-    body.appendChild(el);
-  };
+  //The global deps of the carousel have to be present before executing its logic.
+  var depsCheck = 0;
+  var deps = ['Utils','Player','SimpleScrollbar','Menu'];
 
-  var getPlayerConfig = function(data){
-    var obj = Utils.copy(config);
-    
-    obj.ciTrack = true;
-    obj.onPlayerChange = !!config.onPlayerChange;
-    obj.data = data || [];
+  (function initSolo() {
+    setTimeout(function() {
+      console.log('deps poll...');
+      
+      var ready = true;
+      for (var i = 0; i < deps.length; i++)
+        if ('undefined' === typeof window[deps[i]])
+          ready = false;
 
-    if(!!config.playlist && 'show' === config.playlist){
-      obj.onPlayerReady = function(playerInstance){
-        var menuConfig = Utils.copy(config);
-        menuConfig.data = data;
-        (new Menu(playerInstance,menuConfig)).initialize();
-      };
+      if(ready){
 
-      obj.onNext = function(next){
-        menu.setActiveItem(next.assetId);
-        menu.hideMenu();
-      };
+        var playerConfig = Utils.copy(config);
+        var menu;
+        var player;
+        
+        playerConfig.ciTrack = true;
+        playerConfig.data = config.channel.videos;
+        playerConfig.onPlayerChange = !!playerConfig.onPlayerChange;
 
-      obj.onFullscreenChange = function(){
-        menu.hideMenu();
-      };
-    }
+        playerConfig.onPlayerReady = function(){
+          if (config.debug) {
+            console.log("a player is ready");
+          }
 
-    return obj;
-  };
-  
-  function initialize(){
-    renderPlayer();
+          menu = new Menu(player, config);
+          menu.initialize();
+        };
 
-    config = Utils.getParentConfig(id);
-    
-    var channel = config.channel || {};
-    
-    config.channelId = channel.id || config.channelId || config.channelid;
-    config.loginId = config.loginId || config.loginid;
-    
-    var params = channel.parameters || {};
-    var src = config.api_base_url + '/channels/' + config.channelId + '/videos?X-login-id=' + config.loginId;
-    
-    for (var p in params) {
-      src += '&' + p + '=' + params[p];
-    }
+        playerConfig.onNext = function(next){
+          if(next){
+            menu.setActiveItem(next.assetId);
+          }
 
-    src += '&p=0&n=6&callback=tvpcallback';
+          menu.hideMenu();
+        };
 
-    var script = document.createElement('script');
-    script.src = src;
-    
-    window['tvpcallback'] = function(data) {
-      if (data.length) {
-        Utils.sendMessage({
-          event: ("tvp_" + id).replace(/-/g,'_') + ':render'
-        });
-  
-        (new Player('tvp-player-el-' + id, getPlayerConfig(data))).initialize();
+        playerConfig.onFullscreenChange = function(){
+          menu.hideMenu();
+        };
+        
+        player = new Player('player', playerConfig);
+        player.initialize();
+
+        var skeleton = document.getElementById('skeleton');
+        if(skeleton)
+          skeleton.parentNode.removeChild(skeleton);
+
+        setTimeout(function(){
+          Utils.removeClass(player.el.parentNode,'hide');
+        },1);
+      }else if(++depsCheck < 200){
+        initSolo()
       }
-    };
-
-    body.appendChild(script);
-  };
-
-  var isLoadingLibs = function(){
-    var not = function(obj) {
-      return 'undefined' === typeof obj
-    };
-
-    return not(window.Utils) || not(window.Player) || not(window.Menu) || not(window.SimpleScrollbar);
-  };
-
-  if (isLoadingLibs()) {
-    var libsLoadingCheck = 0;
-    (function libsLoadingPoll() {
-      setTimeout(function() {
-        if (isLoadingLibs()) {
-          (++libsLoadingCheck < 200) ? libsLoadingPoll(): console.warn('limit reached');
-        } else {
-          initialize();
-        }
-      },150);
-    })();
-  } else {
-    initialize();
-  }
+    },5);
+  })();
 
 }());

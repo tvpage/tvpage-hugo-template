@@ -1,0 +1,16 @@
+'<div class="carousel-title">{title_text}</div>' +
+'<div id="skeleton" class="skeleton">' +
+  {{ range (seq ($.Scratch.Get "settings").items_per_page) }}
+    '<div class="video video-{{ . }}">' +
+      '<div class="video-image">' +
+        '<svg class="video-image-icon" viewBox="0 0 200 200" alt="Play video">' +
+          '<polygon points="70, 55 70, 145 145, 100"></polygon>' +
+        '</svg>' +
+      '</div>' +
+      '<p class="video-title"></p>' +
+    '</div>' +
+  {{ end }}
+'</div>' +
+'<div id="carousel" class="hide">' +
+  '<div class="carousel-content"></div>' +
+'</div>'

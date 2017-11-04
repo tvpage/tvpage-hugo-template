@@ -91,6 +91,7 @@
       this.onLoad();
     }
 
+    var that = this;
     var channel = this.channel || {};
     var channelId = channel.id || this.options.channelid || this.options.channelId;
 
@@ -104,11 +105,7 @@
         od: this.options.videos_order_direction,
         callback: 'tvpcallback'
       })
-    });
-    
-    var that = this;
-
-    window['tvpcallback'] = function(data){
+    },function(data){
       if ( !data.length || (data.length < that.itemsPerPage) ) {
         that.isLastPage = true;
       }
@@ -120,7 +117,7 @@
       if (that.onLoadEnd) {
         that.onLoadEnd();
       }
-    };
+    });
   };
 
   Grid.prototype.next = function(){

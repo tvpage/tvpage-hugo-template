@@ -46,18 +46,15 @@
           params: {
             'X-login-id': settings.loginId,
             o: settings.products_order_by,
-            od: settings.products_order_direction,
-            callback: 'tvpcallback'
+            od: settings.products_order_direction
           }
+        },function(data) {
+            if (data && data.length && 'function' === typeof fn) {
+                fn(data);
+            } else {
+                fn([]);
+            }
         });
-    
-        window['tvpcallback'] = function(data) {
-          if (data && data.length && 'function' === typeof fn) {
-            fn(data);
-          } else {
-            fn([]);
-          }
-        };
     };
 
     var render = function(data,config) {

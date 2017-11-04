@@ -200,28 +200,17 @@
   
     return assets[this.current];
   };
-  
+
   Player.prototype.onReady = function(e, pl) {
-    this.instance = pl;
     this.resize.call(this);
-  
-    if (window.BigScreen) {
-      var that = this;
-      BigScreen.onchange = function(){
-          that.isFullScreen = !that.isFullScreen;
-          that.resize();
-      };
-    }
-    
+
     this.analyticsConfig();
     this.controlBarZindex();
     this.handleResize();
-  
+
     if(this.onPlayerReady){
       this.onPlayerReady(this);
     }
-  
-    this.play(this.getCurrentAsset());
   };
   
   Player.prototype.notifyState = function(e){
@@ -289,26 +278,43 @@
   }
   
   Player.prototype.startPlayer = function() {
-    var depsChecks = 0;
+
+    var config = this.getConfig();
     var that = this;
-    (function depsReady() {
+    var depsCheck = 0;
+    var deps = ['TVPage','_tvpa'];
+
+    (function start() {
       setTimeout(function() {
-        if (PlayerUtils.isUndefined(window.TVPage) || PlayerUtils.isUndefined(window._tvpa)) {
-          (++depsChecks < 50) ? depsReady(): console.warn('can\'t load deps');
-        } else {
-          var config = that.getConfig();
+        console.log('deps poll...');
+        
+        var ready = true;
+        for (var i = 0; i < deps.length; i++)
+          if ('undefined' === typeof window[deps[i]])
+            ready = false;
   
+        if(ready){
+
           config.onReady = function(e, pl){
             that.onReady(e, pl);
           };
-  
+
           config.onStateChange = function(e) {
             that.onStateChange(e);
           };
-  
+
           that.player = new TVPage.player(config);
+
+          var globalRunId = that.player.options.globalRunId;
+
+          that.instance = TVPage.instances[globalRunId];
+
+          that.play(that.getCurrentAsset());
+  
+        }else if(++depsCheck < 200){
+          start()
         }
-      }, 150);
+      },5);
     })();
   };
   
@@ -376,12 +382,23 @@
     this.onPlayerReady = this.getCallable('onPlayerReady');
   };
   
+  Player.prototype.handleBigScreenChange = function() {
+    if (window.BigScreen) {
+      var that = this;
+      BigScreen.onchange = function(){
+        that.isFullScreen = !that.isFullScreen;
+        that.resize();
+      }; 
+    }
+  };
+
   Player.prototype.initialize = function() {
     this.setControlsOptions();
     this.setAdvertisingOptions();
     this.setConfig();
     this.addAssets(this.options.data);
     this.startPlayer();
+    this.handleBigScreenChange();
   };
   
   window.Player = Player;

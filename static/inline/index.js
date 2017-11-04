@@ -1,173 +1,289 @@
-var utils = {
-    isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
-    isIOS: /iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream,
-    isset: function(o,p){
-        var val = o;
-        if (p) val = o[p];
-        return "undefined" !== typeof val;
-    },
-    getIframeHtml: function(options) {
-        var html = '<head><base target="_blank" /></head><body class="' + (options.className || '') + '" data-domain="' +
-            (options.domain || '') + '" data-id="' + (options.id || '') + '" onload="' +
-            'var d = document, head = d.getElementsByTagName(\'head\')[0],' +
-            'addJS = function(u){ var s = d.createElement(\'script\');s.src=u;d.body.appendChild(s);},' +
-            'addCSS = function(h){ var l = d.createElement(\'link\');l.rel=\'stylesheet\';l.href=h;head.appendChild(l);};';
+//Helpers
+var body = document.body;
+var userAgent = navigator.userAgent;
+var isFirefox = /Firefox/i.test(userAgent);
+var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+var iOS = /iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(userAgent) && !window.MSStream;
+var iframeBaseHtml = '<head><base target="_blank"/></head><body class="{className}"' +
+'data-domain="{domain}" data-id="{id}" onload="startTime={startTime};' + 
+'var d=document,h=d.head,' +
+'loadJS = function(u){var s=d.createElement(\'script\');s.src=u;h.appendChild(s);},' +
+'loadCSS = function(u){var l=d.createElement(\'link\');l.rel=\'stylesheet\';l.href=u;h.appendChild(l);};';
+var tmpl = function(t,d){
+  return t.replace(/\{([\w\.]*)\}/g, function(str, key) {
+    var keys = key.split("."),
+      v = d[keys.shift()];
+    for (var i = 0, l = keys.length; i < l; i++) v = v[keys[i]];
+    return (typeof v !== "undefined" && v !== null) ? v : "";
+  });
+};
+var isFunction = function(o) {
+  return "function" === typeof o;
+};
+var isObject = function(o) {
+  return "object" === typeof o;
+};
+var hasKey = function(o, key) {
+  return o.hasOwnProperty(key);
+};
+var isUndefined = function(o){
+  return 'undefined' === typeof o;
+};
+var isset = function(o, p) {
+  var val = o;
+  if (p) val = o[p];
+  return "undefined" !== typeof val;
+};
+var addClass = function(obj, c) {
+  if (!obj || !c) return;
+  if ('string' === typeof obj) {
+    document.getElementById(obj).classList.add(c);
+  } else {
+    obj.classList.add(c);
+  }
+};
+var removeClass = function(obj, c) {
+  if (!obj || !c) return;
+  if ('string' === typeof obj) {
+    document.getElementById(obj).classList.remove(c);
+  } else {
+    obj.classList.remove(c);
+  }
+};
+var getById = function(id){
+  return document.getElementById(id);
+};
+var getEventType = function(e) {
+  var evt = null
+  if (e && isset(e, "data") && isset(e.data, "event")) {
+    evt = e.data.event;
+  }
 
-        var js = options.js || [];
-        if ('function' === typeof js) {
-            js = js();
-        }
+  if (evt && evt.length && evt.substr(0, eventPrefix.length) === eventPrefix) {
+    return evt.substr(eventPrefix.length + 1);
+  }
 
-        js = js.filter(Boolean);
-        for (var i = 0; i < js.length; i++) {
-            html += 'addJS(\'' + js[i] + '\');';
-        }
-
-        var css = options.css || [];
-        if ('function' === typeof css) {
-            css = css();
-        }
-
-        css = css.filter(Boolean);
-        for (var i = 0; i < css.length; i++) {
-            html += 'addCSS(\'' + css[i] + '\');';
-        }
-
-        html += '"><style>' + (options.style || '') + '</style>';
-
-        var content = options.html || '';
-        if ('function' === typeof content) {
-            html += content();
-        } else if (content.trim().length) {
-            html += content;
-        }
-
-        return html;
-    },
-    addClass: function(obj,c){
-        if (!obj || !c) return;
-        if ('string' === typeof obj) {
-            document.getElementById(obj).classList.add(c);
-        } else {
-            obj.classList.add(c);
-        }
-    },
-    removeClass: function(obj,c){
-        if (!obj || !c) return;
-        if ('string' === typeof obj) {
-            document.getElementById(obj).classList.remove(c);
-        } else {
-            obj.classList.remove(c);
-        }
-    },
-    extend: function(out) {
-        out = out || {};
-        for (var i = 1; i < arguments.length; i++) {
-            if (!arguments[i])
-                continue;
-
-            for (var key in arguments[i]) {
-                if (arguments[i].hasOwnProperty(key))
-                    out[key] = arguments[i][key];
-            }
-        }
-        return out;
-    }
+  return null;
 };
 
-if (typeof bootstrap !== "object" || !bootstrap.hasOwnProperty('name') || bootstrap.name.length<=0 ) {
-  throw new Error('Must pass bootstrap and boostrap.name');
-}
+//Builds the document for iframes.
+function getIframeHtml(o) {
+  o.startTime = startTime;
 
+  var html = tmpl(iframeBaseHtml,o);
+  var clean = function(s){
+    return (s || []).filter(Boolean);
+  };
+
+  html += "function onStart(e){";
+  html += "  if(!e || !e.data || !e.data.event || '" + o.eventPrefix + ":start' !== e.data.event){";
+  html += "    return; ";
+  html += "  }";
+  
+  var js = clean(o.js);
+  for (var i = 0; i < js.length; i++)
+    html += 'loadJS(\'' + js[i] + '\');';
+
+  var css = clean(o.css);
+  for (var i = 0; i < css.length; i++)
+    html += 'loadCSS(\'' + css[i] + '\');';
+
+  html += "  if(parent)";
+  html += "    parent.removeEventListener('message', onStart, false);";
+  html += "};";
+
+  html += "  parent.addEventListener('message', onStart);";
+
+  html += '"><style>' + (o.style || '') + '</style>';
+  html += tmpl((o.html || '').trim(),o.context);
+
+  return html;
+};
+
+
+//We merge the defaults, the .md file's params and the runtime input into one config object.
+if (!isObject(bootstrap) || !hasKey(bootstrap, "name") || bootstrap.name.length <= 0)
+  throw new Error('Widget must have a bootstrap and name (id)');
+
+var config = bootstrap;
 var id = bootstrap.name;
+var tvpage = window.__TVPage__ = window.__TVPage__ || {};
 
-//If there's config object for this specific widget, then we merged in... extend?
-window.__TVPage__ = window.__TVPage__ || {};
-__TVPage__.config = __TVPage__.config || {};
-
-if ("object" === typeof __TVPage__.config[id]) {
-    __TVPage__.config[id] = utils.extend(bootstrap, __TVPage__.config[id]);
-} else {
-    __TVPage__.config[id] = bootstrap;
+if(hasKey(tvpage.config,id) && isObject(tvpage.config[id])){
+  var runTime = tvpage.config[id];
+  for (var key in runTime) {
+    if (runTime.hasOwnProperty(key))
+      config[key] = runTime[key];
+  }
 }
-
-var __windowCallbackFunc__ = null;
-if (   __TVPage__.config[id].hasOwnProperty('onChange') && typeof   __TVPage__.config[id].onChange == "function" ) {
-  __windowCallbackFunc__ = __TVPage__.config[id].onChange;
-  delete __TVPage__.config[id].onChange;
-}
-
-var config = utils.isset(window.__TVPage__) && utils.isset(__TVPage__,"config") && utils.isset(__TVPage__.config,id) ? __TVPage__.config[id] : {};
-
-var hostCssTagId = "tvp-inline-host-css";
-var hostCssTag = "";
-if (!document.getElementById(hostCssTagId)) {
-  hostCssTag = '<style id="' + hostCssTagId + '">' + config.css.host + '</style>';
-}
-
-var targetElement;
-if ( !config.hasOwnProperty('targetEl') ||  !document.getElementById(config.targetEl) ) {
-  throw new Error ( "Must provide a targetEl");
-} 
-
-var targetElement = document.getElementById(config.targetEl);
-targetElement.insertAdjacentHTML('beforebegin', "<style>" + config.css["host-custom"] + "</style>" + hostCssTag + '<div id="' + id + '-holder" class="tvp-inline-holder">'+
-'<iframe class="tvp-iframe" src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe></div>');
-targetElement.parentNode.removeChild(targetElement);
 
 config.id = id;
-config.staticPath = config.baseUrl + "/inline";
-config.mobilePath = utils.isMobile ? 'mobile/' : '';
-config.distPath = config.debug ? '/' : '/dist/';
-config.cssPath = config.staticPath + config.distPath + 'css/';
-config.jsPath = config.staticPath  + '/dist/js/';
-config.eventPrefix = ("tvp_" + config.id).replace(/-/g,'_');
+config.eventPrefix = ("tvp_" + id).replace(/-/g, '_');
+config.loginId = config.loginId || config.loginid;
+config.channelId = (config.channelId || config.channelid) || config.channel.id;
 
-var playerUrl = "https://cdnjs.tvpage.com/tvplayer/tvp-" + config.player_version + ".min.js";
-var holder = document.getElementById(config.id + "-holder");
-utils.isset(config, 'iframe_holder_background_color') ? holder.style.cssText += 'background-color:'+ config.iframe_holder_background_color +';' : null;
+var __windowCallbackFunc__ = null;
+if (hasKey(config,"onChange") && isFunction(config.onChange)){
+  __windowCallbackFunc__ = config.onChange;
+  delete config.onChange;
+}
+
+window.__TVPage__.config[id] = config;
+
+//Initial rendering
+if (!hasKey(config,"targetEl") || !getById(config.targetEl))
+  throw new Error("Must provide a targetEl");
+
+var type = config.type;
+var mobilePrefix = isMobile ? "-mobile" : "";
+var css = config.css;
+var cssMobile = config.css.mobile;
+var baseUrl = config.baseUrl;
+var staticPath = baseUrl + '/' + type;
+var debug = config.debug;
+var mobilePath = isMobile ? 'mobile/' : '';
+var distPath = debug ? '/' : '/dist/';
+var cssPath = staticPath + distPath + 'css/';
+var jsPath = staticPath + distPath + 'js/';
+var eventPrefix = config.eventPrefix;
+var templates = config.templates;
+var mobileTemplates = templates.mobile;
+
+//We have a generic host css per widget type that we only include once.
+var getHostStyles = function(){
+  var styles = '';
+  var styleId = 'tvp-' + type + '-host';
+  var code = isMobile ? cssMobile : css;
+
+  if (!getById(styleId))
+    styles += '<style id="' + styleId + '">' + code.host + '</style>';
+
+  var custom = code['host-custom'];
+  
+  if(!isUndefined(custom))
+    styles += '<style>' + custom + '</style>'
+
+  return styles;
+};
+
+var getInitialHtml = function(){
+  var html = "";
+  var hostId = "tvp-" + type + "-host";
+
+  html += getHostStyles();
+  html += '<div id="' + id + '-holder" class="tvp-'+type+'-holder">';
+  html += '<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe></div>';
+
+  return html;
+};
+
+var getPlayerUrl = function(){
+    var url = "https://cdnjs.tvpage.com/tvplayer/tvp-" + config.player_version + ".min.js";
+    if (config.player_url && (config.player_url + "").trim().length) {
+        url = config.player_url;
+    }
+    return url;
+};
+
+//Here's the first HTML write we do to the host page, this is the fastest way to do it
+//refer to https://jsperf.com/insertadjacenthtml-perf/3
+var targetElement = getById(config.targetEl);
+targetElement.insertAdjacentHTML('beforebegin',getInitialHtml());
+targetElement.parentNode.removeChild(targetElement);
+
+var holder = getById(id + "-holder");
 var iframe = holder.querySelector("iframe");
 var iframeDocument = iframe.contentWindow.document;
-
-iframeDocument.open().write(utils.getIframeHtml({
-    id: config.id,
-    className: "dynamic",
-    domain: config.baseUrl,
-    style: config.css.inline,
-    js: [
-        '//a.tvpage.com/tvpa.min.js',
-        '//imasdk.googleapis.com/js/sdkloader/ima3.js',
-        playerUrl,
-        config.debug ? config.jsPath + "scripts.js" : "",
-        config.debug ? "" : config.jsPath + "scripts.min.js"
-    ],
-    css: [
-        config.debug ? config.cssPath + "styles.css" : "",
-        config.debug ? "" : config.cssPath + "styles.min.css"
-    ]
-}));
-iframeDocument.close();
-
-var isEvent = function (e, type) {    
-    return (e && utils.isset(e, "data") && utils.isset(e.data, "event") && config.eventPrefix + type === e.data.event);
-};
-
-window.addEventListener("message", function(e){
-    if (!isEvent(e, ":resize")) return;
-    holder.style.height = e.data.height;
+var iframeHtml = getIframeHtml({
+  id: id,
+  domain: baseUrl,
+  className: "dynamic",
+  style: config.css.base,
+  context: config,
+  html: templates.base,
+  eventPrefix: eventPrefix,
+  js: [
+    '//a.tvpage.com/tvpa.min.js',
+    '//imasdk.googleapis.com/js/sdkloader/ima3.js',
+    getPlayerUrl(),
+    debug ? jsPath + "vendor/jquery.js" : "",
+    debug ? baseUrl + "/libs/utils.js" : "",
+    debug ? baseUrl + "/libs/player.js" : "",
+    debug ? jsPath + "index.js" : "",
+    debug ? "" : jsPath + "scripts.min.js"
+  ],
+  css: [
+    debug ? cssPath + 'styles.css' : '',
+    debug ? '' : cssPath + 'styles.min.css'
+  ]
 });
 
-var clickData = {};
+iframeDocument.open().write(iframeHtml);
+iframeDocument.close();
+console.log('renders initial dom (iframe w/skeleton)', performance.now() - startTime);
 
-var getEventType = function (e) {
-  var evt = null
-    if (e && utils.isset(e, "data") && utils.isset(e.data, "event") ) {
-      evt= e.data.event;
-    }
-    
-    if (evt && evt.length && evt.substr(0, config.eventPrefix.length) === config.eventPrefix) {
-      return evt.substr(config.eventPrefix.length + 1);
-    }
-    
-    return null;
+
+//API calls/loading, is here were we call the most important api(s)
+if(!hasKey(config,'channel') && !hasKey(config,'channelId') && !hasKey(config,'channelid'))
+  throw new Error('Widget config missing channel obj');
+
+var cbackName = 'tvp_callback_' + Math.random().toString(36).substring(7);
+
+window[cbackName] = function(data){
+  console.log('call to api completed', performance.now() - startTime);
+  
+  //Preload data images.. this can be done smarter depending on the template, for example
+  //carousel on mobile will need to preload first image only whilst desktop needs
+  //same qty as the items_per_page setting.
+  config.toPreload = isMobile ? 1 : config.items_per_page;
+
+  for (var i = 0; i < data.length; i++) {
+    if(hasKey(data[i],'asset'))
+      (new Image()).src = data[i].asset.thumbnailUrl;
+
+    if(i + 1 == config.toPreload)
+      break;
+  }
+  
+  console.log('first page of video images preloaded', performance.now() - startTime); 
+
+  //We then add the data to the tvp global and then we fire the event that will start
+  //things in the widget side.
+  config.channel.videos = data;
+
+  //This is the first event that start things out
+  setTimeout(function(){
+    window.postMessage({
+      event: eventPrefix + ':start'
+    }, '*');
+  },0);
 };
+
+var channel = config.channel || {};
+var channelId = channel.id || config.channelId;
+
+var src = config.api_base_url + '/channels/' + channelId + '/videos';
+var callParams = {
+  p: 0,
+  n: config.items_per_page + 1,
+  o: config.videos_order_by,
+  od: config.videos_order_direction,
+  'X-login-id': config.loginId,
+  callback: cbackName
+};
+
+var c = 0;
+for (var param in callParams) {
+  src += (c > 0 ? '&' : '?') + param + '=' + callParams[param];
+  ++c;
+}
+
+if(channel.parameters){
+  var channelParams = channel.parameters;
+  for (var channelParam in channelParams)
+    src += '&' + channelParam + '=' + channelParams[channelParam];
+}
+
+var jsonpScript = document.createElement('script');
+jsonpScript.src = src;
+body.appendChild(jsonpScript);

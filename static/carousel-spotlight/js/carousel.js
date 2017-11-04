@@ -190,20 +190,19 @@
         p: 0,
         n: this.itemsPerPage,
         o: this.options.videos_order_by,
-        od: this.options.videos_order_direction,
-        callback: 'tvpcallback'
+        od: this.options.videos_order_direction
       })
-    });
-
-    var that = this;
-    window['tvpcallback'] = function(data) {
+    },function(data) {
       that.data = data;
+      
       callback(data);
+      
       that.loading = false;
+      
       if (that.onLoadEnd) {
         that.onLoadEnd();
       }
-    };
+    });
   };
 
   Carousel.prototype.runTimeUpdates = function() {

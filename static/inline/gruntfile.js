@@ -64,10 +64,6 @@ module.exports = function(grunt) {
         options: {
           separator: ';',
         },
-        dist: {
-          src: ['src/intro.js', 'src/project.js', 'src/outro.js'],
-          dest: 'dist/built.js',
-        },
         dev: {
           src: [
              'js/vendor/jquery.js'
@@ -79,7 +75,7 @@ module.exports = function(grunt) {
             ,'js/libs/player.js'
             , 'js/inline.js'
             , 'js/index.js'],
-          dest: 'dist/js/scripts.js'
+          dest: 'js/scripts.js'
         }
       }
     });

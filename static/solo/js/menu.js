@@ -1,7 +1,8 @@
 (function() {
   
-    var Menu = function(player, options) {
+    function Menu(player, options) {
       this.options = options || {};
+      this.templates = this.options.templates;
       this.player = player;
       this.allVideos = [];
       this.page = 0;
@@ -44,9 +45,9 @@
     };
 
     Menu.prototype.render = function() {
-      var menuList = this.options.data || [];
-      
+      var menuList = this.options.channel.videos || [];
       var menuListLength = menuList.length;
+      
       if (menuListLength < 1)
         return;
 
@@ -59,9 +60,11 @@
       noVideosEl.id = 'tvp-no-videos-container';
 
       var menuHidden = document.getElementById('tvp-hidden-menu');
+
       menuHidden.appendChild(noVideosEl);
+
       menuHidden.insertBefore(menuListEl, noVideosEl);
-      menuHidden.style.cssText = 'height:' + (document.getElementById('tvp-player-el-' + this.options.id).offsetHeight - 40) + 'px;';
+      menuHidden.style.cssText = 'height:' + this.player.el.offsetHeight - 40 + 'px;';
       
       var videoDetails = document.getElementsByClassName('tvp-video-details');
 
@@ -72,6 +75,7 @@
         
         menuItem.title = Utils.trimText(menuItem.title, 100);
         menuItem.duration = Utils.formatDuration(menuItem.duration);
+
         menuListEl.innerHTML += Utils.tmpl(this.options.templates['menu-item'], menuItem);
         
         this.renderCategoryValue(menuItem,videoDetails[i]);
@@ -101,6 +105,7 @@
       this.page++;
       this.isFetching = true;
 
+      var that = this;
       var channel = this.options.channel || {};
 
       Utils.loadScript({
@@ -108,17 +113,14 @@
         params: Utils.extend(channel.parameters || {}, {
           'X-login-id': this.options.loginId,
           p: this.page,
-          n: this.itemsPerPage,
-          callback: 'tvpcallback'
+          n: this.itemsPerPage
         })
-      });
-      var that = this;
-      window['tvpcallback'] = function(data) {
+      },function(data) {
         that.isFetching = false;
         that.lastPage = (!data.length || data.length < that.itemsPerPage) ? true : false;
         that.player.addAssets(data);
         that.update(data);
-      };
+      });
     };
 
     Menu.prototype.bindLoadMoreEvent = function(e) {
@@ -159,11 +161,13 @@
     };
 
     Menu.prototype.renderFullScreenMenu = function() {
-      var playerEl = document.getElementById('tvp-player-el-' + this.options.id);
-      var iframe = playerEl.querySelector('iframe');
       var menuEl = document.createElement('div');
+
       menuEl.id = 'tvp-slide-menu';
-      menuEl.innerHTML = this.options.templates.menu;
+      menuEl.innerHTML = this.templates.menu;
+
+      var iframe = this.player.el.querySelector('iframe');
+      
       iframe.parentNode.insertBefore(menuEl, iframe.nextSibling);
     };
 
@@ -171,13 +175,15 @@
       window.removeEventListener('resize', resizingEvents, false);
       window.addEventListener('resize', resizingEvents, false);
 
+      var that = this;
+
       function resizingEvents() {
-        var newSize = (this.payerCont.clientHeight - 40) + 'px;';
-        this.hiddenMenu.style.cssText = 'height:' + newSize;
-        var totalHeight = this.scrollMenu.scrollHeight,
-          ownHeight = this.scrollMenu.clientHeight,
+        var newSize = (that.player.el.clientHeight - 40) + 'px;';
+        that.hiddenMenu.style.cssText = 'height:' + newSize;
+        var totalHeight = that.scrollMenu.scrollHeight,
+          ownHeight = that.scrollMenu.clientHeight,
           scrollRatio = ownHeight / totalHeight;
-        this.scrollBar.style.cssText += 'height:' + Math.floor((scrollRatio) * 100) + '%;top:' + (this.scrollMenu.scrollTop / totalHeight) * 100 + '%;right:-' + (this.hiddenMenu.clientWidth - 9) + 'px;';
+        that.scrollBar.style.cssText += 'height:' + Math.floor((scrollRatio) * 100) + '%;top:' + (that.scrollMenu.scrollTop / totalHeight) * 100 + '%;right:-' + (that.hiddenMenu.clientWidth - 9) + 'px;';
       };
     };
 
@@ -268,6 +274,7 @@
 
     Menu.prototype.initialize = function(){
       this.render();
+
       this.cacheDOM();
       this.bindMenuEvent();
       this.bindClickEvent();
