@@ -1,28 +1,31 @@
+/* fonts */
 {{ with ($.Scratch.Get "settings").fonts }}
   {{ range . }}
-    "@import url('{{ . | htmlUnescape | safeHTML }}');" +
+    "@import url({{ . | htmlUnescape | safeHTML }});" +
   {{ end }}
 {{ end }}
 
+/* base */
 "* {" +
     "box-sizing: border-box;" +
 "}" +
 
 "html," +
 "body {" +
-  "height: 100%;" +
+  "height:100%;" +
   "-webkit-text-size-adjust:none;" +
 "}" +
 
 "body {" +
-    "font-family: Helvetica;" +
     "-webkit-font-smoothing: antialiased;" +
     "-moz-osx-font-smoothing: grayscale;" +
     "text-rendering: optimizeLegibility;" +
-    "padding: {{ ($.Scratch.Get "settings").iframe_carousel_body_padding }};" +
-    "margin: {{ ($.Scratch.Get "settings").iframe_carousel_body_margin }};" +
+    "font-family: {body_fontFamily};" +
+    "padding: {body_padding};" +
+    "margin: {body_margin};" +
 "}" +
 
+/* helpers */
 ".skeleton {" +
     "overflow: hidden;" +
 "}" +
@@ -32,26 +35,7 @@
     "visibility: hidden;" +
 "}" +
 
-".carousel-title {" +
-    "font-family: {{ ($.Scratch.Get "settings").title_text_font_family }};" +
-    "font-weight: {{ ($.Scratch.Get "settings").title_text_font_weight }};" +
-    "font-size:{{ ($.Scratch.Get "settings").title_font_size }};" +
-    "text-align:{{ ($.Scratch.Get "settings").title_text_align }};" +
-    "color:{{ ($.Scratch.Get "settings").title_color }};" +
-    "padding: {{ ($.Scratch.Get "settings").title_padding }};" +
-    "background:{{ ($.Scratch.Get "settings").title_background }};" +
-"}" +
-
-".carousel-title > span {" +
-    "text-transform: {{ ($.Scratch.Get "settings").title_category_text_transform }};" +
-    "font-family: {{ ($.Scratch.Get "settings").title_category_text_font_family }};" +
-"}" +
-
-".carousel-content {" +
-    "background:{{ ($.Scratch.Get "settings").content_background }};" +
-    "border:{{ ($.Scratch.Get "settings").content_border }};" +
-"}" +
-
+/* videos */
 ".video {" +
     "cursor: pointer;" +
     "margin: 0 auto;" +
@@ -168,47 +152,6 @@
 
 ".video-metadata > div {" +
     "padding:{{ ($.Scratch.Get "settings").item_metadata_padding }};" +
-"}" +
-
-".tvp-carousel-arrow {" +
-    "width:{{ ($.Scratch.Get "settings").arrow_size }};" +
-    "border:{{ ($.Scratch.Get "settings").arrow_border }};" +
-"}" +
-
-".tvp-carousel-arrow > svg {" +
-    "width:{{ ($.Scratch.Get "settings").arrow_width_480 }};" +
-    "height: {{ ($.Scratch.Get "settings").arrow_height_480 }};" +
-    "background:{{ ($.Scratch.Get "settings").arrow_background_color }};" +
-    "fill:{{ ($.Scratch.Get "settings").arrow_icon_color }};" +
-    "border-radius:{{ ($.Scratch.Get "settings").arrow_border_radius }};" +
-"}" +
-
-".tvp-carousel-arrow.inactive > svg {" +
-    "background: {{ ($.Scratch.Get "settings").arrow_inactive_background_color }};" +
-    "fill: {{ ($.Scratch.Get "settings").arrow_inactive_icon_color }};" +
-"}" +
-
-".tvp-carousel-arrow.inactive:hover > svg {" +
-    "pointer-events: none;" +
-    "background: {{ ($.Scratch.Get "settings").arrow_inactive_background_color }};" +
-    "fill: {{ ($.Scratch.Get "settings").arrow_inactive_icon_color }};" +
-"}" +
-
-".tvp-carousel-arrow:hover > svg {" +
-    "background:{{ ($.Scratch.Get "settings").arrow_background_color_hover }};" +
-    "fill:{{ ($.Scratch.Get "settings").arrow_icon_color_hover }};" +
-"}" +
-
-".tvp-carousel-arrow.prev {" +
-    "fill: {{ ($.Scratch.Get "settings").arrow_icon_color }};" +
-"}" +
-
-".tvp-carousel-arrow.prev {" +
-    "left:{{ ($.Scratch.Get "settings").arrow_prev_left }};" +
-"}" +
-
-".tvp-carousel-arrow.next {" +
-    "right:{{ ($.Scratch.Get "settings").arrow_next_right }};" +
 "}" +
 
 ".slick-dotted.slick-slider {" +
