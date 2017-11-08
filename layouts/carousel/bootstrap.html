@@ -2,41 +2,52 @@
 
 (function(){
 
-	var bootstrap = {{ $.Scratch.Get "settings" | jsonify }};
-	bootstrap.type = "{{ .Type }}";
+	var config = {{ $.Scratch.Get "settings" | jsonify }};
+	
+	config.type = "{{ .Type }}";
 	
 	{{- if (getenv "HUGO_DEBUG") -}}
-	bootstrap.baseUrl = "{{ trim $.Site.BaseURL "/" }}";
+		config.baseUrl = "{{ trim $.Site.BaseURL "/" }}";
 	{{- else -}}
-	bootstrap.baseUrl = "{{ $.Site.BaseURL }}";
+		config.baseUrl = "{{ $.Site.BaseURL }}";
 	{{- end -}}
 	
-	bootstrap.templates = {
-		mobile: {
-			skeleton: {{- (partial (printf "%s/mobile/templates/skeleton.html" .Type) .) -}},
-			"modal-content": {{- (partial (printf "%s/mobile/templates/modal-content.html" .Type) .) -}}
+	config.templates = {
+		base: {{- (partial (printf "%s/templates/base.html" .Type) .) -}},
+		videos: {
+			list: {{- (partial (printf "%s/templates/videos/list.html" .Type) .) -}},
+			item: {{- (partial (printf "%s/templates/videos/item.html" .Type) .) -}}
 		},
-		skeleton: {{- (partial (printf "%s/templates/skeleton.html" .Type) .) -}},
-		carousel: {{- (partial (printf "%s/templates/carousel.html" .Type) .) -}},
-		"carousel-item": {{- (partial (printf "%s/templates/carousel-item.html" .Type) .) -}},
-		modal: {{- (partial (printf "%s/templates/modal.html" .Type) .) -}},
-		"modal-content": {{- (partial (printf "%s/templates/modal-content.html" .Type) .) -}},
-		"modal-iframe": '<iframe class="tvp-iframe-modal" src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe>'
+		mobile: {
+			base: {{- (partial (printf "%s/mobile/templates/base.html" .Type) .) -}},
+			modal: {
+				content: {{- (partial (printf "%s/mobile/templates/modal/content.html" .Type) .) -}}
+			}
+		},
+		modal: {
+			base: {{- (partial (printf "%s/templates/modal/base.html" .Type) .) -}}, 
+			content: {{- (partial (printf "%s/templates/modal/content.html" .Type) .) -}},
+			iframe: '<iframe class="tvp-iframe-modal" src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe>'
+		}
 	};
 
-	bootstrap.css = {
+	config.css = {
+		base: {{- (partial (printf "%s/css/base.css" .Type) .) | htmlUnescape | safeHTML -}},
 		mobile: {
+			base: {{- (partial (printf "%s/mobile/css/base.css" .Type) .) | htmlUnescape | safeHTML -}},
 			host: {{- (partial (printf "%s/mobile/css/host.css" .Type) .) | htmlUnescape | safeHTML -}},
 			"host-custom": {{- (partial (printf "%s/mobile/css/host-custom.css" .Type) .) | htmlUnescape | safeHTML -}},
-			carousel: {{- (partial (printf "%s/mobile/css/carousel.css" .Type) .) | htmlUnescape | safeHTML -}},
 			"modal-content": {{- (partial (printf "%s/mobile/css/modal-content.css" .Type) .) | htmlUnescape | safeHTML -}}
 		},
 		host: {{- (partial (printf "%s/css/host.css" .Type) .) | htmlUnescape | safeHTML -}},
 		"host-custom": {{- (partial (printf "%s/css/host-custom.css" .Type) .) | htmlUnescape | safeHTML -}},
-		carousel: {{- (partial (printf "%s/css/carousel.css" .Type) .) | htmlUnescape | safeHTML -}},
 		"modal-content": {{- (partial (printf "%s/css/modal-content.css" .Type) .) | htmlUnescape | safeHTML -}}
 	};
 
 	{{- (readFile "/themes/tvpage/static/carousel/index.js") | htmlUnescape | safeHTML -}}
 
+	
+	
+
+	
 }());

@@ -34,7 +34,7 @@
   };
   
   //The player singleton. A small layer on top of tvpage library
-  var Player = function(el, options, startWith) {
+  function Player(el, options, startWith) {
     PlayerUtils.optionsCheck(options);
   
     this.options = options;
@@ -45,6 +45,7 @@
     this.initialResize = true;
     this.startWith = startWith || null;
     this.isFullScreen = false;
+    this.currentIndex = null;
   };
   
   Player.prototype.getPlayButtonOptions = function() {
@@ -97,6 +98,14 @@
   };
   
   Player.prototype.play = function(asset, ongoing) {
+    if(this.options.debug){
+      console.log('will play: ', asset);
+    }
+
+    if('string' === typeof asset){
+      asset = this.getAssetById(asset).asset;
+    }
+
     if(this.shallCue(ongoing)){
       this.instance.cueVideo(asset);
     } else {
@@ -184,21 +193,27 @@
       }]);
     }
   };
+
+  Player.prototype.getCurrentAsset = function(){
+    return this.assets[this.currentIndex];
+  };
   
-  Player.prototype.getCurrentAsset = function() {
-    var current = 0;
+  Player.prototype.getAssetById = function(id){
     var assets = this.assets;
-  
-    if (this.startWith) {
-      for (var i = 0; i < assets.length; i++) {
-        if (assets[i].assetId === this.startWith)
-          current = i;
+    var assetsLength = assets.length;
+    var resp = {
+      i:null,
+      asset: null
+    };
+
+    for (var i = 0; i < assetsLength; i++) {
+      if (assets[i].assetId === id){
+        resp.index = i;
+        resp.asset = assets[i];
       }
     }
-  
-    this.current = current;
-  
-    return assets[this.current];
+
+    return resp;
   };
 
   Player.prototype.onReady = function(e, pl) {
@@ -214,24 +229,26 @@
   };
   
   Player.prototype.notifyState = function(e){
-    var stateData = JSON.parse(JSON.stringify(this.assets[this.current]));
-    stateData.currentTime = this.instance.getCurrentTime();
+    var currentAsset = this.getCurrentAsset() || {};
+    
+    currentAsset.currentTime = this.instance.getCurrentTime();
+
     if (this.onPlayerChange && window.parent) {
       window.parent.postMessage({
         event: this.eventPrefix + ':on_player_change',
         e: e,
-        stateData : stateData
+        stateData : currentAsset
       }, '*');
     }
   };
   
   Player.prototype.handleVideoEnded = function(){
-    this.current++;
-    if (!this.assets[this.current]) {
-      this.current = 0;
+    this.currentIndex++;
+    if (!this.assets[this.currentIndex]) {
+      this.currentIndex = 0;
     }
   
-    var next = this.assets[this.current];
+    var next = this.assets[this.currentIndex];
     
     this.play(next, true);
     if (this.onNext) {
@@ -309,7 +326,19 @@
 
           that.instance = TVPage.instances[globalRunId];
 
-          that.play(that.getCurrentAsset());
+          var index = 0;
+          var asset = that.assets[index];
+      
+          if(this.startWith){
+            var assetResp = getAssetById(this.startWith);
+      
+            index = assetResp.index;
+            asset = assetResp.asset;
+          }
+        
+          this.currentIndex = index;
+
+          that.play(asset);
   
         }else if(++depsCheck < 200){
           start()

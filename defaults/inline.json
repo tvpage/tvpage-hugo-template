@@ -19,11 +19,18 @@
             "value": "ASC"
         },
         {
+            "for": "inline",
+            "type": "text",
+            "label": "Items Per Page",
+            "code": "items_per_page",
+            "value": "4"
+         },
+        {
             "for": "player",
             "type": "text",
             "label": "Player Version",
             "code": "player_version",
-            "value": "3.1.2"
+            "value": "3.1.3"
         },
         {
             "for": "player",
@@ -51,7 +58,7 @@
             "type": "text",
             "label": "inline Holder Padding Top",
             "code": "inline_holder_padding_top",
-            "value": "80%"
+            "value": "200%"
         },
         {
             "for": "carousel",
@@ -996,6 +1003,265 @@
             "label": "Skeleton Background Color",
             "code": "skeleton_background_color",
             "value": "#efefef"
-          }
+          },
+          {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Padding Left",
+            "code": "item_padding_left",
+            "value": "5px"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Padding Right",
+            "code": "item_padding_right",
+            "value": "5px"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Margin Left",
+            "code": "item_margin_left",
+            "value": "0"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Margin Right",
+            "code": "item_margin_right",
+            "value": "0"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Image Background Color",
+            "code": "item_image_background_color",
+            "value": "#efefef"
+        },
+          {
+              "for": "carousel",
+              "type": "text",
+              "label": "Item Background Image Size",
+              "code": "item_background_image_size",
+              "value": "cover"
+          },
+          {
+              "for": "carousel",
+              "type": "text",
+              "label": "Item Border",
+              "code": "item_border",
+              "value": "0"
+          },
+          {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Play Button Background Color",
+            "code": "item_play_button_background_color",
+            "value": "#fff"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Play Button Background Size",
+            "code": "item_play_button_background_size",
+            "value": "initial"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Play Button Border",
+            "code": "item_play_button_border",
+            "value": "0"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Play Button Border Radius",
+            "code": "item_play_button_border_radius",
+            "value": "50%"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Play Button Width",
+            "code": "item_play_button_width",
+            "value": "45px"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Play Button Height",
+            "code": "item_play_button_height",
+            "value": "45px"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Image Overlay Color",
+            "code": "item_image_overlay_color",
+            "value": "rgba(0, 0, 0, 0.2)"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Play Button Icon Color",
+            "code": "item_play_button_icon_color",
+            "value": "#333"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Title Font Size",
+            "code": "item_title_font_size",
+            "value": "12px"
+        },
+         {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Title Font Family",
+            "code": "item_title_font_family",
+            "value": "Helvetica"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Title Font Weight",
+            "code": "item_title_font_weight",
+            "value": "initial"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Title Font Color",
+            "code": "item_title_font_color",
+            "value": "#333"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Title Text Align",
+            "code": "item_title_text_align",
+            "value": "left"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Title Margin",
+            "code": "item_title_margin",
+            "value": "10px 0"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Item Title Padding",
+            "code": "item_title_padding",
+            "value": "0 7px"
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Items To Scroll",
+            "code": "items_to_scroll",
+            "value": "1"
+        },
+        {
+            "for": "carousel",
+            "type": "boolean",
+            "label": "Navigation Bullets",
+            "code": "navigation_bullets",
+            "value": false
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Navigation Bullets Append To",
+            "code": "navigation_bullets_append_to",
+            "value": ""
+          },
+          {
+            "for": "carousel",
+            "type": "text",
+            "label": "Navigation Bullets Position",
+            "code": "navigation_bullets_position",
+            "value": "relative"
+          },
+          {
+            "for": "carousel",
+            "type": "text",
+            "label": "Navigation Bullets Bottom",
+            "code": "navigation_bullets_bottom",
+            "value": "0"
+          },
+          {
+            "for": "carousel",
+            "type": "text",
+            "label": "Navigation Bullets Text Align",
+            "code": "navigation_bullets_text_align",
+            "value": "center"
+          },
+          {
+            "for": "carousel",
+            "type": "text",
+            "label": "Navigation Bullets Margin",
+            "code": "navigation_bullets_margin",
+            "value": "0"
+          },
+          {
+              "for": "carousel",
+              "type": "boolean",
+              "label": "Navigation Bullets Margin Bottom",
+              "code": "navigation_bullets_margin_bottom",
+              "value": "30px"
+          },
+          {
+            "for": "carousel",
+            "type": "text",
+            "label": "Navigation Active Bullet Size",
+            "code": "navigation_active_bullet_background_position",
+            "value": "0px 0px"
+         },
+         {
+            "for": "carousel",
+            "type": "text",
+            "label": "Navigation Active Bullet Background Color",
+            "code": "navigation_active_bullet_background_color",
+            "value": "#333333"
+         },
+         {
+            "for": "carousel",
+            "type": "text",
+            "label": "Navigation Active Bullet Border",
+            "code": "navigation_active_bullet_border",
+            "value": "none"
+         },
+         {
+            "for": "carousel",
+            "type": "text",
+            "label": "Navigation Bullet Size",
+            "code": "navigation_bullet_size",
+            "value": "20px"
+         },
+         {
+            "for": "carousel",
+            "type": "text",
+            "label": "Navigation Bullet Padding",
+            "code": "navigation_bullet_padding",
+            "value": "0"
+         },
+         {
+            "for": "carousel",
+            "type": "text",
+            "label": "Navigation Bullet Font Size",
+            "code": "navigation_bullet_font_size",
+            "value": "6px"
+         },
+         {
+            "for": "carousel",
+            "type": "text",
+            "label": "Navigation Bullet Font Color",
+            "code": "navigation_bullet_font_color",
+            "value": "black"
+         }
     ]
 }

@@ -3,64 +3,8 @@
   visibility: hidden;
 }
 
-.video-image-icon > polygon {
-  pointer-events: none;
-  transition: all .05s ease-in-out;
-}
-
-.video:hover .video-image-overlay {
-  opacity: 1;
-  visibility: visible;
-}
-
-.carousel-content {
-  width: 1px;
-  min-width: 100%;
-  opacity: 0;
-  visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-
-.carousel-content.slick-initialized {
-  opacity: 1;
-  visibility: visible;
-}
-
-.mobile .tvp-carousel-arrow {
-  display: none;
-}
-
-.tvp-carousel-arrow {
-  transition: top .05s ease-in-out;
-  position: absolute;
-  margin: 0;
-  padding: 0;
-  cursor: pointer;
-  outline: none;
-  z-index: 1000;
-}
-
-.tvp-carousel-arrow:before {
-  display: block;
-  content: "";
-  width: 100%;
-  padding-top: 100%;
-}
-
-.tvp-carousel-arrow > svg {
-  transition: all .05s ease-in-out;
-  pointer-events: none;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-.tvp-carousel-arrow > svg > path {
-  pointer-events: none;
-}
-
 .video-metadata {
-  display: none;
+    display: none;
 }
 
 .metadata .video-metadata {
@@ -73,97 +17,28 @@
 }
 
 .video-metadata > div:last-child {
-  text-align: right;
+    text-align: right;
 }
 
-/* Arrows */
-.slick-prev,
-.slick-next
-{
-    font-size: 0;
-    line-height: 0;
-    position: absolute;
-    display: block;
-    width: 20px;
-    height: 20px;
-    padding: 0;
-    cursor: pointer;
-    color: transparent;
-    border: none;
-    outline: none;
-    background: gray;
-    z-index: 1000;
-    opacity: 0;
-    visibility: hidden;
-}
-.slick-prev:hover,
-.slick-prev:focus,
-.slick-next:hover,
-.slick-next:focus
-{
-    color: transparent;
-    outline: none;
-    background: transparent;
-}
-.slick-prev:hover:before,
-.slick-prev:focus:before,
-.slick-next:hover:before,
-.slick-next:focus:before
-{
-    opacity: 1;
-}
-.slick-prev.slick-disabled:before,
-.slick-next.slick-disabled:before
-{
-    opacity: .25;
+.video-image-icon > polygon {
+  pointer-events: none;
+  transition: all .05s ease-in-out;
 }
 
-.slick-prev:before,
-.slick-next:before
-{
-    font-family: 'slick';
-    font-size: 20px;
-    line-height: 1;
-
-    opacity: .75;
-    color: white;
-
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+.video:hover .video-image-overlay {
+  opacity: 1;
+  visibility: visible;
 }
 
-.slick-prev
-{
-    left: 0px;
-}
-[dir='rtl'] .slick-prev
-{
-    right: 0;
-    left: auto;
-}
-.slick-prev:before
-{
-    content: '←';
-}
-[dir='rtl'] .slick-prev:before
-{
-    content: '→';
+/* .carousel-content {
+  width: 1px;
+  min-width: 100%;
+  opacity: 0;
+  visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
-.slick-next
-{
-    right: 0;
-}
-[dir='rtl'] .slick-next
-{
-    right: auto;
-    left: 0;
-}
-.slick-next:before
-{
-    content: '→';
-}
-[dir='rtl'] .slick-next:before
-{
-    content: '←';
-}
+.carousel-content.slick-initialized {
+  opacity: 1;
+  visibility: visible;
+} */

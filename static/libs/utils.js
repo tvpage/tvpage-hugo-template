@@ -6,6 +6,10 @@
     return o.hasOwnProperty(k);
   };
 
+  var hasClass = function(o,c) {
+    return o.classList && o.classList.contains(c);
+  };
+
   var getGlobalFromParent = function(){
     return window.parent && hasKey(window.parent, '__TVPage__') ? window.parent.__TVPage__ : null;
   };
@@ -28,6 +32,29 @@
     return el.getAttribute(a);
   };
 
+  Utils.stopEvent = function(e) {
+    if(e){
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  };
+
+  var closest = function(el, cback) {
+    return el && (cback(el) ? el : closest(el.parentNode, cback));
+  };
+
+  Utils.closest = closest;
+
+  Utils.getRealTargetByClass = function(targetEl, targetClass){
+    return hasClass(targetEl, targetClass) ? targetEl : closest(targetEl, function(el){
+      return hasClass(el, targetClass)
+    });
+  };
+
+  Utils.remove = function(el) {
+    el.parentNode.removeChild(el);
+  };
+
   Utils.addClass = function(el,c) {
     el.classList.add(c);
   };
@@ -40,9 +67,7 @@
     return document.getElementById(id);
   };
   
-  Utils.hasClass = function(o,c) {
-    return o.classList.contains(c);
-  };
+  Utils.hasClass = hasClass;
   
   Utils.loadScript = function(o, cback){
     var script = document.createElement('script');
@@ -176,6 +201,28 @@
     price = parseFloat(price).toFixed(2);
     price = price > 0 ? ('$' + price) : '';
     return price;
+  };
+
+  Utils.rowerize = function(a, size){
+    var rows = [];
+    var aLength = a.length;
+
+    for (var i = 0; i < aLength; i += size) {
+      rows.push(a.slice(i, i + size));
+    }
+    
+    return rows;
+  };
+
+  Utils.isEvent = function(e) {
+    return e && e.data && e.data.event;
+  };
+
+  Utils.addProps = function(a,b) {
+    for (var p in b)
+      a[p] = b[p];
+    
+    return a;
   };
 
   Utils.getParentConfig = function(id) {

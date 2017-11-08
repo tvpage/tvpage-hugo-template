@@ -3,7 +3,7 @@
     var body = document.body;
     var id = Utils.attr(body,'data-id');
     var config = window.parent.__TVPage__.config[id];
-    var eventPrefix = config.eventPrefix;
+    var eventPrefix = config.events.prefix;
     var mainEl = Utils.getById(id);
     var productsEl = null;
     var analytics = null;
@@ -17,14 +17,22 @@
     };
 
     var onNoProducts = function(){
+
         Utils.addClass(mainEl,'tvp-no-products');
+
+        console.log("HERE?")
+
         Utils.sendMessage({
             event: eventPrefix + ':modal_no_products'
         });
     };
 
     var onProducts = function(){
+
         Utils.removeClass(mainEl,'tvp-no-products');
+
+        console.log("HERE?")
+
         Utils.sendMessage({
             event: eventPrefix + ':modal_products'
         });
@@ -135,7 +143,7 @@
 
             product.ratingReviews = ratingReviewsHtml;
 
-            var template = config.templates["modal-content"];
+            var template = config.templates.modal.content;
 
             productsHtml += Utils.tmpl(template.product, product);
             popupsHtml += Utils.tmpl(template.popup, product);

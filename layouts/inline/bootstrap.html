@@ -1,25 +1,47 @@
 {{- partial "settings.html" . -}}
+
 (function(){
 
-	var bootstrap = {{ $.Scratch.Get "settings" | jsonify }};
-	bootstrap.baseUrl = "{{ $.Site.BaseURL }}";
+	var config = {{ $.Scratch.Get "settings" | jsonify }};
 	
-	bootstrap.templates = {
+	{{- if (getenv "HUGO_DEBUG") -}}
+		config.baseUrl = "{{ trim $.Site.BaseURL "/" }}";
+	{{- else -}}
+		config.baseUrl = "{{ $.Site.BaseURL }}";
+	{{- end -}}
+
+	config.templates = {
 		base: {{- (partial (printf "%s/templates/base.html" .Type) .) -}},
+		products: {
+			featured: {{- (partial (printf "%s/templates/products/featured.html" .Type) .) -}},
+			list: {{- (partial (printf "%s/templates/products/list.html" .Type) .) -}},
+			item: {{- (partial (printf "%s/templates/products/item.html" .Type) .) -}}
+		},
+		videos: {
+			list: {{- (partial (printf "%s/templates/videos/list.html" .Type) .) -}},
+			item: {{- (partial (printf "%s/templates/videos/item.html" .Type) .) -}}
+		},
 		mobile: {
-			base: {{- (partial (printf "%s/mobile/templates/base.html" .Type) .) -}}
+			base: {{- (partial (printf "%s/mobile/templates/base.html" .Type) .) -}},
+			products: {
+				list: {{- (partial (printf "%s/mobile/templates/products/list.html" .Type) .) -}},
+				item: {{- (partial (printf "%s/mobile/templates/products/item.html" .Type) .) -}}
+			},
+			videos: {
+				list: {{- (partial (printf "%s/mobile/templates/videos/list.html" .Type) .) -}},
+				item: {{- (partial (printf "%s/mobile/templates/videos/item.html" .Type) .) -}}
+			}
 		}
 	};
 
-	bootstrap.css = {
+	config.css = {
 
-		//The css for the host page
+		//host, external page css
 		host: {{- (partial (printf "%s/css/host.css" .Type) .) | htmlUnescape | safeHTML -}},
 		'host-custom': {{- (partial (printf "%s/css/host-custom.css" .Type) .) | htmlUnescape | safeHTML -}},
 
-		//Base layer of css, helpers and resets
+		//base layer of css, helpers, resets, etc.
 		base: {{- (partial (printf "%s/css/base.css" .Type) .) | htmlUnescape | safeHTML -}},
-
 
 		mobile: {
 			host: {{- (partial (printf "%s/mobile/css/host.css" .Type) .) | htmlUnescape | safeHTML -}}
@@ -31,4 +53,6 @@
 
 
 
+
+	
 }());

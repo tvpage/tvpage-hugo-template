@@ -6,6 +6,7 @@ var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.
 var iOS = /iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(userAgent) && !window.MSStream;
 var iframeBaseHtml = '<head><base target="_blank"/></head><body class="{className}"' +
 'data-domain="{domain}" data-id="{id}" onload="startTime={startTime};' + 
+'console.log(\'iframe loaded\');' +
 'var d=document,h=d.head,' +
 'loadJS = function(u){var s=d.createElement(\'script\');s.src=u;h.appendChild(s);},' +
 'loadCSS = function(u){var l=d.createElement(\'link\');l.rel=\'stylesheet\';l.href=u;h.appendChild(l);};';
@@ -53,18 +54,6 @@ var removeClass = function(obj, c) {
 var getById = function(id){
   return document.getElementById(id);
 };
-var getEventType = function(e) {
-  var evt = null
-  if (e && isset(e, "data") && isset(e.data, "event")) {
-    evt = e.data.event;
-  }
-
-  if (evt && evt.length && evt.substr(0, eventPrefix.length) === eventPrefix) {
-    return evt.substr(eventPrefix.length + 1);
-  }
-
-  return null;
-};
 
 //Builds the document for iframes.
 function getIframeHtml(o) {
@@ -88,8 +77,12 @@ function getIframeHtml(o) {
   for (var i = 0; i < css.length; i++)
     html += 'loadCSS(\'' + css[i] + '\');';
 
-  html += "  if(parent)";
+  html += "  if(parent){";
+  html += "    console.log(\'adding onStart: \', onStart);";
   html += "    parent.removeEventListener('message', onStart, false);";
+  html += "  }else{";
+  html += "    console.log(parent);";
+  html += "  }";
   html += "};";
 
   html += "  parent.addEventListener('message', onStart);";
@@ -100,16 +93,41 @@ function getIframeHtml(o) {
   return html;
 };
 
+function loadScript(o, cback){
+  var script = document.createElement('script');
+  var src = o.base || '';
+  var prms = o.params || {};
+  var counter = 0;
+
+  for (var p in prms) {
+    if (prms.hasOwnProperty(p)) {
+      src += (counter > 0 ? '&' : '?') + p + '=' + prms[p];
+      ++counter;
+    }
+  }
+
+  var cBackName = 'tvp_callback_' + Math.random().toString(36).substring(7);
+
+  window[cBackName] = function(data){
+    if(isFunction(cback))
+      cback(data);
+  };
+
+  src += '&callback=' + cBackName;
+  script.src = src;
+
+  body.appendChild(script);
+};
+
 
 //We merge the defaults, the .md file's params and the runtime input into one config object.
-if (!isObject(bootstrap) || !hasKey(bootstrap, "name") || bootstrap.name.length <= 0)
-  throw new Error('Widget must have a bootstrap and name (id)');
+if (!isObject(config) || !hasKey(config, "name") || config.name.length <= 0)
+  throw new Error('Widget must have a config and name (id)');
 
-var config = bootstrap;
-var id = bootstrap.name;
 var tvpage = window.__TVPage__ = window.__TVPage__ || {};
+var id = config.name;
 
-if(hasKey(tvpage.config,id) && isObject(tvpage.config[id])){
+if(hasKey(tvpage.config, id) && isObject(tvpage.config[id])){
   var runTime = tvpage.config[id];
   for (var key in runTime) {
     if (runTime.hasOwnProperty(key))
@@ -117,10 +135,8 @@ if(hasKey(tvpage.config,id) && isObject(tvpage.config[id])){
   }
 }
 
-config.id = id;
-config.eventPrefix = ("tvp_" + id).replace(/-/g, '_');
-config.loginId = config.loginId || config.loginid;
-config.channelId = (config.channelId || config.channelid) || config.channel.id;
+if (!hasKey(config,"targetEl") || !getById(config.targetEl))
+  throw new Error("Must provide a targetEl");
 
 var __windowCallbackFunc__ = null;
 if (hasKey(config,"onChange") && isFunction(config.onChange)){
@@ -128,37 +144,47 @@ if (hasKey(config,"onChange") && isFunction(config.onChange)){
   delete config.onChange;
 }
 
+var debug = config.debug;
+var type = config.type;
+var css = config.css;
+var baseUrl = config.baseUrl;
+var static = baseUrl + '/' + type;
+var dist = debug ? '/' : '/dist/';
+
+//post runtime config addition
+config.loginId = config.loginId || config.loginid;
+config.channelId = (config.channelId || config.channelid) || config.channel.id;
+
+config.id = id;
+config.events = {};
+config.events.prefix = ("tvp_" + id).replace(/-/g, '_');
+config.paths = {};
+config.paths.baseUrl = baseUrl;
+config.paths.static = static;
+config.paths.dist = dist;
+config.paths.javascript = static + dist + 'js/';
+config.paths.css = static + dist + 'css/';
+
+//mobile configuration
+config.mobile = {};
+config.mobile.path = isMobile ? 'mobile/' : '';
+config.mobile.prefix = isMobile ? "-mobile" : "";
+config.mobile.templates = config.templates.mobile;
+
 window.__TVPage__.config[id] = config;
 
 //Initial rendering
-if (!hasKey(config,"targetEl") || !getById(config.targetEl))
-  throw new Error("Must provide a targetEl");
-
-var type = config.type;
-var mobilePrefix = isMobile ? "-mobile" : "";
-var css = config.css;
-var cssMobile = config.css.mobile;
-var baseUrl = config.baseUrl;
-var staticPath = baseUrl + '/' + type;
-var debug = config.debug;
-var mobilePath = isMobile ? 'mobile/' : '';
-var distPath = debug ? '/' : '/dist/';
-var cssPath = staticPath + distPath + 'css/';
-var jsPath = staticPath + distPath + 'js/';
-var eventPrefix = config.eventPrefix;
-var templates = config.templates;
-var mobileTemplates = templates.mobile;
-
 //We have a generic host css per widget type that we only include once.
 var getHostStyles = function(){
   var styles = '';
   var styleId = 'tvp-' + type + '-host';
-  var code = isMobile ? cssMobile : css;
+
+  var host = isMobile ? css.mobile.host : css.host;
 
   if (!getById(styleId))
-    styles += '<style id="' + styleId + '">' + code.host + '</style>';
+    styles += '<style id="' + styleId + '">' + host + '</style>';
 
-  var custom = code['host-custom'];
+  var custom = isMobile ? css.mobile['host-custom'] : css['host-custom'];
   
   if(!isUndefined(custom))
     styles += '<style>' + custom + '</style>'
@@ -178,11 +204,11 @@ var getInitialHtml = function(){
 };
 
 var getPlayerUrl = function(){
-    var url = "https://cdnjs.tvpage.com/tvplayer/tvp-" + config.player_version + ".min.js";
-    if (config.player_url && (config.player_url + "").trim().length) {
-        url = config.player_url;
-    }
-    return url;
+  var url = "https://cdnjs.tvpage.com/tvplayer/" + (debug ? "local/" : "/") + "tvp-" + config.player_version + ".min.js";
+  if (config.player_url && (config.player_url + "").trim().length) {
+      url = config.player_url;
+  }
+  return url;
 };
 
 //Here's the first HTML write we do to the host page, this is the fastest way to do it
@@ -191,13 +217,17 @@ var targetElement = getById(config.targetEl);
 targetElement.insertAdjacentHTML('beforebegin',getInitialHtml());
 targetElement.parentNode.removeChild(targetElement);
 
+var eventPrefix = config.events.prefix;
+var templates = isMobile ? config.mobile.templates : config.templates;
+var javascriptPath = config.paths.javascript;
+var cssPath = config.paths.css;
 var holder = getById(id + "-holder");
 var iframe = holder.querySelector("iframe");
 var iframeDocument = iframe.contentWindow.document;
+
 var iframeHtml = getIframeHtml({
   id: id,
   domain: baseUrl,
-  className: "dynamic",
   style: config.css.base,
   context: config,
   html: templates.base,
@@ -206,14 +236,16 @@ var iframeHtml = getIframeHtml({
     '//a.tvpage.com/tvpa.min.js',
     '//imasdk.googleapis.com/js/sdkloader/ima3.js',
     getPlayerUrl(),
-    debug ? jsPath + "vendor/jquery.js" : "",
+    debug ? javascriptPath + "vendor/jquery.js" : "",
     debug ? baseUrl + "/libs/utils.js" : "",
+    debug ? baseUrl + "/libs/carousel.js" : "",
     debug ? baseUrl + "/libs/player.js" : "",
-    debug ? jsPath + "index.js" : "",
-    debug ? "" : jsPath + "scripts.min.js"
+    debug ? javascriptPath + "index.js" : "",
+    debug ? "" : javascriptPath + "scripts.min.js"
   ],
   css: [
     debug ? cssPath + 'styles.css' : '',
+    debug ? cssPath + "/vendor/slick.css" : "",
     debug ? '' : cssPath + 'styles.min.css'
   ]
 });
@@ -227,63 +259,44 @@ console.log('renders initial dom (iframe w/skeleton)', performance.now() - start
 if(!hasKey(config,'channel') && !hasKey(config,'channelId') && !hasKey(config,'channelid'))
   throw new Error('Widget config missing channel obj');
 
-var cbackName = 'tvp_callback_' + Math.random().toString(36).substring(7);
+var loadVideosParams = {
+  p: 0,
+  n: config.items_per_page,
+  o: config.videos_order_by,
+  od: config.videos_order_direction,
+  'X-login-id': config.loginId
+};
 
-window[cbackName] = function(data){
-  console.log('call to api completed', performance.now() - startTime);
-  
-  //Preload data images.. this can be done smarter depending on the template, for example
-  //carousel on mobile will need to preload first image only whilst desktop needs
-  //same qty as the items_per_page setting.
-  config.toPreload = isMobile ? 1 : config.items_per_page;
+var channelParams = config.channel.parameters;
 
-  for (var i = 0; i < data.length; i++) {
-    if(hasKey(data[i],'asset'))
-      (new Image()).src = data[i].asset.thumbnailUrl;
+if(channelParams){
+  for (var channelParam in channelParams)
+    loadVideosParams[channelParam] = channelParams[channelParam];
+}
 
-    if(i + 1 == config.toPreload)
-      break;
+//load whatever you think is useful, then just call start
+var start = function(){
+  if(debug){
+    console.log('sending start event', performance.now() - startTime);
   }
   
-  console.log('first page of video images preloaded', performance.now() - startTime); 
+  window.postMessage({
+    event: eventPrefix + ':start'
+  }, '*');
+};
+
+//the videos call
+loadScript({
+  base: config.api_base_url + '/channels/' + config.channelId + '/videos',
+  params: loadVideosParams
+},function(data) {
+  if(debug){
+    console.log('videos api call completed', performance.now() - startTime);
+  }
 
   //We then add the data to the tvp global and then we fire the event that will start
   //things in the widget side.
   config.channel.videos = data;
 
-  //This is the first event that start things out
-  setTimeout(function(){
-    window.postMessage({
-      event: eventPrefix + ':start'
-    }, '*');
-  },0);
-};
-
-var channel = config.channel || {};
-var channelId = channel.id || config.channelId;
-
-var src = config.api_base_url + '/channels/' + channelId + '/videos';
-var callParams = {
-  p: 0,
-  n: config.items_per_page + 1,
-  o: config.videos_order_by,
-  od: config.videos_order_direction,
-  'X-login-id': config.loginId,
-  callback: cbackName
-};
-
-var c = 0;
-for (var param in callParams) {
-  src += (c > 0 ? '&' : '?') + param + '=' + callParams[param];
-  ++c;
-}
-
-if(channel.parameters){
-  var channelParams = channel.parameters;
-  for (var channelParam in channelParams)
-    src += '&' + channelParam + '=' + channelParams[channelParam];
-}
-
-var jsonpScript = document.createElement('script');
-jsonpScript.src = src;
-body.appendChild(jsonpScript);
+  start();
+});

@@ -3,7 +3,7 @@
     var body = document.body;
     var id = body.getAttribute("data-id") || "";
     var config = window.parent.__TVPage__.config[id];
-    var eventPrefix = config.eventPrefix;
+    var eventPrefix = config.events.prefix;
     var mainEl = Utils.getById(id);
     var analytics = null;
     var eventName;

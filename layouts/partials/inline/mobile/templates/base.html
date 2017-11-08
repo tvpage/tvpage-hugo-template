@@ -1,14 +1,28 @@
-'<div class="carousel-title">{title_text}</div>' +
+'<div id="widget-title" class="inline-title"></div>' +
 '<div id="skeleton" class="skeleton">' +
-  '<div class="video video-1">' +
-    '<div class="video-image">' +
-      '<svg class="video-image-icon" viewBox="0 0 200 200" alt="Play video">' +
-        '<polygon points="70, 55 70, 145 145, 100"></polygon>' +
-      '</svg>' +
-    '</div>' +
-    '<p class="video-title"></p>' +
+  '<div class="player-holder">' +
+    '<div></div>' +
+  '</div>' +
+  '<div class="products-holder">' +
+    '<div></div>' +
+  '</div>' +
+  '<div class="videos-holder">' +
+      '<div></div>' +
   '</div>' +
 '</div>' +
-'<div id="carousel" class="hide">' +
-  '<div class="carousel-content"></div>' +
+'<div id="inline">' +
+  '<h1 id="widget-title"></h1>' +
+  '<div class="row">' +
+    '<div id="player" class="hide">' +
+      '<div class="player-holder">' +
+        '<div id="player-el"></div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="products-holder">' +
+      '<div id="products" class="hide"></div>' +
+    '</div>' +
+    '<div class="videos-holder">' +
+      '<div id="videos" class="hide"></div>' +
+    '</div>' +
+  '</div>' +
 '</div>'

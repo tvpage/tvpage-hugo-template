@@ -1,5 +1,5 @@
-'<div class="widget-title">{title_text}</div>' +
 '<div id="skeleton" class="skeleton">' +
+  '<h1 id="widget-title"></h1>' +
   '<div class="player-holder">' +
     '<div></div>' +
   '</div>' +
@@ -10,10 +10,26 @@
       '<div></div>' +
   '</div>' +
 '</div>' +
-'<div id="inline" class="hide">' +
-  '<div class="player-holder hide">' +
-    '<div id="player"></div>' +
+'<div id="inline">' +
+  '<h1 id="widget-title"></h1>' +
+  '<div class="row">' +
+    '<div class="col-6 left">' +
+      '<div id="player" class="hide">' +
+        '<div class="player-holder">' +
+          '<div id="player-el"></div>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="col-3 right">' +
+      '<div class="products-holder">' +
+        '<div id="products" class="abs-center hide"></div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="col-3 right">' +
+      '<div id="featured-product"></div>' +
+    '</div>' +
   '</div>' +
-  '<div id="products">' +
+  '<div class="videos-holder">' +
+      '<div id="videos"></div>' +
   '</div>' +
 '</div>'
