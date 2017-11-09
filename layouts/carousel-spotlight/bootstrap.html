@@ -9,8 +9,7 @@
 		"carousel-item": {{- (partial (printf "%s/carousel-item.html" .Type) .) -}},
 		modal: {{- (partial (printf "%s/modal.html" .Type) .) -}},
 		"modal-iframe": '<iframe class="tvp-iframe-modal" src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe>',
-		"modal-content": {{- (partial (printf "%s/modal-content.html" .Type) .) -}},
-		"modal-content-mobile": {{- (partial (printf "%s/modal-content-mobile.html" .Type) .) -}}
+		"modal-content": {{- (partial (printf "%s/modal-content.html" .Type) .) -}}
 	};
 	
 	bootstrap.css = {
