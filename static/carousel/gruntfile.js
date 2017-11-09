@@ -25,9 +25,16 @@ module.exports = function(grunt) {
         },
         desktop: {
             files: {
-                'dist/css/styles.min.css': ['css/vendor/slick.css','css/styles.css'],
-                'dist/css/host.min.css': ['css/host.css'],
-                'dist/css/modal/styles.min.css': ['css/vendor/perfect-scrollbar.min.css','css/modal/styles.css']
+              'dist/css/styles.min.css': [
+                '../bootstrap-4.0.0/css/bootstrap.css',
+                'css/vendor/slick.css',
+                'css/styles.css'
+              ],
+              'dist/css/host.min.css': ['css/host.css'],
+              'dist/css/modal/styles.min.css': [
+                'css/vendor/perfect-scrollbar.min.css',
+                'css/modal/styles.css'
+              ]
             }
         },
         mobile: {

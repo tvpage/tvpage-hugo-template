@@ -250,7 +250,7 @@ function getInitialHtml(){
 };
 
 function getPlayerUrl(){
-  var url = "https://cdnjs.tvpage.com/tvplayer/" + (debug ? "local/" : "/") + "tvp-" + config.player_version + ".min.js";
+  var url = "https://cdnjs.tvpage.com/tvplayer/" + (debug ? "local/" : "") + "tvp-" + config.player_version + ".min.js";
   if (config.player_url && (config.player_url + "").trim().length) {
       url = config.player_url;
   }
