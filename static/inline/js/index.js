@@ -105,7 +105,7 @@
       videosCarousel.render();
     }else{
       videosCarousel = new Carousel('videos',{
-        arrowsCenteredTo: '.video-image',
+        arrowsVerticalAlign: ['center', '.video-image'],
         endpoint: endpoint,
         page: 0,
         data: channelVideos,
@@ -175,7 +175,7 @@
 
     }else{
       productsCarousel = new Carousel('products',{
-        arrowsCenteredTo: 'bottom',
+        arrowsVerticalAlign: 'bottom',
         dotsCenter: true,
         dots: true,
         clean: true,

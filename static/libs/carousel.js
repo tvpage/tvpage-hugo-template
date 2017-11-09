@@ -1,8 +1,7 @@
 (function(){
 
   function Carousel(sel, options, config){
-    this.options = options || {};
-    
+    this.options = options || {};    
     this.data = this.options.data || [];
     this.page = this.options.page || 0;
     this.endpoint = this.options.endpoint;
@@ -118,38 +117,42 @@
       that.$slickEl.on('afterChange', function(event, slick){
         console.log('# Slick "afterChange" was called!');
 
-        //prob not the best place to have this
-        // if(!this.full){
-        //   that.loadNext('render');
-        // }
+        //not the best place to do this... is very bouncy, should we try again and checking id loading
+        if(!this.full){
+          that.loadNext('render');
+        }
       });
 
       that.$slickEl.on('setPosition', function(event, slick){
-        var arrowsCenteredTo = that.options.arrowsCenteredTo,
-        arrowTop,
-        arrowBottom,
-        centerToEl;
-
-        if(!Utils.isUndefined(arrowsCenteredTo)){
-          centerToEl = that.el.querySelector(arrowsCenteredTo);
+        var arrowsVerticalAlign = that.options.arrowsVerticalAlign,
+            arrowTop,
+            arrowBottom;
+        
+        if('string' === typeof arrowsVerticalAlign){
 
           if('bottom' === arrowsCenteredTo){
             arrowBottom = '0';
             arrowTop = 'auto';
-          }else if(centerToEl){
-            var centerToElRect = centerToEl.getBoundingClientRect();
-            arrowTop = Math.floor(centerToElRect.top + (centerToElRect.height / 2)) + 'px';
+          }
+
+        }else if(arrowsVerticalAlign.length > 1){
+          var referenceEl = that.el.querySelector(arrowsVerticalAlign[1]);
+          
+          if(referenceEl){
+            var position = arrowsVerticalAlign[0];
+
+            if('center' === position){
+             arrowTop = referenceEl.offsetTop + Math.floor(referenceEl.getBoundingClientRect().height / 2); 
+            }
           }
         }
 
+        //implement on arrows
         var arrows = that.el.querySelectorAll('.slick-arrow');
         var arrowsLength = arrows.length;
 
         for (var i = 0; i < arrowsLength; i++) {
           var arrow = arrows[i];
-          
-          if(arrowsCenteredTo && centerToEl)
-            arrow.style.position = 'fixed';
 
           if(arrowTop)
             arrow.style.top = arrowTop;
@@ -160,10 +163,12 @@
           that.showArrow(arrow);
         }
 
-        Utils.sendMessage({
-          event: that.eventPrefix + ':resize',
-          height: Utils.getWidgetHeight()
-        });
+        setTimeout(function(){
+          Utils.sendMessage({
+            event: that.eventPrefix + ':carousel_resize',
+            height: Utils.getWidgetHeight()
+          });
+        },10);
 
       });
 
@@ -289,6 +294,9 @@
   };
 
   Carousel.prototype.load = function(action,cback){
+    if(this.loading)
+      return;
+
     this.loading = true;
 
     var that = this;

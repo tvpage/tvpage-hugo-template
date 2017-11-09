@@ -91,7 +91,10 @@ config.loginId = config.loginId || config.loginid;
 config.channelId = (config.channelId || config.channelid) || config.channel.id;
 
 config.events = {};
-config.events.prefix = ('tvp_' + id).replace(/-/g, '_');
+
+var eventPrefix = ('tvp_' + id).replace(/-/g, '_');
+
+config.events.prefix = eventPrefix;
 
 config.paths = {};
 config.paths.baseUrl = baseUrl;
@@ -107,55 +110,25 @@ config.mobile.templates = config.templates.mobile;
 
 window.__TVPage__.config[id] = config;
 
-//API calls/loading, is here were we call the most important api(s)
-var loadVideosParams = {
-  p: 0,
-  n: config.items_per_page,
-  o: config.videos_order_by,
-  od: config.videos_order_direction,
-  'X-login-id': config.loginId
-};
-
-var channelParams = config.channel.parameters;
-
-if(channelParams){
-  for (var channelParam in channelParams)
-    loadVideosParams[channelParam] = channelParams[channelParam];
-}
-
-//load whatever you think is useful, then just call start
-function sendStart(){
-  window.postMessage({
-    event: eventPrefix + ':start'
-  }, '*');
-};
-
-//the videos call
-loadScript({
-  base: config.api_base_url + '/channels/' + config.channelId + '/videos',
-  params: loadVideosParams
-},function(data) {
-  if(debug){
-    console.log('videos api call completed', performance.now() - startTime);
-  }
-
-  //We then add the data to the tvp global and then we fire the event that will start
-  //things in the widget side.
-  config.channel.videos = data;
-
-  sendStart();
-});
 
 //helpers
 var userAgent = navigator.userAgent;
 var isFirefox = /Firefox/i.test(userAgent);
 var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
 var iOS = /iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(userAgent) && !window.MSStream;
-var iframeBaseHtml = '<head><base target="_blank"/></head><body class="{className}"' +
+var iframeHtmlStart = '<head><base target="_blank"/></head><body class="{className}"' +
 'data-domain="{domain}" data-id="{id}" onload="startTime={startTime};' +
 'var d=document,h=d.head,' +
 'loadJavaScript = function(u){var s=d.createElement(\'script\');s.src=u;h.appendChild(s);},' +
-'loadCSS = function(u){var l=d.createElement(\'link\');l.rel=\'stylesheet\';l.href=u;h.appendChild(l);};';
+'loadCSS = function(u,c){'+
+'  var l=d.createElement(\'link\');'+
+'  l.rel=\'stylesheet\';'+
+'  l.href=u;'+
+'  if(c && \'function\' === typeof c){'+
+'   l.onload=c;'+
+'  }'+
+'  h.appendChild(l);' +
+'};';
 var tmpl = function(t,d){
   return t.replace(/\{([\w\.]*)\}/g, function(str, key) {
     var keys = key.split("."),
@@ -196,21 +169,23 @@ var removeClass = function(obj, c) {
 function getIframeHtml(o) {
   o.startTime = startTime;
 
-  var html = tmpl(iframeBaseHtml,o),
-  clean = function(s){
-    return (s || []).filter(Boolean);
-  },
-  load = function(arr, type){
-    arr = clean(arr);
-    
-    var arrLength = arr.length,
-        l = '';
+  var html = tmpl(iframeHtmlStart, o),
+      clean = function(s){
+        return (s || []).filter(Boolean);
+      },
+      load = function(arr, type, cback){
+        arr = clean(arr);
+        
+        var arrLength = arr.length,
+            l = '';
 
-    for (var i = 0; i < arrLength; i++)
-      l += 'load' + type + '(\'' + arr[i] + '\');';
+        for (var i = 0; i < arrLength; i++){
+          var last = arrLength == i + 1;
+          l += 'load' + type + '(\'' + arr[i] + '\', ' + (last && cback ? cback : '') + ');';
+        }
 
-    return l;
-  };
+        return l;
+      };
 
   html +=
   '  function onStart(e){' +
@@ -218,10 +193,12 @@ function getIframeHtml(o) {
   '      return;' +
   '    }' +
 
-       load(o.js, 'JavaScript') + load(o.css, 'CSS') +
-       
-       'var skeleton = document.getElementById(\'skeleton\');' + 
-       'setTimeout(function(){skeleton && skeleton.classList.remove(\'hide\')},15);' +
+       load(o.js, 'JavaScript') + 
+       load(o.css, 'CSS', 'function(){' +
+        '   var skel = document.getElementById(\'skeleton\');' +
+        '   skel && skel.classList.remove(\'hide\');' +
+        '}'
+       ) +
 
   '    parent.removeEventListener(\'message\', onStart, false);' +
   '};';
@@ -236,7 +213,7 @@ function getIframeHtml(o) {
 
   '<style>' + (o.style || '') + '</style>';
   
-  html += tmpl((o.html || '').trim(),o.context);
+  html += tmpl((o.html || '').trim(), o.context);
 
   return html;
 };
@@ -244,7 +221,7 @@ function getIframeHtml(o) {
 
 //Initial rendering
 //We have a generic host css per widget type that we only include once.
-var getHostStyles = function(){
+function getHostStyles(){
   var styles = '';
   var styleId = 'tvp-' + type + '-host';
 
@@ -256,23 +233,23 @@ var getHostStyles = function(){
   var custom = isMobile ? css.mobile['host-custom'] : css['host-custom'];
   
   if(!isUndefined(custom))
-    styles += '<style>' + custom + '</style>'
+    styles += '<style>' + custom + '</style>';
 
   return styles;
 };
 
-var getInitialHtml = function(){
+function getInitialHtml(){
   var html = "";
   var hostId = "tvp-" + type + "-host";
 
   html += getHostStyles();
   html += '<div id="' + id + '-holder" class="tvp-'+type+'-holder">';
-  html += '<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe></div>';
-
+  html += '  <iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe>';
+  html += '</div>';
   return html;
 };
 
-var getPlayerUrl = function(){
+function getPlayerUrl(){
   var url = "https://cdnjs.tvpage.com/tvplayer/" + (debug ? "local/" : "/") + "tvp-" + config.player_version + ".min.js";
   if (config.player_url && (config.player_url + "").trim().length) {
       url = config.player_url;
@@ -280,46 +257,109 @@ var getPlayerUrl = function(){
   return url;
 };
 
-//Here's the first HTML write we do to the host page, this is the fastest way to do it
-//refer to https://jsperf.com/insertadjacenthtml-perf/3
-var targetElement = getById(config.targetEl);
-targetElement.insertAdjacentHTML('beforebegin',getInitialHtml());
-remove(targetElement);
 
-var eventPrefix = config.events.prefix;
 var templates = isMobile ? config.mobile.templates : config.templates;
 var javascriptPath = config.paths.javascript;
 var cssPath = config.paths.css;
-var holder = getById(id + "-holder");
-var iframe = holder.querySelector("iframe");
-var iframeDocument = iframe.contentWindow.document;
-var iframeHtml = getIframeHtml({
-  id: id,
-  domain: baseUrl,
-  style: config.css.base,
-  context: config,
-  html: templates.base,
-  eventPrefix: eventPrefix,
-  js: [
-    "//a.tvpage.com/tvpa.min.js",
-    debug ? javascriptPath + "/vendor/jquery.js" : "",
-    debug ? baseUrl + "/libs/utils.js" : "",
-    debug ? baseUrl + "/libs/analytics.js" : "",
-    debug ? baseUrl + "/libs/carousel.js" : "",
-    debug ? javascriptPath + "/index.js" : "",
-    debug ? "" : javascriptPath + "/scripts.min.js"
-  ],
-  css: [
-    debug ? cssPath + "/vendor/slick.css" : "",
-    debug ? baseUrl + "/bootstrap-4.0.0/css/bootstrap.css" : "",
-    debug ? cssPath + "/styles.css" : "",
-    debug ? "" : cssPath + "/styles.min.css"
-  ]
-});
+var holder;
 
-iframeDocument.open().write(iframeHtml);
-iframeDocument.close();
-console.log('renders initial dom (iframe w/skeleton)', performance.now() - startTime);
+//Here's the first HTML write we do to the host page, this is the fastest way to do it
+//refer to https://jsperf.com/insertadjacenthtml-perf/3
+function widgetRender(){
+  var targetElement = getById(config.targetEl);
+  targetElement.insertAdjacentHTML('beforebegin',getInitialHtml());
+  remove(targetElement);
+
+  holder = getById(id + "-holder");
+  var iframe = holder.querySelector("iframe");
+  var iframeDocument = iframe.contentWindow.document;
+  var iframeHtml = getIframeHtml({
+    id: id,
+    domain: baseUrl,
+    style: config.css.base,
+    context: config,
+    html: templates.base,
+    eventPrefix: eventPrefix,
+    js: [
+      "//a.tvpage.com/tvpa.min.js",
+      debug ? javascriptPath + "/vendor/jquery.js" : "",
+      debug ? baseUrl + "/libs/utils.js" : "",
+      debug ? baseUrl + "/libs/analytics.js" : "",
+      debug ? baseUrl + "/libs/carousel.js" : "",
+      debug ? javascriptPath + "/index.js" : "",
+      debug ? "" : javascriptPath + "/scripts.min.js"
+    ],
+    css: [
+      debug ? cssPath + "/vendor/slick.css" : "",
+      debug ? baseUrl + "/bootstrap-4.0.0/css/bootstrap.css" : "",
+      debug ? cssPath + "/styles.css" : "",
+      debug ? "" : cssPath + "/styles.min.css"
+    ]
+  });
+
+  iframeDocument.open().write(iframeHtml);
+  iframeDocument.close();
+  console.log('renders initial dom (iframe w/skeleton)', performance.now() - startTime);
+
+}
+
+function onWidgetLoad(data){
+  if(debug){
+    console.log('videos api call completed', performance.now() - startTime);
+  }
+
+  //We then add the data to the tvp global and then we fire the event that will start
+  //things in the widget side.
+  if(data && data.length){
+    config.channel.videos = data;
+
+    widgetRender();
+
+    //this event will trigger the load of the widget iframe resources
+    window.postMessage({
+      event: eventPrefix + ':start'
+    }, '*');
+  }else if(debug){
+    console.log('videos api call returned 0 videos', performance.now() - startTime);   
+  }
+};
+
+//API calls/loading, is here were we call the most important api(s) and it's the start 
+//of everything.
+function widgetLoad(){
+
+  //API calls/loading, is here were we call the most important api(s)
+  var loadVideosParams = {
+    p: 0,
+    n: config.items_per_page,
+    o: config.videos_order_by,
+    od: config.videos_order_direction,
+    'X-login-id': config.loginId
+  };
+
+  var channelParams = config.channel.parameters;
+
+  if(channelParams){
+    for (var channelParam in channelParams)
+      loadVideosParams[channelParam] = channelParams[channelParam];
+  }
+
+  //load whatever you think is useful, then just call start
+  function sendStart(){
+    window.postMessage({
+      event: eventPrefix + ':start'
+    }, '*');
+  };
+
+  //the videos call
+  loadScript({
+    base: config.api_base_url + '/channels/' + config.channelId + '/videos',
+    params: loadVideosParams
+  },onWidgetLoad);
+
+}
+
+widgetLoad();
 
 
 //Modal starts here
@@ -393,7 +433,7 @@ window.addEventListener("message", function(e) {
     case 'render':
       handleRender(e);
       break;
-    case 'resize':
+    case 'carousel_resize':
       handleResize(e);
       break;
     case 'on_player_change':
@@ -429,7 +469,7 @@ function handleResize(e) {
   if (!modal.classList.contains("tvp-hidden") || !e.data.height)
     return;
 
-  holder.style.height = e.data.height;
+  holder.style.height = e.data.height + 'px';
 }
 
 var getPlayerUrl = function(){

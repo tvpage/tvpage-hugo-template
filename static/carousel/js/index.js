@@ -8,7 +8,6 @@
   var templates = config.templates;
   var channelVideos = config.channel.videos;
   var mainEl;
-  var skeleton = true;
   var skeletonEl = document.getElementById('skeleton');
   var videosCarousel;
 
@@ -24,8 +23,6 @@
 
     if(channelParams){
       endpointParams = Utils.addProps(endpointParams, channelParams);
-
-      console.log(endpointParams);
     }
 
     var carouselConfig = {
@@ -76,6 +73,7 @@
     }else{
 
       videosCarousel = new Carousel('videos',{
+        arrowsVerticalAlign: ['center', '.video-image'],
         endpoint: endpoint,
         page: 0,
         data: channelVideos,
