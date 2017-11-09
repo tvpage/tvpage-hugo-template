@@ -1,30 +1,15 @@
 module.exports = function(grunt) {
-
     grunt.initConfig({
       watch: {
-        sass:{
-          files: ['scss/**/*.scss'],
-          tasks: ['sass', 'autoprefixer', 'cssmin']
-        },
-        scripts:{
-          files : ['js/**/*.js'],
-          tasks : ['concat:dev']
-        }
-      },
-      sass: {
-        dist: {
-          options:{
-            style : 'expanded'
-          },
-          files: {
-            'css/styles.css' : 'scss/styles.scss'
-          }
+        css: {
+          files: ['css/**/*.css'],
+          tasks: ['autoprefixer']
         }
       },
       autoprefixer: {
         css: {
           files: {
-            'css/styles.css' : 'css/styles.css'
+            'css/styles.css': 'css/styles.css'
           }
         }
       },
@@ -34,48 +19,37 @@ module.exports = function(grunt) {
           roundingPrecision: -1
         },
         desktop: {
-          files: {            
-            'dist/css/styles.min.css' : ['css/styles.css']
-          }
+            files: {
+              'dist/css/styles.min.css': [
+                '../bootstrap-4.0.0/css/bootstrap.css',
+                'css/vendor/slick.css',
+                'css/styles.css'
+              ],
+              'dist/css/host.min.css': [
+                'css/host.css'
+              ]
+            }
         }
       },
       uglify: {
         options: {
           compress: {
-            drop_console: true
+            drop_console: false
           }
         },
+
         scripts: {
           files: {
             'dist/js/scripts.min.js': [
-               'js/vendor/jquery.js'
-              ,'js/vendor/slick-min.js'
-              ,'js/vendor/jquery.ellipsis.js'
-              ,'js/carousel.js'
-              ,'js/libs/analytics.js'
-              ,'js/libs/utils.js'
-              ,'js/libs/player.js'
-              , 'js/inline.js'
-              , 'js/index.js']
+              'js/vendor/jquery.js',
+              'js/vendor/slick-min.js',
+              '../libs/utils.js',
+              '../libs/analytics.js',
+              '../libs/player.js',
+              '../libs/carousel.js',
+              'js/index.js'
+            ]
           }
-        }
-      },
-      concat: {
-        options: {
-          separator: ';',
-        },
-        dev: {
-          src: [
-             'js/vendor/jquery.js'
-            ,'js/vendor/slick-min.js'
-            ,'js/vendor/jquery.ellipsis.js'
-            ,'js/carousel.js'
-            ,'js/libs/analytics.js'
-            ,'js/libs/utils.js'
-            ,'js/libs/player.js'
-            , 'js/inline.js'
-            , 'js/index.js'],
-          dest: 'js/scripts.js'
         }
       }
     });
@@ -84,9 +58,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-autoprefixer');
     grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-contrib-sass');
-    grunt.loadNpmTasks('grunt-contrib-concat');
-    
-    grunt.registerTask('default', ['concat:dev', 'sass', 'autoprefixer', 'cssmin', 'concat:dev', 'watch']);
-    grunt.registerTask('release', ['uglify', 'sass', 'autoprefixer', 'cssmin']);
+
+    grunt.registerTask('default', ['uglify', 'autoprefixer', 'cssmin']);
+
 };
