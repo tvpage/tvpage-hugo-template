@@ -1,35 +1,52 @@
 '<div id="skeleton" class="skeleton">' +
-  '<h1 id="widget-title"></h1>' +
-  '<div class="player-holder">' +
-    '<div></div>' +
+  
+  '<div class="row justify-content-start">' +
+    '<div class="col">' +
+      '<h2 id="widget-title" class="widget-title"></h2>' +
+    '</div>' +
   '</div>' +
-  '<div class="products-holder">' +
-    '<div></div>' +
-  '</div>' +
-  '<div class="videos-holder">' +
-      '<div></div>' +
-  '</div>' +
-'</div>' +
-'<div id="inline">' +
-  '<h1 id="widget-title"></h1>' +
-  '<div class="row">' +
-    '<div class="col-6 left">' +
-      '<div id="player" class="hide">' +
-        '<div class="player-holder">' +
-          '<div id="player-el"></div>' +
+
+  '<div class="row mt-2">' +
+    '<div class="col-sm-6 px-2">'+
+      '<div class="player-holder fluid-y">'+
+        '<div id="player-el"></div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="col-sm-3 px-4">'+
+      '<div id="featured-product">' +
+        '<div class="skeleton-bg w-50 mx-auto mt-2 mb-1">' +
+          '<div class="product-image fluid-y"></div>' +
+        '</div>' +
+        '<p class="product-title mb-1"></p>' +
+        '<p class="product-price mb-1"></p>' +
+        '<button type="button" class="btn-primary w-100 p-1">View Details</button>' +
+      '</div>' +
+    '</div>' +
+    '<div id="products" class="col-sm-3 px-2">' +
+      {{ range seq 3 }}
+      '<div class="row mb-2">' +
+        '<div class="col-3 px-2">' +
+          '<div class="skeleton-bg">' +
+            '<div class="product-image fluid-y"></div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="col-9 px-2">' +
+          '<p class="product-title m-0"></p>' +
         '</div>' +
       '</div>' +
-    '</div>' +
-    '<div class="col-3 right">' +
-      '<div class="products-holder">' +
-        '<div id="products" class="abs-center hide"></div>' +
-      '</div>' +
-    '</div>' +
-    '<div class="col-3 right">' +
-      '<div id="featured-product"></div>' +
+      {{ end }}
     '</div>' +
   '</div>' +
-  '<div class="videos-holder">' +
-      '<div id="videos"></div>' +
+
+  '<div class="row mt-2 videos-skel-delete">' +
+    {{ range (seq 4) }}
+    '<div class="col-3 px-2">' +
+      '<div class="video-image fluid-y skeleton-bg mb-2"></div>' +
+      '<p class="video-title"></p>' +
+    '</div>' +
+    {{ end }}
   '</div>' +
+
+  '<div id="videos"></div>' +
+  
 '</div>'

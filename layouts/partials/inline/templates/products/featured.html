@@ -1,6 +1,8 @@
-'<a class="featured-product" href="{linkUrl}" data-id="{id}">' +
-  '<img class="fluid" src="{imageUrl}"/>' +
-  '<p id="featured-product-title">{title}</p>' +
-  '<p id="featured-product-price">{price}</p>' +
-  '<button class="featured-product-btn">{actionText}</button>' +
+'<a href="{linkUrl}" data-id="{id}">' +
+  '<div class="skeleton-bg w-50 mx-auto mt-2 mb-1">' +
+    '<div class="product-image fluid-y" style="background-image:url({imageUrl});"></div>' +
+  '</div>' +
+  '<p class="product-title mb-1 ready">{title}</p>' +
+  '<p class="product-price mb-1 ready">{price}</p>' +
+  '<button type="button" class="btn-primary w-100 p-1">{actionText}</button>' +
 '</a>'

@@ -151,18 +151,8 @@
 .slick-prev,
 .slick-next
 {
-    font-size: 0;
-    line-height: 0;
     position: absolute;
-    display: block;
-    width: 20px;
-    height: 20px;
-    padding: 0;
     cursor: pointer;
-    color: white;
-    border: none;
-    outline: none;
-    background:#313132;
     z-index: 1000;
     opacity: 0;
     visibility: hidden;

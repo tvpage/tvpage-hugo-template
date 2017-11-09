@@ -78,8 +78,6 @@ if(isFunction(onChange)){
   delete config.onChange;
 }
 
-console.log(config);
-
 //globals
 var debug = config.debug;
 var type = config.type;
@@ -93,17 +91,17 @@ config.loginId = config.loginId || config.loginid;
 config.channelId = (config.channelId || config.channelid) || config.channel.id;
 
 config.events = {};
-config.events.prefix = ("tvp_" + id).replace(/-/g, '_');
+config.events.prefix = ('tvp_' + id).replace(/-/g, '_');
 
 config.paths = {};
 config.paths.baseUrl = baseUrl;
 config.paths.static = static;
 config.paths.dist = dist;
-config.paths.javascript = static + dist + 'js/';
-config.paths.css = static + dist + 'css/';
+config.paths.javascript = static + dist + 'js';
+config.paths.css = static + dist + 'css';
 
 config.mobile = {};
-config.mobile.path = isMobile ? 'mobile/' : '';
+config.mobile.path = isMobile ? 'mobile' : '';
 config.mobile.prefix = isMobile ? '-mobile' : '';
 config.mobile.templates = config.templates.mobile;
 
@@ -219,8 +217,11 @@ function getIframeHtml(o) {
   '    if(!e || !e.data || !e.data.event || \'' + o.eventPrefix + ':start\' !== e.data.event){' +
   '      return;' +
   '    }' +
-  
-      load(o.js, 'JavaScript') + load(o.css, 'CSS') +
+
+       load(o.js, 'JavaScript') + load(o.css, 'CSS') +
+       
+       'var skeleton = document.getElementById(\'skeleton\');' + 
+       'setTimeout(function(){skeleton && skeleton.classList.remove(\'hide\')},15);' +
 
   '    parent.removeEventListener(\'message\', onStart, false);' +
   '};';
@@ -292,31 +293,27 @@ var cssPath = config.paths.css;
 var holder = getById(id + "-holder");
 var iframe = holder.querySelector("iframe");
 var iframeDocument = iframe.contentWindow.document;
-
-config.body_margin = 0;
-config.body_padding = 0;
-config.body_fontFamily = 'Helvetica';
-
 var iframeHtml = getIframeHtml({
   id: id,
   domain: baseUrl,
-  style: tmpl(config.css.base, config),
+  style: config.css.base,
   context: config,
   html: templates.base,
   eventPrefix: eventPrefix,
   js: [
     "//a.tvpage.com/tvpa.min.js",
-    debug ? javascriptPath + "vendor/jquery.js" : "",
+    debug ? javascriptPath + "/vendor/jquery.js" : "",
     debug ? baseUrl + "/libs/utils.js" : "",
     debug ? baseUrl + "/libs/analytics.js" : "",
     debug ? baseUrl + "/libs/carousel.js" : "",
-    debug ? javascriptPath + "index.js" : "",
-    debug ? "" : javascriptPath + "scripts.min.js"
+    debug ? javascriptPath + "/index.js" : "",
+    debug ? "" : javascriptPath + "/scripts.min.js"
   ],
   css: [
-    debug ? cssPath + "vendor/slick.css" : "",
-    debug ? cssPath + "styles.css" : "",
-    debug ? "" : cssPath + "styles.min.css"
+    debug ? cssPath + "/vendor/slick.css" : "",
+    debug ? baseUrl + "/bootstrap-4.0.0/css/bootstrap.css" : "",
+    debug ? cssPath + "/styles.css" : "",
+    debug ? "" : cssPath + "/styles.min.css"
   ]
 });
 
@@ -450,7 +447,7 @@ var iframeModalHtml = getIframeHtml({
   domain: baseUrl,
   context: config,
   eventPrefix: eventPrefix,
-  style: isMobile ? cssMobile['modal-content'] : css['modal-content'],
+  style: isMobile ? css.mobile.modal.content : css.modal.content,
   className: isMobile ? "mobile" : "",
   html: (isMobile ? templates.mobile.modal.content : templates.modal.content).body,
   js: [
@@ -464,30 +461,17 @@ var iframeModalHtml = getIframeHtml({
     debug ? baseUrl + "/libs/player.js" : "",
     
     debug && isMobile ? javascriptPath + "/vendor/jquery.js" : "",
-    debug ? javascriptPath + "/" + mobilePath + "modal/index.js" : "",
+    debug ? javascriptPath + "/" + mobilePath + "/modal/index.js" : "",
     debug && !isMobile ? javascriptPath + "/vendor/perfect-scrollbar.min.js" : "",
-    debug ? "" : javascriptPath + mobilePath + "modal/scripts.min.js"
+    debug ? "" : javascriptPath + mobilePath + "/modal/scripts.min.js"
   ],
   css: [
-    debug ? cssPath + "/" + mobilePath + "modal/styles.css" : "",
+    debug ? cssPath + "/" + mobilePath + "/modal/styles.css" : "",
     debug && isMobile ? cssPath + "/vendor/slick.css" : "",
     debug && !isMobile ? cssPath + "/vendor/perfect-scrollbar.min.css" : "",
-    debug ? "" : cssPath + "/" + mobilePath + "modal/styles.min.css"
+    debug ? "" : cssPath + "/" + mobilePath + "/modal/styles.min.css"
   ]
 });
-
-var renderIframeModal = function(){
-  iframeModalHolder.innerHTML = templates.modal.iframe;
-  iframeModal = iframeModalHolder.querySelector('.tvp-iframe-modal');
-  iframeModalDocument = iframeModal.contentWindow.document;
-  iframeModalDocument.open().write(iframeModalHtml);
-  iframeModalDocument.close();
-  
-  //start things out inside the iframe modal
-  window.postMessage({
-    event: eventPrefix + ':start'
-  }, '*');
-};
 
 function handleVideoClick(e) {
   var videos = config.channel.videos;
@@ -507,7 +491,18 @@ function handleVideoClick(e) {
 
   removeClass(modal, 'tvp-hidden');
   removeClass('tvp-modal-overlay-' + id, 'tvp-hidden');
-  renderIframeModal();
+  
+  //render the iframe contents
+  iframeModalHolder.innerHTML = templates.modal.iframe;
+  iframeModal = iframeModalHolder.querySelector('.tvp-iframe-modal');
+  iframeModalDocument = iframeModal.contentWindow.document;
+  iframeModalDocument.open().write(iframeModalHtml);
+  iframeModalDocument.close();
+  
+  //start things out inside the iframe modal
+  window.postMessage({
+    event: eventPrefix + ':start'
+  }, '*');
   
   if (config.fix_page_scroll)
     addClass(body, 'tvp-modal-open');

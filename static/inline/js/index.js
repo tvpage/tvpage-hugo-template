@@ -32,7 +32,7 @@
     var onVideoClick = function(e){
       Utils.stopEvent(e);
 
-      var target = Utils.getRealTargetByClass(e.target, 'carousel-item');
+      var target = Utils.getRealTargetByClass(e.target, 'tvp-carousel-item');
       var clickedId = target.getAttribute('data-id');
 
       if(clickedId){
@@ -104,8 +104,8 @@
       videosCarousel.initialize();
       videosCarousel.render();
     }else{
-
       videosCarousel = new Carousel('videos',{
+        arrowsCenteredTo: '.video-image',
         endpoint: endpoint,
         page: 0,
         data: channelVideos,
@@ -127,7 +127,10 @@
               slidesToScroll: 2
             }
           }
-        ]
+        ],
+        onReady: function(){
+          Utils.remove(skeletonEl.querySelector('.videos-skel-delete'));
+        }
       }, config);
 
       videosCarousel.initialize();
@@ -172,12 +175,15 @@
 
     }else{
       productsCarousel = new Carousel('products',{
+        arrowsCenteredTo: 'bottom',
+        dotsCenter: true,
+        dots: true,
         clean: true,
         endpoint: endpoint,
         full:true,
         itemsTarget: '.slick-carousel',
         itemsPerPage: 4,
-        pageWrapStart: '<div class="carousel-item" >',
+        pageWrapStart: '<div class="tvp-carousel-item" >',
         pageWrapEnd: '</div>',
         templates: {
           list: templates.products.list,
@@ -185,15 +191,6 @@
         },
         params: endpointParams,
         parse: parse,
-        onReady: function(){
-          var productsSkeletonEl = skeletonEl.querySelector('.products-holder');
-
-          if(productsSkeletonEl){
-            Utils.remove(productsSkeletonEl);
-          }
-
-          Utils.removeClass(Utils.getById('products'), 'hide');
-        },
         onClick: function(e){
           Utils.stopEvent(e);
 
@@ -241,9 +238,6 @@
         if (config.debug) {
           console.log("a player is ready");
         }
-        
-        Utils.remove(skeletonEl.querySelector('.player-holder'));
-        Utils.removeClass(Utils.getById('player'), 'hide');
       }
     };
     
@@ -267,11 +261,15 @@
       if(ready){
 
         //This looks more to me for a skeleton update
-        Utils.getById('widget-title').innerHTML = firstVideo.title;
+        var widgetTitleEl = Utils.getById('widget-title');
+        
+        widgetTitleEl.innerHTML = firstVideo.title;
+        Utils.addClass(widgetTitleEl, 'ready');
 
         initPlayer();
-        initProducts();
         initVideos();
+        initProducts();
+        
 
       }else if(++depsCheck < 200){
         initInline()

@@ -12,40 +12,60 @@
     this.eventPrefix = config.events.prefix;
     this.templates = this.options.templates;
     this.loading = false;
-    this.itemClass = '.carousel-item';
+    this.itemClass = '.tvp-carousel-item';
     this.full = this.options.full || false;
+    this.dots = Utils.isUndefined(this.options.dots) ? false : this.options.dots;
+    this.maxDots = 5;
+    this.limitDots = Utils.isUndefined(this.options.limitDots) ? true : this.options.limitDots;
     this.el = document.getElementById(sel);
   };
 
   Carousel.prototype.getSlickConfig = function(){
-    var options = this.options;
-    var isMaxBullets = Number(this.options.carousel_max_bullets) < this.data.length;
-
-    var slickConfig = {
-      slidesToShow: this.options.slidesToShow,
-      slidesToScroll: this.options.slidesToScroll,
-      dots: isMaxBullets ? false : this.config.navigation_bullets,
-      infinite: this.options.infinite || false,
+    var options = this.options,
+    slickConfig = {
+      prevArrow:'<button type="button" class="btn-sm btn-primary slick-prev"></button>',
+      nextArrow:'<button type="button" class="btn-sm btn-primary slick-next"></button>',
+      slidesToShow: options.slidesToShow,
+      slidesToScroll: options.slidesToScroll,
+      infinite: options.infinite || false,
       arrows: true
     };
 
-    if(!!this.options.responsive && this.options.responsive.length){
-      slickConfig.responsive = this.options.responsive;
+    if(!!options.responsive && options.responsive.length){
+      slickConfig.responsive = options.responsive;
     }
 
-    if (this.config.navigation_bullets_append_to) {
-      slickConfig.appendDots = this.config.navigation_bullets_append_to;
+    if(this.config.navigation_bullets && this.dots){
+      slickConfig.dots = true;
+
+      if(this.limitDots && this.maxDots < Utils.rowerize(this.data, this.itemsPerPage).length){
+        slickConfig.dots = false;
+      }
+    }
+
+    //dots/bullets pagination
+    if(slickConfig.dots){
+
+      slickConfig.customPaging = function (slick, k) {
+        return '<button class="btn-sm btn-primary carousel-dot-' + k + '">' + k + '</button>';
+      };
+
+      if(this.config.navigation_bullets_append_to){
+        slickConfig.appendDots = this.config.navigation_bullets_append_to;
+      }else{
+        console.log("?")
+      }
     }
 
     return slickConfig;
   };
 
-  Carousel.prototype.handleClick = function() {    
+  Carousel.prototype.handleClick = function() {
     var that = this;
     var items = this.el.querySelectorAll(this.itemClass);
     var itemsLength = items.length;
-
-    var onClick = Utils.isFunction(onClick) ? onClick : function(e){
+    
+    var onClick = Utils.isFunction(this.options.onClick) ? this.options.onClick : function(e){
       if(that.options.clickDefaultStop){
         Utils.stopEvent(e);
       }
@@ -73,6 +93,11 @@
     }
   };
 
+  Carousel.prototype.showArrow = function(arrow){
+    arrow.style.opacity = 1;
+    arrow.style.visibility = 'visible';
+  };
+
   Carousel.prototype.start = function(){
     var that = this;
     var startSlick = function() {
@@ -81,6 +106,10 @@
       that.$slickEl.on('init', function(event, slick) {
         if(that.config.debug) {
           console.log('carousel el initialized: ', that.itemsTargetEl, performance.now() - startTime);
+        }
+
+        if(that.options.dotsCenter){
+          that.el.classList.add('dots-centered');
         }
 
         that.onReady();
@@ -96,38 +125,39 @@
       });
 
       that.$slickEl.on('setPosition', function(event, slick){
-        
-        //Needs to be generic
-        //var imageIcon = that.el.querySelector('.video-image-icon');
+        var arrowsCenteredTo = that.options.arrowsCenteredTo,
+        arrowTop,
+        arrowBottom,
+        centerToEl;
 
-        //if(imageIcon){
+        if(!Utils.isUndefined(arrowsCenteredTo)){
+          centerToEl = that.el.querySelector(arrowsCenteredTo);
 
-          //the reference?
-          //var imageIconRect = imageIcon.getBoundingClientRect();  
-          //var iconCenter = Math.floor(imageIconRect.top + (imageIconRect.height / 2));
-
-          //Remove the carousel's top
-          //iconCenter = iconCenter - that.el.getBoundingClientRect().top;
-
-          // var arrows = that.el.querySelectorAll('.slick-arrow');
-          // var arrowsLength = arrows.length;
-  
-          // for (var i = 0; i < arrowsLength; i++) {
-          //   var arrow = arrows[i];
-          //   arrow.style.top = iconCenter - (arrow.getBoundingClientRect().height / 2) + 'px';
-          //   arrow.style.opacity = 1;
-          //   arrow.style.visibility = 'visible';
-          // }
-        //}
+          if('bottom' === arrowsCenteredTo){
+            arrowBottom = '0';
+            arrowTop = 'auto';
+          }else if(centerToEl){
+            var centerToElRect = centerToEl.getBoundingClientRect();
+            arrowTop = Math.floor(centerToElRect.top + (centerToElRect.height / 2)) + 'px';
+          }
+        }
 
         var arrows = that.el.querySelectorAll('.slick-arrow');
         var arrowsLength = arrows.length;
 
         for (var i = 0; i < arrowsLength; i++) {
           var arrow = arrows[i];
-          //arrow.style.top = iconCenter - (arrow.getBoundingClientRect().height / 2) + 'px';
-          arrow.style.opacity = 1;
-          arrow.style.visibility = 'visible';
+          
+          if(arrowsCenteredTo && centerToEl)
+            arrow.style.position = 'fixed';
+
+          if(arrowTop)
+            arrow.style.top = arrowTop;
+          
+          if(arrowBottom)
+            arrow.style.bottom = arrowBottom;
+
+          that.showArrow(arrow);
         }
 
         Utils.sendMessage({
@@ -198,9 +228,10 @@
 
       if(hasPageWrap){
         var pages = Utils.rowerize(all, this.itemsPerPage)
+        var pagesLength = pages.length;
         var html = '';
 
-        for (var i = 0; i < pages.length; i++) {
+        for (var i = 0; i < pagesLength; i++) {
           html += pageWrapStart + this.renderBatch(pages[i]) + pageWrapEnd;
         }
 

@@ -1,63 +1,17 @@
-{{ with ($.Scratch.Get "settings").fonts }}
-  {{ range . }}
-    "@import url('{{ . | htmlUnescape | safeHTML }}');" +
-  {{ end }}
-{{ end }}
-
-'.tvplayer-analytics-holder {' +
-  'display: none !important;' +
-'}' +
-
-"* {" +
-  "box-sizing: border-box;" +
+/* helpers */
+".hide {" +
+  "opacity: 0;" + 
+  "visibility: hidden;" +
 "}" +
 
-"html," +
-"body {" +
-"height: 100%;" +
-"-webkit-text-size-adjust:none;" +
+".clickable {" +
+  "cursor:pointer;" + 
 "}" +
 
-"body {" +
-  "font-family: Helvetica;" +
-  "-webkit-font-smoothing: antialiased;" +
-  "-moz-osx-font-smoothing: grayscale;" +
-  "text-rendering: optimizeLegibility;" +
-  "padding: {{ ($.Scratch.Get "settings").iframe_carousel_body_padding }};" +
-  "margin: {{ ($.Scratch.Get "settings").iframe_carousel_body_margin }};" +
-"}" +
-
-'h1, h2, p, a, ul, li {' +
-  'margin:0;' +
-  'padding:0;' +
-'}' +
-
-'.fluid {' +
+'.fluid-y {' +
+  'height: 0;' +
   'width: 100%;' +
-  'display: block;' +
-'}' +
-
-'.fill-height-or-more {' +
-  'display: flex;' +
-  'flex-direction: column;' +
-'}' +
-
-'.fill-height-or-more > div {' +
-  'flex: 1;' +
-'}' +
-
-'.row:after {' +
-  'display: table;' +
-  'content: " ";' +
-  'clear: both;' +
-'}' +
-
-'.left {' +
-  'float: left;' +
-'}' +
-
-'.right {' +
-  'float: right;' +
+  'position: relative;' +
 '}' +
 
 '.abs-center {' +
@@ -68,117 +22,119 @@
   'right: 0;' +
 '}' +
 
-'.col-8,' +
-'.col-2,' +
-'.col-4 {' +
-  'width: 100%;' +
-'}' +
-
-'.player-holder {' +
-  'height: 0;' +
-  'width: 100%;' +
-  'position: relative;' +
-  'padding-bottom: 56.25%;' +
-'}' +
-
-'.products-holder {' +
-  'height: 0;' +
-  'width: 100%;' +
-  'position: relative;' +
-  'padding-bottom: 112.25%;' +
-'}' +
-
-'.skeleton .player-holder > div {' +
+'.abs-bottom {' +
   'position: absolute;' +
-  'top: 0;' +
   'bottom: 0;' +
-  'left: 0;' +
-  'right: 0;' +
-  "background-color: {{ ($.Scratch.Get "settings").skeleton_background_color }};" +
 '}' +
 
-".hide {" +
-  "opacity: 0;" + 
-  "visibility: hidden;" +
-"}" +
-
-'.product {' +
-  'display: block;' +
+'.col-x-push {' +
+  'margin-left: 15px;' +
+  'margin-right: 15px;' +
 '}' +
 
-'.product.mobile {' +
-  'display: block;' +
-  'width: 100px;' +
-  'height: 100px;' +
+
+/* thumbnail sizes */
+'.thumb-sm {' +
+  'max-width: 50px;' +
 '}' +
 
-'.product-image {' +
-  'background-repeat: no-repeat;' +
-  'background-position: center;' +
-  'position: relative;' +
-  'pointer-events: none;' +
-  'background-size: cover;' +
-  'border: 0;' +
-  'width: 20%;' +
+'.thumb-md {' +
+  'max-width: 100px;' +
 '}' +
 
-'.product-image:before {' +
-  'display: block;' +
-  'content: "";' +
-  'width: 100%;' +
-  'padding-top: 100%;' +
-'}' +
-
-'.product-details{' +
-  'width: 80%;' +
-'}' +
-
-'/* ############# */' +
-'/* Video */' +
-
-".video {" +
-  "cursor: pointer;" +
-  "margin: 0 auto;" +
-  "backface-visibility: hidden;" +
-  "-webkit-backface-visibility: hidden;" +
-  "padding-left:{{ ($.Scratch.Get "settings").item_padding_left }};" +
-  "padding-right:{{ ($.Scratch.Get "settings").item_padding_right }};" +
-  "margin-left:{{ ($.Scratch.Get "settings").item_margin_left }};" +
-  "margin-right:{{ ($.Scratch.Get "settings").item_margin_right }};" +
-"}" +
-
-".skeleton .video {" +
-  "float: left;" +
-  "width: 25%;" +
-"}" +
-
-".video:focus {" +
-  "outline:0;" +
-"}" +
-
-".video-image {" +
+'.bg-default {' +
   "background-repeat: no-repeat;" +
   "background-position: center;" +
   "position: relative;" +
-  "pointer-events: none;" +
+'}' +
+
+/* image aspect ratios & shapes */
+'.video-image {' +
   "background-size: {{ ($.Scratch.Get "settings").item_background_image_size }};" +
-  "border: {{ ($.Scratch.Get "settings").item_border }};" +
-"}" +
+  'padding-bottom: 56.25%;' +
+'}'+
 
-".video-image:focus {" +
-  "outline: 0;" +
-"}" +
+'.product-image {' +
+  'padding-bottom: 100%;' +
+  'background-size: cover;' +
+'}' +
 
-".video-image:before {" +
-  "display: block;" +
-  "content: \"\";" +
-  "width: 100%;" +
-  "padding-top: 56.25%;" +
-"}" +
 
-".skeleton .video-image {" +
+/* backgrounds */
+'.white-bg {' +
+  'background-color: white;' +
+'}' +
+
+'.skeleton-bg {' +
+  'background-color: {{ ($.Scratch.Get "settings").item_image_background_color }};' +
+'}' +
+
+
+/* skeleton piece */
+".skeleton .widget-title:not(.ready) {" +
   "background-color: {{ ($.Scratch.Get "settings").item_image_background_color }};" +
 "}" +
+
+".skeleton .widget-title:not(.ready):before {" +
+  "content: \"...\";" +
+  "color: transparent;" +
+"}" +
+
+'.player-holder {' +
+  'padding-bottom: 56.25%;' +
+'}' +
+
+'.skeleton .player-holder {' +
+  "background-color: {{ ($.Scratch.Get "settings").skeleton_background_color }};" +
+'}' +
+
+'.featured-product-holder {' +
+  'padding-bottom: 112.25%;' +
+'}' +
+
+'.skeleton .featured-product-holder {' +
+  "background-color: {{ ($.Scratch.Get "settings").skeleton_background_color }};" +
+'}' +
+
+'.products-holder {' +
+  'padding-bottom: 112.25%;' +
+'}' +
+
+'.skeleton .products-holder {' +
+  "background-color: {{ ($.Scratch.Get "settings").skeleton_background_color }};" +
+'}' +
+
+'.videos-holder {' +
+  'padding-bottom: 19.25%;' +
+'}'+
+
+".skeleton .video-title:not(.ready) {" +
+  "background-color: {{ ($.Scratch.Get "settings").item_image_background_color }};" +
+"}" +
+
+".skeleton .video-title:not(.ready):before {" +
+  "content: \"...\";" +
+  "color: transparent;" +
+"}" +
+
+".skeleton .product-title:not(.ready) {" +
+  "background-color: {{ ($.Scratch.Get "settings").item_image_background_color }};" +
+"}" +
+
+".skeleton .product-title:not(.ready):before {" +
+  "content: \"...\";" +
+  "color: transparent;" +
+"}" +
+
+".skeleton .product-price:not(.ready) {" +
+  "background-color: {{ ($.Scratch.Get "settings").item_image_background_color }};" +
+"}" +
+
+".skeleton .product-price:not(.ready):before {" +
+  "content: \"...\";" +
+  "color: transparent;" +
+"}" +
+
 
 ".video-image-overlay {" +
   "top: 0;" +
@@ -211,111 +167,4 @@
   "height:{{ ($.Scratch.Get "settings").item_play_button_height }};" +
   "border: {{ ($.Scratch.Get "settings").item_play_button_border }};" +
   "border-radius:{{ ($.Scratch.Get "settings").item_play_button_border_radius }};" +
-"}" +
-
-'.skeleton .video-image-icon {' +
-  'display:none;' +
-'}' +
-
-'.skeleton.updated .video-image-icon {' +
-  'display:block;' +
-'}' +
-
-".video-image-icon > polygon {" +
-  "fill:{{ ($.Scratch.Get "settings").item_play_button_icon_color }};" +
-"}" +
-
-".video-title {" +
-  "font-family: {{ ($.Scratch.Get "settings").item_title_font_family }};" +
-  "font-weight: {{ ($.Scratch.Get "settings").item_title_font_weight }};" +
-  "font-size:{{ ($.Scratch.Get "settings").item_title_font_size }};" +
-  "text-align:{{ ($.Scratch.Get "settings").item_title_text_align }};" +
-  "color:{{ ($.Scratch.Get "settings").item_title_font_color }};" +
-  "margin:{{ ($.Scratch.Get "settings").item_title_margin }};" +
-  "padding:{{ ($.Scratch.Get "settings").item_title_padding }};" +
-"}" +
-
-".skeleton .video-title:not(.ready) {" +
-  "background-color: {{ ($.Scratch.Get "settings").item_image_background_color }};" +
-"}" +
-
-".skeleton .video-title:not(.ready):before {" +
-  "content: \"...\";" +
-  "color: transparent;" +
-"}" +
-
-'/* ############# */' +
-'/* Slick */' +
-".slick-dotted.slick-slider {" +
-  "margin-bottom: {{ ($.Scratch.Get "settings").navigation_bullets_margin_bottom }};" +
-"}" +
-
-".slick-dots {" +
-  "position: {{ ($.Scratch.Get "settings").navigation_bullets_position }};" +
-  "bottom: {{ ($.Scratch.Get "settings").navigation_bullets_bottom }};" +
-  "text-align: {{ ($.Scratch.Get "settings").navigation_bullets_text_align }};" +
-  "margin: {{ ($.Scratch.Get "settings").navigation_bullets_margin }};" +
-"}" +
-
-".slick-dots li {" +
-  "width: {{ ($.Scratch.Get "settings").navigation_bullet_size }};" +
-  "height: {{ ($.Scratch.Get "settings").navigation_bullet_size }};" +
-  "margin: {{ ($.Scratch.Get "settings").navigation_bullet_margin }};" +
-  "padding: {{ ($.Scratch.Get "settings").navigation_bullet_padding }};" +
-"}" +
-
-".slick-dots li button {" +
-  "width: {{ ($.Scratch.Get "settings").navigation_bullet_size }};" +
-  "height: {{ ($.Scratch.Get "settings").navigation_bullet_size }};" +
-  "padding: {{ ($.Scratch.Get "settings").navigation_bullet_padding }};" +
-  {{ with ($.Scratch.Get "settings").navigation_bullet_background_image_url }}
-      "background-image: url('{{ $.Site.BaseURL }}/carousel/{{ . }}');" +
-      "background-position: {{ ($.Scratch.Get "settings").navigation_bullet_background_position }};" +
-  {{ end }}
-  "background-color: {{ ($.Scratch.Get "settings").navigation_bullet_background_color }};" +
-  "border: {{ ($.Scratch.Get "settings").navigation_bullet_border }};" +
-  "border-radius: {{ ($.Scratch.Get "settings").navigation_bullet_border_radius }};" +
-"}" +
-
-".slick-dots li button:before {" +
-  "content: initial !important;" +
-"}" +
-
-".slick-dots li button:hover {" +
-  "background-position: {{ ($.Scratch.Get "settings").navigation_active_bullet_background_position }};" +
-  "background-color: {{ ($.Scratch.Get "settings").navigation_active_bullet_background_color }};" +
-  "border: {{ ($.Scratch.Get "settings").navigation_active_bullet_border }};" +
-"}" +
-
-".slick-dots li.slick-active button {" +
-  {{ with ($.Scratch.Get "settings").navigation_active_bullet_background_image_url }}
-      "background-image: url('{{ $.Site.BaseURL }}/carousel/{{ . }}');" +
-  {{ end }}
-  "background-position: {{ ($.Scratch.Get "settings").navigation_active_bullet_background_position }};" +
-  "background-color: {{ ($.Scratch.Get "settings").navigation_active_bullet_background_color }};" +
-  {{ if ne ($.Scratch.Get "settings").navigation_active_bullet_border "none"}}
-  "border: {{ ($.Scratch.Get "settings").navigation_active_bullet_border }};" +
-  {{ end }}
-"}" +
-
-"@media screen and (min-width: 768px){"+
-  '.col-2 {' +
-    'width: 16.666666665%;' +
-  '}' +
-
-  '.col-3 {' +
-    'width: 24.9999999975%;' +
-  '}' +
-  
-  '.col-4 {' +
-    'width: 33.33333333%;' +
-  '}' +
-
-  '.col-6 {' +
-    'width: 49.999999995%;' +
-  '}' +
-
-  '.col-8 {' +
-    'width: 66.66666667%;' +
-  '}' +
 "}"

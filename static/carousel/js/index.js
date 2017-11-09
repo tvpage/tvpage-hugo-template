@@ -7,47 +7,13 @@
   var apiBaseUrl = config.api_base_url;
   var templates = config.templates;
   var channelVideos = config.channel.videos;
-  var mainEl = Utils.getById('carousel');
+  var mainEl;
   var skeleton = true;
   var skeletonEl = document.getElementById('skeleton');
   var videosCarousel;
 
-  //render image and title for preloaded elements, etc. I think we should change this to be a second render.
-  function videosSkeletonUpdate(){
-    if(!skeleton){
-      return;
-    }
-
-    console.log('videosSkeletonUpdate')
-    
-    var itemsLength = channelVideos.length;
-    
-    for (var i = 0; i < itemsLength; i++) {
-      var video = channelVideos[i];
-      var videoEl = skeletonEl.querySelector('.video-' + (i + 1));
-
-      if(!videoEl)
-        continue;
-
-      videoEl.querySelector('.video-image').style.backgroundImage = "url('" + video.asset.thumbnailUrl + "')";
-
-      var videoTitleEl = videoEl.querySelector('.video-title');
-
-      videoTitleEl.classList.add('ready');
-      videoTitleEl.innerHTML = video.title;
-
-      if (i + 1 === config.toPreload)
-        break;
-    }
-
-    skeletonEl.classList.add('updated');
-  }
-
   //a videos section will be initialized
   function initVideos(){
-
-    videosSkeletonUpdate();
-
     var endpoint = apiBaseUrl + '/channels/' + config.channelId + '/videos';
     var endpointParams = {
       o: config.videos_order_by,
@@ -132,12 +98,7 @@
           }
         ],
         onReady: function(){
-          if(skeletonEl)
-            Utils.remove(skeletonEl);
-          
-          setTimeout(function(){
-            Utils.removeClass(mainEl, 'hide');
-          },1);
+          Utils.remove(skeletonEl.querySelector('.videos-skel-delete'));
         }
       }, config);
 
@@ -165,6 +126,14 @@
           ready = false;
 
       if(ready){
+
+        mainEl = Utils.getById('carousel');
+     
+        //This looks more to me for a skeleton/base update
+        var widgetTitleEl = Utils.getById('widget-title');
+        widgetTitleEl.innerHTML = config.title_text;
+
+        Utils.addClass(widgetTitleEl, 'ready');
         
         initVideos();
 

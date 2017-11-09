@@ -35,13 +35,9 @@
 	};
 
 	config.css = {
-
-		//host, external page css
+		base: {{- (partial (printf "%s/css/base.css" .Type) .) | htmlUnescape | safeHTML -}},
 		host: {{- (partial (printf "%s/css/host.css" .Type) .) | htmlUnescape | safeHTML -}},
 		'host-custom': {{- (partial (printf "%s/css/host-custom.css" .Type) .) | htmlUnescape | safeHTML -}},
-
-		//base layer of css, helpers, resets, etc.
-		base: {{- (partial (printf "%s/css/base.css" .Type) .) | htmlUnescape | safeHTML -}},
 
 		mobile: {
 			host: {{- (partial (printf "%s/mobile/css/host.css" .Type) .) | htmlUnescape | safeHTML -}}
@@ -49,10 +45,11 @@
 	};
 
 	{{- (readFile "/themes/tvpage/static/inline/index.js") | htmlUnescape | safeHTML -}}
+	
 
 
 
 
-
+	
 	
 }());
