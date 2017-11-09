@@ -45,7 +45,14 @@ module.exports = function(grunt) {
         },
         scripts: {
           files: {
-            'dist/js/scripts.min.js': ['js/vendor/jquery.js','js/vendor/slick-min.js','../libs/utils.js','../libs/analytics.js','js/carousel.js', 'js/index.js']
+            'dist/js/scripts.min.js': [
+              'js/vendor/jquery.js',
+              'js/vendor/slick-min.js',
+              '../libs/utils.js',
+              '../libs/analytics.js',
+              '../libs/carousel.js',
+              'js/index.js'
+            ]
           }
         },
         modal: {
