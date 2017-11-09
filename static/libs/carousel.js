@@ -1,4 +1,4 @@
-(function(){
+   (function(){
 
   function Carousel(sel, options, config){
     this.options = options || {};    
@@ -130,7 +130,7 @@
         
         if('string' === typeof arrowsVerticalAlign){
 
-          if('bottom' === arrowsCenteredTo){
+          if('bottom' === arrowsVerticalAlign){
             arrowBottom = '0';
             arrowTop = 'auto';
           }
