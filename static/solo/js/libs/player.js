@@ -45,7 +45,8 @@
     this.preload = isset(options.preload) ? options.preload : null;
     this.poster = isset(options.poster) ? options.poster : null;
     this.overlay = isset(options.overlay) ? options.overlay : null;
-    this.debug = isset(options.debug) ? options.debug : false;
+    this.debug = isset(options.debug) ? !!Number(options.debug) : false;
+    this.lockControls = isset(options.lockControls) ? !!Number(options.lockControls) : false;
 
     this.playbutton = compact({
       height: isset(options.play_button_height) ? options.play_button_height : null,
@@ -306,7 +307,8 @@
             version: that.version,
             advertising:that.advertising,
             preload: that.preload,
-            debug: that.debug
+            debug: that.debug,
+            lockControls: that.lockControls
           };
 
           var extras = ["preload","poster","overlay"];
