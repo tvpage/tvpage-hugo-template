@@ -35,11 +35,6 @@ body  {
   padding-bottom: 56.25%;
 }
 
-.tvplayer-overlay, .tvplayer-overlay-thumbnail {
-  z-index: 2147483 !important;
-}
-
-
 .tvp-player-holder {
   width: 80%;
   float: left;
