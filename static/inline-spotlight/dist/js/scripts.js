@@ -362,16 +362,16 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
         var advertisingOptions = isset(options.advertising) && "object" === typeof options.advertising && !isEmpty(options.advertising) ? options.advertising : {};
         this.advertising = compact({
           enabled: isset(advertisingOptions.enabled) ? advertisingOptions.enabled : false,
-          adServerUrl: isset(advertisingOptions.adServerUrl) ? advertisingOptions.adServerUrl : null,
-          adTimeout: isset(advertisingOptions.adTimeout) ? advertisingOptions.adTimeout : "2000",
-          maxAds: isset(advertisingOptions.maxAds) ? advertisingOptions.maxAds : "100",
-          adInterval: isset(advertisingOptions.adInterval) ? String(advertisingOptions.adInterval) : "0"
+          adServerUrl: isset(advertisingOptions.adserverurl) ? advertisingOptions.adserverurl : null,
+          adTimeout: isset(advertisingOptions.adtimeout) ? advertisingOptions.adtimeout : "2000",
+          maxAds: isset(advertisingOptions.maxads) ? advertisingOptions.maxads : "100",
+          adInterval: isset(advertisingOptions.adinterval) ? String(advertisingOptions.adinterval) : "0"
         });
         
         //Context reference for Methods.
         var that = this;
 
-        this.play = function(asset,ongoing){            
+        this.play = function(asset,ongoing,immediate){           
             if (!asset) return; // console.log('need asset');
             var willCue = false,
                 isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -386,7 +386,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                 }
             }
 
-            if (willCue) this.instance.cueVideo(asset);                
+            if (willCue && !immediate) this.instance.cueVideo(asset);
             else this.instance.loadVideo(asset);
 
             // this will fix the continues loading of youtube type video on iOS (iPad/iPhone)            
@@ -458,7 +458,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
               }
             }
 
-            this.play(this.assets[this.current], true);
+            this.play(this.assets[this.current], true, arguments[1]);
         }
 
         this.onReady = function(e, pl){            
@@ -571,6 +571,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
     var productData = [];
     var isProductsInitialized = false;
     var analytics = null;
+    var isHidden = false;
     var breakpoint = 769;
     var currentApproach = '';
     var loginId = null;
@@ -586,6 +587,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
     var inlineEl = null;
     var productRatingEmptyIsBordered = false;
     var hasProducts = true;
+    var allOptions = {};
 
     var renderedApproach = function () {
         if (document.body.clientWidth < breakpoint) {
@@ -701,16 +703,21 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
     };
 
     var showTitle = function(opts, title){
-        var showTitleOption = Utils.isset(opts, 'show_video_title') ? opts.show_video_title : true,
+        var $inlineVideoTitle = $(inlineEl).find('#videoTitle'),
+            $inlineFeaturedTitle = $(inlineEl).find('#tvp-featured-title'),
+            showTitleOption = Utils.isset(opts, 'show_video_title') ? opts.show_video_title : true,
             titleToShow = Utils.isset(opts, 'static_title') ? opts.static_title : title;
         if (!showTitleOption) {
-            $(inlineEl).find('#videoTitle').hide();
+            $inlineVideoTitle.hide();
         } else {
-            $(inlineEl).find('#videoTitle').html(titleToShow);
+            $inlineVideoTitle.html(titleToShow);
+            Utils.isset(opts, 'video_header_color') ? $inlineVideoTitle.css('color',opts.video_header_color) : null;
+            Utils.isset(opts, 'featured_product_header_color') ? $inlineFeaturedTitle.css('color',opts.featured_product_header_color) : null;
         }
     };
 
     function Inline(el, options) {
+        allOptions = options;
         currentApproach = renderedApproach();
         xchg = options.xchg || false;
         loginId = (options.loginId || options.loginid) || 0;
@@ -734,6 +741,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
         var loadProducts = function(videoId, loginId, fn) {
             if (!videoId) return;
             var src = options.api_base_url +'/videos/' + videoId + '/products?X-login-id=' + loginId;
+            src += '&o=' + allOptions.products_order_by + '&od=' + allOptions.products_order_direction;
             var cbName = 'tvp_' + Math.floor(Math.random() * 555);
             src += '&callback=' + cbName;
             var script = document.createElement('script');
@@ -798,8 +806,12 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                 $(templates.productsNav).appendTo(_container);
             }
 
+            var centerMode = productData.length > 1 ? true : false;
+            $(productContent).on('init' , function(){
+                $('.tvp-slide-up').css('pointer-events', 'auto');
+            });
             $(productContent).slick({
-                arrows: Utils.isset(options.products_slider_arrows) ? options.products_slider_arrows : true,
+                arrows: options.products_slider_arrows ,
                 prevArrow: document.querySelector('.tvp-products-prev'),
                 nextArrow: document.querySelector('.tvp-products-next'),
                 slidesToShow: 1,
@@ -809,22 +821,25 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                         {
                             breakpoint: 769,
                             settings: {
-                                arrows: Utils.isset(options.products_slider_arrows_mobile) ? options.products_slider_arrows_mobile : true
+                                centerMode: centerMode,
+                                centerPadding: options.products_slider_center_padding,
+                                arrows: options.products_slider_arrows_mobile,
+                                slidesToShow: options.products_slider_slides_to_show
                             }
                         }
                     ]
-            }).on('setPosition', function(s) {
-                var $productItms = $('.tvp-product-item');
-                for (var i = $productItms.length - 1; i >= 0; i--) {                    
-                    var defaultTitle = $productItms[i].getAttribute('data-title');
-                    $productItms[i].querySelector('.tvp-product-info-title').innerHTML = defaultTitle;
-                }
-                $('.tvp-product-info-title').ellipsis({
-                    row: renderedApproach() !== 'mobile' ? 3 : 2 
-                });  
-                });
-                addProductActiveState(productData[0].id);
-            };
+            });
+            var $productItms = $('.tvp-product-item');
+            for (var i = $productItms.length - 1; i >= 0; i--) {                    
+                var defaultTitle = $productItms[i].getAttribute('data-title');
+                $productItms[i].querySelector('.tvp-product-info-title').innerHTML = defaultTitle;
+                Utils.isset(options, 'product_item_title_font_color') ? $productItms[i].querySelector('.tvp-product-info-title').style.cssText += 'color:'+ options.product_item_title_font_color +';' : null;
+            }
+            $('.tvp-product-info-title').ellipsis({
+                row: renderedApproach() !== 'mobile' ? 3 : 2 
+            }); 
+            addProductActiveState(productData[0].id);
+        };
 
             if(!isProductsInitialized){
                 loadProducts(vid, lid, 
@@ -895,34 +910,36 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                     nextArrow: '.tvp-videos-arrow-next',
                     prevArrow: '.tvp-videos-arrow-prev',
                     dotsClass: 'tvp-slider-dots',
-                    dots: Utils.isset(options, 'video_slider_dots') ? options.video_slider_dots : false,
+                    dots: options.video_slider_dots,
                     responsive:[
                         {
                             breakpoint: 769,
                             settings: {
                                 arrows: false,
-                                centerPadding: '0px',
-                                slidesToShow: 2,
-                                slidesToScroll: 2,
-                                dots: Utils.isset(options, 'video_slider_dots_mobile') ? options.video_slider_dots_mobile : true
+                                centerMode: options.video_slider_center_mode_mobile,
+                                centerPadding: options.video_slider_center_padding,
+                                slidesToShow: options.videos_to_show_mobile ,
+                                slidesToScroll: options.videos_to_scroll_mobile ,
+                                dots: options.video_slider_dots_mobile
                             }
                         }
                     ]
                 }).on('setPosition', function(s) {               
                     if (renderedApproach() !== 'mobile') {
                         var item = s.currentTarget.querySelector('.slick-current');
-                        var itemPadding = parseInt(window.getComputedStyle(item, null).paddingTop);
                         var baseHeight = item.querySelector('.tvp-video-item-image').offsetHeight;
                         var arrowHeight = parseInt(s.currentTarget.slick.$nextArrow[0].offsetHeight);
 
-                        s.currentTarget.slick.$nextArrow[0].style.marginTop = ((baseHeight - arrowHeight) / 2) + itemPadding + "px";
-                        s.currentTarget.slick.$prevArrow[0].style.marginTop = ((baseHeight - arrowHeight) / 2) + itemPadding + "px";    
+                        s.currentTarget.slick.$nextArrow[0].style.marginTop = (baseHeight / 2) - (arrowHeight / 6) + "px";
+                        s.currentTarget.slick.$prevArrow[0].style.marginTop = (baseHeight / 2) - (arrowHeight / 6) + "px";
                     }
 
                     for (var i = s.currentTarget.slick.$slides.length - 1; i >= 0; i--) {
                         var slideItem = s.currentTarget.slick.$slides[i];
-                        var defaultTitle = slideItem.querySelector('.tvp-video-item').getAttribute('data-title');                        
-                        slideItem.querySelector('.tvp-video-item-title').innerHTML = defaultTitle;
+                        var defaultTitle = slideItem.querySelector('.tvp-video-item');                        
+                        slideItem.querySelector('.tvp-video-item-title').innerHTML = defaultTitle.getAttribute('data-title');
+                        Utils.isset(options, 'videos_carousel_item_date_font_color') ? defaultTitle.querySelector('.tvp-video-item-title').style.cssText += 'color:'+ options.videos_carousel_item_date_font_color +';' : null;
+                        Utils.isset(options, 'videos_carousel_item_title_font_color') ? defaultTitle.querySelector('.tvp-video-metadata').style.cssText += 'color:'+ options.videos_carousel_item_title_font_color +';' : null;
                     }
 
                     $('.tvp-video-item-title').ellipsis({
@@ -963,26 +980,53 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                 li: loginId
             });
 
-            window.addEventListener('resize', Utils.debounce(function(){
+            var handleResize = function(e){
                 if (isProductsInitialized) {
                     if(currentApproach !== renderedApproach()){                        
                         currentApproach = renderedApproach();
                     }
                     renderProducts(selectedVideo.id, loginId);
+                    var prodsSection = $('.tvp-player-product-section');
+                    if (isHidden && (renderedApproach() == 'desktop')) {
+                        prodsSection.find('.tvp-slide-up > span').removeClass('tvp-plus').addClass('tvp-minus');
+                        prodsSection.find('.tvp-products-scroller').fadeTo('fast', 1);
+                        isHidden = false;
+                    }else if(e.type == 'orientationchange' && (isHidden && (renderedApproach() == 'mobile'))){
+                       $('.tvp-player-product-section').find('.tvp-products-scroller').fadeTo('slow', 1, function(){
+                            renderProducts(selectedVideo.id, loginId);
+                            $('.tvp-slide-up').css("pointer-events", "auto")
+                                    .children()
+                                        .removeClass('tvp-plus')
+                                            .addClass('tvp-minus');
+                            $(this).show('slow');
+                            isHidden = false;
+                        });
+                    }
                 }
                 checkProducts();
                 resizeParent();
-            }, 85));
+            };
+            var addListenerMulti = function(element, eventNames, listener) {
+              var events = eventNames.split(' ');
+              for (var i = 0, iLen = events.length; i < iLen; i++) {
+                element.removeEventListener(events[i], listener, false);
+                element.addEventListener(events[i], listener, false);
+              }
+            };
+            addListenerMulti(window,'resize orientationchange', handleResize)
         };
 
         var load = function(callback){
             var getChannelVideos = function(callback){
                 var channel_id = Utils.isEmpty(channel) ? channelId : channel.id;
                 var params = channel.parameters || {};
+                params.o = options.videos_order_by;
+                params.od = options.videos_order_direction;
                 var src = options.api_base_url+ '/channels/' + channel_id + '/videos?X-login-id=' + loginId;
                 for (var p in params) { src += '&' + p + '=' + params[p];}
-                var cbName = options.callbackName || 'tvp_' + Math.floor(Math.random() * 555);
-                src += '&p=' + page + '&n=' + itemsPerPage + '&callback='+cbName;
+                var cbName = options.callbackName || 'tvp_' + Math.floor(Math.random() * 555),
+                    sortedData = !Utils.isEmpty(options.sort_videos_by) ? '&o='+options.sort_videos_by+'&od='+options.sort_videos_order : '';
+                src += '&p=' + page + '&n=' + itemsPerPage + 'status=approved'+sortedData+'&callback='+cbName;
                 var script = document.createElement('script');
                 script.src = src;
                 window[cbName || 'callback'] = callback;
@@ -1020,6 +1064,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
         };
         
         inlineEl.onclick = function(e) {
+            e.preventDefault();
             var target;
             
             var getTarget = function (name) {                
@@ -1049,19 +1094,57 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
 
 
             if (getTarget('tvp-video-item')) {
+                if (isHidden) {
+                   $('.tvp-player-product-section').find('.tvp-products-scroller').fadeTo('slow', 1, function(){
+                        $('.tvp-slide-up').css("pointer-events", "auto")
+                                .children()
+                                    .removeClass('tvp-plus')
+                                        .addClass('tvp-minus');
+                        $(this).show('slow');
+                        isHidden = false;
+                    });
+                }
+
                 selectedVideo = getSelectedData(videosData, target.getAttribute('data-id'));
                 
-                player.load(selectedVideo.id);
+                player.load(selectedVideo.id, options.immediate);
                 addVideoActiveState(selectedVideo.id);
                 isProductsInitialized = false;
                 renderProducts(selectedVideo.id, selectedVideo.loginId);
                 showTitle(options, selectedVideo.title);                        
             }
             else if (getTarget('tvp-product-item')) {
-                pkTrack(this.querySelector('.tvp-product-item').getAttribute('data-id'));
+                pkTrack(target.getAttribute('data-id'));
+                window.open(target.getAttribute('href'),'_blank');
             }
             else if (getTarget('tvp-video-play')) {
                 player.instance.play();
+            }
+            else if (getTarget('tvp-slide-up')){
+                $(target).css("pointer-events", "none");
+                var prodsSection = $('.tvp-player-product-section');
+                var prodsScroller = prodsSection.find('.tvp-products-scroller');
+                if (isHidden) {
+                    prodsScroller.fadeTo('slow', 1, function(){
+                        renderProducts(selectedVideo.id, loginId);
+                        $(target).css("pointer-events", "auto")
+                                .children()
+                                    .removeClass('tvp-plus')
+                                        .addClass('tvp-minus');
+                        $(this).show('slow');
+                        isHidden = false;
+                        resizeParent();
+                    });
+                }else{
+                    prodsScroller.fadeTo('slow', 0, function(){
+                        $(target).css("pointer-events", "auto")
+                                .children()
+                                    .removeClass('tvp-minus')
+                                        .addClass('tvp-plus');
+                        $(this).hide('slow');
+                        isHidden = true;
+                    });
+                }
             }
         };
 

@@ -19,6 +19,7 @@
     var inlineEl = null;
     var productRatingEmptyIsBordered = false;
     var hasProducts = true;
+    var generalOptions = {};
 
     var renderedApproach = function () {
         if (document.body.clientWidth < breakpoint) {
@@ -34,7 +35,7 @@
         if (window.parent) {
             window.parent.postMessage({
                 event: 'tvp_'+ inlineEl.id.replace(/-/g,'_') +':resize',
-                height: inlineEl.offsetHeight + 'px'
+                height: inlineEl.scrollHeight + 'px'
             }, '*');
         }
     }
@@ -61,6 +62,7 @@
     var loadProducts = function(videoId, loginId, fn) {
         if (!videoId) return;
         var src = '//api.tvpage.com/v1/videos/' + videoId + '/products?X-login-id=' + loginId;
+        src += '&o=' + generalOptions.products_order_by + '&od=' + generalOptions.products_order_direction;
         var cbName = 'tvp_' + Math.floor(Math.random() * 555);
         src += '&callback=' + cbName;
         var script = document.createElement('script');
@@ -157,7 +159,9 @@
     var renderProducts = function (vid, lid) {        
         var products =  document.getElementById('tvpProductsView');
         var deInitProd = function () {
-            $('#productContent').slick('unslick');
+            if(products.length > 1){
+                $('#productContent').slick('unslick');   
+            }
             products.innerHTML = "";
         };
         var layoutProducts = function () {            
@@ -205,41 +209,43 @@
                 $(templates.productsNav).appendTo(_container);
             }
 
-            $(productContent).slick({
-                arrows: true,
-                prevArrow: document.querySelector('.tvp-products-prev'),
-                nextArrow: document.querySelector('.tvp-products-next'),
-                slidesToShow: 1,
-                slidesToScroll: 1,
-                dots: true,
-                dotsClass: 'tvp-slider-dots',
-                appendDots: $('.tvp-products-nav'),
-                responsive:[
-                    {
-                        breakpoint: 769,
-                        settings: {
-                            arrows: false,
-                            centerPadding: '0px',
-                            slidesToShow: 1,
-                            slidesToScroll: 1,
-                            dots: false
+            if(productData.length > 1){
+                $(productContent).slick({
+                    arrows: true,
+                    prevArrow: document.querySelector('.tvp-products-prev'),
+                    nextArrow: document.querySelector('.tvp-products-next'),
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    dots: true,
+                    dotsClass: 'tvp-slider-dots',
+                    appendDots: $('.tvp-products-nav'),
+                    responsive:[
+                        {
+                            breakpoint: 769,
+                            settings: {
+                                arrows: false,
+                                centerPadding: generalOptions.product_holder_slide_center_padding,
+                                slidesToShow: 1,
+                                slidesToScroll: 1,
+                                dots: false
+                            }
                         }
+                    ]
+                }).on('setPosition', function(s) {
+                    var $productItms = $('.tvp-product-item');
+                    for (var i = $productItms.length - 1; i >= 0; i--) {                    
+                        var defaultTitle = $productItms[i].getAttribute('data-title');
+                        $productItms[i].querySelector('.tvp-product-info-title').innerHTML = defaultTitle;
                     }
-                ]
-            }).on('setPosition', function(s) {
-                var $productItms = $('.tvp-product-item');
-                for (var i = $productItms.length - 1; i >= 0; i--) {                    
-                    var defaultTitle = $productItms[i].getAttribute('data-title');
-                    $productItms[i].querySelector('.tvp-product-info-title').innerHTML = defaultTitle;
-                }
+                    $('.tvp-product-info-title').ellipsis({
+                        row: 2
+                    });  
+                });
+                addProductActiveState(productData[0].id);
                 $('.tvp-product-info-title').ellipsis({
-                    row: 2
-                });  
-            });
-            addProductActiveState(productData[0].id);
-            $('.tvp-product-info-title').ellipsis({
-                row: 3
-            });  
+                    row: 3
+                });
+            }
         };
 
         if(!isProductsInitialized){
@@ -298,6 +304,7 @@
     };
 
     function Inline(el, options) {
+        generalOptions = options;
         currentApproach = renderedApproach();
         xchg = options.xchg || false;
         loginId = (options.loginId || options.loginid) || 0;
@@ -360,7 +367,8 @@
                             breakpoint: 769,
                             settings: {
                                 arrows: false,
-                                centerPadding: '0px',
+                                centerPadding: options.videos_carousel_center_padding,
+                                centerMode : true,
                                 slidesToShow: 2,
                                 slidesToScroll: 2,
                                 dots: true
@@ -437,6 +445,8 @@
             var getChannelVideos = function(callback){
                 var channel_id = Utils.isEmpty(channel) ? channelId : channel.id;
                 var params = channel.parameters || {};
+                params.o = options.videos_order_by;
+                params.od = options.videos_order_direction;
                 var src = '//api.tvpage.com/v1/channels/' + channel_id + '/videos?X-login-id=' + loginId;
                 for (var p in params) { src += '&' + p + '=' + params[p];}
                 var cbName = options.callbackName || 'tvp_' + Math.floor(Math.random() * 555);
