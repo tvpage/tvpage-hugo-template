@@ -1,488 +1,501 @@
 
 exports.tvpGUITest = function (options) {
-    const SECOUND = 1000;
+  const SECOUND = 1000;
 
-    var client, targetIframeId, parent, msg,
-        isPlaying = false,
-        isFullScreen = false,
-        isMobile = (options !== undefined && options.isMobile !== undefined ? options.isMobile : false),
-        orientation =  (options !== undefined && options.orientation ? options.orientation : 'PORTRAIT'),
-        modalOverlay = options.modalOverlay,
-        modalCloseId = options.modalCloseId,
-        DATA = (options !== undefined && options.DATA !== undefined ? options.DATA : {}),
-        debug = false;
+  var client, targetIframeId, parent, msg,
+      isPlaying = false,
+      isFullScreen = false,
+      isMobile = (options !== undefined && options.isMobile ? options.isMobile : false),
+      orientation =  (options !== undefined && options.orientation ? options.orientation : 'PORTRAIT'),
+      modalOverlay = options.modalOverlay,
+      modalCloseId = options.modalCloseId,
+      DATA = (options !== undefined && options.DATA !== undefined ? options.DATA : {}),
+      debug = false;
 
-    if (DATA.SLA === undefined)
-      DATA.SLA = SECOUND;
+  if (DATA.SLA === undefined)
+    DATA.SLA = SECOUND;
 
-    var log = function (result) {
-      if (debug === true) {
-        console.log(">> DEBUG: <<");
-        console.log(result);
+  var log = function (result) {
+    if (debug === true) {
+      console.log(">> DEBUG: <<");
+      console.log(result);
+    }
+
+    if (msg !== undefined && msg !== "")
+      console.log(">> " + msg + " <<");
+
+    msg = undefined;
+  };
+
+  return {
+    ICON_DEFAULT_SCREEN: "M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z",
+    ICON_FULL_SCREEN: "M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z",
+    ICON_PLAYING: "M8 5v14l11-7z",
+    ICON_PAUSE: "M6 19h4V5H6v14zm8-14v14h4V5h-4z",
+    init: function (browser, type, id, count, target, time) {
+      targetIframeId = count;
+
+      client = browser.url(DATA.URL)
+        .pause(DATA.SLA);
+
+      if (isMobile === false)
+        client.resizeWindow(1440, 900);
+
+      if (orientation === 'LANDSCAPE')
+        client.setOrientation(orientation);
+          
+      client.waitForElementVisible(id + " iframe[gesture=media]", DATA.SLA);
+
+      parent = target;
+
+      if (count !== undefined)
+        client.frame(targetIframeId);
+
+      return client;
+    },
+    widgetTitle: function (iframeId, target, expected, type) {
+      if (type === undefined)
+        type = 'css selector';
+
+      client.element(type)
+        .waitForElementVisible(iframeId, DATA.SLA)
+        .waitForElementVisible(iframeId + " > " + target, DATA.SLA);
+
+      this.text(iframeId + " > " + target, expected);
+    },
+    widgetNav: function (iframeId, count) {
+      var index = 1;
+
+      client.element('css selector')
+        .waitForElementVisible(iframeId + " > div.tvp-carousel-content.slick-initialized.slick-slider", DATA.SLA);
+
+      client.element('css selector')
+        .waitForElementVisible(iframeId + " > div.tvp-carousel-arrow.prev.inactive", DATA.SLA)
+        .waitForElementVisible(iframeId + " > div.tvp-carousel-arrow.next", DATA.SLA);
+
+      for (i=0;i < count;i++) {
+        client.element('css selector')
+          .moveToElement(iframeId + " > div.tvp-carousel-arrow.next", 20, 20)
+          .mouseButtonClick('left')
+          .pause(SECOUND);
+
+        index++;
+        client.expect.element("div[data-slick-index='" + i + "']").to.have.attribute('aria-hidden').which.equals('true');
       }
 
-      if (msg !== undefined && msg !== "")
-        console.log(">> " + msg + " <<");
-
-      msg = undefined;
-    };
-
-    return {
-      ICON_DEFAULT_SCREEN: "M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z",
-      ICON_FULL_SCREEN: "M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z",
-      ICON_PLAYING: "M8 5v14l11-7z",
-      ICON_PAUSE: "M6 19h4V5H6v14zm8-14v14h4V5h-4z",
-      init: function (browser, type, id, count, target) {
-        targetIframeId = count;
-
-        client = browser.url(DATA.URL)
-          .pause(DATA.SLA);
-
-        if (isMobile === false)
-          client.resizeWindow(1440, 900);
-
-        if (orientation === 'LANDSCAPE')
-          client.setOrientation(orientation);
-          
-        client.waitForElementVisible(id + " iframe[gesture=media]", DATA.SLA);
-
-        parent = target;
-
-        if (count !== undefined)
-          client.frame(targetIframeId);
-
-        return client;
-      },
-      widgetTitle: function (iframeId, target, expected, type) {
-        if (type === undefined)
-          type = 'css selector';
-
-        client.element(type)
-          .waitForElementVisible(iframeId, DATA.SLA)
-          .waitForElementVisible(iframeId + " > " + target, DATA.SLA);
-
-        this.text(iframeId + " > " + target, expected);
-      },
-      widgetNav: function (iframeId, count) {
-        var index = 1;
-
+      for (i=0;i < count;i++) {
         client.element('css selector')
-          .waitForElementVisible(iframeId + " > div.tvp-carousel-content.slick-initialized.slick-slider", DATA.SLA);
+          .moveToElement(iframeId + " > div.tvp-carousel-arrow.prev", 20, 20)
+          .mouseButtonClick('left')
+          .pause(SECOUND);
 
+        client.expect.element("div[data-slick-index='" + index-- + "']").to.have.attribute('aria-hidden').which.equals('false');
+      }
+    },
+    moveAndClick: function (target, x, y, button, isVisible) {
+      if (x === undefined)
+        x = 0;
+
+      if (y === undefined)
+        y = 0;
+
+      if (button === undefined)
+        button = "left";
+
+      if (isVisible === true) {
         client.element('css selector')
-          .waitForElementVisible(iframeId + " > div.tvp-carousel-arrow.prev.inactive", DATA.SLA)
-          .waitForElementVisible(iframeId + " > div.tvp-carousel-arrow.next", DATA.SLA);
+          .waitForElementVisible(target, DATA.SLA)
+          .moveToElement(target, x, y)
+          .mouseButtonClick(button);
+      } else {
+        client.element('css selector')
+          .waitForElementPresent(target, DATA.SLA)
+          .moveToElement(target, x, y)
+          .mouseButtonClick(button);
+      }
+    },
+    modalLoad: function (target, x, y) {
+      client
+        .waitForElementPresent(target + " > div.tvp-video", DATA.SLA)
+        .click(target + " > div.tvp-video");
 
-        for (i=0;i < count;i++) {
-          client.element('css selector')
-            .moveToElement(iframeId + " > div.tvp-carousel-arrow.next", 20, 20)
-            .mouseButtonClick('left')
-            .pause(SECOUND);
+      client.frameParent();
+    },
+    modalSanity: function (modalId, videoId) {
+      this.modalLoad(videoId, 160, 100),
+      this.pause(),
 
-          index++;
-          client.expect.element("div[data-slick-index='" + i + "']").to.have.attribute('aria-hidden').which.equals('true');
-        }
+      client
+        .waitForElementVisible('div#tvp-modal-overlay-carousel-1', DATA.SLA)
+        .waitForElementVisible('div#tvp-modal-carousel-1', DATA.SLA)
+        .pause(SECOUND),
 
-        for (i=0;i < count;i++) {
-          client.element('css selector')
-            .moveToElement(iframeId + " > div.tvp-carousel-arrow.prev", 20, 20)
-            .mouseButtonClick('left')
-            .pause(SECOUND);
+      client.expect.element(modalId + ' h4#tvp-modal-title-carousel-1').text.to.equal(DATA.FIRST_VIDEO_TITLE),
+      client.expect.element(modalId + ' div#tvp-modal-close-carousel-1').to.be.present;
 
-          client.expect.element("div[data-slick-index='" + index-- + "']").to.have.attribute('aria-hidden').which.equals('false');
-        }
-      },
-      moveAndClick: function (target, x, y, button, isVisible) {
-        if (x === undefined)
-          x = 0;
+      if (isMobile === false) {
+        client.frame(2);
+        client.expect.element(parent + ' div.tvp-products-headline').text.to.equal(DATA.PRODUCT_HEADLINE);
+      } else {
+        client.frame(2);
+        client.expect.element('p.tvp-products-text').text.to.equal(DATA.PRODUCT_HEADLINE);
+      }
 
-        if (y === undefined)
-          y = 0;
+      this.modalClose(modalId);
+    },
+    modalLoadPerformance: function (iframeId, videoId, target, targetIframe) {
+      client.frameParent()
+        .pause(SECOUND)
+        .frame(targetIframeId),
+      this.modalLoad(videoId, 160, 100),
+      this.pause();
 
-        if (button === undefined)
-          button = "left";
+      targetIframeId = targetIframe;
 
-        if (isVisible === true) {
-          client.element('css selector')
-            .waitForElementVisible(target, DATA.SLA)
-            .moveToElement(target, x, y)
-            .mouseButtonClick(button);
-        } else {
-          client.element('css selector')
-            .waitForElementPresent(target, DATA.SLA)
-            .moveToElement(target, x, y)
-            .mouseButtonClick(button);
-        }
-      },
-      modalLoad: function (target, x, y) {
+      client
+        .waitForElementVisible(iframeId, DATA.SLA)
+        .waitForElementVisible(iframeId + " iframe.tvp-iframe-modal[gesture='media']", DATA.SLA)
+        .frame(targetIframeId),
+
+      client.expect.element(target).to.be.present;
+      client.expect.element(target + " div#tvplayer-playbutton").to.be.present;
+      client.expect.element(target + " div#tvplayer-playbutton-icon").to.be.present;
+
+      this.pause();
+    },
+    modalClose: function (modalId) {
+      client.frameParent(),
+      this.pause();
+
+      this.moveAndClick(modalId + " " + modalCloseId, DATA.SLA, 10, 10, 'left', true);
+
+      client.expect.element(modalOverlay).to.have.css('display', 'hidden');
+      client.expect.element(modalId).to.have.css('display', 'none');
+
+      this.pause();
+    },
+    productModal: function () {
+      var regex = (DATA.PRODUCT_TITLE_REGEX !== undefined ? DATA.PRODUCT_TITLE_REGEX : /\ /i);
+
+      client.waitForElementVisible(parent, DATA.SLA);
+
+      client.expect.element(parent + " a#tvp-product-83102610").to.be.present;
+      client.expect.element(parent + " a#tvp-product-83102610").to.have.attribute('href', DATA.PRODUCT_URL);
+
+      // Product pop-up
+      client
+        .moveToElement(parent + " a#tvp-product-83102610", 70, 70)
+        .pause(2*SECOUND);
+
+      if (isMobile === false) {
+        client.expect.element(parent + " a#tvp-product-83102610").to.have.attribute('class', 'tvp-product active');
+        client.expect.element(parent + " a#tvp-product-popup-83102610").to.be.present;
+        client.expect.element(parent + " a#tvp-product-popup-83102610").to.have.attribute('href', DATA.PRODUCT_URL);
+        client.expect.element(parent + " a#tvp-product-popup-83102610 > div.tvp-product-popup-image").to.have.css("background-image", "url(" + DATA.PRODUCT_IMG + ");");
+        client.expect.element(parent + " a#tvp-product-popup-83102610 > p.tvp-product-title").text.to.match(regex);
+        client.expect.element(parent + " a#tvp-product-popup-83102610 > p.tvp-product-price").text.to.equal("");
+        client.expect.element(parent + " a#tvp-product-popup-83102610 > button.tvp-product-cta").to.be.present;
+        client.expect.element(parent + " div.tvp-inner-arrow-indicator").to.be.present;
+      }
+
+      client.pause(SECOUND);
+    },
+    productModalLink: function () {
+      // Click on product from modal
+      if (isMobile === true) {
         client
-          .waitForElementPresent(target + " > div.tvp-video", DATA.SLA)
-          .click(target + " > div.tvp-video");
+          .click(parent + " a#tvp-product-83102610")
+          .windowHandles(function (result) {
+            this.switchWindow(result.value[1]);
+            this.verify.urlContains(DATA.PRODUCT_SECURE_URL);
+            this.closeWindow();
 
-        client.frameParent();
-      },
-      modalSanity: function (modalId, videoId) {
-        this.modalLoad(videoId, 160, 100),
-        this.pause(),
-
-        client
-          .waitForElementVisible('div#tvp-modal-overlay-carousel-1', DATA.SLA)
-          .waitForElementVisible('div#tvp-modal-carousel-1', DATA.SLA)
-          .pause(SECOUND),
-
-        client.expect.element(modalId + ' h4#tvp-modal-title-carousel-1').text.to.equal(DATA.FIRST_VIDEO_TITLE),
-        client.expect.element(modalId + ' div#tvp-modal-close-carousel-1').to.be.present;
-
-        if (isMobile === false) {
-          client.expect.element(modalId + ' div.tvp-products-headline').text.to.equal(DATA.PRODUCT_HEADLINE);
-        } else {
-          client.frame(2);
-          client.expect.element('p.tvp-products-text').text.to.equal(DATA.PRODUCT_HEADLINE);
-        }
-
-        this.modalClose(modalId);
-      },
-
-      modalLoadPerformance: function (iframeId, videoId, target, targetIframe) {
-        client.frameParent()
-          .pause(SECOUND)
-          .frame(targetIframeId),
-        this.modalLoad(videoId, 160, 100),
-        this.pause();
-
-        targetIframeId = targetIframe;
-
-        client
-          .waitForElementVisible(iframeId, DATA.SLA)
-          .waitForElementVisible(iframeId + " iframe.tvp-iframe-modal[gesture='media']", DATA.SLA)
-          .frame(targetIframeId),
-
-        client.expect.element(target).to.be.present;
-        client.expect.element(target + " div#tvplayer-playbutton").to.be.present;
-        client.expect.element(target + " div#tvplayer-playbutton-icon").to.be.present;
-
-        this.pause();
-      },
-      modalClose: function (modalId) {
-        client.frameParent(),
-        this.pause();
-
-        this.moveAndClick(modalId + " " + modalCloseId, DATA.SLA, 10, 10, 'left', true);
-
-        client.expect.element(modalOverlay).to.have.css('display', 'hidden');
-        client.expect.element(modalId).to.have.css('display', 'none');
-
-        this.pause();
-      },
-      productModal: function () {
-        var regex = (DATA.PRODUCT_TITLE_REGEX === undefined ? /\ /i : DATA.PRODUCT_TITLE_REGEX);
-
-        client.waitForElementVisible(parent, DATA.SLA);
-
-        client.expect.element(parent + " a#tvp-product-83102610").to.be.present;
-        client.expect.element(parent + " a#tvp-product-83102610").to.have.attribute('href', DATA.PRODUCT_URL);
-
-        // Product pop-up
-        client
-          .moveToElement(parent + " a#tvp-product-83102610", 70, 70)
+            this.switchWindow(result.value[0]);
+            this.waitForElementVisible("div#tvp-modal-iframe-holder-carousel-1", DATA.SLA);
+            this.waitForElementVisible("iframe.tvp-iframe-modal[gesture='media']", DATA.SLA);
+            this.frame(targetIframeId);
+          })
           .pause(2*SECOUND);
+      } else {
+        client
+          .waitForElementVisible(parent + " a#tvp-product-83102610", DATA.SLA)
+          .moveToElement(parent + " a#tvp-product-83102610", 70, 70)
+          .waitForElementVisible(parent + " a.tvp-product-popup", DATA.SLA)
+          .pause(SECOUND)
+          .mouseButtonClick("left")
+          .windowHandles(function (result) {
+            this.switchWindow(result.value[1]);
+            this.verify.urlContains(DATA.PRODUCT_SECURE_URL);
+            this.closeWindow();
 
-        if (isMobile === false) {
-          client.expect.element(parent + " a#tvp-product-83102610").to.have.attribute('class', 'tvp-product active');
-          client.expect.element(parent + " a#tvp-product-popup-83102610").to.be.present;
-          client.expect.element(parent + " a#tvp-product-popup-83102610").to.have.attribute('href', DATA.PRODUCT_URL);
-          client.expect.element(parent + " a#tvp-product-popup-83102610 > div.tvp-product-popup-image").to.have.css("background-image", "url(" + DATA.PRODUCT_IMG + ");");
-          client.expect.element(parent + " a#tvp-product-popup-83102610 > p.tvp-product-title").text.to.match(regex);
-          client.expect.element(parent + " a#tvp-product-popup-83102610 > p.tvp-product-price").text.to.equal("");
-          client.expect.element(parent + " a#tvp-product-popup-83102610 > button.tvp-product-cta").to.be.present;
-          client.expect.element(parent + " div.tvp-inner-arrow-indicator").to.be.present;
-        }
+            this.switchWindow(result.value[0]);
+            this.waitForElementVisible("div#tvp-modal-iframe-holder-carousel-1", DATA.SLA);
+            this.waitForElementVisible("iframe.tvp-iframe-modal[gesture='media']", DATA.SLA);
+            this.frame(targetIframeId);
+          })
+          .pause(5*SECOUND);
 
-        client.pause(SECOUND);
-      },
-      productModalLink: function () {
-        // Click on product from modal
-        if (isMobile === true) {
-          client
-            .click(parent + " a#tvp-product-83102610")
-            .windowHandles(function (result) {
-              this.switchWindow(result.value[1]);
-              this.verify.urlContains(DATA.PRODUCT_SECURE_URL);
-              this.closeWindow();
+        // Click on product from pop-up thumnail
+        client
+          .waitForElementVisible(parent + " a#tvp-product-83102610", DATA.SLA)
+          .moveToElement(parent + " a#tvp-product-83102610", 70, 70)
+          .waitForElementVisible(parent + " div.tvp-product-popup-image", DATA.SLA)
+          .moveToElement(parent + " div.tvp-product-popup-image", 105, 105)
+          .mouseButtonClick("left")
+          .pause(SECOUND)
+          .windowHandles(function (result) {
+            this.switchWindow(result.value[1]);
+            this.verify.urlContains(DATA.PRODUCT_SECURE_URL);
+            this.closeWindow();
 
-              this.switchWindow(result.value[0]);
-              this.waitForElementVisible("div#tvp-modal-iframe-holder-carousel-1", DATA.SLA);
-              this.waitForElementVisible("iframe.tvp-iframe-modal[gesture='media']", DATA.SLA);
-              this.frame(targetIframeId);
-            })
-            .pause(2*SECOUND);
-        } else {
-          client
-            .waitForElementVisible(parent + " a#tvp-product-83102610", DATA.SLA)
-            .moveToElement(parent + " a#tvp-product-83102610", 70, 70)
-            .waitForElementVisible(parent + " a.tvp-product-popup", DATA.SLA)
-            .pause(SECOUND)
-            .mouseButtonClick("left")
-            .windowHandles(function (result) {
-              this.switchWindow(result.value[1]);
-              this.verify.urlContains(DATA.PRODUCT_SECURE_URL);
-              this.closeWindow();
+            this.switchWindow(result.value[0]);
+            this.waitForElementVisible("div#tvp-modal-iframe-holder-carousel-1", DATA.SLA);
+            this.waitForElementVisible("iframe.tvp-iframe-modal[gesture='media']", DATA.SLA);
+            this.frame(targetIframeId);
+          })
+          .pause(5*SECOUND);
 
-              this.switchWindow(result.value[0]);
-              this.waitForElementVisible("div#tvp-modal-iframe-holder-carousel-1", DATA.SLA);
-              this.waitForElementVisible("iframe.tvp-iframe-modal[gesture='media']", DATA.SLA);
-              this.frame(targetIframeId);
-            })
-            .pause(5*SECOUND);
+        // Click on product from pop-up title
+        client
+          .waitForElementVisible(parent + " a#tvp-product-83102610", DATA.SLA)
+          .moveToElement(parent + " a#tvp-product-83102610", 70, 70)
+          .waitForElementVisible(parent + " p.tvp-product-title", DATA.SLA)
+          .moveToElement(parent + " p.tvp-product-title", 40, 20)
+          .pause(SECOUND)
+          .mouseButtonClick("left")
+          .windowHandles(function (result) {
+            this.switchWindow(result.value[1]);
+            this.verify.urlContains(DATA.PRODUCT_SECURE_URL);
+            this.closeWindow();
 
-          // Click on product from pop-up thumnail
-          client
-            .waitForElementVisible(parent + " a#tvp-product-83102610", DATA.SLA)
-            .moveToElement(parent + " a#tvp-product-83102610", 70, 70)
-            .waitForElementVisible(parent + " div.tvp-product-popup-image", DATA.SLA)
-            .moveToElement(parent + " div.tvp-product-popup-image", 105, 105)
-            .mouseButtonClick("left")
-            .pause(SECOUND)
-            .windowHandles(function (result) {
-              this.switchWindow(result.value[1]);
-              this.verify.urlContains(DATA.PRODUCT_SECURE_URL);
-              this.closeWindow();
+            this.switchWindow(result.value[0]);
+            this.waitForElementVisible("div#tvp-modal-iframe-holder-carousel-1", DATA.SLA);
+            this.waitForElementVisible("iframe.tvp-iframe-modal[gesture='media']", DATA.SLA);
+            this.frame(targetIframeId);
+          })
+          .pause(5*SECOUND);
 
-              this.switchWindow(result.value[0]);
-              this.waitForElementVisible("div#tvp-modal-iframe-holder-carousel-1", DATA.SLA);
-              this.waitForElementVisible("iframe.tvp-iframe-modal[gesture='media']", DATA.SLA);
-              this.frame(targetIframeId);
-            })
-            .pause(5*SECOUND);
+        // Click on product from pop-up cta
+        client
+          .waitForElementVisible(parent + " a#tvp-product-83102610", DATA.SLA)
+          .moveToElement(parent + " a#tvp-product-83102610", 70, 70)
+          .waitForElementVisible(parent + " button.tvp-product-cta", DATA.SLA)
+          .moveToElement(parent + " button.tvp-product-cta", 40, 20)
+          .mouseButtonClick("left")
+          .pause(SECOUND)
+          .windowHandles(function (result) {
+            this.switchWindow(result.value[1]);
+            this.verify.urlContains(DATA.PRODUCT_SECURE_URL);
+            this.closeWindow();
 
-          // Click on product from pop-up title
-          client
-            .waitForElementVisible(parent + " a#tvp-product-83102610", DATA.SLA)
-            .moveToElement(parent + " a#tvp-product-83102610", 70, 70)
-            .waitForElementVisible(parent + " p.tvp-product-title", DATA.SLA)
-            .moveToElement(parent + " p.tvp-product-title", 40, 20)
-            .pause(SECOUND)
-            .mouseButtonClick("left")
-            .windowHandles(function (result) {
-              this.switchWindow(result.value[1]);
-              this.verify.urlContains(DATA.PRODUCT_SECURE_URL);
-              this.closeWindow();
+            this.switchWindow(result.value[0]);
+            this.waitForElementVisible("div#tvp-modal-iframe-holder-carousel-1", DATA.SLA);
+            this.waitForElementVisible("iframe.tvp-iframe-modal[gesture='media']", DATA.SLA);
+            this.frame(targetIframeId);
+          })
+          .pause(5*SECOUND);
+      }
+    },
+    playerLoadPerformance: function (count) {
+      targetIframe = count;
 
-              this.switchWindow(result.value[0]);
-              this.waitForElementVisible("div#tvp-modal-iframe-holder-carousel-1", DATA.SLA);
-              this.waitForElementVisible("iframe.tvp-iframe-modal[gesture='media']", DATA.SLA);
-              this.frame(targetIframeId);
-            })
-            .pause(5*SECOUND);
+      if (count !== undefined)
+        client.frame(targetIframe);
 
-          // Click on product from pop-up cta
-          client
-            .waitForElementVisible(parent + " a#tvp-product-83102610", DATA.SLA)
-            .moveToElement(parent + " a#tvp-product-83102610", 70, 70)
-            .waitForElementVisible(parent + " button.tvp-product-cta", DATA.SLA)
-            .moveToElement(parent + " button.tvp-product-cta", 40, 20)
-            .mouseButtonClick("left")
-            .pause(SECOUND)
-            .windowHandles(function (result) {
-              this.switchWindow(result.value[1]);
-              this.verify.urlContains(DATA.PRODUCT_SECURE_URL);
-              this.closeWindow();
+      client.element('css selector')
+        .waitForElementVisible(parent + " div#tvplayer-playbutton", DATA.SLA)
+        .waitForElementPresent(parent + " div#ControlBarFloater", DATA.SLA);
 
-              this.switchWindow(result.value[0]);
-              this.waitForElementVisible("div#tvp-modal-iframe-holder-carousel-1", DATA.SLA);
-              this.waitForElementVisible("iframe.tvp-iframe-modal[gesture='media']", DATA.SLA);
-              this.frame(targetIframeId);
-            })
-            .pause(5*SECOUND);
-        }
-      },
-      playerLoadPerformance: function (count) {
-        targetIframe = count;
+      // sanity check
+      client.expect.element(parent + " div#ControlBarFloater > div.tvp-control-volume-container").to.be.present;
+      client.expect.element(parent + " div#ControlBarFloater > div.tvp-control-volume-container > div.tvp-control-volume-selector-container").to.be.present;
+      client.expect.element(parent + " div#ControlBarFloater > div.tvp-control-volume-container").to.be.present;
+      client.expect.element(parent + " div#CtrlClosedCaptionImage").to.be.present;
 
-        if (count !== undefined)
-          client.frame(targetIframe);
+      // tvplayer icon check
+      client.expect.element(parent + " #tvplayer-playbutton-icon").to.be.present;
+    },
+    playerStart: function (x, y) {
+      client.waitForElementVisible(parent + ' div#tvplayer-playbutton-icon', DATA.SLA)
+      client.expect.element(parent + " #tvplayer-playbutton-icon").to.be.present,
 
-        client.element('css selector')
-          .waitForElementVisible(parent + " div#tvplayer-playbutton", DATA.SLA)
-          .waitForElementPresent(parent + " div#ControlBarFloater", DATA.SLA);
+      client.waitForElementVisible(parent + ' div#tvplayer-playbutton-icon', DATA.SLA)
+      client.expect.element(parent + " #tvplayer-playbutton-icon").to.be.present,
 
-        // sanity check
-        client.expect.element(parent + " div#ControlBarFloater > div.tvp-control-volume-container").to.be.present;
-        client.expect.element(parent + " div#ControlBarFloater > div.tvp-control-volume-container > div.tvp-control-volume-selector-container").to.be.present;
-        client.expect.element(parent + " div#ControlBarFloater > div.tvp-control-volume-container").to.be.present;
-        client.expect.element(parent + " div#CtrlClosedCaptionImage").to.be.present;
+      this.moveAndClick(parent + ' div#tvplayer-playbutton-icon', 12, 15),
+      client.waitForElementPresent(parent + " div#tvp-spinner", DATA.SLA),
+      client.expect.element(parent + ' div#tvp-spinner').to.have.css('display').which.equals('none'),
+      client.expect.element(parent + ' div#tvplayer-playbutton').not.to.be.present,
+      client.expect.element(parent + ' div#tvplayer-playbutton-icon').not.to.be.present,        
+      this.pause(3);
 
-        // tvplayer icon check
-        client.expect.element(parent + " #tvplayer-playbutton-icon").to.be.present;
-      },
-      playerStart: function (x, y) {
-        client.waitForElementVisible(parent + ' div#tvplayer-playbutton-icon', DATA.SLA)
-        client.expect.element(parent + " #tvplayer-playbutton-icon").to.be.present,
+      isPlaying = true;
+    },
+    playerSanity: function () {
+      this.playerStart(),
+      this.playerShowControl('div#ControlBarFloater > div.tvp-parent-seekbar'),
+      this.playerTime();
+    },
+    playerClickPause: function () {
+      this.moveAndClick(parent + ' div#ControlBarFloater > div.tvp-control-playpause', 15, 15);
 
-        client.waitForElementVisible(parent + ' div#tvplayer-playbutton-icon', DATA.SLA)
-        client.expect.element(parent + " #tvplayer-playbutton-icon").to.be.present,
-
-        this.moveAndClick(parent + ' div#tvplayer-playbutton-icon', 12, 15),
-        client.waitForElementPresent(parent + " div#tvp-spinner", DATA.SLA),
-        client.expect.element(parent + ' div#tvp-spinner').to.have.css('display').which.equals('none'),
-        client.expect.element(parent + ' div#tvplayer-playbutton').not.to.be.present,
-        client.expect.element(parent + ' div#tvplayer-playbutton-icon').not.to.be.present,        
-        this.pause(3);
-
+      if (isPlaying === false) {
+        client.expect.element(parent + ' div#ControlBarFloater > div.tvp-control-playpause path').to.have.attribute("d", this.ICON_PLAYING);
         isPlaying = true;
-      },
-      playerSanity: function () {
-        this.playerStart(),
-        this.playerShowControl('div#ControlBarFloater > div.tvp-parent-seekbar'),
-        this.playerTime();
-      },
-      playerClickPause: function () {
-        this.moveAndClick(parent + ' div#ControlBarFloater > div.tvp-control-playpause', 15, 15);
+      } else {
+        client.expect.element(parent + ' div#ControlBarFloater > div.tvp-control-playpause path').to.have.attribute("d", this.ICON_PAUSE);
+        isPlaying = false;
+      }
 
-        if (isPlaying === false) {
-          client.expect.element(parent + ' div#ControlBarFloater > div.tvp-control-playpause path').to.have.attribute("d", this.ICON_PLAYING);
-          isPlaying = true;
+      this.pause(1);
+    },
+    playerClickOverlay: function () {
+      client.element('css selector')
+        .waitForElementPresent(paernt + ' div.tvp-control-overlay', DATA.SLA)
+        .click(parent + ' div.tvp-control-overlay');
+    },
+    playerPauseAndPlay: function () {
+      this.playerClickPause(),
+      this.playerTime(),
+      this.playerClickPause();
+    },
+    playerCheckFullScreen: function (keys) {
+      if (keys === undefined) {
+        if (isMobile === true) {
+          client.element('css selector')
+            .click(parent + ' div.tvp-control-overlay')
+            .pause(SECOUND)
+            .waitForElementVisible(parent + " div.tvp-control-fullscreen", DATA.SLA)
+            .click(parent + " div.tvp-control-fullscreen");
         } else {
-          client.expect.element(parent + ' div#ControlBarFloater > div.tvp-control-playpause path').to.have.attribute("d", this.ICON_PAUSE);
-          isPlaying = false;
-        }
-
-        this.pause(1);
-      },
-      playerClickOverlay: function () {
-        client.element('css selector')
-          .waitForElementPresent(paernt + ' div.tvp-control-overlay', DATA.SLA)
-          .click(parent + ' div.tvp-control-overlay');
-      },
-      playerPauseAndPlay: function () {
-        this.playerClickPause(),
-        this.playerTime(),
-        this.playerClickPause();
-      },
-      playerCheckFullScreen: function (keys) {
-        if (keys === undefined) {
           client.element('css selector')
             .moveToElement(parent + ' iframe', 20, 20)
             .waitForElementVisible(parent + " div.tvp-control-fullscreen", DATA.SLA)
             .click(parent + " div.tvp-control-fullscreen");
-        } else {
-          return false;
-        }
-
-        if (isFullScreen === false) {
-          client.expect.element(parent + ' div.tvp-control-fullscreen > svg.tvp-controlbar-svg path:nth-child(2)').to.have.attribute('d', this.ICON_DEFAULT_SCREEN);
-          isFullScreen = true;
-        } else {
-          client.expect.element(parent + ' div.tvp-control-fullscreen > svg.tvp-controlbar-svg path:nth-child(2)').to.have.attribute('d', this.ICON_FULL_SCREEN);
-          isFullScreen = false;          
-        }
-      },
-      playerShowControl: function (target) {
-        if (isMobile === true) {
-          client.element('css selector')
-            .click(parent + ' div.tvp-control-overlay')
-            .waitForElementPresent(parent + " " + target, DATA.SLA)
-            .click(parent + ' div.tvp-control-overlay');
-        } else {
-          client.element('css selector')
-            .moveToElement(parent + ' div#ControlBarFloater', 10, 10)
-            .waitForElementVisible(parent + " " + target, DATA.SLA)
-            .pause(SECOUND);
-        }
-      },
-      playerSkip: function (x) {
-        var seekbar = 'div#ControlBarFloater > div.tvp-parent-seekbar',
-            y = 20;
-
-        if (isMobile === true) {
-          if (orientation === 'PORTRAIT') {
-            y = 4;
-          } else if (orientation === 'LANDSCAPE') {
-            y = 16;
           }
-        }
-
-        this.playerShowControl(seekbar),
-        this.moveAndClick(parent + " " + seekbar, x, y, "left", true),
-        this.playerTime();
-        
-        client.expect.element(parent + ' div#ControlBarFloater > div.tvp-control-playpause').to.have.css('display').which.not.equals('none');
-        client.expect.element(parent + ' div#ControlBarFloater > div.tvp-control-fullscreen').to.have.css('display').which.not.equals('none');
-
-        this.pause();
-      },
-      playerCheckPlaying: function (isFinished) {
-        if (isFinished === undefined)
-          isFinished = false;
-
-        client.expect.element(parent + ' div#tvp-spinner').to.have.css('display').which.equals('none');
-
-        if (isFinished === false) {
-          client.expect.element(parent + ' div#tvplayer-playbutton-icon').to.not.be.present;
-          client.expect.element(parent + ' div#tvplayer-playbutton').to.not.be.present;
-        } else {
-          client.expect.element(parent + ' div#tvplayer-playbutton-icon').to.be.present;
-          client.expect.element(parent + ' div#tvplayer-playbutton').to.be.present;
-
-          if (isFullScreen === true) {
-            //client.expect.element(parent + " div#tvplayer-overlay").not.to.have.css('z-index', '2147483');
-          }
-        }
-      },
-      playerTime: function () {
-        if (isMobile === true) {
-          client.element('css selector')
-            .click(parent + ' div.tvp-control-overlay');
-        }
-
-        client.element('css selector')
-          .waitForElementPresent(parent + ' div#CtrlTime', DATA.SLA)
-          .pause(SECOUND)
-          .getText(parent + " div#CtrlTime", function (result) {
-            this.assert.equal(typeof result, "object"),
-            this.assert.equal(result.status, 0);
-
-            if (result.value !== null && result.value !== undefined) {
-              var current = result.value.match(/^(\S+)\s(.*)/).slice(1);
-
-              this.assert.notEqual(result.value, ""),
-              this.assert.notEqual(current[0], "00:00");
-            } else {
-              console.log(">> Skipping Time Check!! <<");
-            }
-
-            if (isMobile === true) {
-              client.element('css selector')
-                .click(parent + ' div.tvp-control-overlay');
-            }
-          });
-      },
-      text: function (selector, expected, type) {
-        if (type === undefined)
-          type = 'css selector';
-
-        client.element(type)
-          .getText(selector, function (result) {
-              this.assert.equal(typeof result, "object");
-              this.assert.equal(result.status, 0);
-              this.assert.equal(result.value, expected);
-          });
-      },
-      iframe: function (count) {
-        targetIframeId = count;
-        client.frame(targetIframeId);
-      },
-      keys: function (key, callback) {
-        client.keys(key, callback);
-      },
-      pause: function (count) {
-        if (count === undefined)
-          count = 1;
-
-        client.pause(count * SECOUND, log);
-      },
-      end: function () {
-        client.end();
+      } else {
+        return false;
       }
-    };
+
+      if (isFullScreen === false) {
+        client.expect.element(parent + ' div.tvp-control-fullscreen > svg.tvp-controlbar-svg path:nth-child(2)').to.have.attribute('d', this.ICON_DEFAULT_SCREEN);
+        isFullScreen = true;
+      } else {
+        client.expect.element(parent + ' div.tvp-control-fullscreen > svg.tvp-controlbar-svg path:nth-child(2)').to.have.attribute('d', this.ICON_FULL_SCREEN);
+        isFullScreen = false;          
+      }
+
+      if (isMobile === true) {
+        client.element('css selector')
+          .click(parent + ' div.tvp-control-overlay');
+      }
+    },
+    playerShowControl: function (target) {
+      if (isMobile === true) {
+        client.element('css selector')
+          .click(parent + ' div.tvp-control-overlay')
+          .waitForElementPresent(parent + " " + target, DATA.SLA)
+          .click(parent + ' div.tvp-control-overlay');
+      } else {
+        client.element('css selector')
+          .moveToElement(parent + ' div.tvp-control-overlay', 10, 10)
+          .waitForElementVisible(parent + " " + target, DATA.SLA)
+          .pause(SECOUND);
+      }
+    },
+    playerSkip: function (x) {
+      var seekbar = 'div#ControlBarFloater > div.tvp-parent-seekbar',
+          y = 20;
+
+      if (isMobile === true) {
+        if (orientation === 'PORTRAIT') {
+          y = 4;
+        } else if (orientation === 'LANDSCAPE') {
+          y = 16;
+        }
+      }
+
+      this.playerShowControl(seekbar),
+      this.moveAndClick(parent + " " + seekbar, x, y, "left", true),
+      this.playerTime();
+      
+      client.expect.element(parent + ' div#ControlBarFloater > div.tvp-control-playpause').to.have.css('display').which.not.equals('none');
+      client.expect.element(parent + ' div#ControlBarFloater > div.tvp-control-fullscreen').to.have.css('display').which.not.equals('none');
+
+      this.pause();
+    },
+    playerCheckPlaying: function (isFinished) {
+      if (isFinished === undefined)
+        isFinished = false;
+
+      client.expect.element(parent + ' div#tvp-spinner').to.have.css('display').which.equals('none');
+
+      if (isFinished === false) {
+        client.expect.element(parent + ' div#tvplayer-playbutton-icon').to.not.be.present;
+        client.expect.element(parent + ' div#tvplayer-playbutton').to.not.be.present;
+      } else {
+        client.expect.element(parent + ' div#tvplayer-playbutton-icon').to.be.present;
+        client.expect.element(parent + ' div#tvplayer-playbutton').to.be.present;
+
+        if (isFullScreen === true) {
+          //client.expect.element(parent + " div#tvplayer-overlay").not.to.have.css('z-index', '2147483');
+        }
+      }
+    },
+    playerTime: function () {
+      if (isMobile === true) {
+        client.element('css selector')
+          .click(parent + ' div.tvp-control-overlay');
+      }
+
+      client.element('css selector')
+        .pause(2*SECOUND)
+        .waitForElementPresent(parent + ' div#CtrlTime', DATA.SLA)
+        .getText(parent + " div#CtrlTime", function (result) {
+          this.assert.equal(typeof result, "object"),
+          this.assert.equal(result.status, 0);
+
+          if (typeof result.value === "string" && result.value !== "" ) {
+            var current = result.value.match(/^(\S+)\s(.*)/).slice(1);
+
+            this.assert.notEqual(result.value, ""),
+            this.assert.notEqual(current[0], "00:00");
+          } else {
+            console.log(">> Skipping Time Check!! <<");
+          }
+
+          if (isMobile === true) {
+            client.element('css selector')
+              .click(parent + ' div.tvp-control-overlay');
+          }
+        });
+    },
+    text: function (selector, expected, type) {
+      if (type === undefined)
+        type = 'css selector';
+
+      client.element(type)
+        .getText(selector, function (result) {
+            this.assert.equal(typeof result, "object");
+            this.assert.equal(result.status, 0);
+            this.assert.equal(result.value, expected);
+        });
+    },
+    iframe: function (count) {
+      targetIframeId = count;
+      client.frame(targetIframeId);
+    },
+    keys: function (key, callback) {
+      client.keys(key, callback);
+    },
+    pause: function (count) {
+      if (count === undefined)
+        count = 1;
+
+      client.pause(count * SECOUND, log);
+    },
+    end: function () {
+      client.end();
+    }
+  };
 };

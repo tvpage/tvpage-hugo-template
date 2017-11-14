@@ -56,8 +56,8 @@ module.exports = {
     carousel.playerLoadPerformance(2),
     carousel.playerSanity(),
     carousel.playerSkip(50),
-    carousel.playerSkip(200),
-    carousel.playerSkip(295),
+    carousel.playerSkip(150),
+    carousel.playerSkip(240),
     carousel.pause(10),
 
     // check for video finish playing and check for new video is playing
@@ -71,10 +71,10 @@ module.exports = {
     carousel.playerLoadPerformance(2),
     carousel.playerSanity(),
     carousel.end();
-  }
+  },
 
   'caousel-youtube-player-fullscreen': function (browser) {
-    var carousel = new tvpGUITest({
+    var carousel = widget.tvpGUITest({
           'modalOverlay': this.modalOverlay,
           'modalCloseId': this.modalCloseId
         }),
@@ -99,7 +99,7 @@ module.exports = {
   },
 
   'carousel-youtube-resize': function (browser) {
-    var carousel = new tvpGUITest({
+    var carousel = widget.tvpGUITest({
           'modalOverlay': this.modalOverlay,
           'modalCloseId': this.modalCloseId
         }),
