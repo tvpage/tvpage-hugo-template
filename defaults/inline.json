@@ -1304,6 +1304,13 @@
             "label": "Navigation Bullet Font Color",
             "code": "navigation_bullet_font_color",
             "value": "black"
+         },
+         {
+            "for": "inline",
+            "type": "text",
+            "label": "Iframe Holder Background Color",
+            "code": "iframe_holder_background_color",
+            "value": "white"
          }
     ]
 }
