@@ -11,8 +11,9 @@
       },
       "videos": {
         "enabled": true,
-        "delete_on_success": true,
-        "path": "videos"
+        "delete_on_success": false,
+        "path": "videos",
+        "resolution": "1440x900"
       },
       "launch_url": "http://app",
       "selenium_host": "chromedriver",
