@@ -246,6 +246,15 @@
       return false;
     }
   };
+
+  Utils.getStyle = function(el,styleProp){
+    var s;
+    if (el.currentStyle)
+      s = el.currentStyle[styleProp];
+    else if (window.getComputedStyle)
+      s = document.defaultView.getComputedStyle(el,null).getPropertyValue(styleProp);
+    return s;
+  };
     
   window.Utils = Utils;
 }())

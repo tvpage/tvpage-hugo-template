@@ -14,8 +14,9 @@
     this.itemClass = '.tvp-carousel-item';
     this.full = this.options.full || false;
     this.dots = Utils.isUndefined(this.options.dots) ? false : this.options.dots;
+    this.appendDots = Utils.isUndefined(this.options.appendDots) ? false : this.options.appendDots;
     this.maxDots = 5;
-    this.limitDots = Utils.isUndefined(this.options.limitDots) ? true : this.options.limitDots;
+    this.limitDots = Utils.isUndefined(this.options.limitDots) ? false : this.options.limitDots;
     this.el = document.getElementById(sel);
   };
 
@@ -44,15 +45,12 @@
 
     //dots/bullets pagination
     if(slickConfig.dots){
-
       slickConfig.customPaging = function (slick, k) {
         return '<button class="btn-sm btn-primary carousel-dot-' + k + '">' + k + '</button>';
       };
 
-      if(this.config.navigation_bullets_append_to){
-        slickConfig.appendDots = this.config.navigation_bullets_append_to;
-      }else{
-        console.log("?")
+      if(this.appendDots){
+        slickConfig.appendDots = this.appendDots;
       }
     }
 
@@ -61,9 +59,6 @@
 
   Carousel.prototype.handleClick = function() {
     var that = this;
-    var items = this.el.querySelectorAll(this.itemClass);
-    var itemsLength = items.length;
-    
     var onClick = Utils.isFunction(this.options.onClick) ? this.options.onClick : function(e){
       if(that.options.clickDefaultStop){
         Utils.stopEvent(e);
@@ -77,6 +72,9 @@
         clicked: id
       });
     };
+
+    var items = this.el.querySelectorAll(this.itemClass);
+    var itemsLength = items.length;
 
     for (var i = 0; i < itemsLength; i++) {
       items[i].removeEventListener('click', onClick, false);
@@ -92,84 +90,157 @@
     }
   };
 
-  Carousel.prototype.showArrow = function(arrow){
-    arrow.style.opacity = 1;
-    arrow.style.visibility = 'visible';
+  //since the slick's setPosition callback is triggered multiple times, is probably better
+  //to align the arrows again, only if the new position is diff than the existing one?
+  Carousel.prototype.alignArrowsX = function(){
+    var alignArrowsX = this.options.alignArrowsX;
+    var xOffset;
+
+    //we snap the arrow to the slide item by default, that's why we need to get the first
+    //and last item of the page
+    if(Utils.isUndefined(alignArrowsX)){
+      var firstItem = this.el.querySelector(this.itemClass);
+      if(firstItem){
+        var firstItemEl = firstItem.querySelector('.video');
+        
+        if(firstItemEl){
+          xOffset = Utils.getStyle(firstItemEl,'padding-left');
+        }
+      }
+    }
+
+    if(Utils.isUndefined(xOffset))
+      return;
+
+    //implement on arrows
+    var arrowPrev = this.el.querySelector('.slick-prev');
+    if(arrowPrev){
+      arrowPrev.style.left = xOffset;
+    }
+
+    var arrowNext = this.el.querySelector('.slick-next');
+    if(arrowNext){
+      arrowNext.style.right = (parseInt(xOffset) - 1) + 'px';
+    }
+  };
+
+  //all alignment offered will happen relative to the slick-carousel element
+  Carousel.prototype.alignArrowsY = function(){
+    var alignArrowsY = this.options.alignArrowsY,
+        arrowTop,
+        arrowBottom,
+        isCenter;
+
+    if('string' === typeof alignArrowsY){
+
+      if('bottom' === alignArrowsY){
+        arrowBottom = '0';
+        arrowTop = 'auto';
+      }
+
+    }else if(alignArrowsY && alignArrowsY.length > 1){
+      isCenter = 'center' === alignArrowsY[0];
+
+      var referenceEl = this.el.querySelector(alignArrowsY[1]);
+
+      if(referenceEl){
+
+        //you can add a check with offsetParent to which element the referenceEl will use as it's relative, if this is not
+        //the slick-carousel, we traverse until reach it and we add the offSetTop value of the elements
+        if(isCenter){
+          
+          var offsetParents,
+              offsetParent;
+
+          // var collectOffsetParents = function(){
+            
+          // };
+
+          // collectOffsetParents();
+
+          console.log(Utils.hasClass(referenceEl.offsetParent, 'slick-carousel'))
+
+          //so far this value is the center of the reference element
+          //arrowTop = referenceEl.offsetTop + Math.floor(referenceEl.getBoundingClientRect().height / 2);
+
+        }
+      }
+    }
+
+    //implement on arrows
+    var arrows = this.el.querySelectorAll('.slick-arrow');
+    var arrowsLength = arrows.length;
+
+    for (var i = 0; i < arrowsLength; i++) {
+      var arrow = arrows[i];
+
+      if(arrowTop || arrowBottom)
+        arrow.style.transform = 'initial';
+
+      if(arrowTop){
+        //arrow.style.top = isCenter ? arrowTop - arrow.getBoundingClientRect().height / 2 : arrowTop;
+      }
+      
+      if(arrowBottom)
+        arrow.style.bottom = arrowBottom;
+
+      //show arrows
+      arrow.style.opacity = 1;
+      arrow.style.visibility = 'visible';
+    }
+  };
+
+  Carousel.prototype.onSlickInit = function(){
+    if(this.config.debug) {
+      console.log('carousel el initialized: ', this.itemsTargetEl, performance.now() - startTime);
+    }
+
+    if(this.options.dotsCenter){
+      Utils.addClass(this.el, 'dots-centered');
+    }
+
+    if(this.options.dotsClass){
+      Utils.addClass(this.el.querySelector('.slick-dots'), this.options.dotsClass);
+    }
+
+    this.onReady();
+  };
+
+  Carousel.prototype.onSlickAfterChange = function(){
+    console.log('# Slick "afterChange" was called!');
+    
+    //not the best place to do this... is very bouncy, should we try again and checking id loading
+    // if(!this.full){
+    //   this.loadNext('render');
+    // }
+  };
+
+  Carousel.prototype.onSlickSetPosition = function(){
+    this.alignArrowsX();
+    this.alignArrowsY();
+
+    setTimeout(function(prefix){
+      Utils.sendMessage({
+        event: prefix + ':carousel_resize',
+        height: Utils.getWidgetHeight()
+      });
+    }, 10, this.eventPrefix);
   };
 
   Carousel.prototype.start = function(){
     var that = this;
+    
     var startSlick = function() {
       that.$slickEl = $(that.itemsTargetEl);
       
-      that.$slickEl.on('init', function(event, slick) {
-        if(that.config.debug) {
-          console.log('carousel el initialized: ', that.itemsTargetEl, performance.now() - startTime);
-        }
-
-        if(that.options.dotsCenter){
-          that.el.classList.add('dots-centered');
-        }
-
-        that.onReady();
+      that.$slickEl.on('init', function(){
+        that.onSlickInit.call(that);
       });
-
-      that.$slickEl.on('afterChange', function(event, slick){
-        console.log('# Slick "afterChange" was called!');
-
-        //not the best place to do this... is very bouncy, should we try again and checking id loading
-        if(!this.full){
-          that.loadNext('render');
-        }
+      that.$slickEl.on('afterChange', function(){
+        that.onSlickAfterChange.call(that);
       });
-
-      that.$slickEl.on('setPosition', function(event, slick){
-        var arrowsVerticalAlign = that.options.arrowsVerticalAlign,
-            arrowTop,
-            arrowBottom;
-        
-        if('string' === typeof arrowsVerticalAlign){
-
-          if('bottom' === arrowsVerticalAlign){
-            arrowBottom = '0';
-            arrowTop = 'auto';
-          }
-
-        }else if(arrowsVerticalAlign.length > 1){
-          var referenceEl = that.el.querySelector(arrowsVerticalAlign[1]);
-          
-          if(referenceEl){
-            var position = arrowsVerticalAlign[0];
-
-            if('center' === position){
-             arrowTop = referenceEl.offsetTop + Math.floor(referenceEl.getBoundingClientRect().height / 2); 
-            }
-          }
-        }
-
-        //implement on arrows
-        var arrows = that.el.querySelectorAll('.slick-arrow');
-        var arrowsLength = arrows.length;
-
-        for (var i = 0; i < arrowsLength; i++) {
-          var arrow = arrows[i];
-
-          if(arrowTop)
-            arrow.style.top = arrowTop;
-          
-          if(arrowBottom)
-            arrow.style.bottom = arrowBottom;
-
-          that.showArrow(arrow);
-        }
-
-        setTimeout(function(){
-          Utils.sendMessage({
-            event: that.eventPrefix + ':carousel_resize',
-            height: Utils.getWidgetHeight()
-          });
-        },10);
-
+      that.$slickEl.on('setPosition', function(){
+        that.onSlickSetPosition.call(that);
       });
 
       that.$slickEl.slick(that.getSlickConfig());
@@ -313,19 +384,21 @@
       base: this.endpoint,
       params: Utils.extend(this.params || {}, loadParams)
     },function(data){
-      that.onLoad.call(that, data);
-
-      if(Utils.isFunction(that[action])){
-        that[action]();
-
-        if('render' === action){
-          that.handleClick();
+      setTimeout(function(){
+        that.onLoad.call(that, data);
+        
+        if(Utils.isFunction(that[action])){
+          that[action]();
+  
+          if('render' === action){
+            that.handleClick();
+          }
         }
-      }
-
-      if(Utils.isFunction(cback)){
-        cback(data);
-      }
+  
+        if(Utils.isFunction(cback)){
+          cback(data);
+        }
+      },0);
     });
 
     return this;

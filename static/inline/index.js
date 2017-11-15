@@ -294,11 +294,10 @@ function widgetRender(){
       debug ? "" : javascriptPath + "/scripts.min.js"
     ],
     css: [
-      debug ? baseUrl + "/bootstrap-4.0.0/css/bootstrap.css" : "",
+      debug ? baseUrl + "/bootstrap/dist/css/bootstrap.css" : "",
       debug ? cssPath + "/vendor/slick.css" : "",
       debug ? cssPath + '/styles.css' : '',
-
-    debug ? '' : cssPath + '/styles.min.css'
+      debug ? '' : cssPath + '/styles.min.css'
     ]
   }));
 
@@ -376,6 +375,8 @@ window.addEventListener("message", function(e) {
   var eventArr = eventData.event.split(':');
   var type = eventArr[0] === eventPrefix ? eventArr[1] : '';
   
+  //we are currently choosing the carousel_resize event (for this widget) to wait until
+  //we resize the holder... this should be more generic
   if('carousel_resize' === type){
     holder.style.height = eventData.height + 'px';
   }
