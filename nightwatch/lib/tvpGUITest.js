@@ -1,6 +1,6 @@
 
 exports.tvpGUITest = function (options) {
-  const SECOUND = 1000;
+  const SECOND = 1000;
 
   var client, targetIframeId, parent, msg,
       isPlaying = false,
@@ -10,10 +10,11 @@ exports.tvpGUITest = function (options) {
       modalOverlay = options.modalOverlay,
       modalCloseId = options.modalCloseId,
       DATA = (options !== undefined && options.DATA !== undefined ? options.DATA : {}),
+      selectorType = (options !== undefined && options.selectorType !== undefined ? options.selectorType : "css selector"),
       debug = false;
 
   if (DATA.SLA === undefined)
-    DATA.SLA = SECOUND;
+    DATA.SLA = SECOND;
 
   var log = function (result) {
     if (debug === true) {
@@ -32,17 +33,22 @@ exports.tvpGUITest = function (options) {
     ICON_FULL_SCREEN: "M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z",
     ICON_PLAYING: "M8 5v14l11-7z",
     ICON_PAUSE: "M6 19h4V5H6v14zm8-14v14h4V5h-4z",
-    init: function (browser, type, id, count, target, time) {
+    init: function (browser, type, id, count, target) {
       targetIframeId = count;
 
-      client = browser.url(DATA.URL)
-        .pause(DATA.SLA);
+      client = browser.url(DATA.URL, function (result) {
+          msg = type;
+          log();
 
-      if (isMobile === false)
-        client.resizeWindow(1440, 900);
+          if (isMobile === false) {
+            this.resizeWindow(1440, 900);
+          }
 
-      if (orientation === 'LANDSCAPE')
-        client.setOrientation(orientation);
+          if (orientation !== undefined) {
+            this.setOrientation(orientation);
+          }
+        })
+        .pause(2*SECOND);
           
       client.waitForElementVisible(id + " iframe[gesture=media]", DATA.SLA);
 
@@ -53,11 +59,11 @@ exports.tvpGUITest = function (options) {
 
       return client;
     },
-    widgetTitle: function (iframeId, target, expected, type) {
-      if (type === undefined)
-        type = 'css selector';
-
-      client.element(type)
+    widgetTitle: function (iframeId, target, expected) {
+      client.element(selectorType, function (result) {
+          msg = "Start Widget Title Testing";
+          log();
+        })
         .waitForElementVisible(iframeId, DATA.SLA)
         .waitForElementVisible(iframeId + " > " + target, DATA.SLA);
 
@@ -66,28 +72,28 @@ exports.tvpGUITest = function (options) {
     widgetNav: function (iframeId, count) {
       var index = 1;
 
-      client.element('css selector')
+      client.element(selectorType)
         .waitForElementVisible(iframeId + " > div.tvp-carousel-content.slick-initialized.slick-slider", DATA.SLA);
 
-      client.element('css selector')
+      client.element(selectorType)
         .waitForElementVisible(iframeId + " > div.tvp-carousel-arrow.prev.inactive", DATA.SLA)
         .waitForElementVisible(iframeId + " > div.tvp-carousel-arrow.next", DATA.SLA);
 
       for (i=0;i < count;i++) {
-        client.element('css selector')
+        client.element(selectorType)
           .moveToElement(iframeId + " > div.tvp-carousel-arrow.next", 20, 20)
           .mouseButtonClick('left')
-          .pause(SECOUND);
+          .pause(SECOND);
 
         index++;
         client.expect.element("div[data-slick-index='" + i + "']").to.have.attribute('aria-hidden').which.equals('true');
       }
 
       for (i=0;i < count;i++) {
-        client.element('css selector')
+        client.element(selectorType)
           .moveToElement(iframeId + " > div.tvp-carousel-arrow.prev", 20, 20)
           .mouseButtonClick('left')
-          .pause(SECOUND);
+          .pause(SECOND);
 
         client.expect.element("div[data-slick-index='" + index-- + "']").to.have.attribute('aria-hidden').which.equals('false');
       }
@@ -103,12 +109,12 @@ exports.tvpGUITest = function (options) {
         button = "left";
 
       if (isVisible === true) {
-        client.element('css selector')
+        client.element(selectorType)
           .waitForElementVisible(target, DATA.SLA)
           .moveToElement(target, x, y)
           .mouseButtonClick(button);
       } else {
-        client.element('css selector')
+        client.element(selectorType)
           .waitForElementPresent(target, DATA.SLA)
           .moveToElement(target, x, y)
           .mouseButtonClick(button);
@@ -126,18 +132,20 @@ exports.tvpGUITest = function (options) {
       this.pause(),
 
       client
-        .waitForElementVisible('div#tvp-modal-overlay-carousel-1', DATA.SLA)
-        .waitForElementVisible('div#tvp-modal-carousel-1', DATA.SLA)
-        .pause(SECOUND),
+        .waitForElementVisible(modalId, DATA.SLA)
+        .waitForElementVisible(modalId + ' h4#tvp-modal-title-carousel-1', DATA.SLA)
+        .waitForElementVisible(modalId + ' div#tvp-modal-close-carousel-1', DATA.SLA)
+        .pause(SECOND),
 
       client.expect.element(modalId + ' h4#tvp-modal-title-carousel-1').text.to.equal(DATA.FIRST_VIDEO_TITLE),
       client.expect.element(modalId + ' div#tvp-modal-close-carousel-1').to.be.present;
 
       if (isMobile === false) {
-        client.frame(2);
-        client.expect.element(parent + ' div.tvp-products-headline').text.to.equal(DATA.PRODUCT_HEADLINE);
+        client.waitForElementVisible(modalId + ' div.tvp-products-headline', DATA.SLA),
+        client.expect.element(modalId + ' div.tvp-products-headline').text.to.equal(DATA.PRODUCT_HEADLINE);
       } else {
-        client.frame(2);
+        client.frame(2),
+        client.waitForElementVisible('p.tvp-products-text', DATA.SLA),
         client.expect.element('p.tvp-products-text').text.to.equal(DATA.PRODUCT_HEADLINE);
       }
 
@@ -145,7 +153,7 @@ exports.tvpGUITest = function (options) {
     },
     modalLoadPerformance: function (iframeId, videoId, target, targetIframe) {
       client.frameParent()
-        .pause(SECOUND)
+        .pause(SECOND)
         .frame(targetIframeId),
       this.modalLoad(videoId, 160, 100),
       this.pause();
@@ -185,7 +193,7 @@ exports.tvpGUITest = function (options) {
       // Product pop-up
       client
         .moveToElement(parent + " a#tvp-product-83102610", 70, 70)
-        .pause(2*SECOUND);
+        .pause(2*SECOND);
 
       if (isMobile === false) {
         client.expect.element(parent + " a#tvp-product-83102610").to.have.attribute('class', 'tvp-product active');
@@ -198,7 +206,7 @@ exports.tvpGUITest = function (options) {
         client.expect.element(parent + " div.tvp-inner-arrow-indicator").to.be.present;
       }
 
-      client.pause(SECOUND);
+      client.pause(SECOND);
     },
     productModalLink: function () {
       // Click on product from modal
@@ -215,13 +223,13 @@ exports.tvpGUITest = function (options) {
             this.waitForElementVisible("iframe.tvp-iframe-modal[gesture='media']", DATA.SLA);
             this.frame(targetIframeId);
           })
-          .pause(2*SECOUND);
+          .pause(2*SECOND);
       } else {
         client
           .waitForElementVisible(parent + " a#tvp-product-83102610", DATA.SLA)
           .moveToElement(parent + " a#tvp-product-83102610", 70, 70)
           .waitForElementVisible(parent + " a.tvp-product-popup", DATA.SLA)
-          .pause(SECOUND)
+          .pause(SECOND)
           .mouseButtonClick("left")
           .windowHandles(function (result) {
             this.switchWindow(result.value[1]);
@@ -233,7 +241,7 @@ exports.tvpGUITest = function (options) {
             this.waitForElementVisible("iframe.tvp-iframe-modal[gesture='media']", DATA.SLA);
             this.frame(targetIframeId);
           })
-          .pause(5*SECOUND);
+          .pause(5*SECOND);
 
         // Click on product from pop-up thumnail
         client
@@ -242,7 +250,7 @@ exports.tvpGUITest = function (options) {
           .waitForElementVisible(parent + " div.tvp-product-popup-image", DATA.SLA)
           .moveToElement(parent + " div.tvp-product-popup-image", 105, 105)
           .mouseButtonClick("left")
-          .pause(SECOUND)
+          .pause(SECOND)
           .windowHandles(function (result) {
             this.switchWindow(result.value[1]);
             this.verify.urlContains(DATA.PRODUCT_SECURE_URL);
@@ -253,7 +261,7 @@ exports.tvpGUITest = function (options) {
             this.waitForElementVisible("iframe.tvp-iframe-modal[gesture='media']", DATA.SLA);
             this.frame(targetIframeId);
           })
-          .pause(5*SECOUND);
+          .pause(5*SECOND);
 
         // Click on product from pop-up title
         client
@@ -261,7 +269,7 @@ exports.tvpGUITest = function (options) {
           .moveToElement(parent + " a#tvp-product-83102610", 70, 70)
           .waitForElementVisible(parent + " p.tvp-product-title", DATA.SLA)
           .moveToElement(parent + " p.tvp-product-title", 40, 20)
-          .pause(SECOUND)
+          .pause(SECOND)
           .mouseButtonClick("left")
           .windowHandles(function (result) {
             this.switchWindow(result.value[1]);
@@ -273,7 +281,7 @@ exports.tvpGUITest = function (options) {
             this.waitForElementVisible("iframe.tvp-iframe-modal[gesture='media']", DATA.SLA);
             this.frame(targetIframeId);
           })
-          .pause(5*SECOUND);
+          .pause(5*SECOND);
 
         // Click on product from pop-up cta
         client
@@ -282,7 +290,7 @@ exports.tvpGUITest = function (options) {
           .waitForElementVisible(parent + " button.tvp-product-cta", DATA.SLA)
           .moveToElement(parent + " button.tvp-product-cta", 40, 20)
           .mouseButtonClick("left")
-          .pause(SECOUND)
+          .pause(SECOND)
           .windowHandles(function (result) {
             this.switchWindow(result.value[1]);
             this.verify.urlContains(DATA.PRODUCT_SECURE_URL);
@@ -293,16 +301,16 @@ exports.tvpGUITest = function (options) {
             this.waitForElementVisible("iframe.tvp-iframe-modal[gesture='media']", DATA.SLA);
             this.frame(targetIframeId);
           })
-          .pause(5*SECOUND);
+          .pause(5*SECOND);
       }
     },
     playerLoadPerformance: function (count) {
-      targetIframe = count;
+      targetIframeId = count;
 
       if (count !== undefined)
-        client.frame(targetIframe);
+        client.frame(targetIframeId);
 
-      client.element('css selector')
+      client.element(selectorType)
         .waitForElementVisible(parent + " div#tvplayer-playbutton", DATA.SLA)
         .waitForElementPresent(parent + " div#ControlBarFloater", DATA.SLA);
 
@@ -324,9 +332,9 @@ exports.tvpGUITest = function (options) {
 
       this.moveAndClick(parent + ' div#tvplayer-playbutton-icon', 12, 15),
       client.waitForElementPresent(parent + " div#tvp-spinner", DATA.SLA),
-      client.expect.element(parent + ' div#tvp-spinner').to.have.css('display').which.equals('none'),
-      client.expect.element(parent + ' div#tvplayer-playbutton').not.to.be.present,
-      client.expect.element(parent + ' div#tvplayer-playbutton-icon').not.to.be.present,        
+      client.waitForElementNotVisible(parent + ' div#tvp-spinner', DATA.SLA),
+      client.waitForElementNotPresent(parent + ' div#tvplayer-playbutton', DATA.SLA),
+      client.waitForElementNotPresent(parent + ' div#tvplayer-playbutton-icon', DATA.SLA),        
       this.pause(3);
 
       isPlaying = true;
@@ -350,7 +358,7 @@ exports.tvpGUITest = function (options) {
       this.pause(1);
     },
     playerClickOverlay: function () {
-      client.element('css selector')
+      client.element(selectorType)
         .waitForElementPresent(paernt + ' div.tvp-control-overlay', DATA.SLA)
         .click(parent + ' div.tvp-control-overlay');
     },
@@ -362,45 +370,49 @@ exports.tvpGUITest = function (options) {
     playerCheckFullScreen: function (keys) {
       if (keys === undefined) {
         if (isMobile === true) {
-          client.element('css selector')
-            .click(parent + ' div.tvp-control-overlay')
-            .pause(SECOUND)
-            .waitForElementVisible(parent + " div.tvp-control-fullscreen", DATA.SLA)
-            .click(parent + " div.tvp-control-fullscreen");
-        } else {
-          client.element('css selector')
-            .moveToElement(parent + ' iframe', 20, 20)
-            .waitForElementVisible(parent + " div.tvp-control-fullscreen", DATA.SLA)
-            .click(parent + " div.tvp-control-fullscreen");
-          }
+          this.playerShowControl("div#ControlBarFloater > div.tvp-control-fullscreen.tvp-controlbar-icon");
+          client.click(parent + " div#ControlBarFloater > div.tvp-control-fullscreen.tvp-controlbar-icon");
+        } else if (isMobile === false) {
+          this.playerShowControl("div#ControlBarFloater > div.tvp-control-fullscreen.tvp-controlbar-icon"),
+          client.click(parent + " div#ControlBarFloater > div.tvp-control-fullscreen.tvp-controlbar-icon");
+        }
       } else {
         return false;
       }
 
       if (isFullScreen === false) {
-        client.expect.element(parent + ' div.tvp-control-fullscreen > svg.tvp-controlbar-svg path:nth-child(2)').to.have.attribute('d', this.ICON_DEFAULT_SCREEN);
+        client.expect.element(parent + ' div.tvp-control-fullscreen.tvp-controlbar-icon > svg.tvp-controlbar-svg path:nth-child(2)').to.have.attribute('d', this.ICON_DEFAULT_SCREEN);
         isFullScreen = true;
       } else {
-        client.expect.element(parent + ' div.tvp-control-fullscreen > svg.tvp-controlbar-svg path:nth-child(2)').to.have.attribute('d', this.ICON_FULL_SCREEN);
-        isFullScreen = false;          
-      }
-
-      if (isMobile === true) {
-        client.element('css selector')
-          .click(parent + ' div.tvp-control-overlay');
+        client.expect.element(parent + ' div.tvp-control-fullscreen.tvp-controlbar-icon > svg.tvp-controlbar-svg path:nth-child(2)').to.have.attribute('d', this.ICON_FULL_SCREEN);
+        isFullScreen = false;
       }
     },
-    playerShowControl: function (target) {
+    playerShowControl: function (target, x, y) {
       if (isMobile === true) {
-        client.element('css selector')
-          .click(parent + ' div.tvp-control-overlay')
-          .waitForElementPresent(parent + " " + target, DATA.SLA)
-          .click(parent + ' div.tvp-control-overlay');
+        if (x === undefined) {
+          x = 20;
+        }
+
+        if (y === undefined) {
+          y = 20;
+        }
+
+        client.element(selectorType)
+          .moveToElement(parent + ' div.tvp-control-overlay', x, y)
+          .mouseButtonDown("left")
+          .pause(SECOND)
+          .moveToElement(parent + " " + target, x, y)
+          .mouseButtonUp("left");
+
+        if (isFullScreen === false) {
+          client.waitForElementVisible(parent + " " + target, DATA.SLA);
+        }
       } else {
-        client.element('css selector')
-          .moveToElement(parent + ' div.tvp-control-overlay', 10, 10)
+        client.element(selectorType)
+          .moveToElement(parent + ' div.tvp-control-overlay', x, y)
           .waitForElementVisible(parent + " " + target, DATA.SLA)
-          .pause(SECOUND);
+          .pause(SECOND);
       }
     },
     playerSkip: function (x) {
@@ -415,7 +427,7 @@ exports.tvpGUITest = function (options) {
         }
       }
 
-      this.playerShowControl(seekbar),
+      this.playerShowControl(seekbar, x, y),
       this.moveAndClick(parent + " " + seekbar, x, y, "left", true),
       this.playerTime();
       
@@ -443,13 +455,10 @@ exports.tvpGUITest = function (options) {
       }
     },
     playerTime: function () {
-      if (isMobile === true) {
-        client.element('css selector')
-          .click(parent + ' div.tvp-control-overlay');
-      }
+      this.playerShowControl("div#CtrlTime")
 
-      client.element('css selector')
-        .pause(2*SECOUND)
+      client.element(selectorType)
+        .pause(2*SECOND)
         .waitForElementPresent(parent + ' div#CtrlTime', DATA.SLA)
         .getText(parent + " div#CtrlTime", function (result) {
           this.assert.equal(typeof result, "object"),
@@ -463,18 +472,10 @@ exports.tvpGUITest = function (options) {
           } else {
             console.log(">> Skipping Time Check!! <<");
           }
-
-          if (isMobile === true) {
-            client.element('css selector')
-              .click(parent + ' div.tvp-control-overlay');
-          }
         });
     },
-    text: function (selector, expected, type) {
-      if (type === undefined)
-        type = 'css selector';
-
-      client.element(type)
+    text: function (selector, expected) {
+      client.element(selectorType)
         .getText(selector, function (result) {
             this.assert.equal(typeof result, "object");
             this.assert.equal(result.status, 0);
@@ -492,7 +493,7 @@ exports.tvpGUITest = function (options) {
       if (count === undefined)
         count = 1;
 
-      client.pause(count * SECOUND, log);
+      client.pause(count * SECOND);
     },
     end: function () {
       client.end();

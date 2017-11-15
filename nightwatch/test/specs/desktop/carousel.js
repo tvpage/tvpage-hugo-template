@@ -9,7 +9,7 @@ var DATA = {
       PRODUCT_HEADLINE: "Related Products",
       PRODUCT_TITLE_REGEX: /Ninja\ Coffee\ Bar®\ with\ Glass\ Carafe/i,
       FIRST_VIDEO_TITLE: "Galette des Rois Recipe for De'Longhi MultiFry",
-      SLA: 5000
+      SLA: 10000
     };
 
 var widget = require(__dirname + "/../../../lib/tvpGUITest.js");
@@ -57,7 +57,7 @@ module.exports = {
     carousel.playerSanity(),
     carousel.playerSkip(50),
     carousel.playerSkip(150),
-    carousel.playerSkip(240),
+    carousel.playerSkip(260),
     carousel.pause(10),
 
     // check for video finish playing and check for new video is playing
@@ -76,9 +76,10 @@ module.exports = {
   'caousel-youtube-player-fullscreen': function (browser) {
     var carousel = widget.tvpGUITest({
           'modalOverlay': this.modalOverlay,
-          'modalCloseId': this.modalCloseId
+          'modalCloseId': this.modalCloseId,
+          'DATA': DATA
         }),
-        client = carousel.init(browser, "Carousel Youtube Player Fullscreen", URL, "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
+        client = carousel.init(browser, "Carousel Youtube Player Fullscreen", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
 
     carousel.modalLoad('div[data-slick-index="2"]', 160, 100),
     carousel.playerLoadPerformance(2),
@@ -101,21 +102,22 @@ module.exports = {
   'carousel-youtube-resize': function (browser) {
     var carousel = widget.tvpGUITest({
           'modalOverlay': this.modalOverlay,
-          'modalCloseId': this.modalCloseId
+          'modalCloseId': this.modalCloseId,
+          'DATA': DATA
         }),
-        client = carousel.init(browser, "Carousel Youtube Player Normal", URL, "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
+        client = carousel.init(browser, "Carousel Youtube Player Normal", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
 
     carousel.modalLoad(this.firstVideoId, 160, 100),
     client.resizeWindow(1440/2, 1200),
     client.frameParent(),
     client
-      .waitForElementVisible(this.modalId, SLA),
+      .waitForElementVisible(this.modalId, 5000),
     client.expect.element(this.modalId).to.have.css('width', 700),
     client.frame(2)
     client.resizeWindow(1440/3, 1200),
     client.frameParent(),
     client
-      .waitForElementVisible(this.modalId, SLA),
+      .waitForElementVisible(this.modalId, 5000),
     client.expect.element(this.modalId).to.have.css('width', 480);
     carousel.end();
   }

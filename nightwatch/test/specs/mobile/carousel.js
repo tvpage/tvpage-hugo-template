@@ -1,514 +1,18 @@
 /*==============================================================================*/
 /* Nightwatch Recorder generated Mon Oct 23 2017 18:49:04 GMT-0700 (PDT) */
 /*==============================================================================*/
-
-const URL = "https://www.goodlookingbean.com/test/carousel/",
-const PRODUCT_URL = "http://www.ninjakitchen.com/products/0/all/67/ninja-coffee-bar-with-glass-carafe/",
-const     PRODUCT_SECURE_URL = "https://m.ninjakitchen.com/products/0/all/67/ninja-coffee-bar-with-glass-carafe/",
-    PRODUCT_IMG = "http://www.ninjakitchen.com/include/images/products/hero-CF080.jpg",
-    PRODUCT_HEADLINE = "Related Products",
-    FIRST_VIDEO_TITLE = "Galette des Rois Recipe for De'Longhi MultiFry",
-    SECOUND = 1000,
-const  SLA = 5*SECOUND;
-
-var tvpGUITest = function (options) {
-    var client, targetIframeId, sla, parent, msg,
-        isPlaying = false,
-        isFullScreen = false,
-        isMobile = (options !== undefined && options.isMobile ? options.isMobile : false),
-        orientation =  (options !== undefined && options.orientation ? options.orientation : 'PORTRAIT'),
-        modalOverlay = options.modalOverlay,
-        modalCloseId = options.modalCloseId,
-        debug = false;
-
-    var log = function (result) {
-      if (debug === true) {
-        console.log(">> DEBUG: <<");
-        console.log(result);
-      }
-
-      if (msg !== undefined && msg !== "")
-        console.log(">> " + msg + " <<");
-
-      msg = undefined;
+var DATA = {
+      URL: "https://www.goodlookingbean.com/test/carousel/",
+      PRODUCT_URL: "http://www.ninjakitchen.com/products/0/all/67/ninja-coffee-bar-with-glass-carafe/",
+      PRODUCT_SECURE_URL: "https://m.ninjakitchen.com/products/0/all/67/ninja-coffee-bar-with-glass-carafe/",
+      PRODUCT_IMG: "http://www.ninjakitchen.com/include/images/products/hero-CF080.jpg",
+      PRODUCT_HEADLINE: "Related Products",
+      PRODUCT_TITLE_REGEX: /Ninja\ Coffee\ Bar®\ with\ Glass\ Carafe/i,
+      FIRST_VIDEO_TITLE: "Galette des Rois Recipe for De'Longhi MultiFry",
+      SLA: 10000
     };
 
-    return {
-      ICON_DEFAULT_SCREEN: "M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z",
-      ICON_FULL_SCREEN: "M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z",
-      ICON_PLAYING: "M8 5v14l11-7z",
-      ICON_PAUSE: "M6 19h4V5H6v14zm8-14v14h4V5h-4z",
-      init: function (browser, type, url, id, count, target, time) {
-        targetIframeId = count;
-
-        if (time !== undefined)
-          sla = time;
-        else
-          sla = SLA;
-
-        client = browser.url(url)
-          .pause(sla);
-
-        if (isMobile === false)
-          client.resizeWindow(1440, 900);
-
-        if (orientation === 'LANDSCAPE')
-          client.setOrientation(orientation);
-          
-        client.waitForElementVisible(id + " iframe[gesture=media]", sla);
-
-        parent = target;
-
-        if (count !== undefined)
-          client.frame(targetIframeId);
-
-        return client;
-      },
-      widgetTitle: function (iframeId, target, expected, type) {
-        if (type === undefined)
-          type = 'css selector';
-
-        client.element(type)
-          .waitForElementVisible(iframeId, sla)
-          .waitForElementVisible(iframeId + " > " + target, sla);
-
-        this.text(iframeId + " > " + target, expected);
-      },
-      widgetNav: function (iframeId, count) {
-        var index = 1;
-
-        client.element('css selector')
-          .waitForElementVisible(iframeId + " > div.tvp-carousel-content.slick-initialized.slick-slider", sla);
-
-        client.element('css selector')
-          .waitForElementVisible(iframeId + " > div.tvp-carousel-arrow.prev.inactive", sla)
-          .waitForElementVisible(iframeId + " > div.tvp-carousel-arrow.next", sla);
-
-        for (i=0;i < count;i++) {
-          client.element('css selector')
-            .moveToElement(iframeId + " > div.tvp-carousel-arrow.next", 20, 20)
-            .mouseButtonClick('left')
-            .pause(SECOUND);
-
-          index++;
-          client.expect.element("div[data-slick-index='" + i + "']").to.have.attribute('aria-hidden').which.equals('true');
-        }
-
-        for (i=0;i < count;i++) {
-          client.element('css selector')
-            .moveToElement(iframeId + " > div.tvp-carousel-arrow.prev", 20, 20)
-            .mouseButtonClick('left')
-            .pause(SECOUND);
-
-          client.expect.element("div[data-slick-index='" + index-- + "']").to.have.attribute('aria-hidden').which.equals('false');
-        }
-      },
-      moveAndClick: function (target, x, y, button, isVisible) {
-        if (x === undefined)
-          x = 0;
-
-        if (y === undefined)
-          y = 0;
-
-        if (button === undefined)
-          button = "left";
-
-        if (isVisible === true) {
-          client.element('css selector')
-            .waitForElementVisible(target, sla)
-            .moveToElement(target, x, y)
-            .mouseButtonClick(button);
-        } else {
-          client.element('css selector')
-            .waitForElementPresent(target, sla)
-            .moveToElement(target, x, y)
-            .mouseButtonClick(button);
-        }
-      },
-      modalLoad: function (target, x, y) {
-        client
-          .waitForElementPresent(target + " > div.tvp-video", sla)
-          .click(target + " > div.tvp-video");
-
-        client.frameParent();
-      },
-      modalSanity: function (modalId, videoId) {
-        this.modalLoad(videoId, 160, 100),
-        this.pause(),
-
-        client
-          .waitForElementVisible('div#tvp-modal-overlay-carousel-1', sla)
-          .waitForElementVisible('div#tvp-modal-carousel-1', sla)
-          .pause(SECOUND),
-
-        client.expect.element(modalId + ' h4#tvp-modal-title-carousel-1').text.to.equal(FIRST_VIDEO_TITLE),
-        client.expect.element(modalId + ' div#tvp-modal-close-carousel-1').to.be.present;
-
-        if (isMobile === false) {
-          client.frame(2);
-          client.expect.element(parent + ' div.tvp-products-headline').text.to.equal(PRODUCT_HEADLINE);
-        } else {
-          client.frame(2);
-          client.expect.element('p.tvp-products-text').text.to.equal(PRODUCT_HEADLINE);
-        }
-
-        this.modalClose(modalId);
-      },
-
-      modalLoadPerformance: function (iframeId, videoId, target, targetIframe) {
-        client.frameParent()
-          .pause(SECOUND)
-          .frame(targetIframeId),
-        this.modalLoad(videoId, 160, 100),
-        this.pause();
-
-        targetIframeId = targetIframe;
-
-        client
-          .waitForElementVisible(iframeId, sla)
-          .waitForElementVisible(iframeId + " iframe.tvp-iframe-modal[gesture='media']", sla)
-          .frame(targetIframeId),
-
-        client.expect.element(target).to.be.present;
-        client.expect.element(target + " div#tvplayer-playbutton").to.be.present;
-        client.expect.element(target + " div#tvplayer-playbutton-icon").to.be.present;
-
-        this.pause();
-      },
-      modalClose: function (modalId) {
-        client.frameParent(),
-        this.pause();
-
-        this.moveAndClick(modalId + " " + modalCloseId, sla, 10, 10, 'left', true);
-
-        client.expect.element(modalOverlay).to.have.css('display', 'hidden');
-        client.expect.element(modalId).to.have.css('display', 'none');
-
-        this.pause();
-      },
-      productModal: function () {
-        client.waitForElementVisible(parent, sla);
-
-        client.expect.element(parent + " a#tvp-product-83102610").to.be.present;
-        client.expect.element(parent + " a#tvp-product-83102610").to.have.attribute('href', PRODUCT_URL);
-
-        // Product pop-up
-        client
-          .moveToElement(parent + " a#tvp-product-83102610", 70, 70)
-          .pause(2*SECOUND);
-
-        if (isMobile === false) {
-          client.expect.element(parent + " a#tvp-product-83102610").to.have.attribute('class', 'tvp-product active');
-          client.expect.element(parent + " a#tvp-product-popup-83102610").to.be.present;
-          client.expect.element(parent + " a#tvp-product-popup-83102610").to.have.attribute('href', PRODUCT_URL);
-          client.expect.element(parent + " a#tvp-product-popup-83102610 > div.tvp-product-popup-image").to.have.css("background-image", "url(" + PRODUCT_IMG + ");");
-          client.expect.element(parent + " a#tvp-product-popup-83102610 > p.tvp-product-title").text.to.match(/Ninja\ Coffee\ Bar®\ with\ Glass\ Carafe/i);
-          client.expect.element(parent + " a#tvp-product-popup-83102610 > p.tvp-product-price").text.to.equal("");
-          client.expect.element(parent + " a#tvp-product-popup-83102610 > button.tvp-product-cta").to.be.present;
-          client.expect.element(parent + " div.tvp-inner-arrow-indicator").to.be.present;
-        }
-
-        client.pause(SECOUND);
-      },
-      productModalLink: function () {
-        // Click on product from modal
-        if (isMobile === true) {
-          client
-            .click(parent + " a#tvp-product-83102610")
-            .windowHandles(function (result) {
-              this.switchWindow(result.value[1]);
-              this.verify.urlContains(PRODUCT_SECURE_URL);
-              this.closeWindow();
-
-              this.switchWindow(result.value[0]);
-              this.waitForElementVisible("div#tvp-modal-iframe-holder-carousel-1", sla);
-              this.waitForElementVisible("iframe.tvp-iframe-modal[gesture='media']", sla);
-              this.frame(targetIframeId);
-            })
-            .pause(2*SECOUND);
-        } else {
-          client
-            .waitForElementVisible(parent + " a#tvp-product-83102610", sla)
-            .moveToElement(parent + " a#tvp-product-83102610", 70, 70)
-            .waitForElementVisible(parent + " a.tvp-product-popup", sla)
-            .pause(SECOUND)
-            .mouseButtonClick("left")
-            .windowHandles(function (result) {
-              this.switchWindow(result.value[1]);
-              this.verify.urlContains(PRODUCT_SECURE_URL);
-              this.closeWindow();
-
-              this.switchWindow(result.value[0]);
-              this.waitForElementVisible("div#tvp-modal-iframe-holder-carousel-1", sla);
-              this.waitForElementVisible("iframe.tvp-iframe-modal[gesture='media']", sla);
-              this.frame(targetIframeId);
-            })
-            .pause(5*SECOUND);
-
-          // Click on product from pop-up thumnail
-          client
-            .waitForElementVisible(parent + " a#tvp-product-83102610", sla)
-            .moveToElement(parent + " a#tvp-product-83102610", 70, 70)
-            .waitForElementVisible(parent + " div.tvp-product-popup-image", sla)
-            .moveToElement(parent + " div.tvp-product-popup-image", 105, 105)
-            .mouseButtonClick("left")
-            .pause(SECOUND)
-            .windowHandles(function (result) {
-              this.switchWindow(result.value[1]);
-              this.verify.urlContains(PRODUCT_SECURE_URL);
-              this.closeWindow();
-
-              this.switchWindow(result.value[0]);
-              this.waitForElementVisible("div#tvp-modal-iframe-holder-carousel-1", sla);
-              this.waitForElementVisible("iframe.tvp-iframe-modal[gesture='media']", sla);
-              this.frame(targetIframeId);
-            })
-            .pause(5*SECOUND);
-
-          // Click on product from pop-up title
-          client
-            .waitForElementVisible(parent + " a#tvp-product-83102610", sla)
-            .moveToElement(parent + " a#tvp-product-83102610", 70, 70)
-            .waitForElementVisible(parent + " p.tvp-product-title", sla)
-            .moveToElement(parent + " p.tvp-product-title", 40, 20)
-            .pause(SECOUND)
-            .mouseButtonClick("left")
-            .windowHandles(function (result) {
-              this.switchWindow(result.value[1]);
-              this.verify.urlContains(PRODUCT_SECURE_URL);
-              this.closeWindow();
-
-              this.switchWindow(result.value[0]);
-              this.waitForElementVisible("div#tvp-modal-iframe-holder-carousel-1", sla);
-              this.waitForElementVisible("iframe.tvp-iframe-modal[gesture='media']", sla);
-              this.frame(targetIframeId);
-            })
-            .pause(5*SECOUND);
-
-          // Click on product from pop-up cta
-          client
-            .waitForElementVisible(parent + " a#tvp-product-83102610", sla)
-            .moveToElement(parent + " a#tvp-product-83102610", 70, 70)
-            .waitForElementVisible(parent + " button.tvp-product-cta", sla)
-            .moveToElement(parent + " button.tvp-product-cta", 40, 20)
-            .mouseButtonClick("left")
-            .pause(SECOUND)
-            .windowHandles(function (result) {
-              this.switchWindow(result.value[1]);
-              this.verify.urlContains(PRODUCT_SECURE_URL);
-              this.closeWindow();
-
-              this.switchWindow(result.value[0]);
-              this.waitForElementVisible("div#tvp-modal-iframe-holder-carousel-1", sla);
-              this.waitForElementVisible("iframe.tvp-iframe-modal[gesture='media']", sla);
-              this.frame(targetIframeId);
-            })
-            .pause(5*SECOUND);
-        }
-      },
-      playerLoadPerformance: function (count) {
-        targetIframe = count;
-
-        if (count !== undefined)
-          client.frame(targetIframe);
-
-        client.element('css selector')
-          .waitForElementVisible(parent + " div#tvplayer-playbutton", sla)
-          .waitForElementPresent(parent + " div#ControlBarFloater", sla);
-
-        // sanity check
-        client.expect.element(parent + " div#ControlBarFloater > div.tvp-control-volume-container").to.be.present;
-        client.expect.element(parent + " div#ControlBarFloater > div.tvp-control-volume-container > div.tvp-control-volume-selector-container").to.be.present;
-        client.expect.element(parent + " div#ControlBarFloater > div.tvp-control-volume-container").to.be.present;
-        client.expect.element(parent + " div#CtrlClosedCaptionImage").to.be.present;
-
-        // tvplayer icon check
-        client.expect.element(parent + " #tvplayer-playbutton-icon").to.be.present;
-      },
-      playerStart: function (x, y) {
-        client.waitForElementVisible(parent + ' div#tvplayer-playbutton-icon', sla)
-        client.expect.element(parent + " #tvplayer-playbutton-icon").to.be.present,
-
-        client.waitForElementVisible(parent + ' div#tvplayer-playbutton-icon', sla)
-        client.expect.element(parent + " #tvplayer-playbutton-icon").to.be.present,
-
-        this.moveAndClick(parent + ' div#tvplayer-playbutton-icon', 12, 15),
-        client.waitForElementPresent(parent + " div#tvp-spinner", sla),
-        client.expect.element(parent + ' div#tvp-spinner').to.have.css('display').which.equals('none'),
-        client.expect.element(parent + ' div#tvplayer-playbutton').not.to.be.present,
-        client.expect.element(parent + ' div#tvplayer-playbutton-icon').not.to.be.present,        
-        this.pause(3);
-
-        isPlaying = true;
-      },
-      playerSanity: function () {
-        this.playerStart(),
-        this.playerShowControl('div#ControlBarFloater > div.tvp-parent-seekbar'),
-        this.playerTime();
-      },
-      playerClickPause: function () {
-        this.moveAndClick(parent + ' div#ControlBarFloater > div.tvp-control-playpause', 15, 15);
-
-        if (isPlaying === false) {
-          client.expect.element(parent + ' div#ControlBarFloater > div.tvp-control-playpause path').to.have.attribute("d", this.ICON_PLAYING);
-          isPlaying = true;
-        } else {
-          client.expect.element(parent + ' div#ControlBarFloater > div.tvp-control-playpause path').to.have.attribute("d", this.ICON_PAUSE);
-          isPlaying = false;
-        }
-
-        this.pause(1);
-      },
-      playerClickOverlay: function () {
-        client.element('css selector')
-          .waitForElementPresent(paernt + ' div.tvp-control-overlay', sla)
-          .click(parent + ' div.tvp-control-overlay');
-      },
-      playerPauseAndPlay: function () {
-        this.playerClickPause(),
-        this.playerTime(),
-        this.playerClickPause();
-      },
-      playerCheckFullScreen: function (keys) {
-        if (keys === undefined) {
-          if (isMobile === true) {
-            client.element('css selector')
-              .click(parent + ' div.tvp-control-overlay')
-              .pause(SECOUND)
-              .waitForElementVisible(parent + " div.tvp-control-fullscreen", sla)
-              .click(parent + " div.tvp-control-fullscreen");
-          } else {
-            client.element('css selector')
-              .moveToElement(parent + ' iframe', 20, 20)
-              .waitForElementVisible(parent + " div.tvp-control-fullscreen", sla)
-              .click(parent + " div.tvp-control-fullscreen");
-            }
-        } else {
-          return false;
-        }
-
-        if (isFullScreen === false) {
-          client.expect.element(parent + ' div.tvp-control-fullscreen > svg.tvp-controlbar-svg path:nth-child(2)').to.have.attribute('d', this.ICON_DEFAULT_SCREEN);
-          isFullScreen = true;
-        } else {
-          client.expect.element(parent + ' div.tvp-control-fullscreen > svg.tvp-controlbar-svg path:nth-child(2)').to.have.attribute('d', this.ICON_FULL_SCREEN);
-          isFullScreen = false;          
-        }
-
-        if (isMobile === true) {
-          client.element('css selector')
-            .click(parent + ' div.tvp-control-overlay');
-        }
-      },
-      playerShowControl: function (target) {
-        if (isMobile === true) {
-          client.element('css selector')
-            .click(parent + ' div.tvp-control-overlay')
-            .waitForElementPresent(parent + " " + target, sla)
-            .click(parent + ' div.tvp-control-overlay');
-        } else {
-          client.element('css selector')
-            .moveToElement(parent + ' div.tvp-control-overlay', 10, 10)
-            .waitForElementVisible(parent + " " + target, sla)
-            .pause(SECOUND);
-        }
-      },
-      playerSkip: function (x) {
-        var seekbar = 'div#ControlBarFloater > div.tvp-parent-seekbar',
-            y = 20;
-
-        if (isMobile === true) {
-          if (orientation === 'PORTRAIT') {
-            y = 4;
-          } else if (orientation === 'LANDSCAPE') {
-            y = 16;
-          }
-        }
-
-        this.playerShowControl(seekbar),
-        this.moveAndClick(parent + " " + seekbar, x, y, "left", true),
-        this.playerTime();
-        
-        client.expect.element(parent + ' div#ControlBarFloater > div.tvp-control-playpause').to.have.css('display').which.not.equals('none');
-        client.expect.element(parent + ' div#ControlBarFloater > div.tvp-control-fullscreen').to.have.css('display').which.not.equals('none');
-
-        this.pause();
-      },
-      playerCheckPlaying: function (isFinished) {
-        if (isFinished === undefined)
-          isFinished = false;
-
-        client.expect.element(parent + ' div#tvp-spinner').to.have.css('display').which.equals('none');
-
-        if (isFinished === false) {
-          client.expect.element(parent + ' div#tvplayer-playbutton-icon').to.not.be.present;
-          client.expect.element(parent + ' div#tvplayer-playbutton').to.not.be.present;
-        } else {
-          client.expect.element(parent + ' div#tvplayer-playbutton-icon').to.be.present;
-          client.expect.element(parent + ' div#tvplayer-playbutton').to.be.present;
-
-          if (isFullScreen === true) {
-            //client.expect.element(parent + " div#tvplayer-overlay").not.to.have.css('z-index', '2147483');
-          }
-        }
-      },
-      playerTime: function () {
-        if (isMobile === true) {
-          client.element('css selector')
-            .click(parent + ' div.tvp-control-overlay');
-        }
-
-        client.element('css selector')
-          .pause(2*SECOUND)
-          .waitForElementPresent(parent + ' div#CtrlTime', sla)
-          .getText(parent + " div#CtrlTime", function (result) {
-            this.assert.equal(typeof result, "object"),
-            this.assert.equal(result.status, 0);
-
-            if (typeof result.value === "string" && result.value !== "" ) {
-              var current = result.value.match(/^(\S+)\s(.*)/).slice(1);
-
-              this.assert.notEqual(result.value, ""),
-              this.assert.notEqual(current[0], "00:00");
-            } else {
-              console.log(">> Skipping Time Check!! <<");
-            }
-
-            if (isMobile === true) {
-              client.element('css selector')
-                .click(parent + ' div.tvp-control-overlay');
-            }
-          });
-      },
-      text: function (selector, expected, type) {
-        if (type === undefined)
-          type = 'css selector';
-
-        client.element(type)
-          .getText(selector, function (result) {
-              this.assert.equal(typeof result, "object");
-              this.assert.equal(result.status, 0);
-              this.assert.equal(result.value, expected);
-          });
-      },
-      iframe: function (count) {
-        targetIframeId = count;
-        client.frame(targetIframeId);
-      },
-      keys: function (key, callback) {
-        client.keys(key, callback);
-      },
-      pause: function (count) {
-        if (count === undefined)
-          count = 1;
-
-        client.pause(count * SECOUND, log);
-      },
-      end: function () {
-        client.end();
-      }
-    };
-};
+var widget = require(__dirname + "/../../../lib/tvpGUITest.js");
 
 module.exports = {
   widgetHolder: "div#carousel-1-holder",
@@ -523,13 +27,15 @@ module.exports = {
   firstVideoId: 'div[data-slick-index="0"]',
 
   'carousel-youtube-sanity': function (browser) {
-    var carousel = new tvpGUITest({
+    var carousel = widget.tvpGUITest({
           'isMobile': true,
           'modalOverlay': this.modalOverlay,
-          'modalCloseId': this.modalCloseId
+          'modalCloseId': this.modalCloseId,
+          'orientation': "PORTRAIT",
+          'DATA': DATA
         }),
         parent = this.widgetIframeId + " > " + this.productHolder,
-        client = carousel.init(browser, "Carousel Youtube Sanity", URL, "div#carousel-1-holder", 0, parent);
+        client = carousel.init(browser, "Carousel Youtube Sanity", "div#carousel-1-holder", 0, parent);
 
     carousel.widgetTitle(this.widgetIframeId, this.widgetTitleId, "Recommended Videos"),
     //carousel.widgetNav(this.widgetIframeId, 16),
@@ -542,20 +48,22 @@ module.exports = {
   },
 
   'carousel-youtube-player': function (browser) {
-    var carousel = new tvpGUITest({
+    var carousel = widget.tvpGUITest({
           'isMobile': true,
           'modalOverlay': this.modalOverlay,
-          'modalCloseId': this.modalCloseId
+          'modalCloseId': this.modalCloseId,
+          'orientation': "PORTRAIT",
+          'DATA': DATA
         }),
         parent = this.widgetIframeId + " > " + this.playerHolder,
-        client = carousel.init(browser, "Carousel Youtube Player Normal", URL, "div#carousel-1-holder", 0, parent);
+        client = carousel.init(browser, "Carousel Youtube Player Normal", "div#carousel-1-holder", 0, parent);
 
     carousel.modalLoad(this.firstVideoId, 160, 100),
     carousel.playerLoadPerformance(2),
     carousel.playerSanity(),
     carousel.playerSkip(100),
     carousel.playerSkip(200),
-    carousel.playerSkip(350),
+    carousel.playerSkip(300),
     carousel.pause(10),
 
     // check for video finish playing and check for new video is playing
@@ -572,13 +80,15 @@ module.exports = {
   },
 
   'caousel-youtube-player-fullscreen': function (browser) {
-    var carousel = new tvpGUITest({
+    var carousel = widget.tvpGUITest({
           'isMobile': true,
           'modalOverlay': this.modalOverlay,
-          'modalCloseId': this.modalCloseId
+          'modalCloseId': this.modalCloseId,
+          'orientation': "PORTRAIT",
+          'DATA': DATA
         }),
         parent = this.widgetIframeId + " > " + this.playerHolder,
-        client = carousel.init(browser, "Carousel Youtube Player Full Screen", URL, "div#carousel-1-holder", 0, parent);
+        client = carousel.init(browser, "Carousel Youtube Player Full Screen", "div#carousel-1-holder", 0, parent);
 
     carousel.modalLoad(this.firstVideoId, 160, 100),
     carousel.playerLoadPerformance(2),
@@ -600,20 +110,22 @@ module.exports = {
   },
   
   'carousel-youtube-player-landscape': function (browser) {
-    var carousel = new tvpGUITest({
+    var carousel = widget.tvpGUITest({
           'isMobile': true,
-          'orientation': 'LANDSCAPE',
           'modalOverlay': this.modalOverlay,
-          'modalCloseId': this.modalCloseId
+          'modalCloseId': this.modalCloseId,
+          'orientation': 'LANDSCAPE',
+          'DATA': DATA
         }),
-        client = carousel.init(browser, "Carousel Youtube Player Normal", URL, "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
+        client = carousel.init(browser, "Carousel Youtube Player Normal", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
 
+    carousel.pause(),
     carousel.modalLoad(this.firstVideoId, 160, 100),
     carousel.playerLoadPerformance(2),
     carousel.playerSanity(),
-    carousel.playerSkip(190),
-    carousel.playerSkip(250),
-    carousel.playerSkip(300),
+    carousel.playerSkip(150),
+    carousel.playerSkip(230),
+    carousel.playerSkip(260),
     carousel.pause(10),
 
     // check for video finish playing and check for new video is playing
@@ -630,14 +142,16 @@ module.exports = {
   },
 
   'caousel-youtube-player-fullscreen-landscape': function (browser) {
-    var carousel = new tvpGUITest({
+    var carousel = widget.tvpGUITest({
           'isMobile': true,
-          'orientation': 'LANDSCAPE',
           'modalOverlay': this.modalOverlay,
-          'modalCloseId': this.modalCloseId
+          'modalCloseId': this.modalCloseId,
+          'orientation': 'LANDSCAPE',
+          'DATA': DATA
         }),
-        client = carousel.init(browser, "Carousel Youtube Player Full Screen", URL, "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
+        client = carousel.init(browser, "Carousel Youtube Player Full Screen", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
 
+    carousel.pause(),
     carousel.modalLoad(this.firstVideoId, 160, 100),
     carousel.playerLoadPerformance(2),
     carousel.playerStart(),
@@ -652,6 +166,218 @@ module.exports = {
 
     // Starting secound video
 //    carousel.playerStart();
+    carousel.end();
+  },
+
+  'carousel-youtube-portrait-landscape-play-portrait': function (browser) {
+    var carousel = widget.tvpGUITest({
+          'isMobile': true,
+          'modalOverlay': this.modalOverlay,
+          'modalCloseId': this.modalCloseId,
+          'orientation': "PORTRAIT",
+          'DATA': DATA
+        }),
+        client = carousel.init(browser, "Carousel Youtube Player Rotation Test #1", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
+
+    client.setOrientation('LANDSCAPE'),
+    carousel.pause(3),
+    carousel.modalLoad(this.firstVideoId, 160, 100),
+    carousel.playerLoadPerformance(2),
+    carousel.playerStart(),
+    carousel.pause(5),
+    client.setOrientation('PORTRAIT'),
+    carousel.pause(5),
+    carousel.end();
+  },
+
+  'carousel-youtube-portrait-play-landscape-portrait': function (browser) {
+    var carousel = widget.tvpGUITest({
+          'isMobile': true,
+          'modalOverlay': this.modalOverlay,
+          'modalCloseId': this.modalCloseId,
+          'orientation': "PORTRAIT",
+          'DATA': DATA
+        }),
+        client = carousel.init(browser, "Carousel Youtube Player Rotation Test #2", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
+
+    carousel.modalLoad(this.firstVideoId, 160, 100),
+    carousel.playerLoadPerformance(2),
+    carousel.playerStart(),
+    carousel.pause(5),
+    client.setOrientation('LANDSCAPE'),
+    carousel.pause(5),
+    client.setOrientation('PORTRAIT'),
+    carousel.pause(5),
+    carousel.end();
+  },
+
+  'carousel-youtube-landscape-portrait-play-landscape': function (browser) {
+    var carousel = widget.tvpGUITest({
+          'isMobile': true,
+          'modalOverlay': this.modalOverlay,
+          'modalCloseId': this.modalCloseId,
+          'orientation': "LANDSCAPE",
+          'DATA': DATA
+        }),
+        client = carousel.init(browser, "Carousel Youtube Player Rotation Test #3", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
+
+    carousel.pause(2),
+    client.setOrientation('PORTRAIT'),
+    carousel.pause(2),
+    carousel.modalLoad(this.firstVideoId, 160, 100),
+    carousel.playerLoadPerformance(2),
+    carousel.playerStart(),
+    carousel.pause(5),
+    client.setOrientation('LANDSCAPE'),
+    carousel.pause(5),
+    carousel.end();
+  },
+
+  'carousel-youtube-landscape-play-portrait-landscape': function (browser) {
+    var carousel = widget.tvpGUITest({
+          'isMobile': true,
+          'modalOverlay': this.modalOverlay,
+          'modalCloseId': this.modalCloseId,
+          'orientation': "LANDSCAPE",
+          'DATA': DATA
+        }),
+        client = carousel.init(browser, "Carousel Youtube Player Rotation Test #4", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
+
+    carousel.modalLoad(this.firstVideoId, 160, 100),
+    carousel.playerLoadPerformance(2),
+    carousel.playerStart(),
+    carousel.pause(5),
+    client.setOrientation('PORTRAIT'),
+    carousel.pause(5),
+    client.setOrientation('LANDSCAPE'),
+    carousel.pause(5),
+    carousel.end();
+  },
+
+  'carousel-youtube-portrait-play-fullscreen-landscape-portrait': function (browser) {
+    var carousel = widget.tvpGUITest({
+          'isMobile': true,
+          'modalOverlay': this.modalOverlay,
+          'modalCloseId': this.modalCloseId,
+          'orientation': "PORTRAIT",
+          'DATA': DATA
+        }),
+        client = carousel.init(browser, "Carousel Youtube Player Rotation Test #5", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
+
+    carousel.modalLoad(this.firstVideoId, 160, 100),
+    carousel.playerLoadPerformance(2),
+    carousel.playerStart(),
+    carousel.pause(5),
+    carousel.playerCheckFullScreen(),
+    carousel.pause(5)
+    client.setOrientation('LANDSCAPE'),
+    carousel.pause(5),
+    client.setOrientation('PORTRAIT'),
+    carousel.pause(5),
+    carousel.playerCheckFullScreen(),
+    carousel.pause(5),
+    carousel.end();
+  },
+
+  'carousel-youtube-landscape-play-fullscreen-portrait': function (browser) {
+    var carousel = widget.tvpGUITest({
+        'isMobile': true,
+        'modalOverlay': this.modalOverlay,
+        'modalCloseId': this.modalCloseId,
+        'orientation': "LANDSCAPE",
+        'DATA': DATA
+      }),
+      client = carousel.init(browser, "Carousel Youtube Player Rotation Test #6", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
+
+    carousel.modalLoad(this.firstVideoId, 160, 100),
+    carousel.playerLoadPerformance(2),
+    carousel.playerStart(),
+    carousel.pause(5),
+    carousel.playerCheckFullScreen(),
+    carousel.pause(5)
+    client.setOrientation('PORTRAIT'),
+    carousel.pause(5),
+    carousel.playerCheckFullScreen(),
+    carousel.pause(5),
+    carousel.end();
+  },
+
+  'carousel-youtube-portrait-landscape-play-fullscreen-portrait-landscape': function (browser) {
+    var carousel = widget.tvpGUITest({
+        'isMobile': true,
+        'modalOverlay': this.modalOverlay,
+        'modalCloseId': this.modalCloseId,
+        'orientation': "PORTRAIT",
+        'DATA': DATA
+      }),
+      client = carousel.init(browser, "Carousel Youtube Player Rotation Test #6", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
+
+    carousel.modalLoad(this.firstVideoId, 160, 100),
+    carousel.playerLoadPerformance(2),
+    client.setOrientation("LANDSCAPE"),
+    carousel.pause(2)
+    carousel.playerStart(),
+    carousel.pause(2),
+    carousel.playerCheckFullScreen(),
+    carousel.pause(2)
+    client.setOrientation('PORTRAIT'),
+    carousel.pause(5),
+    client.setOrientation("LANDSCAPE"),
+    carousel.pause(5)
+    carousel.playerCheckFullScreen(),
+    carousel.pause(5),
+    carousel.end();
+  },
+
+  'carousel-youtube-landscape-portrait-play-fullscreen-landscape': function (browser) {
+    var carousel = widget.tvpGUITest({
+        'isMobile': true,
+        'modalOverlay': this.modalOverlay,
+        'modalCloseId': this.modalCloseId,
+        'orientation': "LANDSCAPE",
+        'DATA': DATA
+      }),
+      client = carousel.init(browser, "Carousel Youtube Player Rotation Test #7", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
+
+    carousel.modalLoad(this.firstVideoId, 160, 100),
+    carousel.playerLoadPerformance(2),
+    client.setOrientation("PORTRAIT"),
+    carousel.pause(2)
+    carousel.playerStart(),
+    carousel.pause(2),
+    carousel.playerCheckFullScreen(),
+    carousel.pause(2)
+    client.setOrientation('LANDSCAPE'),
+    carousel.pause(5),
+    carousel.playerCheckFullScreen(),
+    carousel.pause(5),
+    carousel.end();
+  },
+
+  'carousel-youtube-landscape-portrait-play-fullscreen-landscape-portrait': function (browser) {
+    var carousel = widget.tvpGUITest({
+        'isMobile': true,
+        'modalOverlay': this.modalOverlay,
+        'modalCloseId': this.modalCloseId,
+        'orientation': "LANDSCAPE",
+        'DATA': DATA
+      }),
+      client = carousel.init(browser, "Carousel Youtube Player Rotation Test #8", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
+
+    carousel.modalLoad(this.firstVideoId, 160, 100),
+    carousel.playerLoadPerformance(2),
+    client.setOrientation("PORTRAIT"),
+    carousel.pause(2)
+    carousel.playerStart(),
+    carousel.pause(2),
+    carousel.playerCheckFullScreen(),
+    carousel.pause(2)
+    client.setOrientation('LANDSCAPE'),
+    carousel.pause(5),
+    client.setOrientation("PORTRAIT"),
+    carousel.pause(5)
+    carousel.playerCheckFullScreen(),
+    carousel.pause(5),
     carousel.end();
   }
 };
