@@ -228,7 +228,7 @@ exports.tvpGUITest = function (options) {
         client
           .waitForElementVisible(parent + " a#tvp-product-83102610", DATA.SLA)
           .moveToElement(parent + " a#tvp-product-83102610", 70, 70)
-          .waitForElementVisible(parent + " a.tvp-product-popup", DATA.SLA)
+          .waitForElementVisible(parent + "  a#tvp-product-popup-83102610", DATA.SLA)
           .pause(SECOND)
           .mouseButtonClick("left")
           .windowHandles(function (result) {
@@ -247,8 +247,8 @@ exports.tvpGUITest = function (options) {
         client
           .waitForElementVisible(parent + " a#tvp-product-83102610", DATA.SLA)
           .moveToElement(parent + " a#tvp-product-83102610", 70, 70)
-          .waitForElementVisible(parent + " div.tvp-product-popup-image", DATA.SLA)
-          .moveToElement(parent + " div.tvp-product-popup-image", 105, 105)
+          .waitForElementVisible(parent + " a#tvp-product-popup-83102610 div.tvp-product-popup-image", DATA.SLA)
+          .moveToElement(parent + " a#tvp-product-popup-83102610 div.tvp-product-popup-image", 105, 105)
           .mouseButtonClick("left")
           .pause(SECOND)
           .windowHandles(function (result) {
@@ -267,8 +267,8 @@ exports.tvpGUITest = function (options) {
         client
           .waitForElementVisible(parent + " a#tvp-product-83102610", DATA.SLA)
           .moveToElement(parent + " a#tvp-product-83102610", 70, 70)
-          .waitForElementVisible(parent + " p.tvp-product-title", DATA.SLA)
-          .moveToElement(parent + " p.tvp-product-title", 40, 20)
+          .waitForElementVisible(parent + " a#tvp-product-popup-83102610 p.tvp-product-title", DATA.SLA)
+          .moveToElement(parent + " a#tvp-product-popup-83102610 p.tvp-product-title", 40, 20)
           .pause(SECOND)
           .mouseButtonClick("left")
           .windowHandles(function (result) {
@@ -287,8 +287,8 @@ exports.tvpGUITest = function (options) {
         client
           .waitForElementVisible(parent + " a#tvp-product-83102610", DATA.SLA)
           .moveToElement(parent + " a#tvp-product-83102610", 70, 70)
-          .waitForElementVisible(parent + " button.tvp-product-cta", DATA.SLA)
-          .moveToElement(parent + " button.tvp-product-cta", 40, 20)
+          .waitForElementVisible(parent + " a#tvp-product-popup-83102610 button.tvp-product-cta", DATA.SLA)
+          .moveToElement(parent + " a#tvp-product-popup-83102610 button.tvp-product-cta", 40, 20)
           .mouseButtonClick("left")
           .pause(SECOND)
           .windowHandles(function (result) {
