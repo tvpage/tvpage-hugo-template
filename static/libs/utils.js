@@ -1,7 +1,13 @@
 (function(){
+
   var userAgent = navigator.userAgent;
   var body = document.body;
-  
+
+  //helpers
+  var getById = function(id){
+    return document.getElementById(id);
+  }
+
   var hasKey = function(o,k){
     return o.hasOwnProperty(k);
   };
@@ -18,6 +24,7 @@
     return 'function' === typeof o;
   };
   
+  //the utils module
   var Utils = {};
   
   Utils.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
@@ -25,7 +32,7 @@
   Utils.isIOS = (/iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(userAgent) && !window.MSStream);
   
   Utils.getWidgetHeight = function() {
-    return body.scrollHeight;
+    return Math.floor(getById('skeleton').getBoundingClientRect().height);
   };
 
   Utils.attr = function(el,a) {
@@ -63,10 +70,8 @@
     el.classList.remove(c);
   };
 
-  Utils.getById = function(id) {
-    return document.getElementById(id);
-  };
-  
+  Utils.getById = getById;
+
   Utils.hasClass = hasClass;
   
   Utils.loadScript = function(o, cback){

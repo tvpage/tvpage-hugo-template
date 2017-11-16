@@ -8,6 +8,10 @@
     var productsEl = null;
     var analytics = null;
 
+    var getWidgetHeight = function(){
+        return Math.floor(mainEl.getBoundingClientRect().height);
+    };
+
     var pkTrack = function(){
         analytics.track('pk',{
             vd: this.getAttribute('data-vd'),
@@ -17,22 +21,14 @@
     };
 
     var onNoProducts = function(){
-
         Utils.addClass(mainEl,'tvp-no-products');
-
-        console.log("HERE?")
-
         Utils.sendMessage({
             event: eventPrefix + ':modal_no_products'
         });
     };
 
     var onProducts = function(){
-
         Utils.removeClass(mainEl,'tvp-no-products');
-
-        console.log("HERE?")
-
         Utils.sendMessage({
             event: eventPrefix + ':modal_products'
         });
@@ -258,7 +254,7 @@
 
         Utils.sendMessage({
             event: eventPrefix + ':modal_resize',
-            height: Utils.getWidgetHeight() + 'px'
+            height: getWidgetHeight() + 'px'
         });
     };
 
@@ -319,7 +315,7 @@
 
         Utils.sendMessage({
             event: eventPrefix + ':modal_initialized',
-            height: Utils.getWidgetHeight() + 'px'
+            height: getWidgetHeight() + 'px'
         });
     };
     

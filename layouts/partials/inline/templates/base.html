@@ -2,27 +2,27 @@
   
   '<div class="row justify-content-start">' +
     '<div class="col">' +
-      '<h2 id="widget-title" class="widget-title"></h2>' +
+      '<h3 id="widget-title" class="widget-title"></h3>' +
     '</div>' +
   '</div>' +
 
   '<div class="row mt-2">' +
-    '<div class="col-sm-6">'+
+    '<div class="col-md-6">'+
       '<div class="player-holder fluid-y">'+
         '<div id="player-el"></div>' +
       '</div>' +
     '</div>' +
-    '<div class="col-sm-3">'+
+    '<div class="col-md-3 hidden-sm-down">'+
       '<div id="featured-product">' +
         '<div class="skeleton-bg w-50 mx-auto mt-2 mb-1">' +
           '<div class="product-image fluid-y"></div>' +
         '</div>' +
         '<p class="product-title mb-1"></p>' +
         '<p class="product-price mb-1"></p>' +
-        '<button type="button" class="btn-primary w-100 p-1">View Details</button>' +
+        '<button type="button" class="w-100 p-1">View Details</button>' +
       '</div>' +
     '</div>' +
-    '<div id="products" class="col-sm-3">' +
+    '<div id="products" class="col-md-3 mt-3 m0-md">' +
       {{ range seq 3 }}
       '<div class="row mb-2">' +
         '<div class="col-3">' +

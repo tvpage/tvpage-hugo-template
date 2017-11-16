@@ -23,8 +23,8 @@
   Carousel.prototype.getSlickConfig = function(){
     var options = this.options,
     slickConfig = {
-      prevArrow:'<button type="button" class="btn-sm btn-primary slick-prev"></button>',
-      nextArrow:'<button type="button" class="btn-sm btn-primary slick-next"></button>',
+      prevArrow:'<button type="button" class="btn-sm slick-prev"></button>',
+      nextArrow:'<button type="button" class="btn-sm slick-next"></button>',
       slidesToShow: options.slidesToShow,
       slidesToScroll: options.slidesToScroll,
       infinite: options.infinite || false,
@@ -46,7 +46,7 @@
     //dots/bullets pagination
     if(slickConfig.dots){
       slickConfig.customPaging = function (slick, k) {
-        return '<button class="btn-sm btn-primary carousel-dot-' + k + '">' + k + '</button>';
+        return '<button class="btn-sm carousel-dot-' + k + '">' + k + '</button>';
       };
 
       if(this.appendDots){
@@ -67,6 +67,7 @@
       var target = Utils.getRealTargetByClass(e.target, that.itemClass.substr(1));
       var id = target.getAttribute('data-id');
 
+      //later remove this, probably only the carousel widget is using it, lets fix it
       Utils.sendMessage({
         event: that.eventPrefix + ":carousel_click",
         clicked: id
@@ -88,6 +89,8 @@
     if(Utils.isFunction(onReady)){
       onReady();
     }
+
+    this.handleClick();
   };
 
   //since the slick's setPosition callback is triggered multiple times, is probably better
@@ -130,6 +133,29 @@
         arrowTop,
         arrowBottom,
         isCenter;
+    
+    var updateArrows = function(){
+      var arrows = that.el.querySelectorAll('.slick-arrow');
+      var arrowsLength = arrows.length;
+
+      for (var i = 0; i < arrowsLength; i++) {
+        var arrow = arrows[i];
+
+        if(arrowTop || arrowBottom)
+          arrow.style.transform = 'initial';
+
+        if(arrowTop){
+          arrow.style.top = isCenter ? arrowTop - arrow.getBoundingClientRect().height / 2 : arrowTop;
+        }
+        
+        if(arrowBottom)
+          arrow.style.bottom = arrowBottom;
+
+        //show arrows
+        arrow.style.opacity = 1;
+        arrow.style.visibility = 'visible';
+      }
+    };
 
     if('string' === typeof alignArrowsY){
 
@@ -139,54 +165,51 @@
       }
 
     }else if(alignArrowsY && alignArrowsY.length > 1){
+      var referenceEl = this.el.querySelector(alignArrowsY[1]);
+      
+      if(!referenceEl){
+        return;
+      }
+
       isCenter = 'center' === alignArrowsY[0];
 
-      var referenceEl = this.el.querySelector(alignArrowsY[1]);
+      if(isCenter){
 
-      if(referenceEl){
+        var that = this;        
+        var parentsCheck = 0;
+        var parents = [];
+        var currentParent = referenceEl.offsetParent;
 
-        //you can add a check with offsetParent to which element the referenceEl will use as it's relative, if this is not
-        //the slick-carousel, we traverse until reach it and we add the offSetTop value of the elements
-        if(isCenter){
-          
-          var offsetParents,
-              offsetParent;
+        //if reference offsetParent is not slick's topmost element, we collect the elements in-between and
+        //we'll add that to the top value calculation
+        (function collectParents(){
+          setTimeout(function() {
+            if(currentParent && Utils.hasClass(currentParent, 'slick-carousel')){
+              arrowTop = 0;
 
-          // var collectOffsetParents = function(){
-            
-          // };
+              var parentsLength = parents.length;
+              
+              for (var i = 0; i < parentsLength; i++) {
+                arrowTop += parents[i].offsetTop;
+              }
 
-          // collectOffsetParents();
+              //adding the center of the element
+              arrowTop += Math.floor(referenceEl.getBoundingClientRect().height / 2);
 
-          console.log(Utils.hasClass(referenceEl.offsetParent, 'slick-carousel'))
+              updateArrows();
+              return;
+            }else if(++parentsCheck < 30){
+              parents.push(currentParent);
 
-          //so far this value is the center of the reference element
-          //arrowTop = referenceEl.offsetTop + Math.floor(referenceEl.getBoundingClientRect().height / 2);
+              if(currentParent)
+                currentParent = currentParent.offsetParent;
 
-        }
+              collectParents();
+            }
+          },0);
+        })();
+
       }
-    }
-
-    //implement on arrows
-    var arrows = this.el.querySelectorAll('.slick-arrow');
-    var arrowsLength = arrows.length;
-
-    for (var i = 0; i < arrowsLength; i++) {
-      var arrow = arrows[i];
-
-      if(arrowTop || arrowBottom)
-        arrow.style.transform = 'initial';
-
-      if(arrowTop){
-        //arrow.style.top = isCenter ? arrowTop - arrow.getBoundingClientRect().height / 2 : arrowTop;
-      }
-      
-      if(arrowBottom)
-        arrow.style.bottom = arrowBottom;
-
-      //show arrows
-      arrow.style.opacity = 1;
-      arrow.style.visibility = 'visible';
     }
   };
 
@@ -219,12 +242,11 @@
     this.alignArrowsX();
     this.alignArrowsY();
 
-    setTimeout(function(prefix){
-      Utils.sendMessage({
-        event: prefix + ':carousel_resize',
-        height: Utils.getWidgetHeight()
-      });
-    }, 10, this.eventPrefix);
+    setTimeout(function(opts){
+      var onResize = opts.onResize;
+      if(Utils.isFunction(onResize))
+        onResize();
+    }, 10, this.options);
   };
 
   Carousel.prototype.start = function(){
@@ -236,9 +258,11 @@
       that.$slickEl.on('init', function(){
         that.onSlickInit.call(that);
       });
+      
       that.$slickEl.on('afterChange', function(){
         that.onSlickAfterChange.call(that);
       });
+
       that.$slickEl.on('setPosition', function(){
         that.onSlickSetPosition.call(that);
       });
@@ -389,10 +413,6 @@
         
         if(Utils.isFunction(that[action])){
           that[action]();
-  
-          if('render' === action){
-            that.handleClick();
-          }
         }
   
         if(Utils.isFunction(cback)){

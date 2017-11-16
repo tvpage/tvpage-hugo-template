@@ -1,3 +1,4 @@
+/* wet can move this to the scss piece */
 /* helpers */
 ".hide {" +
   "opacity: 0;" + 
@@ -140,7 +141,7 @@
   "color: transparent;" +
 "}" +
 
-
+/* implementation specific */
 ".video-image-overlay {" +
   "top: 0;" +
   "bottom: 0;" +
@@ -174,12 +175,24 @@
   "border-radius:{{ ($.Scratch.Get "settings").item_play_button_border_radius }};" +
 "}"+
 
+".mobile .product{"+
+  "min-height: 85px;"+
+"}"+
+
 /* slick overrides */
 ".slick-dots{" +
   "margin:0;" +
 "}" +
 
-'.slick-dots.products-carousel-dots{' +
-  'position: absolute;' +
-  'bottom: -20px;' +
-'}'
+"@media screen and (min-width: 768px) {" +
+
+  ".m0-md{" +
+    "margin: 0 !important;" +
+  "}" +
+
+  ".slick-dots.products-carousel-dots{" +
+    "position: absolute;" +
+    "bottom: -20px;" +
+  "}"+
+  
+"}"

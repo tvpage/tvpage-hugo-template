@@ -85,24 +85,19 @@ var css = config.css;
 var baseUrl = config.baseUrl;
 var static = baseUrl + '/' + type;
 var dist = debug ? '/' : '/dist/';
+var eventPrefix = ('tvp_' + id).replace(/-/g, '_');
 
 config.id = id;
 config.loginId = config.loginId || config.loginid;
 config.channelId = (config.channelId || config.channelid) || config.channel.id;
-
 config.events = {};
-
-var eventPrefix = ('tvp_' + id).replace(/-/g, '_');
-
 config.events.prefix = eventPrefix;
-
 config.paths = {};
 config.paths.baseUrl = baseUrl;
 config.paths.static = static;
 config.paths.dist = dist;
 config.paths.javascript = static + dist + 'js';
 config.paths.css = static + dist + 'css';
-
 config.mobile = {};
 config.mobile.path = isMobile ? 'mobile' : '';
 config.mobile.prefix = isMobile ? '-mobile' : '';
@@ -187,9 +182,11 @@ function getIframeHtml(o) {
         return l;
       };
 
+      console.log('    if(!e || !e.data || !e.data.event || \'' + o.eventPrefix + ':' + o.startEvent + '\' !== e.data.event){');
+
   html +=
   '  function onStart(e){' +
-  '    if(!e || !e.data || !e.data.event || \'' + o.eventPrefix + ':start\' !== e.data.event){' +
+  '    if(!e || !e.data || !e.data.event || \'' + o.eventPrefix + ':' + o.startEvent + '\' !== e.data.event){' +
   '      return;' +
   '    }' +
 
@@ -275,6 +272,7 @@ function widgetRender(){
   var iframeDocument = iframe.contentWindow.document;
   var iframeHtml = getIframeHtml({
     id: id,
+    startEvent: 'widget_start',
     domain: baseUrl,
     style: config.css.base,
     context: config,
@@ -291,7 +289,7 @@ function widgetRender(){
     ],
     css: [
       debug ? cssPath + "/vendor/slick.css" : "",
-      debug ? baseUrl + "/bootstrap-4.0.0/css/bootstrap.css" : "",
+      debug ? baseUrl + "/bootstrap/dist/css/bootstrap.css" : "",
       debug ? cssPath + "/styles.css" : "",
       debug ? "" : cssPath + "/styles.min.css"
     ]
@@ -317,7 +315,7 @@ function onWidgetLoad(data){
 
     //this event will trigger the load of the widget iframe resources
     window.postMessage({
-      event: eventPrefix + ':start'
+      event: eventPrefix + ':widget_start'
     }, '*');
   }else if(debug){
     console.log('videos api call returned 0 videos', performance.now() - startTime);   
@@ -344,13 +342,6 @@ function widgetLoad(){
       loadVideosParams[channelParam] = channelParams[channelParam];
   }
 
-  //load whatever you think is useful, then just call start
-  function sendStart(){
-    window.postMessage({
-      event: eventPrefix + ':start'
-    }, '*');
-  };
-
   //the videos call
   loadScript({
     base: config.api_base_url + '/channels/' + config.channelId + '/videos',
@@ -361,8 +352,72 @@ function widgetLoad(){
 
 widgetLoad();
 
+//handle events
+var isEvent = function(e){
+  return e && e.data && e.data.event;
+};
+var getEventType = function(e){
+  var eArr = e.data.event.split(':');
+  return eArr[0] === eventPrefix ? eArr[1] : '';
+};
+var resizeHolder = function(h){
+  holder.style.height = h + 'px';
+};
 
-//Modal starts here
+//handle events
+window.addEventListener("message", function(e){
+  if(!isEvent(e)){
+    return;
+  }
+
+  var type = getEventType(e);
+  
+  if('widget_ready' === type){
+    resizeHolder(e.data.height);
+  }
+
+  if('widget_resize' === type){
+    resizeHolder(e.data.height);
+  }
+
+  if('carousel_click' === type){
+    handleVideoClick(e);
+  }
+
+  if('modal_initialized' === type){
+    handleModalInitialized(e);    
+  }
+
+  if('modal_no_products' === type){
+    handleModalNoProducts(e);
+  }
+
+  if('modal_products' === type){
+    handleModalProducts(e); 
+  }
+
+  if('player_next' === type){
+    handlePlayerNext(e);
+  }
+
+  if('modal_resize' === type){
+    handleModalResize(e);
+  }
+
+  if('render' === type){
+    handleRender(e); 
+  }
+
+  if('on_player_change' === type){
+    handleOnPlayerChange(e);
+  }
+
+  if (__windowCallbackFunc__)
+    __windowCallbackFunc__(e);
+});
+
+
+//modal stuff starts here
 var modalContainer = createEl('div');
 
 modalContainer.innerHTML = templates.modal.base.modal;
@@ -407,45 +462,6 @@ modal.addEventListener('click', function(e) {
   }
 }, false);
 
-//Listen and handle messages coming from the widget
-window.addEventListener("message", function(e) {
-  var event = (e && e.data && e.data.event).split(':');
-  var type = event[0] === eventPrefix ? event[1] : '';
-  switch (type) {
-    case 'carousel_click':
-      handleVideoClick(e);
-      break;
-    case 'modal_initialized':
-      handleModalInitialized(e);
-      break;
-    case 'modal_no_products':
-      handleModalNoProducts(e);
-      break;
-    case 'modal_products':
-      handleModalProducts(e);
-      break;
-    case 'player_next':
-      handlePlayerNext(e);
-      break;
-    case 'modal_resize':
-      handleModalResize(e);
-      break;
-    case 'render':
-      handleRender(e);
-      break;
-    case 'carousel_resize':
-      handleResize(e);
-      break;
-    case 'on_player_change':
-      handleOnPlayerChange(e);
-      break;
-    default:
-  }
-
-  if (__windowCallbackFunc__)
-    __windowCallbackFunc__(e);
-});
-
 function handleOnPlayerChange(e){
   config.onPlayerChange(e.data.e, e.data.stateData);
 }
@@ -466,6 +482,9 @@ function handleRender(e) {
 }
 
 function handleResize(e) {
+
+  console.log('####', e.data.height, '####');
+
   if (!modal.classList.contains("tvp-hidden") || !e.data.height)
     return;
 
@@ -483,6 +502,7 @@ var getPlayerUrl = function(){
 var mobilePath = config.mobile.path;
 
 var iframeModalHtml = getIframeHtml({
+  startEvent: 'widget_modal_start',
   id: id,
   domain: baseUrl,
   context: config,
@@ -541,7 +561,7 @@ function handleVideoClick(e) {
   
   //start things out inside the iframe modal
   window.postMessage({
-    event: eventPrefix + ':start'
+    event: eventPrefix + ':widget_modal_start'
   }, '*');
   
   if (config.fix_page_scroll)

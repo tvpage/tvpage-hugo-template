@@ -76,7 +76,7 @@
 {
     display: none;
     float: left;
-    min-height: 116px;
+    min-height: 85px;
 }
 .slick-slide:focus
 {
@@ -185,7 +185,7 @@
     line-height: 1;
 
     opacity: .75;
-    color: white;
+    color: black;
 
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

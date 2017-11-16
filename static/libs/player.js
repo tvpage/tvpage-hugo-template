@@ -147,30 +147,14 @@
       this.onResize(this.initialResize,[width,height]);
   };
   
-  //We can't resize using local references when we are inside an iframe. Alternative is to receive external
-  //size from host.
   Player.prototype.handleResize = function() {
-    var that = this;
-    if (window.location !== window.parent.location && PlayerUtils.iOS) {
-      var onHolderResize = function(e) {
-        if(!e || !e.data || !e.data.event || that.eventPrefix + ':external_resize' !== e.data.event)
-          return;
-        
-        var size = e.data.size || [];
-  
-        that.resize(size[0], size[1]);
-      };
-  
-      window.removeEventListener('message', onHolderResize, false);
-      window.addEventListener('message', onHolderResize, false);
-    } else {
-      var onResize = function(){
-        that.resize.call(that);
-      };
-      
-      window.removeEventListener('resize', onResize, false);
-      window.addEventListener('resize', onResize, false);
-    }
+    var that = this,
+        onResize = function(){
+          that.resize.call(that);
+        };
+    
+    window.removeEventListener('resize', onResize, false);
+    window.addEventListener('resize', onResize, false);
   };
   
   Player.prototype.analyticsConfig = function() {

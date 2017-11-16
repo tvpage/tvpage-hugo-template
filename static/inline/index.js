@@ -85,25 +85,20 @@ var css = config.css;
 var baseUrl = config.baseUrl;
 var static = baseUrl + '/' + type;
 var dist = debug ? '/' : '/dist/';
+var eventPrefix = ('tvp_' + id).replace(/-/g, '_');
+var holder;
 
 config.id = id;
 config.loginId = config.loginId || config.loginid;
 config.channelId = (config.channelId || config.channelid) || config.channel.id;
-
 config.events = {};
-config.events.prefix = ('tvp_' + id).replace(/-/g, '_');
-
-var eventPrefix = ('tvp_' + id).replace(/-/g, '_');
-
 config.events.prefix = eventPrefix;
-
 config.paths = {};
 config.paths.baseUrl = baseUrl;
 config.paths.static = static;
 config.paths.dist = dist;
 config.paths.javascript = static + dist + 'js';
 config.paths.css = static + dist + 'css';
-
 config.mobile = {};
 config.mobile.path = isMobile ? 'mobile' : '';
 config.mobile.prefix = isMobile ? '-mobile' : '';
@@ -116,6 +111,9 @@ window.__TVPage__.config[id] = config;
 var userAgent = navigator.userAgent;
 var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
 var iOS = /iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(userAgent) && !window.MSStream;
+var initialHtml = '<div id="{id}-holder" class="tvp-{type}-holder">' +
+'<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe>' +
+'</div>';
 var iframeHtmlStart = '<head><base target="_blank"/></head><body class="{className}"' +
 'data-domain="{domain}" data-id="{id}" onload="startTime={startTime};' +
 'var d=document,h=d.head,' +
@@ -189,7 +187,7 @@ function getIframeHtml(o) {
 
   html +=
   '  function onStart(e){' +
-  '    if(!e || !e.data || !e.data.event || \'' + o.eventPrefix + ':start\' !== e.data.event){' +
+  '    if(!e || !e.data || !e.data.event || \'' + o.eventPrefix + ':widget_start\' !== e.data.event){' +
   '      return;' +
   '    }' +
 
@@ -236,16 +234,14 @@ function getHostStyles(){
     styles += '<style>' + custom + '</style>';
 
   return styles;
-};
+}
 
 function getInitialHtml(){
   var html = "";
-  var hostId = "tvp-" + type + "-host";
 
   html += getHostStyles();
-  html += '<div id="' + id + '-holder" class="tvp-'+type+'-holder">';
-  html += '  <iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe>';
-  html += '</div>';
+  html += tmpl(initialHtml, config);
+  
   return html;
 };
 
@@ -256,8 +252,6 @@ function getPlayerUrl(){
   }
   return url;
 };
-
-var holder;
 
 //Here's the first HTML write we do to the host page, this is the fastest way to do it
 //refer to https://jsperf.com/insertadjacenthtml-perf/3
@@ -324,18 +318,16 @@ function onWidgetLoad(data){
 
     //this event will trigger the load of the widget iframe resources
     window.postMessage({
-      event: eventPrefix + ':start'
+      event: eventPrefix + ':widget_start'
     }, '*');
   }else if(debug){
     console.log('videos api call returned 0 videos', performance.now() - startTime);   
   }
 };
 
-//API calls/loading, is here were we call the most important api(s) and it's the start 
-//of everything.
+//api calls/loading, is here were we call the most important api(s) and it's the start of everything.
 function widgetLoad(){
 
-  //the videos call params
   var videosLoadParams = {
     p: 0,
     n: config.items_per_page,
@@ -364,21 +356,28 @@ widgetLoad();
 var isEvent = function(e){
   return e && e.data && e.data.event;
 };
+var getEventType = function(e){
+  var eArr = e.data.event.split(':');
+  return eArr[0] === eventPrefix ? eArr[1] : '';
+};
+var resizeHolder = function(h){
+  holder.style.height = h + 'px';
+};
 
-//Listen and handle messages coming from the widget
-window.addEventListener("message", function(e) {
+//handle events
+window.addEventListener("message", function(e){
   if(!isEvent(e)){
     return;
   }
 
-  var eventData = e.data;
-  var eventArr = eventData.event.split(':');
-  var type = eventArr[0] === eventPrefix ? eventArr[1] : '';
+  var type = getEventType(e);
   
-  //we are currently choosing the carousel_resize event (for this widget) to wait until
-  //we resize the holder... this should be more generic
-  if('carousel_resize' === type){
-    holder.style.height = eventData.height + 'px';
+  if('widget_ready' === type){
+    resizeHolder(e.data.height);
+  }
+
+  if('widget_resize' === type){
+    resizeHolder(e.data.height);
   }
 
   if (__windowCallbackFunc__)
