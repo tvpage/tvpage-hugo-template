@@ -11,7 +11,7 @@ var DATA = {
       FIRST_VIDEO_TITLE: "Galette des Rois Recipe for De'Longhi MultiFry",
       SLA: 20000,
       BROWSERHEIGHT: 1080,
-      BROWSEWIDTH: 1920
+      BROWSEWIDTH: 1920      
     };
 
 var widget = require(__dirname + "/../../../../lib/tvpGUITest.js");

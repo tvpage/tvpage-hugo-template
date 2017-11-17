@@ -39,10 +39,10 @@ module.exports = {
 
     carousel.widgetTitle(this.widgetIframeId, this.widgetTitleId, "Recommended Videos"),
     carousel.widgetNav(this.widgetIframeId, 16, true),
-    carousel.modalSanity(this.modalId, this.firstVideoId),
-    carousel.modalLoadPerformance(this.widgetIFrameHolder, this.firstVideoId, this.widgetIframeId + " > " + this.playerHolder, 2),
+    carousel.modalSanity(this.modalId, this.firstVideoId, true),
+    carousel.modalLoadPerformance(this.widgetIFrameHolder, this.firstVideoId, this.widgetIframeId + " > " + this.playerHolder, 2, true),
     carousel.productModal(),
-    carousel.productModalLink(),
+    carousel.productModalLink(true),
     carousel.end();
   },
 

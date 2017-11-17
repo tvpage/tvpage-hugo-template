@@ -3,15 +3,17 @@
 /*==============================================================================*/
 var DATA = {
       URL: "https://www.goodlookingbean.com/test/carousel/",
-      PRODUCT_URL: "http://www.ninjakitchen.com/products/0/all/67/ninja-coffee-bar-with-glass-carafe/",
-      PRODUCT_SECURE_URL: "https://www.ninjakitchen.com/products/0/all/67/ninja-coffee-bar-with-glass-carafe/",
-      PRODUCT_IMG: "http://www.ninjakitchen.com/include/images/products/hero-CF080.jpg",
+      PRODUCT_URL: "http://www.keurig.com/Brewers/Home/Keurig%C2%AE-K475-Coffee-Maker/p/K475-Coffee-Maker?text=k400",
+      PRODUCT_SECURE_URL: "https://www.keurig.com/Brewers/Home/Keurig%C2%AE-K475-Coffee-Maker/p/K475-Coffee-Maker?text=k400",
+      PRODUCT_IMG: "https://app.tvpage.com/api/spotImage/1758799/479/458/6295232216827.png",
       PRODUCT_HEADLINE: "Related Products",
-      PRODUCT_TITLE_REGEX: /Ninja\ Coffee\ Bar®\ with\ Glass\ Carafe/i,
+      PRODUCT_TITLE_REGEX: /Keurig®\ K475\ Coffee\ Maker/i,
       FIRST_VIDEO_TITLE: "Galette des Rois Recipe for De'Longhi MultiFry",
       SLA: 20000,
       BROWSERHEIGHT: 1080,
-      BROWSEWIDTH: 1920
+      BROWSEWIDTH: 1920,
+      PRODUCTID: 83102883,
+      isFF: true
     };
 
 var widget = require(__dirname + "/../../../../lib/tvpGUITest.js");
@@ -38,11 +40,11 @@ module.exports = {
         client = carousel.init(browser, "Carousel Widget Normal", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.productHolder);
 
     carousel.widgetTitle(this.widgetIframeId, this.widgetTitleId, "Recommended Videos"),
-    carousel.widgetNav(this.widgetIframeId, 16),
-    carousel.modalSanity(this.modalId, this.firstVideoId),
-    carousel.modalLoadPerformance(this.widgetIFrameHolder, this.firstVideoId, this.widgetIframeId + " > " + this.playerHolder, 2),
-    carousel.productModal(),
-    carousel.productModalLink(),
+    carousel.widgetNav(this.widgetIframeId, 16, true),
+    carousel.modalSanity(this.modalId, this.firstVideoId, true),
+    carousel.modalLoadPerformance(this.widgetIFrameHolder, this.firstVideoId, this.widgetIframeId + " > " + this.playerHolder, 2, true),
+    carousel.productModal(true),
+    carousel.productModalLink(true),
     carousel.end();
   },
 

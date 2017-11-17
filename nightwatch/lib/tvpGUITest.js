@@ -22,6 +22,12 @@ exports.tvpGUITest = function (options) {
   if (DATA.BROWSEWIDTH === undefined)
     DATA.BROWSEWIDTH = 1440;
 
+ if (DATA.PRODUCTID === undefined)
+    DATA.PRODUCTID = 83102610;
+
+  if (DATA.isFF === undefined)
+    DATA.isFF = false;
+
   var log = function (result) {
     if (debug === true) {
       console.log(">> DEBUG: <<");
@@ -193,27 +199,29 @@ exports.tvpGUITest = function (options) {
 
       this.pause();
     },
-    productModal: function () {
+    productModal: function (skip) {
       var regex = (DATA.PRODUCT_TITLE_REGEX !== undefined ? DATA.PRODUCT_TITLE_REGEX : /\ /i);
 
       client.waitForElementVisible(parent, DATA.SLA);
 
-      client.expect.element(parent + " a#tvp-product-83102610").to.be.present;
-      client.expect.element(parent + " a#tvp-product-83102610").to.have.attribute('href', DATA.PRODUCT_URL);
-
+      client.expect.element(parent + " a#tvp-product-" + DATA.PRODUCTID).to.be.present;
+      client.expect.element(parent + " a#tvp-product-" + DATA.PRODUCTID).to.have.attribute('href', DATA.PRODUCT_URL);
+      if(skip){
+        return;
+      }
       // Product pop-up
       client
-        .moveToElement(parent + " a#tvp-product-83102610", 70, 70)
+        .moveToElement(parent + " a#tvp-product-" + DATA.PRODUCTID, 70, 70)
         .pause(2*SECOND);
 
       if (isMobile === false) {
-        client.expect.element(parent + " a#tvp-product-83102610").to.have.attribute('class', 'tvp-product active');
-        client.expect.element(parent + " a#tvp-product-popup-83102610").to.be.present;
-        client.expect.element(parent + " a#tvp-product-popup-83102610").to.have.attribute('href', DATA.PRODUCT_URL);
-        client.expect.element(parent + " a#tvp-product-popup-83102610 > div.tvp-product-popup-image").to.have.css("background-image", "url(" + DATA.PRODUCT_IMG + ");");
-        client.expect.element(parent + " a#tvp-product-popup-83102610 > p.tvp-product-title").text.to.match(regex);
-        client.expect.element(parent + " a#tvp-product-popup-83102610 > p.tvp-product-price").text.to.equal("");
-        client.expect.element(parent + " a#tvp-product-popup-83102610 > button.tvp-product-cta").to.be.present;
+        client.expect.element(parent + " a#tvp-product-" + DATA.PRODUCTID).to.have.attribute('class', 'tvp-product active');
+        client.expect.element(parent + " a#tvp-product-popup-" + DATA.PRODUCTID).to.be.present;
+        client.expect.element(parent + " a#tvp-product-popup-" + DATA.PRODUCTID).to.have.attribute('href', DATA.PRODUCT_URL);
+        client.expect.element(parent + " a#tvp-product-popup-" + DATA.PRODUCTID + " > div.tvp-product-popup-image").to.have.css("background-image", "url(" + DATA.PRODUCT_IMG + ");");
+        client.expect.element(parent + " a#tvp-product-popup-" + DATA.PRODUCTID + " > p.tvp-product-title").text.to.match(regex);
+        client.expect.element(parent + " a#tvp-product-popup-" + DATA.PRODUCTID + " > p.tvp-product-price").text.to.equal("");
+        client.expect.element(parent + " a#tvp-product-popup-" + DATA.PRODUCTID + " > button.tvp-product-cta").to.be.present;
         client.expect.element(parent + " div.tvp-inner-arrow-indicator").to.be.present;
       }
 
@@ -223,7 +231,7 @@ exports.tvpGUITest = function (options) {
       // Click on product from modal
       if (isMobile === true) {
         client
-          .click(parent + " a#tvp-product-83102610")
+          .click(parent + " a#tvp-product-" + DATA.PRODUCTID)
           .windowHandles(function (result) {
             this.switchWindow(result.value[1]);
             this.verify.urlContains(DATA.PRODUCT_SECURE_URL);
@@ -236,10 +244,13 @@ exports.tvpGUITest = function (options) {
           })
           .pause(2*SECOND);
       } else {
+        if (DATA.isFF) {
+          return;
+        }
         client
-          .waitForElementVisible(parent + " a#tvp-product-83102610", DATA.SLA)
-          .moveToElement(parent + " a#tvp-product-83102610", 70, 70)
-          .waitForElementVisible(parent + "  a#tvp-product-popup-83102610", DATA.SLA)
+          .waitForElementVisible(parent + " a#tvp-product-" + DATA.PRODUCTID, DATA.SLA)
+          .moveToElement(parent + " a#tvp-product-" + DATA.PRODUCTID, 70, 70)
+          .waitForElementVisible(parent + "  a#tvp-product-popup-" + DATA.PRODUCTID, DATA.SLA)
           .pause(SECOND)
           .mouseButtonClick("left")
           .windowHandles(function (result) {
@@ -256,10 +267,10 @@ exports.tvpGUITest = function (options) {
 
         // Click on product from pop-up thumnail
         client
-          .waitForElementVisible(parent + " a#tvp-product-83102610", DATA.SLA)
-          .moveToElement(parent + " a#tvp-product-83102610", 70, 70)
-          .waitForElementVisible(parent + " a#tvp-product-popup-83102610 div.tvp-product-popup-image", DATA.SLA)
-          .moveToElement(parent + " a#tvp-product-popup-83102610 div.tvp-product-popup-image", 105, 105)
+          .waitForElementVisible(parent + " a#tvp-product-" + DATA.PRODUCTID, DATA.SLA)
+          .moveToElement(parent + " a#tvp-product-" + DATA.PRODUCTID, 70, 70)
+          .waitForElementVisible(parent + " a#tvp-product-popup-" + DATA.PRODUCTID + " div.tvp-product-popup-image", DATA.SLA)
+          .moveToElement(parent + " a#tvp-product-popup-" + DATA.PRODUCTID + " div.tvp-product-popup-image", 105, 105)
           .mouseButtonClick("left")
           .pause(SECOND)
           .windowHandles(function (result) {
@@ -279,10 +290,10 @@ exports.tvpGUITest = function (options) {
 
         // Click on product from pop-up title
         client
-          .waitForElementVisible(parent + " a#tvp-product-83102610", DATA.SLA)
-          .moveToElement(parent + " a#tvp-product-83102610", 70, 70)
-          .waitForElementVisible(parent + " a#tvp-product-popup-83102610 p.tvp-product-title", DATA.SLA)
-          .moveToElement(parent + " a#tvp-product-popup-83102610 p.tvp-product-title", 40, 20)
+          .waitForElementVisible(parent + " a#tvp-product-" + DATA.PRODUCTID, DATA.SLA)
+          .moveToElement(parent + " a#tvp-product-" + DATA.PRODUCTID, 70, 70)
+          .waitForElementVisible(parent + " a#tvp-product-popup-" + DATA.PRODUCTID + " p.tvp-product-title", DATA.SLA)
+          .moveToElement(parent + " a#tvp-product-popup-" + DATA.PRODUCTID + " p.tvp-product-title", 40, 20)
           .pause(SECOND)
           .mouseButtonClick("left")
           .windowHandles(function (result) {
@@ -302,10 +313,10 @@ exports.tvpGUITest = function (options) {
 
         // Click on product from pop-up cta
         client
-          .waitForElementVisible(parent + " a#tvp-product-83102610", DATA.SLA)
-          .moveToElement(parent + " a#tvp-product-83102610", 70, 70)
-          .waitForElementVisible(parent + " a#tvp-product-popup-83102610 button.tvp-product-cta", DATA.SLA)
-          .moveToElement(parent + " a#tvp-product-popup-83102610 button.tvp-product-cta", 40, 20)
+          .waitForElementVisible(parent + " a#tvp-product-" + DATA.PRODUCTID, DATA.SLA)
+          .moveToElement(parent + " a#tvp-product-" + DATA.PRODUCTID, 70, 70)
+          .waitForElementVisible(parent + " a#tvp-product-popup-" + DATA.PRODUCTID + " button.tvp-product-cta", DATA.SLA)
+          .moveToElement(parent + " a#tvp-product-popup-" + DATA.PRODUCTID + " button.tvp-product-cta", 40, 20)
           .mouseButtonClick("left")
           .pause(SECOND)
           .windowHandles(function (result) {
