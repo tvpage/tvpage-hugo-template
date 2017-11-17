@@ -184,7 +184,7 @@ function getIframeHtml(o){
 
         for (var i = 0; i < arrLength; i++){
           var last = arrLength == i + 1;
-          l += 'load' + type + '(\'' + arr[i] + '\', ' + (last && cback ? cback : '') + ');';
+          l += 'load' + type + '(\'' + arr[i] + '\'' + (last && cback ? (',' + cback) : '') + ');';
         }
 
         return l;
