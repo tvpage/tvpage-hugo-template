@@ -61,53 +61,53 @@ module.exports = {
     carousel.modalLoad(this.firstVideoId, 160, 100),
     carousel.playerLoadPerformance(2),
     carousel.playerSanity(),
-    carousel.playerSkip(100),
-    carousel.playerSkip(200),
-    carousel.playerSkip(300),
+    // carousel.playerSkip(100),
+    // carousel.playerSkip(200),
+    // carousel.playerSkip(300),
     carousel.pause(10),
 
     // check for video finish playing and check for new video is playing
-    carousel.playerCheckPlaying(true),
-    carousel.modalClose(this.modalId), // testing close modal
+    // carousel.playerCheckPlaying(true),
+    // carousel.modalClose(this.modalId), // testing close modal
 
-    // Move to carousel iframe
-    carousel.iframe(0),
+    // // Move to carousel iframe
+    // carousel.iframe(0),
 
-    carousel.modalLoad(this.firstVideoId, 160, 100),
-    carousel.playerLoadPerformance(2),
-    carousel.playerSanity(),
+    // carousel.modalLoad(this.firstVideoId, 160, 100),
+    // carousel.playerLoadPerformance(2),
+    // carousel.playerSanity(),
     carousel.end();
   },
 
-  'caousel-youtube-player-fullscreen': function (browser) {
-    var carousel = widget.tvpGUITest({
-          'isMobile': true,
-          'modalOverlay': this.modalOverlay,
-          'modalCloseId': this.modalCloseId,
-          'orientation': "PORTRAIT",
-          'DATA': DATA
-        }),
-        parent = this.widgetIframeId + " > " + this.playerHolder,
-        client = carousel.init(browser, "Carousel Youtube Player Full Screen", "div#carousel-1-holder", 0, parent);
+//   'caousel-youtube-player-fullscreen': function (browser) {
+//     var carousel = widget.tvpGUITest({
+//           'isMobile': true,
+//           'modalOverlay': this.modalOverlay,
+//           'modalCloseId': this.modalCloseId,
+//           'orientation': "PORTRAIT",
+//           'DATA': DATA
+//         }),
+//         parent = this.widgetIframeId + " > " + this.playerHolder,
+//         client = carousel.init(browser, "Carousel Youtube Player Full Screen", "div#carousel-1-holder", 0, parent);
 
-    carousel.modalLoad(this.firstVideoId, 160, 100),
-    carousel.playerLoadPerformance(2),
-    carousel.playerStart(),
-    carousel.playerCheckFullScreen(),
-//    carousel.playerTime(),
-//    carousel.playerSkip(100),
-//    carousel.playerSkip(200),
-//    carousel.playerSkip(355),
-//    carousel.pause(5),
+//     carousel.modalLoad(this.firstVideoId, 160, 100),
+//     carousel.playerLoadPerformance(2),
+//     carousel.playerStart(),
+//     carousel.playerCheckFullScreen(),
+// //    carousel.playerTime(),
+// //    carousel.playerSkip(100),
+// //    carousel.playerSkip(200),
+// //    carousel.playerSkip(355),
+// //    carousel.pause(5),
 
-    // checking for next loaded video sanity
-    //carousel.playerCheckPlaying(true),
-    carousel.pause(2),
+//     // checking for next loaded video sanity
+//     //carousel.playerCheckPlaying(true),
+//     carousel.pause(2),
 
-    // Starting secound video
-    //carousel.playerStart();
-    carousel.end();
-  },
+//     // Starting secound video
+//     //carousel.playerStart();
+//     carousel.end();
+//   },
   
   'carousel-youtube-player-landscape': function (browser) {
     var carousel = widget.tvpGUITest({
@@ -123,51 +123,51 @@ module.exports = {
     carousel.modalLoad(this.firstVideoId, 160, 100),
     carousel.playerLoadPerformance(2),
     carousel.playerSanity(),
-    carousel.playerSkip(150),
-    carousel.playerSkip(230),
-    carousel.playerSkip(260),
+    // carousel.playerSkip(150),
+    // carousel.playerSkip(230),
+    // carousel.playerSkip(260),
     carousel.pause(10),
 
     // check for video finish playing and check for new video is playing
-    carousel.playerCheckPlaying(true),
-    carousel.modalClose(this.modalId), // testing close modal
+    // carousel.playerCheckPlaying(true),
+    // carousel.modalClose(this.modalId), // testing close modal
 
-    // Move to carousel iframe
-    carousel.iframe(0),
+    // // Move to carousel iframe
+    // carousel.iframe(0),
 
-    carousel.modalLoad(this.firstVideoId, 160, 100),
-    carousel.playerLoadPerformance(2),
-    carousel.playerSanity(),
+    // carousel.modalLoad(this.firstVideoId, 160, 100),
+    // carousel.playerLoadPerformance(2),
+    // carousel.playerSanity(),
     carousel.end();
   },
 
-  'caousel-youtube-player-fullscreen-landscape': function (browser) {
-    var carousel = widget.tvpGUITest({
-          'isMobile': true,
-          'modalOverlay': this.modalOverlay,
-          'modalCloseId': this.modalCloseId,
-          'orientation': 'LANDSCAPE',
-          'DATA': DATA
-        }),
-        client = carousel.init(browser, "Carousel Youtube Player Full Screen", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
+//   'caousel-youtube-player-fullscreen-landscape': function (browser) {
+//     var carousel = widget.tvpGUITest({
+//           'isMobile': true,
+//           'modalOverlay': this.modalOverlay,
+//           'modalCloseId': this.modalCloseId,
+//           'orientation': 'LANDSCAPE',
+//           'DATA': DATA
+//         }),
+//         client = carousel.init(browser, "Carousel Youtube Player Full Screen", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
 
-    carousel.pause(),
-    carousel.modalLoad(this.firstVideoId, 160, 100),
-    carousel.playerLoadPerformance(2),
-    carousel.playerStart(),
-    //carousel.playerSkip(100),
-    //carousel.playerSkip(200),
-    ////carousel.playerSkip(355),
-    //carousel.pause(5),
+//     carousel.pause(),
+//     carousel.modalLoad(this.firstVideoId, 160, 100),
+//     carousel.playerLoadPerformance(2),
+//     carousel.playerStart(),
+//     //carousel.playerSkip(100),
+//     //carousel.playerSkip(200),
+//     ////carousel.playerSkip(355),
+//     //carousel.pause(5),
 
-    // checking for next loaded video sanity
-    //carousel.playerCheckPlaying(true),
-    carousel.pause(2),
+//     // checking for next loaded video sanity
+//     //carousel.playerCheckPlaying(true),
+//     carousel.pause(2),
 
-    // Starting secound video
-//    carousel.playerStart();
-    carousel.end();
-  },
+//     // Starting secound video
+// //    carousel.playerStart();
+//     carousel.end();
+//   },
 
   'carousel-youtube-portrait-landscape-play-portrait': function (browser) {
     var carousel = widget.tvpGUITest({
@@ -211,173 +211,173 @@ module.exports = {
     carousel.end();
   },
 
-  'carousel-youtube-landscape-portrait-play-landscape': function (browser) {
-    var carousel = widget.tvpGUITest({
-          'isMobile': true,
-          'modalOverlay': this.modalOverlay,
-          'modalCloseId': this.modalCloseId,
-          'orientation': "LANDSCAPE",
-          'DATA': DATA
-        }),
-        client = carousel.init(browser, "Carousel Youtube Player Rotation Test #3", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
+  // 'carousel-youtube-landscape-portrait-play-landscape': function (browser) {
+  //   var carousel = widget.tvpGUITest({
+  //         'isMobile': true,
+  //         'modalOverlay': this.modalOverlay,
+  //         'modalCloseId': this.modalCloseId,
+  //         'orientation': "LANDSCAPE",
+  //         'DATA': DATA
+  //       }),
+  //       client = carousel.init(browser, "Carousel Youtube Player Rotation Test #3", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
 
-    carousel.pause(2),
-    client.setOrientation('PORTRAIT'),
-    carousel.pause(2),
-    carousel.modalLoad(this.firstVideoId, 160, 100),
-    carousel.playerLoadPerformance(2),
-    carousel.playerStart(),
-    carousel.pause(5),
-    client.setOrientation('LANDSCAPE'),
-    carousel.pause(5),
-    carousel.end();
-  },
+  //   carousel.pause(2),
+  //   client.setOrientation('PORTRAIT'),
+  //   carousel.pause(2),
+  //   carousel.modalLoad(this.firstVideoId, 160, 100),
+  //   carousel.playerLoadPerformance(2),
+  //   carousel.playerStart(),
+  //   carousel.pause(5),
+  //   client.setOrientation('LANDSCAPE'),
+  //   carousel.pause(5),
+  //   carousel.end();
+  // },
 
-  'carousel-youtube-landscape-play-portrait-landscape': function (browser) {
-    var carousel = widget.tvpGUITest({
-          'isMobile': true,
-          'modalOverlay': this.modalOverlay,
-          'modalCloseId': this.modalCloseId,
-          'orientation': "LANDSCAPE",
-          'DATA': DATA
-        }),
-        client = carousel.init(browser, "Carousel Youtube Player Rotation Test #4", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
+  // 'carousel-youtube-landscape-play-portrait-landscape': function (browser) {
+  //   var carousel = widget.tvpGUITest({
+  //         'isMobile': true,
+  //         'modalOverlay': this.modalOverlay,
+  //         'modalCloseId': this.modalCloseId,
+  //         'orientation': "LANDSCAPE",
+  //         'DATA': DATA
+  //       }),
+  //       client = carousel.init(browser, "Carousel Youtube Player Rotation Test #4", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
 
-    carousel.modalLoad(this.firstVideoId, 160, 100),
-    carousel.playerLoadPerformance(2),
-    carousel.playerStart(),
-    carousel.pause(5),
-    client.setOrientation('PORTRAIT'),
-    carousel.pause(5),
-    client.setOrientation('LANDSCAPE'),
-    carousel.pause(5),
-    carousel.end();
-  },
+  //   carousel.modalLoad(this.firstVideoId, 160, 100),
+  //   carousel.playerLoadPerformance(2),
+  //   carousel.playerStart(),
+  //   carousel.pause(5),
+  //   client.setOrientation('PORTRAIT'),
+  //   carousel.pause(5),
+  //   client.setOrientation('LANDSCAPE'),
+  //   carousel.pause(5),
+  //   carousel.end();
+  // },
+ 
+  // 'carousel-youtube-portrait-play-fullscreen-landscape-portrait': function (browser) {
+  //   var carousel = widget.tvpGUITest({
+  //         'isMobile': true,
+  //         'modalOverlay': this.modalOverlay,
+  //         'modalCloseId': this.modalCloseId,
+  //         'orientation': "PORTRAIT",
+  //         'DATA': DATA
+  //       }),
+  //       client = carousel.init(browser, "Carousel Youtube Player Rotation Test #5", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
 
-  'carousel-youtube-portrait-play-fullscreen-landscape-portrait': function (browser) {
-    var carousel = widget.tvpGUITest({
-          'isMobile': true,
-          'modalOverlay': this.modalOverlay,
-          'modalCloseId': this.modalCloseId,
-          'orientation': "PORTRAIT",
-          'DATA': DATA
-        }),
-        client = carousel.init(browser, "Carousel Youtube Player Rotation Test #5", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
+  //   carousel.modalLoad(this.firstVideoId, 160, 100),
+  //   carousel.playerLoadPerformance(2),
+  //   carousel.playerStart(),
+  //   carousel.pause(5),
+  //   carousel.playerCheckFullScreen(),
+  //   carousel.pause(5)
+  //   client.setOrientation('LANDSCAPE'),
+  //   carousel.pause(5),
+  //   client.setOrientation('PORTRAIT'),
+  //   carousel.pause(5),
+  //   carousel.playerCheckFullScreen(),
+  //   carousel.pause(5),
+  //   carousel.end();
+  // },
 
-    carousel.modalLoad(this.firstVideoId, 160, 100),
-    carousel.playerLoadPerformance(2),
-    carousel.playerStart(),
-    carousel.pause(5),
-    carousel.playerCheckFullScreen(),
-    carousel.pause(5)
-    client.setOrientation('LANDSCAPE'),
-    carousel.pause(5),
-    client.setOrientation('PORTRAIT'),
-    carousel.pause(5),
-    carousel.playerCheckFullScreen(),
-    carousel.pause(5),
-    carousel.end();
-  },
+  // 'carousel-youtube-landscape-play-fullscreen-portrait': function (browser) {
+  //   var carousel = widget.tvpGUITest({
+  //       'isMobile': true,
+  //       'modalOverlay': this.modalOverlay,
+  //       'modalCloseId': this.modalCloseId,
+  //       'orientation': "LANDSCAPE",
+  //       'DATA': DATA
+  //     }),
+  //     client = carousel.init(browser, "Carousel Youtube Player Rotation Test #6", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
 
-  'carousel-youtube-landscape-play-fullscreen-portrait': function (browser) {
-    var carousel = widget.tvpGUITest({
-        'isMobile': true,
-        'modalOverlay': this.modalOverlay,
-        'modalCloseId': this.modalCloseId,
-        'orientation': "LANDSCAPE",
-        'DATA': DATA
-      }),
-      client = carousel.init(browser, "Carousel Youtube Player Rotation Test #6", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
+  //   carousel.modalLoad(this.firstVideoId, 160, 100),
+  //   carousel.playerLoadPerformance(2),
+  //   carousel.playerStart(),
+  //   carousel.pause(5),
+  //   carousel.playerCheckFullScreen(),
+  //   carousel.pause(5)
+  //   client.setOrientation('PORTRAIT'),
+  //   carousel.pause(5),
+  //   carousel.playerCheckFullScreen(),
+  //   carousel.pause(5),
+  //   carousel.end();
+  // },
 
-    carousel.modalLoad(this.firstVideoId, 160, 100),
-    carousel.playerLoadPerformance(2),
-    carousel.playerStart(),
-    carousel.pause(5),
-    carousel.playerCheckFullScreen(),
-    carousel.pause(5)
-    client.setOrientation('PORTRAIT'),
-    carousel.pause(5),
-    carousel.playerCheckFullScreen(),
-    carousel.pause(5),
-    carousel.end();
-  },
+  // 'carousel-youtube-portrait-landscape-play-fullscreen-portrait-landscape': function (browser) {
+  //   var carousel = widget.tvpGUITest({
+  //       'isMobile': true,
+  //       'modalOverlay': this.modalOverlay,
+  //       'modalCloseId': this.modalCloseId,
+  //       'orientation': "PORTRAIT",
+  //       'DATA': DATA
+  //     }),
+  //     client = carousel.init(browser, "Carousel Youtube Player Rotation Test #6", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
 
-  'carousel-youtube-portrait-landscape-play-fullscreen-portrait-landscape': function (browser) {
-    var carousel = widget.tvpGUITest({
-        'isMobile': true,
-        'modalOverlay': this.modalOverlay,
-        'modalCloseId': this.modalCloseId,
-        'orientation': "PORTRAIT",
-        'DATA': DATA
-      }),
-      client = carousel.init(browser, "Carousel Youtube Player Rotation Test #6", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
+  //   carousel.modalLoad(this.firstVideoId, 160, 100),
+  //   carousel.playerLoadPerformance(2),
+  //   client.setOrientation("LANDSCAPE"),
+  //   carousel.pause(2)
+  //   carousel.playerStart(),
+  //   carousel.pause(2),
+  //   carousel.playerCheckFullScreen(),
+  //   carousel.pause(2)
+  //   client.setOrientation('PORTRAIT'),
+  //   carousel.pause(5),
+  //   client.setOrientation("LANDSCAPE"),
+  //   carousel.pause(5)
+  //   carousel.playerCheckFullScreen(),
+  //   carousel.pause(5),
+  //   carousel.end();
+  // },
 
-    carousel.modalLoad(this.firstVideoId, 160, 100),
-    carousel.playerLoadPerformance(2),
-    client.setOrientation("LANDSCAPE"),
-    carousel.pause(2)
-    carousel.playerStart(),
-    carousel.pause(2),
-    carousel.playerCheckFullScreen(),
-    carousel.pause(2)
-    client.setOrientation('PORTRAIT'),
-    carousel.pause(5),
-    client.setOrientation("LANDSCAPE"),
-    carousel.pause(5)
-    carousel.playerCheckFullScreen(),
-    carousel.pause(5),
-    carousel.end();
-  },
+  // 'carousel-youtube-landscape-portrait-play-fullscreen-landscape': function (browser) {
+  //   var carousel = widget.tvpGUITest({
+  //       'isMobile': true,
+  //       'modalOverlay': this.modalOverlay,
+  //       'modalCloseId': this.modalCloseId,
+  //       'orientation': "LANDSCAPE",
+  //       'DATA': DATA
+  //     }),
+  //     client = carousel.init(browser, "Carousel Youtube Player Rotation Test #7", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
 
-  'carousel-youtube-landscape-portrait-play-fullscreen-landscape': function (browser) {
-    var carousel = widget.tvpGUITest({
-        'isMobile': true,
-        'modalOverlay': this.modalOverlay,
-        'modalCloseId': this.modalCloseId,
-        'orientation': "LANDSCAPE",
-        'DATA': DATA
-      }),
-      client = carousel.init(browser, "Carousel Youtube Player Rotation Test #7", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
+  //   carousel.modalLoad(this.firstVideoId, 160, 100),
+  //   carousel.playerLoadPerformance(2),
+  //   client.setOrientation("PORTRAIT"),
+  //   carousel.pause(2)
+  //   carousel.playerStart(),
+  //   carousel.pause(2),
+  //   carousel.playerCheckFullScreen(),
+  //   carousel.pause(2)
+  //   client.setOrientation('LANDSCAPE'),
+  //   carousel.pause(5),
+  //   carousel.playerCheckFullScreen(),
+  //   carousel.pause(5),
+  //   carousel.end();
+  // },
 
-    carousel.modalLoad(this.firstVideoId, 160, 100),
-    carousel.playerLoadPerformance(2),
-    client.setOrientation("PORTRAIT"),
-    carousel.pause(2)
-    carousel.playerStart(),
-    carousel.pause(2),
-    carousel.playerCheckFullScreen(),
-    carousel.pause(2)
-    client.setOrientation('LANDSCAPE'),
-    carousel.pause(5),
-    carousel.playerCheckFullScreen(),
-    carousel.pause(5),
-    carousel.end();
-  },
+  // 'carousel-youtube-landscape-portrait-play-fullscreen-landscape-portrait': function (browser) {
+  //   var carousel = widget.tvpGUITest({
+  //       'isMobile': true,
+  //       'modalOverlay': this.modalOverlay,
+  //       'modalCloseId': this.modalCloseId,
+  //       'orientation': "LANDSCAPE",
+  //       'DATA': DATA
+  //     }),
+  //     client = carousel.init(browser, "Carousel Youtube Player Rotation Test #8", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
 
-  'carousel-youtube-landscape-portrait-play-fullscreen-landscape-portrait': function (browser) {
-    var carousel = widget.tvpGUITest({
-        'isMobile': true,
-        'modalOverlay': this.modalOverlay,
-        'modalCloseId': this.modalCloseId,
-        'orientation': "LANDSCAPE",
-        'DATA': DATA
-      }),
-      client = carousel.init(browser, "Carousel Youtube Player Rotation Test #8", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
-
-    carousel.modalLoad(this.firstVideoId, 160, 100),
-    carousel.playerLoadPerformance(2),
-    client.setOrientation("PORTRAIT"),
-    carousel.pause(2)
-    carousel.playerStart(),
-    carousel.pause(2),
-    carousel.playerCheckFullScreen(),
-    carousel.pause(2)
-    client.setOrientation('LANDSCAPE'),
-    carousel.pause(5),
-    client.setOrientation("PORTRAIT"),
-    carousel.pause(5)
-    carousel.playerCheckFullScreen(),
-    carousel.pause(5),
-    carousel.end();
-  }
+  //   carousel.modalLoad(this.firstVideoId, 160, 100),
+  //   carousel.playerLoadPerformance(2),
+  //   client.setOrientation("PORTRAIT"),
+  //   carousel.pause(2)
+  //   carousel.playerStart(),
+  //   carousel.pause(2),
+  //   carousel.playerCheckFullScreen(),
+  //   carousel.pause(2)
+  //   client.setOrientation('LANDSCAPE'),
+  //   carousel.pause(5),
+  //   client.setOrientation("PORTRAIT"),
+  //   carousel.pause(5)
+  //   carousel.playerCheckFullScreen(),
+  //   carousel.pause(5),
+  //   carousel.end();
+  // }
 };
