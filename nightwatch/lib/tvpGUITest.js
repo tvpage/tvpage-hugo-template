@@ -528,6 +528,72 @@ exports.tvpGUITest = function (options) {
     },
     end: function () {
       client.end();
+    },
+    analytics: function() {
+
+      function getParameterByName(name, url) {
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+      }
+
+      analyticsCount = {
+        'ci': 0,
+        'vv': 0,
+        'pi': 0,
+        'pk': 0,
+        'vt': 0,
+      };
+  
+      analyticsTest = {
+        'ci': function(client, src) {
+          this.assert.equal(analyticsCount['ci'], 1);
+          var li = getParameterByName('li', src);
+          this.assert.equal(li, DATA.LOGIN_ID);
+          var url = getParameterByName('url', src);
+          this.assert.equal(url, DATA.URL);
+        },
+        'vv': function() {
+          
+        },
+        'pi': function() {
+          
+        },
+        'pk': function() {
+          
+        },
+        'vt': function() {
+          
+        }
+      };
+
+      client.frame(2).waitForElementVisible('p#analtyticsTest', 6000);
+      client.frame(2).elements("tag name", "script", function(result) {
+        result.value.forEach(function(script) {
+          client.elementIdAttribute(script.ELEMENT, 'src', function(res) {
+            var src = res.value;
+            for (var key in analyticsCount) {
+              if (src.indexOf('rt=' + key) >= 0) {
+                analyticsCount[key]++;
+                var test = analyticsTest[key].bind(this,client, src);
+                test();
+              }
+            }
+          });
+        });
+      });
+    },
+    getParameterByName: function(name, url) {
+      name = name.replace(/[\[\]]/g, "\\$&");
+      var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+          results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
+    
   };
 };

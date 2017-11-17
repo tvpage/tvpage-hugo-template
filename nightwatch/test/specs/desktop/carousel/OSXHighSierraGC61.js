@@ -11,7 +11,8 @@ var DATA = {
       FIRST_VIDEO_TITLE: "Galette des Rois Recipe for De'Longhi MultiFry",
       SLA: 20000,
       BROWSERHEIGHT: 1080,
-      BROWSEWIDTH: 1920
+      BROWSEWIDTH: 1920,
+      LOGIN_ID: 1758799
     };
 
 var widget = require(__dirname + "/../../../../lib/tvpGUITest.js");
@@ -27,6 +28,27 @@ module.exports = {
   playerHolder: "div.tvp-player-holder",
   productHolder: "div.tvp-products-holder",
   firstVideoId: 'div[data-slick-index="0"]',
+
+  'analytics': function(browser) {
+    var carousel = widget.tvpGUITest({
+      'modalOverlay': this.modalOverlay,
+      'modalCloseId': this.modalCloseId,
+      'DATA': DATA
+    }),
+    client = carousel.init(browser, "Carousel Youtube Player Normal", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
+
+    carousel.modalLoad(this.firstVideoId, 160, 100),
+    carousel.playerLoadPerformance(2),
+    carousel.playerSanity(),
+    carousel.pause(10),
+
+    carousel.analytics();
+
+
+    carousel.modalClose(this.modalId), // testing close modal
+
+    carousel.end();
+  },
 
   'carousel-youtube-sanity': function (browser) {
     var carousel = widget.tvpGUITest({
