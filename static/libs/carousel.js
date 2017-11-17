@@ -1,4 +1,4 @@
-   (function(){
+(function(){
 
   function Carousel(sel, options, config){
     this.options = options || {};    
@@ -18,20 +18,21 @@
     this.maxDots = 5;
     this.limitDots = Utils.isUndefined(this.options.limitDots) ? false : this.options.limitDots;
     this.loadMore = Utils.isUndefined(this.options.loadMore) ? true : this.options.loadMore;
+    this.dotsPosition = Utils.isUndefined(this.options.dotsPosition) ? 'bottom' : this.options.dotsPosition;
     this.el = document.getElementById(sel);
   };
 
   Carousel.prototype.getSlickConfig = function(){
     var options = this.options,
     slickConfig = {
-      prevArrow:'<button type="button" class="btn-sm slick-prev"></button>',
-      nextArrow:'<button type="button" class="btn-sm slick-next"></button>',
+      prevArrow: '#carousel-arrow-prev',
+      nextArrow: '#carousel-arrow-next',
       slidesToShow: options.slidesToShow,
       slidesToScroll: options.slidesToScroll,
       infinite: options.infinite || false,
       arrows: true
     };
-
+1
     if(!!options.responsive && options.responsive.length){
       slickConfig.responsive = options.responsive;
     }
@@ -47,7 +48,7 @@
     //dots/bullets pagination
     if(slickConfig.dots){
       slickConfig.customPaging = function (slick, k) {
-        return '<button class="btn-sm carousel-dot-' + k + '">' + k + '</button>';
+        return '<button class="btn-sm carousel-dot carousel-dot-' + k + '">' + k + '</button>';
       };
 
       if(this.appendDots){
@@ -95,7 +96,10 @@
     //and last item of the page
     if(Utils.isUndefined(alignArrowsX)){
       var firstItem = this.el.querySelector(this.itemClass);
+      
       if(firstItem){
+        
+        //WTF? video class here?
         var firstItemEl = firstItem.querySelector('.video');
         
         if(firstItemEl){
@@ -115,7 +119,7 @@
 
     var arrowNext = this.el.querySelector('.slick-next');
     if(arrowNext){
-      arrowNext.style.right = (parseInt(xOffset) - 1) + 'px';
+      arrowNext.style.right = parseInt(xOffset) + 'px';
     }
   };
 
@@ -126,8 +130,8 @@
         arrowBottom,
         isCenter;
     
-    var updateArrows = function(){
-      var arrows = that.el.querySelectorAll('.slick-arrow');
+    function updateArrows(){
+      var arrows = that.el.querySelectorAll('.carousel-arrow');
       var arrowsLength = arrows.length;
 
       for (var i = 0; i < arrowsLength; i++) {
@@ -207,7 +211,7 @@
 
   Carousel.prototype.onSlickInit = function(){
     if(this.config.debug) {
-      console.log('carousel el initialized: ', this.itemsTargetEl, performance.now() - startTime);
+      console.log('carousel el initialized: ', performance.now() - startTime);
     }
 
     if(this.options.dotsCenter){
@@ -216,6 +220,13 @@
 
     if(this.options.dotsClass){
       Utils.addClass(this.el.querySelector('.slick-dots'), this.options.dotsClass);
+    }
+
+    var arrowEls = this.el.querySelectorAll('.carousel-arrow');
+    var arrowElsLength = arrowEls.length;
+
+    for (var i = 0; i < arrowElsLength; i++) {
+      this.el.querySelector('.slick-carousel').appendChild(arrowEls[i]);
     }
 
     this.onReady();
@@ -280,44 +291,75 @@
     }
   };
 
+  Carousel.prototype.renderItem = function(item){
+    return Utils.tmpl(this.templates.item, item);
+  };
+
   Carousel.prototype.renderBatch = function(batch){
     var html = '';
     var batchLength = batch.length;
-    var itemTemplate = this.templates.item;
 
     for (var i = 0; i < batchLength; i++){
-      html += Utils.tmpl(itemTemplate, batch[i]);
+      html += this.renderItem(batch[i]);
     }
 
     return html;
   };
 
+  Carousel.prototype.buildArrow = function(dir){
+    var arrowEl = document.createElement('button');
+    arrowEl.type = 'button';
+    arrowEl.id = 'carousel-arrow-' + dir;
+    arrowEl.className = 'btn-sm carousel-arrow slick-' + dir;
+    
+    var iconEl = document.createElement('i');
+    iconEl.className = 'material-icons';
+    
+    var iconElHTML = 'keyboard_arrow_';
+    
+    if('prev' === dir)
+      iconElHTML += 'left';
+
+    if('next' === dir)
+      iconElHTML += 'right';
+
+    iconEl.innerHTML = iconElHTML;
+    
+    arrowEl.appendChild(iconEl);
+
+    return arrowEl;
+  };
+  
   Carousel.prototype.render = function(){
     var all = this.data;
     var allLength = all.length;
 
-    if(!allLength && this.options.clean){ 
+    //if no data to render
+    if(!allLength && this.options.clean){
       this.el.innerHTML = '';
       this.itemsTargetEl = null;
 
       return;
     }
 
+    this.parse();
+
     var moreThan1 = allLength > 1;
     var itemTemplate = this.templates.item;
+
+    var pages = Utils.rowerize(all, this.itemsPerPage)
+    var pagesLength = pages.length;
+
+    var pageWrapStart = this.options.pageWrapStart;
+    var pageWrapEnd = this.options.pageWrapEnd;
+    var hasPageWrap = pageWrapStart && pageWrapEnd;
 
     //so we are only considering the page wrappers if the page is 0?
     if(0 == this.page){
       this.el.innerHTML = Utils.tmpl(this.templates.list, this.config);
       this.itemsTargetEl = this.el.querySelector(this.options.itemsTarget);
-      
-      var pageWrapStart = this.options.pageWrapStart;
-      var pageWrapEnd = this.options.pageWrapEnd;
-      var hasPageWrap = pageWrapStart && pageWrapEnd;
 
       if(hasPageWrap){
-        var pages = Utils.rowerize(all, this.itemsPerPage)
-        var pagesLength = pages.length;
         var html = '';
 
         for (var i = 0; i < pagesLength; i++) {
@@ -329,20 +371,62 @@
         this.itemsTargetEl.innerHTML = this.renderBatch(all);
       }
 
+      //we won't start the slick slider if there's no overflow of items
       if(moreThan1){
+        //if user don't pass where nav dots should be, we render a placeholder
+        if(!this.appendDots && this.dots){
+          this.appendDotsEl = document.createElement('div');
+          this.appendDotsEl.id = 'dots-target';
+          this.appendDotsEl.className = 'col';
+          
+          this.appendDots = '#dots-target';
+          
+          if('bottom' === this.dotsPosition){
+            this.el.appendChild(this.appendDotsEl);
+          }else{
+            this.el.insertBefore(this.appendDotsEl, this.el.firstChild);
+          }
+
+          this.el.appendChild(this.buildArrow('prev'));
+          this.el.appendChild(this.buildArrow('next'));
+        }
+
         this.start();
       }else{
         this.onReady();
       }
     }else{
-      var iOffset = this.itemsPerPage * this.page;
+      //if it's a subsequent page we need to consider offset
+      var pageOffset = this.page;
 
-      for (var i = 0; i < allLength; i++) {
-        this.$slickEl.slick('slickAdd', Utils.tmpl(this.templates.item, all[ (i + iOffset) % all.length ]));
+      if(hasPageWrap){
+        var html = '';
+
+        for (var i = 0; i < pagesLength; i++) {
+          var page = pages[i + pageOffset]
+          
+          if(page){
+            html += pageWrapStart + this.renderBatch(page) + pageWrapEnd;
+          }
+        }
+
+        this.$slickEl.slick('slickAdd', html);
+      }else{
+        var html = '';
+
+        for (var i = 0; i < pagesLength; i++) {
+          var page = pages[i + pageOffset]
+          
+          if(page){
+            html += this.renderBatch(page);
+          }
+        }
+
+        this.$slickEl.slick('slickAdd', html);
       }
-
-      this.handleClick();
     }
+
+    this.handleClick();
   };
 
   Carousel.prototype.parse = function(){
@@ -359,7 +443,7 @@
 
     var dataLength = data.length || 0;
 
-    if(!this.options.loadMore){
+    if(!this.loadMore){
       this.data = data;
     }else if(!dataLength || dataLength < this.itemsPerPage){
       this.full = true;
@@ -375,8 +459,6 @@
     var onLoad = this.options.onLoad;
     if(Utils.isFunction(onLoad))
       onLoad(data);
-
-    this.parse();
   };
 
   Carousel.prototype.load = function(action,cback){

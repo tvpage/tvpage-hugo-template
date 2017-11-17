@@ -235,6 +235,7 @@
     var next = this.assets[this.currentIndex];
     
     this.play(next, true);
+
     if (this.onNext) {
       this.onNext(next);
     }

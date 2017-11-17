@@ -1,80 +1,4 @@
 {
-  "config": {
-      "global": [
-          {
-              "type": "text",
-              "label": "API Base Url",
-              "code": "api_base_url",
-              "value": "//api.tvpage.com/v1"
-          },
-          {
-              "type": "boolean",
-              "label": "Analytics",
-              "code": "analytics",
-              "value": true
-          },
-          {
-              "type": "text",
-              "label": "Videos Order By",
-              "code": "videos_order_by",
-              "value": "sortOrder"
-          },
-          {
-              "type": "text",
-              "label": "Videos Order Direction",
-              "code": "videos_order_direction",
-              "value": "ASC"
-          }
-      ],
-      "player": [
-          {
-              "type": "text",
-              "label": "API Base Url",
-              "code": "api_base_url",
-              "value": "//api.tvpage.com/v1"
-          },
-          {
-              "type": "boolean",
-              "label": "Analytics",
-              "code": "analytics",
-              "value": true
-          }
-      ]
-  },
-  "css": {
-      "iframe1": {
-          "body": [
-              {
-                  "type": "text",
-                  "label": "Margin",
-                  "code": "margin",
-                  "value": "0"
-              },
-              {
-                  "type": "text",
-                  "label": "Padding",
-                  "code": "padding",
-                  "value": "0"
-              }
-          ]
-      },
-      "iframe2": {
-          "body": [
-              {
-                  "type": "text",
-                  "label": "Margin",
-                  "code": "margin",
-                  "value": "0"
-              },
-              {
-                  "type": "text",
-                  "label": "Padding",
-                  "code": "padding",
-                  "value": "0"
-              }
-          ]
-      }
-  },
   "option": [
       {
           "type": "text",
@@ -191,7 +115,7 @@
           "type": "boolean",
           "label": "Navigation Bullets",
           "code": "navigation_bullets",
-          "value": false
+          "value": true
       },
       {
           "for": "carousel",

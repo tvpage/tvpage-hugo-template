@@ -47,6 +47,12 @@
       config.channel.videos = config.channel.videos.concat(data);
     }
 
+    function parseVideos(item){
+      item.title = Utils.trimText(item.title, 35);
+
+      return item;
+    }
+
     var videosCarousel = new Carousel('videos',{
       alignArrowsY: ['center', '.video-image'],
       endpoint: videosEndpoint,
@@ -56,6 +62,7 @@
       }, channelParams),
       page: 0,
       data: channelVideos,
+      dots: true,
       slidesToShow: 4,
       slidesToScroll: 1,
       itemsTarget: '.slick-carousel',
@@ -76,7 +83,8 @@
       onClick: onClick,
       onReady: onReady,
       onLoad: onLoad,
-      onResize: onResize
+      onResize: onResize,
+      parse: parseVideos
     }, config);
 
     videosCarousel.initialize();

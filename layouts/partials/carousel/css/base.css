@@ -1,165 +1,233 @@
 /* helpers */
 ".hide {" +
-    "opacity: 0;" + 
-    "visibility: hidden;" +
-  "}" +
-  
-  ".clickable {" +
-    "cursor:pointer;" + 
-  "}" +
-  
-  '.fluid-y {' +
-    'height: 0;' +
-    'width: 100%;' +
-    'position: relative;' +
-  '}' +
-  
-  '.abs-center {' +
-    'position: absolute;' +
-    'top: 0;' +
-    'bottom: 0;' +
-    'left: 0;' +
-    'right: 0;' +
-    'margin: auto;' +
-  '}' +
-  
-  '.abs-bottom {' +
-    'position: absolute;' +
-    'bottom: 0;' +
-  '}' +
-  
-  '.col-x-push {' +
-    'margin-left: 15px;' +
-    'margin-right: 15px;' +
-  '}' +
-  
-  '.col-x-pull {' +
-    'margin-left: -15px;' +
-    'margin-right: -15px;' +
-  '}' +
-  
-  /* thumbnail sizes */
-  '.thumb-sm {' +
-    'max-width: 50px;' +
-  '}' +
-  
-  '.thumb-md {' +
-    'max-width: 100px;' +
-  '}' +
-  
-  '.bg-default {' +
-    "background-repeat: no-repeat;" +
-    "background-position: center;" +
-    "position: relative;" +
-  '}' +
-  
-  /* image aspect ratios & shapes */
-  '.video-image {' +
-    "background-size: {{ ($.Scratch.Get "settings").item_background_image_size }};" +
-    'padding-bottom: 56.25%;' +
-  '}'+
-  
-  '.product-image {' +
-    'padding-bottom: 100%;' +
-    'background-size: cover;' +
-  '}' +
-  
-  
-  /* backgrounds */
-  '.white-bg {' +
-    'background-color: white;' +
-  '}' +
-  
-  '.skeleton-bg {' +
-    'background-color: {{ ($.Scratch.Get "settings").item_image_background_color }};' +
-  '}' +
-  
-  
-  /* skeleton piece */
-  ".skeleton .widget-title:not(.ready) {" +
-    "background-color: {{ ($.Scratch.Get "settings").item_image_background_color }};" +
-  "}" +
-  
-  ".skeleton .widget-title:not(.ready):before {" +
-    "content: \"...\";" +
-    "color: transparent;" +
-  "}" +
-  
-  '.player-holder {' +
-    'padding-bottom: 56.25%;' +
-  '}' +
-  
-  '.skeleton .player-holder {' +
-    "background-color: {{ ($.Scratch.Get "settings").skeleton_background_color }};" +
-  '}' +
-  
-  '.featured-product-holder {' +
-    'padding-bottom: 112.25%;' +
-  '}' +
-  
-  '.skeleton .featured-product-holder {' +
-    "background-color: {{ ($.Scratch.Get "settings").skeleton_background_color }};" +
-  '}' +
-  
-  '.products-holder {' +
-    'padding-bottom: 112.25%;' +
-  '}' +
-  
-  '.skeleton .products-holder {' +
-    "background-color: {{ ($.Scratch.Get "settings").skeleton_background_color }};" +
-  '}' +
-  
-  '.videos-holder {' +
-    'padding-bottom: 19.25%;' +
-  '}'+
-  
-  ".skeleton .video-title:not(.ready) {" +
-    "background-color: {{ ($.Scratch.Get "settings").item_image_background_color }};" +
-  "}" +
-  
-  ".skeleton .video-title:not(.ready):before {" +
-    "content: \"...\";" +
-    "color: transparent;" +
-  "}" +
-  
-  ".skeleton .product-title:not(.ready) {" +
-    "background-color: {{ ($.Scratch.Get "settings").item_image_background_color }};" +
-  "}" +
-  
-  ".skeleton .product-title:not(.ready):before {" +
-    "content: \"...\";" +
-    "color: transparent;" +
-  "}" +
-  
-  ".skeleton .product-price:not(.ready) {" +
-    "background-color: {{ ($.Scratch.Get "settings").item_image_background_color }};" +
-  "}" +
-  
-  ".skeleton .product-price:not(.ready):before {" +
-    "content: \"...\";" +
-    "color: transparent;" +
-  "}" +
-  
-  
-  ".video-image-overlay {" +
-    "transition: all .2s ease;" +
-    "pointer-events: none;" +
-    "opacity: 0;" +
-    "visibility: hidden;" +
-    "background:{{ ($.Scratch.Get "settings").item_image_overlay_color }};" +
-  "}" +
-  
-  ".video-image-icon {" +
-    "cursor: pointer;" +
-    "z-index: 1000;" +
-    "background-color:{{ ($.Scratch.Get "settings").item_play_button_background_color }};" +
-    "width:{{ ($.Scratch.Get "settings").item_play_button_width }};" +
-    "height:{{ ($.Scratch.Get "settings").item_play_button_height }};" +
-    "color:white" +
-  "}" +
+  "opacity: 0;" + 
+  "visibility: hidden;" +
+"}" +
 
-  ".video-image-icon > i {" +
-    "width: 34px;" +
-    "height: 34px;" +
-    "font-size: 34px;" +
-  "}"
+".clickable {" +
+  "cursor:pointer;" + 
+"}" +
+
+'.fluid-y {' +
+  'height: 0;' +
+  'width: 100%;' +
+  'position: relative;' +
+'}' +
+
+'.abs-center {' +
+  'position: absolute;' +
+  'top: 0;' +
+  'bottom: 0;' +
+  'left: 0;' +
+  'right: 0;' +
+  'margin: auto;' +
+'}' +
+
+'.abs-bottom {' +
+  'position: absolute;' +
+  'bottom: 0;' +
+'}' +
+
+'.col-x-push {' +
+  'margin-left: 15px;' +
+  'margin-right: 15px;' +
+'}' +
+
+'.col-x-pull {' +
+  'margin-left: -15px;' +
+  'margin-right: -15px;' +
+'}' +
+
+/* thumbnail sizes */
+'.thumb-sm {' +
+  'max-width: 50px;' +
+'}' +
+
+'.thumb-md {' +
+  'max-width: 100px;' +
+'}' +
+
+'.bg-default {' +
+  "background-repeat: no-repeat;" +
+  "background-position: center;" +
+  "position: relative;" +
+'}' +
+
+/* image aspect ratios & shapes */
+'.video-image {' +
+  "background-size: {{ ($.Scratch.Get "settings").item_background_image_size }};" +
+  'padding-bottom: 56.25%;' +
+'}'+
+
+'.product-image {' +
+  'padding-bottom: 100%;' +
+  'background-size: cover;' +
+'}' +
+
+
+/* backgrounds */
+'.white-bg {' +
+  'background-color: white;' +
+'}' +
+
+'.skeleton-bg {' +
+  'background-color: {{ ($.Scratch.Get "settings").item_image_background_color }};' +
+'}' +
+
+
+/* skeleton piece */
+".skeleton .widget-title:not(.ready) {" +
+  "background-color: {{ ($.Scratch.Get "settings").item_image_background_color }};" +
+"}" +
+
+".skeleton .widget-title:not(.ready):before {" +
+  "content: \"...\";" +
+  "color: transparent;" +
+"}" +
+
+'.player-holder {' +
+  'padding-bottom: 56.25%;' +
+'}' +
+
+'.skeleton .player-holder {' +
+  "background-color: {{ ($.Scratch.Get "settings").skeleton_background_color }};" +
+'}' +
+
+'.featured-product-holder {' +
+  'padding-bottom: 112.25%;' +
+'}' +
+
+'.skeleton .featured-product-holder {' +
+  "background-color: {{ ($.Scratch.Get "settings").skeleton_background_color }};" +
+'}' +
+
+'.products-holder {' +
+  'padding-bottom: 112.25%;' +
+'}' +
+
+'.skeleton .products-holder {' +
+  "background-color: {{ ($.Scratch.Get "settings").skeleton_background_color }};" +
+'}' +
+
+'.videos-holder {' +
+  'padding-bottom: 19.25%;' +
+'}'+
+
+".skeleton .video-title:not(.ready) {" +
+  "background-color: {{ ($.Scratch.Get "settings").item_image_background_color }};" +
+"}" +
+
+".skeleton .video-title:not(.ready):before {" +
+  "content: \"...\";" +
+  "color: transparent;" +
+"}" +
+
+".skeleton .product-title:not(.ready) {" +
+  "background-color: {{ ($.Scratch.Get "settings").item_image_background_color }};" +
+"}" +
+
+".skeleton .product-title:not(.ready):before {" +
+  "content: \"...\";" +
+  "color: transparent;" +
+"}" +
+
+".skeleton .product-price:not(.ready) {" +
+  "background-color: {{ ($.Scratch.Get "settings").item_image_background_color }};" +
+"}" +
+
+".skeleton .product-price:not(.ready):before {" +
+  "content: \"...\";" +
+  "color: transparent;" +
+"}" +
+
+
+".video-image-overlay {" +
+  "transition: all .2s ease;" +
+  "pointer-events: none;" +
+  "opacity: 0;" +
+  "visibility: hidden;" +
+  "background:{{ ($.Scratch.Get "settings").item_image_overlay_color }};" +
+"}" +
+
+".video-image-icon {" +
+  "cursor: pointer;" +
+  "z-index: 1000;" +
+  "background-color:{{ ($.Scratch.Get "settings").item_play_button_background_color }};" +
+  "width:{{ ($.Scratch.Get "settings").item_play_button_width }};" +
+  "height:{{ ($.Scratch.Get "settings").item_play_button_height }};" +
+  "color:white" +
+"}" +
+
+".video-image-icon > i {" +
+  "width: 34px;" +
+  "height: 34px;" +
+  "font-size: 34px;" +
+"}" +
+
+".carousel-arrow{"+
+  "width: 30px;"+
+  "height: 30px;"+
+  "padding: 0;"+
+  "border-radius: 0;"+
+  "border: none;"+
+  "background-color: black;"+
+  "position: absolute;"+
+  "cursor: pointer;"+
+  "z-index: 1000;"+
+  "opacity: 0;"+
+  "visibility: hidden;"+
+  "color: white;"+
+"}"+
+
+".carousel-arrow.slick-disabled{"+
+  "opacity: 0.6 !important;"+
+"}"+
+
+".carousel-arrow:hover,"+
+".carousel-arrow:focus,"+
+".carousel-dot:hover,"+
+".carousel-dot:focus{"+
+  "outline: none;"+
+"}"+
+
+".carousel-arrow:not(.slick-disabled):hover{"+
+  "background-color: white;"+
+  "color: black;"+
+"}"+
+
+".slick-prev{"+
+  "left: 0px;"+
+"}"+
+
+".slick-next{"+
+    "right: 0;"+
+"}"+
+
+".slick-dots{"+
+  "margin-top: 15px;"+
+"}"+
+
+".slick-dots li{"+
+  "margin-right: 5px;"+
+"}"+
+
+".dots-centered .slick-dots{"+
+  "text-align: center;"+
+"}"+
+
+".carousel-dot {"+
+  "border-radius: 0;"+
+  "border: none;"+
+  "background-color: rgba(0,0,0,0.6);"+ 
+  "width: 15px;"+
+  "height: 15px;"+
+  "padding: 0;"+
+"}"+
+
+".slick-active .carousel-dot{"+
+  "background-color: rgb(0,0,0);"+
+"}"+
+
+".carousel-dot:hover{"+
+  "background-color: rgb(0,0,0);"+
+"}"
