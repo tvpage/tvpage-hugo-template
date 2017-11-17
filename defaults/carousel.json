@@ -115,7 +115,7 @@
           "type": "boolean",
           "label": "Navigation Bullets",
           "code": "navigation_bullets",
-          "value": true
+          "value": false
       },
       {
           "for": "carousel",
