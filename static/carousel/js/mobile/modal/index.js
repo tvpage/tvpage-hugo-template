@@ -8,6 +8,22 @@
     var analytics = null;
     var eventName;
 
+    function getWidgetHeight(){
+        var height = Math.floor(mainEl.getBoundingClientRect().height);
+        
+        var bodyPaddingTop = Utils.getStyle(body, 'padding-top');
+        if(bodyPaddingTop){
+            bodyPaddingTop = parseInt(bodyPaddingTop);
+        }
+
+        var bodyPaddingBottom = Utils.getStyle(body, 'padding-bottom');
+        if(bodyPaddingBottom){
+            bodyPaddingBottom = parseInt(bodyPaddingBottom);
+        }
+
+        return height + bodyPaddingTop + bodyPaddingBottom;
+    }
+
     var pkTrack = function() {
         analytics.track('pk', {
             vd: this.getAttribute('data-vd'),
@@ -39,7 +55,7 @@
         }
 
         var dataLength = data.length;
-        var template = config.templates.mobile['modal-content'].products;
+        var template = config.templates.mobile.modal.content;
         
         var piTrack = function(p){
             analytics.track('pi', {
@@ -59,14 +75,14 @@
             product.title = Utils.trimText(product.title + '', 50);
             product.price = Utils.trimPrice(product.price + '');
 
-            html += Utils.tmpl(template, product);
+            html += Utils.tmpl(template.product, product);
         }
 
         carousel.innerHTML = html;
 
         Utils.sendMessage({
             event: eventPrefix + ':modal_resize',
-            height: Utils.getWidgetHeight() + 'px'
+            height: getWidgetHeight() + 'px'
         });
 
         var products = container.getElementsByClassName('tvp-product');
@@ -146,7 +162,7 @@
 
                 Utils.sendMessage({
                     event: eventPrefix + ':modal_resize',
-                    height: Utils.getWidgetHeight() + 'px'
+                    height: getWidgetHeight()
                 });
             });
 
@@ -210,7 +226,7 @@
     var onPlayeResize = function() {
         Utils.sendMessage({
             event: eventPrefix + ':modal_resize',
-            height: Utils.getWidgetHeight()
+            height: getWidgetHeight() + 'px'
         });
     };
 
@@ -250,7 +266,7 @@
 
         Utils.sendMessage({
             event: eventPrefix + ':modal_initialized',
-            height: Utils.getWidgetHeight() + 'px'
+            height: getWidgetHeight() + 'px'
         });
     };
 

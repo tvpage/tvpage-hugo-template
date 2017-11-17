@@ -17,6 +17,7 @@
     this.appendDots = Utils.isUndefined(this.options.appendDots) ? false : this.options.appendDots;
     this.maxDots = 5;
     this.limitDots = Utils.isUndefined(this.options.limitDots) ? false : this.options.limitDots;
+    this.loadMore = Utils.isUndefined(this.options.loadMore) ? true : this.options.loadMore;
     this.el = document.getElementById(sel);
   };
 
@@ -58,20 +59,11 @@
   };
 
   Carousel.prototype.handleClick = function() {
-    var that = this;
+    var defaultStop = this.options.clickDefaultStop;
     var onClick = Utils.isFunction(this.options.onClick) ? this.options.onClick : function(e){
-      if(that.options.clickDefaultStop){
+      if(defaultStop){
         Utils.stopEvent(e);
       }
-
-      var target = Utils.getRealTargetByClass(e.target, that.itemClass.substr(1));
-      var id = target.getAttribute('data-id');
-
-      //later remove this, probably only the carousel widget is using it, lets fix it
-      Utils.sendMessage({
-        event: that.eventPrefix + ":carousel_click",
-        clicked: id
-      });
     };
 
     var items = this.el.querySelectorAll(this.itemClass);
@@ -230,12 +222,9 @@
   };
 
   Carousel.prototype.onSlickAfterChange = function(){
-    console.log('# Slick "afterChange" was called!');
-    
-    //not the best place to do this... is very bouncy, should we try again and checking id loading
-    // if(!this.full){
-    //   this.loadNext('render');
-    // }
+    if(this.loadMore && !this.full){
+      this.loadNext('render');
+    }
   };
 
   Carousel.prototype.onSlickSetPosition = function(){
@@ -252,7 +241,7 @@
   Carousel.prototype.start = function(){
     var that = this;
     
-    var startSlick = function() {
+    function startSlick(){
       that.$slickEl = $(that.itemsTargetEl);
       
       that.$slickEl.on('init', function(){
@@ -307,8 +296,7 @@
     var all = this.data;
     var allLength = all.length;
 
-    if(!allLength && this.options.clean){
-      
+    if(!allLength && this.options.clean){ 
       this.el.innerHTML = '';
       this.itemsTargetEl = null;
 
@@ -318,7 +306,8 @@
     var moreThan1 = allLength > 1;
     var itemTemplate = this.templates.item;
 
-    if(0 === this.page){
+    //so we are only considering the page wrappers if the page is 0?
+    if(0 == this.page){
       this.el.innerHTML = Utils.tmpl(this.templates.list, this.config);
       this.itemsTargetEl = this.el.querySelector(this.options.itemsTarget);
       
@@ -346,12 +335,13 @@
         this.onReady();
       }
     }else{
-
       var iOffset = this.itemsPerPage * this.page;
 
       for (var i = 0; i < allLength; i++) {
         this.$slickEl.slick('slickAdd', Utils.tmpl(this.templates.item, all[ (i + iOffset) % all.length ]));
       }
+
+      this.handleClick();
     }
   };
 
@@ -368,22 +358,23 @@
     this.loading = false;
 
     var dataLength = data.length || 0;
-    
-    if(!dataLength){
 
-      //this shall trun off any subsequent loading tasks
+    if(!this.options.loadMore){
+      this.data = data;
+    }else if(!dataLength || dataLength < this.itemsPerPage){
       this.full = true;
-
+      
       if(this.options.clean)
         this.data = [];
 
       return;
-
-    }else if(this.full){
-      this.data = data;
     }else{
       this.data = this.data.concat(data);
     }
+
+    var onLoad = this.options.onLoad;
+    if(Utils.isFunction(onLoad))
+      onLoad(data);
 
     this.parse();
   };

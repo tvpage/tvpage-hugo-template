@@ -1,14 +1,19 @@
-'<div id="skeleton" class="skeleton">' +
-  '<div class="carousel-title">{title_text}</div>' +
-  '<div class="video video-1">' +
-    '<div class="video-image">' +
-      '<svg class="video-image-icon" viewBox="0 0 200 200" alt="Play video">' +
-        '<polygon points="70, 55 70, 145 145, 100"></polygon>' +
-      '</svg>' +
+'<div id="skeleton" class="skeleton hide">' +
+  
+  '<div class="row justify-content-start">' +
+    '<div class="col">' +
+      '<h2 id="widget-title" class="widget-title"></h2>' +
     '</div>' +
-    '<p class="video-title"></p>' +
   '</div>' +
-'</div>' +
-'<div id="carousel" class="hide">' +
-  '<div class="carousel-content"></div>' +
+
+  '<div class="row mt-2 videos-skel-delete">' +
+    {{ range (seq ($.Scratch.Get "settings").items_per_page) }}
+    '<div class="video video-{{ . }} col px-2">' +
+      '<div class="video-image fluid-y skeleton-bg mb-2 bg-default"></div>' +
+      '<p class="video-title"></p>' +
+    '</div>' +
+    {{ end }}
+  '</div>' +
+  
+  '<div id="videos" class="col-x-pull"></div>' +
 '</div>'

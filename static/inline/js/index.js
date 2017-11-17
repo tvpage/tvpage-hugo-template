@@ -2,14 +2,25 @@
   
   var body = document.body;
   var id = body.getAttribute('data-id');
-  var config = window.parent.__TVPage__.config[id];  
+  var config = window.parent.__TVPage__.config[id];
+  var firstVideo = config.channel.videos[0];
+  var channelParams = config.channel.parameters;
   var eventPrefix = config.events.prefix;
   var apiBaseUrl = config.api_base_url;
+  var videosEndpoint = apiBaseUrl + '/channels/' + config.channelId + '/videos';
+  var videosOrderParams = {
+    o: config.videos_order_by,
+    od: config.videos_order_direction
+  };
+  var productsEndpoint = apiBaseUrl + '/videos/' + firstVideo.id + '/products';
+  var productsOrderParams = {
+    o: config.products_order_by,
+    od: config.products_order_direction
+  };
   var isMobile = Utils.isMobile;
   var channelVideos = config.channel.videos;
   var templates = config.templates;
   var templatesMobile = templates.mobile;
-  var firstVideo = config.channel.videos[0];
   var skeleton = true;
   var skeletonEl = document.getElementById('skeleton');
   var player;
@@ -33,11 +44,21 @@
       height: Utils.getWidgetHeight()
     });
   }
+
+  function renderFeaturedProduct(data){
+    var html = '';
+
+    if(data && !Utils.isEmptyObject(data)){
+      html = Utils.tmpl(templates.products.featured, data);
+    }
+
+    Utils.getById('featured-product').innerHTML = html;
+  }
   
   function initVideos(){
 
     //when a videos carousel element is clicked
-    var onVideoClick = function(e){
+    function onClick(e){
       Utils.stopEvent(e);
 
       var target = Utils.getRealTargetByClass(e.target, 'tvp-carousel-item');
@@ -48,38 +69,35 @@
 
         productsCarousel.endpoint = apiBaseUrl + '/videos/' + clickedId + '/products';
         productsCarousel.load('render', function(data){
-          var html = '';
-          if(data){
-            html = Utils.tmpl(templates.products.featured, data[0]);
-          }
-  
-          Utils.getById('featured-product').innerHTML = html;
+          renderFeaturedProduct(data[0]);
         });
       }
-    };
+    }
 
-    var endpoint = apiBaseUrl + '/channels/' + config.channelId + '/videos';
-    var endpointParams = {
-      o: config.videos_order_by,
-      od: config.videos_order_direction
-    };
-    var channelParams = config.channel.parameters;
-    
-    if(channelParams){
-      for (var channelParam in channelParams)
-      endpointParams[channelParam] = channelParams[channelParam];
+    function onReady(){
+      Utils.remove(skeletonEl.querySelector('.videos-skel-delete'));
+      
+      videosCarouselReady = true;
+      videosCarousel.loadNext('render');
+
+      onWidgetReady();
+    }
+
+    function onLoad(data){
+      player.addAssets(data);
+      channelVideos = channelVideos.concat(data);
     }
 
     if(isMobile){
       videosCarousel = new Carousel('videos',{
         alignArrowsY: ['center', '.video-image'],
         page: 0,
-        endpoint: endpoint,
-        params: endpointParams,
+        endpoint: videosEndpoint,
+        params: Utils.addProps(videosOrderParams, channelParams),
         data: channelVideos,
         slidesToShow: 4,
         slidesToScroll: 1,
-        onClick: onVideoClick,
+        onClick: onClick,
         itemsTarget: '.slick-carousel',
         itemsPerPage: 4,
         templates: {
@@ -95,23 +113,20 @@
             }
           }
         ],
-        onReady: function(){
-          Utils.remove(skeletonEl.querySelector('.videos-skel-delete'));
-          videosCarouselReady = true;
-          onWidgetReady();
-        },
+        onReady: onReady,
+        onLoad: onLoad,
         onResize:onWidgetResize
       }, config);
     }else{
       videosCarousel = new Carousel('videos',{
         alignArrowsY: ['center', '.video-image'],
         page: 0,
-        endpoint: endpoint,
-        params: endpointParams,
+        endpoint: videosEndpoint,
+        params: Utils.addProps(videosOrderParams, channelParams),
         data: channelVideos,
         slidesToShow: 4,
         slidesToScroll: 1,
-        onClick: onVideoClick,
+        onClick: onClick,
         itemsTarget: '.slick-carousel',
         itemsPerPage: 4,
         templates: {
@@ -127,54 +142,54 @@
             }
           }
         ],
-        onReady: function(){
-          Utils.remove(skeletonEl.querySelector('.videos-skel-delete'));
-          videosCarouselReady = true;
-          onWidgetReady();
-        },
+        onReady: onReady,
+        onLoad: onLoad,
         onResize:onWidgetResize
       }, config);
     }
 
     videosCarousel.initialize();
     videosCarousel.render();
-
-    //TODObest to know when the slider is ready with a callback
-    // setTimeout(function(){
-    //   videosCarousel.loadNext('render');
-    // },10);
   };
 
   function initProducts(){
-
-    var endpoint = apiBaseUrl + '/videos/' + firstVideo.id + '/products';
-    var parse = function(item){
+    
+    function parseProducts(item){
       item.title = Utils.trimText(item.title, 25);//this has to be an option
       item.price = Utils.trimPrice(item.price);
       item.actionText = item.actionText || 'View Details';
       return item;
-    };
-    var endpointParams = {
-      o: config.products_order_by,
-      od: config.products_order_direction
-    };
+    }
+
+    function onReady(){
+      productsCarouselReady = true;
+      onWidgetReady(); 
+    }
+
+    function onClick(e){
+      Utils.stopEvent(e);
+
+      var target = Utils.getRealTargetByClass(e.target, 'product');
+      var targetId = target.getAttribute('data-id');
+
+      if(target && targetId){
+        renderFeaturedProduct(productsCarousel.getItemById(targetId));
+      }
+    }
 
     if(isMobile){
       productsCarousel = new Carousel('products',{
-        endpoint: endpoint,
+        endpoint: productsEndpoint,
         clean: true,
+        loadMore: false,
         itemsTarget: '.slick-carousel',
         templates: {
           list: templatesMobile.products.list,
           item: templatesMobile.products.item
         },
-        params: endpointParams,
-        parse: parse,
-        onReady: function(){
-          productsCarouselReady = true;
-          
-          onWidgetReady();
-        },
+        params: productsOrderParams,
+        parse: parseProducts,
+        onReady: onReady,
         onResize:onWidgetResize
       }, config);
       
@@ -188,8 +203,8 @@
         dots: true,
         dotsClass: 'products-carousel-dots',
         clean: true,
-        endpoint: endpoint,
-        full:true,
+        loadMore: false,
+        endpoint: productsEndpoint,
         itemsTarget: '.slick-carousel',
         itemsPerPage: 4,
         pageWrapStart: '<div class="tvp-carousel-item" >',
@@ -198,8 +213,8 @@
           list: templates.products.list,
           item: templates.products.item
         },
-        params: endpointParams,
-        parse: parse,
+        params: productsOrderParams,
+        parse: parseProducts,
         responsive: [
           {
             breakpoint: 768,
@@ -208,38 +223,15 @@
             }
           }
         ],
-        onReady: function(){
-          productsCarouselReady = true;
-          
-          onWidgetReady();
-        },
+        onReady: onReady,
         onResize:onWidgetResize,
-        onClick: function(e){
-          Utils.stopEvent(e);
-
-          var target = Utils.getRealTargetByClass(e.target, 'product');
-          var id = target.getAttribute('data-id');
-          
-          var data = productsCarousel.getItemById(id);
-          var html = '';
-          if(data){
-            html = Utils.tmpl(templates.products.featured, data);
-          }
-  
-          Utils.getById('featured-product').innerHTML = html;
-        }
+        onClick: onClick
       }, config);
 
       productsCarousel.initialize();
       productsCarousel.load('render', function(data){
-        var html = '';
-        if(data){
-          html = Utils.tmpl(templates.products.featured, data[0]);
-        }
-
-        Utils.getById('featured-product').innerHTML = html;
+        renderFeaturedProduct(data[0]);
       });
-      
     }
   };
 
@@ -295,16 +287,14 @@
         if(isMobile)
           Utils.addClass(body,'mobile');
 
-        //This looks more to me for a skeleton update
+        //add widget title
         var widgetTitleEl = Utils.getById('widget-title');
-        
         widgetTitleEl.innerHTML = firstVideo.title;
         Utils.addClass(widgetTitleEl, 'ready');
 
         initPlayer();
         initVideos();
         initProducts();
-        
 
       }else if(++depsCheck < 200){
         initInline()

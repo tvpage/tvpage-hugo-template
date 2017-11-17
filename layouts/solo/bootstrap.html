@@ -1,4 +1,26 @@
-{{- partial "settings.html" . -}}
+{{- $type := .Type -}}
+{{- $defaults := getJSON (printf "themes/tvpage/defaults/%s.json" $type) -}}
+
+{{- range $defaults.option -}}
+{{- $.Scratch.SetInMap "config" .code .value -}}
+{{- end -}}
+
+{{- range readDir "/" -}}
+	{{- if eq .Name "defaults" -}}
+		{{- if (where (readDir "defaults/") "Name" (printf "%s.json" $type)) -}}
+			{{- range (getJSON (printf "defaults/%s.json" $type)).option -}}
+			{{- $.Scratch.SetInMap "config" .code .value -}}
+			{{- end -}}
+		{{- end -}}
+	{{- end -}}
+{{- end -}}
+
+{{- range $i, $param := .Params -}}
+{{- $.Scratch.SetInMap "config" $i . -}}
+{{- end -}}
+
+{{- $.Scratch.Set "settings" ($.Scratch.Get "config") -}}
+
 (function(){
 
   var bootstrap = {{ $.Scratch.Get "settings" | jsonify }};
@@ -19,12 +41,5 @@
   };
 
   {{- (readFile "/themes/tvpage/static/solo/index.js") | htmlUnescape | safeHTML -}}
-
-
-  
-
-  
-
-
 
 }());

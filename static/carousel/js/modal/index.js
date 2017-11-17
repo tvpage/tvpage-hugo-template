@@ -8,38 +8,50 @@
     var productsEl = null;
     var analytics = null;
 
-    var getWidgetHeight = function(){
-        return Math.floor(mainEl.getBoundingClientRect().height);
-    };
+    function getWidgetHeight(){
+        var height = Math.floor(mainEl.getBoundingClientRect().height);
+        
+        var bodyPaddingTop = Utils.getStyle(body, 'padding-top');
+        if(bodyPaddingTop){
+            bodyPaddingTop = parseInt(bodyPaddingTop);
+        }
 
-    var pkTrack = function(){
+        var bodyPaddingBottom = Utils.getStyle(body, 'padding-bottom');
+        if(bodyPaddingBottom){
+            bodyPaddingBottom = parseInt(bodyPaddingBottom);
+        }
+
+        return height + bodyPaddingTop + bodyPaddingBottom;
+    }
+
+    function pkTrack(){
         analytics.track('pk',{
-            vd: this.getAttribute('data-vd'),
+            vd: Utils.attr(this,'data-vd'),
             ct: this.id.split('-').pop(),
             pg: config.channelId
         });
-    };
+    }
 
-    var onNoProducts = function(){
+    function onNoProducts(){
         Utils.addClass(mainEl,'tvp-no-products');
         Utils.sendMessage({
             event: eventPrefix + ':modal_no_products'
         });
-    };
+    }
 
-    var onProducts = function(){
+    function onProducts(){
         Utils.removeClass(mainEl,'tvp-no-products');
         Utils.sendMessage({
             event: eventPrefix + ':modal_products'
         });
     };
 
-    var onLoadProducts = function(data) {
+    function onLoadProducts(data) {
         data.length ? onProducts() : onNoProducts();
         render(data);
     };
 
-    var loadProducts = function(vid, cback) {
+    function loadProducts(vid, cback) {
         if (!vid || !cback) {
             return;
         }
@@ -54,7 +66,7 @@
         }, cback);
     };
 
-    var getProductRating = function(product){
+    function getProductRating(product){
         var attr = config.product_rating_attribute;
         var rating = 0;
         
@@ -65,7 +77,7 @@
         return rating;
     };
 
-    var getProductReview = function(product){
+    function getProductReview(product){
         var attr = config.product_review_attribute;
         var review = 0;
         
@@ -271,7 +283,7 @@
         });
     };
 
-    var initializePlayer = function(){
+    function initializePlayer(){
         var playerConfig = Utils.copy(config);
 
         playerConfig.data = config.channel.videos;

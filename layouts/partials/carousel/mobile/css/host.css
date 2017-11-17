@@ -12,13 +12,6 @@
     "position: relative;" +
 "}" +
 
-".tvp-carousel-holder:before {" +
-    "display: block;" +
-    "content: \"\";" +
-    "width: 100%;" +
-    "padding-top: {{ ($.Scratch.Get "settings").carousel_holder_padding_top_mobile }};" +
-"}" +
-
 ".tvp-carousel-holder > iframe {" +
     "top: 0;" +
     "left: 0;" +

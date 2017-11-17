@@ -3,155 +3,84 @@
   var body = document.body;
   var id = body.getAttribute('data-id');
   var config = window.parent.__TVPage__.config[id];
+  var channelParams = config.channel.parameters;
   var eventPrefix = config.events.prefix;
   var apiBaseUrl = config.api_base_url;
+  var videosEndpoint = apiBaseUrl + '/channels/' + config.channelId + '/videos';
   var templates = config.templates;
   var channelVideos = config.channel.videos;
   var skeletonEl = document.getElementById('skeleton');
-  var videosCarousel;
-  var videosCarouselReady = false;
 
-  function onWidgetReady(){
-    if(videosCarouselReady){
+  //a videos section will be initialized
+  function initVideos(){
+
+    function onResize(){
+      Utils.sendMessage({
+        event: eventPrefix + ':widget_resize',
+        height: Utils.getWidgetHeight()
+      });
+    }
+    
+    function onClick(e){
+      if(e && e.target){
+        var realTarget = Utils.getRealTargetByClass(e.target, videosCarousel.itemClass.substr(1));
+
+        Utils.sendMessage({
+          event: eventPrefix + ':widget_videos_click',
+          clicked: realTarget.getAttribute('data-id')
+        });
+      }
+    }
+
+    function onReady(){
+      Utils.remove(skeletonEl.querySelector('.videos-skel-delete'));
+      
       Utils.sendMessage({
         event: eventPrefix + ':widget_ready',
         height: Utils.getWidgetHeight()
       });
-    }
-  }
-
-  function onWidgetResize(){
-    Utils.sendMessage({
-      event: eventPrefix + ':widget_resize',
-      height: Utils.getWidgetHeight()
-    });
-  }
-
-  //a videos section will be initialized
-  function initVideos(){
-    var endpoint = apiBaseUrl + '/channels/' + config.channelId + '/videos';
-    var endpointParams = {
-      o: config.videos_order_by,
-      od: config.videos_order_direction
-    };
-
-    var channelParams = config.channel.parameters;
-
-    if(channelParams){
-      endpointParams = Utils.addProps(endpointParams, channelParams);
+      
+      videosCarousel.loadNext('render');
     }
 
-    var carouselConfig = {
+    function onLoad(data){
+      config.channel.videos = config.channel.videos.concat(data);
+    }
+
+    var videosCarousel = new Carousel('videos',{
+      alignArrowsY: ['center', '.video-image'],
+      endpoint: videosEndpoint,
+      params: Utils.addProps({
+        o: config.videos_order_by,
+        od: config.videos_order_direction
+      }, channelParams),
+      page: 0,
+      data: channelVideos,
       slidesToShow: 4,
       slidesToScroll: 1,
-      page: 0,
       itemsTarget: '.slick-carousel',
-      itemsPerPage: 4
-    };
-
-    var videoTemplates = templates.mobile.videos;
-
-    if(videoTemplates){
-      carouselConfig.templates = {
-        list: videoTemplates.list,
-        item: videoTemplates.item
-      };
-    }
-
-    carouselConfig.endpoint = endpoint;
-    carouselConfig.data = channelVideos;
-    carouselConfig.params = endpointParams;
-    carouselConfig.responsive = [
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2
-        }
+      itemsPerPage: 4,
+      templates: {
+        list: templates.videos.list,
+        item: templates.videos.item
       },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1
+      responsive: [
+        {
+          breakpoint: 600,
+          settings: {
+            slidesToShow: 2,
+            slidesToScroll: 2
+          }
         }
-      }
-    ];
+      ],
+      onClick: onClick,
+      onReady: onReady,
+      onLoad: onLoad,
+      onResize: onResize
+    }, config);
 
-    if(Utils.isMobile){
-      videosCarousel = new Carousel('videos',{
-        arrowsVerticalAlign: ['center', '.video-image'],
-        endpoint: endpoint,
-        page: 0,
-        data: channelVideos,
-        slidesToShow: 4,
-        slidesToScroll: 1,
-        itemsTarget: '.slick-carousel',
-        itemsPerPage: 4,
-        templates: {
-          list: templates.videos.list,
-          item: templates.videos.item
-        },
-        params: endpointParams,
-        responsive: [
-          {
-            breakpoint: 600,
-            settings: {
-              slidesToShow: 2,
-              slidesToScroll: 2
-            }
-          }
-        ],
-        onReady: function(){
-          Utils.remove(skeletonEl.querySelector('.videos-skel-delete'));
-          videosCarouselReady = true;
-          onWidgetReady();
-        },
-        onResize: onWidgetResize
-      }, config);
-
-      videosCarousel.initialize();
-      videosCarousel.render();
-    }else{
-      videosCarousel = new Carousel('videos',{
-        arrowsVerticalAlign: ['center', '.video-image'],
-        endpoint: endpoint,
-        page: 0,
-        data: channelVideos,
-        slidesToShow: 4,
-        slidesToScroll: 1,
-        itemsTarget: '.slick-carousel',
-        itemsPerPage: 4,
-        templates: {
-          list: templates.videos.list,
-          item: templates.videos.item
-        },
-        params: endpointParams,
-        responsive: [
-          {
-            breakpoint: 600,
-            settings: {
-              slidesToShow: 2,
-              slidesToScroll: 2
-            }
-          }
-        ],
-        onReady: function(){
-          Utils.remove(skeletonEl.querySelector('.videos-skel-delete'));
-          videosCarouselReady = true;
-          onWidgetReady();
-        },
-        onResize: onWidgetResize
-      }, config);
-
-      videosCarousel.initialize();
-      videosCarousel.render();
-
-      //best to know when the slider is ready with a callback
-      // setTimeout(function(){
-      //   videosCarousel.loadNext('render');
-      // },10);
-    }
+    videosCarousel.initialize();
+    videosCarousel.render();
   };
 
   //The global deps of the carousel have to be present before executing its logic.
@@ -169,10 +98,9 @@
 
       if(ready){
      
-        //This looks more to me for a skeleton/base update
+        //add widget title
         var widgetTitleEl = Utils.getById('widget-title');
         widgetTitleEl.innerHTML = config.title_text;
-
         Utils.addClass(widgetTitleEl, 'ready');
         
         initVideos();

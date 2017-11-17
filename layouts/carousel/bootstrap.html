@@ -41,13 +41,17 @@
 		},
 		modal: {
 			base: {{- (partial (printf "%s/templates/modal/base.html" .Type) .) -}},
+			body: {{- (partial (printf "%s/templates/modal/body.html" .Type) .) -}},
 			content: {{- (partial (printf "%s/templates/modal/content.html" .Type) .) -}},
 			iframe: '<iframe class="tvp-iframe-modal" src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe>'
 		},
 		mobile: {
 			base: {{- (partial (printf "%s/mobile/templates/base.html" .Type) .) -}},
 			modal: {
-				content: {{- (partial (printf "%s/mobile/templates/modal/content.html" .Type) .) -}}
+				iframe: '<iframe class="tvp-iframe-modal" src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe>',
+				base: {{- (partial (printf "%s/mobile/templates/modal/base.html" .Type) .) -}},
+				content: {{- (partial (printf "%s/mobile/templates/modal/content.html" .Type) .) -}},
+				body: {{- (partial (printf "%s/mobile/templates/modal/body.html" .Type) .) -}}
 			}
 		}
 	};
@@ -63,9 +67,12 @@
 			base: {{- (partial (printf "%s/mobile/css/base.css" .Type) .) | htmlUnescape | safeHTML -}},
 			host: {{- (partial (printf "%s/mobile/css/host.css" .Type) .) | htmlUnescape | safeHTML -}},
 			"host-custom": {{- (partial (printf "%s/mobile/css/host-custom.css" .Type) .) | htmlUnescape | safeHTML -}},
-			"modal-content": {{- (partial (printf "%s/mobile/css/modal/content.css" .Type) .) | htmlUnescape | safeHTML -}}
+			modal: {
+				content: {{- (partial (printf "%s/mobile/css/modal/content.css" .Type) .) | htmlUnescape | safeHTML -}}
+			}
 		}
 	};
+
 
 	{{- (readFile "/themes/tvpage/static/carousel/index.js") | htmlUnescape | safeHTML -}}
 

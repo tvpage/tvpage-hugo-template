@@ -1,32 +1,73 @@
 var body = document.body;
+var userAgent = navigator.userAgent;
+var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+var iOS = /iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(userAgent) && !window.MSStream;
+var initialHtml = '<div id="{id}-holder" class="tvp-{type}-holder">' +
+'<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe>' +
+'</div>';
+var iframeHtmlStart = '<head><base target="_blank"/></head><body class="{className}"' +
+'data-domain="{domain}" data-id="{id}" onload="startTime={startTime};' +
+'var d=document,h=d.head,' +
+'loadJavaScript = function(u){var s=d.createElement(\'script\');s.src=u;h.appendChild(s);},' +
+'loadCSS = function(u,c){'+
+'  var l=d.createElement(\'link\');'+
+'  l.rel=\'stylesheet\';'+
+'  l.href=u;'+
+'  if(c && \'function\' === typeof c){'+
+'   l.onload=c;'+
+'  }'+
+'  h.appendChild(l);' +
+'};';
 
 //helpers
-var isObject = function(o) {
+function isObject(o) {
   return "object" === typeof o;
-};
-var isFunction = function(o) {
+}
+function isFunction(o) {
   return "function" === typeof o;
-};
-var hasKey = function(o, key) {
+}
+function hasKey(o, key) {
   return o.hasOwnProperty(key);
-};
-var getById = function(id){
+}
+function getById(id){
   return document.getElementById(id);
-};
-var createEl = function(t){
+}
+function createEl(t){
   return document.createElement(t);
-};
-var randomStr = function(){
-  return Math.random().toString(36).substring(7);
-};
-
-//add preconnect hint
-var preConnectLink = createEl('link');
-preConnectLink.rel = 'preconnect';
-preConnectLink.href = 'http://api.tvpage.com/v1';
-document.head.appendChild(preConnectLink);
-
-//loads scripts more for jsonp
+}
+function tmpl(t,d){
+  return t.replace(/\{([\w\.]*)\}/g, function(str, key) {
+    var keys = key.split("."),
+      v = d[keys.shift()];
+    for (var i = 0, l = keys.length; i < l; i++) v = v[keys[i]];
+    return (typeof v !== "undefined" && v !== null) ? v : "";
+  });
+}
+function isUndefined(o){
+  return 'undefined' === typeof o;
+}
+function addClass(obj, c) {
+  if (!obj || !c) return;
+  if ('string' === typeof obj) {
+    document.getElementById(obj).classList.add(c);
+  } else {
+    obj.classList.add(c);
+  }
+}
+function removeClass(obj, c) {
+  if (!obj || !c) return;
+  if ('string' === typeof obj) {
+    document.getElementById(obj).classList.remove(c);
+  } else {
+    obj.classList.remove(c);
+  }
+}
+function remove(el){
+  el.parentNode.removeChild(el);
+}
+function cleanArray(a){
+  return a.filter(Boolean);
+}
 function loadScript(options, cback){
   var opts = options || {};
   var script = createEl('script');
@@ -39,17 +80,24 @@ function loadScript(options, cback){
     ++c;
   }
 
-  var cbackName = 'tvp_callback_' + randomStr();
+  var cName = 'tvp_callback_' + Math.random().toString(36).substring(7);
 
-  window[cbackName] = function(data){
+  window[cName] = function(data){
     if(isFunction(cback))
       cback(data);
   };
 
-  script.src = src + '&callback=' + cbackName;
+  script.src = src + '&callback=' + cName;
 
   body.appendChild(script);
-};
+}
+function isEvent(e){
+  return e && e.data && e.data.event;
+}
+function getEventType(e){
+  var eArr = e.data.event.split(':');
+  return eArr[0] === eventPrefix ? eArr[1] : '';
+}
 
 //We merge the defaults, the .md file's params and the runtime input into one config object.
 if (!isObject(config) || !hasKey(config, "name") || config.name.length <= 0)
@@ -78,7 +126,14 @@ if(isFunction(onChange)){
   delete config.onChange;
 }
 
-//globals
+//add preconnect hint
+var preConnectLink = createEl('link');
+preConnectLink.rel = 'preconnect';
+preConnectLink.href = config.api_base_url;
+document.head.appendChild(preConnectLink);
+
+//here we start with the actual logic that will prepare the iframe(s) content and inject it
+//to the page.
 var debug = config.debug;
 var type = config.type;
 var css = config.css;
@@ -86,6 +141,9 @@ var baseUrl = config.baseUrl;
 var static = baseUrl + '/' + type;
 var dist = debug ? '/' : '/dist/';
 var eventPrefix = ('tvp_' + id).replace(/-/g, '_');
+var templates;
+var javascriptPath;
+var cssPath;
 var holder;
 
 config.id = id;
@@ -104,75 +162,19 @@ config.mobile.path = isMobile ? 'mobile' : '';
 config.mobile.prefix = isMobile ? '-mobile' : '';
 config.mobile.templates = config.templates.mobile;
 
+templates = isMobile ? config.mobile.templates : config.templates;
+javascriptPath = config.paths.javascript;
+cssPath = config.paths.css;
+
 window.__TVPage__.config[id] = config;
 
-
-//helpers
-var userAgent = navigator.userAgent;
-var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
-var iOS = /iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(userAgent) && !window.MSStream;
-var initialHtml = '<div id="{id}-holder" class="tvp-{type}-holder">' +
-'<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe>' +
-'</div>';
-var iframeHtmlStart = '<head><base target="_blank"/></head><body class="{className}"' +
-'data-domain="{domain}" data-id="{id}" onload="startTime={startTime};' +
-'var d=document,h=d.head,' +
-'loadJavaScript = function(u){var s=d.createElement(\'script\');s.src=u;h.appendChild(s);},' +
-'loadCSS = function(u,c){'+
-'  var l=d.createElement(\'link\');'+
-'  l.rel=\'stylesheet\';'+
-'  l.href=u;'+
-'  if(c && \'function\' === typeof c){'+
-'   l.onload=c;'+
-'  }'+
-'  h.appendChild(l);' +
-'};';
-var tmpl = function(t,d){
-  return t.replace(/\{([\w\.]*)\}/g, function(str, key) {
-    var keys = key.split("."),
-      v = d[keys.shift()];
-    for (var i = 0, l = keys.length; i < l; i++) v = v[keys[i]];
-    return (typeof v !== "undefined" && v !== null) ? v : "";
-  });
-};
-var isUndefined = function(o){
-  return 'undefined' === typeof o;
-};
-var isset = function(o, p) {
-  var val = o;
-  if (p) val = o[p];
-  return "undefined" !== typeof val;
-};
-var addClass = function(obj, c) {
-  if (!obj || !c) return;
-  if ('string' === typeof obj) {
-    document.getElementById(obj).classList.add(c);
-  } else {
-    obj.classList.add(c);
-  }
-};
-var remove = function(el){
-  el.parentNode.removeChild(el);
-};
-var removeClass = function(obj, c) {
-  if (!obj || !c) return;
-  if ('string' === typeof obj) {
-    document.getElementById(obj).classList.remove(c);
-  } else {
-    obj.classList.remove(c);
-  }
-};
-
-//Builds the document for iframes.
-function getIframeHtml(o) {
+//builds the document html for an iframe
+function getIframeHtml(o){
   o.startTime = startTime;
 
   var html = tmpl(iframeHtmlStart, o),
-      clean = function(s){
-        return (s || []).filter(Boolean);
-      },
       load = function(arr, type, cback){
-        arr = clean(arr);
+        arr = cleanArray(arr);
         
         var arrLength = arr.length,
             l = '';
@@ -185,73 +187,50 @@ function getIframeHtml(o) {
         return l;
       };
 
-  html +=
-  '  function onStart(e){' +
-  '    if(!e || !e.data || !e.data.event || \'' + o.eventPrefix + ':widget_start\' !== e.data.event){' +
-  '      return;' +
-  '    }' +
+  html += load(o.js, 'JavaScript') + 
+  load(o.css, 'CSS', 'function(){' +
+  '   var skel = document.getElementById(\'skeleton\');' +
+  '   skel && skel.classList.remove(\'hide\');' +
+  '}'
+  );
 
-       load(o.js, 'JavaScript') + 
-       load(o.css, 'CSS', 'function(){' +
-        '   var skel = document.getElementById(\'skeleton\');' +
-        '   skel && skel.classList.remove(\'hide\');' +
-        '}'
-       ) +
-
-  '    parent.removeEventListener(\'message\', onStart, false);' +
-  '};';
-
-  html +=
-  '  if(parent){' +
-  '    parent.addEventListener(\'message\', onStart, false);' +
-  '  }else{' +
-  '    console.log(\'# parent error! #\', parent);' +
-  '  }' +
-  '">' +
-
-  '<style>' + (o.style || '') + '</style>';
-  
+  html += '">';//closing the body tag
+  html += '<style>' + (o.style || '') + '</style>';
   html += tmpl((o.html || '').trim(), o.context);
 
   return html;
 };
 
-
-//Initial rendering
-//We have a generic host css per widget type that we only include once.
-function getHostStyles(){
-  var styles = '';
-  var styleId = 'tvp-' + type + '-host';
-
-  var host = isMobile ? css.mobile.host : css.host;
-
-  if (!getById(styleId))
-    styles += '<style id="' + styleId + '">' + host + '</style>';
-
-  var custom = isMobile ? css.mobile['host-custom'] : css['host-custom'];
-  
-  if(!isUndefined(custom))
-    styles += '<style>' + custom + '</style>';
-
-  return styles;
-}
-
+//we have a generic host css per widget type that we only include once.
 function getInitialHtml(){
   var html = "";
-
-  html += getHostStyles();
-  html += tmpl(initialHtml, config);
+  var styleId = 'tvp-' + type + '-host';
   
-  return html;
-};
+  var hostStyles = isMobile ? css.mobile.host : css.host;
 
+  if (!getById(styleId))
+    html += '<style id="' + styleId + '">' + hostStyles + '</style>';
+  
+  var hostCustomStyles = isMobile ? css.mobile['host-custom'] : css['host-custom'];
+  
+  if(!isUndefined(hostCustomStyles))
+    html += '<style>' + hostCustomStyles + '</style>';
+
+  html += tmpl(initialHtml, config);
+
+  return html;
+}
+
+//gets the player url
 function getPlayerUrl(){
-  var url = "https://cdnjs.tvpage.com/tvplayer/" + (debug ? "local/" : "") + "tvp-" + config.player_version + ".min.js";
+  var url = "https://cdnjs.tvpage.com/tvplayer/tvp-" + config.player_version + ".min.js";
+  
   if (config.player_url && (config.player_url + "").trim().length) {
       url = config.player_url;
   }
+
   return url;
-};
+}
 
 //Here's the first HTML write we do to the host page, this is the fastest way to do it
 //refer to https://jsperf.com/insertadjacenthtml-perf/3
@@ -262,9 +241,6 @@ function widgetRender(){
 
   holder = getById(id + "-holder");
   
-  var templates = isMobile ? config.mobile.templates : config.templates;
-  var javascriptPath = config.paths.javascript;
-  var cssPath = config.paths.css;
   var iframe = holder.querySelector("iframe");
   var iframeDocument = iframe.contentWindow.document;
 
@@ -307,19 +283,11 @@ function onWidgetLoad(data){
     console.log('videos api call completed', performance.now() - startTime);
   }
 
-  
+  //We then add the data to the tvp global and then we fire the event that will start
+  //things in the widget side.
   if(data && data.length){
-
-    //We then add the data to the tvp global and then we fire the event that will start
-    //things in the widget side.
     config.channel.videos = data;
-
     widgetRender();
-
-    //this event will trigger the load of the widget iframe resources
-    window.postMessage({
-      event: eventPrefix + ':widget_start'
-    }, '*');
   }else if(debug){
     console.log('videos api call returned 0 videos', performance.now() - startTime);   
   }
@@ -348,21 +316,9 @@ function widgetLoad(){
     base: config.api_base_url + '/channels/' + config.channelId + '/videos',
     params: videosLoadParams
   },onWidgetLoad);
-
 }
 
 widgetLoad();
-
-var isEvent = function(e){
-  return e && e.data && e.data.event;
-};
-var getEventType = function(e){
-  var eArr = e.data.event.split(':');
-  return eArr[0] === eventPrefix ? eArr[1] : '';
-};
-var resizeHolder = function(h){
-  holder.style.height = h + 'px';
-};
 
 //handle events
 window.addEventListener("message", function(e){
@@ -373,13 +329,22 @@ window.addEventListener("message", function(e){
   var type = getEventType(e);
   
   if('widget_ready' === type){
-    resizeHolder(e.data.height);
+    handleReady(e)
   }
 
   if('widget_resize' === type){
-    resizeHolder(e.data.height);
+    handleResize(e)
   }
 
   if (__windowCallbackFunc__)
     __windowCallbackFunc__(e);
 });
+
+//event handlers
+function handleReady(e) {
+  holder.style.height = e.data.height + 'px';
+}
+
+function handleResize(e) {
+  holder.style.height = e.data.height + 'px';
+}

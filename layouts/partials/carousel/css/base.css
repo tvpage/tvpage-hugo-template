@@ -20,6 +20,7 @@
     'bottom: 0;' +
     'left: 0;' +
     'right: 0;' +
+    'margin: auto;' +
   '}' +
   
   '.abs-bottom {' +
@@ -32,6 +33,10 @@
     'margin-right: 15px;' +
   '}' +
   
+  '.col-x-pull {' +
+    'margin-left: -15px;' +
+    'margin-right: -15px;' +
+  '}' +
   
   /* thumbnail sizes */
   '.thumb-sm {' +
@@ -137,12 +142,6 @@
   
   
   ".video-image-overlay {" +
-    "top: 0;" +
-    "bottom: 0;" +
-    "left: 0;" +
-    "right: 0;" +
-    "position: absolute;" +
-    "margin: auto;" +
     "transition: all .2s ease;" +
     "pointer-events: none;" +
     "opacity: 0;" +
@@ -151,20 +150,16 @@
   "}" +
   
   ".video-image-icon {" +
-    "padding: 0;" +
-    "position: absolute;" +
-    "top: 0;" +
-    "left: 0;" +
-    "bottom: 0;" +
-    "right: 0;" +
-    "margin: auto;" +
     "cursor: pointer;" +
     "z-index: 1000;" +
-    "transition: all .05s ease-in-out;" +
-    "background:{{ ($.Scratch.Get "settings").item_play_button_background_color }};" +
-    "background-size:{{ ($.Scratch.Get "settings").item_play_button_background_size }};" +
+    "background-color:{{ ($.Scratch.Get "settings").item_play_button_background_color }};" +
     "width:{{ ($.Scratch.Get "settings").item_play_button_width }};" +
     "height:{{ ($.Scratch.Get "settings").item_play_button_height }};" +
-    "border: {{ ($.Scratch.Get "settings").item_play_button_border }};" +
-    "border-radius:{{ ($.Scratch.Get "settings").item_play_button_border_radius }};" +
+    "color:white" +
+  "}" +
+
+  ".video-image-icon > i {" +
+    "width: 34px;" +
+    "height: 34px;" +
+    "font-size: 34px;" +
   "}"

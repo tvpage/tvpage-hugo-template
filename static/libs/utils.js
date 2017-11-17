@@ -4,25 +4,38 @@
   var body = document.body;
 
   //helpers
-  var getById = function(id){
+  function getById(id){
     return document.getElementById(id);
   }
 
-  var hasKey = function(o,k){
+  function hasKey(o,k){
     return o.hasOwnProperty(k);
-  };
+  }
 
-  var hasClass = function(o,c) {
+  function hasClass(o,c) {
     return o.classList && o.classList.contains(c);
-  };
+  }
 
-  var getGlobalFromParent = function(){
+  function getGlobalFromParent(){
     return window.parent && hasKey(window.parent, '__TVPage__') ? window.parent.__TVPage__ : null;
-  };
+  }
 
-  var isFunction = function(o) {
+  function isFunction(o){
     return 'function' === typeof o;
-  };
+  }
+
+  function closest(el, cback) {
+    return el && (cback(el) ? el : closest(el.parentNode, cback));
+  }
+
+  function isEmptyObject(o){
+    for(var k in o) {
+      if(o.hasOwnProperty(k))
+        return false;
+    }
+
+    return true;
+  }
   
   //the utils module
   var Utils = {};
@@ -39,15 +52,13 @@
     return el.getAttribute(a);
   };
 
+  Utils.isEmptyObject = isEmptyObject;
+
   Utils.stopEvent = function(e) {
     if(e){
       e.preventDefault();
       e.stopPropagation();
     }
-  };
-
-  var closest = function(el, cback) {
-    return el && (cback(el) ? el : closest(el.parentNode, cback));
   };
 
   Utils.closest = closest;
@@ -224,6 +235,9 @@
   };
 
   Utils.addProps = function(a,b) {
+    if(isEmptyObject(b) || isEmptyObject(b))
+      return a;
+
     for (var p in b)
       a[p] = b[p];
     
@@ -262,4 +276,5 @@
   };
     
   window.Utils = Utils;
+
 }())

@@ -313,9 +313,9 @@
           var index = 0;
           var asset = that.assets[index];
       
-          if(this.startWith){
-            var assetResp = getAssetById(this.startWith);
-      
+          if(that.startWith){
+            var assetResp = that.getAssetById(that.startWith);
+
             index = assetResp.index;
             asset = assetResp.asset;
           }
