@@ -164,7 +164,7 @@
   "font-size: 34px;" +
 "}" +
 
-".carousel-arrow{"+
+".slick-arrow{"+
   "width: 30px;"+
   "height: 30px;"+
   "padding: 0;"+
@@ -179,13 +179,17 @@
   "color: white;"+
 "}"+
 
-".carousel-arrow.slick-disabled{"+
+".slick-arrow.slick-disabled{"+
   "opacity: 0.6 !important;"+
 "}"+
 
-".carousel-arrow:focus,"+
+".slick-arrow:focus,"+
 ".carousel-dot:focus{"+
   "outline: none;"+
+"}"+
+
+".slick-arrow{"+
+
 "}"+
 
 ".slick-prev{"+
@@ -193,7 +197,7 @@
 "}"+
 
 ".slick-next{"+
-    "right: 0;"+
+  "right: 0;"+
 "}"+
 
 ".slick-dots{"+

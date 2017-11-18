@@ -25,8 +25,6 @@
   Carousel.prototype.getSlickConfig = function(){
     var options = this.options,
     slickConfig = {
-      prevArrow: '#carousel-arrow-prev',
-      nextArrow: '#carousel-arrow-next',
       slidesToShow: options.slidesToShow,
       slidesToScroll: options.slidesToScroll,
       infinite: options.infinite || false,
@@ -131,7 +129,7 @@
         isCenter;
     
     function updateArrows(){
-      var arrows = that.el.querySelectorAll('.carousel-arrow');
+      var arrows = that.el.querySelectorAll('.slick-arrow');
       var arrowsLength = arrows.length;
 
       for (var i = 0; i < arrowsLength; i++) {
@@ -223,7 +221,7 @@
       Utils.addClass(this.el.querySelector('.slick-dots'), this.options.dotsClass);
     }
 
-    var arrowEls = this.el.querySelectorAll('.carousel-arrow');
+    var arrowEls = this.el.querySelectorAll('.slick-arrow');
     var arrowElsLength = arrowEls.length;
 
     for (var i = 0; i < arrowElsLength; i++) {
@@ -306,30 +304,6 @@
 
     return html;
   };
-
-  Carousel.prototype.buildArrow = function(dir){
-    var arrowEl = document.createElement('button');
-    arrowEl.type = 'button';
-    arrowEl.id = 'carousel-arrow-' + dir;
-    arrowEl.className = 'btn-sm carousel-arrow slick-' + dir;
-    
-    var iconEl = document.createElement('i');
-    iconEl.className = 'material-icons';
-    
-    var iconElHTML = 'keyboard_arrow_';
-    
-    if('prev' === dir)
-      iconElHTML += 'left';
-
-    if('next' === dir)
-      iconElHTML += 'right';
-
-    iconEl.innerHTML = iconElHTML;
-    
-    arrowEl.appendChild(iconEl);
-
-    return arrowEl;
-  };
   
   Carousel.prototype.render = function(){
     var all = this.data;
@@ -387,9 +361,6 @@
           }else{
             this.el.insertBefore(this.appendDotsEl, this.el.firstChild);
           }
-
-          this.el.appendChild(this.buildArrow('prev'));
-          this.el.appendChild(this.buildArrow('next'));
         }
 
         this.start();
@@ -411,6 +382,10 @@
           }
         }
 
+        if(this.config.debug){
+          console.log('carousel adding item(s)');
+        }
+
         this.$slickEl.slick('slickAdd', html);
       }else{
         var html = '';
@@ -421,6 +396,10 @@
           if(page){
             html += this.renderBatch(page);
           }
+        }
+
+        if(this.config.debug){
+          console.log('carousel adding item(s)');
         }
 
         this.$slickEl.slick('slickAdd', html);

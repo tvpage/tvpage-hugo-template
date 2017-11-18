@@ -1,4 +1,6 @@
+console.log('scripts js file was loaded and executed');
 (function() {
+  console.log('iife was executed');
 
   var body = document.body;
   var id = body.getAttribute('data-id');
@@ -95,7 +97,11 @@
   var depsCheck = 0;
   var deps = ['jQuery','Carousel','Utils','Analytics'];
 
+  console.log('right before start polling');
+
   (function initCarousel() {
+    console.log('right before start polling 2');
+
     setTimeout(function() {
       console.log('deps poll...');
       
