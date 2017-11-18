@@ -529,7 +529,7 @@ exports.tvpGUITest = function (options) {
     end: function () {
       client.end();
     },
-    analytics: function() {
+    analytics: function(frame) {
 
       function getParameterByName(name, url) {
         name = name.replace(/[\[\]]/g, "\\$&");
@@ -550,28 +550,59 @@ exports.tvpGUITest = function (options) {
   
       analyticsTest = {
         'ci': function(client, src) {
+          client.waitForElementVisible('p#analtyticsTestCI', 6000);
+          client.expect.element('p#analtyticsTestCI').to.be.present;
           this.assert.equal(analyticsCount['ci'], 1);
           var li = getParameterByName('li', src);
           this.assert.equal(li, DATA.LOGIN_ID);
           var url = getParameterByName('url', src);
           this.assert.equal(url, DATA.URL);
+          var cid = getParameterByName('cid', src);
+          this.assert.ok(cid);
         },
-        'vv': function() {
-          
+        'vv': function(client, src) {
+          client.waitForElementVisible('p#analtyticsTestVV', 6000);
+          client.expect.element('p#analtyticsTestVV').to.be.present;
+          var li = getParameterByName('li', src);
+          this.assert.equal(li, DATA.LOGIN_ID);
+          var url = getParameterByName('url', src);
+          this.assert.equal(url, DATA.URL);
+          var pg = getParameterByName('pg', src);
+          this.assert.equal(pg, DATA.CHANNEL_ID);
+          var vd = getParameterByName('vd', src);
+          this.assert.equal(vd, DATA.VIDEO_ID);
+          var vvs = getParameterByName('vvs', src);
+          this.assert.ok(vvs);
+          DATA.vvs = vvs;
         },
         'pi': function() {
           
         },
-        'pk': function() {
-          
+        'pk': function(client, src) {
+          client.waitForElementVisible('p.analtyticsTestPK', 6000);
+          client.expect.element('p.analtyticsTestPK').to.be.present;
+          var url = getParameterByName('url', src);
+          this.assert.equal(url, DATA.URL);
+          var li = getParameterByName('li', src);
+          this.assert.equal(li, DATA.LOGIN_ID);
+          var pg = getParameterByName('pg', src);
+          this.assert.equal(pg, DATA.CHANNEL_ID);
+          var vd = getParameterByName('vd', src);
+          this.assert.equal(vd, DATA.VIDEO_ID);
+          var ct = getParameterByName('ct', src);
+          this.assert.equal(ct, DATA.PRODUCTID);
+          var cid = getParameterByName('cid', src);
+          this.assert.ok(cid);
+          client.elements("class name", "analtyticsTestPK", function(result) {
+            this.assert.ok(analyticsCount['pk'] <= result.value.length);
+          });
         },
         'vt': function() {
           
         }
       };
 
-      client.frame(2).waitForElementVisible('p#analtyticsTest', 6000);
-      client.frame(2).elements("tag name", "script", function(result) {
+      client.frame(frame).elements("tag name", "script", function(result) {
         result.value.forEach(function(script) {
           client.elementIdAttribute(script.ELEMENT, 'src', function(res) {
             var src = res.value;
