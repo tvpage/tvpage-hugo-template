@@ -193,6 +193,7 @@
               arrowTop += Math.floor(referenceEl.getBoundingClientRect().height / 2);
 
               updateArrows();
+
               return;
             }else if(++parentsCheck < 30){
               parents.push(currentParent);
@@ -268,7 +269,7 @@
       });
 
       that.$slickEl.slick(that.getSlickConfig());
-    };
+    }
 
     if (Utils.isUndefined($.fn.slick)) {
       $.ajax({

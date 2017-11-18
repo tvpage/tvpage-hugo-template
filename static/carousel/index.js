@@ -250,7 +250,7 @@ function widgetRender(){
   iframeDocument.open().write(getIframeHtml({
     id: id,
     domain: baseUrl,
-    style: config.css.base,
+    style: isMobile ? css.mobile.base : css.base,
     context: config,
     html: templates.base,
     eventPrefix: eventPrefix,

@@ -1,125 +1,147 @@
-{{ with ($.Scratch.Get "settings").fonts }}
-{{ range . }}
-  "@import url('{{ . | htmlUnescape | safeHTML }}');" +
-{{ end }}
-{{ end }}
-
-'@-webkit-keyframes placeHolderShimmer {' +
-  '0% {' +
-    'background-position: -1800px 0;' +
-  '}' +
-  '100% {' +
-    'background-position: 1800px 0;' +
-  '}' +
-'}' +
-
-"* {" +
-  "box-sizing: border-box;" +
-"}" +
-
-"html," +
-"body {" +
-"height: 100%;" +
-"-webkit-text-size-adjust:none;" +
-"}" +
-
-"body {" +
-  "font-family: Helvetica;" +
-  "-webkit-font-smoothing: antialiased;" +
-  "-moz-osx-font-smoothing: grayscale;" +
-  "text-rendering: optimizeLegibility;" +
-  "padding: {{ ($.Scratch.Get "settings").iframe_carousel_body_padding }};" +
-  "margin: {{ ($.Scratch.Get "settings").iframe_carousel_body_margin }};" +
-"}" +
-
+/* helpers */
 ".hide {" +
   "opacity: 0;" + 
   "visibility: hidden;" +
 "}" +
 
-".carousel-title {" +
-  "font-family: {{ ($.Scratch.Get "settings").title_text_font_family }};" +
-  "font-weight: {{ ($.Scratch.Get "settings").title_text_font_weight }};" +
-  "font-size:{{ ($.Scratch.Get "settings").title_font_size }};" +
-  "text-align:{{ ($.Scratch.Get "settings").title_text_align }};" +
-  "color:{{ ($.Scratch.Get "settings").title_color }};" +
-  "padding: {{ ($.Scratch.Get "settings").title_padding }};" +
-  "background:{{ ($.Scratch.Get "settings").title_background }};" +
+".clickable {" +
+  "cursor:pointer;" + 
 "}" +
 
-".carousel-title > span {" +
-  "text-transform: {{ ($.Scratch.Get "settings").title_category_text_transform }};" +
-  "font-family: {{ ($.Scratch.Get "settings").title_category_text_font_family }};" +
-"}" +
+'.fluid-y {' +
+  'height: 0;' +
+  'width: 100%;' +
+  'position: relative;' +
+'}' +
 
-".carousel-content {" +
-  "background:{{ ($.Scratch.Get "settings").content_background }};" +
-  "border:{{ ($.Scratch.Get "settings").content_border }};" +
-"}" +
+'.abs-center {' +
+  'position: absolute;' +
+  'top: 0;' +
+  'bottom: 0;' +
+  'left: 0;' +
+  'right: 0;' +
+  'margin: auto;' +
+'}' +
 
-".video {" +
-  "cursor: pointer;" +
-  "margin: 0 auto;" +
-  "backface-visibility: hidden;" +
-  "-webkit-backface-visibility: hidden;" +
-  "padding-left:{{ ($.Scratch.Get "settings").item_padding_left }};" +
-  "padding-right:{{ ($.Scratch.Get "settings").item_padding_right }};" +
-  "margin-left:{{ ($.Scratch.Get "settings").item_margin_left }};" +
-  "margin-right:{{ ($.Scratch.Get "settings").item_margin_right }};" +
-"}" +
+'.abs-bottom {' +
+  'position: absolute;' +
+  'bottom: 0;' +
+'}' +
 
-".skeleton .video {" +
-  "padding-left:0;" +
-  "padding-right:0;" +
-"}" +
+'.col-x-push {' +
+  'margin-left: 15px;' +
+  'margin-right: 15px;' +
+'}' +
 
-".video:focus {" +
-  "outline:0;" +
-"}" +
+'.col-x-pull {' +
+  'margin-left: -15px;' +
+  'margin-right: -15px;' +
+'}' +
 
-".video-image {" +
+/* thumbnail sizes */
+'.thumb-sm {' +
+  'max-width: 50px;' +
+'}' +
+
+'.thumb-md {' +
+  'max-width: 100px;' +
+'}' +
+
+'.bg-default {' +
   "background-repeat: no-repeat;" +
   "background-position: center;" +
   "position: relative;" +
-  "pointer-events: none;" +
-  "background-size: {{ ($.Scratch.Get "settings").item_background_image_size }};" +
-  "border: {{ ($.Scratch.Get "settings").item_border }};" +
-"}" +
-
-".video-image:focus {" +
-  "outline: 0;" +
-"}" +
-
-".video-image:before {" +
-  "display: block;" +
-  "content: \"\";" +
-  "width: 100%;" +
-  "padding-top: 56.25%;" +
-"}" +
-
-'.skeleton .video-image,' +
-'.skeleton .video-title:not(.ready) {' +
-  '-webkit-animation-duration: 2.0s;' +
-  'animation-duration: 2.0s;' +
-  '-webkit-animation-fill-mode: forwards;' +
-  'animation-fill-mode: forwards;' +
-  '-webkit-animation-iteration-count: infinite;' +
-  'animation-iteration-count: infinite;' +
-  '-webkit-animation-name: placeHolderShimmer;' +
-  'animation-name: placeHolderShimmer;' +
-  '-webkit-animation-timing-function: linear;' +
-  'animation-timing-function: linear;' +
-  'background: linear-gradient(-270deg, #f2f2f2 3%, #fff 53%, #f2f2f2 97%);' +
-  'background-size: 1800px 100%;' +
 '}' +
 
+/* image aspect ratios & shapes */
+'.video-image {' +
+  "background-size: {{ ($.Scratch.Get "settings").item_background_image_size }};" +
+  'padding-bottom: 56.25%;' +
+'}'+
+
+'.product-image {' +
+  'padding-bottom: 100%;' +
+  'background-size: cover;' +
+'}' +
+
+
+/* backgrounds */
+'.white-bg {' +
+  'background-color: white;' +
+'}' +
+
+'.skeleton-bg {' +
+  'background-color: {{ ($.Scratch.Get "settings").item_image_background_color }};' +
+'}' +
+
+
+/* skeleton piece */
+".skeleton .widget-title:not(.ready) {" +
+  "background-color: {{ ($.Scratch.Get "settings").item_image_background_color }};" +
+"}" +
+
+".skeleton .widget-title:not(.ready):before {" +
+  "content: \"...\";" +
+  "color: transparent;" +
+"}" +
+
+'.player-holder {' +
+  'padding-bottom: 56.25%;' +
+'}' +
+
+'.skeleton .player-holder {' +
+  "background-color: {{ ($.Scratch.Get "settings").skeleton_background_color }};" +
+'}' +
+
+'.featured-product-holder {' +
+  'padding-bottom: 112.25%;' +
+'}' +
+
+'.skeleton .featured-product-holder {' +
+  "background-color: {{ ($.Scratch.Get "settings").skeleton_background_color }};" +
+'}' +
+
+'.products-holder {' +
+  'padding-bottom: 112.25%;' +
+'}' +
+
+'.skeleton .products-holder {' +
+  "background-color: {{ ($.Scratch.Get "settings").skeleton_background_color }};" +
+'}' +
+
+'.videos-holder {' +
+  'padding-bottom: 19.25%;' +
+'}'+
+
+".skeleton .video-title:not(.ready) {" +
+  "background-color: {{ ($.Scratch.Get "settings").item_image_background_color }};" +
+"}" +
+
+".skeleton .video-title:not(.ready):before {" +
+  "content: \"...\";" +
+  "color: transparent;" +
+"}" +
+
+".skeleton .product-title:not(.ready) {" +
+  "background-color: {{ ($.Scratch.Get "settings").item_image_background_color }};" +
+"}" +
+
+".skeleton .product-title:not(.ready):before {" +
+  "content: \"...\";" +
+  "color: transparent;" +
+"}" +
+
+".skeleton .product-price:not(.ready) {" +
+  "background-color: {{ ($.Scratch.Get "settings").item_image_background_color }};" +
+"}" +
+
+".skeleton .product-price:not(.ready):before {" +
+  "content: \"...\";" +
+  "color: transparent;" +
+"}" +
+
+
 ".video-image-overlay {" +
-  "top: 0;" +
-  "bottom: 0;" +
-  "left: 0;" +
-  "right: 0;" +
-  "position: absolute;" +
-  "margin: auto;" +
   "transition: all .2s ease;" +
   "pointer-events: none;" +
   "opacity: 0;" +
@@ -128,123 +150,73 @@
 "}" +
 
 ".video-image-icon {" +
-  "padding: 0;" +
-  "position: absolute;" +
-  "top: 0;" +
-  "left: 0;" +
-  "bottom: 0;" +
-  "right: 0;" +
-  "margin: auto;" +
   "cursor: pointer;" +
   "z-index: 1000;" +
-  "transition: all .05s ease-in-out;" +
-  "background:{{ ($.Scratch.Get "settings").item_play_button_background_color }};" +
-  "background-size:{{ ($.Scratch.Get "settings").item_play_button_background_size }};" +
+  "background-color:{{ ($.Scratch.Get "settings").item_play_button_background_color }};" +
   "width:{{ ($.Scratch.Get "settings").item_play_button_width }};" +
   "height:{{ ($.Scratch.Get "settings").item_play_button_height }};" +
-  "border: {{ ($.Scratch.Get "settings").item_play_button_border }};" +
-  "border-radius:{{ ($.Scratch.Get "settings").item_play_button_border_radius }};" +
+  "color:white" +
 "}" +
 
-'.skeleton .video-image-icon {' +
-  'display:none;' +
-'}' +
-
-'.skeleton.updated .video-image-icon {' +
-  'display:block;' +
-'}' +
-
-".video-image-icon > polygon {" +
-  "fill:{{ ($.Scratch.Get "settings").item_play_button_icon_color }};" +
+".video-image-icon > i {" +
+  "width: 34px;" +
+  "height: 34px;" +
+  "font-size: 34px;" +
 "}" +
 
-".video-title {" +
-  "font-family: {{ ($.Scratch.Get "settings").item_title_font_family }};" +
-  "font-weight: {{ ($.Scratch.Get "settings").item_title_font_weight }};" +
-  "font-size:{{ ($.Scratch.Get "settings").item_title_font_size }};" +
-  "text-align:{{ ($.Scratch.Get "settings").item_title_text_align }};" +
-  "color:{{ ($.Scratch.Get "settings").item_title_font_color }};" +
-  "margin:{{ ($.Scratch.Get "settings").item_title_margin }};" +
-  "padding:{{ ($.Scratch.Get "settings").item_title_padding }};" +
-"}" +
+".carousel-arrow{"+
+  "width: 30px;"+
+  "height: 30px;"+
+  "padding: 0;"+
+  "border-radius: 0;"+
+  "border: none;"+
+  "background-color: black;"+
+  "position: absolute;"+
+  "cursor: pointer;"+
+  "z-index: 1000;"+
+  "opacity: 0;"+
+  "visibility: hidden;"+
+  "color: white;"+
+"}"+
 
-".skeleton .video-title:not(.ready):before {" +
-  "content: \"...\";" +
-  "color: transparent;" +
-"}" +
+".carousel-arrow.slick-disabled{"+
+  "opacity: 0.6 !important;"+
+"}"+
 
-".video-metadata {" +
-  "font-family:{{ ($.Scratch.Get "settings").item_metadata_font_family }};" +
-  "font-size:{{ ($.Scratch.Get "settings").item_metadata_font_size }};" +
-  "color:{{ ($.Scratch.Get "settings").item_metadata_font_color }};" +
-"}" +
+".carousel-arrow:focus,"+
+".carousel-dot:focus{"+
+  "outline: none;"+
+"}"+
 
-".video-metadata > div {" +
-  "padding:{{ ($.Scratch.Get "settings").item_metadata_padding }};" +
-"}" +
+".slick-prev{"+
+  "left: 0px;"+
+"}"+
 
-".slick-dotted.slick-slider {" +
-  "margin-bottom: {{ ($.Scratch.Get "settings").navigation_bullets_margin_bottom }};" +
-"}" +
+".slick-next{"+
+    "right: 0;"+
+"}"+
 
-".slick-dots {" +
-  "position: {{ ($.Scratch.Get "settings").navigation_bullets_position }};" +
-  "bottom: {{ ($.Scratch.Get "settings").navigation_bullets_bottom }};" +
-  "text-align: {{ ($.Scratch.Get "settings").navigation_bullets_text_align }};" +
-  "margin: {{ ($.Scratch.Get "settings").navigation_bullets_margin }};" +
-"}" +
+".slick-dots{"+
+  "margin-top: 15px;"+
+"}"+
 
-".slick-dots li {" +
-  "width: {{ ($.Scratch.Get "settings").navigation_bullet_size }};" +
-  "height: {{ ($.Scratch.Get "settings").navigation_bullet_size }};" +
-  "margin: {{ ($.Scratch.Get "settings").navigation_bullet_margin }};" +
-  "padding: {{ ($.Scratch.Get "settings").navigation_bullet_padding }};" +
-"}" +
+".slick-dots li{"+
+  "margin-right: 5px;"+
+"}"+
 
-".slick-dots li button {" +
-  "width: {{ ($.Scratch.Get "settings").navigation_bullet_size }};" +
-  "height: {{ ($.Scratch.Get "settings").navigation_bullet_size }};" +
-  "padding: {{ ($.Scratch.Get "settings").navigation_bullet_padding }};" +
-  {{ with ($.Scratch.Get "settings").navigation_bullet_background_image_url }}
-      "background-image: url('{{ $.Site.BaseURL }}/carousel/{{ . }}');" +
-      "background-position: {{ ($.Scratch.Get "settings").navigation_bullet_background_position }};" +
-  {{ end }}
-  "background-color: {{ ($.Scratch.Get "settings").navigation_bullet_background_color }};" +
-  "border: {{ ($.Scratch.Get "settings").navigation_bullet_border }};" +
-  "border-radius: {{ ($.Scratch.Get "settings").navigation_bullet_border_radius }};" +
-"}" +
+".dots-centered .slick-dots{"+
+  "text-align: center;"+
+"}"+
 
-".slick-dots li button:before {" +
-  "content: initial !important;" +
-"}" +
+".carousel-dot {"+
+  "border-radius: 0;"+
+  "border: none;"+
+  "background-color: rgba(0,0,0,0.6);"+ 
+  "width: 15px;"+
+  "height: 15px;"+
+  "padding: 0;"+
+"}"+
 
-".slick-dots li button:hover {" +
-  "background-position: {{ ($.Scratch.Get "settings").navigation_active_bullet_background_position }};" +
-  "background-color: {{ ($.Scratch.Get "settings").navigation_active_bullet_background_color }};" +
-  "border: {{ ($.Scratch.Get "settings").navigation_active_bullet_border }};" +
-"}" +
-
-".slick-dots li.slick-active button {" +
-  {{ with ($.Scratch.Get "settings").navigation_active_bullet_background_image_url }}
-      "background-image: url('{{ $.Site.BaseURL }}/carousel/{{ . }}');" +
-  {{ end }}
-  "background-position: {{ ($.Scratch.Get "settings").navigation_active_bullet_background_position }};" +
-  "background-color: {{ ($.Scratch.Get "settings").navigation_active_bullet_background_color }};" +
-  {{ if ne ($.Scratch.Get "settings").navigation_active_bullet_border "none"}}
-  "border: {{ ($.Scratch.Get "settings").navigation_active_bullet_border }};" +
-  {{ end }}
-"}" +
-
-{{ if gt ($.Scratch.Get "settings").iframe_carousel_body_padding_480 0 }}
-"@media screen and (max-width: 448px){"+
-  "body {" +
-      "padding: {{ ($.Scratch.Get "settings").iframe_carousel_body_padding_480 }};" +
-  "}" +
-"}" +
-{{ end  }}
-
-"@media screen and (min-width: 1025px) and (orientation: landscape) {" +
-  "body {" +
-      "padding: {{ ($.Scratch.Get "settings").iframe_carousel_body_padding_768 }};" +
-  "}" +
+".slick-active .carousel-dot{"+
+  "background-color: rgb(0,0,0);"+
 "}"
