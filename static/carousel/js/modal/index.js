@@ -35,14 +35,14 @@
     function onNoProducts(){
         Utils.addClass(mainEl,'tvp-no-products');
         Utils.sendMessage({
-            event: eventPrefix + ':modal_no_products'
+            event: eventPrefix + ':widget_modal_no_products'
         });
     }
 
     function onProducts(){
         Utils.removeClass(mainEl,'tvp-no-products');
         Utils.sendMessage({
-            event: eventPrefix + ':modal_products'
+            event: eventPrefix + ':widget_modal_products'
         });
     };
 
@@ -265,7 +265,7 @@
         productsEl.style.height = size[1] + 'px';
 
         Utils.sendMessage({
-            event: eventPrefix + ':modal_resize',
+            event: eventPrefix + ':widget_modal_resize',
             height: getWidgetHeight() + 'px'
         });
     };
@@ -326,7 +326,7 @@
         }
 
         Utils.sendMessage({
-            event: eventPrefix + ':modal_initialized',
+            event: eventPrefix + ':widget_modal_initialized',
             height: getWidgetHeight() + 'px'
         });
     };

@@ -217,9 +217,11 @@
     
     currentAsset.currentTime = this.instance.getCurrentTime();
 
+    //better for libs to expose a onPlayerChange callback and then we can use more meaningful events like
+    //widget_videos_modal_player_change, etc
     if (this.onPlayerChange && window.parent) {
       window.parent.postMessage({
-        event: this.eventPrefix + ':on_player_change',
+        event: this.eventPrefix + ':widget_player_change',
         e: e,
         stateData : currentAsset
       }, '*');
@@ -284,7 +286,7 @@
     var config = this.getConfig();
     var that = this;
     var depsCheck = 0;
-    var deps = ['TVPage','_tvpa'];
+    var deps = ['TVPage'];
 
     (function start() {
       setTimeout(function() {
@@ -297,8 +299,12 @@
   
         if(ready){
 
+          var onReadyCalled = false;
           config.onReady = function(e, pl){
-            that.onReady(e, pl);
+            if(!onReadyCalled){
+              onReadyCalled = true;
+              that.onReady(e, pl);
+            }
           };
 
           config.onStateChange = function(e) {

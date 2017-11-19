@@ -81,7 +81,7 @@
         carousel.innerHTML = html;
 
         Utils.sendMessage({
-            event: eventPrefix + ':modal_resize',
+            event: eventPrefix + ':widget_modal_resize',
             height: getWidgetHeight() + 'px'
         });
 
@@ -161,7 +161,7 @@
                 }
 
                 Utils.sendMessage({
-                    event: eventPrefix + ':modal_resize',
+                    event: eventPrefix + ':widget_modal_resize',
                     height: getWidgetHeight()
                 });
             });
@@ -194,14 +194,17 @@
     var onNoProducts = function(){
         Utils.addClass(mainEl,'tvp-no-products');
         Utils.sendMessage({
-            event: eventPrefix + ':modal_no_products'
+            event: eventPrefix + ':widget_modal_no_products'
         });
     };
-
+console.log('jajajajajaj######sjjs')
     var onProducts = function(){
+
+        console.log('jajajajajaj######sjjs')
+
         Utils.removeClass(mainEl,'tvp-no-products');
         Utils.sendMessage({
-            event: eventPrefix + ':modal_products'
+            event: eventPrefix + ':widget_modal_products'
         });
     };
 
@@ -225,7 +228,7 @@
 
     var onPlayeResize = function() {
         Utils.sendMessage({
-            event: eventPrefix + ':modal_resize',
+            event: eventPrefix + ':widget_modal_resize',
             height: getWidgetHeight() + 'px'
         });
     };
@@ -265,7 +268,7 @@
         }
 
         Utils.sendMessage({
-            event: eventPrefix + ':modal_initialized',
+            event: eventPrefix + ':widget_modal_initialized',
             height: getWidgetHeight() + 'px'
         });
     };

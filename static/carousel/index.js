@@ -331,44 +331,45 @@ window.addEventListener("message", function(e){
   var eventType = getEventType(e);
   
   if('widget_ready' === eventType){
-    handleReady(e);
+    onWidgetReady(e);
   }
 
   if('widget_resize' === eventType){
-    handleResize(e);
+    onWidgetResize(e);
   }
 
-  if('widget_videos_click' === eventType){
-    handleVideosClick(e);
+  if('widget_videos_carousel_click' === eventType){
+    onWidgetVideosCarouselClick(e);
   }
 
   //check if you need this
   if('render' === eventType){
-    handleRender(e); 
+    onRender(e); 
   }
 
   //normalize this to form part of the std
-  if('modal_initialized' === eventType){
-    handleModalInitialized(e);    
+  if('widget_modal_initialized' === eventType){
+    onWidgetModalInitialized(e);
   }
 
-  if('modal_no_products' === eventType){
-    handleModalNoProducts(e);
+  if('widget_modal_no_products' === eventType){
+    onWidgetModalNoProducts(e);
   }
 
-  if('modal_products' === eventType){
-    handleModalProducts(e); 
+  if('widget_modal_products' === eventType){
+    onWidgetModalProducts(e); 
   }
 
-  if('modal_resize' === eventType){
-    handleModalResize(e);
+  if('widget_modal_resize' === eventType){
+    onWidgetModalResize(e);
   }
 
   //? how to order this?
-  if('on_player_change' === eventType){
-    handleOnPlayerChange(e);
+  if('widget_player_change' === eventType){
+    onWidgetPlayerChange(e);
   }
 
+  //listen to the onstatechange instead and check for video ended (this shall pass the video)
   if('player_next' === eventType){
     handlePlayerNext(e);
   }
@@ -377,67 +378,20 @@ window.addEventListener("message", function(e){
     __windowCallbackFunc__(e);
 });
 
-//modal stuff starts here
-var modalContainer = createEl('div');
-modalContainer.innerHTML = templates.modal.base;
-body.appendChild(modalContainer);
-
-var iframeModalHolder = getById('tvp-modal-iframe-holder-' + id);
-var iframeModal = null;
-var iframeModalDocument = null;
-var modal = getById("tvp-modal-" + id);
-
-addClass(modal, isMobile ? "mobile" : "desktop");
-
-if (config.modal_title_position.trim().length && "bottom" === config.modal_title_position) {
-  var modalTitleEl = modal.querySelector("#tvp-modal-title-" + id);
-  addClass(modalTitleEl,"bottom")
-  modal.querySelector(".tvp-modal-body").appendChild(modalTitleEl);
-}
-
-function closeModal() {
-  addClass(modal, 'tvp-hidden');
-  addClass('tvp-modal-overlay-' + id, 'tvp-hidden');
-
-  removeClass(iframeModalHolder, 'products');
-  removeClass(iframeModalHolder, 'no-products');
-  removeClass(modal.querySelector('.tvp-products-headline'), 'active');
-
-  remove(iframeModal);
-
-  if (config.fix_page_scroll)
-    removeClass(body, 'tvp-modal-open');
-
-  window.postMessage({
-    event: eventPrefix + ':modal_close'
-  }, '*');
-};
-
-getById("tvp-modal-close-" + id).addEventListener('click', closeModal, false);
-
-modal.addEventListener('click', function(e) {
-  if (e.target === modal || !modal.contains(e.target)) {
-    closeModal();
-  }
-}, false);
-
-
-/**
- * event handlers
- */
-function handleReady(e) {
+//event handlers
+function onWidgetReady(e) {
   holder.style.height = e.data.height + 'px';
 }
 
-function handleResize(e) {
+function onWidgetResize(e) {
   holder.style.height = e.data.height + 'px';
 }
 
-function handleOnPlayerChange(e){
+function onWidgetPlayerChange(e){
   config.onPlayerChange(e.data.e, e.data.stateData);
 }
 
-function handleRender(e) {
+function onRender(e) {
   addClass(holder, "initialized");
   
   if(config.background){
@@ -452,7 +406,63 @@ function handleRender(e) {
   }
 }
 
-function handleVideosClick(e) {
+var modalInitialized = false;
+var iframeModalHolder;
+var iframeModal;
+var iframeModalDocument;
+var modal;
+
+function onWidgetVideosCarouselClick(e) {
+
+  if(!modalInitialized){
+    modalInitialized = true;
+
+    //external render
+    var modalContainer = createEl('div');
+    modalContainer.innerHTML = templates.modal.base;
+    body.appendChild(modalContainer);
+
+    iframeModalHolder = getById('tvp-modal-iframe-holder-' + id);
+    iframeModal = null;
+    iframeModalDocument = null;
+    modal = getById("tvp-modal-" + id);
+
+    addClass(modal, isMobile ? "mobile" : "desktop");
+
+    if (config.modal_title_position.trim().length && "bottom" === config.modal_title_position) {
+      var modalTitleEl = modal.querySelector("#tvp-modal-title-" + id);
+      addClass(modalTitleEl,"bottom")
+      modal.querySelector(".tvp-modal-body").appendChild(modalTitleEl);
+    }
+
+    function closeModal() {
+      addClass(modal, 'tvp-hidden');
+      addClass('tvp-modal-overlay-' + id, 'tvp-hidden');
+
+      removeClass(iframeModalHolder, 'products');
+      removeClass(iframeModalHolder, 'no-products');
+      removeClass(modal.querySelector('.tvp-products-headline'), 'active');
+
+      remove(iframeModal);
+
+      if (config.fix_page_scroll)
+        removeClass(body, 'tvp-modal-open');
+
+      window.postMessage({
+        event: eventPrefix + ':modal_close'
+      }, '*');
+    };
+
+    getById("tvp-modal-close-" + id).addEventListener('click', closeModal, false);
+
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal || !modal.contains(e.target)) {
+        closeModal();
+      }
+    }, false);
+  }
+
+  //modal initialization
   var videos = config.channel.videos;
   var selected = null;
   var clicked = e.data.clicked;
@@ -508,7 +518,7 @@ function handleVideosClick(e) {
     addClass(body, 'tvp-modal-open');
 }
 
-function handleModalInitialized(e) {
+function onWidgetModalInitialized(e) {
   var onOrientationChange = function() {
     if (iOS && iframeModal && iframeModal.contentWindow) {
       var width = iframeModal.parentNode.offsetWidth;
@@ -529,7 +539,7 @@ function handlePlayerNext(e) {
   getById('tvp-modal-title-' + id).innerHTML = e.data.next.assetTitle || "";
 }
 
-function handleModalNoProducts(e) {
+function onWidgetModalNoProducts(e) {
   if (!config.merchandise)
     return;
 
@@ -545,7 +555,9 @@ function handleModalNoProducts(e) {
   }
 }
 
-function handleModalProducts(e){
+function onWidgetModalProducts(e){
+
+  console.log('##HERE??')
 
   removeClass(iframeModalHolder, 'no-products');
   addClass(iframeModalHolder, 'products');
@@ -567,6 +579,6 @@ function handleModalProducts(e){
   modal.querySelector('.tvp-modal-header').appendChild(headlineEl);
 }
 
-function handleModalResize(e){
+function onWidgetModalResize(e){
   iframeModal.style.height = e.data.height;
 }

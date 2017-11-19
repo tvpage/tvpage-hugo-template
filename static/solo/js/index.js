@@ -15,8 +15,14 @@
       
       var ready = true;
       for (var i = 0; i < deps.length; i++)
-        if ('undefined' === typeof window[deps[i]])
+        
+        if ('undefined' === typeof window[deps[i]]){
+          var dep = deps[i];
+          if(config.debug){
+            console.log(dep + ' is undefined');
+          }
           ready = false;
+        }
 
       if(ready){
 

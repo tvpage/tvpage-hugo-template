@@ -17,18 +17,19 @@
   };
   
   Analytics.prototype.initConfig = function(options){
-    if(isUndefined(window._tvpa))
-      throw new Error('need _tvpa');
+    var _tvpa = isUndefined(window._tvpa) ? [] : _tvpa;
   
     this.config = this.getConfigBase(options);
 
     if (options && options.firstPartyCookies && options.cookieDomain)
       this.config.firstPartyCookieDomain = options.cookieDomain;
-  
+
     _tvpa.push(['config', this.config]);
   };
   
   Analytics.prototype.track = function(e, data){
+    var _tvpa = isUndefined(window._tvpa) ? [] : _tvpa;
+
     if(!isUndefined(e) && !isUndefined(data)){
       _tvpa.push(['track', e, data]);
     }

@@ -25,6 +25,13 @@
       "code": "iframe_body_margin",
       "value": "0"
    },
+   {
+      "for": "solo",
+      "type": "text",
+      "label": "Items Per Page",
+      "code": "items_per_page",
+      "value": "25"
+   },
     {
        "for": "carousel",
        "type": "text",

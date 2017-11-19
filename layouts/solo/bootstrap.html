@@ -6,13 +6,13 @@
 {{- end -}}
 
 {{- range readDir "/" -}}
-	{{- if eq .Name "defaults" -}}
-		{{- if (where (readDir "defaults/") "Name" (printf "%s.json" $type)) -}}
-			{{- range (getJSON (printf "defaults/%s.json" $type)).option -}}
-			{{- $.Scratch.SetInMap "config" .code .value -}}
-			{{- end -}}
-		{{- end -}}
-	{{- end -}}
+  {{- if eq .Name "defaults" -}}
+    {{- if (where (readDir "defaults/") "Name" (printf "%s.json" $type)) -}}
+      {{- range (getJSON (printf "defaults/%s.json" $type)).option -}}
+      {{- $.Scratch.SetInMap "config" .code .value -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
 {{- end -}}
 
 {{- range $i, $param := .Params -}}
@@ -23,23 +23,32 @@
 
 (function(){
 
-  var bootstrap = {{ $.Scratch.Get "settings" | jsonify }};
+  var config = {{ $.Scratch.Get "config" | jsonify }};
 
-  bootstrap.type = "{{ .Type }}";
-  bootstrap.baseUrl = "{{ $.Site.BaseURL }}";
-  
-  bootstrap.templates = {
+  config.type = "{{ .Type }}";
+
+  {{- if (getenv "HUGO_DEBUG") -}}
+    config.baseUrl = "{{ trim $.Site.BaseURL "/" }}";
+  {{- else -}}
+    config.baseUrl = "{{ $.Site.BaseURL }}";
+  {{- end -}}
+
+  config.templates = {
     base: {{- (partial (printf "%s/templates/base.html" .Type) .) | htmlUnescape | safeHTML -}},
     menu: {{- (partial (printf "%s/templates/menu.html" .Type) .) | htmlUnescape | safeHTML -}},
     "menu-item": {{- (partial (printf "%s/templates/menu-item.html" .Type) .) | htmlUnescape | safeHTML -}}
   };
   
-  bootstrap.css = {
+  config.css = {
     base: {{- (partial (printf "%s/css/base.css" .Type) .) | htmlUnescape | safeHTML -}},
     host: {{- (partial (printf "%s/css/host.css" .Type) .) | htmlUnescape | safeHTML -}},
     "host-custom": {{- (partial (printf "%s/css/host-custom.css" .Type) .) | htmlUnescape | safeHTML -}}
   };
 
-  {{- (readFile "/themes/tvpage/static/solo/index.js") | htmlUnescape | safeHTML -}}
+  config.indexFile = "{{ printf "hello" }}";
+
+  {{- (readFile "/themes/tvpage/static/solo/index.js" ) | htmlUnescape | safeHTML -}}
+
+
 
 }());

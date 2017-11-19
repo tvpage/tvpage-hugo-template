@@ -1,7 +1,4 @@
-console.log('scripts js file was loaded and executed');
 (function() {
-  console.log('iife was executed');
-
   var body = document.body;
   var id = body.getAttribute('data-id');
   var config = window.parent.__TVPage__.config[id];
@@ -28,7 +25,7 @@ console.log('scripts js file was loaded and executed');
         var realTarget = Utils.getRealTargetByClass(e.target, videosCarousel.itemClass.substr(1));
 
         Utils.sendMessage({
-          event: eventPrefix + ':widget_videos_click',
+          event: eventPrefix + ':widget_videos_carousel_click',
           clicked: realTarget.getAttribute('data-id')
         });
       }
@@ -97,11 +94,7 @@ console.log('scripts js file was loaded and executed');
   var depsCheck = 0;
   var deps = ['jQuery','Carousel','Utils','Analytics'];
 
-  console.log('right before start polling');
-
   (function initCarousel() {
-    console.log('right before start polling 2');
-
     setTimeout(function() {
       console.log('deps poll...');
       
@@ -116,6 +109,21 @@ console.log('scripts js file was loaded and executed');
         var widgetTitleEl = Utils.getById('widget-title');
         widgetTitleEl.innerHTML = config.title_text;
         Utils.addClass(widgetTitleEl, 'ready');
+
+        var analytics = new Analytics();
+        var analyticsConfig = {
+          domain: location.hostname || '',
+          logUrl: apiBaseUrl + '/__tvpa.gif',
+          li: config.loginId
+        };
+
+        if (config.firstPartyCookies && config.cookieDomain)
+            analyticsConfig.firstPartyCookieDomain = config.cookieDomain;
+        
+        analytics.initConfig(analyticsConfig);
+        analytics.track('ci', {
+          li: config.loginId
+        });
         
         initVideos();
 

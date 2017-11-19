@@ -61,7 +61,7 @@
     function onClick(e){
       Utils.stopEvent(e);
 
-      var target = Utils.getRealTargetByClass(e.target, 'tvp-carousel-item');
+      var target = Utils.getRealTargetByClass(e.target, 'carousel-item');
       var clickedId = target.getAttribute('data-id');
 
       if(clickedId){
@@ -170,11 +170,20 @@
       Utils.stopEvent(e);
 
       var target = Utils.getRealTargetByClass(e.target, 'product');
-      var targetId = target.getAttribute('data-id');
 
-      if(target && targetId){
-        renderFeaturedProduct(productsCarousel.getItemById(targetId));
+      if(target){
+        var targetId = target.getAttribute('data-id');
+
+        if(target && targetId){
+          renderFeaturedProduct(productsCarousel.getItemById(targetId));
+        }
+      }else{
+        if(config.debug){
+          console.log('click target is bad:', e.target);
+        }
       }
+
+      
     }
 
     if(isMobile){
@@ -207,7 +216,7 @@
         endpoint: productsEndpoint,
         itemsTarget: '.slick-carousel',
         itemsPerPage: 4,
-        pageWrapStart: '<div class="tvp-carousel-item" >',
+        pageWrapStart: '<div class="carousel-item" >',
         pageWrapEnd: '</div>',
         templates: {
           list: templates.products.list,
@@ -238,6 +247,7 @@
   function initPlayer(){
     var playerConfig = Utils.copy(config);
     
+    //the player can take care of the ci
     playerConfig.ciTrack = true;
     playerConfig.data = config.channel.videos;
     playerConfig.onPlayerChange = !!playerConfig.onPlayerChange;

@@ -11,7 +11,7 @@
     this.eventPrefix = config.events.prefix;
     this.templates = this.options.templates;
     this.loading = false;
-    this.itemClass = '.tvp-carousel-item';
+    this.itemClass = '.carousel-item';
     this.full = this.options.full || false;
     this.dots = Utils.isUndefined(this.options.dots) ? false : this.options.dots;
     this.appendDots = Utils.isUndefined(this.options.appendDots) ? false : this.options.appendDots;
@@ -19,6 +19,8 @@
     this.limitDots = Utils.isUndefined(this.options.limitDots) ? false : this.options.limitDots;
     this.loadMore = Utils.isUndefined(this.options.loadMore) ? true : this.options.loadMore;
     this.dotsPosition = Utils.isUndefined(this.options.dotsPosition) ? 'bottom' : this.options.dotsPosition;
+    this.arrowsXOffset;
+    this.arrowsYOffset;
     this.el = document.getElementById(sel);
   };
 
@@ -30,7 +32,7 @@
       infinite: options.infinite || false,
       arrows: true
     };
-1
+
     if(!!options.responsive && options.responsive.length){
       slickConfig.responsive = options.responsive;
     }
@@ -95,19 +97,24 @@
     if(Utils.isUndefined(alignArrowsX)){
       var firstItem = this.el.querySelector(this.itemClass);
       
-      if(firstItem){
-        
-        //WTF? video class here?
-        var firstItemEl = firstItem.querySelector('.video');
-        
-        if(firstItemEl){
-          xOffset = Utils.getStyle(firstItemEl,'padding-left');
-        }
+      if(firstItem && !Utils.isUndefined(firstItem.firstChild)){
+        xOffset = Utils.getStyle(firstItem.firstChild,'padding-left');
       }
     }
 
+    console.log(this.arrowsXOffset, xOffset)
+
+    this.arrowsXOffset = xOffset;
+
+    // if(this.arrowsXOffset == xOffset)
+    //   return;
+
+    // this.arrowsXOffset = xOffset;
+
     if(Utils.isUndefined(xOffset))
       return;
+
+    console.log('Rectifing....')
 
     //implement on arrows
     var arrowPrev = this.el.querySelector('.slick-prev');
@@ -217,8 +224,9 @@
       Utils.addClass(this.el, 'dots-centered');
     }
 
-    if(this.options.dotsClass){
-      Utils.addClass(this.el.querySelector('.slick-dots'), this.options.dotsClass);
+    var slickDotsEl = this.el.querySelector('.slick-dots');
+    if(this.options.dotsClass && slickDotsEl){
+      Utils.addClass(slickDotsEl, this.options.dotsClass);
     }
 
     var arrowEls = this.el.querySelectorAll('.slick-arrow');
