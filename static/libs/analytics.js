@@ -1,14 +1,19 @@
 (function(){
-  var isUndefined = function(o){
+  function isUndefined(o){
     return 'undefined' === typeof o;
-  };
+  }
   
   function Analytics(){
     this.config = null;
   }
+
+  Analytics.prototype.getGlobal = function(){
+    return window._tvpa || [];
+  };
   
   Analytics.prototype.getConfigBase = function(options){
     var opts = options || {};
+
     return {
       logUrl: opts.logUrl || '',
       li: opts.loginId || '',
@@ -17,21 +22,17 @@
   };
   
   Analytics.prototype.initConfig = function(options){
-    var _tvpa = window._tvpa || [];
-  
     this.config = this.getConfigBase(options);
 
     if (options && options.firstPartyCookies && options.cookieDomain)
       this.config.firstPartyCookieDomain = options.cookieDomain;
 
-    _tvpa.push(['config', this.config]);
+    this.getGlobal().push(['config', this.config]);
   };
   
   Analytics.prototype.track = function(e, data){
-    var _tvpa = window._tvpa || [];
-
-    if(!isUndefined(e) && !isUndefined(data)){
-      _tvpa.push(['track', e, data]);
+    if('undefined' !== typeof e && 'undefined' !== typeof data){
+      this.getGlobal().push(['track', e, data]);
     }
   };
   
