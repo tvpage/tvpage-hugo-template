@@ -17,7 +17,7 @@
   };
   
   Analytics.prototype.initConfig = function(options){
-    var _tvpa = isUndefined(window._tvpa) ? [] : _tvpa;
+    var _tvpa = window._tvpa || [];
   
     this.config = this.getConfigBase(options);
 
@@ -28,7 +28,7 @@
   };
   
   Analytics.prototype.track = function(e, data){
-    var _tvpa = isUndefined(window._tvpa) ? [] : _tvpa;
+    var _tvpa = window._tvpa || [];
 
     if(!isUndefined(e) && !isUndefined(data)){
       _tvpa.push(['track', e, data]);
