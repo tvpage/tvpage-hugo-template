@@ -9,6 +9,13 @@ exports.tvpGUITest = function (options) {
       orientation =  (options !== undefined && options.orientation ? options.orientation : 'PORTRAIT'),
       modalOverlay = options.modalOverlay,
       modalCloseId = options.modalCloseId,
+      modalTitle = options.modalTitle,
+      modalCloseButton = options.modalCloseButton,
+      modalIframeHolder = options.modalIframeHolder,
+      widgetNavHolder = options.widgetNavHolder,
+      widgetNavPrev = options.widgetNavPrev,
+      widgetNavNext = options.widgetNavNext,
+      widgetPlayerButton = options.widgetPlayerButton,
       DATA = (options !== undefined && options.DATA !== undefined ? options.DATA : {}),
       selectorType = (options !== undefined && options.selectorType !== undefined ? options.selectorType : "css selector"),
       debug = false;
@@ -56,13 +63,13 @@ exports.tvpGUITest = function (options) {
             this.resizeWindow(DATA.BROWSEWIDTH, DATA.BROWSERHEIGHT);
           }
 
-          if (orientation !== undefined) {
+          if (isMobile === true && orientation !== undefined) {
             this.setOrientation(orientation);
           }
         })
         .pause(2*SECOND);
           
-      client.waitForElementVisible(id + " iframe[gesture=media]", 10000);
+      client.waitForElementVisible(id + " iframe[gesture=media]", DATA.SLA);
 
       parent = target;
 
@@ -72,14 +79,11 @@ exports.tvpGUITest = function (options) {
       return client;
     },
     widgetTitle: function (iframeId, target, expected) {
-      client.element(selectorType, function (result) {
-          msg = "Start Widget Title Testing";
-          log();
-        })
+      client.element(selectorType)
         .waitForElementVisible(iframeId, DATA.SLA)
-        .waitForElementVisible(iframeId + " > " + target, DATA.SLA);
+        .waitForElementVisible(iframeId + " " + target, DATA.SLA);
 
-      this.text(iframeId + " > " + target, expected);
+      this.text(iframeId + " " + target, expected);
     },
     widgetNav: function (iframeId, count, skip) {
       if(skip){
@@ -88,15 +92,15 @@ exports.tvpGUITest = function (options) {
       var index = 1;
 
       client.element(selectorType)
-        .waitForElementVisible(iframeId + " > div.tvp-carousel-content.slick-initialized.slick-slider", DATA.SLA);
+        .waitForElementVisible(iframeId + " " + widgetNavHolder, DATA.SLA);
 
       client.element(selectorType)
-        .waitForElementVisible(iframeId + " > div.tvp-carousel-arrow.prev.inactive", DATA.SLA)
-        .waitForElementVisible(iframeId + " > div.tvp-carousel-arrow.next", DATA.SLA);
+        .waitForElementVisible(iframeId + " " + widgetNavPrev, DATA.SLA)
+        .waitForElementVisible(iframeId + " " + widgetNavNext, DATA.SLA);
 
       for (i=0;i < count;i++) {
         client.element(selectorType)
-        .click(iframeId + " > div.tvp-carousel-arrow.next")
+        .click(iframeId +  " " + widgetNavNext)
         .pause(SECOND);
 
         index++;
@@ -105,7 +109,7 @@ exports.tvpGUITest = function (options) {
 
       for (i=0;i < count;i++) {
         client.element(selectorType)
-        .click(iframeId + " > div.tvp-carousel-arrow.prev")
+        .click(iframeId + " " + widgetNavPrev)
         .pause(SECOND);
 
         client.expect.element("div[data-slick-index='" + index-- + "']").to.have.attribute('aria-hidden').which.equals('false');
@@ -135,8 +139,8 @@ exports.tvpGUITest = function (options) {
     },
     modalLoad: function (target, x, y) {
       client
-        .waitForElementPresent(target + " > div.tvp-video", DATA.SLA)
-        .click(target + " > div.tvp-video");
+        .waitForElementPresent(target + " " + widgetPlayerButton, DATA.SLA)
+        .click(target + " " + widgetPlayerButton);
 
       client.frameParent();
     },
@@ -146,12 +150,12 @@ exports.tvpGUITest = function (options) {
 
       client
         .waitForElementVisible(modalId, DATA.SLA)
-        .waitForElementVisible(modalId + ' h4#tvp-modal-title-carousel-1', DATA.SLA)
-        .waitForElementVisible(modalId + ' div#tvp-modal-close-carousel-1', DATA.SLA)
+        .waitForElementVisible(modalId + ' h4#' + modalTitle, DATA.SLA)
+        .waitForElementVisible(modalId + ' div#' + modalCloseButton, DATA.SLA)
         .pause(SECOND),
 
-      client.expect.element(modalId + ' h4#tvp-modal-title-carousel-1').text.to.equal(DATA.FIRST_VIDEO_TITLE),
-      client.expect.element(modalId + ' div#tvp-modal-close-carousel-1').to.be.present;
+      client.expect.element(modalId + ' h4#' + modalTitle).text.to.equal(DATA.FIRST_VIDEO_TITLE),
+      client.expect.element(modalId + ' div#' + modalCloseButton).to.be.present;
 
       if (isMobile === false) {
         client.waitForElementVisible(modalId + ' div.tvp-products-headline', 10000),
@@ -238,7 +242,7 @@ exports.tvpGUITest = function (options) {
             this.closeWindow();
 
             this.switchWindow(result.value[0]);
-            this.waitForElementVisible("div#tvp-modal-iframe-holder-carousel-1", DATA.SLA);
+            this.waitForElementVisible("div#" + modalIframeHolder, DATA.SLA);
             this.waitForElementVisible("iframe.tvp-iframe-modal[gesture='media']", DATA.SLA);
             this.frame(targetIframeId);
           })

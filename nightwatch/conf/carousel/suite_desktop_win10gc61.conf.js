@@ -14,7 +14,7 @@ var nightwatch_config = {
         'browserstack.user': process.env.BROWSERSTACK_USERNAME || 'pascualtorres1',
         'browserstack.key': process.env.BROWSERSTACK_ACCESS_KEY || '2ATTF6UbzybcwfcideHN',
         'browserstack.debug': true,
-        'browserstack.networkLogs': true,
+//        'browserstack.networkLogs': true,
         'os': 'Windows',
         'os_version': '10',
         'browser': 'Chrome',

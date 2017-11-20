@@ -1,15 +1,15 @@
-/*==============================================================================*/
+  /*==============================================================================*/
 /* Nightwatch Recorder generated Mon Oct 23 2017 18:49:04 GMT-0700 (PDT) */
 /*==============================================================================*/
 var DATA = {
-      URL: "https://www.goodlookingbean.com/test/carousel/",
+      URL: "https://widgets.goodlookingbean.com/test/carousel/",
       PRODUCT_URL: "http://www.ninjakitchen.com/products/0/all/67/ninja-coffee-bar-with-glass-carafe/",
       PRODUCT_SECURE_URL: "https://www.ninjakitchen.com/products/0/all/67/ninja-coffee-bar-with-glass-carafe/",
       PRODUCT_IMG: "http://www.ninjakitchen.com/include/images/products/hero-CF080.jpg",
       PRODUCT_HEADLINE: "Related Products",
       PRODUCT_TITLE_REGEX: /Ninja\ Coffee\ Bar®\ with\ Glass\ Carafe/i,
-      FIRST_VIDEO_TITLE: "Galette des Rois Recipe for De'Longhi MultiFry",
-      SLA: 20000,
+      FIRST_VIDEO_TITLE: "Galette des Rois Recipe for De'Long...",
+      SLA: 10000,
       BROWSERHEIGHT: 1080,
       BROWSEWIDTH: 1920
     };
@@ -17,30 +17,45 @@ var DATA = {
 var widget = require(__dirname + "/../../../../lib/tvpGUITest.js");
 
 module.exports = {
-  widgetHolder: "div#carousel-1-holder",
-  widgetIFrameHolder: "div#tvp-modal-iframe-holder-carousel-1",
-  widgetIframeId: 'div#carousel-1',
-  widgetTitleId: "div.tvp-carousel-title",
-  modalId: "div#tvp-modal-carousel-1",
-  modalCloseId: "div#tvp-modal-close-carousel-1",
-  modalOverlay: "div#tvp-modal-overlay-carousel-1",
+  widgetHolder: "div#carousel-2-holder",
+  widgetIFrameHolder: "div#tvp-modal-iframe-holder-carousel-2",
+  widgetIframeId: 'div#skeleton',
+  playerIframId: 'div#carousel-2',
+  widgetTitleId: "h3#widget-title",
+  widgetNavHolder: "div#videos div.slick-carousel.slick-initialized.slick-slider",
+  widgetNavPrev: "button.slick-prev ",
+  widgetNavNext: "button.slick-next",
+  widgetPlayerButton: "div.video-image-icon",
+  modalId: "div#tvp-modal-carousel-2",
+  modalCloseId: "div#tvp-modal-close-carousel-2",
+  modalOverlay: "div#tvp-modal-overlay-carousel-2",
   playerHolder: "div.tvp-player-holder",
   productHolder: "div.tvp-products-holder",
   firstVideoId: 'div[data-slick-index="0"]',
+  modalCloseButton: 'tvp-modal-close-carousel-2',
+  modalTitle: 'tvp-modal-title-carousel-2',
+  modalIframeHolder: 'tvp-modal-iframe-holder-carousel-2',
 
   'carousel-youtube-sanity': function (browser) {
     var carousel = widget.tvpGUITest({
           'modalOverlay': this.modalOverlay,
           'modalCloseId': this.modalCloseId,
+          'modalCloseButton': this.modalCloseButton,
+          'modalTitle': this.modalTitle,
+          'modalIframeHolder': this.modalIframeHolder,
+          'widgetNavHolder': this.widgetNavHolder,
+          'widgetNavPrev': this.widgetNavPrev,
+          'widgetNavNext': this.widgetNavNext,
+          'widgetPlayerButton': this.widgetPlayerButton,
           'DATA': DATA
         }),
         parent = this.widgetIframeId + " > " + this.productHolder;
-        client = carousel.init(browser, "Carousel Widget Normal", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.productHolder);
+        client = carousel.init(browser, "Carousel Widget Normal", "div#carousel-2-holder", 0, this.playerIframId + " > " + this.productHolder);
 
     carousel.widgetTitle(this.widgetIframeId, this.widgetTitleId, "Recommended Videos"),
-    carousel.widgetNav(this.widgetIframeId, 16),
+    carousel.widgetNav(this.widgetIframeId, 12),
     carousel.modalSanity(this.modalId, this.firstVideoId),
-    carousel.modalLoadPerformance(this.widgetIFrameHolder, this.firstVideoId, this.widgetIframeId + " > " + this.playerHolder, 2),
+    carousel.modalLoadPerformance(this.widgetIFrameHolder, this.firstVideoId, this.playerIframId + " > " + this.playerHolder, 1),
     carousel.productModal(),
     carousel.productModalLink(),
     carousel.end();
@@ -50,9 +65,16 @@ module.exports = {
     var carousel = widget.tvpGUITest({
           'modalOverlay': this.modalOverlay,
           'modalCloseId': this.modalCloseId,
+          'modalCloseButton': this.modalCloseButton,
+          'modalTitle': this.modalTitle,
+          'modalIframeHolder': this.modalIframeHolder,
+          'widgetNavHolder': this.widgetNavHolder,
+          'widgetNavPrev': this.widgetNavPrev,
+          'widgetNavNext': this.widgetNavNext,
+          'widgetPlayerButton': this.widgetPlayerButton,
           'DATA': DATA
         }),
-        client = carousel.init(browser, "Carousel Youtube Player Normal", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
+        client = carousel.init(browser, "Carousel Youtube Player Normal", "div#carousel-2-holder", 0, this.playerIframId + " > " + this.playerHolder);
 
     carousel.modalLoad(this.firstVideoId, 160, 100),
     carousel.playerLoadPerformance(2),
@@ -105,9 +127,16 @@ module.exports = {
     var carousel = widget.tvpGUITest({
           'modalOverlay': this.modalOverlay,
           'modalCloseId': this.modalCloseId,
+          'modalCloseButton': this.modalCloseButton,
+          'modalTitle': this.modalTitle,
+          'modalIframeHolder': this.modalIframeHolder,
+          'widgetNavHolder': this.widgetNavHolder,
+          'widgetNavPrev': this.widgetNavPrev,
+          'widgetNavNext': this.widgetNavNext,
+          'widgetPlayerButton': this.widgetPlayerButton,
           'DATA': DATA
         }),
-        client = carousel.init(browser, "Carousel Youtube Player Normal", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
+        client = carousel.init(browser, "Carousel Youtube Player Normal", "div#carousel-2-holder", 0, this.playerIframId + " > " + this.playerHolder);
 
     carousel.modalLoad(this.firstVideoId, 160, 100),
     client.resizeWindow(1440/2, 1200),
