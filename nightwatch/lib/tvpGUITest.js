@@ -575,8 +575,19 @@ exports.tvpGUITest = function (options) {
           this.assert.ok(vvs);
           DATA.vvs = vvs;
         },
-        'pi': function() {
-          
+        'pi': function(client, src) {
+          var url = getParameterByName('url', src);
+          this.assert.equal(url, DATA.URL);
+          var li = getParameterByName('li', src);
+          this.assert.equal(li, DATA.LOGIN_ID);
+          var pg = getParameterByName('pg', src);
+          this.assert.equal(pg, DATA.CHANNEL_ID);
+          var vd = getParameterByName('vd', src);
+          this.assert.equal(vd, DATA.VIDEO_ID);
+          var vd = getParameterByName('vd', src);
+          this.assert.equal(vd, DATA.VIDEO_ID);
+          var cid = getParameterByName('cid', src);
+          this.assert.ok(cid);
         },
         'pk': function(client, src) {
           client.waitForElementVisible('p.analtyticsTestPK', 6000);
@@ -597,7 +608,7 @@ exports.tvpGUITest = function (options) {
             this.assert.ok(analyticsCount['pk'] <= result.value.length);
           });
         },
-        'vt': function() {
+        'vt': function(client, src) {
           
         }
       };

@@ -76,6 +76,7 @@ module.exports = {
     // carousel.modalLoad(this.firstVideoId, 160, 100),
     // carousel.playerLoadPerformance(2),
     // carousel.playerSanity(),
+    carousel.analytics(2);
     carousel.end();
   },
 
