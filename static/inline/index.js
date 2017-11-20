@@ -23,18 +23,23 @@ var iframeHtmlStart = '<head><base target="_blank"/></head><body class="{classNa
 function isObject(o) {
   return "object" === typeof o;
 }
+
 function isFunction(o) {
   return "function" === typeof o;
 }
+
 function hasKey(o, key) {
   return o.hasOwnProperty(key);
 }
+
 function getById(id){
   return document.getElementById(id);
 }
+
 function createEl(t){
   return document.createElement(t);
 }
+
 function tmpl(t,d){
   return t.replace(/\{([\w\.]*)\}/g, function(str, key) {
     var keys = key.split("."),
@@ -43,9 +48,11 @@ function tmpl(t,d){
     return (typeof v !== "undefined" && v !== null) ? v : "";
   });
 }
+
 function isUndefined(o){
   return 'undefined' === typeof o;
 }
+
 function addClass(obj, c) {
   if (!obj || !c) return;
   if ('string' === typeof obj) {
@@ -54,6 +61,7 @@ function addClass(obj, c) {
     obj.classList.add(c);
   }
 }
+
 function removeClass(obj, c) {
   if (!obj || !c) return;
   if ('string' === typeof obj) {
@@ -62,12 +70,15 @@ function removeClass(obj, c) {
     obj.classList.remove(c);
   }
 }
+
 function remove(el){
   el.parentNode.removeChild(el);
 }
+
 function cleanArray(a){
   return a.filter(Boolean);
 }
+
 function loadScript(options, cback){
   var opts = options || {};
   var script = createEl('script');
@@ -91,32 +102,15 @@ function loadScript(options, cback){
 
   body.appendChild(script);
 }
+
 function isEvent(e){
   return e && e.data && e.data.event;
 }
+
 function getEventType(e){
   var eArr = e.data.event.split(':');
   return eArr[0] === eventPrefix ? eArr[1] : '';
 }
-
-//We merge the defaults, the .md file's params and the runtime input into one config object.
-if (!isObject(config) || !hasKey(config, "name") || config.name.length <= 0)
-  throw new Error('Widget must have a config and name (id)');
-
-var tvpage = window.__TVPage__ = window.__TVPage__ || {};
-var id = config.name;
-
-if(hasKey(tvpage.config, id) && isObject(tvpage.config[id])){
-  var runTime = tvpage.config[id];
-  for (var key in runTime)
-    config[key] = runTime[key];
-}
-
-if (!hasKey(config,"targetEl") || !getById(config.targetEl))
-  throw new Error("Must provide a targetEl");
-
-if(!hasKey(config,'channel') && !hasKey(config,'channelId') && !hasKey(config,'channelid'))
-  throw new Error('Widget config missing channel obj');
 
 var __windowCallbackFunc__ = null,
     onChange = config.onChange;
@@ -203,16 +197,19 @@ function getIframeHtml(o){
 
 //we have a generic host css per widget type that we only include once.
 function getInitialHtml(){
-  var html = "";
-  var styleId = 'tvp-' + type + '-host';
-  
-  var hostStyles = isMobile ? css.mobile.host : css.host;
+  var hostStylesId = 'tvp-' + type + '-host';
 
-  if (!getById(styleId))
-    html += '<style id="' + styleId + '">' + hostStyles + '</style>';
+  if(!getById(hostStylesId)){
+    var hostStylesEl = createEl('style');
+    hostStylesEl.id = hostStylesId;
+    hostStylesEl.innerHTML = isMobile ? css.mobile.host : css.host;
+    document.head.appendChild(hostStylesEl);
+  }
   
-  var hostCustomStyles = isMobile ? css.mobile['host-custom'] : css['host-custom'];
-  
+  var hostCustom = 'host-custom';
+  var hostCustomStyles = isMobile ? css.mobile[hostCustom] : css[hostCustom];
+  var html = '';
+
   if(!isUndefined(hostCustomStyles))
     html += '<style>' + hostCustomStyles + '</style>';
 
@@ -243,6 +240,7 @@ function widgetRender(){
   
   var iframe = holder.querySelector("iframe");
   var iframeDocument = iframe.contentWindow.document;
+  var libsPath = baseUrl + '/libs';
 
   iframeDocument.open().write(getIframeHtml({
     id: id,
@@ -255,17 +253,17 @@ function widgetRender(){
       '//a.tvpage.com/tvpa.min.js',
       '//imasdk.googleapis.com/js/sdkloader/ima3.js',
       getPlayerUrl(),
-      debug ? javascriptPath + "/vendor/jquery.js" : "",
-      debug ? baseUrl + "/libs/utils.js" : "",
-      debug ? baseUrl + "/libs/carousel.js" : "",
-      debug ? baseUrl + "/libs/player.js" : "",
-      debug ? javascriptPath + "/index.js" : "",
+      debug ? javascriptPath + '/vendor/jquery.js' : '',
+      debug ? libsPath + '/utils.js' : '',
+      debug ? libsPath + '/carousel.js' : '',
+      debug ? libsPath + '/player.js' : '',
+      debug ? javascriptPath + '/index.js' : '',
 
       debug ? "" : javascriptPath + "/scripts.min.js"
     ],
     css: [
-      debug ? baseUrl + "/bootstrap/dist/css/bootstrap.css" : "",
-      debug ? cssPath + "/vendor/slick.css" : "",
+      debug ? baseUrl + '/bootstrap/dist/css/bootstrap.css' : '',
+      debug ? baseUrl + '/slick/slick.css' : '',
       debug ? cssPath + '/styles.css' : '',
       debug ? '' : cssPath + '/styles.min.css'
     ]
@@ -326,14 +324,14 @@ window.addEventListener("message", function(e){
     return;
   }
 
-  var type = getEventType(e);
+  var eventType = getEventType(e);
   
-  if('widget_ready' === type){
-    handleReady(e)
+  if('widget_ready' === eventType){
+    onWidgetReady(e);
   }
 
-  if('widget_resize' === type){
-    handleResize(e)
+  if('widget_resize' === eventType){
+    onWidgetResize(e);
   }
 
   if (__windowCallbackFunc__)
@@ -341,10 +339,10 @@ window.addEventListener("message", function(e){
 });
 
 //event handlers
-function handleReady(e) {
+function onWidgetReady(e) {
   holder.style.height = e.data.height + 'px';
 }
 
-function handleResize(e) {
+function onWidgetResize(e) {
   holder.style.height = e.data.height + 'px';
 }

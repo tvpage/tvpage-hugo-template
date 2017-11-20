@@ -102,8 +102,6 @@
       }
     }
 
-    console.log(this.arrowsXOffset, xOffset)
-
     this.arrowsXOffset = xOffset;
 
     // if(this.arrowsXOffset == xOffset)
@@ -113,8 +111,6 @@
 
     if(Utils.isUndefined(xOffset))
       return;
-
-    console.log('Rectifing....')
 
     //implement on arrows
     var arrowPrev = this.el.querySelector('.slick-prev');

@@ -24,47 +24,20 @@
 (function(){
 
 	var config = {{ $.Scratch.Get "settings" | jsonify }};
-	
+
+	//we removed the forward slash that hugo adds on local development
+	var baseUrl;
 	{{- if (getenv "HUGO_DEBUG") -}}
-		config.baseUrl = "{{ trim $.Site.BaseURL "/" }}";
+		baseUrl = "{{ trim $.Site.BaseURL "/" }}";
 	{{- else -}}
-		config.baseUrl = "{{ $.Site.BaseURL }}";
+		baseUrl = "{{ $.Site.BaseURL }}";
 	{{- end -}}
+	config.baseUrl = baseUrl;
 
-	config.templates = {
-		base: {{- (partial (printf "%s/templates/base.html" .Type) .) -}},
-		products: {
-			featured: {{- (partial (printf "%s/templates/products/featured.html" .Type) .) -}},
-			list: {{- (partial (printf "%s/templates/products/list.html" .Type) .) -}},
-			item: {{- (partial (printf "%s/templates/products/item.html" .Type) .) -}}
-		},
-		videos: {
-			list: {{- (partial (printf "%s/templates/videos/list.html" .Type) .) -}},
-			item: {{- (partial (printf "%s/templates/videos/item.html" .Type) .) -}}
-		},
-		mobile: {
-			base: {{- (partial (printf "%s/mobile/templates/base.html" .Type) .) -}},
-			products: {
-				list: {{- (partial (printf "%s/mobile/templates/products/list.html" .Type) .) -}},
-				item: {{- (partial (printf "%s/mobile/templates/products/item.html" .Type) .) -}}
-			},
-			videos: {
-				list: {{- (partial (printf "%s/mobile/templates/videos/list.html" .Type) .) -}},
-				item: {{- (partial (printf "%s/mobile/templates/videos/item.html" .Type) .) -}}
-			}
-		}
-	};
+	{{- (readFile "/themes/tvpage/static/inline/config.js") | htmlUnescape | safeHTML -}}
 
-	config.css = {
-		base: {{- (partial (printf "%s/css/base.css" .Type) .) | htmlUnescape | safeHTML -}},
-		host: {{- (partial (printf "%s/css/host.css" .Type) .) | htmlUnescape | safeHTML -}},
-		'host-custom': {{- (partial (printf "%s/css/host-custom.css" .Type) .) | htmlUnescape | safeHTML -}},
+	config.templates = {{- (partial (printf "%s/templates/index.html" $type) .) -}};
+	config.css = {{- (partial (printf "%s/css/index.html" $type) .) -}};
 
-		mobile: {
-			host: {{- (partial (printf "%s/mobile/css/host.css" .Type) .) | htmlUnescape | safeHTML -}}
-		}
-	};
-
-	{{- (readFile "/themes/tvpage/static/inline/index.js") | htmlUnescape | safeHTML -}}
-
+	{{- (readFile (printf "/themes/tvpage/static/%s/index.js" $type) ) | htmlUnescape | safeHTML -}}
 }());
