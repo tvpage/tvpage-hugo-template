@@ -3,15 +3,12 @@
 /*==============================================================================*/
 var DATA = {
       URL: "https://widgets.goodlookingbean.com/test/carousel/",
-      PRODUCT_URL: "http://www.ninjakitchen.com/products/0/all/67/ninja-coffee-bar-with-glass-carafe/",
-      PRODUCT_SECURE_URL: "https://www.ninjakitchen.com/products/0/all/67/ninja-coffee-bar-with-glass-carafe/",
-      PRODUCT_IMG: "http://www.ninjakitchen.com/include/images/products/hero-CF080.jpg",
       PRODUCT_HEADLINE: "Related Products",
-      PRODUCT_TITLE_REGEX: /Ninja\ Coffee\ Bar®\ with\ Glass\ Carafe/i,
       FIRST_VIDEO_TITLE: "Galette des Rois Recipe for De'Long...",
       SLA: 10000,
       BROWSERHEIGHT: 1080,
-      BROWSEWIDTH: 1920
+      BROWSEWIDTH: 1920,
+      LOGIN_ID: 1758799
     };
 
 var widget = require(__dirname + "/../../../../lib/tvpGUITest.js");
@@ -36,6 +33,123 @@ module.exports = {
   modalTitle: 'tvp-modal-title-carousel-2',
   modalIframeHolder: 'tvp-modal-iframe-holder-carousel-2',
 
+  // 'carousel-youtube-sanity': function (browser) {
+  //   var carousel = widget.tvpGUITest({
+  //         'modalOverlay': this.modalOverlay,
+  //         'modalCloseId': this.modalCloseId,
+  //         'modalCloseButton': this.modalCloseButton,
+  //         'modalTitle': this.modalTitle,
+  //         'modalIframeHolder': this.modalIframeHolder,
+  //         'widgetNavHolder': this.widgetNavHolder,
+  //         'widgetNavPrev': this.widgetNavPrev,
+  //         'widgetNavNext': this.widgetNavNext,
+  //         'widgetPlayerButton': this.widgetPlayerButton,
+  //         'DATA': DATA
+  //       }),
+  //       parent = this.widgetIframeId + " > " + this.productHolder;
+  //       client = carousel.init(browser, "Carousel Widget Normal", "div#carousel-2-holder", 0, this.playerIframId + " > " + this.productHolder);
+
+  //   carousel.widgetTitle(this.widgetIframeId, this.widgetTitleId, "Recommended Videos"),
+  //   carousel.widgetNav(this.widgetIframeId, 12),
+  //   carousel.modalSanity(this.modalId, this.firstVideoId),
+  //   carousel.modalLoadPerformance(this.widgetIFrameHolder, this.firstVideoId, this.playerIframId + " > " + this.playerHolder, 1),
+  //   carousel.productModal(),
+  //   carousel.productModalLink(),
+  //   carousel.end();
+  // },
+
+  // 'carousel-youtube-player': function (browser) {
+  //   var carousel = widget.tvpGUITest({
+  //         'modalOverlay': this.modalOverlay,
+  //         'modalCloseId': this.modalCloseId,
+  //         'modalCloseButton': this.modalCloseButton,
+  //         'modalTitle': this.modalTitle,
+  //         'modalIframeHolder': this.modalIframeHolder,
+  //         'widgetNavHolder': this.widgetNavHolder,
+  //         'widgetNavPrev': this.widgetNavPrev,
+  //         'widgetNavNext': this.widgetNavNext,
+  //         'widgetPlayerButton': this.widgetPlayerButton,
+  //         'DATA': DATA
+  //       }),
+  //       client = carousel.init(browser, "Carousel Youtube Player Normal", "div#carousel-2-holder", 0, this.playerIframId + " > " + this.playerHolder);
+
+  //   carousel.modalLoad(this.firstVideoId, 160, 100),
+  //   carousel.playerLoadPerformance(2),
+  //   carousel.playerSanity(),
+  //   // carousel.playerSkip(50),
+  //   // carousel.playerSkip(150),
+  //   // carousel.playerSkip(260),
+  //   carousel.pause(10),
+
+  //   // check for video finish playing and check for new video is playing
+  //   // carousel.playerCheckPlaying(true),
+  //   carousel.modalClose(this.modalId), // testing close modal
+
+  //   // // Move to carousel iframe
+  //   // carousel.iframe(0),
+
+  //   // carousel.modalLoad(this.firstVideoId, 160, 100),
+  //   // carousel.playerLoadPerformance(2),
+  //   // carousel.playerSanity(),
+  //   carousel.end();
+  // },
+
+  // // 'caousel-youtube-player-fullscreen': function (browser) {
+  // //   var carousel = widget.tvpGUITest({
+  // //         'modalOverlay': this.modalOverlay,
+  // //         'modalCloseId': this.modalCloseId,
+  // //         'DATA': DATA
+  // //       }),
+  // //       client = carousel.init(browser, "Carousel Youtube Player Fullscreen", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
+
+  // //   carousel.modalLoad('div[data-slick-index="2"]', 160, 100),
+  // //   carousel.playerLoadPerformance(2),
+  // //   carousel.playerStart(),
+  // //   carousel.playerCheckFullScreen(),
+  // //   carousel.playerSkip(250),
+  // //   carousel.playerSkip(750),
+  // //   carousel.playerSkip(1030),
+  // //   carousel.pause(10),
+
+  // //   // checking for next loaded video sanity
+  // //   carousel.playerCheckPlaying(true),
+  // //   carousel.pause(2),
+
+  // //   // Starting secound video
+  // //   carousel.playerStart();
+  // //   carousel.end();
+  // // },
+
+  // 'carousel-youtube-resize': function (browser) {
+  //   var carousel = widget.tvpGUITest({
+  //         'modalOverlay': this.modalOverlay,
+  //         'modalCloseId': this.modalCloseId,
+  //         'modalCloseButton': this.modalCloseButton,
+  //         'modalTitle': this.modalTitle,
+  //         'modalIframeHolder': this.modalIframeHolder,
+  //         'widgetNavHolder': this.widgetNavHolder,
+  //         'widgetNavPrev': this.widgetNavPrev,
+  //         'widgetNavNext': this.widgetNavNext,
+  //         'widgetPlayerButton': this.widgetPlayerButton,
+  //         'DATA': DATA
+  //       }),
+  //       client = carousel.init(browser, "Carousel Youtube Player Normal", "div#carousel-2-holder", 0, this.playerIframId + " > " + this.playerHolder);
+
+  //   carousel.modalLoad(this.firstVideoId, 160, 100),
+  //   client.resizeWindow(1440/2, 1200),
+  //   client.frameParent(),
+  //   client
+  //     .waitForElementVisible(this.modalId, 5000),
+  //   client.expect.element(this.modalId).to.have.css('width', 700),
+  //   client.frame(2)
+  //   client.resizeWindow(1440/3, 1200),
+  //   client.frameParent(),
+  //   client
+  //     .waitForElementVisible(this.modalId, 5000),
+  //   client.expect.element(this.modalId).to.have.css('width', 480);
+  //   carousel.end();
+  // },
+
   'carousel-youtube-sanity': function (browser) {
     var carousel = widget.tvpGUITest({
           'modalOverlay': this.modalOverlay,
@@ -53,103 +167,12 @@ module.exports = {
         client = carousel.init(browser, "Carousel Widget Normal", "div#carousel-2-holder", 0, this.playerIframId + " > " + this.productHolder);
 
     carousel.widgetTitle(this.widgetIframeId, this.widgetTitleId, "Recommended Videos"),
-    carousel.widgetNav(this.widgetIframeId, 12),
+    //carousel.widgetNav(this.widgetIframeId, 12),
     carousel.modalSanity(this.modalId, this.firstVideoId),
     carousel.modalLoadPerformance(this.widgetIFrameHolder, this.firstVideoId, this.playerIframId + " > " + this.playerHolder, 1),
     carousel.productModal(),
-    carousel.productModalLink(),
-    carousel.end();
-  },
-
-  'carousel-youtube-player': function (browser) {
-    var carousel = widget.tvpGUITest({
-          'modalOverlay': this.modalOverlay,
-          'modalCloseId': this.modalCloseId,
-          'modalCloseButton': this.modalCloseButton,
-          'modalTitle': this.modalTitle,
-          'modalIframeHolder': this.modalIframeHolder,
-          'widgetNavHolder': this.widgetNavHolder,
-          'widgetNavPrev': this.widgetNavPrev,
-          'widgetNavNext': this.widgetNavNext,
-          'widgetPlayerButton': this.widgetPlayerButton,
-          'DATA': DATA
-        }),
-        client = carousel.init(browser, "Carousel Youtube Player Normal", "div#carousel-2-holder", 0, this.playerIframId + " > " + this.playerHolder);
-
-    carousel.modalLoad(this.firstVideoId, 160, 100),
-    carousel.playerLoadPerformance(2),
-    carousel.playerSanity(),
-    // carousel.playerSkip(50),
-    // carousel.playerSkip(150),
-    // carousel.playerSkip(260),
-    carousel.pause(10),
-
-    // check for video finish playing and check for new video is playing
-    // carousel.playerCheckPlaying(true),
-    carousel.modalClose(this.modalId), // testing close modal
-
-    // // Move to carousel iframe
-    // carousel.iframe(0),
-
-    // carousel.modalLoad(this.firstVideoId, 160, 100),
-    // carousel.playerLoadPerformance(2),
-    // carousel.playerSanity(),
-    carousel.end();
-  },
-
-  // 'caousel-youtube-player-fullscreen': function (browser) {
-  //   var carousel = widget.tvpGUITest({
-  //         'modalOverlay': this.modalOverlay,
-  //         'modalCloseId': this.modalCloseId,
-  //         'DATA': DATA
-  //       }),
-  //       client = carousel.init(browser, "Carousel Youtube Player Fullscreen", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
-
-  //   carousel.modalLoad('div[data-slick-index="2"]', 160, 100),
-  //   carousel.playerLoadPerformance(2),
-  //   carousel.playerStart(),
-  //   carousel.playerCheckFullScreen(),
-  //   carousel.playerSkip(250),
-  //   carousel.playerSkip(750),
-  //   carousel.playerSkip(1030),
-  //   carousel.pause(10),
-
-  //   // checking for next loaded video sanity
-  //   carousel.playerCheckPlaying(true),
-  //   carousel.pause(2),
-
-  //   // Starting secound video
-  //   carousel.playerStart();
-  //   carousel.end();
-  // },
-
-  'carousel-youtube-resize': function (browser) {
-    var carousel = widget.tvpGUITest({
-          'modalOverlay': this.modalOverlay,
-          'modalCloseId': this.modalCloseId,
-          'modalCloseButton': this.modalCloseButton,
-          'modalTitle': this.modalTitle,
-          'modalIframeHolder': this.modalIframeHolder,
-          'widgetNavHolder': this.widgetNavHolder,
-          'widgetNavPrev': this.widgetNavPrev,
-          'widgetNavNext': this.widgetNavNext,
-          'widgetPlayerButton': this.widgetPlayerButton,
-          'DATA': DATA
-        }),
-        client = carousel.init(browser, "Carousel Youtube Player Normal", "div#carousel-2-holder", 0, this.playerIframId + " > " + this.playerHolder);
-
-    carousel.modalLoad(this.firstVideoId, 160, 100),
-    client.resizeWindow(1440/2, 1200),
-    client.frameParent(),
-    client
-      .waitForElementVisible(this.modalId, 5000),
-    client.expect.element(this.modalId).to.have.css('width', 700),
-    client.frame(2)
-    client.resizeWindow(1440/3, 1200),
-    client.frameParent(),
-    client
-      .waitForElementVisible(this.modalId, 5000),
-    client.expect.element(this.modalId).to.have.css('width', 480);
+    //carousel.productModalLink(),
+    carousel.analytics(1, ['ci','vv','pi','pk']),
     carousel.end();
   }
 };

@@ -7,6 +7,7 @@ exports.tvpGUITest = function (options) {
       isFullScreen = false,
       isMobile = (options !== undefined && options.isMobile ? options.isMobile : false),
       orientation =  (options !== undefined && options.orientation ? options.orientation : 'PORTRAIT'),
+
       modalOverlay = options.modalOverlay,
       modalCloseId = options.modalCloseId,
       modalTitle = options.modalTitle,
@@ -16,6 +17,7 @@ exports.tvpGUITest = function (options) {
       widgetNavPrev = options.widgetNavPrev,
       widgetNavNext = options.widgetNavNext,
       widgetPlayerButton = options.widgetPlayerButton,
+
       DATA = (options !== undefined && options.DATA !== undefined ? options.DATA : {}),
       selectorType = (options !== undefined && options.selectorType !== undefined ? options.selectorType : "css selector"),
       debug = false;
@@ -28,9 +30,6 @@ exports.tvpGUITest = function (options) {
 
   if (DATA.BROWSEWIDTH === undefined)
     DATA.BROWSEWIDTH = 1440;
-
- if (DATA.PRODUCTID === undefined)
-    DATA.PRODUCTID = 83102610;
 
   if (DATA.isFF === undefined)
     DATA.isFF = false;
@@ -45,6 +44,17 @@ exports.tvpGUITest = function (options) {
       console.log(">> " + msg + " <<");
 
     msg = undefined;
+  };
+
+  var getParameterByName = function(name, url) {
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+
+    if (!results) return null;
+    if (!results[2]) return '';
+
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
   };
 
   return {
@@ -144,7 +154,12 @@ exports.tvpGUITest = function (options) {
 
       client.frameParent();
     },
-    modalSanity: function (modalId, videoId, skip) {
+    modalSanity: function (modalId, videoId, videoTitle, targetIframe, skip) {
+      if (targetIframe !== undefined) {
+        targetIframeId = targetIframe;
+        client.frame(targetIframeId);
+      }
+
       this.modalLoad(videoId, 160, 100),
       this.pause(),
 
@@ -154,7 +169,7 @@ exports.tvpGUITest = function (options) {
         .waitForElementVisible(modalId + ' div#' + modalCloseButton, DATA.SLA)
         .pause(SECOND),
 
-      client.expect.element(modalId + ' h4#' + modalTitle).text.to.equal(DATA.FIRST_VIDEO_TITLE),
+      client.expect.element(modalId + ' h4#' + modalTitle).text.to.equal(videoTitle),
       client.expect.element(modalId + ' div#' + modalCloseButton).to.be.present;
 
       if (isMobile === false) {
@@ -165,6 +180,7 @@ exports.tvpGUITest = function (options) {
         client.waitForElementVisible('p.tvp-products-text', DATA.SLA),
         client.expect.element('p.tvp-products-text').text.to.equal(DATA.PRODUCT_HEADLINE);
       }
+
       if(! skip){
         this.modalClose(modalId);        
       }
@@ -203,42 +219,67 @@ exports.tvpGUITest = function (options) {
 
       this.pause();
     },
-    productModal: function (skip) {
-      var regex = (DATA.PRODUCT_TITLE_REGEX !== undefined ? DATA.PRODUCT_TITLE_REGEX : /\ /i);
+    productModal: function (skip, product) {
+      if (product === undefined) {
+        product = {
+          "ID": 83102610,
+          "URL": "http://www.ninjakitchen.com/products/0/all/67/ninja-coffee-bar-with-glass-carafe/",
+          "SECURE_URL": "https://www.ninjakitchen.com/products/0/all/67/ninja-coffee-bar-with-glass-carafe/",
+          "TITLE_REGEX": /Ninja\ Coffee\ Bar®\ with\ Glass\ Carafe/i,
+          "IMG": "http://www.ninjakitchen.com/include/images/products/hero-CF080.jpg",
+          "PRICE": ""
+        }
+      }
+
+      var regex = (product.TITLE_REGEX !== undefined ? product.TITLE_REGEX : /\ /i);
+
+      if (product.ID === undefined)
 
       client.waitForElementVisible(parent, DATA.SLA);
 
-      client.expect.element(parent + " a#tvp-product-" + DATA.PRODUCTID).to.be.present;
-      client.expect.element(parent + " a#tvp-product-" + DATA.PRODUCTID).to.have.attribute('href', DATA.PRODUCT_URL);
+      client.click(parent + " a#tvp-product-" + product.ID);
+      //client.expect.element(parent + " a#tvp-product-" + product.ID).to.be.present;
+      //client.expect.element(parent + " a#tvp-product-" + product.ID).to.have.attribute('href', product.URL);
+
       if(skip){
         return;
       }
       // Product pop-up
       client
-        .moveToElement(parent + " a#tvp-product-" + DATA.PRODUCTID, 70, 70)
+        .moveToElement(parent + " a#tvp-product-" + product.ID, 70, 70)
         .pause(2*SECOND);
 
       if (isMobile === false) {
-        client.expect.element(parent + " a#tvp-product-" + DATA.PRODUCTID).to.have.attribute('class', 'tvp-product active');
-        client.expect.element(parent + " a#tvp-product-popup-" + DATA.PRODUCTID).to.be.present;
-        client.expect.element(parent + " a#tvp-product-popup-" + DATA.PRODUCTID).to.have.attribute('href', DATA.PRODUCT_URL);
-        client.expect.element(parent + " a#tvp-product-popup-" + DATA.PRODUCTID + " > div.tvp-product-popup-image").to.have.css("background-image", "url(" + DATA.PRODUCT_IMG + ");");
-        client.expect.element(parent + " a#tvp-product-popup-" + DATA.PRODUCTID + " > p.tvp-product-title").text.to.match(regex);
-        client.expect.element(parent + " a#tvp-product-popup-" + DATA.PRODUCTID + " > p.tvp-product-price").text.to.equal("");
-        client.expect.element(parent + " a#tvp-product-popup-" + DATA.PRODUCTID + " > button.tvp-product-cta").to.be.present;
+        client.expect.element(parent + " a#tvp-product-" + product.ID).to.have.attribute('class', 'tvp-product active');
+        client.expect.element(parent + " a#tvp-product-popup-" + product.ID).to.be.present;
+        client.expect.element(parent + " a#tvp-product-popup-" + product.ID).to.have.attribute('href', product.URL);
+        client.expect.element(parent + " a#tvp-product-popup-" + product.ID + " > div.tvp-product-popup-image").to.have.css("background-image", "url(" + product.IMG + ");");
+        client.expect.element(parent + " a#tvp-product-popup-" + product.ID + " > p.tvp-product-title").text.to.match(regex);
+        client.expect.element(parent + " a#tvp-product-popup-" + product.ID + " > p.tvp-product-price").text.to.equal(product.PRICE);
+        client.expect.element(parent + " a#tvp-product-popup-" + product.ID + " > button.tvp-product-cta").to.be.present;
         client.expect.element(parent + " div.tvp-inner-arrow-indicator").to.be.present;
       }
 
       client.pause(SECOND);
     },
-    productModalLink: function (skip) {
+    productModalLink: function (skip, product) {
+      if (product === undefined) {
+        product = {
+          "ID": 83102610,
+          "URL": "http://www.ninjakitchen.com/products/0/all/67/ninja-coffee-bar-with-glass-carafe/",
+          "SECURE_URL": "https://www.ninjakitchen.com/products/0/all/67/ninja-coffee-bar-with-glass-carafe/",
+          "TITLE_REGEX": /Ninja\ Coffee\ Bar®\ with\ Glass\ Carafe/i,
+          "IMG": "http://www.ninjakitchen.com/include/images/products/hero-CF080.jpg"
+        }
+      }
+
       // Click on product from modal
       if (isMobile === true) {
         client
-          .click(parent + " a#tvp-product-" + DATA.PRODUCTID)
+          .click(parent + " a#tvp-product-" + product.ID)
           .windowHandles(function (result) {
             this.switchWindow(result.value[1]);
-            this.verify.urlContains(DATA.PRODUCT_SECURE_URL);
+            this.verify.urlContains(product.SECURE_URL);
             this.closeWindow();
 
             this.switchWindow(result.value[0]);
@@ -252,14 +293,14 @@ exports.tvpGUITest = function (options) {
           return;
         }
         client
-          .waitForElementVisible(parent + " a#tvp-product-" + DATA.PRODUCTID, DATA.SLA)
-          .moveToElement(parent + " a#tvp-product-" + DATA.PRODUCTID, 70, 70)
-          .waitForElementVisible(parent + "  a#tvp-product-popup-" + DATA.PRODUCTID, DATA.SLA)
+          .waitForElementVisible(parent + " a#tvp-product-" + product.ID, DATA.SLA)
+          .moveToElement(parent + " a#tvp-product-" + product.ID, 70, 70)
+          .waitForElementVisible(parent + "  a#tvp-product-popup-" + product.ID, DATA.SLA)
           .pause(SECOND)
           .mouseButtonClick("left")
           .windowHandles(function (result) {
             this.switchWindow(result.value[1]),
-            this.verify.urlContains(DATA.PRODUCT_SECURE_URL),
+            this.verify.urlContains(product.SECURE_URL),
             this.closeWindow(),
 
             this.switchWindow(result.value[0]),
@@ -271,10 +312,10 @@ exports.tvpGUITest = function (options) {
 
         // Click on product from pop-up thumnail
         client
-          .waitForElementVisible(parent + " a#tvp-product-" + DATA.PRODUCTID, DATA.SLA)
-          .moveToElement(parent + " a#tvp-product-" + DATA.PRODUCTID, 70, 70)
-          .waitForElementVisible(parent + " a#tvp-product-popup-" + DATA.PRODUCTID + " div.tvp-product-popup-image", DATA.SLA)
-          .moveToElement(parent + " a#tvp-product-popup-" + DATA.PRODUCTID + " div.tvp-product-popup-image", 105, 105)
+          .waitForElementVisible(parent + " a#tvp-product-" + product.ID, DATA.SLA)
+          .moveToElement(parent + " a#tvp-product-" + product.ID, 70, 70)
+          .waitForElementVisible(parent + " a#tvp-product-popup-" + product.ID + " div.tvp-product-popup-image", DATA.SLA)
+          .moveToElement(parent + " a#tvp-product-popup-" + product.ID + " div.tvp-product-popup-image", 105, 105)
           .mouseButtonClick("left")
           .pause(SECOND)
           .windowHandles(function (result) {
@@ -282,7 +323,7 @@ exports.tvpGUITest = function (options) {
               return;
             }
             this.switchWindow(result.value[1]),
-            this.verify.urlContains(DATA.PRODUCT_SECURE_URL),
+            this.verify.urlContains(product.SECURE_URL),
             this.closeWindow(),
 
             this.switchWindow(result.value[0]),
@@ -294,10 +335,10 @@ exports.tvpGUITest = function (options) {
 
         // Click on product from pop-up title
         client
-          .waitForElementVisible(parent + " a#tvp-product-" + DATA.PRODUCTID, DATA.SLA)
-          .moveToElement(parent + " a#tvp-product-" + DATA.PRODUCTID, 70, 70)
-          .waitForElementVisible(parent + " a#tvp-product-popup-" + DATA.PRODUCTID + " p.tvp-product-title", DATA.SLA)
-          .moveToElement(parent + " a#tvp-product-popup-" + DATA.PRODUCTID + " p.tvp-product-title", 40, 20)
+          .waitForElementVisible(parent + " a#tvp-product-" + product.ID, DATA.SLA)
+          .moveToElement(parent + " a#tvp-product-" + product.ID, 70, 70)
+          .waitForElementVisible(parent + " a#tvp-product-popup-" + product.ID + " p.tvp-product-title", DATA.SLA)
+          .moveToElement(parent + " a#tvp-product-popup-" + product.ID + " p.tvp-product-title", 40, 20)
           .pause(SECOND)
           .mouseButtonClick("left")
           .windowHandles(function (result) {
@@ -305,7 +346,7 @@ exports.tvpGUITest = function (options) {
               return;
             }
             this.switchWindow(result.value[1]),
-            this.verify.urlContains(DATA.PRODUCT_SECURE_URL),
+            this.verify.urlContains(product.SECURE_URL),
             // this.closeWindow(),
 
             this.switchWindow(result.value[0]),
@@ -317,10 +358,10 @@ exports.tvpGUITest = function (options) {
 
         // Click on product from pop-up cta
         client
-          .waitForElementVisible(parent + " a#tvp-product-" + DATA.PRODUCTID, DATA.SLA)
-          .moveToElement(parent + " a#tvp-product-" + DATA.PRODUCTID, 70, 70)
-          .waitForElementVisible(parent + " a#tvp-product-popup-" + DATA.PRODUCTID + " button.tvp-product-cta", DATA.SLA)
-          .moveToElement(parent + " a#tvp-product-popup-" + DATA.PRODUCTID + " button.tvp-product-cta", 40, 20)
+          .waitForElementVisible(parent + " a#tvp-product-" + product.ID, DATA.SLA)
+          .moveToElement(parent + " a#tvp-product-" + product.ID, 70, 70)
+          .waitForElementVisible(parent + " a#tvp-product-popup-" + product.ID + " button.tvp-product-cta", DATA.SLA)
+          .moveToElement(parent + " a#tvp-product-popup-" + product.ID + " button.tvp-product-cta", 40, 20)
           .mouseButtonClick("left")
           .pause(SECOND)
           .windowHandles(function (result) {
@@ -328,7 +369,7 @@ exports.tvpGUITest = function (options) {
               return;
             }
             this.switchWindow(result.value[1]),
-            this.verify.urlContains(DATA.PRODUCT_SECURE_URL),
+            this.verify.urlContains(product.SECURE_URL),
             this.closeWindow(),
 
             this.switchWindow(result.value[0]),
@@ -358,7 +399,10 @@ exports.tvpGUITest = function (options) {
       // tvplayer icon check
       // client.expect.element(parent + " #tvplayer-playbutton-icon").to.be.present;
     },
-    playerStart: function (x, y) {
+    playerStart: function (x, y, playerParent) {
+      if (playerParent !== undefined)
+        parent = playerParent;
+
       client.waitForElementVisible(parent + ' div#tvplayer-playbutton-icon', DATA.SLA)
       client.expect.element(parent + " #tvplayer-playbutton-icon").to.be.present,
 
@@ -533,73 +577,84 @@ exports.tvpGUITest = function (options) {
     end: function () {
       client.end();
     },
-    analytics: function(frame) {
+    analytics: function(frame, events, aData) {
 
-      analyticsCount = {
+      var counts = {
         'ci': 0,
         'vv': 0,
         'pi': 0,
         'pk': 0
       };
   
-      analyticsTest = {
+      var tests = {
         'ci': function(client, src) {
+          console.log(">>> Checking CI <<<");
+
           client.waitForElementVisible('p#analtyticsTestCI', 6000);
           client.expect.element('p#analtyticsTestCI').to.be.present;
-          this.assert.equal(analyticsCount['ci'], 1);
+          this.assert.equal(counts['ci'], 1);
           var li = getParameterByName('li', src);
-          this.assert.equal(li, DATA.LOGIN_ID);
+          this.assert.equal(li, aData.LOGIN_ID);
           var url = getParameterByName('url', src);
           this.assert.equal(url, DATA.URL);
-          var cid = getParameterByName('cid', src);
-          this.assert.ok(cid);
+          // TODO: Need to check CID
+          //var cid = getParameterByName('cid', src);
+          //this.assert.ok(cid);
         },
         'vv': function(client, src) {
+          console.log(">>> Checking VV <<<");
+
           client.waitForElementVisible('p#analtyticsTestVV', 6000);
           client.expect.element('p#analtyticsTestVV').to.be.present;
           var li = getParameterByName('li', src);
-          this.assert.equal(li, DATA.LOGIN_ID);
+          this.assert.equal(li, aData.LOGIN_ID);
           var url = getParameterByName('url', src);
           this.assert.equal(url, DATA.URL);
           var pg = getParameterByName('pg', src);
-          this.assert.equal(pg, DATA.CHANNEL_ID);
+          this.assert.equal(pg, aData.CHANNEL_ID);
           var vd = getParameterByName('vd', src);
-          this.assert.equal(vd, DATA.VIDEO_ID);
+          this.assert.equal(vd, aData.VIDEO_ID);
           var vvs = getParameterByName('vvs', src);
           this.assert.ok(vvs);
           DATA.vvs = vvs;
         },
         'pi': function(client, src) {
+          console.log(">>> Checking PI <<<");
+
           var url = getParameterByName('url', src);
           this.assert.equal(url, DATA.URL);
           var li = getParameterByName('li', src);
-          this.assert.equal(li, DATA.LOGIN_ID);
+          this.assert.equal(li, aData.LOGIN_ID);
           var pg = getParameterByName('pg', src);
-          this.assert.equal(pg, DATA.CHANNEL_ID);
+          this.assert.equal(pg, aData.CHANNEL_ID);
           var vd = getParameterByName('vd', src);
-          this.assert.equal(vd, DATA.VIDEO_ID);
+          this.assert.equal(vd, aData.VIDEO_ID);
           var vd = getParameterByName('vd', src);
-          this.assert.equal(vd, DATA.VIDEO_ID);
-          var cid = getParameterByName('cid', src);
-          this.assert.ok(cid);
+          this.assert.equal(vd, aData.VIDEO_ID);
+          // TODO: Need to check CID
+          //var cid = getParameterByName('cid', src);
+          //this.assert.ok(cid);
         },
         'pk': function(client, src) {
+          console.log(">>> Checking PK <<<");
+
           client.waitForElementVisible('p.analtyticsTestPK', 6000);
           client.expect.element('p.analtyticsTestPK').to.be.present;
           var url = getParameterByName('url', src);
           this.assert.equal(url, DATA.URL);
           var li = getParameterByName('li', src);
-          this.assert.equal(li, DATA.LOGIN_ID);
+          this.assert.equal(li, aData.LOGIN_ID);
           var pg = getParameterByName('pg', src);
-          this.assert.equal(pg, DATA.CHANNEL_ID);
+          this.assert.equal(pg, aData.CHANNEL_ID);
           var vd = getParameterByName('vd', src);
-          this.assert.equal(vd, DATA.VIDEO_ID);
+          this.assert.equal(vd, aData.VIDEO_ID);
           var ct = getParameterByName('ct', src);
-          this.assert.equal(ct, DATA.PRODUCTID);
-          var cid = getParameterByName('cid', src);
-          this.assert.ok(cid);
+          this.assert.equal(ct, aData.product.ID);
+          // TODO: Need to check CID
+          //var cid = getParameterByName('cid', src);
+          //this.assert.ok(cid);
           client.elements("class name", "analtyticsTestPK", function(result) {
-            this.assert.ok(analyticsCount['pk'] <= result.value.length);
+            this.assert.ok(counts['pk'] <= result.value.length);
           });
         }
       };
@@ -607,26 +662,19 @@ exports.tvpGUITest = function (options) {
       client.frame(frame).elements("tag name", "script", function(result) {
         result.value.forEach(function(script) {
           client.elementIdAttribute(script.ELEMENT, 'src', function(res) {
-            var src = res.value;
-            for (var key in analyticsCount) {
+            var src = res.value,
+                THAT = this;
+
+            events.forEach(function (key, i) {
               if (src.indexOf('rt=' + key) >= 0) {
-                analyticsCount[key]++;
-                var test = analyticsTest[key].bind(this,client, src);
+                counts[key]++;
+                var test = tests[key].bind(THAT, client, src);
                 test();
               }
-            }
+            });
           });
         });
       });
-    },
-    getParameterByName: function(name, url) {
-      name = name.replace(/[\[\]]/g, "\\$&");
-      var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-          results = regex.exec(url);
-      if (!results) return null;
-      if (!results[2]) return '';
-      return decodeURIComponent(results[2].replace(/\+/g, " "));
-    }
-    
+    }    
   };
 };
