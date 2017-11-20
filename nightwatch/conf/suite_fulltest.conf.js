@@ -25,15 +25,15 @@ nightwatch_config = {
       },
       filter: "desktop/carousel/W10GC61.js"
     },
-    CarouselW10E15: {
+    CarouselW10FF55: {
       desiredCapabilities: {
-        'build': 'CarouselW10E15',
+        'build': 'CarouselWin10FF55',
         'os': 'Windows',
         'os_version': '10',
-        'browser': 'Edge',
-        'browser_version': '15.0'
+        'browser': 'Firefox',
+        'browser_version': '55.0'
       },
-      filter: "desktop/carousel/W10E15.js"
+      filter: "desktop/carousel/W10FF55.js"
     },
     CarouselW10IE11: {
       desiredCapabilities: {
@@ -45,15 +45,15 @@ nightwatch_config = {
       },
       filter: "desktop/carousel/W10IE11.js"
     },
-    CarouselW10FF55: {
+    CarouselW10E15: {
       desiredCapabilities: {
-        'build': 'CarouselWin10FF55',
+        'build': 'CarouselW10E15',
         'os': 'Windows',
         'os_version': '10',
-        'browser': 'Firefox',
-        'browser_version': '55.0'
+        'browser': 'Edge',
+        'browser_version': '15.0'
       },
-      filter: "desktop/carousel/W10FF55.js"
+      filter: "desktop/carousel/W10E15.js"
     },
     CarouselWin8GC61: {
       desiredCapabilities: {
