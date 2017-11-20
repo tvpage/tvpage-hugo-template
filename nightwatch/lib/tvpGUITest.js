@@ -535,21 +535,11 @@ exports.tvpGUITest = function (options) {
     },
     analytics: function(frame) {
 
-      function getParameterByName(name, url) {
-        name = name.replace(/[\[\]]/g, "\\$&");
-        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-            results = regex.exec(url);
-        if (!results) return null;
-        if (!results[2]) return '';
-        return decodeURIComponent(results[2].replace(/\+/g, " "));
-      }
-
       analyticsCount = {
         'ci': 0,
         'vv': 0,
         'pi': 0,
-        'pk': 0,
-        'vt': 0,
+        'pk': 0
       };
   
       analyticsTest = {
@@ -579,8 +569,19 @@ exports.tvpGUITest = function (options) {
           this.assert.ok(vvs);
           DATA.vvs = vvs;
         },
-        'pi': function() {
-          
+        'pi': function(client, src) {
+          var url = getParameterByName('url', src);
+          this.assert.equal(url, DATA.URL);
+          var li = getParameterByName('li', src);
+          this.assert.equal(li, DATA.LOGIN_ID);
+          var pg = getParameterByName('pg', src);
+          this.assert.equal(pg, DATA.CHANNEL_ID);
+          var vd = getParameterByName('vd', src);
+          this.assert.equal(vd, DATA.VIDEO_ID);
+          var vd = getParameterByName('vd', src);
+          this.assert.equal(vd, DATA.VIDEO_ID);
+          var cid = getParameterByName('cid', src);
+          this.assert.ok(cid);
         },
         'pk': function(client, src) {
           client.waitForElementVisible('p.analtyticsTestPK', 6000);
@@ -600,9 +601,6 @@ exports.tvpGUITest = function (options) {
           client.elements("class name", "analtyticsTestPK", function(result) {
             this.assert.ok(analyticsCount['pk'] <= result.value.length);
           });
-        },
-        'vt': function() {
-          
         }
       };
 
