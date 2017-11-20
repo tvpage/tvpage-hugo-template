@@ -119,7 +119,7 @@
 
         if (config.firstPartyCookies && config.cookieDomain)
             analyticsConfig.firstPartyCookieDomain = config.cookieDomain;
-        
+
         analytics.initConfig(analyticsConfig);
         analytics.track('ci', {
           li: config.loginId

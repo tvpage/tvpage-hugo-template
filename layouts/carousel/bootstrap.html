@@ -19,60 +19,30 @@
 {{- $.Scratch.SetInMap "config" $i . -}}
 {{- end -}}
 
+{{- range $i, $param := .Site.Params -}}
+{{- $.Scratch.SetInMap "config" $i . -}}
+{{- end -}}
+
 {{- $.Scratch.Set "settings" ($.Scratch.Get "config") -}}
 
 (function(){
-
-	var config = {{ $.Scratch.Get "config" | jsonify }};
-
-	config.type = "{{ .Type }}";
 	
-	{{- if (getenv "HUGO_DEBUG") -}}
-		config.baseUrl = "{{ trim $.Site.BaseURL "/" }}";
-	{{- else -}}
-		config.baseUrl = "{{ $.Site.BaseURL }}";
-	{{- end -}}
+		var config = {{ $.Scratch.Get "config" | jsonify }};
 
-	config.templates = {
-		base: {{- (partial (printf "%s/templates/base.html" .Type) .) -}},
-		videos: {
-			list: {{- (partial (printf "%s/templates/videos/list.html" .Type) .) -}},
-			item: {{- (partial (printf "%s/templates/videos/item.html" .Type) .) -}}
-		},
-		modal: {
-			base: {{- (partial (printf "%s/templates/modal/base.html" .Type) .) -}},
-			body: {{- (partial (printf "%s/templates/modal/body.html" .Type) .) -}},
-			content: {{- (partial (printf "%s/templates/modal/content.html" .Type) .) -}},
-			iframe: '<iframe class="tvp-iframe-modal" src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe>'
-		},
-		mobile: {
-			base: {{- (partial (printf "%s/mobile/templates/base.html" .Type) .) -}},
-			modal: {
-				iframe: '<iframe class="tvp-iframe-modal" src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe>',
-				base: {{- (partial (printf "%s/mobile/templates/modal/base.html" .Type) .) -}},
-				content: {{- (partial (printf "%s/mobile/templates/modal/content.html" .Type) .) -}},
-				body: {{- (partial (printf "%s/mobile/templates/modal/body.html" .Type) .) -}}
-			}
-		}
-	};
+		//we removed the forward slash that hugo adds on local development
+		var baseUrl;
+		{{- if (getenv "HUGO_DEBUG") -}}
+			baseUrl = "{{ trim $.Site.BaseURL "/" }}";
+		{{- else -}}
+			baseUrl = "{{ $.Site.BaseURL }}";
+		{{- end -}}
+		config.baseUrl = baseUrl;
 
-	config.css = {
-		base: {{- (partial (printf "%s/css/base.css" .Type) .) | htmlUnescape | safeHTML -}},
-		host: {{- (partial (printf "%s/css/host.css" .Type) .) | htmlUnescape | safeHTML -}},
-		"host-custom": {{- (partial (printf "%s/css/host-custom.css" .Type) .) | htmlUnescape | safeHTML -}},
-		modal:{
-			content: {{- (partial (printf "%s/css/modal/content.css" .Type) .) | htmlUnescape | safeHTML -}}
-		},
-		mobile: {
-			base: {{- (partial (printf "%s/mobile/css/base.css" .Type) .) | htmlUnescape | safeHTML -}},
-			host: {{- (partial (printf "%s/mobile/css/host.css" .Type) .) | htmlUnescape | safeHTML -}},
-			"host-custom": {{- (partial (printf "%s/mobile/css/host-custom.css" .Type) .) | htmlUnescape | safeHTML -}},
-			modal: {
-				content: {{- (partial (printf "%s/mobile/css/modal/content.css" .Type) .) | htmlUnescape | safeHTML -}}
-			}
-		}
-	};
+		{{- (readFile (printf "/themes/tvpage/static/%s/config.js" $type) ) | htmlUnescape | safeHTML -}}
 
-	{{- (readFile "/themes/tvpage/static/carousel/index.js") | htmlUnescape | safeHTML -}}
-
-}());
+		config.templates = {{- (partial (printf "%s/templates/index.html" $type) .) -}};
+		config.css = {{- (partial (printf "%s/css/index.html" $type) .) -}};
+		
+		{{- (readFile (printf "/themes/tvpage/static/%s/index.js" $type) ) | htmlUnescape | safeHTML -}}
+		
+	}());

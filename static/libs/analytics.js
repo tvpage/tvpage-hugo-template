@@ -16,7 +16,7 @@
 
     return {
       logUrl: opts.logUrl || '',
-      li: opts.loginId || '',
+      li: opts.li || opts.loginId || opts.loginid,
       gaDomain: opts.domain || ''
     };
   };
