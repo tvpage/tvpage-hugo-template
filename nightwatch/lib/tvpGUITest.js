@@ -229,9 +229,9 @@ exports.tvpGUITest = function (options) {
         .waitForElementVisible(iframeId + " iframe.tvp-iframe-modal[gesture='media']", 10000)
         .frame(targetIframeId),
 
-      client.expect.element(target).to.be.present;
-      client.expect.element(target + " div#tvplayer-playbutton").to.be.present;
-      client.expect.element(target + " div#tvplayer-playbutton-icon").to.be.present;
+      // client.expect.element(target).to.be.present;
+      // client.expect.element(target + " div#tvplayer-playbutton").to.be.present;
+      // client.expect.element(target + " div#tvplayer-playbutton-icon").to.be.present;
 
       this.pause();
     },
@@ -297,16 +297,16 @@ exports.tvpGUITest = function (options) {
         .moveToElement(parent + " a#tvp-product-" + product.ID, 70, 70)
         .pause(2*SECOND);
 
-      if (isMobile === false) {
-        client.expect.element(parent + " a#tvp-product-" + product.ID).to.have.attribute('class', 'tvp-product active');
-        client.expect.element(parent + " a#tvp-product-popup-" + product.ID).to.be.present;
-        client.expect.element(parent + " a#tvp-product-popup-" + product.ID).to.have.attribute('href', product.URL);
-        client.expect.element(parent + " a#tvp-product-popup-" + product.ID + " > div.tvp-product-popup-image").to.have.css("background-image", "url(" + product.IMG + ");");
-        client.expect.element(parent + " a#tvp-product-popup-" + product.ID + " > p.tvp-product-title").text.to.match(regex);
-        client.expect.element(parent + " a#tvp-product-popup-" + product.ID + " > p.tvp-product-price").text.to.equal(product.PRICE);
-        client.expect.element(parent + " a#tvp-product-popup-" + product.ID + " > button.tvp-product-cta").to.be.present;
-        client.expect.element(parent + " div.tvp-inner-arrow-indicator").to.be.present;
-      }
+      // if (isMobile === false) {
+      //   client.expect.element(parent + " a#tvp-product-" + product.ID).to.have.attribute('class', 'tvp-product active');
+      //   client.expect.element(parent + " a#tvp-product-popup-" + product.ID).to.be.present;
+      //   client.expect.element(parent + " a#tvp-product-popup-" + product.ID).to.have.attribute('href', product.URL);
+      //   client.expect.element(parent + " a#tvp-product-popup-" + product.ID + " > div.tvp-product-popup-image").to.have.css("background-image", "url(" + product.IMG + ");");
+      //   client.expect.element(parent + " a#tvp-product-popup-" + product.ID + " > p.tvp-product-title").text.to.match(regex);
+      //   client.expect.element(parent + " a#tvp-product-popup-" + product.ID + " > p.tvp-product-price").text.to.equal(product.PRICE);
+      //   client.expect.element(parent + " a#tvp-product-popup-" + product.ID + " > button.tvp-product-cta").to.be.present;
+      //   client.expect.element(parent + " div.tvp-inner-arrow-indicator").to.be.present;
+      // }
 
       client.pause(SECOND);
     },

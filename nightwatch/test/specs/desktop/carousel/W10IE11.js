@@ -145,7 +145,7 @@ module.exports = {
         parent = this.playerIframId + " > " + this.productHolder;
         client = carousel.init(browser, "Carousel Widget Analytics", "div#carousel-2-holder", 0, parent);
 
-    carousel.widgetTitle(this.widgetIframeId, this.widgetTitleId, "Recommended Videos"),
+    // carousel.widgetTitle(this.widgetIframeId, this.widgetTitleId, "Recommended Videos"),
     //carousel.widgetNav(this.widgetIframeId, 12),
     carousel.modalSanity(this.modalId, this.firstVideoId, 'Double wall insulated mug'),
     carousel.modalLoadPerformance(this.widgetIFrameHolder, this.firstVideoId, this.playerIframId + " > " + this.playerHolder, 1);
