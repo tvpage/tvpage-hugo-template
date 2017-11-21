@@ -23,6 +23,13 @@ exports.tvpGUITest = function (options) {
       selectorType = (options !== undefined && options.selectorType !== undefined ? options.selectorType : "css selector"),
       debug = false;
 
+  var aCounts = {
+        'ci': 0,
+        'vv': 0,
+        'pi': 0,
+        'pk': 0
+      };
+
   if (DATA.SLA === undefined)
     DATA.SLA = SECOND;
 
@@ -58,22 +65,22 @@ exports.tvpGUITest = function (options) {
     return decodeURIComponent(results[2].replace(/\+/g, " "));
   };
 
-  var inArray = function(needle, haystack) {
+  var inArray = function(needle, haystack, isIndex) {
     var found = false;
 
     haystack.forEach(function(value, i) {
       if (needle == value) {
-        found = true;
+        found = (isIndex === true ? i : true);
       }
     });
 
     return found;
   };
 
-  var checkCounts = function (client, events, counts, expected) {
+  var checkCounts = function (client, events, expected) {
     events.forEach(function (key, i) {
-      console.log(">>> Checking " + key + " Event Counts: " + counts[key] + " <<<");
-      client.assert.equal(counts[key], expected[key]);
+      console.log(">>> Checking " + key + " Event Counts: " + aCounts[key] + " <<<");
+      client.assert.equal(aCounts[key], expected[key]);
     })
   };
 
@@ -619,47 +626,48 @@ exports.tvpGUITest = function (options) {
       client.end();
     },
     analytics: function(frame, events, aData) {
-
-      var counts = {
-        'ci': 0,
-        'vv': 0,
-        'pi': 0,
-        'pk': 0
-      };
-  
       var tests = {
-        'ci': function(client, src) {
+        'ci': function(client, src, current) {
           console.log(">>> Checking CI <<<");
 
           client.waitForElementVisible('p#analtyticsTestCI', 6000);
           client.expect.element('p#analtyticsTestCI').to.be.present;
-          this.assert.equal(counts['ci'], 1);
+          this.assert.equal(aCounts['ci'], 1);
+
           var li = getParameterByName('li', src);
           this.assert.equal(li, aData.LOGIN_ID);
+
           var url = getParameterByName('url', src);
           this.assert.equal(url, DATA.URL);
-          // TODO: Need to check CID
-          //var cid = getParameterByName('cid', src);
-          //this.assert.ok(cid);
+
+          var cid = getParameterByName('cid', src);
+          this.assert.ok(cid);
         },
-        'vv': function(client, src) {
+        'vv': function(client, src, current) {
           console.log(">>> Checking VV <<<");
 
-          client.waitForElementVisible('p#analtyticsTestVV', 6000);
-          client.expect.element('p#analtyticsTestVV').to.be.present;
           var li = getParameterByName('li', src);
           this.assert.equal(li, aData.LOGIN_ID);
+
           var url = getParameterByName('url', src);
           this.assert.equal(url, DATA.URL);
+
           var pg = getParameterByName('pg', src);
           this.assert.equal(pg, aData.CHANNEL_ID);
+
           var vd = getParameterByName('vd', src);
-          this.assert.equal(vd, aData.VIDEO_ID);
+          this.assert.equal(vd, aData.VIDS[current]);
+
+          client.waitForElementPresent('p.analtyticsTestVV', 6000);
+          client.expect.element('p.analtyticsTestVV').to.be.present;
+
           var vvs = getParameterByName('vvs', src);
           this.assert.ok(vvs);
+
           DATA.vvs = vvs;
         },
-        'pi': function(client, src) {
+        'pi': function(client, src, current) {
+          var THAT = this;
           console.log(">>> Checking PI ");
 
           var url = getParameterByName('url', src);
@@ -668,20 +676,20 @@ exports.tvpGUITest = function (options) {
           this.assert.equal(li, aData.LOGIN_ID);
           var pg = getParameterByName('pg', src);
           this.assert.equal(pg, aData.CHANNEL_ID);
+
+          var cid = getParameterByName('cid', src);
+          this.assert.ok(cid);
+
           var vd = getParameterByName('vd', src);
-          this.assert.equal(vd, aData.VIDEO_ID);
+          THAT.assert.equal(vd, aData.VIDS[current]);
 
           var productId = getParameterByName('ct', src);
 
           console.log("Expected Product ID: " + productId);
-          var found = inArray(productId, aData.PIDS);
+          var found = inArray(productId, aData.PIDS[current]);
           this.assert.equal(found, true);
-
-          // TODO: Need to check CID
-          //var cid = getParameterByName('cid', src);
-          //this.assert.ok(cid);
         },
-        'pk': function(client, src) {
+        'pk': function(client, src, current) {
           console.log(">>> Checking PK <<<");
 
           client.waitForElementVisible('p.analtyticsTestPK', 6000);
@@ -695,18 +703,17 @@ exports.tvpGUITest = function (options) {
           var pg = getParameterByName('pg', src);
           this.assert.equal(pg, aData.CHANNEL_ID);
 
+          var cid = getParameterByName('cid', src);
+          this.assert.ok(cid);
+
           var vd = getParameterByName('vd', src);
-          this.assert.equal(vd, aData.VIDEO_ID);
+          this.assert.equal(vd, aData.VIDS[current]);
 
           var ct = getParameterByName('ct', src);
-          this.assert.equal(ct, aData.PID);
-
-          // TODO: Need to check CID
-          //var cid = getParameterByName('cid', src);
-          //this.assert.ok(cid);
+          this.assert.equal(ct, aData.PKIDS[current]);
 
           client.elements("class name", "analtyticsTestPK", function(result) {
-            this.assert.ok(counts['pk'] <= result.value.length);
+            this.assert.ok(aCounts['pk'] <= result.value.length);
           });
         }
       };
@@ -719,16 +726,23 @@ exports.tvpGUITest = function (options) {
             var src = res.value,
                 THAT = this;
 
-            events.forEach(function (key, count) {
+            events.forEach(function (key, index) {
               if (src.indexOf('rt=' + key) >= 0) {
-                counts[key]++;
-                var test = tests[key].bind(THAT, client, src);
+                var vd = getParameterByName('vd', src),
+                    current = inArray(vd, aData.VIDS, true);
+
+                aCounts[key]++;
+
+                var test = tests[key].bind(THAT, client, src, current);
                 test();
               }
             });
           });
         });
       });
-    }    
+    },
+    getAnalyticCounts: function () {
+      return aCounts;
+    }
   };
 };
