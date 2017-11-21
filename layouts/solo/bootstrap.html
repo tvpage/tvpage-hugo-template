@@ -6,13 +6,13 @@
 {{- end -}}
 
 {{- range readDir "/" -}}
-	{{- if eq .Name "defaults" -}}
-		{{- if (where (readDir "defaults/") "Name" (printf "%s.json" $type)) -}}
-			{{- range (getJSON (printf "defaults/%s.json" $type)).option -}}
-			{{- $.Scratch.SetInMap "config" .code .value -}}
-			{{- end -}}
+{{- if eq .Name "defaults" -}}
+	{{- if (where (readDir "defaults/") "Name" (printf "%s.json" $type)) -}}
+		{{- range (getJSON (printf "defaults/%s.json" $type)).option -}}
+		{{- $.Scratch.SetInMap "config" .code .value -}}
 		{{- end -}}
 	{{- end -}}
+{{- end -}}
 {{- end -}}
 
 {{- range $i, $param := .Params -}}
@@ -26,23 +26,23 @@
 {{- $.Scratch.Set "settings" ($.Scratch.Get "config") -}}
 
 (function(){
+
+	var config = {{ $.Scratch.Get "config" | jsonify }};
+
+	//we removed the forward slash that hugo adds on local development
+	var baseUrl;
+	{{- if (getenv "HUGO_DEBUG") -}}
+		baseUrl = "{{ trim $.Site.BaseURL "/" }}";
+	{{- else -}}
+		baseUrl = "{{ $.Site.BaseURL }}";
+	{{- end -}}
+	config.baseUrl = baseUrl;
+
+	{{- (readFile (printf "/themes/tvpage/static/%s/config.js" $type) ) | htmlUnescape | safeHTML -}}
+
+	config.templates = {{- (partial (printf "%s/templates/index.html" $type) .) -}};
+	config.css = {{- (partial (printf "%s/css/index.html" $type) .) -}};
 	
-		var config = {{ $.Scratch.Get "config" | jsonify }};
-
-		//we removed the forward slash that hugo adds on local development
-		var baseUrl;
-		{{- if (getenv "HUGO_DEBUG") -}}
-			baseUrl = "{{ trim $.Site.BaseURL "/" }}";
-		{{- else -}}
-			baseUrl = "{{ $.Site.BaseURL }}";
-		{{- end -}}
-		config.baseUrl = baseUrl;
-
-		{{- (readFile (printf "/themes/tvpage/static/%s/config.js" $type) ) | htmlUnescape | safeHTML -}}
-
-		config.templates = {{- (partial (printf "%s/templates/index.html" $type) .) -}};
-		config.css = {{- (partial (printf "%s/css/index.html" $type) .) -}};
-		
-		{{- (readFile (printf "/themes/tvpage/static/%s/index.js" $type) ) | htmlUnescape | safeHTML -}}
-		
-	}());
+	{{- (readFile (printf "/themes/tvpage/static/%s/index.js" $type) ) | htmlUnescape | safeHTML -}}
+	
+}());

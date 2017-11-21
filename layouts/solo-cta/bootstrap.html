@@ -1,61 +1,48 @@
-{{- partial "settings.html" . -}}
+{{- $type := .Type -}}
+{{- $defaults := getJSON (printf "themes/tvpage/defaults/%s.json" $type) -}}
+
+{{- range $defaults.option -}}
+{{- $.Scratch.SetInMap "config" .code .value -}}
+{{- end -}}
+
+{{- range readDir "/" -}}
+{{- if eq .Name "defaults" -}}
+  {{- if (where (readDir "defaults/") "Name" (printf "%s.json" $type)) -}}
+    {{- range (getJSON (printf "defaults/%s.json" $type)).option -}}
+    {{- $.Scratch.SetInMap "config" .code .value -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- end -}}
+
+{{- range $i, $param := .Params -}}
+{{- $.Scratch.SetInMap "config" $i . -}}
+{{- end -}}
+
+{{- range $i, $param := .Site.Params -}}
+{{- $.Scratch.SetInMap "config" $i . -}}
+{{- end -}}
+
+{{- $.Scratch.Set "settings" ($.Scratch.Get "config") -}}
+
 (function(){
 
-  var bootstrap = {{ $.Scratch.Get "settings" | jsonify }};
-  bootstrap.type = "{{ .Type }}";
-  bootstrap.baseUrl = "{{ $.Site.BaseURL }}";
-  bootstrap.templates = {
-    cta: '<div class="tvp-cta-overlay-cover"></div>' +
-    '<svg class="tvp-cta-play" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">' +
-        '<polygon points="70, 55 70, 145 145, 100"></polygon>' +
-    '</svg>',
-    modal: '<div id="tvp-modal-overlay-{{ ($.Scratch.Get "settings").name }}" class="tvp-modal-overlay tvp-hidden"></div>' +
-    '<div id="tvp-modal-{{ ($.Scratch.Get "settings").name }}" class="tvp-modal tvp-hidden">' +
-      '<div class="tvp-modal-wrapper {{ if ($.Scratch.Get "settings").video_modal_center }}centered{{end}}">' +
-              '<div class="tvp-modal-content">' +
-                  '<div id="tvp-modal-header-{{ ($.Scratch.Get "settings").name }}" class="tvp-modal-header">' +
-                      '<div id="tvp-modal-close-{{ ($.Scratch.Get "settings").name }}" class="tvp-modal-close">' +
-                        '<svg class="tvp-modal-close-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">' +
-                          '<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>' +
-                          '<path d="M0 0h24v24H0z"></path>' +
-                        '</svg>' +
-                      '</div>' +
-                    '<h4 id="tvp-modal-title-{{ ($.Scratch.Get "settings").name }}" class="tvp-modal-title"></h4>' +
-                  '</div>' +
-                  '<div class="tvp-modal-body">' +
-                      '<div id="tvp-modal-iframe-holder-{{ ($.Scratch.Get "settings").name }}" class="tvp-modal-iframe-holder"></div>' +
-                  '</div>' +
-              '</div>' +
-          '</div>' +
-      '</div>',
-      "modal-content": '<div id="{{ ($.Scratch.Get "settings").name }}" class="tvp-clearfix iframe-content">' +
-          '<div class="tvp-player-holder">' +
-              '<div class="tvp-player">' +
-                  '<div id="tvp-player-el"></div>' +
-              '</div>' +
-          '</div>' +
-          '<div class="tvp-products-holder">' +
-              '<div class="tvp-products"></div>' +
-          '</div>' +
-      '</div>',
-      "modal-content-mobile": '<div id="{{ ($.Scratch.Get "settings").name }}" class="tvp-clearfix iframe-content">' +
-          '<div class="tvp-player-holder">' +
-              '<div class="tvp-player">' +
-                  '<div id="tvp-player-el"></div>' +
-              '</div>' +
-          '</div>' +
-          '<div class="tvp-products">' +
-              '<div class="tvp-products-carousel"></div>' +
-          '</div>' +
-      '</div>'
-  };
+  var config = {{ $.Scratch.Get "config" | jsonify }};
+
+  //we removed the forward slash that hugo adds on local development
+  var baseUrl;
+  {{- if (getenv "HUGO_DEBUG") -}}
+    baseUrl = "{{ trim $.Site.BaseURL "/" }}";
+  {{- else -}}
+    baseUrl = "{{ $.Site.BaseURL }}";
+  {{- end -}}
+  config.baseUrl = baseUrl;
+
+  {{- (readFile (printf "/themes/tvpage/static/%s/config.js" $type) ) | htmlUnescape | safeHTML -}}
+
+  config.templates = {{- (partial (printf "%s/templates/index.html" $type) .) -}};
+  config.css = {{- (partial (printf "%s/css/index.html" $type) .) -}};
   
-  bootstrap.css = {
-    host: {{- (partial (printf "%s/host.css" .Type) .) | htmlUnescape | safeHTML -}},
-    "host-custom": {{- (partial (printf "%s/host-custom.css" .Type) .) | htmlUnescape | safeHTML -}},
-    modal: {{- (partial (printf "%s/modal.css" .Type) .) | htmlUnescape | safeHTML -}},
-  };
-
-  {{- (readFile "/themes/tvpage/static/solo-cta/index.js") | htmlUnescape | safeHTML -}}
-
+  {{- (readFile (printf "/themes/tvpage/static/%s/index.js" $type) ) | htmlUnescape | safeHTML -}}
+  
 }());

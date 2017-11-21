@@ -1,0 +1,5 @@
+{
+  host: {{- (partial (printf "%s/host.css" .Type) .) | htmlUnescape | safeHTML -}},
+  "host-custom": {{- (partial (printf "%s/host-custom.css" .Type) .) | htmlUnescape | safeHTML -}},
+  modal: {{- (partial (printf "%s/modal.css" .Type) .) | htmlUnescape | safeHTML -}},
+}
