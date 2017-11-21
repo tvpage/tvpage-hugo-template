@@ -83,7 +83,7 @@ nightwatch_config = {
         'browser': 'Firefox',
         'browser_version': '55.0'
       },
-      filter: "desktop/W8FF55.js"
+      filter: "desktop/carousel/W8FF55.js"
     },
     CarouselOSXSierraS10: {
       desiredCapabilities: {
@@ -162,6 +162,144 @@ nightwatch_config = {
         'os_version': '6.0'
       },
       filter: "mobile/carousel/Nexus6Android6.js"
+    },
+    SoloW10GC61: {
+      desiredCapabilities: {
+        'build': 'SoloW10GC61',
+        'os': 'Windows',
+        'os_version': '10',
+        'browser': 'Chrome',
+        'browser_version': '61.0',
+      },
+      filter: "desktop/solo/W10GC61.js"
+    },
+    SoloW10FF55: {
+      desiredCapabilities: {
+        'build': 'SoloWin10FF55',
+        'os': 'Windows',
+        'os_version': '10',
+        'browser': 'Firefox',
+        'browser_version': '55.0'
+      },
+      filter: "desktop/solo/W10GC61.js"
+    },
+    SoloW10IE11: {
+      desiredCapabilities: {
+        'build': 'SoloW10IE11',
+        'os': 'Windows',
+        'os_version': '10',
+        'browser': 'IE',
+        'browser_version': '11.0',
+      },
+      filter: "desktop/solo/W10GC61.js"
+    },
+    SoloW10E15: {
+      desiredCapabilities: {
+        'build': 'SoloW10E15',
+        'os': 'Windows',
+        'os_version': '10',
+        'browser': 'Edge',
+        'browser_version': '15.0'
+      },
+      filter: "desktop/solo/W10GC61.js"
+    },
+    SoloWin8GC61: {
+      desiredCapabilities: {
+        'build': 'SoloW8GC61',
+        'os': 'Windows',
+        'os_version': '8.1',
+        'browser': 'Chrome',
+        'browser_version': '61.0',
+      },
+      filter: "desktop/solo/W10GC61.js"
+    },
+    SoloW8IE11: {
+      desiredCapabilities: {
+        'build': 'SoloW8IE11',
+        'os': 'Windows',
+        'os_version': '8.1',
+        'browser': 'IE',
+        'browser_version': '11.0'
+      },
+      filter: "desktop/solo/W10GC61.js"
+    },
+    SoloW8FF55: {
+      desiredCapabilities: {
+        'build': 'SoloW8FF55',
+        'os': 'Windows',
+        'os_version': '8.1',
+        'browser': 'Firefox',
+        'browser_version': '55.0'
+      },
+      filter: "desktop/solo/W10GC61.js"
+    },
+    SoloOSXSierraS10: {
+      desiredCapabilities: {
+        'build': 'SoloOSXSierraS10',
+        'os': 'OS X',
+        'os_version': 'Sierra',
+        'browser': 'Safari',
+        'browser_version': '10.1'
+      },
+      filter: "desktop/solo/W10GC61.js"
+    },
+    SoloOSXSierraGC61: {
+      desiredCapabilities: {
+        'build': 'SoloOSXSierraGC61',
+        'os': 'OS X',
+        'os_version': 'Sierra',
+        'browser': 'Chrome',
+        'browser_version': '61.0',
+      },
+      filter: "desktop/solo/W10GC61.js"
+    },
+    SoloOSXSierraFF55: {
+      desiredCapabilities: {
+        'build': 'SoloOSXSierraFF55',
+        'os': 'OS X',
+        'os_version': 'Sierra',
+        'browser': 'Firefox',
+        'browser_version': '55.0'
+      },
+      filter: "desktop/solo/W10GC61.js"
+    },
+    SoloOSXHighSierraGC61: {
+      desiredCapabilities: {
+        'build': 'SoloOSXHighSierraGC61',
+        'os': 'OS X',
+        'os_version': 'High Sierra',
+        'browser': 'Chrome',
+        'browser_version': '61.0'
+      },
+      filter: "desktop/solo/W10GC61.js"
+    },
+    SoloOSXHighSierraFF55: {
+      desiredCapabilities: {
+        'build': 'SoloOSXHighSierraFF55',
+        'os': 'OS X',
+        'os_version': 'High Sierra',
+        'browser': 'Firefox',
+        'browser_version': '55.0'
+      },
+      filter: "desktop/solo/W10GC61.js"
+    },
+    SoloGooglepixelAndroid8: {
+      desiredCapabilities: {
+        'build': 'SoloGooglepixelAndroid8',
+        'device': 'Google Pixel',
+        'realMobile': 'true',
+        'os_version': '8.0'
+      },
+      filter: "desktop/solo/W10GC61.js"
+    },
+    SoloNexus6Android6: {
+      desiredCapabilities: {
+        'build': 'SoloNexus6Android6',
+        'device': 'Google Nexus 6',
+        'realMobile': 'true',
+        'os_version': '6.0'
+      },
+      filter: "desktop/solo/W10GC61.js"
     }
   }
 };

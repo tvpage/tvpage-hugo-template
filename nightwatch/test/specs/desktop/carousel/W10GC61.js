@@ -1,14 +1,12 @@
-  /*==============================================================================*/
+/*==============================================================================*/
 /* Nightwatch Recorder generated Mon Oct 23 2017 18:49:04 GMT-0700 (PDT) */
 /*==============================================================================*/
 var DATA = {
       URL: "https://widgets.goodlookingbean.com/test/carousel/",
       PRODUCT_HEADLINE: "Related Products",
-      FIRST_VIDEO_TITLE: "Galette des Rois Recipe for De'Long...",
       SLA: 10000,
       BROWSERHEIGHT: 1080,
-      BROWSEWIDTH: 1920,
-      LOGIN_ID: 1758799
+      BROWSEWIDTH: 1920
     };
 
 var widget = require(__dirname + "/../../../../lib/tvpGUITest.js");
@@ -37,24 +35,18 @@ module.exports = {
   //   var carousel = widget.tvpGUITest({
   //         'modalOverlay': this.modalOverlay,
   //         'modalCloseId': this.modalCloseId,
-  //         'modalCloseButton': this.modalCloseButton,
-  //         'modalTitle': this.modalTitle,
-  //         'modalIframeHolder': this.modalIframeHolder,
-  //         'widgetNavHolder': this.widgetNavHolder,
-  //         'widgetNavPrev': this.widgetNavPrev,
-  //         'widgetNavNext': this.widgetNavNext,
-  //         'widgetPlayerButton': this.widgetPlayerButton,
   //         'DATA': DATA
   //       }),
   //       parent = this.widgetIframeId + " > " + this.productHolder;
-  //       client = carousel.init(browser, "Carousel Widget Normal", "div#carousel-2-holder", 0, this.playerIframId + " > " + this.productHolder);
+  //       client = carousel.init(browser, "Carousel Widget Normal", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.productHolder);
 
   //   carousel.widgetTitle(this.widgetIframeId, this.widgetTitleId, "Recommended Videos"),
-  //   carousel.widgetNav(this.widgetIframeId, 12),
+  //   carousel.widgetNav(this.widgetIframeId, 16),
   //   carousel.modalSanity(this.modalId, this.firstVideoId),
-  //   carousel.modalLoadPerformance(this.widgetIFrameHolder, this.firstVideoId, this.playerIframId + " > " + this.playerHolder, 1),
+  //   carousel.modalLoadPerformance(this.widgetIFrameHolder, this.firstVideoId, this.widgetIframeId + " > " + this.playerHolder, 2),
   //   carousel.productModal(),
   //   carousel.productModalLink(),
+  //   carousel.analytics(2);
   //   carousel.end();
   // },
 
@@ -62,16 +54,9 @@ module.exports = {
   //   var carousel = widget.tvpGUITest({
   //         'modalOverlay': this.modalOverlay,
   //         'modalCloseId': this.modalCloseId,
-  //         'modalCloseButton': this.modalCloseButton,
-  //         'modalTitle': this.modalTitle,
-  //         'modalIframeHolder': this.modalIframeHolder,
-  //         'widgetNavHolder': this.widgetNavHolder,
-  //         'widgetNavPrev': this.widgetNavPrev,
-  //         'widgetNavNext': this.widgetNavNext,
-  //         'widgetPlayerButton': this.widgetPlayerButton,
   //         'DATA': DATA
   //       }),
-  //       client = carousel.init(browser, "Carousel Youtube Player Normal", "div#carousel-2-holder", 0, this.playerIframId + " > " + this.playerHolder);
+  //       client = carousel.init(browser, "Carousel Youtube Player Normal", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
 
   //   carousel.modalLoad(this.firstVideoId, 160, 100),
   //   carousel.playerLoadPerformance(2),
@@ -91,6 +76,7 @@ module.exports = {
   //   // carousel.modalLoad(this.firstVideoId, 160, 100),
   //   // carousel.playerLoadPerformance(2),
   //   // carousel.playerSanity(),
+  //   carousel.analytics(2);
   //   carousel.end();
   // },
 
@@ -124,16 +110,9 @@ module.exports = {
   //   var carousel = widget.tvpGUITest({
   //         'modalOverlay': this.modalOverlay,
   //         'modalCloseId': this.modalCloseId,
-  //         'modalCloseButton': this.modalCloseButton,
-  //         'modalTitle': this.modalTitle,
-  //         'modalIframeHolder': this.modalIframeHolder,
-  //         'widgetNavHolder': this.widgetNavHolder,
-  //         'widgetNavPrev': this.widgetNavPrev,
-  //         'widgetNavNext': this.widgetNavNext,
-  //         'widgetPlayerButton': this.widgetPlayerButton,
   //         'DATA': DATA
   //       }),
-  //       client = carousel.init(browser, "Carousel Youtube Player Normal", "div#carousel-2-holder", 0, this.playerIframId + " > " + this.playerHolder);
+  //       client = carousel.init(browser, "Carousel Youtube Player Normal", "div#carousel-1-holder", 0, this.widgetIframeId + " > " + this.playerHolder);
 
   //   carousel.modalLoad(this.firstVideoId, 160, 100),
   //   client.resizeWindow(1440/2, 1200),
@@ -150,7 +129,7 @@ module.exports = {
   //   carousel.end();
   // },
 
-  'carousel-youtube-sanity': function (browser) {
+  'carousel-youtube-sanity-analytics': function (browser) {
     var carousel = widget.tvpGUITest({
           'modalOverlay': this.modalOverlay,
           'modalCloseId': this.modalCloseId,
@@ -163,16 +142,56 @@ module.exports = {
           'widgetPlayerButton': this.widgetPlayerButton,
           'DATA': DATA
         }),
-        parent = this.widgetIframeId + " > " + this.productHolder;
-        client = carousel.init(browser, "Carousel Widget Normal", "div#carousel-2-holder", 0, this.playerIframId + " > " + this.productHolder);
+        parent = this.playerIframId + " > " + this.productHolder;
+        client = carousel.init(browser, "Carousel Widget Analytics", "div#carousel-2-holder", 0, parent);
 
     carousel.widgetTitle(this.widgetIframeId, this.widgetTitleId, "Recommended Videos"),
     //carousel.widgetNav(this.widgetIframeId, 12),
-    carousel.modalSanity(this.modalId, this.firstVideoId),
-    carousel.modalLoadPerformance(this.widgetIFrameHolder, this.firstVideoId, this.playerIframId + " > " + this.playerHolder, 1),
-    carousel.productModal(),
+    carousel.modalSanity(this.modalId, this.firstVideoId, 'Double wall insulated mug'),
+    carousel.modalLoadPerformance(this.widgetIFrameHolder, this.firstVideoId, this.playerIframId + " > " + this.playerHolder, 1);
+
+    var product = {
+        "ID": 83102933,
+        "URL": "http://http://www.gourmia.com/item.asp?item=10096",
+        "SECURE_URL": "http://http://www.gourmia.com/item.asp?item=10096",
+        "TITLE_REGEX": /Gourmia\ GDK380\ Multi\ Function\ Digital\ Tea\ Kettle,\ \.\.\./i,
+        "IMG": "http://www.gourmia.com/itemimageslarge/GDK380-Small.png",
+        "PRICE": "$199.99"
+      }
+
+    carousel.productModal(false, product),
+    client.windowHandles(function (result) {
+      this.switchWindow(result.value[1]),
+      this.closeWindow(),
+      this.switchWindow(result.value[0]),
+      this.frame(1);
+    }),
     //carousel.productModalLink(),
-    carousel.analytics(1, ['ci','vv','pi','pk']),
+    carousel.analytics(1, ['ci','vv','pi','pk'], {
+      LOGIN_ID: 1758799,
+      CHANNEL_ID: 66133904,
+      VIDEO_ID: 65981962,
+      PID: 83102933,
+      PIDS: [83102933,83102936,83102939,83102914,83102916,83102920,83102919,83102921,83102918,83102928,83102927,83102923],
+      COUNTS: {"ci": 1, "pi": 12, "vv": 0, "pk": 1}
+    }),
+    carousel.playerStart(70, 70, this.playerIframId + " > " + this.playerHolder)
+    carousel.pause(15),
+    // carousel.analytics(1, ['ci','vv','pi','pk'], {
+    //   LOGIN_ID: 1758799,
+    //   CHANNEL_ID: 66133904,
+    //   VIDEO_ID: 65981962,
+    //   PID: 83102933,
+    //   PIDS: [83102933,83102936,83102939,83102914,83102916,83102920,83102919,83102921,83102918,83102928,83102927,83102923],
+    //   COUNTS: {"ci": 1, "pi": 12, "vv": 1, "pk": 1}
+    // }),
+    // carousel.analytics(1, ['ci','vv','pi','pk'], {
+    //   LOGIN_ID: 1758799,
+    //   CHANNEL_ID: 66133904,
+    //   VIDEO_ID: 83106081
+    // }),
+    // carousel.playerStart(70, 70, this.playerIframId + " > " + this.playerHolder),
+    // carousel.pause(10);
     carousel.end();
   }
 };
