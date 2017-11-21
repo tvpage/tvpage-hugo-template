@@ -1,65 +1,57 @@
 (function() {
-    
-    var eventPrefix = "tvp_" + (document.body.getAttribute("data-id") || "").replace(/-/g, '_');
-  
-    var initialize = function() {
-      var el = Utils.getByClass('iframe-content');
-  
-      window.addEventListener('message', function(e) {
-        if (!e || !Utils.isset(e, 'data') || !Utils.isset(e.data, 'event'))
-          return;
-  
-        var data = e.data;
-  
-        if (eventPrefix + ':modal_data' === data.event) {
-          var config = data.runTime;
-          var playerConfig = Utils.copy(config);
-          
-          playerConfig.data = data.data;
-    
-          playerConfig.onResize = function() {
-            Utils.sendMessage({
-              event: eventPrefix + ':modal_resize',
-              height: el.offsetHeight + 'px'
-            });
-          }
-    
-          playerConfig.onNext = function(next) {
-            Utils.sendMessage({
-              event: eventPrefix + ':player_next',
-              next: next || {}
-            });
-          };
-    
-          var player = new Player('tvp-player-el', playerConfig, data.selectedVideo.id);
-          player.initialize();
+  var body = document.body;
+  var id = body.getAttribute('data-id');
+  var config = window.parent.__TVPage__.config[id];
+  var eventPrefix = config.events.prefix;
+
+
+  //The global deps of the carousel have to be present before executing its logic.
+  var depsCheck = 0;
+  var deps = ['TVPage','Utils','Analytics','Player'];
+
+  (function initSoloCTA() {
+    setTimeout(function() {
+      console.log('deps poll...');
+      
+      var ready = true;
+      for (var i = 0; i < deps.length; i++)
+        if ('undefined' === typeof window[deps[i]])
+          ready = false;
+
+      if(ready){
+     
+        var mainEl = Utils.getById(id);
+        var playerConfig = Utils.copy(config);
+        
+        playerConfig.data = config.channel.videos;
+
+        playerConfig.onResize = function() {
+          Utils.sendMessage({
+            event: eventPrefix + ':modal_resize',
+            height: mainEl.offsetHeight + 'px'
+          });
         }
-      });
-  
-      Utils.sendMessage({
-        event: eventPrefix + ':modal_initialized',
-        height: (el.offsetHeight + 20) + 'px'
-      });
-    };
-  
-    var not = function(obj) {
-      return 'undefined' === typeof obj;
-    };
-    if (not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player)) {
-      var libsCheck = 0;
-      (function libsReady() {
-        setTimeout(function() {
-          if (not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player)) {
-            if (++libsCheck < 50) {
-              libsReady();
-            }
-          } else {
-            initialize();
-          }
-        }, 150);
-      })();
-    } else {
-      initialize();
-    }
-  
-  }());
+
+        playerConfig.onNext = function(next) {
+          Utils.sendMessage({
+            event: eventPrefix + ':player_next',
+            next: next || {}
+          });
+        };
+
+        var player = new Player('tvp-player-el', playerConfig, config.channel.firstVideo.id);
+        
+        player.initialize();
+
+        Utils.sendMessage({
+          event: eventPrefix + ':widget_modal_initialized',
+          height: (mainEl.offsetHeight + 20) + 'px'
+        });
+
+      }else if(++depsCheck < 200){
+        initSoloCTA()
+      }
+    },5);
+  })();
+
+}());
