@@ -279,7 +279,7 @@ function widgetRender(){
       debug ? libsPath + '/analytics.js' : '',
       debug ? libsPath + '/carousel.js' : '',
       debug ? javascriptPath + '/index.js' : '',
-      debug ? "" : javascriptPath + "scripts.min.js"
+      debug ? "" : javascriptPath + "/scripts.min.js"
     ],
     css: [
       debug ? baseUrl + '/slick/slick.css' : '',
