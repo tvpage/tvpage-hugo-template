@@ -427,7 +427,6 @@ var iframeModalDocument;
 var modal;
 
 function onWidgetVideosCarouselClick(e) {
-
   if(!modalInitialized){
     modalInitialized = true;
 
