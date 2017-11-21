@@ -167,8 +167,9 @@
       menuEl.innerHTML = this.templates.menu;
 
       var iframe = this.player.el.querySelector('iframe');
-      
-      iframe.parentNode.insertBefore(menuEl, iframe.nextSibling);
+      if(iframe && iframe.parentNode){
+        iframe.parentNode.insertBefore(menuEl, iframe.nextSibling);
+      }
     };
 
     Menu.prototype.listenToResize = function() {

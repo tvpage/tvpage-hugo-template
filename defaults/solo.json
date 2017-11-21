@@ -88,6 +88,13 @@
       "value": "#efefef"
     },
     {
+      "for": "solo",
+      "type": "boolean",
+      "label": "Playlist",
+      "code": "playlist",
+      "value": false
+    },
+    {
       "for": "menu",
       "type": "text",
       "label": "Menu Item Play Button Width",

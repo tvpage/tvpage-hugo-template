@@ -570,9 +570,6 @@ function onWidgetModalNoProducts(e) {
 }
 
 function onWidgetModalProducts(e){
-
-  console.log('##HERE??')
-
   removeClass(iframeModalHolder, 'no-products');
   addClass(iframeModalHolder, 'products');
 

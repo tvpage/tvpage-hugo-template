@@ -46,6 +46,7 @@
     this.startWith = startWith || null;
     this.isFullScreen = false;
     this.currentIndex = null;
+    this.onReadyCalled = false;
   };
   
   Player.prototype.getPlayButtonOptions = function() {
@@ -201,14 +202,18 @@
   };
 
   Player.prototype.onReady = function(e, pl) {
-    this.resize.call(this);
-
-    this.analyticsConfig();
-    this.controlBarZindex();
-    this.handleResize();
-
-    if(this.onPlayerReady){
-      this.onPlayerReady(this);
+    if(this.onReadyCalled){
+      this.resize.call(this);
+    }else{
+      this.resize.call(this);
+      
+      this.analyticsConfig();
+      this.controlBarZindex();
+      this.handleResize();
+  
+      if(this.onPlayerReady){
+        this.onPlayerReady(this);
+      }
     }
   };
   
@@ -236,7 +241,7 @@
     }
 
     var next = this.assets[this.currentIndex];
-    
+
     this.play(next, true);
 
     if (this.onNext) {
@@ -283,7 +288,6 @@
   }
   
   Player.prototype.startPlayer = function() {
-
     var config = this.getConfig();
     var that = this;
     var depsCheck = 0;
@@ -300,12 +304,9 @@
   
         if(ready){
 
-          var onReadyCalled = false;
           config.onReady = function(e, pl){
-            if(!onReadyCalled){
-              onReadyCalled = true;
-              that.onReady(e, pl);
-            }
+            that.onReady(e, pl);
+            that.onReadyCalled = true;
           };
 
           config.onStateChange = function(e) {
