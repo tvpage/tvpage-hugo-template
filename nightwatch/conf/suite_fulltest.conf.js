@@ -55,7 +55,7 @@ nightwatch_config = {
       },
       filter: "desktop/carousel/W10E15.js"
     },
-    CarouselWin8GC61: {
+    CarouselW8GC61: {
       desiredCapabilities: {
         'build': 'CarouselW8GC61',
         'os': 'Windows',
@@ -111,7 +111,7 @@ nightwatch_config = {
         'os': 'OS X',
         'os_version': 'Sierra',
         'browser': 'Firefox',
-        'browser_version': '55.0'
+        'browser_version': '56.0'
       },
       filter: "desktop/carousel/OSXSierraFF55.js"
     },
@@ -141,7 +141,7 @@ nightwatch_config = {
         'os': 'OS X',
         'os_version': 'High Sierra',
         'browser': 'Firefox',
-        'browser_version': '55.0'
+        'browser_version': '56.0'
       },
       filter: "desktop/carousel/OSXHighSierraFF55.js"
     },

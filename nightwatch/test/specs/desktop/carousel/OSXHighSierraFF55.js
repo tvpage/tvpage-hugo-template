@@ -141,6 +141,7 @@ module.exports = {
           'widgetNavPrev': this.widgetNavPrev,
           'widgetNavNext': this.widgetNavNext,
           'widgetPlayerButton': this.widgetPlayerButton,
+          'isFF': true,
           'DATA': DATA
         }),
         parent = this.playerIframId + " > " + this.productHolder;
