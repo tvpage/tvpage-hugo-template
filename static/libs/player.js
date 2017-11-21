@@ -230,10 +230,11 @@
   
   Player.prototype.handleVideoEnded = function(){
     this.currentIndex++;
+
     if (!this.assets[this.currentIndex]) {
       this.currentIndex = 0;
     }
-  
+
     var next = this.assets[this.currentIndex];
     
     this.play(next, true);
@@ -326,8 +327,8 @@
             index = assetResp.index;
             asset = assetResp.asset;
           }
-        
-          this.currentIndex = index;
+
+          that.currentIndex = index;
 
           that.play(asset);
   

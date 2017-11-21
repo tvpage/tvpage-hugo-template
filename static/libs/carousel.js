@@ -130,7 +130,7 @@
         arrowTop,
         arrowBottom,
         isCenter;
-    
+
     function updateArrows(){
       var arrows = that.el.querySelectorAll('.slick-arrow');
       var arrowsLength = arrows.length;
@@ -207,6 +207,14 @@
           },0);
         })();
 
+      }
+    }else{
+      var arrows = this.el.querySelectorAll('.slick-arrow');
+      var arrowsLength = arrows.length;
+
+      for (var i = 0; i < arrowsLength; i++) {
+        arrows[i].style.opacity = 1;
+        arrows[i].style.visibility = 'visible';
       }
     }
   };
