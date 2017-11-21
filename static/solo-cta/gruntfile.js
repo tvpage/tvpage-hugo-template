@@ -23,8 +23,12 @@ module.exports = function(grunt) {
         },
         desktop: {
           files: {
-            'dist/css/styles.min.css': ['css/styles.css'],
-            'dist/css/modal/styles.min.css': ['css/modal/styles.css']
+            'dist/css/styles.min.css': [
+              'css/styles.css'
+            ],
+            'dist/css/modal/styles.min.css': [
+              'css/modal/styles.css'
+            ]
           }
         },
         mobile: {
@@ -39,7 +43,12 @@ module.exports = function(grunt) {
         },
         modal: {
           files: {
-            'dist/js/modal/scripts.min.js': ['../libs/utils.js', '../libs/analytics.js','../libs/player.js', 'js/modal/index.js']
+            'dist/js/modal/scripts.min.js': [
+              '../libs/utils.js', 
+              '../libs/analytics.js',
+              '../libs/player.js',
+              'js/modal/index.js'
+            ]
           }
         }
       }
@@ -51,5 +60,4 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     
     grunt.registerTask('default', ['uglify', 'cssmin', 'autoprefixer']);
-
 };
