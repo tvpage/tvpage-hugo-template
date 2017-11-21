@@ -140,6 +140,7 @@ module.exports = {
           'widgetNavPrev': this.widgetNavPrev,
           'widgetNavNext': this.widgetNavNext,
           'widgetPlayerButton': this.widgetPlayerButton,
+          'isFF': true,
           'DATA': DATA
         }),
         parent = this.playerIframId + " > " + this.productHolder;
@@ -152,7 +153,7 @@ module.exports = {
 
     var product = {
         "ID": 83102933,
-        "URL": "http://http://www.gourmia.com/item.asp?item=10096",
+        "URL": "http://www.gourmia.com/item.asp?item=10096",
         "SECURE_URL": "http://http://www.gourmia.com/item.asp?item=10096",
         "TITLE_REGEX": /Gourmia\ GDK380\ Multi\ Function\ Digital\ Tea\ Kettle,\ \.\.\./i,
         "IMG": "http://www.gourmia.com/itemimageslarge/GDK380-Small.png",
@@ -165,33 +166,41 @@ module.exports = {
       this.closeWindow(),
       this.switchWindow(result.value[0]),
       this.frame(1);
-    }),
+    });
+
+    // product = {
+    //     "ID": 83102933,
+    //     "URL": "http://www.gourmia.com/item.asp?item=10096",
+    //     "SECURE_URL": "http://http://www.gourmia.com/item.asp?item=10096",
+    //     "TITLE_REGEX": /Gourmia\ GDK380\ Multi\ Function\ Digital\ Tea\ Kettle,\ \.\.\./i,
+    //     "IMG": "http://www.gourmia.com/itemimageslarge/GDK380-Small.png",
+    //     "PRICE": "$199.99"
+    //   }
+
     //carousel.productModalLink(),
+    carousel.playerStart(70, 70, this.playerIframId + " > " + this.playerHolder)
+    carousel.pause(15);
+    //carousel.productModal(false, product),
+    // client.windowHandles(function (result) {
+    //   this.switchWindow(result.value[1]),
+    //   this.closeWindow(),
+    //   this.switchWindow(result.value[0]),
+    //   this.frame(1);
+    // }),
+    carousel.playerStart(70, 70, this.playerIframId + " > " + this.playerHolder),
+    carousel.pause(5);
     carousel.analytics(1, ['ci','vv','pi','pk'], {
       LOGIN_ID: 1758799,
       CHANNEL_ID: 66133904,
-      VIDEO_ID: 65981962,
-      PID: 83102933,
-      PIDS: [83102933,83102936,83102939,83102914,83102916,83102920,83102919,83102921,83102918,83102928,83102927,83102923],
-      COUNTS: {"ci": 1, "pi": 12, "vv": 0, "pk": 1}
+      VIDS: [65981962,83106081],
+      PKIDS: [83102933,83102606],
+      PIDS: [
+        [83102933,83102936,83102939,83102914,83102916,83102920,83102919,83102921,83102918,83102928,83102927,83102923],
+        [83102606,83096473,83096474,83102585,83102603,83106094]
+      ],
+      COUNTS: {"ci": 2, "pi": 18, "vv": 2, "pk": 2}
     }),
-    carousel.playerStart(70, 70, this.playerIframId + " > " + this.playerHolder)
-    carousel.pause(15),
-    // carousel.analytics(1, ['ci','vv','pi','pk'], {
-    //   LOGIN_ID: 1758799,
-    //   CHANNEL_ID: 66133904,
-    //   VIDEO_ID: 65981962,
-    //   PID: 83102933,
-    //   PIDS: [83102933,83102936,83102939,83102914,83102916,83102920,83102919,83102921,83102918,83102928,83102927,83102923],
-    //   COUNTS: {"ci": 1, "pi": 12, "vv": 1, "pk": 1}
-    // }),
-    // carousel.analytics(1, ['ci','vv','pi','pk'], {
-    //   LOGIN_ID: 1758799,
-    //   CHANNEL_ID: 66133904,
-    //   VIDEO_ID: 83106081
-    // }),
-    // carousel.playerStart(70, 70, this.playerIframId + " > " + this.playerHolder),
-    // carousel.pause(10);
+    carousel.pause(10),
     carousel.end();
   }
 };
