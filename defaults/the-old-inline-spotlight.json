@@ -1,46 +1,4 @@
 {
-    "config": {
-        "global": [
-            {
-                "type": "text",
-                "label": "API Base Url",
-                "code": "api_base_url",
-                "value": "//api.tvpage.com/v1"
-            },
-            {
-                "type": "boolean",
-                "label": "Analytics",
-                "code": "analytics",
-                "value": true
-            },
-            {
-                "type": "text",
-                "label": "Videos Order By",
-                "code": "videos_order_by",
-                "value": "sortOrder"
-            },
-            {
-                "type": "text",
-                "label": "Videos Order Direction",
-                "code": "videos_order_direction",
-                "value": "ASC"
-            }
-        ],
-        "player": [
-            {
-                "type": "text",
-                "label": "API Base Url",
-                "code": "api_base_url",
-                "value": "//api.tvpage.com/v1"
-            },
-            {
-                "type": "boolean",
-                "label": "Analytics",
-                "code": "analytics",
-                "value": true
-            }
-        ]
-    },
     "option": [
         {
             "type": "text",
@@ -61,18 +19,11 @@
             "value": "ASC"
         },
         {
-            "for": "inline",
-            "type": "text",
-            "label": "Items Per Page",
-            "code": "items_per_page",
-            "value": "4"
-         },
-        {
             "for": "player",
             "type": "text",
             "label": "Player Version",
             "code": "player_version",
-            "value": "3.1.4"
+            "value": "3.1.2"
         },
         {
             "for": "player",
@@ -89,6 +40,20 @@
             "value": false
         },
         {
+            "for": "carousel",
+            "type": "text",
+            "label": "Sort Videos By",
+            "code": "sort_videos_by",
+            "value": ""
+        },
+        {
+            "for": "carousel",
+            "type": "text",
+            "label": "Sort Videos Order",
+            "code": "sort_videos_order",
+            "value": "ASC"
+        },
+        {
             "for": "player",
             "type": "boolean",
             "label": "Autonext",
@@ -96,40 +61,12 @@
             "value": true
         },
         {
-            "for": "inline",
-            "type": "text",
-            "label": "inline Holder Padding Top",
-            "code": "inline_holder_padding_top",
-            "value": "200%"
+            "for": "player",
+            "type": "boolean",
+            "label": "Immediate",
+            "code": "immediate",
+            "value": true
         },
-        {
-            "for": "carousel",
-            "type": "text",
-            "label": "Iframe Carousel Body Padding",
-            "code": "iframe_carousel_body_padding",
-            "value": "0"
-         },
-         {
-            "for": "carousel",
-            "type": "text",
-            "label": "Iframe Carousel Body Padding 480",
-            "code": "iframe_carousel_body_padding_480",
-            "value": "0"
-         },
-         {
-            "for": "carousel",
-            "type": "text",
-            "label": "Iframe Carousel Body Margin",
-            "code": "iframe_carousel_body_margin",
-            "value": "0"
-         },
-         {
-            "for": "carousel",
-            "type": "text",
-            "label": "Iframe Carousel Body Padding 768",
-            "code": "iframe_carousel_body_padding_768",
-            "value": "0"
-         },
         {
             "type": "array",
             "label": "Fonts",
@@ -140,7 +77,7 @@
             "for": "inline",
             "type": "text",
             "label": "iFrame Holder Background Color",
-            "code": "body_background",
+            "code": "body_padding",
             "value": "transparent"
         },
         {
@@ -174,6 +111,13 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Play Button Background Size",
+            "code": "play_button_background_size",
+            "value": "contain"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Play Button Transform",
             "code": "play_button_transform",
             "value": "none"
@@ -181,9 +125,86 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Thumbnail Play Button Icon Color",
+            "code": "thumbnail_play_button_icon_color",
+            "value": "#000"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Active State Border",
             "code": "active_state_border",
             "value": "transparent"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Image Border",
+            "code": "product_image_border",
+            "value": "none"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Image Border Mobile",
+            "code": "product_image_border_mobile",
+            "value": "none"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Image Width",
+            "code": "product_image_width",
+            "value": "calc(25% - 16px)"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Image Height",
+            "code": "product_image_height",
+            "value": "100%"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos To Show",
+            "code": "videos_to_show",
+            "value": "3"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos To Scroll",
+            "code": "videos_to_scroll",
+            "value": "3"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos To Show Mobile",
+            "code": "videos_to_show_mobile",
+            "value": "1"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos To scroll Mobile",
+            "code": "videos_to_scroll_mobile",
+            "value": "1"
+        },
+        {
+            "for": "inline",
+            "type": "boolean",
+            "label": "Video Slider Center Mode Mobile",
+            "code": "video_slider_center_mode_mobile",
+            "value": true
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Video Slider Center Padding Mobile",
+            "code": "video_slider_center_padding_mobile",
+            "value": "35% 0 0"
         },
         {
             "for": "inline",
@@ -237,6 +258,13 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Video Header Line Family",
+            "code": "video_header_font_family",
+            "value": "Helvetica"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Video Header Padding",
             "code": "video_header_padding",
             "value": "0"
@@ -244,9 +272,58 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Video Header Padding Mobile",
+            "code": "video_header_padding_mobile",
+            "value": "10px 0 0"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Video Header Case",
             "code": "video_header_case",
             "value": "none"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Video Header Text Align",
+            "code": "video_header_text_align",
+            "value": "left"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Video Header Text Align Mobile",
+            "code": "video_header_text_align_mobile",
+            "value": "left"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Video Header Margin",
+            "code": "video_header_margin",
+            "value": "0"
+        },
+        {
+            "for": "inline",
+            "type": "boolean",
+            "label": "Video Slider Dots Mobile",
+            "code": "video_slider_dots_mobile",
+            "value": false
+        },
+        {
+            "for": "inline",
+            "type": "boolean",
+            "label": "Video Slider Dots",
+            "code": "video_slider_dots",
+            "value": false
+        }, 
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Video Header Color",
+            "code": "video_header_color",
+            "value": "#333"
         },
         {
             "for": "inline",
@@ -267,6 +344,13 @@
             "type": "text",
             "label": "Product Header Title Text",
             "code": "product_header_title_text",
+            "value": "Featured Products"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Header Title Text Mobile",
+            "code": "product_header_title_text_mobile",
             "value": "Related Products"
         },
         {
@@ -281,7 +365,7 @@
             "type": "text",
             "label": "Featured Product Header Font Size Max",
             "code": "featured_product_header_font_size_max",
-            "value": "32"
+            "value": "14"
         },
         {
             "for": "inline",
@@ -300,16 +384,51 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Featured Product Header Text Transform",
+            "code": "featured_product_header_text_transform",
+            "value": "uppercase"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Text Align",
+            "code": "featured_product_header_text_align",
+            "value": "center"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Margin",
+            "code": "featured_product_header_margin",
+            "value": "0"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Color",
+            "code": "featured_product_header_color",
+            "value": "#333"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Featured Product Header Padding",
             "code": "featured_product_header_padding",
-            "value": "0"
+            "value": "20% 0 0"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Padding",
+            "code": "featured_product_header_padding",
+            "value": "20% 0 0"
         },
         {
             "for": "inline",
             "type": "text",
             "label": "Featured Product Header Line Height",
             "code": "featured_product_header_line_height",
-            "value": "43px"
+            "value": "normal"
         },
         {
             "for": "inline",
@@ -547,7 +666,7 @@
             "type": "text",
             "label": "Product Holder Slider Arrow Button Color",
             "code": "product_holder_slide_arrow_button_color",
-            "value": "rgba(0,0,0,0.75)"
+            "value": "transparent"
         },
         {
             "for": "inline",
@@ -561,21 +680,35 @@
             "type": "text",
             "label": "Product Holder Slider Arrow Color",
             "code": "product_holder_slide_arrow_color",
-            "value": "#fff"
+            "value": "#333"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Holder Slider Arrow Left",
+            "code": "product_holder_slide_arrow_left",
+            "value": "-12px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Holder Slider Arrow Right",
+            "code": "product_holder_slide_arrow_right",
+            "value": "-12px"
         },
         {
             "for": "inline",
             "type": "text",
             "label": "Product Holder Slider Arrow Width",
             "code": "product_holder_slide_arrow_width",
-            "value": "23"
+            "value": "40"
         },
         {
             "for": "inline",
             "type": "text",
             "label": "Product Holder Slider Arrow Height",
             "code": "product_holder_slide_arrow_height",
-            "value": "23"
+            "value": "40"
         },
         {
             "for": "inline",
@@ -583,13 +716,6 @@
             "label": "Product Holder Slider Dots Color",
             "code": "product_holder_slide_dots_color",
             "value": "#D8D8D8"
-        },
-        {
-            "for": "inline",
-            "type": "text",
-            "label": "Product Holder Slider Center Padding",
-            "code": "product_holder_slide_center_padding",
-            "value": "0"
         },
         {
             "for": "inline",
@@ -650,9 +776,121 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Product Item Title Text Align",
+            "code": "product_item_title_text_align",
+            "value": "center"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item Price Text Align",
+            "code": "product_item_price_text_align",
+            "value": "center"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item Price Font Color",
+            "code": "product_item_price_font_color",
+            "value": "#333"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item Price Margin",
+            "code": "product_item_price_margin",
+            "value": "0 0 5px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item Title Margin",
+            "code": "product_item_title_margin",
+            "value": "0 0 5px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item Title Display Dtop",
+            "code": "product_item_title_display_dtop",
+            "value": "block"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item Price Display Dtop",
+            "code": "product_item_price_display_dtop",
+            "value": "block"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item View Button Display Dtop",
+            "code": "product_item_view_button_display_dtop",
+            "value": "block"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item Title Text Align Mobile",
+            "code": "product_item_title_text_align_mobile",
+            "value": "left"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item Info Display Mobile",
+            "code": "product_item_info_display_mobile",
+            "value": "inline-block"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item Show Hide Feature Mobile Display",
+            "code": "product_item_show_hide_feature_mobile_display",
+            "value": "none"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item Show Hide Feature Mobile Arrow Down",
+            "code": "product_item_show_hide_feature_mobile_arrow_down",
+            "value": "url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gICAgPHBhdGggZD0iTTcuNDEgNy44NEwxMiAxMi40Mmw0LjU5LTQuNThMMTggOS4yNWwtNiA2LTYtNnoiLz4gICAgPHBhdGggZD0iTTAtLjc1aDI0djI0SDB6IiBmaWxsPSJub25lIi8+PC9zdmc+);"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item Show Hide Feature Mobile Arrow Up",
+            "code": "product_item_show_hide_feature_mobile_arrow_up",
+            "value": "url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gICAgPHBhdGggZD0iTTcuNDEgMTUuNDFMMTIgMTAuODNsNC41OSA0LjU4TDE4IDE0bC02LTYtNiA2eiIvPiAgICA8cGF0aCBkPSJNMCAwaDI0djI0SDB6IiBmaWxsPSJub25lIi8+PC9zdmc+);"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item Show Hide Feature Mobile Background Color",
+            "code": "product_item_show_hide_feature_mobile_background_color",
+            "value": "#ccc"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item Show Hide Feature Mobile Background Radius",
+            "code": "product_item_show_hide_feature_mobile_background_radius",
+            "value": "50%"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item Price Text Align Mobile",
+            "code": "product_item_price_text_align_mobile",
+            "value": "left"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Product Item Background Color",
             "code": "product_item_background_color",
-            "value": "#D8D8D8"
+            "value": "transparent"
         },
         {
             "for": "inline",
@@ -673,7 +911,7 @@
             "type": "text",
             "label": "Product Item Title Font Size Min",
             "code": "product_item_title_font_size_min",
-            "value": "12"
+            "value": "14"
         },
         {
             "for": "inline",
@@ -692,6 +930,13 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Product Item Title Font Family",
+            "code": "product_item_title_font_family",
+            "value": "Helvetica"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Product Item Title Line Height",
             "code": "product_item_title_line_height",
             "value": "normal"
@@ -701,14 +946,28 @@
             "type": "text",
             "label": "Product Item View Button Border Color",
             "code": "product_item_view_button_border_color",
-            "value": "white"
+            "value": "transparent"
         },
         {
             "for": "inline",
             "type": "text",
             "label": "Product Item View Button Border Background",
             "code": "product_item_view_button_border_background",
-            "value": "transparent"
+            "value": "#000"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item View Button Display",
+            "code": "product_item_view_button_display",
+            "value": "none"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item View Button Margin",
+            "code": "product_item_view_button_margin",
+            "value": "0"
         },
         {
             "for": "inline",
@@ -716,6 +975,69 @@
             "label": "Product Item View Button Font Size Max",
             "code": "product_item_view_button_font_size_max",
             "value": "14"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Product Item Border Color Mobile",
+            "code": "product_item_border_color_mobile",
+            "value": "#000"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Text Align Mobile",
+            "code": "featured_product_header_text_align_mobile",
+            "value": "left"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Text Transform Mobile",
+            "code": "featured_product_header_text_transform_mobile",
+            "value": "none"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Margin Mobile",
+            "code": "featured_product_header_margin_mobile",
+            "value": "24px 0 30px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Font Weight Mobile",
+            "code": "featured_product_header_font_weight_mobile",
+            "value": "normal"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Line Height Mobile",
+            "code": "featured_product_header_line_height_mobile",
+            "value": "20px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Padding Mobile",
+            "code": "featured_product_header_padding_mobile",
+            "value": "0 20px 0 6px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Font Size Mobile",
+            "code": "featured_product_header_font_size_mobile",
+            "value": "14px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Featured Product Header Font Family Mobile",
+            "code": "featured_product_header_font_family_mobile",
+            "value": "helvetica"
         },
         {
             "for": "inline",
@@ -729,7 +1051,7 @@
             "type": "text",
             "label": "Product Item View Button Font Color",
             "code": "product_item_view_button_font_color",
-            "value": "#000"
+            "value": "#fff"
         },
         {
             "for": "inline",
@@ -743,7 +1065,7 @@
             "type": "text",
             "label": "Videos Carousel Container Height",
             "code": "videos_carousel_container_height",
-            "value": "19.53125%"
+            "value": ""
         },
         {
             "for": "inline",
@@ -797,8 +1119,78 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Videos Carousel Margin",
+            "code": "videos_carousel_margin",
+            "value": "-20px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Margin Mobile",
+            "code": "videos_carousel_margin_mobile",
+            "value": "0"
+        },
+        {
+            "for": "inline",
+            "type": "boolean",
+            "label": "Products Slider Arrows",
+            "code": "products_slider_arrows",
+            "value": true
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Products Slider Slides To Show",
+            "code": "products_slider_slides_to_show",
+            "value": "1"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Products Slider Center Padding",
+            "code": "products_slider_center_padding",
+            "value": "25% 0 0"
+        },
+        {
+            "for": "inline",
+            "type": "boolean",
+            "label": "Products Slider Arrows Mobile",
+            "code": "products_slider_arrows_mobile",
+            "value": false
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Videos Carousel Item Title Font Color",
             "code": "videos_carousel_item_title_font_color",
+            "value": "#000"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Title Font Family",
+            "code": "videos_carousel_item_title_font_family",
+            "value": "Helvetica"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Date Font Color",
+            "code": "videos_carousel_item_date_font_color",
+            "value": "#000"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Now Playing Font Color",
+            "code": "videos_carousel_item_now_playing_font_color",
+            "value": "#fff"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Date Font Color Mobile",
+            "code": "videos_carousel_item_date_font_color_mobile",
             "value": "#000"
         },
         {
@@ -818,8 +1210,78 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Videos Carousel Item Date Font Size Min",
+            "code": "videos_carousel_item_date_font_size_min",
+            "value": "10"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Now Playing Font Size Max",
+            "code": "videos_carousel_item_now_playing_font_size_max",
+            "value": "18"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Now Playing Font Size Min",
+            "code": "videos_carousel_item_now_playing_font_size_min",
+            "value": "20"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Date Font Size Max",
+            "code": "videos_carousel_item_date_font_size_max",
+            "value": "16"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Videos Carousel Item Title Font Weight",
             "code": "videos_carousel_item_title_font_weight",
+            "value": "normal"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Date Font Weight",
+            "code": "videos_carousel_item_date_font_weight",
+            "value": "normal"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Now Playing Font Weight",
+            "code": "videos_carousel_item_now_playing_font_weight",
+            "value": "normal"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Date Font Family",
+            "code": "videos_carousel_item_date_font_family",
+            "value": "helvetica"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Now Playing Font Family",
+            "code": "videos_carousel_item_now_playing_font_family",
+            "value": "helvetica"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Date Font Style",
+            "code": "videos_carousel_item_date_font_style",
+            "value": "normal"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Now Playing Font Style",
+            "code": "videos_carousel_item_now_playing_font_style",
             "value": "normal"
         },
         {
@@ -832,8 +1294,22 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Videos Carousel Item Date Line Height",
+            "code": "videos_carousel_item_date_line_height",
+            "value": "normal"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Videos Carousel Item Title Padding",
             "code": "videos_carousel_item_title_padding",
+            "value": "10px 0 0 0"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Date Padding",
+            "code": "videos_carousel_item_date_padding",
             "value": "10px 0 0 0"
         },
         {
@@ -853,8 +1329,29 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Videos Carousel Item Date Display",
+            "code": "videos_carousel_item_date_display",
+            "value": "block"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Videos Carousel Item Title Position",
             "code": "videos_carousel_item_title_position",
+            "value": "static"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Title Position Mobile",
+            "code": "videos_carousel_item_title_position_mobile",
+            "value": "absolute"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Date Position",
+            "code": "videos_carousel_item_date_position",
             "value": "static"
         },
         {
@@ -867,8 +1364,78 @@
         {
             "for": "inline",
             "type": "text",
+            "label": "Videos Carousel Item Title Top Mobile",
+            "code": "videos_carousel_item_title_top_mobile",
+            "value": "20px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Date Top",
+            "code": "videos_carousel_item_date_top",
+            "value": "50%"
+        },
+        {
+            "for": "inline",
+            "type": "text",
             "label": "Videos Carousel Item Title Transform",
             "code": "videos_carousel_item_title_transform",
+            "value": "none"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Products Carousel Padding",
+            "code": "products_carousel_padding",
+            "value": "0 6px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Products Carousel Padding Mobile",
+            "code": "products_carousel_padding_mobile",
+            "value": "0 6px"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Date Transform",
+            "code": "videos_carousel_item_date_transform",
+            "value": "none"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Title Text Align",
+            "code": "videos_carousel_item_title_text_align",
+            "value": "center"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Date Text Align",
+            "code": "videos_carousel_item_date_text_align",
+            "value": "center"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Now Playing Text Align",
+            "code": "videos_carousel_item_now_playing_text_align",
+            "value": "center"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Now Playing Text Transform",
+            "code": "videos_carousel_item_now_playing_text_transform",
+            "value": "none"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Date Text Transform",
+            "code": "videos_carousel_item_date_text_transform",
             "value": "none"
         },
         {
@@ -905,6 +1472,20 @@
             "label": "Videos Carousel Item Thumbnail InActive",
             "code": "videos_carousel_item_thumbnail_inactive",
             "value": "0"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Thumbnail Media Duration Display",
+            "code": "videos_carousel_item_thumbnail_media_duration_display",
+            "value": "none"
+        },
+        {
+            "for": "inline",
+            "type": "text",
+            "label": "Videos Carousel Item Thumbnail Media Duration Display Mobile",
+            "code": "videos_carousel_item_thumbnail_media_duration_display_mobile",
+            "value": "block"
         },
         {
             "for": "inline",
@@ -979,13 +1560,6 @@
         {
             "for": "inline",
             "type": "text",
-            "label": "Videos Carousel Padding",
-            "code": "videos_carousel_center_padding",
-            "value": "0"
-        },
-        {
-            "for": "inline",
-            "type": "text",
             "label": "Videos Carousel Arrow Left",
             "code": "videos_carousel_arrow_left",
             "value": "0"
@@ -1038,279 +1612,7 @@
             "label": "Videos Carousel Arrow Active Opacity",
             "code": "videos_carousel_arrow_active_opacity",
             "value": "1"
-        },
-        {
-            "for": "inline",
-            "type": "text",
-            "label": "Skeleton Background Color",
-            "code": "skeleton_background_color",
-            "value": "#efefef"
-          },
-          {
-            "for": "carousel",
-            "type": "text",
-            "label": "Item Padding Left",
-            "code": "item_padding_left",
-            "value": "5px"
-        },
-        {
-            "for": "carousel",
-            "type": "text",
-            "label": "Item Padding Right",
-            "code": "item_padding_right",
-            "value": "5px"
-        },
-        {
-            "for": "carousel",
-            "type": "text",
-            "label": "Item Margin Left",
-            "code": "item_margin_left",
-            "value": "0"
-        },
-        {
-            "for": "carousel",
-            "type": "text",
-            "label": "Item Margin Right",
-            "code": "item_margin_right",
-            "value": "0"
-        },
-        {
-            "for": "carousel",
-            "type": "text",
-            "label": "Item Image Background Color",
-            "code": "item_image_background_color",
-            "value": "#efefef"
-        },
-          {
-              "for": "carousel",
-              "type": "text",
-              "label": "Item Background Image Size",
-              "code": "item_background_image_size",
-              "value": "cover"
-          },
-          {
-              "for": "carousel",
-              "type": "text",
-              "label": "Item Border",
-              "code": "item_border",
-              "value": "0"
-          },
-          {
-            "for": "carousel",
-            "type": "text",
-            "label": "Item Play Button Background Color",
-            "code": "item_play_button_background_color",
-            "value": "#000"
-        },
-        {
-            "for": "carousel",
-            "type": "text",
-            "label": "Item Play Button Background Size",
-            "code": "item_play_button_background_size",
-            "value": "initial"
-        },
-        {
-            "for": "carousel",
-            "type": "text",
-            "label": "Item Play Button Border",
-            "code": "item_play_button_border",
-            "value": "0"
-        },
-        {
-            "for": "carousel",
-            "type": "text",
-            "label": "Item Play Button Border Radius",
-            "code": "item_play_button_border_radius",
-            "value": "50%"
-        },
-        {
-            "for": "carousel",
-            "type": "text",
-            "label": "Item Play Button Width",
-            "code": "item_play_button_width",
-            "value": "45px"
-        },
-        {
-            "for": "carousel",
-            "type": "text",
-            "label": "Item Play Button Height",
-            "code": "item_play_button_height",
-            "value": "45px"
-        },
-        {
-            "for": "carousel",
-            "type": "text",
-            "label": "Item Image Overlay Color",
-            "code": "item_image_overlay_color",
-            "value": "rgba(0, 0, 0, 0.2)"
-        },
-        {
-            "for": "carousel",
-            "type": "text",
-            "label": "Item Play Button Icon Color",
-            "code": "item_play_button_icon_color",
-            "value": "#333"
-        },
-        {
-            "for": "carousel",
-            "type": "text",
-            "label": "Item Title Font Size",
-            "code": "item_title_font_size",
-            "value": "12px"
-        },
-         {
-            "for": "carousel",
-            "type": "text",
-            "label": "Item Title Font Family",
-            "code": "item_title_font_family",
-            "value": "Helvetica"
-        },
-        {
-            "for": "carousel",
-            "type": "text",
-            "label": "Item Title Font Weight",
-            "code": "item_title_font_weight",
-            "value": "initial"
-        },
-        {
-            "for": "carousel",
-            "type": "text",
-            "label": "Item Title Font Color",
-            "code": "item_title_font_color",
-            "value": "#333"
-        },
-        {
-            "for": "carousel",
-            "type": "text",
-            "label": "Item Title Text Align",
-            "code": "item_title_text_align",
-            "value": "left"
-        },
-        {
-            "for": "carousel",
-            "type": "text",
-            "label": "Item Title Margin",
-            "code": "item_title_margin",
-            "value": "10px 0"
-        },
-        {
-            "for": "carousel",
-            "type": "text",
-            "label": "Item Title Padding",
-            "code": "item_title_padding",
-            "value": "0 7px"
-        },
-        {
-            "for": "carousel",
-            "type": "text",
-            "label": "Items To Scroll",
-            "code": "items_to_scroll",
-            "value": "1"
-        },
-        {
-            "for": "carousel",
-            "type": "boolean",
-            "label": "Navigation Bullets",
-            "code": "navigation_bullets",
-            "value": true
-        },
-        {
-            "for": "carousel",
-            "type": "text",
-            "label": "Navigation Bullets Append To",
-            "code": "navigation_bullets_append_to",
-            "value": ""
-          },
-          {
-            "for": "carousel",
-            "type": "text",
-            "label": "Navigation Bullets Position",
-            "code": "navigation_bullets_position",
-            "value": "relative"
-          },
-          {
-            "for": "carousel",
-            "type": "text",
-            "label": "Navigation Bullets Bottom",
-            "code": "navigation_bullets_bottom",
-            "value": "0"
-          },
-          {
-            "for": "carousel",
-            "type": "text",
-            "label": "Navigation Bullets Text Align",
-            "code": "navigation_bullets_text_align",
-            "value": "center"
-          },
-          {
-            "for": "carousel",
-            "type": "text",
-            "label": "Navigation Bullets Margin",
-            "code": "navigation_bullets_margin",
-            "value": "0"
-          },
-          {
-              "for": "carousel",
-              "type": "boolean",
-              "label": "Navigation Bullets Margin Bottom",
-              "code": "navigation_bullets_margin_bottom",
-              "value": "30px"
-          },
-          {
-            "for": "carousel",
-            "type": "text",
-            "label": "Navigation Active Bullet Size",
-            "code": "navigation_active_bullet_background_position",
-            "value": "0px 0px"
-         },
-         {
-            "for": "carousel",
-            "type": "text",
-            "label": "Navigation Active Bullet Background Color",
-            "code": "navigation_active_bullet_background_color",
-            "value": "#333333"
-         },
-         {
-            "for": "carousel",
-            "type": "text",
-            "label": "Navigation Active Bullet Border",
-            "code": "navigation_active_bullet_border",
-            "value": "none"
-         },
-         {
-            "for": "carousel",
-            "type": "text",
-            "label": "Navigation Bullet Size",
-            "code": "navigation_bullet_size",
-            "value": "20px"
-         },
-         {
-            "for": "carousel",
-            "type": "text",
-            "label": "Navigation Bullet Padding",
-            "code": "navigation_bullet_padding",
-            "value": "0"
-         },
-         {
-            "for": "carousel",
-            "type": "text",
-            "label": "Navigation Bullet Font Size",
-            "code": "navigation_bullet_font_size",
-            "value": "6px"
-         },
-         {
-            "for": "carousel",
-            "type": "text",
-            "label": "Navigation Bullet Font Color",
-            "code": "navigation_bullet_font_color",
-            "value": "black"
-         },
-         {
-            "for": "inline",
-            "type": "text",
-            "label": "Iframe Holder Background Color",
-            "code": "iframe_holder_background_color",
-            "value": "white"
-         }
+        }
+
     ]
 }
