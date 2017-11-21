@@ -2,13 +2,12 @@
 /* Nightwatch Recorder generated Mon Oct 23 2017 18:49:04 GMT-0700 (PDT) */
 /*==============================================================================*/
 var DATA = {
-      URL: "https://widgets.goodlookingbean.com/test/carousel/",
+      URL: "https://widgets.goodlookingbean.com/test/inline/",
       PRODUCT_HEADLINE: "Related Products",
       SLA: 10000,
       BROWSERHEIGHT: 1080,
       BROWSEWIDTH: 1920
     };
-
 
 var widget = require(__dirname + "/../../../../lib/tvpGUITest.js");
 
@@ -16,7 +15,7 @@ module.exports = {
   widgetHolder: "div#carousel-2-holder",
   widgetIFrameHolder: "div#tvp-modal-iframe-holder-carousel-2",
   widgetIframeId: 'div#skeleton',
-  playerIframId: 'div#carousel-2',
+  playerIframId: 'div#player-el',
   widgetTitleId: "h3#widget-title",
   widgetNavHolder: "div#videos div.slick-carousel.slick-initialized.slick-slider",
   widgetNavPrev: "button.slick-prev ",
@@ -25,7 +24,7 @@ module.exports = {
   modalId: "div#tvp-modal-carousel-2",
   modalCloseId: "div#tvp-modal-close-carousel-2",
   modalOverlay: "div#tvp-modal-overlay-carousel-2",
-  playerHolder: "div.tvp-player-holder",
+  playerHolder: "div.player-holder",
   productHolder: "div.tvp-products-holder",
   firstVideoId: 'div[data-slick-index="0"]',
   modalCloseButton: 'tvp-modal-close-carousel-2',
@@ -144,63 +143,58 @@ module.exports = {
           'DATA': DATA
         }),
         parent = this.playerIframId + " > " + this.productHolder;
-        client = carousel.init(browser, "Carousel Widget Analytics", "div#carousel-2-holder", 0, parent);
+        client = carousel.init(browser, "Inline Widget Analytics", "div#inline-2-holder", 0, parent);
 
-    carousel.widgetTitle(this.widgetIframeId, this.widgetTitleId, "Recommended Videos"),
+    carousel.widgetTitle(this.widgetIframeId, this.widgetTitleId, "Double wall insulated mug");
+
     //carousel.widgetNav(this.widgetIframeId, 12),
-    carousel.modalSanity(this.modalId, this.firstVideoId, 'Double wall insulated mug'),
-    carousel.modalLoadPerformance(this.widgetIFrameHolder, this.firstVideoId, this.playerIframId + " > " + this.playerHolder, 1);
+    //carousel.modalSanity(this.modalId, this.firstVideoId, 'Double wall insulated mug'),
+    //carousel.modalLoadPerformance(this.widgetIFrameHolder, this.firstVideoId, this.playerIframId + " > " + this.playerHolder, 1);
 
     var product = {
         "ID": 83102933,
-        "URL": "http://www.gourmia.com/item.asp?item=10096",
+        "URL": "http://http://www.gourmia.com/item.asp?item=10096",
         "SECURE_URL": "http://http://www.gourmia.com/item.asp?item=10096",
         "TITLE_REGEX": /Gourmia\ GDK380\ Multi\ Function\ Digital\ Tea\ Kettle,\ \.\.\./i,
         "IMG": "http://www.gourmia.com/itemimageslarge/GDK380-Small.png",
         "PRICE": "$199.99"
       }
 
-    carousel.productModal(false, product),
+    carousel.products("div#featured-product", product),
     client.windowHandles(function (result) {
       this.switchWindow(result.value[1]),
       this.closeWindow(),
       this.switchWindow(result.value[0]),
       this.frame(1);
-    });
-
-    // product = {
-    //     "ID": 83102933,
-    //     "URL": "http://www.gourmia.com/item.asp?item=10096",
-    //     "SECURE_URL": "http://http://www.gourmia.com/item.asp?item=10096",
-    //     "TITLE_REGEX": /Gourmia\ GDK380\ Multi\ Function\ Digital\ Tea\ Kettle,\ \.\.\./i,
-    //     "IMG": "http://www.gourmia.com/itemimageslarge/GDK380-Small.png",
-    //     "PRICE": "$199.99"
-    //   }
+    }),
 
     //carousel.productModalLink(),
-    carousel.playerStart(70, 70, this.playerIframId + " > " + this.playerHolder)
-    carousel.pause(15);
-    //carousel.productModal(false, product),
-    // client.windowHandles(function (result) {
-    //   this.switchWindow(result.value[1]),
-    //   this.closeWindow(),
-    //   this.switchWindow(result.value[0]),
-    //   this.frame(1);
-    // }),
-    carousel.playerStart(70, 70, this.playerIframId + " > " + this.playerHolder),
-    carousel.pause(5);
-    carousel.analytics(1, ['ci','vv','pi','pk'], {
+    carousel.analytics(0, ['ci','vv','pi','pk'], {
       LOGIN_ID: 1758799,
       CHANNEL_ID: 66133904,
-      VIDS: [65981962,83106081],
-      PKIDS: [83102933,83102606],
-      PIDS: [
-        [83102933,83102936,83102939,83102914,83102916,83102920,83102919,83102921,83102918,83102928,83102927,83102923],
-        [83102606,83096473,83096474,83102585,83102603,83106094]
-      ],
-      COUNTS: {"ci": 2, "pi": 18, "vv": 2, "pk": 2}
+      VIDEO_ID: 65981962,
+      PID: 83102933,
+      PIDS: [83102933,83102936,83102939,83102914,83102916,83102920,83102919,83102921,83102918,83102928,83102927,83102923],
+      COUNTS: {"ci": 1, "pi": 0, "vv": 0, "pk": 0},
+      //COUNTS: {"ci": 1, "pi": 12, "vv": 0, "pk": 1}
     }),
-    carousel.pause(10),
+    carousel.playerStart(70, 70, this.playerIframId)
+    carousel.pause(15),
+    // carousel.analytics(1, ['ci','vv','pi','pk'], {
+    //   LOGIN_ID: 1758799,
+    //   CHANNEL_ID: 66133904,
+    //   VIDEO_ID: 65981962,
+    //   PID: 83102933,
+    //   PIDS: [83102933,83102936,83102939,83102914,83102916,83102920,83102919,83102921,83102918,83102928,83102927,83102923],
+    //   COUNTS: {"ci": 1, "pi": 12, "vv": 1, "pk": 1}
+    // }),
+    // carousel.analytics(1, ['ci','vv','pi','pk'], {
+    //   LOGIN_ID: 1758799,
+    //   CHANNEL_ID: 66133904,
+    //   VIDEO_ID: 83106081
+    // }),
+    // carousel.playerStart(70, 70, this.playerIframId + " > " + this.playerHolder),
+    // carousel.pause(10);
     carousel.end();
   }
 };

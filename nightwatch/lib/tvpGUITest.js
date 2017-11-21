@@ -6,6 +6,7 @@ exports.tvpGUITest = function (options) {
       isPlaying = false,
       isFullScreen = false,
       isMobile = (options !== undefined && options.isMobile ? options.isMobile : false),
+      isFF = (options !== undefined && options.isFF ? options.isFF : false),
       orientation =  (options !== undefined && options.orientation ? options.orientation : 'PORTRAIT'),
       hasModal = (options !== undefined && options.hasModal ? options.hasModal : true),
 
@@ -459,9 +460,13 @@ exports.tvpGUITest = function (options) {
 
       this.moveAndClick(parent + ' div#tvplayer-playbutton-icon', 12, 15),
       client.waitForElementPresent(parent + " div#tvp-spinner", DATA.SLA),
-      client.waitForElementNotVisible(parent + ' div#tvp-spinner', DATA.SLA),
-      client.waitForElementNotPresent(parent + ' div#tvplayer-playbutton', DATA.SLA),
-      client.waitForElementNotPresent(parent + ' div#tvplayer-playbutton-icon', DATA.SLA),        
+      client.waitForElementNotVisible(parent + ' div#tvp-spinner', DATA.SLA);
+
+      if (isFF !== true) {
+        client.waitForElementNotPresent(parent + ' div#tvplayer-playbutton', DATA.SLA),
+        client.waitForElementNotPresent(parent + ' div#tvplayer-playbutton-icon', DATA.SLA);
+      }
+
       this.pause(3);
 
       isPlaying = true;
