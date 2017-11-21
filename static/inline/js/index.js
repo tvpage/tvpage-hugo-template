@@ -28,6 +28,19 @@
   var productsCarouselReady = false;
   var videosCarousel;
   var videosCarouselReady = false;
+  var analytics;
+
+  function piTrack(data){
+    for (var i = 0; i < data.length; i++) {
+      var product = data[i];
+
+      analytics.track('pi',{
+        vd: product.entityIdParent,
+        ct: product.id,
+        pg: config.channelId
+      });
+    }
+  }
   
   function onWidgetReady(){
     if(productsCarouselReady && videosCarouselReady){
@@ -69,6 +82,7 @@
 
         productsCarousel.endpoint = apiBaseUrl + '/videos/' + clickedId + '/products';
         productsCarousel.load('render', function(data){
+          piTrack(data);
           renderFeaturedProduct(data[0]);
         });
       }
@@ -152,8 +166,19 @@
     videosCarousel.render();
   };
 
-  function initProducts(){
+  function initAnalytics() {
+    analytics = new Analytics();
     
+    analytics.initConfig({
+      domain: location.hostname || '',
+      logUrl: apiBaseUrl + '/__tvpa.gif',
+      loginId: config.loginId,
+      firstPartyCookies: config.firstpartycookies,
+      cookieDomain: config.cookiedomain
+    });
+  };
+
+  function initProducts(){
     function parseProducts(item){
       item.title = Utils.trimText(item.title, 25);//this has to be an option
       item.price = Utils.trimPrice(item.price);
@@ -182,8 +207,6 @@
           console.log('click target is bad:', e.target);
         }
       }
-
-      
     }
 
     if(isMobile){
@@ -203,7 +226,7 @@
       }, config);
       
       productsCarousel.initialize();
-      productsCarousel.load('render');
+      productsCarousel.load('render', piTrack);
 
     }else{
       productsCarousel = new Carousel('products',{
@@ -239,6 +262,7 @@
 
       productsCarousel.initialize();
       productsCarousel.load('render', function(data){
+        piTrack(data);
         renderFeaturedProduct(data[0]);
       });
     }
@@ -258,7 +282,7 @@
       
       if(nextVideo.id){
         productsCarousel.endpoint = apiBaseUrl + '/videos/' + nextVideo.id + '/products';
-        productsCarousel.load('render');
+        productsCarousel.load('render', piTrack);
       }
     };
 
@@ -281,7 +305,7 @@
 
   //The global deps of the carousel have to be present before executing its logic.
   var depsCheck = 0;
-  var deps = ['jQuery','Utils','Player', 'Carousel'];
+  var deps = ['jQuery','Utils','Player', 'Carousel', 'Analytics'];
 
   (function initInline() {
     setTimeout(function() {
@@ -304,6 +328,7 @@
 
         initPlayer();
         initVideos();
+        initAnalytics();
         initProducts();
 
       }else if(++depsCheck < 200){

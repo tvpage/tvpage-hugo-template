@@ -255,6 +255,7 @@ function widgetRender(){
       getPlayerUrl(),
       debug ? javascriptPath + '/vendor/jquery.js' : '',
       debug ? libsPath + '/utils.js' : '',
+      debug ? libsPath + '/analytics.js' : '',
       debug ? libsPath + '/carousel.js' : '',
       debug ? libsPath + '/player.js' : '',
       debug ? javascriptPath + '/index.js' : '',
