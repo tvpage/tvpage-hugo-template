@@ -7,6 +7,7 @@ exports.tvpGUITest = function (options) {
       isFullScreen = false,
       isMobile = (options !== undefined && options.isMobile ? options.isMobile : false),
       orientation =  (options !== undefined && options.orientation ? options.orientation : 'PORTRAIT'),
+      hasModal = (options !== undefined && options.hasModal ? options.hasModal : true),
 
       modalOverlay = options.modalOverlay,
       modalCloseId = options.modalCloseId,
@@ -238,6 +239,27 @@ exports.tvpGUITest = function (options) {
 
       this.pause();
     },
+
+    products: function (featuredId, product) {
+      if (product === undefined) {
+        product = {
+          "ID": 83102610,
+          "URL": "http://www.ninjakitchen.com/products/0/all/67/ninja-coffee-bar-with-glass-carafe/",
+          "SECURE_URL": "https://www.ninjakitchen.com/products/0/all/67/ninja-coffee-bar-with-glass-carafe/",
+          "TITLE_REGEX": /Ninja\ Coffee\ Bar®\ with\ Glass\ Carafe/i,
+          "IMG": "http://www.ninjakitchen.com/include/images/products/hero-CF080.jpg",
+          "PRICE": ""
+        }
+      }
+
+      client.waitForElementVisible(featuredId, DATA.SLA);
+
+      client.expect.element(featuredId + " a[data-id='" + product.ID + "']").to.be.visible;
+      client.expect.element(featuredId + " a[data-id='" + product.ID + "']").to.have.attribute('href', product.URL);
+
+      client.click(featuredId + " a[data-id='" + product.ID + "']");
+    },
+
     productModal: function (skip, product) {
       if (product === undefined) {
         product = {
@@ -251,8 +273,6 @@ exports.tvpGUITest = function (options) {
       }
 
       var regex = (product.TITLE_REGEX !== undefined ? product.TITLE_REGEX : /\ /i);
-
-      if (product.ID === undefined)
 
       client.waitForElementVisible(parent, DATA.SLA);
 

@@ -10,7 +10,7 @@ var nightwatch_config = {
   test_settings: {
     default: {
       desiredCapabilities: {
-        'build': 'Carousel OSXHighSierraGC61',
+        'build': 'Hugo Template OSXHighSierraGC61',
         'browserstack.user': process.env.BROWSERSTACK_USERNAME || 'pascualtorres1',
         'browserstack.key': process.env.BROWSERSTACK_ACCESS_KEY || '2ATTF6UbzybcwfcideHN',
         'browserstack.debug': true,
