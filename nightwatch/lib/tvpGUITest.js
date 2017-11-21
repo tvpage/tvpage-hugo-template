@@ -57,6 +57,25 @@ exports.tvpGUITest = function (options) {
     return decodeURIComponent(results[2].replace(/\+/g, " "));
   };
 
+  var inArray = function(needle, haystack) {
+    var found = false;
+
+    haystack.forEach(function(value, i) {
+      if (needle == value) {
+        found = true;
+      }
+    });
+
+    return found;
+  };
+
+  var checkCounts = function (client, events, counts, expected) {
+    events.forEach(function (key, i) {
+      console.log(">>> Checking " + key + " Event Counts: " + counts[key] + " <<<");
+      client.assert.equal(counts[key], expected[key]);
+    })
+  };
+
   return {
     ICON_DEFAULT_SCREEN: "M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z",
     ICON_FULL_SCREEN: "M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z",
@@ -237,13 +256,15 @@ exports.tvpGUITest = function (options) {
 
       client.waitForElementVisible(parent, DATA.SLA);
 
+      client.expect.element(parent + " a#tvp-product-" + product.ID).to.be.visible;
+      client.expect.element(parent + " a#tvp-product-" + product.ID).to.have.attribute('href', product.URL);
+
       client.click(parent + " a#tvp-product-" + product.ID);
-      //client.expect.element(parent + " a#tvp-product-" + product.ID).to.be.present;
-      //client.expect.element(parent + " a#tvp-product-" + product.ID).to.have.attribute('href', product.URL);
 
       if(skip){
         return;
       }
+
       // Product pop-up
       client
         .moveToElement(parent + " a#tvp-product-" + product.ID, 70, 70)
@@ -619,7 +640,7 @@ exports.tvpGUITest = function (options) {
           DATA.vvs = vvs;
         },
         'pi': function(client, src) {
-          console.log(">>> Checking PI <<<");
+          console.log(">>> Checking PI ");
 
           var url = getParameterByName('url', src);
           this.assert.equal(url, DATA.URL);
@@ -629,8 +650,13 @@ exports.tvpGUITest = function (options) {
           this.assert.equal(pg, aData.CHANNEL_ID);
           var vd = getParameterByName('vd', src);
           this.assert.equal(vd, aData.VIDEO_ID);
-          var vd = getParameterByName('vd', src);
-          this.assert.equal(vd, aData.VIDEO_ID);
+
+          var productId = getParameterByName('ct', src);
+
+          console.log("Expected Product ID: " + productId);
+          var found = inArray(productId, aData.PIDS);
+          this.assert.equal(found, true);
+
           // TODO: Need to check CID
           //var cid = getParameterByName('cid', src);
           //this.assert.ok(cid);
@@ -642,17 +668,23 @@ exports.tvpGUITest = function (options) {
           client.expect.element('p.analtyticsTestPK').to.be.present;
           var url = getParameterByName('url', src);
           this.assert.equal(url, DATA.URL);
+
           var li = getParameterByName('li', src);
           this.assert.equal(li, aData.LOGIN_ID);
+
           var pg = getParameterByName('pg', src);
           this.assert.equal(pg, aData.CHANNEL_ID);
+
           var vd = getParameterByName('vd', src);
           this.assert.equal(vd, aData.VIDEO_ID);
+
           var ct = getParameterByName('ct', src);
-          this.assert.equal(ct, aData.product.ID);
+          this.assert.equal(ct, aData.PID);
+
           // TODO: Need to check CID
           //var cid = getParameterByName('cid', src);
           //this.assert.ok(cid);
+
           client.elements("class name", "analtyticsTestPK", function(result) {
             this.assert.ok(counts['pk'] <= result.value.length);
           });
@@ -660,12 +692,14 @@ exports.tvpGUITest = function (options) {
       };
 
       client.frame(frame).elements("tag name", "script", function(result) {
+        console.log(">>> Widget Analytics Testing <<<");
+
         result.value.forEach(function(script) {
           client.elementIdAttribute(script.ELEMENT, 'src', function(res) {
             var src = res.value,
                 THAT = this;
 
-            events.forEach(function (key, i) {
+            events.forEach(function (key, count) {
               if (src.indexOf('rt=' + key) >= 0) {
                 counts[key]++;
                 var test = tests[key].bind(THAT, client, src);

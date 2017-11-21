@@ -160,40 +160,38 @@ module.exports = {
       }
 
     carousel.productModal(false, product),
+    client.windowHandles(function (result) {
+      this.switchWindow(result.value[1]),
+      this.closeWindow(),
+      this.switchWindow(result.value[0]),
+      this.frame(1);
+    }),
     //carousel.productModalLink(),
-    carousel.playerStart(70, 70, this.playerIframId + " > " + this.playerHolder),
     carousel.analytics(1, ['ci','vv','pi','pk'], {
       LOGIN_ID: 1758799,
       CHANNEL_ID: 66133904,
-      VIDEO_ID: 65981962
-    }, product),
-    carousel.modalClose(this.modalId),
-    carousel.modalSanity(this.modalId, this.firstVideoId, 'Wave', 0),
-    client.frameParent(),
-    client.frame(1),
-    carousel.pause(10),
-    carousel.playerStart(70, 70, this.playerIframId + " > " + this.playerHolder),
-    carousel.pause(5);
-
-    product = {
-        "ID": 83102606,
-        "URL": "http://www.mrcoffee.com/specialty/mr.-coffee-steam-espresso-and-cappuccino-maker/BVMC-ECM260-RB-1.html#q=+Espresso+Maker&start=11",
-        "SECURE_URL": "http://www.mrcoffee.com/specialty/mr.-coffee-steam-espresso-and-cappuccino-maker/BVMC-ECM260-RB-1.html#q=+Espresso+Maker&start=11",
-        "TITLE_REGEX": /Mr\.\ Coffee®\ Steam\ Espresso\ &\ Cappuccino\ Maker/i,
-        "IMG": "https://app.tvpage.com/api/spotImage/1758799/1200/1200/7033135434612.png",
-        "PRICE": "$39.99"
-      };
-
-    client.frameParent(),
-    client.frame(1),
-    carousel.productModal(false, product),
-    carousel.pause(5),
-    carousel.analytics(1, ['ci','vv','pi','pk'], {
-      LOGIN_ID: 1758799,
-      CHANNEL_ID: 66133904,
-      VIDEO_ID: 83106081
-    }, product),
-    carousel.pause(5),
+      VIDEO_ID: 65981962,
+      PID: 83102933,
+      PIDS: [83102933,83102936,83102939,83102914,83102916,83102920,83102919,83102921,83102918,83102928,83102927,83102923],
+      COUNTS: {"ci": 1, "pi": 12, "vv": 0, "pk": 1}
+    }),
+    carousel.playerStart(70, 70, this.playerIframId + " > " + this.playerHolder)
+    carousel.pause(15),
+    // carousel.analytics(1, ['ci','vv','pi','pk'], {
+    //   LOGIN_ID: 1758799,
+    //   CHANNEL_ID: 66133904,
+    //   VIDEO_ID: 65981962,
+    //   PID: 83102933,
+    //   PIDS: [83102933,83102936,83102939,83102914,83102916,83102920,83102919,83102921,83102918,83102928,83102927,83102923],
+    //   COUNTS: {"ci": 1, "pi": 12, "vv": 1, "pk": 1}
+    // }),
+    // carousel.analytics(1, ['ci','vv','pi','pk'], {
+    //   LOGIN_ID: 1758799,
+    //   CHANNEL_ID: 66133904,
+    //   VIDEO_ID: 83106081
+    // }),
+    // carousel.playerStart(70, 70, this.playerIframId + " > " + this.playerHolder),
+    // carousel.pause(10);
     carousel.end();
   }
 };
