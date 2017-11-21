@@ -68,6 +68,7 @@ module.exports = function(grunt) {
               '../libs/utils.js',
               '../libs/analytics.js',
               '../libs/player.js',
+              '../libs/carousel.js',
               'js/modal/index.js'
             ],
             'dist/js/mobile/modal/scripts.min.js': [
