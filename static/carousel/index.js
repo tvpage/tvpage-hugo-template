@@ -487,6 +487,7 @@ function onWidgetVideosCarouselClick(e) {
   iframeModalHolder.innerHTML = templates.modal.iframe;
   iframeModal = iframeModalHolder.querySelector('.tvp-iframe-modal');
   iframeModalDocument = iframeModal.contentWindow.document;
+  
   iframeModalDocument.open().write(getIframeHtml({
     id: id,
     domain: baseUrl,
@@ -518,6 +519,7 @@ function onWidgetVideosCarouselClick(e) {
       debug ? "" : cssPath + "/" + mobilePath + "/modal/styles.min.css"
     ]
   }));
+
   iframeModalDocument.close();
   
   if (config.fix_page_scroll)
