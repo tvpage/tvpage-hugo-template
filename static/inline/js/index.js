@@ -226,7 +226,6 @@
       
       productsCarousel.initialize();
       productsCarousel.load('render', piTrack);
-
     }else{
       productsCarousel = new Carousel('products',{
         alignArrowsY: ['center', '.carousel-dot-0'],
@@ -260,12 +259,23 @@
       }, config);
 
       productsCarousel.initialize();
-      productsCarousel.load('render', function(data){  
+      productsCarousel.load('render', function(data){
         piTrack(data);
         renderFeaturedProduct(data[0]);
       });
     }
   };
+
+
+  function onPlayerNext(next) {
+    if (next.assetId) {
+      productsCarousel.endpoint = apiBaseUrl + '/videos/' + next.assetId + '/products';
+      productsCarousel.load('render', function(data){
+        piTrack(data);
+        renderFeaturedProduct(data[0]);
+      });
+    }
+  }
 
   function initPlayer(){
     var playerConfig = Utils.copy(config);
@@ -274,16 +284,7 @@
     playerConfig.ciTrack = true;
     playerConfig.data = config.channel.videos;
     playerConfig.onPlayerChange = !!playerConfig.onPlayerChange;
-    playerConfig.onNext = function(nextVideo){
-      if(config.debug){
-        console.log('next video coming', nextVideo);
-      }
-      
-      if(nextVideo.id){
-        productsCarousel.endpoint = apiBaseUrl + '/videos/' + nextVideo.id + '/products';
-        productsCarousel.load('render', piTrack);
-      }
-    };
+    playerConfig.onNext = onPlayerNext;
 
     //watch out this function triggers twice, once per media provider
     var readyCalled = false;
