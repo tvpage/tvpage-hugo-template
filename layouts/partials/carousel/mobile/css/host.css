@@ -88,9 +88,6 @@
     "border: 0;" +
     "width: 100%;" +
     "height: 100%;" +
-    "position: absolute;" +
-    "top: 0;" +
-    "left: 0;" +
 "}" +
 
 ".tvp-modal-header:after {" +
@@ -120,20 +117,12 @@
     "position: relative;" +
 "}" +
 
-".tvp-modal-iframe-holder:before {" +
-    "display: block;" +
-    "content: '';" +
-    "width: 100%;" +
-    "padding-top: 92%;" +
-"}" +
-
 ".tvp-title {" +
     "height: 22px;" +
 "}" +
 
 ".tvp-modal-body {" +
     "position: relative;" +
-    "padding: 0;" +
 "}" +
 
 ".tvp-modal-close-svg > path:nth-child(2){ " +

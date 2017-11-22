@@ -1,5 +1,4 @@
 (function(){
-
     var body = document.body;
     var id = Utils.attr(body,'data-id');
     var config = window.parent.__TVPage__.config[id];

@@ -8,7 +8,7 @@
   var eventPrefix = config.events.prefix;
   var productsCarousel;
   
-  function onWidgetResize() {
+  function onWidgetResize(){
     Utils.sendMessage({
       event: eventPrefix + ':widget_modal_resize',
       height: getWidgetHeight() + 'px'
@@ -38,7 +38,7 @@
 
   function initProducts() {
     function parseProducts(item){
-      item.title = Utils.trimText(item.title || '', 40);
+      item.title = Utils.trimText(item.title || '', 35);
       item.price = Utils.trimPrice(item.price || '');
       item.actionText = item.actionText || 'View Details';
       return item;
@@ -60,7 +60,23 @@
         item: templates.modal.products.item
       },
       parse: parseProducts,
-      onResize:onWidgetResize
+      onResize:onWidgetResize,
+      responsive: [
+        {
+          breakpoint: 499,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1
+          }
+        },
+        {
+          breakpoint: 767,
+          settings: {
+            slidesToShow: 2,
+            slidesToScroll: 2
+          }
+        }
+      ]
     }, config);
 
     productsCarousel.initialize();

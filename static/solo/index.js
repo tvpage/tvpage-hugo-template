@@ -150,6 +150,7 @@ var mobilePath;
 
 config.id = id;
 config.loginId = config.loginId || config.loginid;
+config.channel = config.channel || {};
 config.channelId = (config.channelId || config.channelid) || config.channel.id;
 config.events = {};
 config.events.prefix = eventPrefix;
@@ -165,7 +166,7 @@ config.mobile.prefix = isMobile ? '-mobile' : '';
 config.mobile.templates = config.templates.mobile;
 
 mobilePath = config.mobile.path;
-templates = isMobile ? config.mobile.templates : config.templates;
+templates = config.templates;
 javascriptPath = config.paths.javascript;
 cssPath = config.paths.css;
 
@@ -208,13 +209,12 @@ function getIframeHtml(o){
 function getInitialHtml(){
   var html = "";
   var styleId = 'tvp-' + type + '-host';
-  
-  var hostStyles = isMobile ? css.mobile.host : css.host;
+  var hostStyles = css.host;
 
   if (!getById(styleId))
     html += '<style id="' + styleId + '">' + hostStyles + '</style>';
   
-  var hostCustomStyles = isMobile ? css.mobile['host-custom'] : css['host-custom'];
+  var hostCustomStyles = css['host-custom'];
   
   if(!isUndefined(hostCustomStyles))
     html += '<style>' + hostCustomStyles + '</style>';
@@ -250,7 +250,7 @@ function widgetRender(){
   iframeDocument.open().write(getIframeHtml({
     id: id,
     domain: baseUrl,
-    style: isMobile ? css.mobile.base : css.base,
+    style: css.base,
     context: config,
     html: templates.base,
     eventPrefix: eventPrefix,
@@ -258,7 +258,7 @@ function widgetRender(){
       "//a.tvpage.com/tvpa.min.js",
       '//imasdk.googleapis.com/js/sdkloader/ima3.js',
       getPlayerUrl(),
-      debug ? javascriptPath + "/vendor/simple-scrollbar.min.js" : "",
+      debug ? javascriptPath + "/vendor/perfect-scrollbar.min.js" : "",
       debug ? baseUrl + "/libs/utils.js" : "",
       debug ? baseUrl + "/libs/analytics.js" : "",
       debug ? baseUrl + "/libs/player.js" : "",
@@ -268,6 +268,7 @@ function widgetRender(){
     ],
     css: [
       debug ? cssPath + "/styles.css" : "",
+      debug ? cssPath + "/vendor/perfect-scrollbar.min.css" : "",
       debug ? "" : cssPath + "/styles.min.css"
     ]
   }));

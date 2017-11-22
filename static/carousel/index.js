@@ -279,8 +279,8 @@ function widgetRender(){
     ],
     css: [
       debug ? baseUrl + '/slick/slick.css' : '',
-      debug && isMobile ? baseUrl + '/slick/mobile/custom.css' : '',
-      debug && !isMobile ? baseUrl + '/slick/custom.css' : '',
+      isMobile ? baseUrl + '/slick/mobile/custom.css' : '',
+      !isMobile ? baseUrl + '/slick/custom.css' : '',
       debug ? baseUrl + '/bootstrap/dist/css/bootstrap.css' : '',
       debug ? '' : cssPath + '/styles.min.css'
     ]
@@ -487,6 +487,7 @@ function onWidgetVideosCarouselClick(e) {
   iframeModalHolder.innerHTML = templates.modal.iframe;
   iframeModal = iframeModalHolder.querySelector('.tvp-iframe-modal');
   iframeModalDocument = iframeModal.contentWindow.document;
+  
   iframeModalDocument.open().write(getIframeHtml({
     id: id,
     domain: baseUrl,
@@ -518,6 +519,7 @@ function onWidgetVideosCarouselClick(e) {
       debug ? "" : cssPath + "/" + mobilePath + "/modal/styles.min.css"
     ]
   }));
+
   iframeModalDocument.close();
   
   if (config.fix_page_scroll)

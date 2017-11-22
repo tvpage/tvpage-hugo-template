@@ -59,7 +59,7 @@
 ".tvp-modal-wrapper {" +
     "position: relative;" +
     "width: auto;" +
-    "margin: 10px;" +
+    "margin: 5px;" +
 "}" +
 
 ".tvp-modal-wrapper.centered {" +
@@ -122,8 +122,10 @@
 "}" +
 
 ".tvp-modal-iframe-holder {" +
+    "height: 0;" +
     "width: 100%;" +
     "position: relative;" +
+    "padding-bottom: 46.47%;" +
 "}" +
 
 ".tvp-title {" +

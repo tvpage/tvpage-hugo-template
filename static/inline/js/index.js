@@ -33,7 +33,7 @@
   function piTrack(data){
     for (var i = 0; i < data.length; i++) {
       var product = data[i];
-
+      
       analytics.track('pi',{
         vd: product.entityIdParent,
         ct: product.id,
@@ -260,7 +260,7 @@
       }, config);
 
       productsCarousel.initialize();
-      productsCarousel.load('render', function(data){
+      productsCarousel.load('render', function(data){  
         piTrack(data);
         renderFeaturedProduct(data[0]);
       });

@@ -22,7 +22,8 @@ module.exports = function(grunt) {
         desktop: {
           files: {
             'dist/css/styles.min.css': [
-              'css/styles.css'
+              'css/styles.css',
+              'css/vendor/perfect-scrollbar.min.css'
             ]
           }
         }
@@ -36,7 +37,7 @@ module.exports = function(grunt) {
               '../libs/utils.js',
               '../libs/analytics.js',
               '../libs/player.js',
-              'js/vendor/simple-scrollbar.min.js',
+              'js/vendor/perfect-scrollbar.min.js',
               'js/menu.js',
               'js/index.js'
             ]
