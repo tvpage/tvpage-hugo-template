@@ -2,7 +2,7 @@
 /* Nightwatch Recorder generated Mon Oct 23 2017 18:49:04 GMT-0700 (PDT) */
 /*==============================================================================*/
 var DATA = {
-  URL: "https://widgets.goodlookingbean.com/test/embed/",
+  URL: "https://widgets.goodlookingbean.com/test/solo-cta/",
   SLA: 10000
 };
 
@@ -12,18 +12,16 @@ var aCounts = {
 };
 
 var guiTest = {
-  init: function (client, frameId) {
+  init: function (client) {
     client
       .url(DATA.URL)
       .pause(1000);
 
-    if (frameId !== undefined)
-      client.frame(frameId);
-
     return client
   },
   playVideo: function (client, loadTime) {
-    client.click('#tvplayer-playbutton').pause(loadTime);
+    client.click('#solo-cta-2-holder').pause(loadTime);
+    client.frame(0).click('#tvplayer-playbutton').pause(loadTime);
   },
   getParameterByName: function(name, url) {
     name = name.replace(/[\[\]]/g, "\\$&");
@@ -46,12 +44,6 @@ var guiTest = {
 
     return found;
   },
-  isNotEmpty: function(string){
-    if(string.length > 0){
-      return true;
-    }
-    return false;
-  },
   analytics: function(client, frame, events, aData) {
     var tests = {
       'ci': function(client, src, current) {
@@ -66,7 +58,9 @@ var guiTest = {
 
         var url = guiTest.getParameterByName('url', src);
         this.assert.equal(url, DATA.URL);
-
+        // TODO: enable cid when the issue is fixed
+        // var cid = guiTest.getParameterByName('cid', src);
+        // this.assert.ok(cid);
       },
       'vv': function(client, src, current) {
         console.log(">>> Checking VV <<<");
@@ -129,19 +123,21 @@ module.exports = {
   before : function (client) {
     client.windowMaximize();
   },
-  'embed-desktop-youtube': function(client) {
+  'solo-cta-desktop-youtube': function(client) {
 
-    guiTest.init(client, 0);
+    guiTest.init(client);
 
     guiTest.playVideo(client, DATA.SLA);
 
     client.pause(10000);
+    // TODO: add next video on test link and check
+    // guiTest.playVideo(client, DATA.SLA);
 
     guiTest.analytics(client, 1, ['ci', 'vv'], {
       LOGIN_ID: 1758799,
-      CHANNEL_ID: 0,
-      VIDS: [83094532],
-      COUNTS: {"ci": 1, "vv": 1}
+      CHANNEL_ID: 66133904,
+      VIDS: [65981962,83106081],
+      COUNTS: {"ci": 2, "vv": 2}
     });
 
     client.end();

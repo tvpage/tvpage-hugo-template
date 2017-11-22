@@ -439,6 +439,144 @@ nightwatch_config = {
       },
       filter: "desktop/solo/solo.js"
     },
+    SoloCtaW10GC61: {
+      desiredCapabilities: {
+        'build': 'SoloCtaW10GC61',
+        'os': 'Windows',
+        'os_version': '10',
+        'browser': 'Chrome',
+        'browser_version': '61.0',
+      },
+      filter: "desktop/solo-cta/solo-cta.js"
+    },
+    SoloCtaW10FF55: {
+      desiredCapabilities: {
+        'build': 'SoloCtaWin10FF55',
+        'os': 'Windows',
+        'os_version': '10',
+        'browser': 'Firefox',
+        'browser_version': '55.0'
+      },
+      filter: "desktop/solo-cta/solo-cta.js"
+    },
+    SoloCtaW10IE11: {
+      desiredCapabilities: {
+        'build': 'SoloCtaW10IE11',
+        'os': 'Windows',
+        'os_version': '10',
+        'browser': 'IE',
+        'browser_version': '11.0',
+      },
+      filter: "desktop/solo-cta/solo-cta.js"
+    },
+    SoloCtaW10E15: {
+      desiredCapabilities: {
+        'build': 'SoloCtaW10E15',
+        'os': 'Windows',
+        'os_version': '10',
+        'browser': 'Edge',
+        'browser_version': '15.0'
+      },
+      filter: "desktop/solo-cta/solo-cta.js"
+    },
+    SoloCtaWin8GC61: {
+      desiredCapabilities: {
+        'build': 'SoloCtaW8GC61',
+        'os': 'Windows',
+        'os_version': '8.1',
+        'browser': 'Chrome',
+        'browser_version': '61.0',
+      },
+      filter: "desktop/solo-cta/solo-cta.js"
+    },
+    SoloCtaW8IE11: {
+      desiredCapabilities: {
+        'build': 'SoloCtaW8IE11',
+        'os': 'Windows',
+        'os_version': '8.1',
+        'browser': 'IE',
+        'browser_version': '11.0'
+      },
+      filter: "desktop/solo-cta/solo-cta.js"
+    },
+    SoloCtaW8FF55: {
+      desiredCapabilities: {
+        'build': 'SoloCtaW8FF55',
+        'os': 'Windows',
+        'os_version': '8.1',
+        'browser': 'Firefox',
+        'browser_version': '55.0'
+      },
+      filter: "desktop/solo-cta/solo-cta.js"
+    },
+    SoloCtaOSXSierraS10: {
+      desiredCapabilities: {
+        'build': 'SoloCtaOSXSierraS10',
+        'os': 'OS X',
+        'os_version': 'Sierra',
+        'browser': 'Safari',
+        'browser_version': '10.1'
+      },
+      filter: "desktop/solo-cta/solo-cta.js"
+    },
+    SoloCtaOSXSierraGC61: {
+      desiredCapabilities: {
+        'build': 'SoloCtaOSXSierraGC61',
+        'os': 'OS X',
+        'os_version': 'Sierra',
+        'browser': 'Chrome',
+        'browser_version': '61.0',
+      },
+      filter: "desktop/solo-cta/solo-cta.js"
+    },
+    SoloCtaOSXSierraFF55: {
+      desiredCapabilities: {
+        'build': 'SoloCtaOSXSierraFF55',
+        'os': 'OS X',
+        'os_version': 'Sierra',
+        'browser': 'Firefox',
+        'browser_version': '55.0'
+      },
+      filter: "desktop/solo-cta/solo-cta.js"
+    },
+    SoloCtaOSXHighSierraGC61: {
+      desiredCapabilities: {
+        'build': 'SoloCtaOSXHighSierraGC61',
+        'os': 'OS X',
+        'os_version': 'High Sierra',
+        'browser': 'Chrome',
+        'browser_version': '61.0'
+      },
+      filter: "desktop/solo-cta/solo-cta.js"
+    },
+    SoloCtaOSXHighSierraFF55: {
+      desiredCapabilities: {
+        'build': 'SoloCtaOSXHighSierraFF55',
+        'os': 'OS X',
+        'os_version': 'High Sierra',
+        'browser': 'Firefox',
+        'browser_version': '55.0'
+      },
+      filter: "desktop/solo-cta/solo-cta.js"
+    },
+    SoloCtaGooglepixelAndroid8: {
+      desiredCapabilities: {
+        'build': 'SoloCtaGooglepixelAndroid8',
+        'device': 'Google Pixel',
+        'realMobile': 'true',
+        'os_version': '8.0'
+      },
+      filter: "desktop/solo-cta/solo-cta.js"
+    },
+    SoloCtaNexus6Android6: {
+      desiredCapabilities: {
+        'build': 'SoloCtaNexus6Android6',
+        'device': 'Google Nexus 6',
+        'realMobile': 'true',
+        'os_version': '6.0'
+      },
+      filter: "desktop/solo-cta/solo-cta.js"
+    },
   }
 };
 
