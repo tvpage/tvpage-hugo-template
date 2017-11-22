@@ -77,31 +77,6 @@
     el.classList.add(c);
   };
 
-  Utils.addEvent = function(element, event, arr, func) {
-    element.removeEventListener(event, clickHandler, false);
-    element.addEventListener(event, clickHandler, false);
-    function clickHandler(e){
-      var that = this;
-      var type;
-      var checkEl = function (el) {
-        if (el && el !== that) {
-          for (var i = 0; i < arr.length; i++) {
-            if (el.classList.contains(arr[i])) {
-              type = arr[i]
-              return el;
-            }
-          }
-          return checkEl(el.parentNode);
-        }
-        return false;
-      }
-      var el = checkEl(e.target);
-      if (el !== false) {
-        func.call(this, type, el, e);
-      }
-    }
-  };
-    
   Utils.removeClass = function(el,c) {
     el.classList.remove(c);
   };

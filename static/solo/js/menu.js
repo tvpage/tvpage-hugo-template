@@ -38,7 +38,7 @@
 
   Menu.prototype.render = function(data) {
       if (!data || !data.length) return;
-      
+
       that.lastPage = (!data.length || data.length < that.settings.items_per_page) ? true : false;
       var playlist = data || [],
           menuItemEl = '',
@@ -91,21 +91,19 @@
   };
 
   Menu.prototype.bindClickEvents = function(){
-      Utils.addEvent(that.playerEl, 'click',['tvp-hamburger','tvp-video'], function(type, el){ 
-          switch (type) {
-              case 'tvp-hamburger':
-                  that.toggleMenu();
-                  break;
-              case 'tvp-video':
-                  var id = el.id.split('-').pop(),
-                      selected = that.allVideos.filter(function(v){return v.id === id});
-                  
-                  that.setActiveItem(id);
-                  that.player.play(that.player.buildAsset(selected[0]));
-                  that.toggleMenu();
-                  break;
-              default:
-          }
+      that.playerEl.addEventListener('click', function(e){
+        var tvpHamburguer = Utils.getRealTargetByClass(e.target, 'tvp-hamburger'),
+            tvpVideo = Utils.getRealTargetByClass(e.target, 'tvp-video');
+            
+        if (tvpHamburguer) {
+           that.toggleMenu();
+         }else if(tvpVideo){
+          var id = tvpVideo.id.split('-').pop(),
+              selected = that.allVideos.filter(function(v){return v.id === id});
+          that.setActiveItem(id);
+          that.player.play(that.player.buildAsset(selected[0]));
+          that.toggleMenu();
+         }
       });
   };
 
