@@ -49,10 +49,10 @@
   }
  
   var depsCheck = 0;
-  var deps = ['Utils','Player','SimpleScrollbar'];
+  var deps = ['Utils','Player'];
 
   if(config.playlist){
-    deps.push('Menu');
+    deps.push('Ps', 'Menu');
   }
 
   (function initSolo() {
