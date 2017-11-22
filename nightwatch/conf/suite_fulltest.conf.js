@@ -171,7 +171,7 @@ nightwatch_config = {
         'browser': 'Chrome',
         'browser_version': '61.0',
       },
-      filter: "desktop/solo/W10GC61.js"
+      filter: "desktop/solo/solo.js"
     },
     SoloW10FF55: {
       desiredCapabilities: {
@@ -181,7 +181,7 @@ nightwatch_config = {
         'browser': 'Firefox',
         'browser_version': '55.0'
       },
-      filter: "desktop/solo/W10GC61.js"
+      filter: "desktop/solo/solo.js"
     },
     SoloW10IE11: {
       desiredCapabilities: {
@@ -191,7 +191,7 @@ nightwatch_config = {
         'browser': 'IE',
         'browser_version': '11.0',
       },
-      filter: "desktop/solo/W10GC61.js"
+      filter: "desktop/solo/solo.js"
     },
     SoloW10E15: {
       desiredCapabilities: {
@@ -201,7 +201,7 @@ nightwatch_config = {
         'browser': 'Edge',
         'browser_version': '15.0'
       },
-      filter: "desktop/solo/W10GC61.js"
+      filter: "desktop/solo/solo.js"
     },
     SoloWin8GC61: {
       desiredCapabilities: {
@@ -211,7 +211,7 @@ nightwatch_config = {
         'browser': 'Chrome',
         'browser_version': '61.0',
       },
-      filter: "desktop/solo/W10GC61.js"
+      filter: "desktop/solo/solo.js"
     },
     SoloW8IE11: {
       desiredCapabilities: {
@@ -221,7 +221,7 @@ nightwatch_config = {
         'browser': 'IE',
         'browser_version': '11.0'
       },
-      filter: "desktop/solo/W10GC61.js"
+      filter: "desktop/solo/solo.js"
     },
     SoloW8FF55: {
       desiredCapabilities: {
@@ -231,7 +231,7 @@ nightwatch_config = {
         'browser': 'Firefox',
         'browser_version': '55.0'
       },
-      filter: "desktop/solo/W10GC61.js"
+      filter: "desktop/solo/solo.js"
     },
     SoloOSXSierraS10: {
       desiredCapabilities: {
@@ -241,7 +241,7 @@ nightwatch_config = {
         'browser': 'Safari',
         'browser_version': '10.1'
       },
-      filter: "desktop/solo/W10GC61.js"
+      filter: "desktop/solo/solo.js"
     },
     SoloOSXSierraGC61: {
       desiredCapabilities: {
@@ -251,7 +251,7 @@ nightwatch_config = {
         'browser': 'Chrome',
         'browser_version': '61.0',
       },
-      filter: "desktop/solo/W10GC61.js"
+      filter: "desktop/solo/solo.js"
     },
     SoloOSXSierraFF55: {
       desiredCapabilities: {
@@ -261,7 +261,7 @@ nightwatch_config = {
         'browser': 'Firefox',
         'browser_version': '55.0'
       },
-      filter: "desktop/solo/W10GC61.js"
+      filter: "desktop/solo/solo.js"
     },
     SoloOSXHighSierraGC61: {
       desiredCapabilities: {
@@ -271,7 +271,7 @@ nightwatch_config = {
         'browser': 'Chrome',
         'browser_version': '61.0'
       },
-      filter: "desktop/solo/W10GC61.js"
+      filter: "desktop/solo/solo.js"
     },
     SoloOSXHighSierraFF55: {
       desiredCapabilities: {
@@ -281,7 +281,7 @@ nightwatch_config = {
         'browser': 'Firefox',
         'browser_version': '55.0'
       },
-      filter: "desktop/solo/W10GC61.js"
+      filter: "desktop/solo/solo.js"
     },
     SoloGooglepixelAndroid8: {
       desiredCapabilities: {
@@ -290,7 +290,7 @@ nightwatch_config = {
         'realMobile': 'true',
         'os_version': '8.0'
       },
-      filter: "desktop/solo/W10GC61.js"
+      filter: "desktop/solo/solo.js"
     },
     SoloNexus6Android6: {
       desiredCapabilities: {
@@ -299,7 +299,7 @@ nightwatch_config = {
         'realMobile': 'true',
         'os_version': '6.0'
       },
-      filter: "desktop/solo/W10GC61.js"
+      filter: "desktop/solo/solo.js"
     }
   }
 };

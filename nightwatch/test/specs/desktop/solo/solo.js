@@ -60,7 +60,7 @@ var guiTest = {
 
         var url = guiTest.getParameterByName('url', src);
         this.assert.equal(url, DATA.URL);
-
+        // TODO: enable cid when the issue is fixed
         // var cid = guiTest.getParameterByName('cid', src);
         // this.assert.ok(cid);
       },
