@@ -300,7 +300,145 @@ nightwatch_config = {
         'os_version': '6.0'
       },
       filter: "desktop/solo/solo.js"
-    }
+    },
+    EmbedW10GC61: {
+      desiredCapabilities: {
+        'build': 'EmbedW10GC61',
+        'os': 'Windows',
+        'os_version': '10',
+        'browser': 'Chrome',
+        'browser_version': '61.0',
+      },
+      filter: "desktop/embed/embed.js"
+    },
+    EmbedW10FF55: {
+      desiredCapabilities: {
+        'build': 'EmbedWin10FF55',
+        'os': 'Windows',
+        'os_version': '10',
+        'browser': 'Firefox',
+        'browser_version': '55.0'
+      },
+      filter: "desktop/embed/embed.js"
+    },
+    EmbedW10IE11: {
+      desiredCapabilities: {
+        'build': 'EmbedW10IE11',
+        'os': 'Windows',
+        'os_version': '10',
+        'browser': 'IE',
+        'browser_version': '11.0',
+      },
+      filter: "desktop/embed/embed.js"
+    },
+    EmbedW10E15: {
+      desiredCapabilities: {
+        'build': 'EmbedW10E15',
+        'os': 'Windows',
+        'os_version': '10',
+        'browser': 'Edge',
+        'browser_version': '15.0'
+      },
+      filter: "desktop/embed/embed.js"
+    },
+    EmbedWin8GC61: {
+      desiredCapabilities: {
+        'build': 'EmbedW8GC61',
+        'os': 'Windows',
+        'os_version': '8.1',
+        'browser': 'Chrome',
+        'browser_version': '61.0',
+      },
+      filter: "desktop/embed/embed.js"
+    },
+    EmbedW8IE11: {
+      desiredCapabilities: {
+        'build': 'EmbedW8IE11',
+        'os': 'Windows',
+        'os_version': '8.1',
+        'browser': 'IE',
+        'browser_version': '11.0'
+      },
+      filter: "desktop/embed/embed.js"
+    },
+    EmbedW8FF55: {
+      desiredCapabilities: {
+        'build': 'EmbedW8FF55',
+        'os': 'Windows',
+        'os_version': '8.1',
+        'browser': 'Firefox',
+        'browser_version': '55.0'
+      },
+      filter: "desktop/embed/embed.js"
+    },
+    EmbedOSXSierraS10: {
+      desiredCapabilities: {
+        'build': 'EmbedOSXSierraS10',
+        'os': 'OS X',
+        'os_version': 'Sierra',
+        'browser': 'Safari',
+        'browser_version': '10.1'
+      },
+      filter: "desktop/embed/embed.js"
+    },
+    EmbedOSXSierraGC61: {
+      desiredCapabilities: {
+        'build': 'EmbedOSXSierraGC61',
+        'os': 'OS X',
+        'os_version': 'Sierra',
+        'browser': 'Chrome',
+        'browser_version': '61.0',
+      },
+      filter: "desktop/embed/embed.js"
+    },
+    EmbedOSXSierraFF55: {
+      desiredCapabilities: {
+        'build': 'EmbedOSXSierraFF55',
+        'os': 'OS X',
+        'os_version': 'Sierra',
+        'browser': 'Firefox',
+        'browser_version': '55.0'
+      },
+      filter: "desktop/embed/embed.js"
+    },
+    EmbedOSXHighSierraGC61: {
+      desiredCapabilities: {
+        'build': 'EmbedOSXHighSierraGC61',
+        'os': 'OS X',
+        'os_version': 'High Sierra',
+        'browser': 'Chrome',
+        'browser_version': '61.0'
+      },
+      filter: "desktop/embed/embed.js"
+    },
+    EmbedOSXHighSierraFF55: {
+      desiredCapabilities: {
+        'build': 'EmbedOSXHighSierraFF55',
+        'os': 'OS X',
+        'os_version': 'High Sierra',
+        'browser': 'Firefox',
+        'browser_version': '55.0'
+      },
+      filter: "desktop/embed/embed.js"
+    },
+    EmbedGooglepixelAndroid8: {
+      desiredCapabilities: {
+        'build': 'EmbedGooglepixelAndroid8',
+        'device': 'Google Pixel',
+        'realMobile': 'true',
+        'os_version': '8.0'
+      },
+      filter: "desktop/embed/embed.js"
+    },
+    EmbedNexus6Android6: {
+      desiredCapabilities: {
+        'build': 'SoloNexus6Android6',
+        'device': 'Google Nexus 6',
+        'realMobile': 'true',
+        'os_version': '6.0'
+      },
+      filter: "desktop/solo/solo.js"
+    },
   }
 };
 
