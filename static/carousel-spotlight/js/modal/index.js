@@ -36,20 +36,26 @@
   };
 
   var loadProducts = function(videoId, settings, fn) {
-    if (!videoId) return;
-    var src = settings.api_base_url + '/videos/' + videoId + '/products?X-login-id=' + settings.loginId;
-    var cbName = 'tvp_' + Math.floor(Math.random() * 555);
-    src += '&callback=' + cbName;
-    var script = document.createElement('script');
-    script.src = src;
-    window[cbName || 'callback'] = function(data) {
+    if (!videoId)
+      return;
+
+    Utils.loadScript({
+      base: settings.api_base_url + '/videos/' + videoId + '/products',
+      params: {
+        'X-login-id': settings.loginId,
+        o: settings.products_order_by,
+        od: settings.products_order_direction,
+        callback: 'tvpcallback'
+      }
+    });
+
+    window['tvpcallback'] = function(data) {
       if (data && data.length && 'function' === typeof fn) {
         fn(data);
       } else {
         fn([]);
       }
     };
-    document.body.appendChild(script);
   };
 
   var render = function(data) {
@@ -228,6 +234,7 @@
       };
 
       player = new Player('tvp-player-el', s, data.selectedVideo.id);
+      player.initialize();
       window.addEventListener('resize', Utils.debounce(function() {
         player.resize();
       }, 85));
@@ -246,18 +253,14 @@
         settings.loginId = loginId;
 
         channelId = Utils.isset(settings.channel) && Utils.isset(settings.channel.id) ? settings.channel.id : (settings.channelId || settings.channelid);
-        analytics = new Analytics();
+        analytics =  new Analytics();
         analytics.initConfig({
-          logUrl: settings.api_base_url + '/__tvpa.gif',
-          domain: Utils.isset(location, 'hostname') ? location.hostname : '',
-          loginId: loginId,
-          firstPartyCookies: settings.firstpartycookies,
-          cookieDomain: settings.cookiedomain
+            domain: Utils.isset(location,'hostname') ?  location.hostname : '',
+            logUrl: settings.api_base_url + '/__tvpa.gif',
+            loginId: loginId,
+            firstPartyCookies: settings.firstpartycookies,
+            cookieDomain: settings.cookiedomain
         });
-        analytics.track('ci', {
-          li: loginId
-        });
-
         var selectedVideo = data.selectedVideo;
         if (Utils.isset(selectedVideo, 'products')) {
           render(selectedVideo.products);
@@ -289,19 +292,27 @@
     }, 0);
   };
 
-  var not = function(obj) {
-    return 'undefined' === typeof obj
+  //We need to poll/check when the dependencies had been already loaded, this is because we 
+  //create the iframes asynchronously.
+  var isLoadingLibs = function(){
+    var libs = ['TVPage', '_tvpa', 'Utils', 'Analytics', 'Player', 'jQuery'];
+    for (var i = 0; i < libs.length; i++)
+      if ('undefined' === typeof window[libs[i]])
+        return true;
+    
+    return false;
   };
-  if (not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player)) {
-    var libsCheck = 0;
-    (function libsReady() {
-      setTimeout(function() {
-        if (not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player)) {
-          (++libsCheck < 200) ? libsReady(): console.warn('limit reached');
+
+  if (isLoadingLibs()) {
+    var libsLoadingCheck = 0;
+    (function libsLoadingPoll() {
+      setTimeout(function(){
+        if (isLoadingLibs()) {
+          (++libsLoadingCheck < 200) ? libsLoadingPoll() : console.warn('limit reached');
         } else {
           initialize();
         }
-      }, 150);
+      },150);
     })();
   } else {
     initialize();

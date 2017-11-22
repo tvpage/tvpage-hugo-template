@@ -1,261 +1,282 @@
-;(function(window, document) {
+(function() {
   
-  function Menu(player, settings) {
-
-    var that = this;
-    this.dataMethod = (document.body.classList.contains('dynamic')) ? 'dynamic' : 'static';
-    this.allVideos = [];
-
-    this.init = function(){
-        that.render();
-        that.cacheDOM();
-        that.bindMenuEvent();
-        that.bindClickEvent();
-        that.bindLoadMoreEvent();
-        that.hideMenuEvents();
-        that.listenToResize();
+    var Menu = function(player, options) {
+      this.options = options || {};
+      this.player = player;
+      this.allVideos = [];
+      this.page = 0;
+      this.lastPage = false;
+      this.isFetching = false;
+      this.itemsPerPage = 6;
+      this.categoryTagAttribute = Utils.isUndefined(this.options.menu_item_play_category_tag_attribute) ? null : this.options.menu_item_play_category_tag_attribute;
     };
 
-    this.cacheDOM =function(){
-        that.hiddenMenu = document.getElementById('tvp-hidden-menu');
-        that.scrollMenu = document.querySelectorAll('.ss-content')[0];
-        that.tvpVid = document.querySelectorAll('.tvp-video');
-        that.hamburguer = document.getElementById('tvp-hamburger-container');
-        that.toggles = document.querySelectorAll('.tvp-hamburger');
-        that.payerCont = document.querySelectorAll('.tvp-player')[0];
-        that.noVideosContainer = document.getElementById('tvp-no-videos-container');
-        that.tvpNoVideos = document.getElementsByClassName('tvp-no-videos');
-        that.scrollBar = document.getElementsByClassName('ss-scroll')[0];
-        that.slideMenu = document.getElementById('tvp-slide-menu');
+    Menu.prototype.cacheDOM = function() {
+      this.hiddenMenu = document.getElementById('tvp-hidden-menu');
+      this.scrollMenu = document.querySelectorAll('.ss-content')[0];
+      this.tvpVid = document.querySelectorAll('.tvp-video');
+      this.hamburguer = document.getElementById('tvp-hamburger-container');
+      this.toggles = document.querySelectorAll('.tvp-hamburger');
+      this.payerCont = document.querySelectorAll('.tvp-player')[0];
+      this.noVideosContainer = document.getElementById('tvp-no-videos-container');
+      this.tvpNoVideos = document.getElementsByClassName('tvp-no-videos');
+      this.scrollBar = document.getElementsByClassName('ss-scroll')[0];
+      this.slideMenu = document.getElementById('tvp-slide-menu');
     };
 
-    this.render = function() {
-        var playlist = settings.data || [];
-        if (playlist.length < 1) return;
-        that.fullScreenMenu();
-        var videoDetails = document.getElementsByClassName('tvp-video-details'),
-            menuHiden = document.getElementById('tvp-hidden-menu'),
-            menuItemEl = document.createElement('div'),
-            noVideosContainer = document.createElement('div');
-
-        menuItemEl.setAttribute('id', 'tvp-clearfix'),    
-        noVideosContainer.setAttribute('id', 'tvp-no-videos-container');
-
-        menuHiden.appendChild(noVideosContainer);
-        menuHiden.insertBefore(menuItemEl,noVideosContainer);
-
-        that.vidCount = 0;
-        for (var i = 0; i < playlist.length; i++) {
-            that.vidCount++;
-            var menuItem = playlist[i];
-            that.allVideos.push(menuItem);
-            menuItem.title = Utils.trimText(menuItem.title, 100);
-            menuItem.duration = Utils.formatDuration(menuItem.duration);
-            menuItemEl.innerHTML += Utils.tmpl(settings.templates['menu-item'], menuItem);
-            if (Utils.isset(settings, 'menu_item_play_category_tag_attribute') && ("" + settings.menu_item_play_category_tag_attribute).trim().length) {
-                var tagAttribute = settings.menu_item_play_category_tag_attribute;
-                var tagAttributeValue = menuItem[tagAttribute];
-                if (tagAttributeValue) {
-                    tagAttributeValue = tagAttributeValue.replace(/_/g,' ');
-                    var categoryFrag = document.createDocumentFragment(),
-                    categoryDiv = document.createElement('div');
-                    categoryDiv.classList.add('tvp-category-tag');
-                    categoryDiv.innerHTML += tagAttributeValue;
-                    categoryFrag.appendChild(categoryDiv);
-                    videoDetails[i].appendChild(categoryFrag);
-                }
-            }
-
-            if (that.dataMethod !== 'static' && playlist.length > 4) {
-                var noVidFrag = document.createDocumentFragment(),
-                    noVideos = document.createElement('div');
-                noVideos.classList.add('tvp-no-videos');
-                noVidFrag.appendChild(noVideos);
-                noVideosContainer.appendChild(noVidFrag);
-            }
+    Menu.prototype.renderCategoryValue = function(item,detailsEl){
+      if (this.categoryTagAttribute) {
+        var attrValue = item[this.categoryTagAttribute];
+        if (attrValue) {
+          attrValue = attrValue.replace(/_/g, ' ');
+          var categoryEl = document.createElement('div');
+          categoryEl.className = 'tvp-category-tag';
+          categoryEl.innerHTML += attrValue;
+          detailsEl.appendChild(categoryEl);
         }
-        if (that.dataMethod === 'static') {
-            that.videoCountP = document.createTextNode(that.vidCount + ' ' + (that.vidCount > 2 ? 'videos' : 'video'));
-            that.tvpVideoCount = document.querySelectorAll('.tvp-video-count')[0];
-            that.tvpVideoCount.appendChild(that.videoCountP);
-        }
-        menuHiden.style.cssText = 'height:'+(document.querySelectorAll('.tvp-player')[0].offsetHeight - 40)+'px;';
-        SimpleScrollbar.initAll();
-
+      }
     };
 
-    this.bindMenuEvent = function() {
-      for (var i = that.toggles.length - 1; i >= 0; i--) {
-        that.toggles[i].onclick = function() {
-            var playerAsset = player.assets[player.current];
-            that.setActiveItem(playerAsset.assetId);
-            that.toggleMenu();
+    Menu.prototype.renderNoVideos = function(target){
+      var div = document.createElement('div');
+      div.className = 'tvp-no-videos';
+      target.appendChild(div);
+    };
+
+    Menu.prototype.render = function() {
+      var menuList = this.options.data || [];
+      
+      var menuListLength = menuList.length;
+      if (menuListLength < 1)
+        return;
+
+      this.renderFullScreenMenu();
+      
+      var menuListEl = document.createElement('div');
+      menuListEl.className = 'tvp-clearfix';
+
+      var noVideosEl = document.createElement('div');
+      noVideosEl.id = 'tvp-no-videos-container';
+
+      var menuHidden = document.getElementById('tvp-hidden-menu');
+      menuHidden.appendChild(noVideosEl);
+      menuHidden.insertBefore(menuListEl, noVideosEl);
+      menuHidden.style.cssText = 'height:' + (document.getElementById('tvp-player-el-' + this.options.id).offsetHeight - 40) + 'px;';
+      
+      var videoDetails = document.getElementsByClassName('tvp-video-details');
+
+      for (var i = 0; i < menuListLength; i++) {
+        var menuItem = menuList[i];
+        
+        this.allVideos.push(menuItem);
+        
+        menuItem.title = Utils.trimText(menuItem.title, 100);
+        menuItem.duration = Utils.formatDuration(menuItem.duration);
+        menuListEl.innerHTML += Utils.tmpl(this.options.templates['menu-item'], menuItem);
+        
+        this.renderCategoryValue(menuItem,videoDetails[i]);
+
+        if (menuListLength > 4)
+          this.renderNoVideos(noVideosEl);
+      }
+      
+      SimpleScrollbar.initAll();
+    };
+
+    Menu.prototype.bindMenuEvent = function() {
+      var that = this;
+      for (var i = this.toggles.length - 1; i >= 0; i--) {
+        this.toggles[i].onclick = function() {
+          var playerAsset = that.player.assets[that.player.current];
+          that.setActiveItem(playerAsset.assetId);
+          that.toggleMenu();
         };
       }
     };
 
-    this.bindLoadMoreEvent = function(e){
-        that.scrollMenu.addEventListener("scroll", Utils.debounce(function() {
-          var menuTop = that.scrollMenu.scrollTop,
-              newHeight = that.hiddenMenu.clientHeight - that.scrollMenu.scrollHeight,
-              percentDocument = (menuTop*100)/newHeight;
-          percentDocument = Math.round(percentDocument);
-          percentDocument = Math.abs(percentDocument);
-          if (percentDocument >= 50 && percentDocument <= 100) {
-            that.dataMethod == 'dynamic' ? that.loadMore() : null;
-          }
-        },30));
+    Menu.prototype.loadMore = function() {
+      if (this.lastPage || this.isFetching)
+        return;
+
+      this.page++;
+      this.isFetching = true;
+
+      var channel = this.options.channel || {};
+
+      Utils.loadScript({
+        base: this.options.api_base_url + '/channels/' + this.options.channelId + '/videos',
+        params: Utils.extend(channel.parameters || {}, {
+          'X-login-id': this.options.loginId,
+          p: this.page,
+          n: this.itemsPerPage,
+          callback: 'tvpcallback'
+        })
+      });
+      var that = this;
+      window['tvpcallback'] = function(data) {
+        that.isFetching = false;
+        that.lastPage = (!data.length || data.length < that.itemsPerPage) ? true : false;
+        that.player.addAssets(data);
+        that.update(data);
+      };
     };
 
-    this.bindClickEvent = function(){
-      for (var i = that.tvpVid.length - 1; i >= 0; i--) {
-        that.videoClick(that.tvpVid[i]);
+    Menu.prototype.bindLoadMoreEvent = function(e) {
+      var that = this;
+      this.scrollMenu.addEventListener("scroll", Utils.debounce(function() {
+        var menuTop = that.scrollMenu.scrollTop,
+          newHeight = that.hiddenMenu.clientHeight - that.scrollMenu.scrollHeight,
+          percentDocument = (menuTop * 100) / newHeight;
+        percentDocument = Math.round(percentDocument);
+        percentDocument = Math.abs(percentDocument);
+        if (percentDocument >= 50 && percentDocument <= 100) {
+          that.loadMore()
+        }
+      }, 30));
+    };
+
+    Menu.prototype.bindClickEvent = function() {
+      for (var i = this.tvpVid.length - 1; i >= 0; i--) {
+        this.videoClick(this.tvpVid[i]);
       }
     };
 
-    this.toggleMenu = function() {
-        that.slideMenu.classList.contains('active') ? that.slideMenu.classList.remove('active') : that.slideMenu.classList.add('active');
+    Menu.prototype.toggleMenu = function() {
+      this.slideMenu.classList.contains('active') ? this.slideMenu.classList.remove('active') : this.slideMenu.classList.add('active');
     };
 
-    this.hideMenu = function(){
-        that.slideMenu.classList.remove('active');
+    Menu.prototype.hideMenu = function() {
+      this.slideMenu.classList.remove('active');
     };
 
-    this.hideMenuEvents = function(){
-        var overlay = document.getElementsByClassName('tvp-overlay')[0];
-        if (overlay) {
-            overlay.onclick = function(){
-                that.hideMenu();
-            };
-        }
-    };
-
-    this.fullScreenMenu = function(){
-        var tvpPlayerEl = that.dataMethod === 'static'? document.getElementById('tvp-player-el') : document.getElementsByClassName('tvp-player-el')[0];
-        var _frame = tvpPlayerEl.getElementsByTagName('iframe');
-        if(_frame.length){
-            var menuFrag = document.createDocumentFragment(),
-            slideMenu = document.createElement('div');
-            slideMenu.setAttribute('id', 'tvp-slide-menu');
-            slideMenu.innerHTML = settings.templates.menu;
-            menuFrag.appendChild(slideMenu);
-            _frame[0].parentNode.insertBefore(menuFrag, _frame[0].nextSibling);
-        }
-    };
-
-    this.listenToResize = function() {
-        window.removeEventListener('resize',resizingEvetns,false);
-        window.addEventListener('resize',resizingEvetns,false);
-        function resizingEvetns(){
-                var newSize = (that.payerCont.clientHeight - 40) +'px;';
-                that.hiddenMenu.style.cssText = 'height:'+newSize;
-                var totalHeight = that.scrollMenu.scrollHeight,
-                    ownHeight = that.scrollMenu.clientHeight,
-                    scrollRatio = ownHeight / totalHeight;
-                that.scrollBar.style.cssText += 'height:' + Math.floor((scrollRatio) * 100) + '%;top:' + (that.scrollMenu.scrollTop / totalHeight) * 100 + '%;right:-'+(that.hiddenMenu.clientWidth - 9)+'px;';
+    Menu.prototype.hideMenuEvents = function() {
+      var overlay = document.getElementsByClassName('tvp-overlay')[0];
+      if (overlay) {
+        overlay.onclick = function() {
+          this.hideMenu();
         };
+      }
     };
 
-    this.update = function(newData) {
-        var playlist = settings.data || [],
-            menuItem;
+    Menu.prototype.renderFullScreenMenu = function() {
+      var playerEl = document.getElementById('tvp-player-el-' + this.options.id);
+      var iframe = playerEl.querySelector('iframe');
+      var menuEl = document.createElement('div');
+      menuEl.id = 'tvp-slide-menu';
+      menuEl.innerHTML = this.options.templates.menu;
+      iframe.parentNode.insertBefore(menuEl, iframe.nextSibling);
+    };
 
-      if (that.noVideosContainer) {
-        that.deleteDivs();
-        for (var i = 0; i < newData.length; i++) {
-            menuItem = playlist[i];
-            that.allVideos.push(newData[i]);
-            settings.data.push(newData[i]);
-            that.noVideosContainer.setAttribute('id', 'tvp-clearfix');
-            newData[i].duration = Utils.formatDuration(newData[i].duration);
-            that.noVideosContainer.innerHTML += Utils.tmpl(settings.templates['menu-item'], newData[i]);
-            that.scrollMenu.appendChild(that.noVideosContainer);
-            if (Utils.isset(settings, 'menu_item_play_category_tag_attribute') && ("" + settings.menu_item_play_category_tag_attribute).trim().length) {
-                var tagAttribute = settings.menu_item_play_category_tag_attribute;
-                var tagAttributeValue = newData[i][settings.menu_item_play_category_tag_attribute];
-                if (tagAttributeValue) {
-                    tagAttributeValue = tagAttributeValue.replace(/_/g,' ');
-                    var categoryFrag = document.createDocumentFragment(),
-                    categoryDiv = document.createElement('div');
-                    categoryDiv.classList.add('tvp-category-tag');
-                    categoryDiv.innerHTML += tagAttributeValue;
-                    categoryFrag.appendChild(categoryDiv);
-                    that.noVideosContainer.getElementsByClassName('tvp-video-details')[i].appendChild(categoryFrag);
-                }
-            }
+    Menu.prototype.listenToResize = function() {
+      window.removeEventListener('resize', resizingEvents, false);
+      window.addEventListener('resize', resizingEvents, false);
+
+      function resizingEvents() {
+        var newSize = (this.payerCont.clientHeight - 40) + 'px;';
+        this.hiddenMenu.style.cssText = 'height:' + newSize;
+        var totalHeight = this.scrollMenu.scrollHeight,
+          ownHeight = this.scrollMenu.clientHeight,
+          scrollRatio = ownHeight / totalHeight;
+        this.scrollBar.style.cssText += 'height:' + Math.floor((scrollRatio) * 100) + '%;top:' + (this.scrollMenu.scrollTop / totalHeight) * 100 + '%;right:-' + (this.hiddenMenu.clientWidth - 9) + 'px;';
+      };
+    };
+
+    Menu.prototype.update = function(newData) {
+      var newDataLength = newData.length;
+      var that = this;
+      var addNewItem = function(item){
+        that.allVideos.push(item);
+        that.options.data.push(item);
+      };
+      var renderItem = function(item){
+        return Utils.tmpl(that.options.templates['menu-item'], item);
+      };
+      if (this.noVideosContainer) {
+        this.deleteDivs();
+        for (var i = 0; i < newDataLength; i++) {
+          var newItem = newData[i];
+          newItem.duration = Utils.formatDuration(newItem.duration);
+          
+          addNewItem(newItem);
+
+          this.noVideosContainer.innerHTML += renderItem(newItem);
+          this.scrollMenu.appendChild(this.noVideosContainer);
+          
+          this.renderCategoryValue(newItem,this.noVideosContainer.getElementsByClassName('tvp-video-details')[i]);
         }
-      }else{
-        var newVivFrag = document.createDocumentFragment(),
-            newDiv = document.createElement('div');
-        for (var i = 0; i < newData.length; i++) {
-            menuItem = playlist[i];
-            that.allVideos.push(newData[i]);
-            settings.data.push(newData[i]);
-            newDiv.setAttribute('id', 'tvp-clearfix');
-            newData[i].duration = Utils.formatDuration(newData[i].duration);
-            newDiv.innerHTML += Utils.tmpl(settings.templates['menu-item'], newData[i]);
-            newVivFrag.appendChild(newDiv);
-            
-            that.scrollMenu.appendChild(newDiv);
-            if (Utils.isset(settings, 'menu_item_play_category_tag_attribute') && ("" + settings.menu_item_play_category_tag_attribute).trim().length) {
-                var tagAttribute = settings.menu_item_play_category_tag_attribute;
-                var tagAttributeValue = newData[i][settings.menu_item_play_category_tag_attribute];
-                if (tagAttributeValue) {
-                    tagAttributeValue = tagAttributeValue.replace(/_/g,' ');
-                    var categoryFrag = document.createDocumentFragment(),
-                    categoryDiv = document.createElement('div');
-                    categoryDiv.classList.add('tvp-category-tag');
-                    categoryDiv.innerHTML += tagAttributeValue;
-                    categoryFrag.appendChild(categoryDiv);
-                    newDiv.getElementsByClassName('tvp-video-details')[i].appendChild(categoryFrag);
-                }
-            }
+      } else {
+        var newDiv = document.createElement('div');
+        newDiv.className = 'tvp-clearfix';
+        for (var i = 0; i < newDataLength; i++) {
+          var newItem = newData[i];
+          newItem.duration = Utils.formatDuration(newItem.duration);
+          
+          addNewItem(newItem);
+
+          newDiv.innerHTML += renderItem(newItem);
+          
+          this.renderCategoryValue(newItem,newDiv.getElementsByClassName('tvp-video-details')[i]);
+        }
+        this.scrollMenu.appendChild(newDiv);
+      }
+      this.cacheDOM();
+      this.bindClickEvent();
+    };
+
+    Menu.prototype.deleteDivs = function() {
+      for (var i = this.tvpNoVideos.length - 1; i >= 0; i--) {
+        this.noVideosContainer.removeChild(this.tvpNoVideos[i]);
+      }
+    };
+
+    Menu.prototype.clearActiveItems = function() {
+      for (var i = this.tvpVid.length - 1; i >= 0; i--) {
+        if (this.tvpVid[i].classList.contains('active')) {
+          this.tvpVid[i].classList.remove('active');
         }
       }
-      that.cacheDOM();
-      that.bindClickEvent();
     };
 
-    this.deleteDivs = function(){
-        for (var i = that.tvpNoVideos.length - 1; i >= 0; i--){
-            that.noVideosContainer.removeChild(that.tvpNoVideos[i]);
+    Menu.prototype.setActiveItem = function(id) {
+      for (var i = this.tvpVid.length - 1; i >= 0; i--) {
+        var item = this.tvpVid[i],
+          itemId = item.id.split('-').pop();
+        if (itemId === id && !item.classList.contains('active')) {
+          this.clearActiveItems();
+          item.classList.add('active');
         }
+      }
     };
 
-    this.clearActiveItems = function () {
-        for (var i = that.tvpVid.length - 1; i >= 0; i--) {
-            if(that.tvpVid[i].classList.contains('active')){
-                that.tvpVid[i].classList.remove('active');
-            }
-        }
+    Menu.prototype.videoClick = function(vids) {
+      var that = this;
+      vids.onclick = function() {
+        if (!this.classList.contains('tvp-video')) return;
+
+        that.clearActiveItems();
+        this.classList.add('active');
+
+        var id = this.id.split('-').pop(),
+          selected = that.allVideos.filter(function(v) {
+            return v.id === id
+          });
+
+        that.player.play(that.player.buildAsset(selected[0]));
+        that.toggleMenu();
+      };
     };
 
-    this.setActiveItem = function (id) {
-        for (var i = that.tvpVid.length - 1; i >= 0; i--) {
-            var item = that.tvpVid[i],
-                itemId = item.id.split('-').pop();
-            if (itemId === id && !item.classList.contains('active')){
-                this.clearActiveItems();
-                item.classList.add('active');
-            }
-        }
+    Menu.prototype.initialize = function(){
+      this.render();
+      this.cacheDOM();
+      this.bindMenuEvent();
+      this.bindClickEvent();
+      this.bindLoadMoreEvent();
+      this.hideMenuEvents();
+      this.listenToResize();
     };
-
-    this.videoClick = function(vids){
-        vids.onclick = function() {
-            if (!this.classList.contains('tvp-video')) return;
-
-            that.clearActiveItems();
-            this.classList.add('active');
-
-            var id = this.id.split('-').pop(),
-                selected = that.allVideos.filter(function(v){return v.id === id});
-            player.play(player.createAsset(selected[0]));
-            that.toggleMenu();
-        };
-    };
-  }
-
-  window.Menu = Menu;
-
-}(window, document));
+  
+    window.Menu = Menu;
+  
+  }());
+  

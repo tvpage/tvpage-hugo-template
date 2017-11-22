@@ -47,7 +47,8 @@ body  {
   right: 0;
   position: absolute;
   margin: auto;
-  transition: all .2s ease;
+  -webkit-transition: all .2s ease;
+          transition: all .2s ease;
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
@@ -74,7 +75,8 @@ body  {
   margin: auto;
   cursor: pointer;
   z-index: 1000;
-  transition: all .05s ease-in-out;
+  -webkit-transition: all .05s ease-in-out;
+          transition: all .05s ease-in-out;
 }
 
 .show-on-hover .tvp-video-play {
@@ -84,7 +86,8 @@ body  {
 
 .tvp-video-play > polygon {
   pointer-events: none;
-  transition: all .05s ease-in-out;
+  -webkit-transition: all .05s ease-in-out;
+          transition: all .05s ease-in-out;
 }
 
 .tvp-video:hover .tvp-video-image-overlay {
@@ -110,7 +113,8 @@ body  {
 }
 
 .tvp-play > polygon {
-  transition: all .05s ease-in-out;
+  -webkit-transition: all .05s ease-in-out;
+          transition: all .05s ease-in-out;
   pointer-events: none;
 }
 
@@ -148,6 +152,7 @@ body  {
   min-width: 100%;
   opacity: 0;
   visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .tvp-carousel-content.slick-initialized {
@@ -160,7 +165,8 @@ body  {
 }
 
 .tvp-carousel-arrow {
-  transition: top .05s ease-in-out;
+  -webkit-transition: top .05s ease-in-out;
+          transition: top .05s ease-in-out;
   position: absolute;
   margin: 0;
   padding: 0;
@@ -177,7 +183,8 @@ body  {
 }
 
 .tvp-carousel-arrow > svg {
-  transition: all .05s ease-in-out;
+  -webkit-transition: all .05s ease-in-out;
+          transition: all .05s ease-in-out;
   pointer-events: none;
   position: absolute;
   top: 0;

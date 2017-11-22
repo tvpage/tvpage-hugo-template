@@ -38,20 +38,26 @@
     };
 
     var loadProducts = function(videoId, settings, fn) {
-        if (!videoId) return;
-        var src = settings.api_base_url + '/videos/' + videoId + '/products?X-login-id=' + settings.loginId;
-        var cbName = 'tvp_' + Math.floor(Math.random() * 555);
-        src += '&callback=' + cbName;
-        var script = document.createElement('script');
-        script.src = src;
-        window[cbName || 'callback'] = function(data) {
-            if (data && data.length && 'function' === typeof fn) {
-                fn(data);
-            } else {
-                fn([]);
-            }
+        if (!videoId)
+          return;
+    
+        Utils.loadScript({
+          base: settings.api_base_url + '/videos/' + videoId + '/products',
+          params: {
+            'X-login-id': settings.loginId,
+            o: settings.products_order_by,
+            od: settings.products_order_direction,
+            callback: 'tvpcallback'
+          }
+        });
+    
+        window['tvpcallback'] = function(data) {
+          if (data && data.length && 'function' === typeof fn) {
+            fn(data);
+          } else {
+            fn([]);
+          }
         };
-        document.body.appendChild(script);
     };
 
     var render = function(data,config) {
@@ -254,7 +260,8 @@
                 }, 0);
             };
 
-            new Player('tvp-player-el', s, data.selectedVideo.id);
+            var player = new Player('tvp-player-el', s, data.selectedVideo.id);
+            player.initialize();
         };
 
         window.addEventListener('message', function(e) {
@@ -269,17 +276,14 @@
                 settings.loginId = loginId;
 
                 channelId = Utils.isset(settings.channel) && Utils.isset(settings.channel.id) ? settings.channel.id : (settings.channelId || settings.channelid);
-
-                analytics = new Analytics();
+                analytics =  new Analytics();
                 analytics.initConfig({
+                    domain: Utils.isset(location,'hostname') ?  location.hostname : '',
                     logUrl: settings.api_base_url + '/__tvpa.gif',
-                    domain: Utils.isset(location, 'hostname') ? location.hostname : '',
                     loginId: loginId,
                     firstPartyCookies: settings.firstpartycookies,
                     cookieDomain: settings.cookiedomain
                 });
-                analytics.track('ci', {li: loginId});
-
                 var selectedVideo = data.selectedVideo;
                 if (Utils.isset(selectedVideo, 'products')) {
                     render(selectedVideo.products,settings);

@@ -99,7 +99,7 @@ if (   __TVPage__.config[id].hasOwnProperty('onChange') && typeof   __TVPage__.c
 }
 
 var config = utils.isset(window.__TVPage__) && utils.isset(__TVPage__,"config") && utils.isset(__TVPage__.config,id) ? __TVPage__.config[id] : {};
-
+var baseUrl = config.baseUrl;
 var hostCssTagId = "tvp-sidebar-host-css";
 var hostCssTag = "";
 if (!document.getElementById(hostCssTagId)) {
@@ -113,11 +113,11 @@ if ( !config.hasOwnProperty('targetEl') ||  !document.getElementById(config.targ
 
 var targetElement = document.getElementById(config.targetEl);
 targetElement.insertAdjacentHTML('beforebegin', hostCssTag + '<style>' + config.css["host-custom" + (utils.isMobile ? "-mobile" : "")] + '</style><div id="' + id + '-holder" class="tvp-sidebar-holder">'+
-'<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe></div>');
+'<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe></div>');
 targetElement.parentNode.removeChild(targetElement);
 
 config.id = id;
-config.staticPath = config.baseUrl + "/sidebar";
+config.staticPath = baseUrl + "/sidebar";
 config.mobilePath = utils.isMobile ? 'mobile/' : '';
 config.distPath = config.debug ? '/' : '/dist/';
 config.cssPath = config.staticPath + config.distPath + 'css/';
@@ -147,7 +147,9 @@ var iframeContent = utils.getIframeHtml({
     domain: config.baseUrl,
     style: config.css.sidebar,
     js: [
-        config.debug ? config.jsPath + "libs/utils.js" : "",
+        "//a.tvpage.com/tvpa.min.js",
+        config.debug ? baseUrl + "libs/analytics.js" : "",
+        config.debug ? baseUrl + "libs/utils.js" : "",
         config.debug ? config.jsPath + "grid.js" : "",
         config.debug ? config.jsPath + "index.js" : "",
         config.debug ? "" : config.jsPath + "scripts.min.js"
@@ -227,12 +229,19 @@ function handlePostMessages(e){
     case 'render':
       handleRender(e);
       break;
+    case 'onPlayerChange':
+      handleOnPlayerChange(e);
+      break;
     default: 
       // do nothing
   }
 
   handleCallback(e);
 };
+
+function handleOnPlayerChange(e){
+  config.onPlayerChange(e.data.e, e.data.stateData);
+}
 
 function handleCallback(e){
   if (__windowCallbackFunc__) 
@@ -252,6 +261,8 @@ function handleVideoClick(e){
 
     //performant way to clone object http://jsben.ch/#/bWfk9
     var configCopy = JSON.parse(JSON.stringify(config));
+    configCopy.onPlayerChange = !!config.onPlayerChange;
+    
     delete configCopy.no_products_banner;
 
     clickData = {
@@ -261,14 +272,14 @@ function handleVideoClick(e){
     };
 
     updateModalTitle(eventData.selectedVideo.title);
-    utils.removeClass('tvp-modal-' + config.id,'tvp-hidden');
+    utils.removeClass(modal,'tvp-hidden');
     utils.removeClass('tvp-modal-overlay-' + config.id,'tvp-hidden');
     
     if (config.fix_page_scroll) {
         utils.addClass(document.body, 'tvp-modal-open');
     }
 
-    iframeModalHolder.innerHTML =  '<iframe class="tvp-iframe-modal" src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe>';
+    iframeModalHolder.innerHTML =  '<iframe class="tvp-iframe-modal" src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe>';
     iframeModal = iframeModalHolder.querySelector('.tvp-iframe-modal');
     iframeModalDocument = iframeModal.contentWindow.document;
     
@@ -290,9 +301,9 @@ function handleVideoClick(e){
           playerUrl,
           config.debug && utils.isMobile ? config.jsPath + "/vendor/jquery.js" : "",
           config.debug && !utils.isMobile ? config.jsPath + "/vendor/perfect-scrollbar.min.js" : "",
-          config.debug ? config.jsPath + "/libs/utils.js" : "",
-          config.debug ? config.jsPath + "/libs/analytics.js" : "",
-          config.debug ? config.jsPath + "/libs/player.js" : "",
+          config.debug ? baseUrl + "libs/utils.js" : "",
+          config.debug ? baseUrl + "libs/analytics.js" : "",
+          config.debug ? baseUrl + "libs/player.js" : "",
           config.debug ? config.jsPath + "/" + config.mobilePath + "modal/index.js" : "",
           config.debug ? "" : config.jsPath + config.mobilePath + "modal/scripts.min.js"
       ],
@@ -319,11 +330,13 @@ function handleModalInitialized(e){
 
   var onOrientationChange = function () {
     if (utils.isIOS && iframeModal && iframeModal.contentWindow) {
-      var width = iframeModal.parentNode.offsetWidth;
-      iframeModal.contentWindow.window.postMessage({
-        event: config.eventPrefix + ':modal_holder_resize',
-        size: [width, Math.floor(width * (9 / 16))]
-      },'*');
+      setTimeout(function(){
+        var width = iframeModal.parentNode.offsetWidth;
+        iframeModal.contentWindow.window.postMessage({
+          event: config.eventPrefix + ':modal_holder_resize',
+          size: [width, Math.floor(width * (9 / 16))]
+        },'*');
+      },300);
     }
   };
   var orientationChangeEvent = 'onorientationchange' in window ? 'orientationchange' : 'resize';
