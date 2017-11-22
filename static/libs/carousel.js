@@ -20,7 +20,11 @@
     this.loadMore = Utils.isUndefined(this.options.loadMore) ? true : this.options.loadMore;
     this.dotsPosition = Utils.isUndefined(this.options.dotsPosition) ? 'bottom' : this.options.dotsPosition;
     this.slideCompare;
+    this.arrowIconsAdded = false;
+    this.prevArrowId = 'carousel-arrow-prev';
+    this.nextArrowId = 'carousel-arrow-next';
     this.el = document.getElementById(sel);
+    this.el.style.position = 'relative';
   };
 
   Carousel.prototype.getSlickConfig = function(){
@@ -29,7 +33,8 @@
       slidesToShow: options.slidesToShow,
       slidesToScroll: options.slidesToScroll,
       infinite: options.infinite || false,
-      arrows: true
+      arrows: true,
+      appendArrows: '#carousel-arrows'
     };
 
     if(!!options.responsive && options.responsive.length){
@@ -85,6 +90,13 @@
     this.handleClick();
   };
 
+  Carousel.prototype.getArrowEls = function(){
+    return [
+      this.appendArrowsEl.querySelector('.slick-prev'),
+      this.appendArrowsEl.querySelector('.slick-next')
+    ].filter(Boolean);
+  };
+
   //since the slick's setPosition callback is triggered multiple times, is probably better
   //to align the arrows again, only if the new position is diff than the existing one?
   Carousel.prototype.alignArrowsX = function(){
@@ -106,13 +118,16 @@
     if(Utils.isUndefined(xOffset))
       return;
 
+    
+    var arrowEls = this.getArrowEls();
+
     //implement on arrows
-    var arrowPrev = this.el.querySelector('.slick-prev');
+    var arrowPrev = arrowEls[0];
     if(arrowPrev){
-      arrowPrev.style.left = xOffset;
+      arrowPrev.style.left = parseInt(xOffset) + 'px';
     }
 
-    var arrowNext = this.el.querySelector('.slick-next');
+    var arrowNext = arrowEls[1];
     if(arrowNext){
       arrowNext.style.right = parseInt(xOffset) + 'px';
     }
@@ -123,31 +138,7 @@
     var alignArrowsY = this.options.alignArrowsY,
         arrowTop,
         arrowBottom,
-        isCenter,
-        once = false;
-
-    function updateArrows(){
-      var arrows = that.el.querySelectorAll('.slick-arrow');
-      var arrowsLength = arrows.length;
-
-      for (var i = 0; i < arrowsLength; i++) {
-        var arrow = arrows[i];
-
-        if(arrowTop || arrowBottom)
-          arrow.style.transform = 'initial';
-
-        if(arrowTop){
-          arrow.style.top = Math.floor(isCenter ? arrowTop - arrow.getBoundingClientRect().height / 2 : arrowTop);
-        }
-        
-        if(arrowBottom)
-          arrow.style.bottom = arrowBottom;
-  
-        //show arrows
-        arrow.style.opacity = 1;
-        arrow.style.visibility = 'visible';
-      }
-    };
+        isCenter;
 
     if('string' === typeof alignArrowsY){
 
@@ -175,19 +166,19 @@
         //we'll add that to the top value calculation
         (function collectParents(){
           setTimeout(function() {
-            if(currentParent && Utils.hasClass(currentParent, 'slick-carousel')){
+            if(currentParent && currentParent.id == that.el.id){
               arrowTop = 0;
 
               var parentsLength = parents.length;
-              
               for (var i = 0; i < parentsLength; i++) {
                 arrowTop += parents[i].offsetTop;
               }
 
-              //adding the center of the element
-              arrowTop += Math.floor(referenceEl.getBoundingClientRect().height / 2);
+              arrowTop += referenceEl.offsetTop + Math.floor(referenceEl.getBoundingClientRect().height / 2);
 
-              updateArrows();
+              that.appendArrowsEl.style.top = arrowTop;
+              
+              Utils.addClass(that.appendArrowsEl,'ready');
 
               return;
             }else if(++parentsCheck < 30){
@@ -198,7 +189,7 @@
 
               collectParents();
             }
-          },0);
+          },100);
         })();
 
       }
@@ -248,7 +239,34 @@
     }
   };
 
+  Carousel.prototype.addArrowIcons = function(){
+    function getIcon(d){
+      var i = Utils.createEl('i');
+      
+      i.className = 'material-icons abs-center';
+      i.innerHTML = 'keyboard_arrow_' + d;
+
+      return i;
+    }
+
+    var arrowEls = this.getArrowEls();
+    
+    var prevArrow = arrowEls[0];
+    if(prevArrow){
+      prevArrow.innerHTML = '';
+      prevArrow.appendChild(getIcon('left'));
+    }
+
+    var nextArrow = arrowEls[1];
+    if(nextArrow){
+      nextArrow.innerHTML = '';
+      nextArrow.appendChild(getIcon('right'));
+    }
+  };
+
   Carousel.prototype.onSlickSetPosition = function(){
+    this.addArrowIcons();
+
     this.alignArrowsX();
     this.alignArrowsY();
 
@@ -377,6 +395,12 @@
             this.el.insertBefore(this.appendDotsEl, this.el.firstChild);
           }
         }
+
+        this.appendArrowsEl = document.createElement('div');
+        this.appendArrowsEl.className = 'carousel-arrows';
+        this.appendArrowsEl.id = 'carousel-arrows';
+
+        this.el.appendChild(this.appendArrowsEl);
 
         this.start();
       }else{

@@ -53,7 +53,7 @@
 
     //for small bp and below we will do 1 video per
     var videosCarousel = new Carousel('videos',{
-      alignArrowsY: ['center', '.video-image'],
+      alignArrowsY: ['center', '.video-image-icon'],
       endpoint: videosEndpoint,
       params: Utils.addProps({
         o: config.videos_order_by,

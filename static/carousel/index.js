@@ -513,8 +513,8 @@ function onWidgetVideosCarouselClick(e) {
       debug ? baseUrl + '/bootstrap/dist/css/bootstrap.css' : '',
       debug ? cssPath + "/" + mobilePath + "/modal/styles.css" : '',
       debug && isMobile ? baseUrl + "/slick/slick.css" : '',
-      debug && isMobile ? baseUrl + '/slick/mobile/custom.css' : '',
-      debug && !isMobile ? baseUrl + '/slick/custom.css' : '',
+      isMobile ? baseUrl + '/slick/mobile/custom.css' : '',
+      !isMobile ? baseUrl + '/slick/custom.css' : '',
       debug && !isMobile ? cssPath + "/vendor/perfect-scrollbar.min.css" : "",
       debug ? "" : cssPath + "/" + mobilePath + "/modal/styles.min.css"
     ]

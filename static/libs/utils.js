@@ -52,6 +52,10 @@
     return el.getAttribute(a);
   };
 
+  Utils.createEl = function(tag) {
+    return document.createElement(tag);
+  };
+
   Utils.isEmptyObject = isEmptyObject;
 
   Utils.stopEvent = function(e) {
