@@ -28,18 +28,18 @@ checks:
 build:
     dependencies:
         before:
-            # - cd static && npm install
-            - cd guitest && npm install
+            - cd static && npm install
+            - cd ../guitest && npm install
 
     tests:
         override:
-            # -
-            #     command: 'npm test'
-            #     coverage:
-            #         file: 'static/coverage/clover.xml'
-            #         format: 'clover'
-            # -
-            #     command: 'npm run check'
+            -
+                command: 'npm test'
+                coverage:
+                    file: 'static/coverage/clover.xml'
+                    format: 'clover'
+            -
+                command: 'npm run check'
             -
                 command: 'node_modules/.bin/nightwatch -c conf/suite_fulltest.conf.js -e SoloW10GC61'
 
