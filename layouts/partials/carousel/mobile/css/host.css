@@ -88,15 +88,9 @@
     "border: 0;" +
     "width: 100%;" +
     "height: 100%;" +
-    "opacity: 0;" +
-    "position: relative;" +
-    "top: auto;" +
-    "left: auto;" +
-"}" +
-
-".no-products .tvp-iframe-modal," +
-".products .tvp-iframe-modal {" +
-    "opacity: 1;" +
+    "position: absolute;" +
+    "top: 0;" +
+    "left: 0;" +
 "}" +
 
 ".tvp-modal-header:after {" +
@@ -122,19 +116,15 @@
 "}" +
 
 ".tvp-modal-iframe-holder {" +
-    "height: 0;" +
     "width: 100%;" +
     "position: relative;" +
-    "padding-bottom: 46.47%;" +
 "}" +
 
-".tvp-modal-iframe-holder.no-products {" +
-    "padding-bottom: 59.5%;" +
-"}" +
-
-".tvp-modal-iframe-holder.products {" +
-    "padding-bottom: 0;" +
-    "height: auto;" +
+".tvp-modal-iframe-holder:before {" +
+    "display: block;" +
+    "content: '';" +
+    "width: 100%;" +
+    "padding-top: 92%;" +
 "}" +
 
 ".tvp-title {" +

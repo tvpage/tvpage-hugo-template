@@ -279,8 +279,9 @@ function widgetRender(){
     ],
     css: [
       debug ? baseUrl + '/slick/slick.css' : '',
+      debug && isMobile ? baseUrl + '/slick/mobile/custom.css' : '',
+      debug && !isMobile ? baseUrl + '/slick/custom.css' : '',
       debug ? baseUrl + '/bootstrap/dist/css/bootstrap.css' : '',
-      debug ? cssPath + '/styles.css' : '',
       debug ? '' : cssPath + '/styles.min.css'
     ]
   }));
@@ -366,14 +367,6 @@ window.addEventListener("message", function(e){
     onWidgetModalInitialized(e);
   }
 
-  if('widget_modal_no_products' === eventType){
-    onWidgetModalNoProducts(e);
-  }
-
-  if('widget_modal_products' === eventType){
-    onWidgetModalProducts(e); 
-  }
-
   if('widget_modal_resize' === eventType){
     onWidgetModalResize(e);
   }
@@ -452,10 +445,6 @@ function onWidgetVideosCarouselClick(e) {
       addClass(modal, 'tvp-hidden');
       addClass('tvp-modal-overlay-' + id, 'tvp-hidden');
 
-      removeClass(iframeModalHolder, 'products');
-      removeClass(iframeModalHolder, 'no-products');
-      removeClass(modal.querySelector('.tvp-products-headline'), 'active');
-
       remove(iframeModal);
 
       if (config.fix_page_scroll)
@@ -513,14 +502,18 @@ function onWidgetVideosCarouselClick(e) {
       debug ? baseUrl + "/libs/utils.js" : "",
       debug ? baseUrl + "/libs/analytics.js" : "",
       debug ? baseUrl + "/libs/player.js" : "",
+      debug ? baseUrl + "/libs/carousel.js" : "",
       debug && isMobile ? javascriptPath + "/vendor/jquery.js" : "",
       debug ? javascriptPath + "/" + mobilePath + "/modal/index.js" : "",
       debug && !isMobile ? javascriptPath + "/vendor/perfect-scrollbar.min.js" : "",
-      debug ? "" : javascriptPath + mobilePath + "/modal/scripts.min.js"
+      debug ? "" : javascriptPath + "/" + mobilePath + "/modal/scripts.min.js"
     ],
     css: [
-      debug ? cssPath + "/" + mobilePath + "/modal/styles.css" : "",
-      debug && isMobile ? cssPath + "/vendor/slick.css" : "",
+      debug ? baseUrl + '/bootstrap/dist/css/bootstrap.css' : '',
+      debug ? cssPath + "/" + mobilePath + "/modal/styles.css" : '',
+      debug && isMobile ? baseUrl + "/slick/slick.css" : '',
+      debug && isMobile ? baseUrl + '/slick/mobile/custom.css' : '',
+      debug && !isMobile ? baseUrl + '/slick/custom.css' : '',
       debug && !isMobile ? cssPath + "/vendor/perfect-scrollbar.min.css" : "",
       debug ? "" : cssPath + "/" + mobilePath + "/modal/styles.min.css"
     ]
@@ -550,43 +543,6 @@ function onWidgetModalInitialized(e) {
 
 function handlePlayerNext(e) {
   getById('tvp-modal-title-' + id).innerHTML = e.data.next.assetTitle || "";
-}
-
-function onWidgetModalNoProducts(e) {
-  if (!config.merchandise)
-    return;
-
-  removeClass(iframeModalHolder, 'products');
-  addClass(iframeModalHolder, 'no-products');
-
-  if(isMobile || !config.products_headline_display)
-    return;
-  
-  var headlineEl = modal.querySelector('.tvp-products-headline');
-  if (headlineEl) {
-    remove(headlineEl);
-  }
-}
-
-function onWidgetModalProducts(e){
-  removeClass(iframeModalHolder, 'no-products');
-  addClass(iframeModalHolder, 'products');
-
-  if (isMobile || modal.querySelector('.tvp-products-headline') || !config.products_headline_display)
-    return;
-
-  var headlineEl = createEl('div');
-  headlineEl.className = 'tvp-products-headline';
-  headlineEl.innerHTML = config.products_headline_text;
-  headlineEl.addEventListener('click',function(){
-    if (this.classList.contains('active')) {
-      removeClass(this,'active')
-    } else {
-      addClass(this,'active')
-    }
-  });
-
-  modal.querySelector('.tvp-modal-header').appendChild(headlineEl);
 }
 
 function onWidgetModalResize(e){

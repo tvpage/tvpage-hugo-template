@@ -19,8 +19,7 @@
     this.limitDots = Utils.isUndefined(this.options.limitDots) ? false : this.options.limitDots;
     this.loadMore = Utils.isUndefined(this.options.loadMore) ? true : this.options.loadMore;
     this.dotsPosition = Utils.isUndefined(this.options.dotsPosition) ? 'bottom' : this.options.dotsPosition;
-    this.arrowsXOffset;
-    this.arrowsYOffset;
+    this.slideCompare;
     this.el = document.getElementById(sel);
   };
 
@@ -104,11 +103,6 @@
 
     this.arrowsXOffset = xOffset;
 
-    // if(this.arrowsXOffset == xOffset)
-    //   return;
-
-    // this.arrowsXOffset = xOffset;
-
     if(Utils.isUndefined(xOffset))
       return;
 
@@ -129,7 +123,8 @@
     var alignArrowsY = this.options.alignArrowsY,
         arrowTop,
         arrowBottom,
-        isCenter;
+        isCenter,
+        once = false;
 
     function updateArrows(){
       var arrows = that.el.querySelectorAll('.slick-arrow');
@@ -142,12 +137,12 @@
           arrow.style.transform = 'initial';
 
         if(arrowTop){
-          arrow.style.top = isCenter ? arrowTop - arrow.getBoundingClientRect().height / 2 : arrowTop;
+          arrow.style.top = Math.floor(isCenter ? arrowTop - arrow.getBoundingClientRect().height / 2 : arrowTop);
         }
         
         if(arrowBottom)
           arrow.style.bottom = arrowBottom;
-
+  
         //show arrows
         arrow.style.opacity = 1;
         arrow.style.visibility = 'visible';
@@ -171,7 +166,6 @@
       isCenter = 'center' === alignArrowsY[0];
 
       if(isCenter){
-
         var that = this;        
         var parentsCheck = 0;
         var parents = [];
@@ -243,8 +237,13 @@
     this.onReady();
   };
 
-  Carousel.prototype.onSlickAfterChange = function(){
-    if(this.loadMore && !this.full){
+  Carousel.prototype.onSlickBeforeChange = function(slickArgs){
+    this.slideCompare = slickArgs[2];//adding currentSlide
+  };
+
+  //if there's actually a change/movement on slides
+  Carousel.prototype.onSlickAfterChange = function(slickArgs){
+    if(this.slideCompare != slickArgs[2] && this.loadMore && !this.full){
       this.loadNext('render');
     }
   };
@@ -270,8 +269,12 @@
         that.onSlickInit.call(that);
       });
       
+      that.$slickEl.on('beforeChange', function(){
+        that.onSlickBeforeChange.call(that, arguments);
+      });
+
       that.$slickEl.on('afterChange', function(){
-        that.onSlickAfterChange.call(that);
+        that.onSlickAfterChange.call(that, arguments);
       });
 
       that.$slickEl.on('setPosition', function(){

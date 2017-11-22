@@ -234,6 +234,14 @@
     return e && e.data && e.data.event;
   };
 
+  Utils.getWindowWidth = function(e) {
+    return Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+  };
+
+  Utils.getWindowHeight = function(e) {
+    return Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+  };
+
   Utils.addProps = function(a,b) {
     if(isEmptyObject(b) || isEmptyObject(b))
       return a;

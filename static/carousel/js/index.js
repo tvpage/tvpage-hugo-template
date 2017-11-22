@@ -1,4 +1,4 @@
-(function() {
+(function(){
   var body = document.body;
   var id = body.getAttribute('data-id');
   var config = window.parent.__TVPage__.config[id];
@@ -12,7 +12,6 @@
 
   //a videos section will be initialized
   function initVideos(){
-
     function onResize(){
       Utils.sendMessage({
         event: eventPrefix + ':widget_resize',
@@ -52,6 +51,7 @@
       return item;
     }
 
+    //for small bp and below we will do 1 video per
     var videosCarousel = new Carousel('videos',{
       alignArrowsY: ['center', '.video-image'],
       endpoint: videosEndpoint,
@@ -72,10 +72,10 @@
       },
       responsive: [
         {
-          breakpoint: 600,
+          breakpoint: 576,
           settings: {
-            slidesToShow: 2,
-            slidesToScroll: 2
+            slidesToShow: 1,
+            slidesToScroll: 1
           }
         }
       ],

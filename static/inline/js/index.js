@@ -168,7 +168,6 @@
 
   function initAnalytics() {
     analytics = new Analytics();
-    
     analytics.initConfig({
       domain: location.hostname || '',
       logUrl: apiBaseUrl + '/__tvpa.gif',
