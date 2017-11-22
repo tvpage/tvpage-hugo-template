@@ -186,8 +186,8 @@ module.exports = {
     //   this.switchWindow(result.value[0]),
     //   this.frame(1);
     // }),
-    carousel.playerStart(70, 70, this.playerIframId + " > " + this.playerHolder),
-    carousel.pause(5);
+    // carousel.playerStart(70, 70, this.playerIframId + " > " + this.playerHolder),
+    // carousel.pause(5);
     carousel.analytics(1, ['ci','vv','pi','pk'], {
       LOGIN_ID: 1758799,
       CHANNEL_ID: 66133904,
