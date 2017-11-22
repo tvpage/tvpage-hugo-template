@@ -310,7 +310,7 @@
       $.ajax({
         dataType: 'script',
         cache: true,          
-        url: this.config.baseUrl + '/carousel/js/vendor/slick-min.js'//need to move this to a global vendors?
+        url: this.config.baseUrl + '/slick/slick-min.js'//need to move this to a global vendors?
       }).done(startSlick);
     } else {
       startSlick();
