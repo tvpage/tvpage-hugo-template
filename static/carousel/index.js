@@ -279,8 +279,8 @@ function widgetRender(){
     ],
     css: [
       debug ? baseUrl + '/slick/slick.css' : '',
-      debug && isMobile ? baseUrl + '/slick/mobile/custom.css' : '',
-      debug && !isMobile ? baseUrl + '/slick/custom.css' : '',
+      isMobile ? baseUrl + '/slick/mobile/custom.css' : '',
+      !isMobile ? baseUrl + '/slick/custom.css' : '',
       debug ? baseUrl + '/bootstrap/dist/css/bootstrap.css' : '',
       debug ? '' : cssPath + '/styles.min.css'
     ]
