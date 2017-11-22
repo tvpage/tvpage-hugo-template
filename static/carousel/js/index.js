@@ -62,10 +62,10 @@
       page: 0,
       data: channelVideos,
       dots: true,
-      slidesToShow: 4,
+      slidesToShow: 3,
       slidesToScroll: 1,
       itemsTarget: '.slick-carousel',
-      itemsPerPage: 4,
+      itemsPerPage: 3,
       templates: {
         list: templates.videos.list,
         item: templates.videos.item
