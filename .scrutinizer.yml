@@ -35,14 +35,14 @@ build:
     tests:
         override:
             -
-                command: 'npm test'
+                command: 'cd ../static && npm test'
                 coverage:
                     file: 'static/coverage/clover.xml'
                     format: 'clover'
             -
                 command: 'npm run check'
             -
-                command: 'node_modules/.bin/nightwatch -c conf/suite_fulltest.conf.js -e SoloW10GC61'
+                command: ' cd ../static && node_modules/.bin/nightwatch -c conf/suite_fulltest.conf.js -e SoloW10GC61'
 
 build_failure_conditions:
     # No new classes/methods with a rating of D or worse
