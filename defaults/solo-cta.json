@@ -11,7 +11,7 @@
       "type": "text",
       "label": "Player Version",
       "code": "player_version",
-      "value": "3.1.2"
+      "value": "3.1.4"
     },
     {
       "type": "text",
@@ -39,6 +39,25 @@
       "label": "Autonext",
       "code": "autonext",
       "value": true
+    },
+    {
+      "type": "text",
+      "label": "Videos Order By",
+      "code": "videos_order_by",
+      "value": "sortOrder"
+    },
+    {
+      "type": "text",
+      "label": "Videos Order Direction",
+      "code": "videos_order_direction",
+      "value": "ASC"
+    },
+    {
+      "for": "carousel",
+      "type": "text",
+      "label": "Items Per Page",
+      "code": "items_per_page",
+      "value": "1"
     },
     {
       "type": "array",
@@ -84,6 +103,20 @@
     {
       "for": "cta",
       "type": "text",
+      "label": "CTA Play Button Border Radius",
+      "code": "cta_play_button_border_radius",
+      "value": "0"
+    },
+    {
+      "for": "cta",
+      "type": "text",
+      "label": "CTA Play Button Border",
+      "code": "cta_play_button_border",
+      "value": "none"
+    },
+    {
+      "for": "cta",
+      "type": "text",
       "label": "CTA Play Button Icon Color",
       "code": "cta_play_button_icon_color",
       "value": "black"
@@ -94,6 +127,13 @@
       "label": "CTA Play Button Icon Color",
       "code": "cta_play_button_icon_stroke_width",
       "value": "1px"
+    },
+    {
+      "for": "carousel",
+      "type": "text",
+      "label": "Play Button Opacity",
+      "code": "play_button_opacity",
+      "value": "0.9"
     },
     {
       "for": "cta",
@@ -171,6 +211,13 @@
       "label": "Modal Border",
       "code": "modal_border",
       "value": "none"
+    },
+    {
+      "for": "modal",
+      "type": "text",
+      "label": "Modal Border Right",
+      "code": "modal_border_radius",
+      "value": "0"
     },
     {
       "for": "modal",
@@ -710,6 +757,13 @@
       "label": "Iframe Modal Body Padding",
       "code": "iframe_modal_body_padding",
       "value": "10px"
+    },
+    {
+      "for": "modal",
+      "type": "text",
+      "label": "Video Modal Center",
+      "code": "video_modal_center",
+      "value": false
     }
   ]
 }

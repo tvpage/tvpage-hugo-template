@@ -37,21 +37,24 @@
         },0);
     };
 
-    var loadProducts = function(videoId, settings, fn) {
-        if (!videoId) return;
-        var src = settings.api_base_url + '/videos/' + videoId + '/products?X-login-id=' + settings.loginId;
-        var cbName = 'tvp_' + Math.floor(Math.random() * 555);
-        src += '&callback=' + cbName;
-        var script = document.createElement('script');
-        script.src = src;
-        window[cbName || 'callback'] = function(data) {
+    var loadProducts = function(videoId,settings,fn){
+        if (!videoId)
+            return;
+
+        Utils.loadScript({
+            base: settings.api_base_url + '/videos/' + videoId + '/products',
+            params: {
+                'X-login-id': settings.loginId,
+                o: settings.products_order_by,
+                od: settings.products_order_direction
+            }
+        },function(data){
             if (data && data.length && 'function' === typeof fn) {
                 fn(data);
             } else {
                 fn([]);
             }
-        };
-        document.body.appendChild(script);
+        });
     };
 
     var render = function(data,config) {
@@ -90,6 +93,10 @@
 
         carousel.innerHTML = productsHtml;
 
+        if (data.length == 1) {
+            container.getElementsByClassName('tvp-product')[0].style.margin = '1px';
+        }
+
         var productsTitle = Utils.getByClass('tvp-products-text');
         productsTitle.innerHTML = "";
         if (hasData) {
@@ -123,9 +130,9 @@
             setTimeout(function() {
                 var $el = $(carousel);
                 var centerMode = data.length > 1 ? true : false;
-                var centerPadding = hasData ? '20px' : "0px";
+                var centerPadding = Utils.isset(config, 'mobile_modal_products_slider_center_padding') ? config.mobile_modal_products_slider_center_padding : '0px';
 
-                var config = {
+                var slickConfig = {
                     slidesToSlide: 1,
                     slidesToShow: 3,
                     arrows: false,
@@ -151,10 +158,10 @@
                     ]
                 };
 
-                config.centerMode = centerMode;
-                config.centerPadding = centerPadding;
+                slickConfig.centerMode = centerMode;
+                slickConfig.centerPadding = centerPadding;
                 
-                if (data.length <= 5) {
+                if (data.length <= 5 && data.length > 1) {
                     var dotsHolderClass = "tvp-slider-dots-holder";
                     var dotsHolderElement = container.querySelector("." + dotsHolderClass);
                     if (dotsHolderElement) {
@@ -165,9 +172,9 @@
                     dotsHolderElement.className = dotsHolderClass;
                     container.querySelector(".tvp-products-headline").appendChild(dotsHolderElement);
 
-                    config.appendDots = dotsHolderElement;
-                    config.dots = true;
-                    config.dotsClass = "tvp-slider-dots";
+                    slickConfig.appendDots = dotsHolderElement;
+                    slickConfig.dots = true;
+                    slickConfig.dotsClass = "tvp-slider-dots";
                 }
 
                 $el.on('init', function() {
@@ -185,7 +192,7 @@
                     }, 0);
                 });
                 
-                $el.slick(config);
+                $el.slick(slickConfig);
 
             }, 10);
         };
@@ -254,7 +261,8 @@
                 }, 0);
             };
 
-            new Player('tvp-player-el', s, data.selectedVideo.id);
+            var player = new Player('tvp-player-el', s, data.selectedVideo.id);
+            player.initialize();
         };
 
         window.addEventListener('message', function(e) {
@@ -269,19 +277,14 @@
                 settings.loginId = loginId;
                 
                 channelId = Utils.isset(settings.channel) && Utils.isset(settings.channel.id) ? settings.channel.id : (settings.channelId || settings.channelid);
-
-                analytics = new Analytics();
+                analytics =  new Analytics();
                 analytics.initConfig({
                     logUrl: settings.api_base_url + '/__tvpa.gif',
-                    domain: Utils.isset(location, 'hostname') ? location.hostname : '',
+                    domain: Utils.isset(location,'hostname') ?  location.hostname : '',
                     loginId: loginId,
                     firstPartyCookies: settings.firstpartycookies,
                     cookieDomain: settings.cookiedomain
                 });
-                analytics.track('ci', {
-                    li: loginId
-                });
-
                 var selectedVideo = data.selectedVideo;
                 if (Utils.isset(selectedVideo, 'products')) {
                     render(selectedVideo.products,settings);

@@ -1,86 +1,57 @@
-(function(window, document) {
+(function() {
+  var body = document.body;
+  var id = body.getAttribute('data-id');
+  var config = window.parent.__TVPage__.config[id];
+  var eventPrefix = config.events.prefix;
 
-    var channelId = null;
-    var eventPrefix = "tvp_" + (document.body.getAttribute("data-id") || "").replace(/-/g,'_');
 
-    var initialize = function() {
-        var el = Utils.getByClass('iframe-content');
+  //The global deps of the carousel have to be present before executing its logic.
+  var depsCheck = 0;
+  var deps = ['TVPage','Utils','Analytics','Player'];
 
-        var initPlayer = function(data) {
-            var s = JSON.parse(JSON.stringify(data.runTime));
+  (function initSoloCTA() {
+    setTimeout(function() {
+      console.log('deps poll...');
+      
+      var ready = true;
+      for (var i = 0; i < deps.length; i++)
+        if ('undefined' === typeof window[deps[i]])
+          ready = false;
 
-            s.data = data.data;
+      if(ready){
+     
+        var mainEl = Utils.getById(id);
+        var playerConfig = Utils.copy(config);
+        
+        playerConfig.data = config.channel.videos;
 
-            s.onResize = function() {
-                setTimeout(function() {
-                    if (window.parent) {
-                        window.parent.postMessage({
-                            event: eventPrefix + ':modal_resize',
-                            height: el.offsetHeight + 'px'
-                        }, '*');
-                    }
-                }, 0);
-            }
+        playerConfig.onResize = function() {
+          Utils.sendMessage({
+            event: eventPrefix + ':modal_resize',
+            height: mainEl.offsetHeight + 'px'
+          });
+        }
 
-            s.onNext = function(next) {
-                if (!next) return;
-                setTimeout(function() {
-                    if (window.parent) {
-                        window.parent.postMessage({
-                            event: eventPrefix + ':player_next',
-                            next: next
-                        }, '*');
-                    }
-                }, 0);
-            };
-
-            new Player('tvp-player-el', s, data.selectedVideo.id);
+        playerConfig.onNext = function(next) {
+          Utils.sendMessage({
+            event: eventPrefix + ':player_next',
+            next: next || {}
+          });
         };
 
-        window.addEventListener('message', function(e) {
-            if (!e || !Utils.isset(e, 'data') || !Utils.isset(e.data, 'event')) return;
-            
-            var data = e.data;
+        var player = new Player('tvp-player-el', playerConfig, config.channel.firstVideo.id);
+        
+        player.initialize();
 
-            if (eventPrefix + ':modal_data' === data.event) {
-                initPlayer(data);
-
-                var settings = data.runTime;
-                var loginId = settings.loginid || settings.loginId;
-
-                channelId = Utils.isset(settings.channel) && Utils.isset(settings.channel.id) ? settings.channel.id : settings.channelId;
-            }
+        Utils.sendMessage({
+          event: eventPrefix + ':widget_modal_initialized',
+          height: (mainEl.offsetHeight + 20) + 'px'
         });
 
-        //Notify when the widget has been initialized.
-        setTimeout(function() {
-            if (window.parent) {
-                window.parent.postMessage({
-                    event: eventPrefix + ':modal_initialized',
-                    height: (el.offsetHeight + 20) + 'px'
-                }, '*');
-            }
-        }, 0);
-    };
+      }else if(++depsCheck < 200){
+        initSoloCTA()
+      }
+    },5);
+  })();
 
-    var not = function(obj) {
-        return 'undefined' === typeof obj
-    };
-    if (not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player)) {
-        var libsCheck = 0;
-        (function libsReady() {
-            setTimeout(function() {
-                if (not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player)) {
-                    if (++libsCheck < 50) {
-                        libsReady();
-                    }
-                } else {
-                    initialize();
-                }
-            }, 150);
-        })();
-    } else {
-        initialize();
-    }
-
-}(window, document));
+}());

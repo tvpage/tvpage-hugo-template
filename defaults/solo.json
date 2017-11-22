@@ -7,11 +7,44 @@
       "value": "//api.tvpage.com/v1"
     },
     {
+      "type": "text",
+      "label": "Videos Order By",
+      "code": "videos_order_by",
+      "value": "sortOrder"
+    },
+    {
+      "type": "text",
+      "label": "Videos Order Direction",
+      "code": "videos_order_direction",
+      "value": "ASC"
+    },
+    {
+      "for": "solo",
+      "type": "text",
+      "label": "Iframe Body Margin",
+      "code": "iframe_body_margin",
+      "value": "0"
+   },
+   {
+      "for": "solo",
+      "type": "text",
+      "label": "Items Per Page",
+      "code": "items_per_page",
+      "value": "6"
+   },
+    {
+       "for": "carousel",
+       "type": "text",
+       "label": "Iframe Carousel Body Padding",
+       "code": "iframe_body_padding",
+       "value": "0"
+    },
+    {
       "for": "player",
       "type": "text",
       "label": "Player Version",
       "code": "player_version",
-      "value": "3.1.2"
+      "value": "3.1.4"
     },
     {
       "for": "player",
@@ -39,6 +72,27 @@
       "label": "Fonts",
       "code": "fonts",
       "value": ["//fonts.googleapis.com/css?family=Open+Sans:600,700,800"]
+    },
+    {
+      "for": "solo",
+      "type": "text",
+      "label": "Solo Holder Padding Top",
+      "code": "solo_holder_padding_top",
+      "value": "56.25%"
+    },
+    {
+      "for": "solo",
+      "type": "text",
+      "label": "Skeleton Background Color",
+      "code": "skeleton_background_color",
+      "value": "#efefef"
+    },
+    {
+      "for": "solo",
+      "type": "boolean",
+      "label": "Playlist",
+      "code": "playlist",
+      "value": false
     },
     {
       "for": "menu",

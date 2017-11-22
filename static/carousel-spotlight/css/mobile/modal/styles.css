@@ -7,6 +7,13 @@ body {
   padding: 0;
 }
 
+.tvp-clearfix:before,
+.tvp-clearfix:after {
+ display: table;
+ content: " ";
+ clear: both;
+}
+
 .slick-dotted.slick-slider{
   margin-bottom: 0 !important;
 }
@@ -36,63 +43,30 @@ body {
   right: 0;
 }
 
-.tvp-clearfix:before,
-.tvp-clearfix:after {
- display: table;
- content: " ";
- clear: both;
-}
-
-.tvp-slider-dots{
-  position: absolute;
-  width: 50%;
-  height: 12px;
-  text-align: center;
-  right: 0;
-  display: block;
-  padding: 0;
-  list-style: none;
-  margin: 12px 0;
-}
-
-.tvp-slider-dots li {
-  position: relative;
-  display: inline-block;
-  top: 50%;
-  width: 20px;
-  height: 20px;
+.slick-dots {
+  text-align: right;
   margin: 0;
-  padding: 0;
-  cursor: pointer;
-  -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
 }
 
-.tvp-slider-dots li button {
-  font-size: 0;
-  line-height: 0;
-  display: block;
+.slick-dots li button {
   width: 20px;
   height: 20px;
   padding: 0;
-  cursor: pointer;
-  color: transparent;
   border: 0;
-  outline: none;
   background: transparent;
   background-repeat: no-repeat;
 }
 
-.tvp-slider-dots li.slick-active button:before {
+.slick-dots li.slick-active button:before {
     opacity: 1;
 }
 
-.tvp-slider-dots li button:hover,
-.tvp-slider-dots li button:focus {
+.slick-dots li button:hover,
+.slick-dots li button:focus {
     outline: none;
 }
 
-.tvp-slider-dots li button:before {
+.slick-dots li button:before {
   line-height: 20px;
   position: absolute;
  top: 0;
@@ -107,8 +81,6 @@ body {
 
 .tvp-products-text {
   position: relative;
-  float: left;
-  width: 100%;
 }
 
 .tvp-player {
@@ -116,14 +88,14 @@ body {
   width: 100%;
   position: relative;
   padding-bottom: 56.25%;
-  background-color: black;
+  background-color: transparent;
 }
 
 #tvp-player-el {
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  background-color: black;
+  background-color: transparent;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -135,7 +107,6 @@ body {
 }
 
 .tvp-products.enabled {
-  padding: 15px 0;
   background-color: white;
 }
 
@@ -160,16 +131,15 @@ body {
   padding: 15px;
 }
 
-.tvp-product {
-  display: block;
-  overflow: hidden;
-  padding: 5px;
-  z-index: 9999;
-  position: relative;
+.tvp-products-headline{
+  margin: 0 0 10px 0;
+  font-family: Helvetica;
 }
 
 .tvp-product {
-  margin-bottom: 0;
+  display: block;
+  overflow: hidden;
+  position: relative;
 }
 
 .tvp-product-cta {
@@ -197,17 +167,4 @@ body {
 .tvp-product-data {
   float: right;
   width: 58%;
-}
-
-.tvp-product-data > p {
-  height: 29px;
-  overflow: hidden;
-  margin: 0;
-  font-size: 12px;
-  color: #1F1D26;
-}
-
-.tvp-product-data > h2 {
-  margin: 5px 0;
-  font-size: 16px;
 }

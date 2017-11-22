@@ -1,0 +1,141 @@
+{{ with ($.Scratch.Get "settings").fonts }}
+  {{ range . }}
+    "@import url('{{ . | htmlUnescape | safeHTML }}');" +
+  {{ end }}
+{{ end }}
+
+"*[class^=tvp-] {" +
+    "box-sizing: border-box;" +
+"}" +
+
+".tvp-carousel-holder {" +
+    "position: relative;" +
+"}" +
+
+".tvp-carousel-holder > iframe {" +
+    "top: 0;" +
+    "left: 0;" +
+    "width: 1px;" +
+    "min-width: 100%;" +
+    "height: 100%;" +
+    "position: absolute;" +
+"}" +
+
+".tvp-hidden {" +
+    "display: none !important;" +
+"}" +
+
+".tvp-modal-open {" +
+    "overflow: hidden;" +
+"}" +
+
+".tvp-modal-overlay {" +
+    "position: fixed;" +
+    "top: 0;" +
+    "right: 0;" +
+    "bottom: 0;" +
+    "left: 0;" +
+    "z-index: 1040;" +
+    "background-color: #000;" +
+    "opacity: .5;" +
+"}" +
+
+".tvp-modal {" +
+    "position: fixed;" +
+    "top: 0;" +
+    "right: 0;" +
+    "bottom: 0;" +
+    "left: 0;" +
+    "z-index: 1050;" +
+    "-webkit-overflow-scrolling: touch;" +
+    "outline: 0;" +
+    "overflow: hidden;" +
+    "overflow-x: hidden;" +
+    "overflow-y: auto;" +
+    "opacity: 1;" +
+    "visibility: visible;" +
+"}" +
+
+".tvp-modal-wrapper {" +
+    "position: relative;" +
+    "width: auto;" +
+    "margin: 10px;" +
+"}" +
+
+".tvp-modal-wrapper.centered {" +
+    "position: absolute;" +
+    "top: 50%;" +
+    "left: 0;" +
+    "right: 0;" +
+    "transform: translateY(-50%);" +
+"}" +
+
+"@media (min-width :768px) {" +
+    ".tvp-modal-wrapper {" +
+        "width: 728px;" +
+        "margin: 30px auto;" +
+    "}" +
+"}" +
+
+".tvp-modal-content {" +
+     "position: relative;" +
+     "background-clip: padding-box;" +
+     "outline: 0;" +
+"}" +
+
+".tvp-iframe-modal {" +
+    "margin: 0;" +
+    "border: 0;" +
+    "width: 100%;" +
+    "height: 100%;" +
+"}" +
+
+".tvp-modal-header:after {" +
+    'content: "";' +
+    "display: table;" +
+    "clear: both;" +
+"}" +
+
+".tvp-modal-title {" +
+    "margin: 0;" +
+    "float: left;" +
+"}" +
+
+".tvp-modal-title.bottom {" +
+  "float: none;" +
+  "padding: 0 0 30px 10px;" +
+"}" +
+
+".tvp-products-headline {" +
+    "float: right;" +
+    "margin: 0;" +
+    "position: relative;" +
+"}" +
+
+".tvp-modal-iframe-holder {" +
+    "width: 100%;" +
+    "position: relative;" +
+"}" +
+
+".tvp-title {" +
+    "height: 22px;" +
+"}" +
+
+".tvp-modal-body {" +
+    "position: relative;" +
+"}" +
+
+".tvp-modal-close-svg > path:nth-child(2){ " +
+  "fill: none;" +
+"}" +
+
+".tvp-modal-close {" +
+    "cursor: pointer;" +
+    "-webkit-appearance: none;" +
+    "position: absolute;" +
+    "-webkit-transition: all .05s ease-in-out;" +
+    "transition: all .05s ease-in-out;" +
+    "background-position: 0 0;" +
+    "background-repeat: no-repeat;" +
+    "background-size: contain;" +
+"}"

@@ -1,26 +1,48 @@
-{{- partial "settings.html" . -}}
+{{- $type := .Type -}}
+{{- $defaults := getJSON (printf "themes/tvpage/defaults/%s.json" $type) -}}
+
+{{- range $defaults.option -}}
+{{- $.Scratch.SetInMap "config" .code .value -}}
+{{- end -}}
+
+{{- range readDir "/" -}}
+{{- if eq .Name "defaults" -}}
+	{{- if (where (readDir "defaults/") "Name" (printf "%s.json" $type)) -}}
+		{{- range (getJSON (printf "defaults/%s.json" $type)).option -}}
+		{{- $.Scratch.SetInMap "config" .code .value -}}
+		{{- end -}}
+	{{- end -}}
+{{- end -}}
+{{- end -}}
+
+{{- range $i, $param := .Params -}}
+{{- $.Scratch.SetInMap "config" $i . -}}
+{{- end -}}
+
+{{- range $i, $param := .Site.Params -}}
+{{- $.Scratch.SetInMap "config" $i . -}}
+{{- end -}}
+
+{{- $.Scratch.Set "settings" ($.Scratch.Get "config") -}}
+
 (function(){
 
-	var bootstrap = {{ $.Scratch.Get "settings" | jsonify }};
-	bootstrap.baseUrl = "{{ $.Site.BaseURL }}";
-	bootstrap.templates = {
-		carousel: {{- (partial (printf "%s/carousel.html" .Type) .) -}},
-    "carousel-item": {{- (partial (printf "%s/carousel-item.html" .Type) .) -}},
-	    modal: {{- (partial (printf "%s/modal.html" .Type) .) -}},
-	    "modal-content": {{- (partial (printf "%s/modal-content.html" .Type) .) -}},
-	    "modal-content-mobile": {{- (partial (printf "%s/modal-content-mobile.html" .Type) .) -}}
-	};
-	
-	bootstrap.css = {
-		host: {{- (partial (printf "%s/host.css" .Type) .) | htmlUnescape | safeHTML -}},
-		"host-mobile": {{- (partial (printf "%s/host-mobile.css" .Type) .) | htmlUnescape | safeHTML -}},
-		"host-custom": {{- (partial (printf "%s/host-custom.css" .Type) .) | htmlUnescape | safeHTML -}},
-		"host-custom-mobile": {{- (partial (printf "%s/host-custom-mobile.css" .Type) .) | htmlUnescape | safeHTML -}},
-		carousel: {{- (partial (printf "%s/carousel.css" .Type) .) | htmlUnescape | safeHTML -}},
-		"modal-content": {{- (partial (printf "%s/modal-content.css" .Type) .) | htmlUnescape | safeHTML -}},
-		"modal-content-mobile": {{- (partial (printf "%s/modal-content-mobile.css" .Type) .) | htmlUnescape | safeHTML -}}
-	};
+	var config = {{ $.Scratch.Get "config" | jsonify }};
 
-	{{- (readFile "/themes/tvpage/static/carousel/index.js") | htmlUnescape | safeHTML -}}
+	//we removed the forward slash that hugo adds on local development
+	var baseUrl;
+	{{- if (getenv "HUGO_DEBUG") -}}
+		baseUrl = "{{ trim $.Site.BaseURL "/" }}";
+	{{- else -}}
+		baseUrl = "{{ $.Site.BaseURL }}";
+	{{- end -}}
+	config.baseUrl = baseUrl;
+
+	{{- (readFile (printf "/themes/tvpage/static/%s/config.js" $type) ) | htmlUnescape | safeHTML -}}
+
+	config.templates = {{- (partial (printf "%s/templates/index.html" $type) .) -}};
+	config.css = {{- (partial (printf "%s/css/index.html" $type) .) -}};
+	
+	{{- (readFile (printf "/themes/tvpage/static/%s/index.js" $type) ) | htmlUnescape | safeHTML -}}
 
 }());

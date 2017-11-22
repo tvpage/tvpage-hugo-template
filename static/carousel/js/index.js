@@ -1,48 +1,136 @@
-;(function(window,document) {
+(function(){
+  var body = document.body;
+  var id = body.getAttribute('data-id');
+  var config = window.parent.__TVPage__.config[id];
+  var channelParams = config.channel.parameters;
+  var eventPrefix = config.events.prefix;
+  var apiBaseUrl = config.api_base_url;
+  var videosEndpoint = apiBaseUrl + '/channels/' + config.channelId + '/videos';
+  var templates = config.templates;
+  var channelVideos = config.channel.videos;
+  var skeletonEl = document.getElementById('skeleton');
 
-var initialize = function(){
-    var settings = {};
-    var body = document.body;
+  //a videos section will be initialized
+  function initVideos(){
+    function onResize(){
+      Utils.sendMessage({
+        event: eventPrefix + ':widget_resize',
+        height: Utils.getWidgetHeight()
+      });
+    }
+    
+    function onClick(e){
+      if(e && e.target){
+        var realTarget = Utils.getRealTargetByClass(e.target, videosCarousel.itemClass.substr(1));
 
-    if (Utils.isset(parent) && Utils.isset(parent,'__TVPage__') && Utils.isset(parent.__TVPage__, 'config')) {
-        settings = parent.__TVPage__.config[body.getAttribute('data-id')];
+        Utils.sendMessage({
+          event: eventPrefix + ':widget_videos_carousel_click',
+          clicked: realTarget.getAttribute('data-id')
+        });
+      }
     }
 
-    var carouselSettings = JSON.parse(JSON.stringify(settings));
-    var name = carouselSettings.name;
-    var main = document.createElement('div');
+    function onReady(){
+      Utils.remove(skeletonEl.querySelector('.videos-skel-delete'));
+      
+      Utils.sendMessage({
+        event: eventPrefix + ':widget_ready',
+        height: Utils.getWidgetHeight()
+      });
+      
+      videosCarousel.loadNext('render');
+    }
 
-    main.id = name;
-    main.className = 'iframe-content' + (Utils.isMobile ? " mobile" : "");
-    main.innerHTML = carouselSettings.templates.carousel;
-    body.appendChild(main);
+    function onLoad(data){
+      config.channel.videos = config.channel.videos.concat(data);
+    }
 
-    carouselSettings.onClick = function (clicked,videos) {
-        window.parent.postMessage({
-            runTime: 'undefined' !== typeof window.__TVPage__ ? __TVPage__ : null,
-            event: "tvp_" + (carouselSettings.id || "").replace(/-/g,'_') + ":video_click",
-            selectedVideo: clicked,
-            videos: videos
-        }, '*');
-    };
+    function parseVideos(item){
+      item.title = Utils.trimText(item.title, 35);
 
-    Carousel(name, carouselSettings);
-};
+      return item;
+    }
 
-var not = function(obj){return 'undefined' === typeof obj};
-if (not(window.jQuery) || not(window.Carousel) || not(window.Utils)) {
-    var libsCheck = 0;
-    (function libsReady() {
-        setTimeout(function(){
-            if (not(window.jQuery) || not(window.Carousel) || not(window.Utils)) {
-                (++libsCheck < 50) ? libsReady() : console.warn('limit reached');
-            } else {
-                initialize();
-            }
-        },150);
-    })();
-} else {
-    initialize();
-}
+    //for small bp and below we will do 1 video per
+    var videosCarousel = new Carousel('videos',{
+      alignArrowsY: ['center', '.video-image-icon'],
+      endpoint: videosEndpoint,
+      params: Utils.addProps({
+        o: config.videos_order_by,
+        od: config.videos_order_direction
+      }, channelParams),
+      page: 0,
+      data: channelVideos,
+      dots: true,
+      slidesToShow: 3,
+      slidesToScroll: 1,
+      itemsTarget: '.slick-carousel',
+      itemsPerPage: 3,
+      templates: {
+        list: templates.videos.list,
+        item: templates.videos.item
+      },
+      responsive: [
+        {
+          breakpoint: 576,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1
+          }
+        }
+      ],
+      onClick: onClick,
+      onReady: onReady,
+      onLoad: onLoad,
+      onResize: onResize,
+      parse: parseVideos
+    }, config);
 
-}(window, document));
+    videosCarousel.initialize();
+    videosCarousel.render();
+  };
+
+  //The global deps of the carousel have to be present before executing its logic.
+  var depsCheck = 0;
+  var deps = ['jQuery','Carousel','Utils','Analytics'];
+
+  (function initCarousel() {
+    setTimeout(function() {
+      console.log('deps poll...');
+      
+      var ready = true;
+      for (var i = 0; i < deps.length; i++)
+        if ('undefined' === typeof window[deps[i]])
+          ready = false;
+
+      if(ready){
+     
+        //add widget title
+        var widgetTitleEl = Utils.getById('widget-title');
+        widgetTitleEl.innerHTML = config.title_text;
+        Utils.addClass(widgetTitleEl, 'ready');
+
+        var analytics = new Analytics();
+        var analyticsConfig = {
+          domain: location.hostname || '',
+          logUrl: apiBaseUrl + '/__tvpa.gif',
+          li: config.loginId
+        };
+
+        if (config.firstPartyCookies && config.cookieDomain)
+            analyticsConfig.firstPartyCookieDomain = config.cookieDomain;
+
+        analytics.initConfig(analyticsConfig);
+        analytics.track('ci', {
+          li: config.loginId
+        });
+        
+        initVideos();
+
+      }else if(++depsCheck < 200){
+        initCarousel()
+      }
+    },5);
+  })();
+
+}());

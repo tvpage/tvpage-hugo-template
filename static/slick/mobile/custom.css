@@ -1,0 +1,62 @@
+/* arrows & dots */
+.slick-arrow {
+  top: 50%;
+  transform: translateY(-50%);
+  position: absolute;
+  color: transparent;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border-radius: 0;
+  border: none;
+  background-color: #1a1a1a;
+  color: white;
+  z-index: 1000;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.ready .slick-arrow {
+  opacity: 1;
+  visibility: visible;
+}
+
+.slick-arrow > i {
+  width: 24px;
+  height: 24px;
+}
+
+.slick-dots {
+  margin: 0;
+}
+
+.dots-centered .slick-dots {
+  text-align: center;
+}
+
+.slick-arrow.slick-disabled {
+  opacity: 0.6 !important;
+}
+
+.slick-arrow:focus,
+.carousel-dot:focus {
+  outline: none;
+}
+
+.slick-prev {
+  left: 0px;
+}
+
+.slick-next {
+  right: 0;
+}
+
+.carousel-arrows{
+  position: absolute;
+  width: 100%;
+  height: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
