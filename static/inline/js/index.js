@@ -304,7 +304,7 @@
 
   //The global deps of the carousel have to be present before executing its logic.
   var depsCheck = 0;
-  var deps = ['jQuery','Utils','Player', 'Carousel', 'Analytics'];
+  var deps = ['jQuery','Utils','Player', 'Carousel', 'Analytics','_tvpa'];
 
   (function initInline() {
     setTimeout(function() {
