@@ -128,7 +128,7 @@ module.exports = {
 
     guiTest.playVideo(client, DATA.SLA);
 
-    client.pause(6000);
+    client.pause(10000);
 
     guiTest.playVideo(client, DATA.SLA);
 
