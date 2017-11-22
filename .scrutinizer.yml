@@ -41,7 +41,7 @@ build:
             -
                 command: 'npm run check'
             -
-                command: 'node_modules/.bin/nightwatch -c conf/suite_fulltest.conf.js -e SoloW10GC61'
+                command: 'node_modules/.bin/nightwatch -c conf/suite_fulltest.conf.js -e SoloW10GC61,SoloW10FF55,SoloW10IE11,SoloW10E15,SoloWin8GC61,SoloW8IE11,SoloW8FF55,SoloOSXSierraS10,SoloOSXSierraGC61,SoloOSXSierraFF55,SoloOSXHighSierraGC61'
 
 build_failure_conditions:
     # No new classes/methods with a rating of D or worse
