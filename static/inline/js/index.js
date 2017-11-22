@@ -17,7 +17,6 @@
     o: config.products_order_by,
     od: config.products_order_direction
   };
-  var isMobile = Utils.isMobile;
   var channelVideos = config.channel.videos;
   var templates = config.templates;
   var templatesMobile = templates.mobile;
@@ -102,7 +101,7 @@
       channelVideos = channelVideos.concat(data);
     }
 
-    if(isMobile){
+    if(Utils.isMobile){
       videosCarousel = new Carousel('videos',{
         alignArrowsY: ['center', '.video-image-icon'],
         page: 0,
@@ -208,7 +207,7 @@
       }
     }
 
-    if(isMobile){
+    if(Utils.isMobile){
       productsCarousel = new Carousel('products',{
         endpoint: productsEndpoint,
         clean: true,
@@ -318,7 +317,7 @@
 
       if(ready){
 
-        if(isMobile)
+        if(Utils.isMobile)
           Utils.addClass(body,'mobile');
 
         //add widget title

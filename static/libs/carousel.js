@@ -269,9 +269,9 @@
   };
 
   Carousel.prototype.onSlickSetPosition = function(){
-    //this.addArrowIcons();
+    this.addArrowIcons();
 
-    //this.alignArrowsX();
+    this.alignArrowsX();
     this.alignArrowsY();
 
     setTimeout(function(opts){
