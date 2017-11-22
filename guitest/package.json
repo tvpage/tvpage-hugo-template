@@ -5,5 +5,8 @@
   "main": "globals.js",
   "dependencies": {
     "nightwatch-video-recorder": "1.1.0"
+  },
+  "devDependencies": {
+    "nightwatch": "^0.9.16"
   }
 }
