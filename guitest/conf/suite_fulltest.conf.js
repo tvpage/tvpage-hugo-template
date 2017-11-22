@@ -577,6 +577,144 @@ nightwatch_config = {
       },
       filter: "desktop/solo-cta/solo-cta.js"
     },
+    CarouselSpotlightW10GC61: {
+      desiredCapabilities: {
+        'build': 'CarouselSpotlightW10GC61',
+        'os': 'Windows',
+        'os_version': '10',
+        'browser': 'Chrome',
+        'browser_version': '61.0',
+      },
+      filter: "desktop/carousel-spotlight/carousel-spotlight.js"
+    },
+    CarouselSpotlightW10FF55: {
+      desiredCapabilities: {
+        'build': 'CarouselSpotlightWin10FF55',
+        'os': 'Windows',
+        'os_version': '10',
+        'browser': 'Firefox',
+        'browser_version': '55.0'
+      },
+      filter: "desktop/carousel-spotlight/carousel-spotlight.js"
+    },
+    CarouselSpotlightW10IE11: {
+      desiredCapabilities: {
+        'build': 'CarouselSpotlightW10IE11',
+        'os': 'Windows',
+        'os_version': '10',
+        'browser': 'IE',
+        'browser_version': '11.0',
+      },
+      filter: "desktop/carousel-spotlight/carousel-spotlight.js"
+    },
+    CarouselSpotlightW10E15: {
+      desiredCapabilities: {
+        'build': 'CarouselSpotlightW10E15',
+        'os': 'Windows',
+        'os_version': '10',
+        'browser': 'Edge',
+        'browser_version': '15.0'
+      },
+      filter: "desktop/carousel-spotlight/carousel-spotlight.js"
+    },
+    CarouselSpotlightWin8GC61: {
+      desiredCapabilities: {
+        'build': 'CarouselSpotlightW8GC61',
+        'os': 'Windows',
+        'os_version': '8.1',
+        'browser': 'Chrome',
+        'browser_version': '61.0',
+      },
+      filter: "desktop/carousel-spotlight/carousel-spotlight.js"
+    },
+    CarouselSpotlightW8IE11: {
+      desiredCapabilities: {
+        'build': 'CarouselSpotlightW8IE11',
+        'os': 'Windows',
+        'os_version': '8.1',
+        'browser': 'IE',
+        'browser_version': '11.0'
+      },
+      filter: "desktop/carousel-spotlight/carousel-spotlight.js"
+    },
+    CarouselSpotlightW8FF55: {
+      desiredCapabilities: {
+        'build': 'CarouselSpotlightW8FF55',
+        'os': 'Windows',
+        'os_version': '8.1',
+        'browser': 'Firefox',
+        'browser_version': '55.0'
+      },
+      filter: "desktop/carousel-spotlight/carousel-spotlight.js"
+    },
+    CarouselSpotlightOSXSierraS10: {
+      desiredCapabilities: {
+        'build': 'CarouselSpotlightOSXSierraS10',
+        'os': 'OS X',
+        'os_version': 'Sierra',
+        'browser': 'Safari',
+        'browser_version': '10.1'
+      },
+      filter: "desktop/carousel-spotlight/carousel-spotlight.js"
+    },
+    CarouselSpotlightOSXSierraGC61: {
+      desiredCapabilities: {
+        'build': 'CarouselSpotlightOSXSierraGC61',
+        'os': 'OS X',
+        'os_version': 'Sierra',
+        'browser': 'Chrome',
+        'browser_version': '61.0',
+      },
+      filter: "desktop/carousel-spotlight/carousel-spotlight.js"
+    },
+    CarouselSpotlightOSXSierraFF55: {
+      desiredCapabilities: {
+        'build': 'CarouselSpotlightOSXSierraFF55',
+        'os': 'OS X',
+        'os_version': 'Sierra',
+        'browser': 'Firefox',
+        'browser_version': '55.0'
+      },
+      filter: "desktop/carousel-spotlight/carousel-spotlight.js"
+    },
+    CarouselSpotlightOSXHighSierraGC61: {
+      desiredCapabilities: {
+        'build': 'CarouselSpotlightOSXHighSierraGC61',
+        'os': 'OS X',
+        'os_version': 'High Sierra',
+        'browser': 'Chrome',
+        'browser_version': '61.0'
+      },
+      filter: "desktop/carousel-spotlight/carousel-spotlight.js"
+    },
+    CarouselSpotlightOSXHighSierraFF55: {
+      desiredCapabilities: {
+        'build': 'CarouselSpotlightOSXHighSierraFF55',
+        'os': 'OS X',
+        'os_version': 'High Sierra',
+        'browser': 'Firefox',
+        'browser_version': '55.0'
+      },
+      filter: "desktop/carousel-spotlight/carousel-spotlight.js"
+    },
+    CarouselSpotlightGooglepixelAndroid8: {
+      desiredCapabilities: {
+        'build': 'CarouselSpotlightGooglepixelAndroid8',
+        'device': 'Google Pixel',
+        'realMobile': 'true',
+        'os_version': '8.0'
+      },
+      filter: "desktop/carousel-spotlight/carousel-spotlight.js"
+    },
+    CarouselSpotlightNexus6Android6: {
+      desiredCapabilities: {
+        'build': 'CarouselSpotlightNexus6Android6',
+        'device': 'Google Nexus 6',
+        'realMobile': 'true',
+        'os_version': '6.0'
+      },
+      filter: "desktop/carousel-spotlight/carousel-spotlight.js"
+    },
   }
 };
 
