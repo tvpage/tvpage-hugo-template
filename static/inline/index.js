@@ -175,7 +175,7 @@ function getIframeHtml(o){
 
         for (var i = 0; i < arrLength; i++){
           var last = arrLength == i + 1;
-          l += 'load' + type + '(\'' + arr[i] + '\', ' + (last && cback ? cback : '') + ');';
+          l += 'load' + type + '(\'' + arr[i] + '\'' + (last && cback ? (',' + cback) : '') + ');';
         }
 
         return l;
@@ -265,6 +265,8 @@ function widgetRender(){
     css: [
       debug ? baseUrl + '/bootstrap/dist/css/bootstrap.css' : '',
       debug ? baseUrl + '/slick/slick.css' : '',
+      isMobile ? baseUrl + '/slick/mobile/custom.css' : '',
+      !isMobile ? baseUrl + '/slick/custom.css' : '',
       debug ? cssPath + '/styles.css' : '',
       debug ? '' : cssPath + '/styles.min.css'
     ]

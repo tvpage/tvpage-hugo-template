@@ -13,28 +13,31 @@
     this.loading = false;
     this.itemClass = '.carousel-item';
     this.full = this.options.full || false;
-    this.dots = Utils.isUndefined(this.options.dots) ? false : this.options.dots;
-    this.appendDots = Utils.isUndefined(this.options.appendDots) ? false : this.options.appendDots;
+    this.dots = this.getOption(this.options.dots, false);
+    this.appendDots = this.getOption(this.options.appendDots, false);
     this.maxDots = 5;
-    this.limitDots = Utils.isUndefined(this.options.limitDots) ? false : this.options.limitDots;
-    this.loadMore = Utils.isUndefined(this.options.loadMore) ? true : this.options.loadMore;
-    this.dotsPosition = Utils.isUndefined(this.options.dotsPosition) ? 'bottom' : this.options.dotsPosition;
+    this.limitDots = this.getOption(this.options.limitDots, false);
+    this.loadMore = this.getOption(this.options.loadMore, true);
+    this.dotsPosition = this.getOption(this.options.dotsPosition, 'bottom');
     this.slideCompare;
-    this.arrowIconsAdded = false;
-    this.prevArrowId = 'carousel-arrow-prev';
-    this.nextArrowId = 'carousel-arrow-next';
+    this.slidesToShow = this.getOption(this.options.slidesToShow, 1);
+    this.slidesToScroll = this.getOption(this.options.slidesToScroll, 1);
     this.el = document.getElementById(sel);
     this.el.style.position = 'relative';
+  };
+
+  Carousel.prototype.getOption = function(option, defaultValue){
+    return Utils.isUndefined(option) ? (defaultValue || null) : option;
   };
 
   Carousel.prototype.getSlickConfig = function(){
     var options = this.options,
     slickConfig = {
-      slidesToShow: options.slidesToShow,
-      slidesToScroll: options.slidesToScroll,
+      slidesToShow: this.slidesToShow,
+      slidesToScroll: this.slidesToScroll,
       infinite: options.infinite || false,
       arrows: true,
-      appendArrows: '#carousel-arrows'
+      appendArrows: '#carousel-arrows-' + this.el.id
     };
 
     if(!!options.responsive && options.responsive.length){
@@ -148,6 +151,7 @@
       }
 
     }else if(alignArrowsY && alignArrowsY.length > 1){
+
       var referenceEl = this.el.querySelector(alignArrowsY[1]);
       
       if(!referenceEl){
@@ -206,7 +210,7 @@
 
   Carousel.prototype.onSlickInit = function(){
     if(this.config.debug) {
-      console.log('carousel el initialized: ', performance.now() - startTime);
+      console.log('carousel el initialized: ' + this.el.id, performance.now() - startTime);
     }
 
     if(this.options.dotsCenter){
@@ -265,9 +269,9 @@
   };
 
   Carousel.prototype.onSlickSetPosition = function(){
-    this.addArrowIcons();
+    //this.addArrowIcons();
 
-    this.alignArrowsX();
+    //this.alignArrowsX();
     this.alignArrowsY();
 
     setTimeout(function(opts){
@@ -361,6 +365,7 @@
     var pageWrapStart = this.options.pageWrapStart;
     var pageWrapEnd = this.options.pageWrapEnd;
     var hasPageWrap = pageWrapStart && pageWrapEnd;
+    this.appendDots = this.getOption(this.options.appendDots, false);
 
     //so we are only considering the page wrappers if the page is 0?
     if(0 == this.page){
@@ -398,7 +403,7 @@
 
         this.appendArrowsEl = document.createElement('div');
         this.appendArrowsEl.className = 'carousel-arrows';
-        this.appendArrowsEl.id = 'carousel-arrows';
+        this.appendArrowsEl.id = 'carousel-arrows-' + this.el.id;
 
         this.el.appendChild(this.appendArrowsEl);
 
