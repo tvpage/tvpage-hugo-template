@@ -2,7 +2,7 @@
 /* Nightwatch Recorder generated Mon Oct 23 2017 18:49:04 GMT-0700 (PDT) */
 /*==============================================================================*/
 var DATA = {
-  URL: "https://widgets.goodlookingbean.com/test/carousel-spotlight/",
+  URL: "https://widgets.goodlookingbean.com/test/inline/",
   SLA: 10000
 };
 
@@ -12,22 +12,18 @@ var aCounts = {
 };
 
 var guiTest = {
-  init: function (client) {
+  init: function (client, frameId) {
     client
       .url(DATA.URL)
       .pause(1000);
 
+    if (frameId !== undefined)
+      client.frame(frameId);
+
     return client
   },
-  playVideo: function (client, loadTime, nextVideo) {
-    if(! nextVideo){
-      client.frame(0, function(res){
-      // console.log(res);
-      }).click('[data-id="65981962"]').pause(loadTime);
-    }
-    client.frameParent().pause(2000).frame(1, function(res){
-      // console.log(res);
-    }).click('#tvplayer-playbutton').pause(loadTime);
+  playVideo: function (client, loadTime) {
+    client.click('#tvplayer-playbutton').pause(loadTime);
   },
   getParameterByName: function(name, url) {
     name = name.replace(/[\[\]]/g, "\\$&");
@@ -89,9 +85,6 @@ var guiTest = {
         var vvs = guiTest.getParameterByName('vvs', src);
         this.assert.ok(vvs);
 
-        var cid = guiTest.getParameterByName('cid', src);
-        this.assert.ok(cid);
-
         DATA.vvs = vvs;
       }
 
@@ -129,15 +122,15 @@ module.exports = {
   before : function (client) {
     client.windowMaximize();
   },
-  'carousel-spotlight-desktop-youtube': function(client) {
+  'inline-desktop-youtube': function(client) {
 
-    guiTest.init(client);
+    guiTest.init(client, 0);
 
     guiTest.playVideo(client, DATA.SLA);
 
     client.pause(10000);
 
-    guiTest.playVideo(client, DATA.SLA, true);
+    guiTest.playVideo(client, DATA.SLA);
 
     guiTest.analytics(client, 1, ['ci', 'vv'], {
       LOGIN_ID: 1758799,

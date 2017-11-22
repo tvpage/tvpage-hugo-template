@@ -715,6 +715,144 @@ nightwatch_config = {
       },
       filter: "desktop/carousel-spotlight/carousel-spotlight.js"
     },
+    InlineW10GC61: {
+      desiredCapabilities: {
+        'build': 'InlineW10GC61',
+        'os': 'Windows',
+        'os_version': '10',
+        'browser': 'Chrome',
+        'browser_version': '61.0',
+      },
+      filter: "desktop/inline/inline.js"
+    },
+    InlineW10FF55: {
+      desiredCapabilities: {
+        'build': 'InlineWin10FF55',
+        'os': 'Windows',
+        'os_version': '10',
+        'browser': 'Firefox',
+        'browser_version': '55.0'
+      },
+      filter: "desktop/inline/inline.js"
+    },
+    InlineW10IE11: {
+      desiredCapabilities: {
+        'build': 'InlineW10IE11',
+        'os': 'Windows',
+        'os_version': '10',
+        'browser': 'IE',
+        'browser_version': '11.0',
+      },
+      filter: "desktop/inline/inline.js"
+    },
+    InlineW10E15: {
+      desiredCapabilities: {
+        'build': 'InlineW10E15',
+        'os': 'Windows',
+        'os_version': '10',
+        'browser': 'Edge',
+        'browser_version': '15.0'
+      },
+      filter: "desktop/inline/inline.js"
+    },
+    InlineWin8GC61: {
+      desiredCapabilities: {
+        'build': 'InlineW8GC61',
+        'os': 'Windows',
+        'os_version': '8.1',
+        'browser': 'Chrome',
+        'browser_version': '61.0',
+      },
+      filter: "desktop/inline/inline.js"
+    },
+    InlineW8IE11: {
+      desiredCapabilities: {
+        'build': 'InlineW8IE11',
+        'os': 'Windows',
+        'os_version': '8.1',
+        'browser': 'IE',
+        'browser_version': '11.0'
+      },
+      filter: "desktop/inline/inline.js"
+    },
+    InlineW8FF55: {
+      desiredCapabilities: {
+        'build': 'InlineW8FF55',
+        'os': 'Windows',
+        'os_version': '8.1',
+        'browser': 'Firefox',
+        'browser_version': '55.0'
+      },
+      filter: "desktop/inline/inline.js"
+    },
+    InlineOSXSierraS10: {
+      desiredCapabilities: {
+        'build': 'InlineOSXSierraS10',
+        'os': 'OS X',
+        'os_version': 'Sierra',
+        'browser': 'Safari',
+        'browser_version': '10.1'
+      },
+      filter: "desktop/inline/inline.js"
+    },
+    InlineOSXSierraGC61: {
+      desiredCapabilities: {
+        'build': 'InlineOSXSierraGC61',
+        'os': 'OS X',
+        'os_version': 'Sierra',
+        'browser': 'Chrome',
+        'browser_version': '61.0',
+      },
+      filter: "desktop/inline/inline.js"
+    },
+    InlineOSXSierraFF55: {
+      desiredCapabilities: {
+        'build': 'InlineOSXSierraFF55',
+        'os': 'OS X',
+        'os_version': 'Sierra',
+        'browser': 'Firefox',
+        'browser_version': '55.0'
+      },
+      filter: "desktop/inline/inline.js"
+    },
+    InlineOSXHighSierraGC61: {
+      desiredCapabilities: {
+        'build': 'InlineOSXHighSierraGC61',
+        'os': 'OS X',
+        'os_version': 'High Sierra',
+        'browser': 'Chrome',
+        'browser_version': '61.0'
+      },
+      filter: "desktop/inline/inline.js"
+    },
+    InlineOSXHighSierraFF55: {
+      desiredCapabilities: {
+        'build': 'InlineOSXHighSierraFF55',
+        'os': 'OS X',
+        'os_version': 'High Sierra',
+        'browser': 'Firefox',
+        'browser_version': '55.0'
+      },
+      filter: "desktop/inline/inline.js"
+    },
+    InlineGooglepixelAndroid8: {
+      desiredCapabilities: {
+        'build': 'InlineGooglepixelAndroid8',
+        'device': 'Google Pixel',
+        'realMobile': 'true',
+        'os_version': '8.0'
+      },
+      filter: "desktop/inline/inline.js"
+    },
+    InlineNexus6Android6: {
+      desiredCapabilities: {
+        'build': 'InlineNexus6Android6',
+        'device': 'Google Nexus 6',
+        'realMobile': 'true',
+        'os_version': '6.0'
+      },
+      filter: "desktop/inline/inline.js"
+    },
   }
 };
 
