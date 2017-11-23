@@ -2,4 +2,11 @@
   host: {{- (partial (printf "%s/host.css" .Type) .) | htmlUnescape | safeHTML -}},
   "host-custom": {{- (partial (printf "%s/host-custom.css" .Type) .) | htmlUnescape | safeHTML -}},
   modal: {{- (partial (printf "%s/modal.css" .Type) .) | htmlUnescape | safeHTML -}},
+  mobile: {
+    host: {{- (partial (printf "%s/mobile/css/host.css" .Type) .) | htmlUnescape | safeHTML -}},
+    "host-custom": {{- (partial (printf "%s/mobile/css/host-custom.css" .Type) .) | htmlUnescape | safeHTML -}},
+    modal: {
+      content: {{- (partial (printf "%s/mobile/css/modal/content.css" .Type) .) | htmlUnescape | safeHTML -}}
+    }
+  }
 }
