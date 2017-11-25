@@ -332,7 +332,7 @@
 
   (function sendFirstSize() {
     setTimeout(function() {
-      console.log('css loaded poll...', );
+      console.log('css loaded poll...');
 
       if('hidden' === Utils.getStyle(Utils.getById('bs-checker'), 'visibility')){
 
