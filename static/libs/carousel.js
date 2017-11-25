@@ -385,6 +385,7 @@
     function wipe(){
       this.el.innerHTML = '';
       this.$slickEl = null;
+      this.appendDots = null;//need a deper reset?
       
       var childEls = [
         this.itemsTargetEl,
@@ -454,9 +455,6 @@
     var pageWrapStart = this.options.pageWrapStart;
     var pageWrapEnd = this.options.pageWrapEnd;
     var hasPageWrap = pageWrapStart && pageWrapEnd;
-
-    //why would need this again, should't this be in the getSlickConfig? what;s going on?
-    this.appendDots = this.getOption(this.options.appendDots, false);
 
     function renderPages(offset){
       var html = '';
