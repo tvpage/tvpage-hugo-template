@@ -30,6 +30,10 @@
     return Utils.isUndefined(option) ? (defaultValue || null) : option;
   };
 
+  Carousel.prototype.getOption = function(option, defaultValue){
+    return Utils.isUndefined(option) ? (defaultValue || null) : option;
+  };
+
   Carousel.prototype.getSlickConfig = function(){
     var options = this.options,
     slickConfig = {
