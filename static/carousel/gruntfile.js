@@ -24,7 +24,8 @@ module.exports = function(grunt) {
           files: {
             'dist/css/styles.min.css': [
               '../bootstrap/dist/css/bootstrap.css',
-              '../slick/slick.css'
+              '../slick/slick.css',
+              'css/styles.css'
             ],
             'dist/css/modal/styles.min.css': [
               'css/vendor/perfect-scrollbar.min.css',
