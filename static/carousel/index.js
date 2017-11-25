@@ -237,7 +237,7 @@ function getInitialHtml(){
   return html;
 }
 
-//gets the player url
+//build the player url
 function getPlayerUrl(){
   var url = "https://cdnjs.tvpage.com/tvplayer/tvp-" + config.player_version + ".min.js";
   

@@ -101,65 +101,34 @@
       channelVideos = channelVideos.concat(data);
     }
 
-    if(Utils.isMobile){
-      videosCarousel = new Carousel('videos',{
-        alignArrowsY: ['center', '.video-image-icon'],
-        page: 0,
-        endpoint: videosEndpoint,
-        params: Utils.addProps(videosOrderParams, channelParams),
-        data: channelVideos,
-        slidesToShow: 4,
-        slidesToScroll: 1,
-        onClick: onClick,
-        itemsTarget: '.slick-carousel',
-        itemsPerPage: 4,
-        templates: {
-          list: templatesMobile.videos.list,
-          item: templatesMobile.videos.item
-        },
-        responsive: [
-          {
-            breakpoint: 600,
-            settings: {
-              slidesToShow: 2,
-              slidesToScroll: 2
-            }
+    videosCarousel = new Carousel('videos',{
+      alignArrowsY: ['center', '.video-image-icon'],
+      page: 0,
+      endpoint: videosEndpoint,
+      params: Utils.addProps(videosOrderParams, channelParams),
+      data: channelVideos,
+      slidesToShow: 4,
+      slidesToScroll: 1,
+      onClick: onClick,
+      itemsTarget: '.slick-carousel',
+      itemsPerPage: 4,
+      templates: {
+        list: templates.videos.list,
+        item: templates.videos.item
+      },
+      responsive: [
+        {
+          breakpoint: 600,
+          settings: {
+            slidesToShow: 2,
+            slidesToScroll: 2
           }
-        ],
-        onReady: onReady,
-        onLoad: onLoad,
-        onResize:onWidgetResize
-      }, config);
-    }else{
-      videosCarousel = new Carousel('videos',{
-        alignArrowsY: ['center', '.video-image-icon'],
-        page: 0,
-        endpoint: videosEndpoint,
-        params: Utils.addProps(videosOrderParams, channelParams),
-        data: channelVideos,
-        slidesToShow: 4,
-        slidesToScroll: 1,
-        onClick: onClick,
-        itemsTarget: '.slick-carousel',
-        itemsPerPage: 4,
-        templates: {
-          list: templates.videos.list,
-          item: templates.videos.item
-        },
-        responsive: [
-          {
-            breakpoint: 600,
-            settings: {
-              slidesToShow: 2,
-              slidesToScroll: 2
-            }
-          }
-        ],
-        onReady: onReady,
-        onLoad: onLoad,
-        onResize:onWidgetResize
-      }, config);
-    }
+        }
+      ],
+      onReady: onReady,
+      onLoad: onLoad,
+      onResize:onWidgetResize
+    }, config);
 
     videosCarousel.initialize();
     videosCarousel.render();
@@ -227,7 +196,7 @@
       productsCarousel.load('render', piTrack);
     }else{
       productsCarousel = new Carousel('products',{
-        //alignArrowsY: ['center', '.carousel-dot-0'],
+        alignArrowsY: ['center', '.carousel-dot-0'],
         dotsCenter: true,
         dots: true,
         dotsClass: 'products-carousel-dots',

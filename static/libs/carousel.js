@@ -1,14 +1,14 @@
 (function(){
 
-  function Carousel(sel, options, config){
+  function Carousel(sel, options, globalConfig){
     this.options = options || {};    
     this.data = this.options.data || [];
     this.page = this.options.page || 0;
     this.endpoint = this.options.endpoint;
     this.itemsPerPage = this.options.itemsPerPage;
     this.params = this.options.params;
-    this.config = config || {};
-    this.eventPrefix = config.events.prefix;
+    this.config = globalConfig || {};
+    this.eventPrefix = globalConfig.events.prefix;
     this.templates = this.options.templates;
     this.loading = false;
     this.itemClass = '.carousel-item';

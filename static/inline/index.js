@@ -136,8 +136,6 @@ var static = baseUrl + '/' + type;
 var dist = debug ? '/' : '/dist/';
 var eventPrefix = ('tvp_' + id).replace(/-/g, '_');
 var templates;
-var javascriptPath;
-var cssPath;
 var holder;
 
 config.id = id;
@@ -146,7 +144,7 @@ config.channelId = (config.channelId || config.channelid) || config.channel.id;
 config.events = {};
 config.events.prefix = eventPrefix;
 config.paths = {};
-config.paths.baseUrl = baseUrl;
+config.paths.libs = baseUrl + '/libs';
 config.paths.static = static;
 config.paths.dist = dist;
 config.paths.javascript = static + dist + 'js';
@@ -157,8 +155,6 @@ config.mobile.prefix = isMobile ? '-mobile' : '';
 config.mobile.templates = config.templates.mobile;
 
 templates = isMobile ? config.mobile.templates : config.templates;
-javascriptPath = config.paths.javascript;
-cssPath = config.paths.css;
 
 window.__TVPage__.config[id] = config;
 
@@ -240,7 +236,7 @@ function widgetRender(){
   
   var iframe = holder.querySelector("iframe");
   var iframeDocument = iframe.contentWindow.document;
-  var libsPath = baseUrl + '/libs';
+  var paths = config.paths;
 
   iframeDocument.open().write(getIframeHtml({
     id: id,
@@ -253,22 +249,22 @@ function widgetRender(){
       '//a.tvpage.com/tvpa.min.js',
       '//imasdk.googleapis.com/js/sdkloader/ima3.js',
       getPlayerUrl(),
-      debug ? javascriptPath + '/vendor/jquery.js' : '',
-      debug ? libsPath + '/utils.js' : '',
-      debug ? libsPath + '/analytics.js' : '',
-      debug ? libsPath + '/carousel.js' : '',
-      debug ? libsPath + '/player.js' : '',
-      debug ? javascriptPath + '/index.js' : '',
+      debug ? paths.javascript + '/vendor/jquery.js' : '',
+      debug ? paths.libs + '/utils.js' : '',
+      debug ? paths.libs + '/analytics.js' : '',
+      debug ? paths.libs + '/carousel.js' : '',
+      debug ? paths.libs + '/player.js' : '',
+      debug ? paths.javascript + '/index.js' : '',
 
-      debug ? "" : javascriptPath + "/scripts.min.js"
+      debug ? "" : paths.javascript + "/scripts.min.js"
     ],
     css: [
       debug ? baseUrl + '/bootstrap/dist/css/bootstrap.css' : '',
       debug ? baseUrl + '/slick/slick.css' : '',
       isMobile ? baseUrl + '/slick/mobile/custom.css' : '',
       !isMobile ? baseUrl + '/slick/custom.css' : '',
-      debug ? cssPath + '/styles.css' : '',
-      debug ? '' : cssPath + '/styles.min.css'
+      debug ? paths.css + '/styles.css' : '',
+      debug ? '' : paths.css + '/styles.min.css'
     ]
   }));
 
