@@ -25,11 +25,29 @@
   var playe
   var productsCarousel;
   var productsCarouselReady = false;
+  var featuredProduct;
   var videosCarousel;
   var videosCarouselReady = false;
   var analytics;
 
-  function piTrack(data){
+  //the featured product
+  function FeaturedProduct(selector){
+    this.el = Utils.getById(selector);
+    this.data = [];
+  }
+
+  FeaturedProduct.prototype.render = function(){
+    var html = '';
+    var data = this.data;
+    
+    if(data && templates.products && templates.products.featured){
+      html = Utils.tmpl(templates.products.featured, data);
+    }
+    
+    this.el.innerHTML = html;
+  }
+
+  function analyticsPITrack(data){
     for (var i = 0; i < data.length; i++) {
       var product = data[i];
       
@@ -57,14 +75,20 @@
     });
   }
 
-  function renderFeaturedProduct(data){
-    var html = '';
+  function onWidgetVideoChange(videoId, fromPlayer){
+    //if the video  change comes auto from the player we don't need to tell the player to play
+    if(!fromPlayer)
+      player.play(videoId);
 
-    if(data && !Utils.isEmptyObject(data)){
-      html = Utils.tmpl(templates.products.featured, data);
-    }
-
-    Utils.getById('featured-product').innerHTML = html;
+    productsCarousel.endpoint = apiBaseUrl + '/videos/' + videoId + '/products';
+    productsCarousel.load('render', function(data){
+      analyticsPITrack(data);
+      
+      if(featuredProduct){
+        featuredProduct.data = data[0];
+        featuredProduct.render();
+      }
+    });
   }
   
   function initVideos(){
@@ -77,13 +101,7 @@
       var clickedId = target.getAttribute('data-id');
 
       if(clickedId){
-        player.play(clickedId);
-
-        productsCarousel.endpoint = apiBaseUrl + '/videos/' + clickedId + '/products';
-        productsCarousel.load('render', function(data){
-          piTrack(data);
-          renderFeaturedProduct(data[0]);
-        });
+        onWidgetVideoChange(clickedId);
       }
     }
 
@@ -167,13 +185,25 @@
         var targetId = target.getAttribute('data-id');
 
         if(target && targetId){
-          renderFeaturedProduct(productsCarousel.getItemById(targetId));
+          featuredProduct.data = productsCarousel.getDataItemById(targetId);
+          featuredProduct.render();
         }
       }else{
         if(config.debug){
           console.log('click target is bad:', e.target);
         }
       }
+    }
+
+    //this is just the first load
+    function onProductsLoad(data){
+      data = data || [];
+      
+      analyticsPITrack(data);
+
+      featuredProduct = new FeaturedProduct('featured-product');
+      featuredProduct.data = data[0];
+      featuredProduct.render();
     }
 
     if(Utils.isMobile){
@@ -193,7 +223,7 @@
       }, config);
       
       productsCarousel.initialize();
-      productsCarousel.load('render', piTrack);
+      productsCarousel.load('render', analyticsPITrack);
     }else{
       productsCarousel = new Carousel('products',{
         alignArrowsY: ['center', '.carousel-dot-0'],
@@ -227,21 +257,16 @@
       }, config);
 
       productsCarousel.initialize();
-      productsCarousel.load('render', function(data){
-        piTrack(data);
-        renderFeaturedProduct(data[0]);
-      });
+      productsCarousel.load('render', onProductsLoad);
     }
   };
 
 
   function onPlayerNext(next) {
-    if (next.assetId) {
-      productsCarousel.endpoint = apiBaseUrl + '/videos/' + next.assetId + '/products';
-      productsCarousel.load('render', function(data){
-        piTrack(data);
-        renderFeaturedProduct(data[0]);
-      });
+    var nextVideoId = next.assetId;
+    
+    if (nextVideoId) {
+      onWidgetVideoChange(nextVideoId);
     }
   }
 

@@ -169,15 +169,18 @@
   "min-height: 85px;"+
 "}"+
 
+".products-carousel-dots{"+
+  "position: absolute;"+
+  "width: 100%;"+
+  "left: 0;"+
+  "right: 0;"+
+  "bottom: 40px;"+
+"}"+
+
 "@media screen and (min-width: 768px) {" +
 
   ".m0-md{" +
     "margin: 0 !important;" +
   "}" +
-
-  ".products-carousel-dots{" +
-    "position: absolute;" +
-    "bottom: -20px;" +
-  "}"+
   
 "}"
