@@ -31,22 +31,7 @@
         });
     }
 
-    function onNoProducts(){
-        Utils.addClass(mainEl,'tvp-no-products');
-        Utils.sendMessage({
-            event: eventPrefix + ':widget_modal_no_products'
-        });
-    }
-
-    function onProducts(){
-        Utils.removeClass(mainEl,'tvp-no-products');
-        Utils.sendMessage({
-            event: eventPrefix + ':widget_modal_products'
-        });
-    };
-
     function onLoadProducts(data) {
-        data.length ? onProducts() : onNoProducts();
         render(data);
     };
 
@@ -260,27 +245,27 @@
 
     };
 
-    var onPlayerResize = function(initial, size){
+    function onPlayerResize(initial, size){
         productsEl.style.height = size[1] + 'px';
 
         Utils.sendMessage({
             event: eventPrefix + ':widget_modal_resize',
             height: getWidgetHeight() + 'px'
         });
-    };
+    }
 
-    var onPlayerNext = function(next){
+    function onPlayerNext(next){
         if (config.merchandise && next) {
-            loadProducts(next.assetId, onLoadProducts);
-        } else {
-            onNoProducts();
+            loadProducts(next.assetId, function(data){
+                render(data);
+            });
         }
 
         Utils.sendMessage({
             event: eventPrefix + ':player_next',
             next: next
         });
-    };
+    }
 
     function initializePlayer(){
         var playerConfig = Utils.copy(config);
@@ -307,28 +292,6 @@
             li: config.loginId
         });
     };
-
-    var initialize = function(){
-
-        //We set the height of the player to the products element, we also do this on player resize, we
-        //want the products scroller to have the same height as the player.
-        productsEl = mainEl.querySelector('.tvp-products-holder');
-        productsEl.style.height = mainEl.querySelector('.tvp-player-holder').offsetHeight + 'px';
-
-        initializePlayer();
-        initializeAnalytics();
-
-        if (config.merchandise) {
-            loadProducts(config.clicked, onLoadProducts);
-        } else {
-            onNoProducts();
-        }
-
-        Utils.sendMessage({
-            event: eventPrefix + ':widget_modal_initialized',
-            height: getWidgetHeight() + 'px'
-        });
-    };
     
     var depsCheck = 0;
     var deps = ['TVPage', '_tvpa', 'Utils', 'Analytics', 'Player', 'Ps'];
@@ -345,7 +308,26 @@
             ready = false;
 
         if(ready){
-            initialize();
+            
+            //We set the height of the player to the products element, we also do this on player resize, we
+            //want the products scroller to have the same height as the player.
+            productsEl = mainEl.querySelector('.tvp-products-holder');
+            productsEl.style.height = mainEl.querySelector('.tvp-player-holder').offsetHeight + 'px';
+
+            initializePlayer();
+            initializeAnalytics();
+
+            if (config.merchandise) {
+                loadProducts(config.clicked, function(data){
+                    render(data);
+                });
+            }
+
+            Utils.sendMessage({
+                event: eventPrefix + ':widget_modal_initialized',
+                height: getWidgetHeight() + 'px'
+            });
+
         }else if(++depsCheck < 200){
             initModal()
         }

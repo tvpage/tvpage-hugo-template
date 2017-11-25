@@ -36,6 +36,17 @@
 
     return true;
   }
+
+  function getStyle(el,styleProp){
+    var s;
+    
+    if (el.currentStyle)
+      s = el.currentStyle[styleProp];
+    else if (window.getComputedStyle)
+      s = document.defaultView.getComputedStyle(el,null).getPropertyValue(styleProp);
+    
+    return s;
+  }
   
   //the utils module
   var Utils = {};
@@ -46,6 +57,12 @@
   
   Utils.getWidgetHeight = function() {
     return Math.floor(getById('skeleton').getBoundingClientRect().height);
+  };
+
+  Utils.logSnapshot = function(msg){
+    if(window.performance && 'undefined' !== typeof startTime){
+      console.log(msg, performance.now() - startTime);
+    }
   };
 
   Utils.attr = function(el,a) {
@@ -278,14 +295,7 @@
     }
   };
 
-  Utils.getStyle = function(el,styleProp){
-    var s;
-    if (el.currentStyle)
-      s = el.currentStyle[styleProp];
-    else if (window.getComputedStyle)
-      s = document.defaultView.getComputedStyle(el,null).getPropertyValue(styleProp);
-    return s;
-  };
+  Utils.getStyle = getStyle;
     
   window.Utils = Utils;
 

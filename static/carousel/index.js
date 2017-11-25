@@ -41,6 +41,16 @@ function createEl(t){
   return document.createElement(t);
 }
 
+function isUndefined(o){
+  return 'undefined' === typeof o;
+}
+
+function logSnapshot(msg) {
+  if(window.performance && 'undefined' !== typeof startTime){
+    console.log(msg, performance.now() - startTime);
+  }
+}
+
 function tmpl(t,d){
   return t.replace(/\{([\w\.]*)\}/g, function(str, key) {
     var keys = key.split("."),
@@ -48,10 +58,6 @@ function tmpl(t,d){
     for (var i = 0, l = keys.length; i < l; i++) v = v[keys[i]];
     return (typeof v !== "undefined" && v !== null) ? v : "";
   });
-}
-
-function isUndefined(o){
-  return 'undefined' === typeof o;
 }
 
 function addClass(obj, c) {
@@ -264,7 +270,6 @@ function widgetRender(){
   iframeDocument.open().write(getIframeHtml({
     id: id,
     domain: baseUrl,
-    style: isMobile ? css.mobile.base : css.base,
     context: config,
     html: templates.base,
     eventPrefix: eventPrefix,
@@ -282,6 +287,7 @@ function widgetRender(){
       isMobile ? baseUrl + '/slick/mobile/custom.css' : '',
       !isMobile ? baseUrl + '/slick/custom.css' : '',
       debug ? baseUrl + '/bootstrap/dist/css/bootstrap.css' : '',
+      debug ? cssPath + '/styles.css' : '',
       debug ? '' : cssPath + '/styles.min.css'
     ]
   }));
@@ -289,22 +295,20 @@ function widgetRender(){
   iframeDocument.close();
 
   if(debug){
-    console.log('renders initial dom (iframe w/skeleton)', performance.now() - startTime);
+    logSnapshot('renders initial dom (iframe w/skeleton)');
   }
 }
 
 function onWidgetLoad(data){
-  if(debug){
-    console.log('videos api call completed', performance.now() - startTime);
-  }
-
-  //We then add the data to the tvp global and then we fire the event that will start
-  //things in the widget side.
-  if(data && data.length){
+  var dataLength = !!data.length ? data.length : 0;
+  
+  if(dataLength){
     config.channel.videos = data;
     widgetRender();
-  }else if(debug){
-    console.log('videos api call returned 0 videos', performance.now() - startTime);   
+  }
+
+  if(debug){
+    logSnapshot('videos api returned: ' + dataLength + ' item(s) in: ')
   }
 };
 
@@ -548,5 +552,5 @@ function handlePlayerNext(e) {
 }
 
 function onWidgetModalResize(e){
-  iframeModal.style.height = e.data.height;
+  iframeModalHolder.style.height = e.data.height;
 }

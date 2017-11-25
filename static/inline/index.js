@@ -178,13 +178,10 @@ function getIframeHtml(o){
       };
 
   html += load(o.js, 'JavaScript') + 
-  load(o.css, 'CSS', 'function(){' +
-  '   var skel = document.getElementById(\'skeleton\');' +
-  '   skel && skel.classList.remove(\'hide\');' +
-  '}'
-  );
+  load(o.css, 'CSS', o.onCSSLoaded || 'function(){document.body.classList.add(\'css-loaded\')}');
 
   html += '">';//closing the body tag
+  html += '<div id="bs-checker" class="invisible"></div>';//helper to check bs is loaded
   html += '<style>' + (o.style || '') + '</style>';
   html += tmpl((o.html || '').trim(), o.context);
 
@@ -241,7 +238,6 @@ function widgetRender(){
   iframeDocument.open().write(getIframeHtml({
     id: id,
     domain: baseUrl,
-    style: config.css.base,
     context: config,
     html: templates.base,
     eventPrefix: eventPrefix,
@@ -271,22 +267,21 @@ function widgetRender(){
   iframeDocument.close();
   
   if(debug){
-    console.log('renders initial dom (iframe w/skeleton)', performance.now() - startTime);
+    console.log('renders initial dom', performance.now() - startTime);
   }
 }
 
+//we then add the data to the tvp global and then we fire the event that will start things in the widget side.
 function onWidgetLoad(data){
-  if(debug){
-    console.log('videos api call completed', performance.now() - startTime);
-  }
-
-  //We then add the data to the tvp global and then we fire the event that will start
-  //things in the widget side.
-  if(data && data.length){
+  var dataLength = !!data.length ? data.length : 0;
+  
+  if(dataLength){
     config.channel.videos = data;
     widgetRender();
-  }else if(debug){
-    console.log('videos api call returned 0 videos', performance.now() - startTime);   
+  }
+
+  if(debug){
+    console.log('videos api returned: ' + dataLength + ' item(s) in: ' + (performance.now() - startTime) + 'ms.');
   }
 };
 

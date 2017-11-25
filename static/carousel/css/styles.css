@@ -1,3 +1,8 @@
+/* turn focus state off */
+*:focus {
+  outline: none;
+}
+
 /* helpers */
 .hide {
   opacity: 0; 
@@ -94,14 +99,6 @@
   background-color: #efefef;
 }
 
-.featured-product-holder {
-  padding-bottom: 112.25%;
-}
-
-.skeleton .featured-product-holder {
-  background-color: #efefef;
-}
-
 .products-holder {
   padding-bottom: 112.25%;
 }
@@ -163,18 +160,6 @@
   width: 34px;
   height: 34px;
   font-size: 34px;
-}
-
-.mobile .product{
-  min-height: 85px;
-}
-
-.products-carousel-dots{
-  position: absolute;
-  width: 100%;
-  left: 0;
-  right: 0;
-  bottom: 12px;
 }
 
 @media screen and (min-width: 768px) {

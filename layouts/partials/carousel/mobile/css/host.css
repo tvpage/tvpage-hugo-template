@@ -85,9 +85,12 @@
 
 ".tvp-iframe-modal {" +
     "margin: 0;" +
-    "border: 0;" +
-    "width: 100%;" +
+    "top: 0;" +
+    "left: 0;" +
+    "width: 1px;" +
+    "min-width: 100%;" +
     "height: 100%;" +
+    "position: absolute;" +
 "}" +
 
 ".tvp-modal-header:after {" +

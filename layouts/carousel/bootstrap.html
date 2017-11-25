@@ -44,5 +44,5 @@
 	config.css = {{- (partial (printf "%s/css/index.html" $type) .) -}};
 	
 	{{- (readFile (printf "/themes/tvpage/static/%s/index.js" $type) ) | htmlUnescape | safeHTML -}}
-
+	
 }());

@@ -30,23 +30,6 @@
   var videosCarouselReady = false;
   var analytics;
 
-  //the featured product
-  function FeaturedProduct(selector){
-    this.el = Utils.getById(selector);
-    this.data = [];
-  }
-
-  FeaturedProduct.prototype.render = function(){
-    var html = '';
-    var data = this.data;
-    
-    if(data && templates.products && templates.products.featured){
-      html = Utils.tmpl(templates.products.featured, data);
-    }
-    
-    this.el.innerHTML = html;
-  }
-
   function analyticsPITrack(data){
     for (var i = 0; i < data.length; i++) {
       var product = data[i];
@@ -75,8 +58,8 @@
     });
   }
 
+  //if the video  change comes auto from the player we don't need to tell the player to play
   function onWidgetVideoChange(videoId, fromPlayer){
-    //if the video  change comes auto from the player we don't need to tell the player to play
     if(!fromPlayer)
       player.play(videoId);
 
@@ -91,10 +74,9 @@
     });
   }
   
+  //when a videos carousel element is clicked
   function initVideos(){
-
-    //when a videos carousel element is clicked
-    function onClick(e){
+    function onVideosCarouselClick(e){
       Utils.stopEvent(e);
 
       var target = Utils.getRealTargetByClass(e.target, 'carousel-item');
@@ -105,16 +87,17 @@
       }
     }
 
-    function onReady(){
+    function onVideosCarouselReady(){
+      videosCarouselReady = true;
+      
       Utils.remove(skeletonEl.querySelector('.videos-skel-delete'));
       
-      videosCarouselReady = true;
       videosCarousel.loadNext('render');
 
       onWidgetReady();
     }
 
-    function onLoad(data){
+    function onVideosCarouselLoad(data){
       player.addAssets(data);
       channelVideos = channelVideos.concat(data);
     }
@@ -127,7 +110,7 @@
       data: channelVideos,
       slidesToShow: 4,
       slidesToScroll: 1,
-      onClick: onClick,
+      onClick: onVideosCarouselClick,
       itemsTarget: '.slick-carousel',
       itemsPerPage: 4,
       templates: {
@@ -143,8 +126,8 @@
           }
         }
       ],
-      onReady: onReady,
-      onLoad: onLoad,
+      onReady: onVideosCarouselReady,
+      onLoad: onVideosCarouselLoad,
       onResize:onWidgetResize
     }, config);
 
@@ -164,6 +147,25 @@
   };
 
   function initProducts(){
+    var prodTemplates = templates.products;
+
+    //the featured product
+    function FeaturedProduct(selector){
+      this.el = Utils.getById(selector);
+      this.data = [];
+    }
+
+    FeaturedProduct.prototype.render = function(){
+      var html = '';
+      var data = this.data;
+      
+      if(data && prodTemplates && prodTemplates.featured){
+        html = Utils.tmpl(prodTemplates.featured, data);
+      }
+      
+      this.el.innerHTML = html;
+    }
+
     function parseProducts(item){
       item.title = Utils.trimText(item.title, 25);//this has to be an option
       item.price = Utils.trimPrice(item.price);
@@ -171,9 +173,10 @@
       return item;
     }
 
-    function onReady(){
+    function onProductsCarouselReady(){
       productsCarouselReady = true;
-      onWidgetReady(); 
+
+      onWidgetReady();
     }
 
     function onClick(e){
@@ -197,13 +200,16 @@
 
     //this is just the first load
     function onProductsLoad(data){
-      data = data || [];
-      
-      analyticsPITrack(data);
+      if(data){
+        featuredProduct = new FeaturedProduct('featured-product');
+        featuredProduct.data = data[0];
+        featuredProduct.render();
 
-      featuredProduct = new FeaturedProduct('featured-product');
-      featuredProduct.data = data[0];
-      featuredProduct.render();
+        //delayed 1st pi track
+        setTimeout(function(){
+          analyticsPITrack(data);
+        }, 3000);
+      }
     }
 
     if(Utils.isMobile){
@@ -218,7 +224,7 @@
         },
         params: productsOrderParams,
         parse: parseProducts,
-        onReady: onReady,
+        onReady: onProductsCarouselReady,
         onResize:onWidgetResize
       }, config);
       
@@ -243,16 +249,8 @@
         },
         params: productsOrderParams,
         parse: parseProducts,
-        responsive: [
-          {
-            breakpoint: 768,
-            settings: {
-              arrows:false
-            }
-          }
-        ],
-        onReady: onReady,
-        onResize:onWidgetResize,
+        onReady: onProductsCarouselReady,
+        onResize: onWidgetResize,
         onClick: onClick
       }, config);
 
@@ -298,6 +296,7 @@
 
   //The global deps of the carousel have to be present before executing its logic.
   var depsCheck = 0;
+  var depsCheckLimit = 1000;
   var deps = ['jQuery','Utils','Player', 'Carousel', 'Analytics','_tvpa'];
 
   (function initInline() {
@@ -314,20 +313,43 @@
         if(Utils.isMobile)
           Utils.addClass(body,'mobile');
 
-        //add widget title
-        var widgetTitleEl = Utils.getById('widget-title');
-        widgetTitleEl.innerHTML = firstVideo.title;
-        Utils.addClass(widgetTitleEl, 'ready');
-
         initPlayer();
         initVideos();
         initAnalytics();
         initProducts();
 
-      }else if(++depsCheck < 200){
+      }else if(++depsCheck < depsCheckLimit){
         initInline()
       }
-    },5);
+    },10);
   })();
-    
+  
+  //at this stage we check when critical css has been loaded & parsed, now having the data we can
+  //update the skeleton and init necassary stuff for the nice transition. We need to wait until
+  //css has really execcuted to send right measurements.
+  var cssLoadedCheck = 0;
+  var cssLoadedCheckLimit = 1000;
+
+  (function sendFirstSize() {
+    setTimeout(function() {
+      console.log('css loaded poll...', );
+
+      if('hidden' === Utils.getStyle(Utils.getById('bs-checker'), 'visibility')){
+
+        //add widget title
+        var widgetTitleEl = Utils.getById('widget-title');
+        widgetTitleEl.innerHTML = firstVideo.title;
+        Utils.addClass(widgetTitleEl, 'ready');
+
+        Utils.sendMessage({
+          event: eventPrefix + ':widget_resize',
+          height: Utils.getWidgetHeight()
+        });        
+
+      }else if(++cssLoadedCheck < cssLoadedCheckLimit){
+        sendFirstSize()
+      }
+    },10);
+  })();
+
 }());

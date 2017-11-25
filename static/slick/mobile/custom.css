@@ -1,4 +1,4 @@
-/* arrows & dots */
+/* arrows */
 .slick-arrow {
   top: 50%;
   transform: translateY(-50%);
@@ -17,7 +17,7 @@
   visibility: hidden;
 }
 
-.ready .slick-arrow {
+.slick-arrow.ready {
   opacity: 1;
   visibility: visible;
 }
@@ -27,20 +27,11 @@
   height: 24px;
 }
 
-.slick-dots {
-  margin: 0;
-}
-
-.dots-centered .slick-dots {
-  text-align: center;
-}
-
 .slick-arrow.slick-disabled {
   opacity: 0.6 !important;
 }
 
-.slick-arrow:focus,
-.carousel-dot:focus {
+.slick-arrow:focus {
   outline: none;
 }
 
@@ -59,4 +50,56 @@
   left: 0;
   right: 0;
   margin: auto;
+}
+
+/*dots*/
+.slick-dots {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.slick-dots li {
+  position: relative;
+  display: inline-block;
+  margin: 0 5px;
+  padding: 0;
+  cursor: pointer;
+}
+
+.dots-centered .slick-dots {
+  text-align: center;
+}
+
+.carousel-dot:focus {
+  outline: none;
+}
+
+.slick-dotted.slick-slider {
+  margin-bottom: 0;
+}
+
+.slick-dots li {
+  margin-right: 5px; 
+}
+
+.slick-dots li:last-child {
+  margin-right: 0;
+}
+
+.dots-centered .slick-dots {
+  text-align: center;
+}
+
+.slick-dots li button {
+  opacity: 0.6;
+  width: 12px;
+  height: 12px;
+  border-radius: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+.slick-dots li.slick-active button {
+  opacity: 1;
 }

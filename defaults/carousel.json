@@ -360,7 +360,7 @@
           "type": "text",
           "label": "Items Per Page",
           "code": "items_per_page",
-          "value": "4"
+          "value": "3"
       },
       {
           "for": "carousel",

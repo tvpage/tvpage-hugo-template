@@ -30,10 +30,6 @@
     return Utils.isUndefined(option) ? (defaultValue || null) : option;
   };
 
-  Carousel.prototype.getOption = function(option, defaultValue){
-    return Utils.isUndefined(option) ? (defaultValue || null) : option;
-  };
-
   Carousel.prototype.getSlickConfig = function(){
     var options = this.options,
     slickConfig = {
@@ -164,56 +160,61 @@
         var currentParent = referenceEl.offsetParent;
         var that = this;
 
-        function arrowsReady(el){
+        function whenArrowsReady(el){
           arrowsEls = el.querySelectorAll('.slick-arrow');
-
           for (var i = 0; i < arrowsEls.length; i++) {
             Utils.addClass(arrowsEls[i], 'ready');
           }
         }
 
+        //when a reference is passed and we need to center vertically, we need to collect the
+        //parents in order to include them in the measurement.
+        function whenReferenceParentsCollected(){
+          top = 0;
+
+          var parentsLength = parents.length;
+
+          for (var i = 0; i < parentsLength; i++) {
+            top += parents[i].offsetTop;
+          }
+
+          top += referenceEl.offsetTop + Math.floor(referenceEl.getBoundingClientRect().height / 2);
+
+          //calculation is done, now lets find the arrows and update their style.
+          if(that.appendArrowsEl.childNodes.length){
+            that.appendArrowsEl.style.top = top;
+            whenArrowsReady(that.appendArrowsEl);
+          }else{
+            //There's currently an issue with Slick, by some reason this is appending the arrows inside the slick element,
+            //basically not respecting the passed appendArrows setting.
+            var slickArrows = that.el.querySelectorAll('.slick-arrow');
+
+            for (var i = 0; i < slickArrows.length; i++) {
+              slickArrows[i].style.top = top;
+            }
+
+            whenArrowsReady(that.el);
+          }
+        }
+
         //if reference offsetParent is not slick's topmost element, we collect the elements in-between and
         //we'll add that to the top value calculation
-        (function collectParents(){
+        (function collectReferenceParents(){
           setTimeout(function() {
             if(currentParent && currentParent.id == that.el.id){
-              top = 0;
+              whenReferenceParentsCollected();
 
-              var parentsLength = parents.length;
-              for (var i = 0; i < parentsLength; i++) {
-                top += parents[i].offsetTop;
-              }
-
-              top += referenceEl.offsetTop + Math.floor(referenceEl.getBoundingClientRect().height / 2);
-
-              //calculation is done, now lets find the arrows and update their style.
-              if(that.appendArrowsEl.childNodes.length){
-                that.appendArrowsEl.style.top = top;
-                arrowsReady(that.appendArrowsEl);
-              }else{
-                //There's currently an issue with Slick, by some reason this is appending the arrows inside the slick element,
-                //basically not respecting the passed appendArrows setting.
-                var slickArrows = that.el.querySelectorAll('.slick-arrow');
-
-                for (var i = 0; i < slickArrows.length; i++) {
-                  slickArrows[i].style.top = top;
-                }
-
-                arrowsReady(that.el);
-              }
-
-              return;
+              return;//important to stop here.
             }else if(++parentsCheck < 30){
               parents.push(currentParent);
 
               if(currentParent)
                 currentParent = currentParent.offsetParent;
 
-              collectParents();
+              collectReferenceParents();
             }
           },100);
         })();
-
       }
     }
 
@@ -236,7 +237,7 @@
 
   Carousel.prototype.onSlickInit = function(){
     if(this.config.debug) {
-      console.log('carousel el initialized: ' + this.el.id, performance.now() - startTime);
+      Utils.logSnapshot('carousel el initialized: ' + this.el.id);
     }
 
     if(this.options.dotsCenter){
@@ -312,14 +313,17 @@
     });
     
     this.$slickEl.on('beforeChange', function(){
+      console.log('####beforeChange')
       that.onSlickBeforeChange.call(that, arguments);
     });
 
     this.$slickEl.on('afterChange', function(){
+      console.log('####afterChange')
       that.onSlickAfterChange.call(that, arguments);
     });
 
     this.$slickEl.on('setPosition', function(){
+      console.log('####setPosition')
       that.onSlickSetPosition.call(that);
     });
 
@@ -402,7 +406,14 @@
     }
 
     if(itemsTarget && itemsTargetEl && Utils.isFunction($(itemsTargetEl).slick)){
-      $(itemsTargetEl).slick('unslick');
+      try{
+        $(itemsTargetEl).slick('unslick');
+      }catch(e){
+        if(this.config.debug){
+          console.log('unslick error', e);
+        }
+      }
+      
       wipe.call(this);
     }else{
       wipe.call(this);
@@ -418,20 +429,23 @@
   };
 
   Carousel.prototype.handleDots = function(){
-    if(!this.dots || this.appendDots && this.dots){
-      return;
-    }else{
+    if(this.dots && !this.appendDots){
       this.appendDotsEl = document.createElement('div');
       this.appendDotsEl.id = 'dots-target';
       this.appendDotsEl.className = 'col';
-
-      Utils.addClass(this.appendDotsEl, this.options.dotsClass || '');
-
+      
       this.appendDots = '#dots-target';
+
       if('bottom' === this.dotsPosition){
         this.el.appendChild(this.appendDotsEl);
       }else{
         this.el.insertBefore(this.appendDotsEl, this.el.firstChild);
+      }
+
+      var dotsClass = this.options.dotsClass;
+      
+      if(!!dotsClass){
+        Utils.addClass(this.appendDotsEl, this.options.dotsClass);
       }
     }
   };
@@ -450,22 +464,28 @@
     this.parse();
 
     var moreThan1 = allLength > 1;
-    var pages = Utils.rowerize(all, this.itemsPerPage)
+    var pages = this.loadMore && this.itemsPerPage ? Utils.rowerize(all, this.itemsPerPage) : [all];
     var pagesLength = pages.length;
     var pageWrapStart = this.options.pageWrapStart;
     var pageWrapEnd = this.options.pageWrapEnd;
     var hasPageWrap = pageWrapStart && pageWrapEnd;
 
-    function renderPages(offset){
-      var html = '';
+    function renderPages(offset, onArray){
+      var html = onArray ? [] : '';
       
       off = offset || 0;
 
       for (var i = 0; i < pagesLength; i++) {
         var page = pages[i + off];
-        
+
         if(page){
-          html += (hasPageWrap ? pageWrapStart : '') + this.renderBatch(page) + (hasPageWrap ? pageWrapEnd : '');
+          var pageHTML = (hasPageWrap ? pageWrapStart : '') + this.renderBatch(page) + (hasPageWrap ? pageWrapEnd : '');
+          
+          if(onArray){
+            html.push(pageHTML);
+          }else{
+            html += pageHTML;
+          }
         }
       }
 
@@ -474,7 +494,13 @@
 
     //if it's a subsequent page we need to consider offset
     if(willUpdate){
-      this.$slickEl.slick('slickAdd', renderPages.call(this, this.page));
+      var pagesHTML = renderPages.call(this, this.page, true);
+      var pagesHTMLLength = pagesHTML.length;
+
+      for (var i = 0; i < pagesHTMLLength; i++) {
+        this.$slickEl.slick('slickAdd', pagesHTML[i]);
+      }
+
       this.handleClick();
     }else{
       this.clean();
@@ -482,26 +508,22 @@
       var holderEl = Utils.createEl('div');
 
       holderEl.innerHTML = Utils.tmpl(this.templates.list, this.config);
-
-      // this.el.innerHTML = Utils.tmpl(this.templates.list, this.config);
       
       var itemsTargetEl = holderEl.querySelector(this.options.itemsTarget);
-      
+
       itemsTargetEl.innerHTML = renderPages.call(this);
 
       this.el.appendChild(itemsTargetEl);
 
-      this.handleDots();
-      this.handleArrows();
-      this.startSlick(itemsTargetEl);
-
       //we won't start the slick slider if there's no overflow of items
       //if user don't pass where nav dots should be, we render a placeholder
-      // if(moreThan1){
-        
-      // }else{
-      //   this.onReady();
-      // }      
+      if(moreThan1){  
+        this.handleDots();
+        this.handleArrows();
+        this.startSlick(itemsTargetEl);
+      }else{
+        this.onReady();
+      }
     }
   };
 

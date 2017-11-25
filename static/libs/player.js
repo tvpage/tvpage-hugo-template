@@ -337,7 +337,7 @@
 
           that.play(asset);
   
-        }else if(++depsCheck < 200){
+        }else if(++depsCheck < 1000){
           start()
         }
       },5);
