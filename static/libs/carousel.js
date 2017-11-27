@@ -155,13 +155,11 @@
       toCenter = 'center' === alignArrowsY[0];
 
       if(toCenter){
-        var parentsCheck = 0;
-        var parents = [];
-        var currentParent = referenceEl.offsetParent;
         var that = this;
 
         function whenArrowsReady(el){
           arrowsEls = el.querySelectorAll('.slick-arrow');
+
           for (var i = 0; i < arrowsEls.length; i++) {
             Utils.addClass(arrowsEls[i], 'ready');
           }
@@ -199,19 +197,30 @@
 
         //if reference offsetParent is not slick's topmost element, we collect the elements in-between and
         //we'll add that to the top value calculation
-        (function collectReferenceParents(){
+        function getCurrentParent(childEl){
+          return childEl ? childEl.offsetParent : referenceEl.offsetParent;
+        }
+
+        var parentsCheck = 0;
+        var parents = [];
+
+        (function collectReferenceParents(currentParent){
           setTimeout(function() {
+            currentParent = currentParent || getCurrentParent();
+
             if(currentParent && currentParent.id == that.el.id){
               whenReferenceParentsCollected();
 
               return;//important to stop here.
-            }else if(++parentsCheck < 30){
+            }else if(++parentsCheck < 200){
               parents.push(currentParent);
 
-              if(currentParent)
-                currentParent = currentParent.offsetParent;
-
-              collectReferenceParents();
+              //if an element actually existed, then we go for it's parent
+              if(currentParent){
+                collectReferenceParents(getCurrentParent(currentParent));
+              } else{
+                collectReferenceParents();
+              }
             }
           },100);
         })();
@@ -313,17 +322,14 @@
     });
     
     this.$slickEl.on('beforeChange', function(){
-      console.log('####beforeChange')
       that.onSlickBeforeChange.call(that, arguments);
     });
 
     this.$slickEl.on('afterChange', function(){
-      console.log('####afterChange')
       that.onSlickAfterChange.call(that, arguments);
     });
 
     this.$slickEl.on('setPosition', function(){
-      console.log('####setPosition')
       that.onSlickSetPosition.call(that);
     });
 
@@ -451,20 +457,21 @@
   };
 
   Carousel.prototype.render = function(){
-    var willUpdate = this.page > 0 ? 1 : 0;
     var all = this.data;
     var allLength = all.length;
 
     //if no data to render
     if(!allLength && this.options.clean){
       this.clean();
+      
       return;
     }
 
     this.parse();
 
-    var moreThan1 = allLength > 1;
-    var pages = this.loadMore && this.itemsPerPage ? Utils.rowerize(all, this.itemsPerPage) : [all];
+    var willUpdate = this.page > 0 ? true : false;
+    var moreThanOne = allLength > 1;
+    var pages = this.itemsPerPage > 0 ? Utils.rowerize(all, this.itemsPerPage) : [all];
     var pagesLength = pages.length;
     var pageWrapStart = this.options.pageWrapStart;
     var pageWrapEnd = this.options.pageWrapEnd;
@@ -517,7 +524,7 @@
 
       //we won't start the slick slider if there's no overflow of items
       //if user don't pass where nav dots should be, we render a placeholder
-      if(moreThan1){  
+      if(moreThanOne){  
         this.handleDots();
         this.handleArrows();
         this.startSlick(itemsTargetEl);
