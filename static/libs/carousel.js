@@ -393,7 +393,7 @@
 
       for (var i = 0; i < childElsLength; i++) {
         if(childEls[i]){
-          childEls[i].remove();
+          Utils.remove(childEls[i]);
         }
       }
     }
