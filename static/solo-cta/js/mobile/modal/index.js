@@ -171,7 +171,7 @@
 
         //We start loading our slick dependency here, it was breaking while rendering it dynamicaly.
         var slickScript = document.createElement('script');
-        slickScript.src = config.baseUrl + '/carousel/js/vendor/slick-min.js'
+        slickScript.src = config.baseUrl + '/solo-cta/js/vendor/slick-min.js'
         slickScript.onload = onSlickLoad;
         body.appendChild(slickScript);
     };

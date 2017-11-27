@@ -17,13 +17,12 @@
     o: config.products_order_by,
     od: config.products_order_direction
   };
-  var isMobile = Utils.isMobile;
   var channelVideos = config.channel.videos;
   var templates = config.templates;
   var templatesMobile = templates.mobile;
   var skeleton = true;
   var skeletonEl = document.getElementById('skeleton');
-  var player;
+  var playe
   var productsCarousel;
   var productsCarouselReady = false;
   var videosCarousel;
@@ -33,7 +32,7 @@
   function piTrack(data){
     for (var i = 0; i < data.length; i++) {
       var product = data[i];
-
+      
       analytics.track('pi',{
         vd: product.entityIdParent,
         ct: product.id,
@@ -102,9 +101,9 @@
       channelVideos = channelVideos.concat(data);
     }
 
-    if(isMobile){
+    if(Utils.isMobile){
       videosCarousel = new Carousel('videos',{
-        alignArrowsY: ['center', '.video-image'],
+        alignArrowsY: ['center', '.video-image-icon'],
         page: 0,
         endpoint: videosEndpoint,
         params: Utils.addProps(videosOrderParams, channelParams),
@@ -133,7 +132,7 @@
       }, config);
     }else{
       videosCarousel = new Carousel('videos',{
-        alignArrowsY: ['center', '.video-image'],
+        alignArrowsY: ['center', '.video-image-icon'],
         page: 0,
         endpoint: videosEndpoint,
         params: Utils.addProps(videosOrderParams, channelParams),
@@ -168,7 +167,6 @@
 
   function initAnalytics() {
     analytics = new Analytics();
-    
     analytics.initConfig({
       domain: location.hostname || '',
       logUrl: apiBaseUrl + '/__tvpa.gif',
@@ -209,7 +207,7 @@
       }
     }
 
-    if(isMobile){
+    if(Utils.isMobile){
       productsCarousel = new Carousel('products',{
         endpoint: productsEndpoint,
         clean: true,
@@ -227,10 +225,9 @@
       
       productsCarousel.initialize();
       productsCarousel.load('render', piTrack);
-
     }else{
       productsCarousel = new Carousel('products',{
-        alignArrowsY: ['center', '.carousel-dot-0'],
+        //alignArrowsY: ['center', '.carousel-dot-0'],
         dotsCenter: true,
         dots: true,
         dotsClass: 'products-carousel-dots',
@@ -268,6 +265,17 @@
     }
   };
 
+
+  function onPlayerNext(next) {
+    if (next.assetId) {
+      productsCarousel.endpoint = apiBaseUrl + '/videos/' + next.assetId + '/products';
+      productsCarousel.load('render', function(data){
+        piTrack(data);
+        renderFeaturedProduct(data[0]);
+      });
+    }
+  }
+
   function initPlayer(){
     var playerConfig = Utils.copy(config);
     
@@ -275,16 +283,7 @@
     playerConfig.ciTrack = true;
     playerConfig.data = config.channel.videos;
     playerConfig.onPlayerChange = !!playerConfig.onPlayerChange;
-    playerConfig.onNext = function(nextVideo){
-      if(config.debug){
-        console.log('next video coming', nextVideo);
-      }
-      
-      if(nextVideo.id){
-        productsCarousel.endpoint = apiBaseUrl + '/videos/' + nextVideo.id + '/products';
-        productsCarousel.load('render', piTrack);
-      }
-    };
+    playerConfig.onNext = onPlayerNext;
 
     //watch out this function triggers twice, once per media provider
     var readyCalled = false;
@@ -305,7 +304,7 @@
 
   //The global deps of the carousel have to be present before executing its logic.
   var depsCheck = 0;
-  var deps = ['jQuery','Utils','Player', 'Carousel', 'Analytics'];
+  var deps = ['jQuery','Utils','Player', 'Carousel', 'Analytics','_tvpa'];
 
   (function initInline() {
     setTimeout(function() {
@@ -318,7 +317,7 @@
 
       if(ready){
 
-        if(isMobile)
+        if(Utils.isMobile)
           Utils.addClass(body,'mobile');
 
         //add widget title

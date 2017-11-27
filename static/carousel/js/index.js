@@ -1,4 +1,4 @@
-(function() {
+(function(){
   var body = document.body;
   var id = body.getAttribute('data-id');
   var config = window.parent.__TVPage__.config[id];
@@ -12,7 +12,6 @@
 
   //a videos section will be initialized
   function initVideos(){
-
     function onResize(){
       Utils.sendMessage({
         event: eventPrefix + ':widget_resize',
@@ -52,8 +51,9 @@
       return item;
     }
 
+    //for small bp and below we will do 1 video per
     var videosCarousel = new Carousel('videos',{
-      alignArrowsY: ['center', '.video-image'],
+      alignArrowsY: ['center', '.video-image-icon'],
       endpoint: videosEndpoint,
       params: Utils.addProps({
         o: config.videos_order_by,
@@ -62,20 +62,20 @@
       page: 0,
       data: channelVideos,
       dots: true,
-      slidesToShow: 4,
+      slidesToShow: 3,
       slidesToScroll: 1,
       itemsTarget: '.slick-carousel',
-      itemsPerPage: 4,
+      itemsPerPage: 3,
       templates: {
         list: templates.videos.list,
         item: templates.videos.item
       },
       responsive: [
         {
-          breakpoint: 600,
+          breakpoint: 576,
           settings: {
-            slidesToShow: 2,
-            slidesToScroll: 2
+            slidesToShow: 1,
+            slidesToScroll: 1
           }
         }
       ],

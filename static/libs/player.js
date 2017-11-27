@@ -104,7 +104,11 @@
     }
 
     if('string' === typeof asset){
-      asset = this.getAssetById(asset).asset;
+      var targetAsset = this.getAssetById(asset);
+      asset = targetAsset.asset;
+      this.currentIndex = targetAsset.index;
+    } else {
+      this.currentIndex = this.assets.indexOf(asset);
     }
 
     if(this.shallCue(ongoing)){

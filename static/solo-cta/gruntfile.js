@@ -73,6 +73,7 @@ module.exports = function(grunt) {
               '../libs/utils.js',
               '../libs/analytics.js',
               '../libs/player.js',
+              'js/vendor/slick-min.js',
               'js/mobile/modal/index.js'
             ]
           }

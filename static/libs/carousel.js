@@ -13,24 +13,31 @@
     this.loading = false;
     this.itemClass = '.carousel-item';
     this.full = this.options.full || false;
-    this.dots = Utils.isUndefined(this.options.dots) ? false : this.options.dots;
-    this.appendDots = Utils.isUndefined(this.options.appendDots) ? false : this.options.appendDots;
+    this.dots = this.getOption(this.options.dots, false);
+    this.appendDots = this.getOption(this.options.appendDots, false);
     this.maxDots = 5;
-    this.limitDots = Utils.isUndefined(this.options.limitDots) ? false : this.options.limitDots;
-    this.loadMore = Utils.isUndefined(this.options.loadMore) ? true : this.options.loadMore;
-    this.dotsPosition = Utils.isUndefined(this.options.dotsPosition) ? 'bottom' : this.options.dotsPosition;
-    this.arrowsXOffset;
-    this.arrowsYOffset;
+    this.limitDots = this.getOption(this.options.limitDots, false);
+    this.loadMore = this.getOption(this.options.loadMore, true);
+    this.dotsPosition = this.getOption(this.options.dotsPosition, 'bottom');
+    this.slideCompare;
+    this.slidesToShow = this.getOption(this.options.slidesToShow, 1);
+    this.slidesToScroll = this.getOption(this.options.slidesToScroll, 1);
     this.el = document.getElementById(sel);
+    this.el.style.position = 'relative';
+  };
+
+  Carousel.prototype.getOption = function(option, defaultValue){
+    return Utils.isUndefined(option) ? (defaultValue || null) : option;
   };
 
   Carousel.prototype.getSlickConfig = function(){
     var options = this.options,
     slickConfig = {
-      slidesToShow: options.slidesToShow,
-      slidesToScroll: options.slidesToScroll,
+      slidesToShow: this.slidesToShow,
+      slidesToScroll: this.slidesToScroll,
       infinite: options.infinite || false,
-      arrows: true
+      arrows: true,
+      appendArrows: '#carousel-arrows-' + this.el.id
     };
 
     if(!!options.responsive && options.responsive.length){
@@ -86,6 +93,13 @@
     this.handleClick();
   };
 
+  Carousel.prototype.getArrowEls = function(){
+    return [
+      this.appendArrowsEl.querySelector('.slick-prev'),
+      this.appendArrowsEl.querySelector('.slick-next')
+    ].filter(Boolean);
+  };
+
   //since the slick's setPosition callback is triggered multiple times, is probably better
   //to align the arrows again, only if the new position is diff than the existing one?
   Carousel.prototype.alignArrowsX = function(){
@@ -104,21 +118,19 @@
 
     this.arrowsXOffset = xOffset;
 
-    // if(this.arrowsXOffset == xOffset)
-    //   return;
-
-    // this.arrowsXOffset = xOffset;
-
     if(Utils.isUndefined(xOffset))
       return;
 
+    
+    var arrowEls = this.getArrowEls();
+
     //implement on arrows
-    var arrowPrev = this.el.querySelector('.slick-prev');
+    var arrowPrev = arrowEls[0];
     if(arrowPrev){
-      arrowPrev.style.left = xOffset;
+      arrowPrev.style.left = parseInt(xOffset) + 'px';
     }
 
-    var arrowNext = this.el.querySelector('.slick-next');
+    var arrowNext = arrowEls[1];
     if(arrowNext){
       arrowNext.style.right = parseInt(xOffset) + 'px';
     }
@@ -131,29 +143,6 @@
         arrowBottom,
         isCenter;
 
-    function updateArrows(){
-      var arrows = that.el.querySelectorAll('.slick-arrow');
-      var arrowsLength = arrows.length;
-
-      for (var i = 0; i < arrowsLength; i++) {
-        var arrow = arrows[i];
-
-        if(arrowTop || arrowBottom)
-          arrow.style.transform = 'initial';
-
-        if(arrowTop){
-          arrow.style.top = isCenter ? arrowTop - arrow.getBoundingClientRect().height / 2 : arrowTop;
-        }
-        
-        if(arrowBottom)
-          arrow.style.bottom = arrowBottom;
-
-        //show arrows
-        arrow.style.opacity = 1;
-        arrow.style.visibility = 'visible';
-      }
-    };
-
     if('string' === typeof alignArrowsY){
 
       if('bottom' === alignArrowsY){
@@ -162,6 +151,7 @@
       }
 
     }else if(alignArrowsY && alignArrowsY.length > 1){
+
       var referenceEl = this.el.querySelector(alignArrowsY[1]);
       
       if(!referenceEl){
@@ -171,7 +161,6 @@
       isCenter = 'center' === alignArrowsY[0];
 
       if(isCenter){
-
         var that = this;        
         var parentsCheck = 0;
         var parents = [];
@@ -181,19 +170,19 @@
         //we'll add that to the top value calculation
         (function collectParents(){
           setTimeout(function() {
-            if(currentParent && Utils.hasClass(currentParent, 'slick-carousel')){
+            if(currentParent && currentParent.id == that.el.id){
               arrowTop = 0;
 
               var parentsLength = parents.length;
-              
               for (var i = 0; i < parentsLength; i++) {
                 arrowTop += parents[i].offsetTop;
               }
 
-              //adding the center of the element
-              arrowTop += Math.floor(referenceEl.getBoundingClientRect().height / 2);
+              arrowTop += referenceEl.offsetTop + Math.floor(referenceEl.getBoundingClientRect().height / 2);
 
-              updateArrows();
+              that.appendArrowsEl.style.top = arrowTop;
+              
+              Utils.addClass(that.appendArrowsEl,'ready');
 
               return;
             }else if(++parentsCheck < 30){
@@ -204,7 +193,7 @@
 
               collectParents();
             }
-          },0);
+          },100);
         })();
 
       }
@@ -221,7 +210,7 @@
 
   Carousel.prototype.onSlickInit = function(){
     if(this.config.debug) {
-      console.log('carousel el initialized: ', performance.now() - startTime);
+      console.log('carousel el initialized: ' + this.el.id, performance.now() - startTime);
     }
 
     if(this.options.dotsCenter){
@@ -243,13 +232,45 @@
     this.onReady();
   };
 
-  Carousel.prototype.onSlickAfterChange = function(){
-    if(this.loadMore && !this.full){
+  Carousel.prototype.onSlickBeforeChange = function(slickArgs){
+    this.slideCompare = slickArgs[2];//adding currentSlide
+  };
+
+  //if there's actually a change/movement on slides
+  Carousel.prototype.onSlickAfterChange = function(slickArgs){
+    if(this.slideCompare != slickArgs[2] && this.loadMore && !this.full){
       this.loadNext('render');
     }
   };
 
+  Carousel.prototype.addArrowIcons = function(){
+    function getIcon(d){
+      var i = Utils.createEl('i');
+      
+      i.className = 'material-icons abs-center';
+      i.innerHTML = 'keyboard_arrow_' + d;
+
+      return i;
+    }
+
+    var arrowEls = this.getArrowEls();
+    
+    var prevArrow = arrowEls[0];
+    if(prevArrow){
+      prevArrow.innerHTML = '';
+      prevArrow.appendChild(getIcon('left'));
+    }
+
+    var nextArrow = arrowEls[1];
+    if(nextArrow){
+      nextArrow.innerHTML = '';
+      nextArrow.appendChild(getIcon('right'));
+    }
+  };
+
   Carousel.prototype.onSlickSetPosition = function(){
+    this.addArrowIcons();
+
     this.alignArrowsX();
     this.alignArrowsY();
 
@@ -270,8 +291,12 @@
         that.onSlickInit.call(that);
       });
       
+      that.$slickEl.on('beforeChange', function(){
+        that.onSlickBeforeChange.call(that, arguments);
+      });
+
       that.$slickEl.on('afterChange', function(){
-        that.onSlickAfterChange.call(that);
+        that.onSlickAfterChange.call(that, arguments);
       });
 
       that.$slickEl.on('setPosition', function(){
@@ -285,7 +310,7 @@
       $.ajax({
         dataType: 'script',
         cache: true,          
-        url: this.config.baseUrl + '/carousel/js/vendor/slick-min.js'//need to move this to a global vendors?
+        url: this.config.baseUrl + '/slick/slick-min.js'//need to move this to a global vendors?
       }).done(startSlick);
     } else {
       startSlick();
@@ -340,6 +365,7 @@
     var pageWrapStart = this.options.pageWrapStart;
     var pageWrapEnd = this.options.pageWrapEnd;
     var hasPageWrap = pageWrapStart && pageWrapEnd;
+    this.appendDots = this.getOption(this.options.appendDots, false);
 
     //so we are only considering the page wrappers if the page is 0?
     if(0 == this.page){
@@ -374,6 +400,12 @@
             this.el.insertBefore(this.appendDotsEl, this.el.firstChild);
           }
         }
+
+        this.appendArrowsEl = document.createElement('div');
+        this.appendArrowsEl.className = 'carousel-arrows';
+        this.appendArrowsEl.id = 'carousel-arrows-' + this.el.id;
+
+        this.el.appendChild(this.appendArrowsEl);
 
         this.start();
       }else{

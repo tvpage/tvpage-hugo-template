@@ -1,300 +1,151 @@
 (function() {
+  var body = document.body;
+  var id = body.getAttribute("data-id") || "";
+  var config = window.parent.__TVPage__.config[id];
+  var templates = config.templates.mobile;
+  var apiBaseUrl = config.api_base_url;
+  var mainEl;
+  var eventPrefix = config.events.prefix;
+  var productsCarousel;
+  
+  function onWidgetResize(){
+    Utils.sendMessage({
+      event: eventPrefix + ':widget_modal_resize',
+      height: getWidgetHeight() + 'px'
+    });
+  }
 
-    var body = document.body;
-    var id = body.getAttribute("data-id") || "";
-    var config = window.parent.__TVPage__.config[id];
-    var eventPrefix = config.events.prefix;
-    var mainEl = Utils.getById(id);
-    var analytics = null;
-    var eventName;
+  function getBodyPadding(){
+    var bodyProps = [
+      'padding-top',
+      'padding-bottom'
+    ];
+    
+    var padding = 0;
 
-    function getWidgetHeight(){
-        var height = Math.floor(mainEl.getBoundingClientRect().height);
-        
-        var bodyPaddingTop = Utils.getStyle(body, 'padding-top');
-        if(bodyPaddingTop){
-            bodyPaddingTop = parseInt(bodyPaddingTop);
-        }
-
-        var bodyPaddingBottom = Utils.getStyle(body, 'padding-bottom');
-        if(bodyPaddingBottom){
-            bodyPaddingBottom = parseInt(bodyPaddingBottom);
-        }
-
-        return height + bodyPaddingTop + bodyPaddingBottom;
+    for (var i = 0; i < bodyProps.length; i++) {
+      padding += parseInt(Utils.getStyle(body, bodyProps[i]));
     }
 
-    var pkTrack = function() {
-        analytics.track('pk', {
-            vd: this.getAttribute('data-vd'),
-            ct: this.id.split('-').pop(),
-            pg: config.channelId
-        });
-    };
+    return padding;
+  }
 
-    function render(data) {
-        var container = mainEl.querySelector('.tvp-products');
-        
-        //This destroy technique might causing leaks?
-        var carouselClass = 'tvp-products-carousel'
-        var carousel = container.querySelector('.' + carouselClass);
-        
-        if(carousel)
-          carousel.parentNode.removeChild(carousel)
+  function getWidgetHeight() {
+    var height = Math.floor(mainEl.getBoundingClientRect().height);
 
-        carousel = document.createElement("div");
-        carousel.className = carouselClass;
-        
-        container.appendChild(carousel);
+    return height + getBodyPadding();
+  }
 
-        var currentProducts = container.getElementsByClassName('tvp-product');
-        for (var j = 0; j < currentProducts.length; j++) {
-            var currentProductEl = currentProducts[j];
-            if(currentProductEl)
-                currentProductEl.removeEventListener('click', pkTrack, false);
+  function initProducts() {
+    function parseProducts(item){
+      item.title = Utils.trimText(item.title || '', 35);
+      item.price = Utils.trimPrice(item.price || '');
+      item.actionText = item.actionText || 'View Details';
+      return item;
+    }
+
+    productsCarousel = new Carousel('products',{
+      clean: true,
+      loadMore: false,
+      endpoint: apiBaseUrl + '/videos/' + config.clicked + '/products',
+      params: Utils.addProps({
+        o: config.products_order_by,
+        od: config.products_order_direction
+      }),
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      itemsTarget: '.slick-carousel',
+      templates: {
+        list: templates.modal.products.list,
+        item: templates.modal.products.item
+      },
+      parse: parseProducts,
+      onResize:onWidgetResize,
+      responsive: [
+        {
+          breakpoint: 499,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1
+          }
+        },
+        {
+          breakpoint: 767,
+          settings: {
+            slidesToShow: 2,
+            slidesToScroll: 2
+          }
         }
+      ]
+    }, config);
 
-        var dataLength = data.length;
-        var template = config.templates.mobile.modal.content;
-        
-        var piTrack = function(p){
-            analytics.track('pi', {
-                vd: p.entityIdParent,
-                ct: p.id,
-                pg: config.channelId
-            });
-        };
+    productsCarousel.initialize();
+    productsCarousel.load('render');
+  }
 
-        var html = "";
+  function onPlayerNext(next) {
+    if (config.merchandise && next) {
+      productsCarousel.endpoint = apiBaseUrl + '/videos/' + next.assetId + '/products';
+      productsCarousel.load('render');
+    }
 
-        for (var i = 0; i < dataLength; i++) {
-            var product = data[i];
+    Utils.sendMessage({
+      event: eventPrefix + ':player_next',
+      next: next
+    });
+  }
 
-            piTrack(product);
+  function initPlayer() {
+    var playerConfig = Utils.copy(config);
 
-            product.title = Utils.trimText(product.title + '', 50);
-            product.price = Utils.trimPrice(product.price + '');
+    playerConfig.data = config.channel.videos;
+    playerConfig.onResize = onWidgetResize;
+    playerConfig.onNext = onPlayerNext;
 
-            html += Utils.tmpl(template.product, product);
-        }
+    var player = new Player('tvp-player-el', playerConfig, config.clicked);
 
-        carousel.innerHTML = html;
+    player.initialize();
+  };
 
-        Utils.sendMessage({
-            event: eventPrefix + ':widget_modal_resize',
-            height: getWidgetHeight() + 'px'
-        });
+  function initAnalytics() {
+    analytics = new Analytics();
 
-        var products = container.getElementsByClassName('tvp-product');
-        var productLength = products.length;
-        
-        for (var j = 0; j < productLength; j++) {
-            products[j].addEventListener('click', pkTrack, false);
-        }
+    analytics.initConfig({
+      domain: location.hostname || '',
+      logUrl: apiBaseUrl + '/__tvpa.gif',
+      loginId: config.loginId,
+      firstPartyCookies: config.firstpartycookies,
+      cookieDomain: config.cookiedomain
+    });
+  };
 
-        //We use slick slider http://kenwheeler.github.io/slick/ for the ui component
-        function onSlickLoad() {
-            var moreThan1 = dataLength > 1;
-            
-            //Won't start the slider if there's not enough elements for it
-            if (!moreThan1)
-                return;
+  var depsCheck = 0;
+  var deps = ['TVPage', 'jQuery', 'Utils', 'Analytics', 'Carousel', 'Player'];
 
-            var centerMode = moreThan1;
-            var prefix = 'mobile_modal_products_slider';
-            var centerPadding = config[prefix + '_center_padding'] || '0px';
-            
-            var slickConfig = {
-                arrows: false,
-                slidesToSlide: 1,
-                slidesToShow: 3,
+  (function initModal() {
+    setTimeout(function() {
+      if (config.debug) {
+        console.log('deps poll...');
+      }
 
-                //Do we want to use this feautre
-                centerMode: centerMode,
-                centerPadding: centerPadding,
+      var ready = true;
+      var depsLength = deps.length;
 
-                //The problem with having different values of slidesToShow depending on device's size is the skeleton build, we
-                //can keep this if we can do that
-                responsive: [
-                {
-                    breakpoint: 768,
-                    settings: {
-                        arrows: false,
-                        centerMode: centerMode,
-                        centerPadding: centerPadding,
-                        slidesToShow: 2
-                    }
-                },
-                {
-                    breakpoint: 480,
-                    settings: {
-                        arrows: false,
-                        centerMode: centerMode,
-                        centerPadding: centerPadding,
-                        slidesToShow: 1
-                    }
-                }
-                ]
-            };
+      for (var i = 0; i < depsLength; i++)
+        if ('undefined' === typeof window[deps[i]])
+          ready = false;
 
-            var addPaginationConfig = function(){
-                slickConfig.appendDots = '#tvp-slider-dots';
-                slickConfig.dots = config.mobile_products_navigation_bullets;
-            };
+      if (ready) {
+        mainEl = Utils.getById(id);
 
-            var $slickEl = $(carousel);
+        initPlayer();
+        initAnalytics();
+        initProducts();
 
-            if (moreThan1 && dataLength <= config.mobile_products_max_navigation_bullets)
-                addPaginationConfig();
-
-            $slickEl.on('init', function() {
-                if(config.debug) {
-                    console.log('mobile products scroller initialized', performance.now() - startTime)
-                }
-
-                Utils.addClass(container,'enabled');
-            });
-
-            $slickEl.on('setPosition', function() {
-                if(config.debug) {
-                    console.log('slick is resizing');
-                }
-
-                Utils.sendMessage({
-                    event: eventPrefix + ':widget_modal_resize',
-                    height: getWidgetHeight()
-                });
-            });
-
-            $slickEl.slick(slickConfig);
-        };
-
-        //We start loading our slick dependency here, it was breaking while rendering it dynamicaly.
-        var slickScript = document.createElement('script');
-        slickScript.src = config.baseUrl + '/carousel/js/vendor/slick-min.js'
-        slickScript.onload = onSlickLoad;
-        body.appendChild(slickScript);
-    };
-
-    var loadProducts = function(vid, cback) {
-        if (!vid || !cback) {
-            return;
-        }
-        
-        Utils.loadScript({
-            base: config.api_base_url + '/videos/' + vid + '/products',
-            params: {
-                'X-login-id': config.loginId,
-                o: config.products_order_by,
-                od: config.products_order_direction
-            }
-        }, cback);
-    };
-
-    var onNoProducts = function(){
-        Utils.addClass(mainEl,'tvp-no-products');
-        Utils.sendMessage({
-            event: eventPrefix + ':widget_modal_no_products'
-        });
-    };
-console.log('jajajajajaj######sjjs')
-    var onProducts = function(){
-
-        console.log('jajajajajaj######sjjs')
-
-        Utils.removeClass(mainEl,'tvp-no-products');
-        Utils.sendMessage({
-            event: eventPrefix + ':widget_modal_products'
-        });
-    };
-
-    var onLoadProducts = function(data) {
-        data.length ? onProducts() : onNoProducts();
-        render(data);
-    };
-
-    var onPlayerNext = function(next) {
-        if (config.merchandise && next) {
-            loadProducts(next.assetId, onLoadProducts);
-        }else{
-            onNoProducts();
-        }
-
-        Utils.sendMessage({
-            event: eventPrefix + ':player_next',
-            next: next
-        });
-    };
-
-    var onPlayeResize = function() {
-        Utils.sendMessage({
-            event: eventPrefix + ':widget_modal_resize',
-            height: getWidgetHeight() + 'px'
-        });
-    };
-
-    var initializePlayer = function() {
-        var playerConfig = Utils.copy(config);
-        
-        playerConfig.data = config.channel.videos;
-        playerConfig.onResize = onPlayeResize;
-        playerConfig.onNext = onPlayerNext;
-
-        var player = new Player('tvp-player-el', playerConfig, config.clicked);
-
-        player.initialize();
-    };
-
-    //This should be done lazily.. after the important stuff
-    var initializeAnalytics = function(){
-        analytics =  new Analytics();
-        analytics.initConfig({
-            domain: location.hostname || '',
-            logUrl: config.api_base_url + '/__tvpa.gif',
-            loginId: config.loginId,
-            firstPartyCookies: config.firstpartycookies,
-            cookieDomain: config.cookiedomain
-        });
-    };
-
-    function initialize() {
-        initializePlayer();
-        initializeAnalytics();
-
-        if (config.merchandise) {
-            loadProducts(config.clicked, onLoadProducts);
-        }else{
-            onNoProducts();
-        }
-
-        Utils.sendMessage({
-            event: eventPrefix + ':widget_modal_initialized',
-            height: getWidgetHeight() + 'px'
-        });
-    };
-
-    var depsCheck = 0;
-    var deps = ['TVPage', '_tvpa', 'jQuery', 'Utils', 'Analytics', 'Player'];
-
-    (function initModal() {
-        setTimeout(function() {
-            if(config.debug){
-                console.log('deps poll...');
-            }
-        
-            var ready = true;
-            var depsLength = deps.length;
-            
-            for (var i = 0; i < depsLength; i++)
-                if ('undefined' === typeof window[deps[i]])
-                ready = false;
-
-            if(ready){
-                initialize();
-            }else if(++depsCheck < 200){
-                initModal()
-            }
-        },10);
-    })();
+      } else if (++depsCheck < 200) {
+        initModal()
+      }
+    }, 10);
+  })();
 
 }());
