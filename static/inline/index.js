@@ -49,6 +49,12 @@ function tmpl(t,d){
   });
 }
 
+function logSnapshot(msg) {
+  if(window.performance && 'undefined' !== typeof startTime){
+    console.log(msg, performance.now() - startTime);
+  }
+}
+
 function isUndefined(o){
   return 'undefined' === typeof o;
 }
@@ -268,7 +274,7 @@ function widgetRender(){
   iframeDocument.close();
   
   if(debug){
-    console.log('renders initial dom', performance.now() - startTime);
+    logSnapshot('renders initial dom');
   }
 }
 
@@ -282,7 +288,7 @@ function onWidgetLoad(data){
   }
 
   if(debug){
-    console.log('videos api returned: ' + dataLength + ' item(s) in: ' + (performance.now() - startTime) + 'ms.');
+    logSnapshot('videos api returned: ' + dataLength + ' item(s)');
   }
 };
 

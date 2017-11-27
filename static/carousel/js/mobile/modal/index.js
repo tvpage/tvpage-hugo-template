@@ -6,6 +6,7 @@
   var apiBaseUrl = config.api_base_url;
   var mainEl;
   var eventPrefix = config.events.prefix;
+  var productsEndpoint = apiBaseUrl + '/videos/' + config.clicked + '/products';
   var productsCarousel;
   
   function onWidgetResize(){
@@ -47,11 +48,11 @@
     productsCarousel = new Carousel('products',{
       clean: true,
       loadMore: false,
-      endpoint: apiBaseUrl + '/videos/' + config.clicked + '/products',
-      params: Utils.addProps({
+      endpoint: productsEndpoint,
+      params: {
         o: config.products_order_by,
         od: config.products_order_direction
-      }),
+      },
       slidesToShow: 1,
       slidesToScroll: 1,
       itemsTarget: '.slick-carousel',

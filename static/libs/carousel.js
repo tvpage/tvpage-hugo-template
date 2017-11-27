@@ -14,6 +14,7 @@
     this.itemClass = '.carousel-item';
     this.full = this.options.full || false;
     this.dots = this.getOption(this.options.dots, false);
+    this.appendArrows = this.getOption(this.options.appendArrows, null);
     this.appendDots = this.getOption(this.options.appendDots, false);
     this.arrows = this.getOption(this.options.arrows, true);
     this.loadMore = this.getOption(this.options.loadMore, true);
@@ -21,7 +22,7 @@
     this.slidesToShow = this.getOption(this.options.slidesToShow, 1);
     this.slidesToScroll = this.getOption(this.options.slidesToScroll, 1);
     this.slideCompare;
-    
+
     this.el = document.getElementById(sel);
     this.el.style.position = 'relative';
   };
@@ -37,7 +38,7 @@
       slidesToScroll: this.slidesToScroll,
       infinite: options.infinite || false,
       arrows: this.arrows,
-      appendArrows: '#carousel-arrows-' + this.el.id,
+      appendArrows: this.appendArrows,
       appendDots: this.appendDots,
       customPaging: function (s, k) {
         return '<button class="btn-primary carousel-dot carousel-dot-' + k + '"></button>';
@@ -84,8 +85,8 @@
 
   Carousel.prototype.getArrowEls = function(){
     return [
-      this.appendArrowsEl.querySelector('.slick-prev'),
-      this.appendArrowsEl.querySelector('.slick-next')
+      this.el.querySelector('.slick-prev'),
+      this.el.querySelector('.slick-next')
     ].filter(Boolean);
   };
 
@@ -130,6 +131,14 @@
         top,
         bottom;
 
+    function whenArrowsReady(el){
+      arrowsEls = el.querySelectorAll('.slick-arrow');
+
+      for (var i = 0; i < arrowsEls.length; i++) {
+        Utils.addClass(arrowsEls[i], 'ready');
+      }
+    }
+
     function handleStringArg(){
       if('bottom' === alignArrowsY){
         bottom = '0';
@@ -148,14 +157,6 @@
 
       if(toCenter){
         var that = this;
-
-        function whenArrowsReady(el){
-          arrowsEls = el.querySelectorAll('.slick-arrow');
-
-          for (var i = 0; i < arrowsEls.length; i++) {
-            Utils.addClass(arrowsEls[i], 'ready');
-          }
-        }
 
         //when a reference is passed and we need to center vertically, we need to collect the
         //parents in order to include them in the measurement.
@@ -214,7 +215,7 @@
                 collectReferenceParents();
               }
             }
-          },100);
+          },50);
         })();
       }
     }
@@ -223,15 +224,8 @@
       handleStringArg.call(this);
     }else if(alignArrowsY && alignArrowsY.length > 1){
       handleArrayArg.call(this);
-    }else{
-      //default handling
-      var arrows = this.el.querySelectorAll('.slick-arrow');
-      var arrowsLength = arrows.length;
-
-      for (var i = 0; i < arrowsLength; i++) {
-        arrows[i].style.opacity = 1;
-        arrows[i].style.visibility = 'visible';
-      }
+    }else if(!alignArrowsY){
+      whenArrowsReady(this.el);
     }
   };
 
@@ -392,7 +386,7 @@
       var childEls = [
         this.itemsTargetEl,
         this.appendArrowsEl,
-        this.appendDotsEl 
+        this.appendDotsEl
       ];
       var childElsLength = childEls.length;
 
@@ -418,12 +412,20 @@
     }
   };
   
+  //if no vertical align was requested, we shall avoid creating arrows placeholder and not
+  //passing any setting to slick.
   Carousel.prototype.handleArrows = function(){
-    this.appendArrowsEl = document.createElement('div');
-    this.appendArrowsEl.className = 'carousel-arrows';
-    this.appendArrowsEl.id = 'carousel-arrows-' + this.el.id;
-    
-    this.el.appendChild(this.appendArrowsEl);
+    if(!!this.options.alignArrowsY){
+      var arrowsId = 'carousel-arrows-' + this.el.id;
+      
+      this.appendArrowsEl = document.createElement('div');
+      this.appendArrowsEl.className = 'carousel-arrows';
+      this.appendArrowsEl.id = arrowsId;
+      
+      this.el.appendChild(this.appendArrowsEl);
+  
+      this.appendArrows = '#' + arrowsId;
+    }
   };
 
   Carousel.prototype.handleDots = function(){
@@ -432,8 +434,10 @@
       return;
     }
 
+    var dotsId = 'dots-target-' + this.el.id;
+
     this.appendDotsEl = document.createElement('div');
-    this.appendDotsEl.id = 'dots-target';
+    this.appendDotsEl.id = dotsId;
     this.appendDotsEl.className = 'col';
 
     var dotsClass = this.options.dotsClass;
@@ -448,7 +452,7 @@
       this.el.insertBefore(this.appendDotsEl, this.el.firstChild);
     }
 
-    this.appendDots = '#dots-target';
+    this.appendDots = '#' + dotsId;
   };
 
   Carousel.prototype.render = function(){
@@ -519,7 +523,7 @@
 
       //we won't start the slick slider if there's no overflow of items
       //if user don't pass where nav dots should be, we render a placeholder
-      if(moreThanOne){  
+      if(moreThanOne){
         this.handleDots();
         this.handleArrows();
         this.startSlick(itemsTargetEl);

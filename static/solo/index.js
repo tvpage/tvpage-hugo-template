@@ -36,6 +36,11 @@ function getById(id){
 function createEl(t){
   return document.createElement(t);
 }
+function logSnapshot(msg) {
+  if(window.performance && 'undefined' !== typeof startTime){
+    console.log(msg, performance.now() - startTime);
+  }
+}
 function tmpl(t,d){
   return t.replace(/\{([\w\.]*)\}/g, function(str, key) {
     var keys = key.split("."),
@@ -276,22 +281,20 @@ function widgetRender(){
   iframeDocument.close();
 
   if(debug){
-    console.log('renders initial dom (iframe w/skeleton)', performance.now() - startTime);
+    logSnapshot('renders initial dom (iframe w/skeleton)')
   }
 }
 
 function onWidgetLoad(data){
-  if(debug){
-    console.log('videos api call completed', performance.now() - startTime);
-  }
-
-  //We then add the data to the tvp global and then we fire the event that will start
-  //things in the widget side.
-  if(data && data.length){
+  var dataLength = !!data.length ? data.length : 0;
+  
+  if(dataLength){
     config.channel.videos = data;
     widgetRender();
-  }else if(debug){
-    console.log('videos api call returned 0 videos', performance.now() - startTime);   
+  }
+
+  if(debug){
+    logSnapshot('videos api returned: ' + dataLength + ' item(s) in: ')
   }
 };
 
