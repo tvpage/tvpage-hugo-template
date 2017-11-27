@@ -22,7 +22,7 @@
   var templatesMobile = templates.mobile;
   var skeleton = true;
   var skeletonEl = document.getElementById('skeleton');
-  var playe
+  var player;
   var productsCarousel;
   var productsCarouselReady = false;
   var featuredProduct;
@@ -214,6 +214,8 @@
 
     if(Utils.isMobile){
       productsCarousel = new Carousel('products',{
+        dotsCenter: true,
+        dotsMax: 10,
         endpoint: productsEndpoint,
         clean: true,
         loadMore: false,
@@ -222,6 +224,15 @@
           list: templatesMobile.products.list,
           item: templatesMobile.products.item
         },
+        responsive: [
+          {
+            breakpoint: 600,
+            settings: {
+              dots: true,
+              arrows: false
+            }
+          }
+        ],
         params: productsOrderParams,
         parse: parseProducts,
         onReady: onProductsCarouselReady,

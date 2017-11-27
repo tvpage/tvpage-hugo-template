@@ -15,19 +15,19 @@
     this.full = this.options.full || false;
     this.dots = this.getOption(this.options.dots, false);
     this.appendDots = this.getOption(this.options.appendDots, false);
-    this.maxDots = 5;
-    this.limitDots = this.getOption(this.options.limitDots, false);
+    this.arrows = this.getOption(this.options.arrows, true);
     this.loadMore = this.getOption(this.options.loadMore, true);
     this.dotsPosition = this.getOption(this.options.dotsPosition, 'bottom');
-    this.slideCompare;
     this.slidesToShow = this.getOption(this.options.slidesToShow, 1);
     this.slidesToScroll = this.getOption(this.options.slidesToScroll, 1);
+    this.slideCompare;
+    
     this.el = document.getElementById(sel);
     this.el.style.position = 'relative';
   };
 
   Carousel.prototype.getOption = function(option, defaultValue){
-    return Utils.isUndefined(option) ? (defaultValue || null) : option;
+    return Utils.isUndefined(option) ? defaultValue : option;
   };
 
   Carousel.prototype.getSlickConfig = function(){
@@ -36,29 +36,21 @@
       slidesToShow: this.slidesToShow,
       slidesToScroll: this.slidesToScroll,
       infinite: options.infinite || false,
-      arrows: true,
+      arrows: this.arrows,
       appendArrows: '#carousel-arrows-' + this.el.id,
-      appendDots: this.appendDots
+      appendDots: this.appendDots,
+      customPaging: function (s, k) {
+        return '<button class="btn-primary carousel-dot carousel-dot-' + k + '"></button>';
+      }
     };
 
     if(!!options.responsive && options.responsive.length){
       slickConfig.responsive = options.responsive;
     }
 
-    if(this.config.navigation_bullets && this.dots){
-      slickConfig.dots = true;
+    slickConfig.dots = this.config.navigation_bullets && this.dots;
 
-      if(this.limitDots && this.maxDots < Utils.rowerize(this.data, this.itemsPerPage).length){
-        slickConfig.dots = false;
-      }
-    }
-
-    //dots/bullets pagination
-    if(slickConfig.dots){
-      slickConfig.customPaging = function (slick, k) {
-        return '<button class="btn-primary carousel-dot carousel-dot-' + k + '"></button>';
-      };
-    }
+    slickConfig = Utils.removeObjNulls(slickConfig);
 
     return slickConfig;
   };
@@ -134,9 +126,9 @@
   //all alignment offered will happen relative to the slick-carousel element
   Carousel.prototype.alignArrowsY = function(){
     var alignArrowsY = this.options.alignArrowsY,
+        toCenter,
         top,
-        bottom,
-        toCenter;
+        bottom;
 
     function handleStringArg(){
       if('bottom' === alignArrowsY){
@@ -231,9 +223,8 @@
       handleStringArg.call(this);
     }else if(alignArrowsY && alignArrowsY.length > 1){
       handleArrayArg.call(this);
-    
-    //default handling
     }else{
+      //default handling
       var arrows = this.el.querySelectorAll('.slick-arrow');
       var arrowsLength = arrows.length;
 
@@ -392,10 +383,11 @@
     var itemsTarget = this.options.itemsTarget;
     var itemsTargetEl = this.el.querySelector(itemsTarget);
 
+    //need a deper reset?
     function wipe(){
       this.el.innerHTML = '';
       this.$slickEl = null;
-      this.appendDots = null;//need a deper reset?
+      this.appendDots = null;
       
       var childEls = [
         this.itemsTargetEl,
@@ -435,25 +427,28 @@
   };
 
   Carousel.prototype.handleDots = function(){
-    if(this.dots && !this.appendDots){
-      this.appendDotsEl = document.createElement('div');
-      this.appendDotsEl.id = 'dots-target';
-      this.appendDotsEl.className = 'col';
-      
-      this.appendDots = '#dots-target';
-
-      if('bottom' === this.dotsPosition){
-        this.el.appendChild(this.appendDotsEl);
-      }else{
-        this.el.insertBefore(this.appendDotsEl, this.el.firstChild);
-      }
-
-      var dotsClass = this.options.dotsClass;
-      
-      if(!!dotsClass){
-        Utils.addClass(this.appendDotsEl, this.options.dotsClass);
-      }
+    //we always render a dots holder as long as the user is passing one implicitily
+    if(this.appendDots){
+      return;
     }
+
+    this.appendDotsEl = document.createElement('div');
+    this.appendDotsEl.id = 'dots-target';
+    this.appendDotsEl.className = 'col';
+
+    var dotsClass = this.options.dotsClass;
+    
+    if(!!dotsClass){
+      Utils.addClass(this.appendDotsEl, this.options.dotsClass);
+    }
+
+    if('bottom' === this.dotsPosition){
+      this.el.appendChild(this.appendDotsEl);
+    }else{
+      this.el.insertBefore(this.appendDotsEl, this.el.firstChild);
+    }
+
+    this.appendDots = '#dots-target';
   };
 
   Carousel.prototype.render = function(){

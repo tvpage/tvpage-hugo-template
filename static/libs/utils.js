@@ -102,6 +102,18 @@
     el.classList.remove(c);
   };
 
+  Utils.removeObjNulls = function(obj) {
+    for (var k in obj) {
+      if (obj.hasOwnProperty(k)) {
+        if(obj[k] === null){
+          delete obj[k];
+        }
+      }
+    }
+
+    return obj;
+  };
+
   Utils.getById = getById;
 
   Utils.hasClass = hasClass;
