@@ -128,7 +128,6 @@
     "position: absolute;" +
     "top: 0;" +
     "left: 0;" +
-    "opacity: 0;" +
     "-webkit-transition: all .05s ease-in-out;" +
     "transition: all .05s ease-in-out;" +
     "opacity: 1;" +
@@ -154,7 +153,11 @@
     "height: 0;" +
     "width: 100%;" +
     "position: relative;" +
-    "padding-bottom: 58%;" +
+    "padding-bottom: 46.47%;" +
+"}" +
+
+".tvp-modal-iframe-holder.no-products {" +
+    "padding-bottom: 57.4%;" +
 "}" +
 
 ".tvp-modal-body {" +

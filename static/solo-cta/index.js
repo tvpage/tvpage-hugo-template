@@ -337,9 +337,21 @@ window.addEventListener("message", function(e){
     onWidgetClick(e);
   }
 
+  if('widget_modal_no_products' === eventType){
+    onWidgetModalNoProducts(e);
+  }
+
+  if('widget_modal_products' === eventType){
+    onWidgetModalProducts(e); 
+  }
+
   //normalize this to form part of the std
   if('widget_modal_initialized' === eventType){
     onWidgetModalInitialized(e);
+  }
+
+  if('widget_modal_resize' === eventType){
+    onWidgetModalResize(e);
   }
 
   //? how to order this?
@@ -399,9 +411,11 @@ function closeModalFromOverlay(e){
   }
 }
 
+function onWidgetModalResize(e){
+  iframeModal.style.height = e.data.height;
+}
 
 function onWidgetClick(e) {
-  // debugger;
   if(!modalInitialized){
     modalInitialized = true;
 
@@ -491,7 +505,7 @@ function onWidgetClick(e) {
       debug && isMobile ? javascriptPath + "/vendor/jquery.js" : "",
       debug ? javascriptPath + "/" + mobilePath + "/modal/index.js" : "",
       debug && !isMobile ? javascriptPath + "/vendor/perfect-scrollbar.min.js" : "",
-      debug ? "" : javascriptPath + mobilePath + "/modal/scripts.min.js"
+      debug ? "" : javascriptPath  + "/" +  mobilePath + "/modal/scripts.min.js"
     ],
     css: [
       debug ? cssPath + "/" + mobilePath + "/modal/styles.css" : "",
@@ -526,4 +540,41 @@ function onWidgetModalInitialized(e) {
 
 function handlePlayerNext(e) {
   getById('tvp-modal-title-' + id).innerHTML = e.data.next.assetTitle || "";
+}
+
+function onWidgetModalNoProducts(e) {
+  if (!config.merchandise)
+    return;
+
+  removeClass(iframeModalHolder, 'products');
+  addClass(iframeModalHolder, 'no-products');
+
+  if(isMobile || !config.products_headline_display)
+    return;
+  
+  var headlineEl = modal.querySelector('.tvp-products-headline');
+  if (headlineEl) {
+    remove(headlineEl);
+  }
+}
+
+function onWidgetModalProducts(e){
+  removeClass(iframeModalHolder, 'no-products');
+  addClass(iframeModalHolder, 'products');
+
+  if (isMobile || modal.querySelector('.tvp-products-headline') || !config.products_headline_display)
+    return;
+
+  var headlineEl = createEl('div');
+  headlineEl.className = 'tvp-products-headline';
+  headlineEl.innerHTML = config.products_headline_text;
+  headlineEl.addEventListener('click',function(){
+    if (this.classList.contains('active')) {
+      removeClass(this,'active')
+    } else {
+      addClass(this,'active')
+    }
+  });
+
+  modal.querySelector('.tvp-modal-header').appendChild(headlineEl);
 }

@@ -162,7 +162,7 @@
 
                 Utils.sendMessage({
                     event: eventPrefix + ':widget_modal_resize',
-                    height: getWidgetHeight()
+                    height: getWidgetHeight() + 'px'
                 });
             });
 
