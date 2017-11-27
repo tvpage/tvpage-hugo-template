@@ -1,0 +1,5 @@
+{
+  base: {{- (partial (printf "%s/templates/base.html" .Type) .) | htmlUnescape | safeHTML -}},
+  menu: {{- (partial (printf "%s/templates/menu.html" .Type) .) | htmlUnescape | safeHTML -}},
+  "menu-item": {{- (partial (printf "%s/templates/menu-item.html" .Type) .) | htmlUnescape | safeHTML -}}
+}

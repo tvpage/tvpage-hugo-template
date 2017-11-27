@@ -1,12 +1,3 @@
-*[class^="tvp-"] {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-}
-
 .tvp-player {
   height: 0;
   width: 100%;
@@ -32,7 +23,8 @@ body {
   z-index: 100;
   -webkit-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
-  transition: background 0.3s, -webkit-transform 0.5s;
+  -webkit-transition: background 0.3s, -webkit-transform 0.5s;
+          transition: background 0.3s, -webkit-transform 0.5s;
   transition: background 0.3s, transform 0.5s;
 }
 
@@ -97,27 +89,33 @@ body {
 }
 
 .tvp-hamburger-x span {
-  transition: background 0s 0.1s;
+  -webkit-transition: background 0s 0.1s;
+          transition: background 0s 0.1s;
 }
 
 .tvp-hamburger-x span::before,
 .tvp-hamburger-x span::after {
-  transition-duration: 0.3s, 0.3s;
-  transition-delay: 0.3s, 0s;
+  -webkit-transition-duration: 0.3s, 0.3s;
+          transition-duration: 0.3s, 0.3s;
+  -webkit-transition-delay: 0.3s, 0s;
+          transition-delay: 0.3s, 0s;
 }
 
 .tvp-hamburger-x span::before {
-  transition-property: top, -webkit-transform;
+  -webkit-transition-property: top, -webkit-transform;
+          transition-property: top, -webkit-transform;
   transition-property: top, transform;
 }
 
 .tvp-hamburger-x span::after {
-  transition-property: bottom, -webkit-transform;
+  -webkit-transition-property: bottom, -webkit-transform;
+          transition-property: bottom, -webkit-transform;
   transition-property: bottom, transform;
 }
 
 #tvp-slide-menu.active #tvp-hamburger-container {
-  transition: -webkit-transform 0.5s;
+  -webkit-transition: -webkit-transform 0.5s;
+          transition: -webkit-transform 0.5s;
   transition: transform 0.5s;
   -webkit-transform: translate3d(50%, 0, 0);
   transform: translate3d(50%, 0, 0);
@@ -141,7 +139,8 @@ body {
 
 #tvp-slide-menu.active .tvp-hamburger-x span::before,
 #tvp-slide-menu.active .tvp-hamburger-x span::after {
-  transition-delay: 0s, 0.3s;
+  -webkit-transition-delay: 0s, 0.3s;
+          transition-delay: 0s, 0.3s;
 }
 
 #tvp-hidden-menu {
@@ -154,7 +153,8 @@ body {
   position: relative;
   text-align: center;
   overflow: auto;
-  transition: -webkit-transform 0.5s, visibility 0s 0.5s;
+  -webkit-transition: -webkit-transform 0.5s, visibility 0s 0.5s;
+          transition: -webkit-transform 0.5s, visibility 0s 0.5s;
   transition: transform 0.5s, visibility 0s 0.5s;
   -webkit-transform: translate3d(-100%, 0, 0);
   transform: translate3d(-100%, 0, 0);
@@ -165,7 +165,8 @@ body {
 #tvp-slide-menu.active #tvp-hidden-menu {
   visibility: visible;
   /* this is for browsers that don't support CSS3 translate3d in showing the menu */
-  transition-delay: 0s;
+  -webkit-transition-delay: 0s;
+          transition-delay: 0s;
   -webkit-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
 }
@@ -180,12 +181,14 @@ body {
   left: 45px;
   position: relative;
   margin: 0;
-  transition-delay: 0.5s;
+  -webkit-transition-delay: 0.5s;
+          transition-delay: 0.5s;
 }
 
 #tvp-slide-menu.active .tvp-video-count {
   visibility: hidden;
-  transition: visibility 0.1s;
+  -webkit-transition: visibility 0.1s;
+          transition: visibility 0.1s;
 }
 
 .tvp-video {
@@ -220,6 +223,7 @@ body {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  background: -webkit-linear-gradient(270deg, rgba(0, 0, 0, 0.5) 0%, #000 100%);
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, #000 100%);
 }
 
@@ -319,7 +323,8 @@ body {
   cursor: pointer;
   border: 0;
   z-index: 1000;
-  transition: all .05s ease-in-out;
+  -webkit-transition: all .05s ease-in-out;
+          transition: all .05s ease-in-out;
 }
 
 .tvp-video-play > polygon {
@@ -332,57 +337,6 @@ body {
   background-repeat: no-repeat;
   background-size: 90%;
   margin: 15px;
-}
-
-/*  SimpleScrollBar  */
-.ss-wrapper {
-  overflow: hidden;
-  width: 100%;
-  height: 100%;
-  position: relative;
-  z-index: 1;
-  float: left;
-}
-
-.ss-content {
-  height: 100%;
-  width: 105%;
-  padding: 0;
-  position: relative;
-  right: 0;
-  overflow: auto;
-}
-
-.ss-content::-webkit-scrollbar {
-  width: 0;
-}
-
-.ss-scroll {
-  position: relative;
-  background-color: #D8D8D8;
-  width: 9px;
-  border-radius: 4px;
-  top: 0;
-  z-index: 2;
-  cursor: pointer;
-  opacity: 0.7;
-  transition: opacity 0.25s linear;
-}
-
-.ss-hidden {
-  display: none;
-}
-
-.ss-container:hover .ss-scroll {
-  opacity: 0.9;
-}
-
-.ss-grabbed {
-  -o-user-select: none;
-  -ms-user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  user-select: none;
 }
 
 @media (max-width:480px) {
