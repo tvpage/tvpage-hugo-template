@@ -58,7 +58,8 @@
 
   Carousel.prototype.handleClick = function() {
     var defaultStop = this.options.clickDefaultStop;
-    var onClick = Utils.isFunction(this.options.onClick) ? this.options.onClick : function(e){
+    var optOnClick = this.options.onClick;
+    var onClick = Utils.isFunction(optOnClick) ? optOnClick : function(e){
       if(defaultStop){
         Utils.stopEvent(e);
       }

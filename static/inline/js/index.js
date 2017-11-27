@@ -30,6 +30,14 @@
   var videosCarouselReady = false;
   var analytics;
 
+  function analyticsPKTrack(product){
+    analytics.track('pk',{
+      vd: product.entityIdParent,
+      ct: product.id,
+      pg: config.channelId
+    });
+  }
+
   function analyticsPITrack(data){
     for (var i = 0; i < data.length; i++) {
       var product = data[i];
@@ -149,10 +157,19 @@
   function initProducts(){
     var prodTemplates = templates.products;
 
-    //the featured product
     function FeaturedProduct(selector){
       this.el = Utils.getById(selector);
-      this.data = [];
+      this.data = {};
+      
+      this.handleClick();
+    }
+
+    FeaturedProduct.prototype.handleClick = function(){
+      var that = this;
+
+      this.el.addEventListener('click', function(e){
+        analyticsPKTrack(that.data);
+      });
     }
 
     FeaturedProduct.prototype.render = function(){
@@ -213,6 +230,19 @@
     }
 
     if(Utils.isMobile){
+      //track the pi here with event delegation
+      document.addEventListener('click', function(e){
+        var target = Utils.getRealTargetByClass(e.target, 'product');
+
+        if(target){
+          var targetId = Utils.attr(target, 'data-id') || null;
+
+          if(targetId){
+            analyticsPKTrack(productsCarousel.getDataItemById(targetId));
+          }
+        }
+      }, false);
+
       productsCarousel = new Carousel('products',{
         dotsCenter: true,
         dotsMax: 10,
