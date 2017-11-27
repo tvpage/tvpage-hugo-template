@@ -28,6 +28,7 @@ module.exports = function(grunt) {
               'css/styles.css'
             ],
             'dist/css/modal/styles.min.css': [
+              '../bootstrap/dist/css/bootstrap.css',
               'css/vendor/perfect-scrollbar.min.css',
               'css/modal/styles.css'
             ]
@@ -36,6 +37,7 @@ module.exports = function(grunt) {
         mobile: {
           files: {
             'dist/css/mobile/modal/styles.min.css': [
+              '../bootstrap/dist/css/bootstrap.css',
               '../slick/slick.css',
               'css/mobile/modal/styles.css'
             ]
@@ -67,6 +69,7 @@ module.exports = function(grunt) {
               '../libs/utils.js',
               '../libs/analytics.js',
               '../libs/player.js',
+              '../libs/carousel.js',
               'js/vendor/perfect-scrollbar.min.js',
               'js/modal/index.js'
             ],
@@ -75,6 +78,7 @@ module.exports = function(grunt) {
               '../libs/utils.js',
               '../libs/analytics.js',
               '../libs/player.js',
+              '../libs/carousel.js',
               'js/mobile/modal/index.js'
             ]
           }

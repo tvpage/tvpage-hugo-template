@@ -77,13 +77,13 @@
         var popupsHtml = "";
         var dataLength = data.length;
 
-        var piTrack = function(p){
+        function piTrack(p){
             analytics.track('pi',{
                 vd: p.entityIdParent,
                 ct: p.id,
                 pg: config.channelId
             });
-        };
+        }
 
         for (var i = 0; i < dataLength; i++) {
             var product = data[i];
@@ -267,7 +267,7 @@
         });
     }
 
-    function initializePlayer(){
+    function initPlayer(){
         var playerConfig = Utils.copy(config);
 
         playerConfig.data = config.channel.videos;
@@ -279,7 +279,7 @@
         player.initialize();
     };
 
-    var initializeAnalytics = function(){
+    function initAnalytics(){
         analytics =  new Analytics();
         analytics.initConfig({
             domain: location.hostname || '',
@@ -294,7 +294,7 @@
     };
     
     var depsCheck = 0;
-    var deps = ['TVPage', '_tvpa', 'Utils', 'Analytics', 'Player', 'Ps'];
+    var deps = ['TVPage', 'Utils', 'Analytics', 'Player', 'Ps'];
 
     (function initModal() {
         setTimeout(function() {
@@ -314,8 +314,8 @@
             productsEl = mainEl.querySelector('.tvp-products-holder');
             productsEl.style.height = mainEl.querySelector('.tvp-player-holder').offsetHeight + 'px';
 
-            initializePlayer();
-            initializeAnalytics();
+            initPlayer();
+            initAnalytics();
 
             if (config.merchandise) {
                 loadProducts(config.clicked, function(data){
