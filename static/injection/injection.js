@@ -15,14 +15,12 @@ var widgetToTest = "carousel";
 var testNew = true;
 
 var createEl = function(els,id){
-  var el = null;
-  if(els.length>0)
-    el = els[0];
-  else
-    el = els;
-  var target = document.createElement("div");
-  target.id = id;
-  el.appendChild(target);
+  if(els.length>0){
+    var el = els[0];
+    var target = document.createElement("div");
+    target.id = id;
+    el.appendChild(target);
+  }
 };
 var widget = {
   solo_cta :{
@@ -101,8 +99,6 @@ var widget = {
             channel: {
               id: '66133904'
             },
-
-
           };
 
           var js = d.createElement(s),
