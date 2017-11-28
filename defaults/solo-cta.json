@@ -53,11 +53,46 @@
       "value": "ASC"
     },
     {
-      "for": "carousel",
+      "for": "cta",
       "type": "text",
       "label": "Items Per Page",
       "code": "items_per_page",
       "value": "1"
+    },
+   {
+        "for": "mobile",
+        "type": "text",
+        "label": "Mobile Modal Body Padding",
+        "code": "mobile_modal_body_padding",
+        "value": "10px"
+    },
+    {
+        "for": "mobile",
+        "type": "text",
+        "label": "Mobile Modal Close Button Width",
+        "code": "mobile_modal_close_button_width",
+        "value": "24px"
+    },
+    {
+        "for": "mobile",
+        "type": "text",
+        "label": "Mobile Modal Close Button Height",
+        "code": "mobile_modal_close_button_height",
+        "value": "24px"
+    },
+   {
+        "for": "mobile",
+        "type": "text",
+        "label": "Mobile Modal Close Button Top",
+        "code": "mobile_modal_close_button_top",
+        "value": "10px"
+    },
+    {
+        "for": "mobile",
+        "type": "text",
+        "label": "Mobile Modal Close Button Right",
+        "code": "mobile_modal_close_button_right",
+        "value": "10px"
     },
     {
       "type": "array",
@@ -385,7 +420,7 @@
           "type": "boolean",
           "label": "Merchandise",
           "code": "merchandise",
-          "value": false
+          "value": true
       },
       {
           "for": "modal",

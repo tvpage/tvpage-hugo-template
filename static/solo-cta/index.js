@@ -502,6 +502,7 @@ function onWidgetClick(e) {
       debug ? baseUrl + "/libs/utils.js" : "",
       debug ? baseUrl + "/libs/analytics.js" : "",
       debug ? baseUrl + "/libs/player.js" : "",
+      debug && isMobile ? "/libs/carousel.js" : "",
       debug && isMobile ? javascriptPath + "/vendor/jquery.js" : "",
       debug ? javascriptPath + "/" + mobilePath + "/modal/index.js" : "",
       debug && !isMobile ? javascriptPath + "/vendor/perfect-scrollbar.min.js" : "",
@@ -509,9 +510,12 @@ function onWidgetClick(e) {
     ],
     css: [
       debug ? cssPath + "/" + mobilePath + "/modal/styles.css" : "",
-      debug && isMobile ? cssPath + "/vendor/slick.css" : "",
       debug && !isMobile ? cssPath + "/vendor/perfect-scrollbar.min.css" : "",
-      debug ? "" : cssPath + "/" + mobilePath + "/modal/styles.min.css"
+      debug ? baseUrl + '/bootstrap/dist/css/bootstrap.css' : '',
+      debug ? "" : cssPath + "/" + mobilePath + "/modal/styles.min.css",
+      debug ? baseUrl + '/slick/slick.css' : '',
+      isMobile ? baseUrl + '/slick/mobile/custom.css' : '',
+      !isMobile ? baseUrl + '/slick/custom.css' : ''
     ]
   }));
   iframeModalDocument.close();

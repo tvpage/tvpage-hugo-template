@@ -66,7 +66,7 @@
 "}" +
 
 ".tvp-hidden {" +
-    "display: none;" +
+    "display: none !important;" +
 "}" +
 
 ".tvp-modal-open {" +
@@ -103,7 +103,7 @@
 ".tvp-modal-wrapper {" +
     "position: relative;" +
     "width: auto;" +
-    "margin: 10px;" +
+    "margin: 5px;" +
 "}" +
 
 ".tvp-modal-wrapper.centered {" +
@@ -112,6 +112,13 @@
     "left: 0;" +
     "right: 0;" +
     "transform: translateY(-50%);" +
+"}" +
+
+"@media (min-width :900px) {" +
+    ".tvp-modal-wrapper {" +
+        "width: 890px;" +
+        "margin: 30px auto;" +
+    "}" +
 "}" +
 
 ".tvp-modal-content {" +
@@ -128,9 +135,12 @@
     "position: absolute;" +
     "top: 0;" +
     "left: 0;" +
-    "-webkit-transition: all .05s ease-in-out;" +
-    "transition: all .05s ease-in-out;" +
-    "opacity: 1;" +
+"}" +
+
+".mobile .tvp-iframe-modal {" +
+    "position: relative;" +
+    "top: auto;" +
+    "left: auto;" +
 "}" +
 
 ".tvp-modal-header:after {" +
@@ -149,6 +159,12 @@
   "padding: 0 0 30px 10px;" +
 "}" +
 
+".tvp-products-headline {" +
+    "float: right;" +
+    "margin: 0;" +
+    "position: relative;" +
+"}" +
+
 ".tvp-modal-iframe-holder {" +
     "height: 0;" +
     "width: 100%;" +
@@ -156,13 +172,16 @@
     "padding-bottom: 46.47%;" +
 "}" +
 
-".tvp-modal-iframe-holder.no-products {" +
-    "padding-bottom: 57.4%;" +
+".tvp-title {" +
+    "height: 22px;" +
 "}" +
 
 ".tvp-modal-body {" +
     "position: relative;" +
-    "padding: 0;" +
+"}" +
+
+".tvp-modal-close-svg > path:nth-child(2){ " +
+  "fill: none;" +
 "}" +
 
 ".tvp-modal-close {" +
@@ -174,15 +193,4 @@
     "background-position: 0 0;" +
     "background-repeat: no-repeat;" +
     "background-size: contain;" +
-"}" +
-
-".tvp-modal-close-svg > path:nth-child(2){ " +
-  "fill: none;" +
-"}" +
-
-"@media (min-width :768px) {" +
-    ".tvp-modal-wrapper {" +
-        "width: 728px;" +
-        "margin: 30px auto;" +
-    "}" +
 "}"

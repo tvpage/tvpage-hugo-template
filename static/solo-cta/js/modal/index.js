@@ -1,12 +1,11 @@
 (function(){
-
     var body = document.body;
-    var id = Utils.attr(body,'data-id');
+    var id = body.getAttribute('data-id');
     var config = window.parent.__TVPage__.config[id];
     var eventPrefix = config.events.prefix;
-    var mainEl = Utils.getById(id);
-    var productsEl = null;
-    var analytics = null;
+    var mainEl;
+    var productsEl;
+    var analytics;
 
     function getWidgetHeight(){
         var height = Math.floor(mainEl.getBoundingClientRect().height);
@@ -32,22 +31,7 @@
         });
     }
 
-    function onNoProducts(){
-        Utils.addClass(mainEl,'tvp-no-products');
-        Utils.sendMessage({
-            event: eventPrefix + ':widget_modal_no_products'
-        });
-    }
-
-    function onProducts(){
-        Utils.removeClass(mainEl,'tvp-no-products');
-        Utils.sendMessage({
-            event: eventPrefix + ':widget_modal_products'
-        });
-    };
-
     function onLoadProducts(data) {
-        data.length ? onProducts() : onNoProducts();
         render(data);
     };
 
@@ -93,13 +77,13 @@
         var popupsHtml = "";
         var dataLength = data.length;
 
-        var piTrack = function(p){
+        function piTrack(p){
             analytics.track('pi',{
                 vd: p.entityIdParent,
                 ct: p.id,
                 pg: config.channelId
             });
-        };
+        }
 
         for (var i = 0; i < dataLength; i++) {
             var product = data[i];
@@ -261,29 +245,29 @@
 
     };
 
-    var onPlayerResize = function(initial, size){
+    function onPlayerResize(initial, size){
         productsEl.style.height = size[1] + 'px';
 
         Utils.sendMessage({
             event: eventPrefix + ':widget_modal_resize',
             height: getWidgetHeight() + 'px'
         });
-    };
+    }
 
-    var onPlayerNext = function(next){
+    function onPlayerNext(next){
         if (config.merchandise && next) {
-            loadProducts(next.assetId, onLoadProducts);
-        } else {
-            onNoProducts();
+            loadProducts(next.assetId, function(data){
+                render(data);
+            });
         }
 
         Utils.sendMessage({
             event: eventPrefix + ':player_next',
             next: next
         });
-    };
+    }
 
-    function initializePlayer(){
+    function initPlayer(){
         var playerConfig = Utils.copy(config);
 
         playerConfig.data = config.channel.videos;
@@ -295,7 +279,7 @@
         player.initialize();
     };
 
-    var initializeAnalytics = function(){
+    function initAnalytics(){
         analytics =  new Analytics();
         analytics.initConfig({
             domain: location.hostname || '',
@@ -309,30 +293,9 @@
         });
     };
 
-    var initialize = function(){
-
-        //We set the height of the player to the products element, we also do this on player resize, we
-        //want the products scroller to have the same height as the player.
-        productsEl = mainEl.querySelector('.tvp-products-holder');
-        productsEl.style.height = mainEl.querySelector('.tvp-player-holder').offsetHeight + 'px';
-
-        initializePlayer();
-        initializeAnalytics();
-
-        if (config.merchandise) {
-            loadProducts(config.clicked, onLoadProducts);
-        } else {
-            onNoProducts();
-        }
-
-        Utils.sendMessage({
-            event: eventPrefix + ':widget_modal_initialized',
-            height: getWidgetHeight() + 'px'
-        });
-    };
-    
-    var depsCheck = 0;
-    var deps = ['TVPage', '_tvpa', 'Utils', 'Analytics', 'Player', 'Ps'];
+    var deps = ['TVPage', 'Utils', 'Player', 'Analytics', 'Ps'],
+        depsCheck = 0,
+        depsCheckLimit = 1000;
 
     (function initModal() {
         setTimeout(function() {
@@ -346,8 +309,28 @@
             ready = false;
 
         if(ready){
-            initialize();
-        }else if(++depsCheck < 200){
+            mainEl = Utils.getById(id);
+            
+            //We set the height of the player to the products element, we also do this on player resize, we
+            //want the products scroller to have the same height as the player.
+            productsEl = mainEl.querySelector('.tvp-products-holder');
+            productsEl.style.height = mainEl.querySelector('.tvp-player-holder').offsetHeight + 'px';
+
+            initPlayer();
+            initAnalytics();
+
+            if (config.merchandise) {
+                loadProducts(config.clicked, function(data){
+                    render(data);
+                });
+            }
+
+            Utils.sendMessage({
+                event: eventPrefix + ':widget_modal_initialized',
+                height: getWidgetHeight() + 'px'
+            });
+
+        }else if(++depsCheck < depsCheckLimit){
             initModal()
         }
         },10);

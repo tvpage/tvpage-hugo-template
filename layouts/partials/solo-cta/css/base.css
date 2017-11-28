@@ -158,6 +158,10 @@
   "color:white" +
 "}" +
 
+".video-image-icon:hover {" +
+  "background-color:black;" +
+"}" +
+
 ".video-image-icon > i {" +
   "width: 34px;" +
   "height: 34px;" +

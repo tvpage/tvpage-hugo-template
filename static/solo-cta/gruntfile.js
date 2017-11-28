@@ -35,7 +35,10 @@ module.exports = function(grunt) {
         mobile: {
           files: {
             'dist/css/mobile/modal/styles.min.css': [
+              '../bootstrap/dist/css/bootstrap.css',
               '../slick/slick.css',
+              '../slick/mobile/custom.css',
+              '../slick/custom.css',
               'css/mobile/modal/styles.css'
             ]
           }
@@ -54,6 +57,7 @@ module.exports = function(grunt) {
               'js/vendor/slick-min.js',
               '../libs/utils.js',
               '../libs/analytics.js',
+              '../libs/carousel.js',
               'js/index.js'
             ]
           }
@@ -72,8 +76,8 @@ module.exports = function(grunt) {
               'js/vendor/jquery.js',
               '../libs/utils.js',
               '../libs/analytics.js',
+              '../libs/carousel.js',
               '../libs/player.js',
-              'js/vendor/slick-min.js',
               'js/mobile/modal/index.js'
             ]
           }
