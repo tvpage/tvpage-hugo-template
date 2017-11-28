@@ -120,8 +120,10 @@
     });
   };
 
-  var depsCheck = 0;
-  var deps = ['TVPage', 'jQuery', 'Utils', 'Analytics', 'Carousel', 'Player'];
+  var deps = ['TVPage', 'jQuery', 'Utils', 'Analytics', 'Carousel', 'Player'],
+      depsCheck = 0,
+      depsCheckLimit = 1000;
+
 
   (function initModal() {
     setTimeout(function() {
@@ -143,7 +145,7 @@
         initAnalytics();
         initProducts();
 
-      } else if (++depsCheck < 200) {
+      } else if (++depsCheck < depsCheckLimit) {
         initModal()
       }
     }, 10);
