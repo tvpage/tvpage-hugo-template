@@ -29,18 +29,17 @@ module.exports = function(grunt) {
         },
         mobile: {
           files: {
-            'dist/css/mobile/host.min.css': ['css/mobile/host.css'],
             'dist/css/mobile/modal/styles.min.css': ['css/mobile/modal/styles.css'],
           }
         }
       },
       uglify: {
         options: {
-          beautify: true
+          beautify: false
         },
         modal: {
           files: {
-            'dist/js/modal/scripts.min.js': ['js/libs/utils.js', 'js/libs/analytics.js','js/libs/player.js', 'js/modal/index.js']
+            'dist/js/modal/scripts.min.js': ['../libs/utils.js', '../libs/analytics.js','../libs/player.js', 'js/modal/index.js']
           }
         }
       }

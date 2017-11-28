@@ -45,13 +45,13 @@ module.exports = function(grunt) {
         },
         scripts: {
           files: {
-            'dist/js/scripts.min.js': ['js/vendor/jquery.js','js/vendor/slick-min.js','js/libs/utils.js','js/carousel.js', 'js/index.js']
+            'dist/js/scripts.min.js': ['js/vendor/jquery.js','js/vendor/slick-min.js','../libs/utils.js','../libs/analytics.js','js/carousel.js', 'js/index.js']
           }
         },
         modal: {
             files: {
-                'dist/js/modal/scripts.min.js': ['js/vendor/jquery.js', 'js/libs/utils.js', 'js/libs/analytics.js','js/libs/player.js', 'js/modal/index.js'],
-                'dist/js/mobile/modal/scripts.min.js': ['js/vendor/jquery.js', 'js/libs/utils.js', 'js/libs/analytics.js','js/libs/player.js', 'js/mobile/modal/index.js']
+                'dist/js/modal/scripts.min.js': ['js/vendor/jquery.js', '../libs/utils.js', '../libs/analytics.js','../libs/player.js', 'js/modal/index.js'],
+                'dist/js/mobile/modal/scripts.min.js': ['js/vendor/jquery.js', '../libs/utils.js', '../libs/analytics.js','../libs/player.js', 'js/mobile/modal/index.js']
             }
         }
       },
