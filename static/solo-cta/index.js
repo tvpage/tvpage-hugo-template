@@ -331,7 +331,7 @@ window.addEventListener("message", function(e){
     return;
   }
 
-  var eventType = getEventType(e)
+  var eventType = getEventType(e);
 
   if('widget_click' === eventType){
     onWidgetClick(e);
@@ -543,9 +543,6 @@ function handlePlayerNext(e) {
 }
 
 function onWidgetModalNoProducts(e) {
-  if (!config.merchandise)
-    return;
-
   removeClass(iframeModalHolder, 'products');
   addClass(iframeModalHolder, 'no-products');
 
