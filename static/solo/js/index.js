@@ -49,6 +49,7 @@
   }
  
   var depsCheck = 0;
+  var depsLimitCheck = 1000;
   var deps = ['Utils','Player'];
 
   if(config.playlist){
@@ -74,7 +75,7 @@
 
         initPlayer();
         
-      }else if(++depsCheck < 200){
+      }else if(++depsCheck < depsLimitCheck){
         initSolo()
       }
     },5);

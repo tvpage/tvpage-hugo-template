@@ -49,6 +49,12 @@ function tmpl(t,d){
   });
 }
 
+function logSnapshot(msg) {
+  if(window.performance && 'undefined' !== typeof startTime){
+    console.log(msg, performance.now() - startTime);
+  }
+}
+
 function isUndefined(o){
   return 'undefined' === typeof o;
 }
@@ -136,8 +142,6 @@ var static = baseUrl + '/' + type;
 var dist = debug ? '/' : '/dist/';
 var eventPrefix = ('tvp_' + id).replace(/-/g, '_');
 var templates;
-var javascriptPath;
-var cssPath;
 var holder;
 
 config.id = id;
@@ -146,7 +150,7 @@ config.channelId = (config.channelId || config.channelid) || config.channel.id;
 config.events = {};
 config.events.prefix = eventPrefix;
 config.paths = {};
-config.paths.baseUrl = baseUrl;
+config.paths.libs = baseUrl + '/libs';
 config.paths.static = static;
 config.paths.dist = dist;
 config.paths.javascript = static + dist + 'js';
@@ -157,8 +161,6 @@ config.mobile.prefix = isMobile ? '-mobile' : '';
 config.mobile.templates = config.templates.mobile;
 
 templates = isMobile ? config.mobile.templates : config.templates;
-javascriptPath = config.paths.javascript;
-cssPath = config.paths.css;
 
 window.__TVPage__.config[id] = config;
 
@@ -175,6 +177,7 @@ function getIframeHtml(o){
 
         for (var i = 0; i < arrLength; i++){
           var last = arrLength == i + 1;
+          
           l += 'load' + type + '(\'' + arr[i] + '\'' + (last && cback ? (',' + cback) : '') + ');';
         }
 
@@ -182,13 +185,10 @@ function getIframeHtml(o){
       };
 
   html += load(o.js, 'JavaScript') + 
-  load(o.css, 'CSS', 'function(){' +
-  '   var skel = document.getElementById(\'skeleton\');' +
-  '   skel && skel.classList.remove(\'hide\');' +
-  '}'
-  );
+  load(o.css, 'CSS', o.onCSSLoaded || 'function(){document.body.classList.add(\'css-loaded\')}');
 
   html += '">';//closing the body tag
+  html += '<div id="bs-checker" class="invisible"></div>';//helper to check bs is loaded
   html += '<style>' + (o.style || '') + '</style>';
   html += tmpl((o.html || '').trim(), o.context);
 
@@ -240,12 +240,11 @@ function widgetRender(){
   
   var iframe = holder.querySelector("iframe");
   var iframeDocument = iframe.contentWindow.document;
-  var libsPath = baseUrl + '/libs';
+  var paths = config.paths;
 
   iframeDocument.open().write(getIframeHtml({
     id: id,
     domain: baseUrl,
-    style: config.css.base,
     context: config,
     html: templates.base,
     eventPrefix: eventPrefix,
@@ -253,47 +252,52 @@ function widgetRender(){
       '//a.tvpage.com/tvpa.min.js',
       '//imasdk.googleapis.com/js/sdkloader/ima3.js',
       getPlayerUrl(),
-      debug ? javascriptPath + '/vendor/jquery.js' : '',
-      debug ? libsPath + '/utils.js' : '',
-      debug ? libsPath + '/carousel.js' : '',
-      debug ? libsPath + '/player.js' : '',
-      debug ? javascriptPath + '/index.js' : '',
+      debug ? paths.javascript + '/vendor/jquery.js' : '',
+      debug ? paths.libs + '/utils.js' : '',
+      debug ? paths.libs + '/analytics.js' : '',
+      debug ? paths.libs + '/carousel.js' : '',
+      debug ? paths.libs + '/player.js' : '',
+      debug ? paths.javascript + '/index.js' : '',
 
-      debug ? "" : javascriptPath + "/scripts.min.js"
+      debug ? "" : paths.javascript + "/scripts.min.js"
     ],
     css: [
       debug ? baseUrl + '/bootstrap/dist/css/bootstrap.css' : '',
       debug ? baseUrl + '/slick/slick.css' : '',
-      debug ? cssPath + '/styles.css' : '',
-      debug ? '' : cssPath + '/styles.min.css'
+      isMobile ? baseUrl + '/slick/mobile/custom.css' : '',
+      !isMobile ? baseUrl + '/slick/custom.css' : '',
+      debug ? paths.css + '/styles.css' : '',
+      debug ? '' : paths.css + '/styles.min.css'
     ]
   }));
 
   iframeDocument.close();
   
   if(debug){
-    console.log('renders initial dom (iframe w/skeleton)', performance.now() - startTime);
+    logSnapshot('renders initial dom');
   }
 }
 
+//we then add the data to the tvp global and then we fire the event that will start things in the widget side.
 function onWidgetLoad(data){
-  if(debug){
-    console.log('videos api call completed', performance.now() - startTime);
-  }
-
-  //We then add the data to the tvp global and then we fire the event that will start
-  //things in the widget side.
-  if(data && data.length){
+  var dataLength = !!data.length ? data.length : 0;
+  
+  if(dataLength){
     config.channel.videos = data;
     widgetRender();
-  }else if(debug){
-    console.log('videos api call returned 0 videos', performance.now() - startTime);   
+  }
+
+  if(debug){
+    logSnapshot('videos api returned: ' + dataLength + ' item(s)');
   }
 };
 
-//api calls/loading, is here were we call the most important api(s) and it's the start of everything.
-function widgetLoad(){
+function holderResize(height){
+  holder.style.height = height + 'px'; 
+}
 
+//api calls/loading, is here were we call the most important api(s) and it's the start of everything.
+function widgetLoad(cback){
   var videosLoadParams = {
     p: 0,
     n: config.items_per_page,
@@ -313,7 +317,7 @@ function widgetLoad(){
   loadScript({
     base: config.api_base_url + '/channels/' + config.channelId + '/videos',
     params: videosLoadParams
-  },onWidgetLoad);
+  }, onWidgetLoad);
 }
 
 widgetLoad();
@@ -340,9 +344,9 @@ window.addEventListener("message", function(e){
 
 //event handlers
 function onWidgetReady(e) {
-  holder.style.height = e.data.height + 'px';
+  holderResize(e.data.height)
 }
 
 function onWidgetResize(e) {
-  holder.style.height = e.data.height + 'px';
+  holderResize(e.data.height)
 }

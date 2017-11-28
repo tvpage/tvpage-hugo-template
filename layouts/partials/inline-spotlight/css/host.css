@@ -1,18 +1,12 @@
-{{ with ($.Scratch.Get "settings").fonts }}
-{{ range . }}
-  "@import url('{{ . | htmlUnescape | safeHTML }}');" +
-{{ end }}
-{{ end }}
-
 "*[class^=tvp-] {" +
   "box-sizing: border-box;" +
 "}" +
 
-".tvp-inline-holder {" +
+".tvp-inline-spotlight-holder {" +
   "position: relative;" +
 "}" +
 
-".tvp-inline-holder > iframe {" +
+".tvp-inline-spotlight-holder > iframe {" +
   "top: 0;" +
   "left: 0;" +
   "width: 1px;" +

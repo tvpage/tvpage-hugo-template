@@ -292,9 +292,12 @@ function onWidgetLoad(data){
   }
 };
 
-//api calls/loading, is here were we call the most important api(s) and it's the start of everything.
-function widgetLoad(){
+function holderResize(height){
+  holder.style.height = height + 'px'; 
+}
 
+//api calls/loading, is here were we call the most important api(s) and it's the start of everything.
+function widgetLoad(cback){
   var videosLoadParams = {
     p: 0,
     n: config.items_per_page,
@@ -314,7 +317,7 @@ function widgetLoad(){
   loadScript({
     base: config.api_base_url + '/channels/' + config.channelId + '/videos',
     params: videosLoadParams
-  },onWidgetLoad);
+  }, onWidgetLoad);
 }
 
 widgetLoad();
@@ -341,9 +344,9 @@ window.addEventListener("message", function(e){
 
 //event handlers
 function onWidgetReady(e) {
-  holder.style.height = e.data.height + 'px';
+  holderResize(e.data.height)
 }
 
 function onWidgetResize(e) {
-  holder.style.height = e.data.height + 'px';
+  holderResize(e.data.height)
 }

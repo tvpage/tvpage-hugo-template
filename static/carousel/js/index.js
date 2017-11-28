@@ -90,8 +90,26 @@
     videosCarousel.render();
   };
 
+  function initAnalytics(){
+    var analytics = new Analytics();
+    var analyticsConfig = {
+      domain: location.hostname || '',
+      logUrl: apiBaseUrl + '/__tvpa.gif',
+      li: config.loginId
+    };
+
+    if (config.firstPartyCookies && config.cookieDomain)
+        analyticsConfig.firstPartyCookieDomain = config.cookieDomain;
+
+    analytics.initConfig(analyticsConfig);
+    analytics.track('ci', {
+      li: config.loginId
+    });
+  }
+
   //The global deps of the carousel have to be present before executing its logic.
   var depsCheck = 0;
+  var depsCheckLimit = 1000;
   var deps = ['jQuery','Carousel','Utils','Analytics'];
 
   (function initCarousel() {
@@ -104,30 +122,15 @@
           ready = false;
 
       if(ready){
-     
         //add widget title
         var widgetTitleEl = Utils.getById('widget-title');
         widgetTitleEl.innerHTML = config.title_text;
         Utils.addClass(widgetTitleEl, 'ready');
 
-        var analytics = new Analytics();
-        var analyticsConfig = {
-          domain: location.hostname || '',
-          logUrl: apiBaseUrl + '/__tvpa.gif',
-          li: config.loginId
-        };
-
-        if (config.firstPartyCookies && config.cookieDomain)
-            analyticsConfig.firstPartyCookieDomain = config.cookieDomain;
-
-        analytics.initConfig(analyticsConfig);
-        analytics.track('ci', {
-          li: config.loginId
-        });
-        
+        initAnalytics();
         initVideos();
 
-      }else if(++depsCheck < 200){
+      }else if(++depsCheck < depsCheckLimit){
         initCarousel()
       }
     },5);

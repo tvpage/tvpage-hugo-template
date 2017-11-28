@@ -1,5 +1,4 @@
-(function() {
-  
+(function() {  
   var body = document.body;
   var id = body.getAttribute('data-id');
   var config = window.parent.__TVPage__.config[id];
@@ -365,9 +364,9 @@
     },10);
   })();
   
-  //at this stage we check when critical css has been loaded & parsed, now having the data we can
-  //update the skeleton and init necassary stuff for the nice transition. We need to wait until
-  //css has really execcuted to send right measurements.
+  //we check when critical css has loaded/parsed. At this step, we have data to
+  //update the skeleton. We wait until css has really executed in order to send
+  //the right measurements.
   var cssLoadedCheck = 0;
   var cssLoadedCheckLimit = 1000;
 
@@ -376,7 +375,6 @@
       console.log('css loaded poll...');
 
       if('hidden' === Utils.getStyle(Utils.getById('bs-checker'), 'visibility')){
-
         //add widget title
         var widgetTitleEl = Utils.getById('widget-title');
         widgetTitleEl.innerHTML = firstVideo.title;
@@ -385,7 +383,7 @@
         Utils.sendMessage({
           event: eventPrefix + ':widget_resize',
           height: Utils.getWidgetHeight()
-        });        
+        });
 
       }else if(++cssLoadedCheck < cssLoadedCheckLimit){
         sendFirstSize()

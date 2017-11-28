@@ -91,22 +91,6 @@
   color: transparent;
 }
 
-.player-holder {
-  padding-bottom: 56.25%;
-}
-
-.skeleton .player-holder {
-  background-color: #efefef;
-}
-
-.products-holder {
-  padding-bottom: 112.25%;
-}
-
-.skeleton .products-holder {
-  background-color: #efefef;
-}
-
 .videos-holder {
   padding-bottom: 19.25%;
 }
@@ -116,24 +100,6 @@
 }
 
 .skeleton .video-title:not(.ready):before {
-  content: "...";
-  color: transparent;
-}
-
-.skeleton .product-title:not(.ready) {
-  background-color: #efefef;
-}
-
-.skeleton .product-title:not(.ready):before {
-  content: "...";
-  color: transparent;
-}
-
-.skeleton .product-price:not(.ready) {
-  background-color: #efefef;
-}
-
-.skeleton .product-price:not(.ready):before {
   content: "...";
   color: transparent;
 }
@@ -154,6 +120,15 @@
   width: 45px;
   height: 45px;
   color:white
+}
+
+:not(.mobile) .video:hover .video-image-overlay {
+  opacity: 1;
+  visibility: visible;
+}
+
+:not(.mobile) .video:hover .video-image-icon {
+  background-color: #000000;
 }
 
 .video-image-icon > i {

@@ -2,7 +2,7 @@
     
     '<div class="row justify-content-start">' +
       '<div class="col">' +
-        '<h2 id="widget-title" class="widget-title"></h2>' +
+        '<h3 id="widget-title" class="widget-title"></h3>' +
       '</div>' +
     '</div>' +
   
@@ -13,7 +13,6 @@
         '</div>' +
       '</div>' +
       '<div id="products" class="col-sm-6 mt-2">' +
-        {{ range seq 3 }}
         '<div class="row mb-2">' +
           '<div class="col-3">' +
             '<div class="skeleton-bg">' +
@@ -24,13 +23,12 @@
             '<p class="product-title m-0"></p>' +
           '</div>' +
         '</div>' +
-        {{ end }}
       '</div>' +
     '</div>' +
   
     '<div class="row mt-2 videos-skel-delete">' +
-      {{ range (seq 4) }}
-      '<div class="col-3">' +
+      {{ range (seq 2) }}
+      '<div class="col-6">' +
         '<div class="video-image fluid-y skeleton-bg mb-2"></div>' +
         '<p class="video-title"></p>' +
       '</div>' +

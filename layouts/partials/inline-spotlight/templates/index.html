@@ -1,7 +1,6 @@
 {
   base: {{- (partial (printf "%s/templates/base.html" .Type) .) -}},
   products: {
-    featured: {{- (partial (printf "%s/templates/products/featured.html" .Type) .) -}},
     list: {{- (partial (printf "%s/templates/products/list.html" .Type) .) -}},
     item: {{- (partial (printf "%s/templates/products/item.html" .Type) .) -}}
   },

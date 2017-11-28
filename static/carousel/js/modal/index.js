@@ -1,11 +1,11 @@
 (function(){
     var body = document.body;
-    var id = Utils.attr(body,'data-id');
+    var id = body.getAttribute('data-id');
     var config = window.parent.__TVPage__.config[id];
     var eventPrefix = config.events.prefix;
-    var mainEl = Utils.getById(id);
-    var productsEl = null;
-    var analytics = null;
+    var mainEl;
+    var productsEl;
+    var analytics;
 
     function getWidgetHeight(){
         var height = Math.floor(mainEl.getBoundingClientRect().height);
@@ -308,6 +308,7 @@
             ready = false;
 
         if(ready){
+            mainEl = Utils.getById(id);
             
             //We set the height of the player to the products element, we also do this on player resize, we
             //want the products scroller to have the same height as the player.

@@ -390,8 +390,8 @@
 
       for (var i = 0; i < childElsLength; i++) {
         var childEl = childEls[i];
-        
-        if(childEl){
+
+        if(document.body.contains(childEl)){
           Utils.remove(childEl);
         }
       }
@@ -419,17 +419,19 @@
   //if no vertical align was requested, we shall avoid creating arrows placeholder and not
   //passing any setting to slick.
   Carousel.prototype.handleArrows = function(){
-    if(!!this.options.alignArrowsY){
-      var arrowsId = 'carousel-arrows-' + this.el.id;
-      
-      this.appendArrowsEl = document.createElement('div');
-      this.appendArrowsEl.className = 'carousel-arrows';
-      this.appendArrowsEl.id = arrowsId;
-      
-      this.el.appendChild(this.appendArrowsEl);
-  
-      this.appendArrows = '#' + arrowsId;
+    if(!this.options.alignArrowsY){
+      return;
     }
+
+    var arrowsId = 'carousel-arrows-' + this.el.id;
+    
+    this.appendArrowsEl = document.createElement('div');
+    this.appendArrowsEl.className = 'carousel-arrows';
+    this.appendArrowsEl.id = arrowsId;
+    
+    this.el.appendChild(this.appendArrowsEl);
+
+    this.appendArrows = '#' + arrowsId;
   };
 
   Carousel.prototype.handleDots = function(){

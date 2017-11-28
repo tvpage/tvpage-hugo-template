@@ -1,22 +1,9 @@
-{{ with ($.Scratch.Get "settings").fonts }}
-{{ range . }}
-  "@import url('{{ . | htmlUnescape | safeHTML }}');" +
-{{ end }}
-{{ end }}
-
 "*[class^=tvp-] {" +
   "box-sizing: border-box;" +
 "}" +
 
 ".tvp-inline-holder {" +
   "position: relative;" +
-"}" +
-
-".tvp-inline-holder:before {" +
-  "display: block;" +
-  "content: \"\";" +
-  "width: 100%;" +
-  "padding-top: {{ ($.Scratch.Get "settings").inline_holder_padding_top }};" +
 "}" +
 
 ".tvp-inline-holder > iframe {" +
@@ -26,8 +13,4 @@
   "min-width: 100%;" +
   "height: 100%;" +
   "position: absolute;" +
-"}" +
-
-".tvp-hidden {" +
-  "display: none !important;" +
 "}"

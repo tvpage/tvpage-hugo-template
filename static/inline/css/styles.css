@@ -147,11 +147,6 @@
 }
 
 /* implementation specific */
-:not(.mobile) .video:hover .video-image-overlay {
-  opacity: 1;
-  visibility: visible;
-}
-
 .video-image-overlay {
   transition: all .2s ease;
   pointer-events: none;
@@ -169,7 +164,12 @@
   color:white
 }
 
-:not(.mobile) .video-image-icon:hover{
+:not(.mobile) .video:hover .video-image-overlay {
+  opacity: 1;
+  visibility: visible;
+}
+
+:not(.mobile) .video:hover .video-image-icon {
   background-color: #000000;
 }
 
