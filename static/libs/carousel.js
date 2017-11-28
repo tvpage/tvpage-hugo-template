@@ -164,13 +164,34 @@
 
           //calculation is done, now lets find the arrows and update their style. We update the CSS rule instead of straight style modification
           //so the top value remains and the user won't experience the top update (flickering)
-          var styleSheets = document.styleSheets[1];
-          var cssRules = styleSheets.cssRules || styleSheets.rules;
+          var allStyleSheets = document.styleSheets;
+          var allStyleSheetsLength = allStyleSheets.length;
+          var slickStyleSheet;
+          var slickStyleSheetId = 'slick/' + (Utils.isMobile ? 'mobile/' : '')  + 'custom.css';
+
+          for (var i = 0; i < allStyleSheetsLength; i++) {
+            var styleSheetHref = allStyleSheets[i].href;
+            
+            if(styleSheetHref && -1 !== styleSheetHref.search(slickStyleSheetId)){
+              slickStyleSheet = allStyleSheets[i];
+            }
+          }
+
+          if(!slickStyleSheet){
+            if(that.config.debug) {
+              console.log("can't find slick's stylesheets");
+            }
+
+            return;
+          }
+
+          var cssRules = slickStyleSheet.cssRules || slickStyleSheet.rules;
 
           for (var i = 0; i < cssRules.length; i++) {
             var rule = cssRules[i];
 
             if(rule.selectorText == '.slick-arrow'){
+              
               rule.style.top = top;
             }
           }
