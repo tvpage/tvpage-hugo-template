@@ -44,7 +44,6 @@
     this.instance = null;
     this.initialResize = true;
     this.startWith = startWith || null;
-    this.isFullScreen = false;
     this.currentIndex = null;
     this.onReadyCalled = false;
   };
@@ -143,7 +142,7 @@
     var width = arguments[0] || this.getParentSize('width');
     var height = arguments[1] || this.getParentSize('height');
     
-    if (this.instance && !this.isFullScreen)
+    if (this.instance)
       this.instance.resize(width,height);
   
     this.initialResize = false;
@@ -407,16 +406,6 @@
     this.onNext = this.getCallable('onNext');
     this.onPlayerReady = this.getCallable('onPlayerReady');
   };
-  
-  Player.prototype.handleBigScreenChange = function() {
-    if (window.BigScreen) {
-      var that = this;
-      BigScreen.onchange = function(){
-        that.isFullScreen = !that.isFullScreen;
-        that.resize();
-      }; 
-    }
-  };
 
   Player.prototype.initialize = function() {
     this.setControlsOptions();
@@ -424,7 +413,6 @@
     this.setConfig();
     this.addAssets(this.options.data);
     this.startPlayer();
-    this.handleBigScreenChange();
   };
   
   window.Player = Player;

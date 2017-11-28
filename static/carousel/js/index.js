@@ -9,6 +9,7 @@
   var templates = config.templates;
   var channelVideos = config.channel.videos;
   var skeletonEl = document.getElementById('skeleton');
+  var videosCarousel;
 
   //a videos section will be initialized
   function initVideos(){
@@ -25,7 +26,7 @@
 
         Utils.sendMessage({
           event: eventPrefix + ':widget_videos_carousel_click',
-          clicked: realTarget.getAttribute('data-id')
+          clicked: Utils.attr(realTarget, 'data-id')
         });
       }
     }
@@ -51,8 +52,7 @@
       return item;
     }
 
-    //for small bp and below we will do 1 video per
-    var videosCarousel = new Carousel('videos',{
+    videosCarousel = new Carousel('videos',{
       alignArrowsY: ['center', '.video-image-icon'],
       endpoint: videosEndpoint,
       params: Utils.addProps({
@@ -102,6 +102,7 @@
         analyticsConfig.firstPartyCookieDomain = config.cookieDomain;
 
     analytics.initConfig(analyticsConfig);
+
     analytics.track('ci', {
       li: config.loginId
     });

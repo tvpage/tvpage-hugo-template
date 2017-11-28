@@ -24,7 +24,7 @@
   Analytics.prototype.initConfig = function(options){
     this.config = this.getConfigBase(options);
 
-    if (options && options.firstPartyCookies && options.cookieDomain)
+    if(options && options.firstPartyCookies && options.cookieDomain)
       this.config.firstPartyCookieDomain = options.cookieDomain;
 
     this.getGlobal().push(['config', this.config]);

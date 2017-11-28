@@ -17,7 +17,11 @@
   visibility: hidden;
 }
 
-.slick-arrow.ready {
+.slick-arrow:active {
+  background-color: #000000;
+}
+
+.arrows-ready .slick-arrow {
   opacity: 1;
   visibility: visible;
 }

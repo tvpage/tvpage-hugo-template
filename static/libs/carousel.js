@@ -1,5 +1,4 @@
 (function(){
-
   function Carousel(sel, options, globalConfig){
     this.options = options || {};    
     this.data = this.options.data || [];
@@ -127,18 +126,11 @@
 
   //all alignment offered will happen relative to the slick-carousel element
   Carousel.prototype.alignArrowsY = function(){
-    var alignArrowsY = this.options.alignArrowsY,
+    var that = this,
+        alignArrowsY = this.options.alignArrowsY,
         toCenter,
         top,
         bottom;
-
-    function whenArrowsReady(el){
-      arrowsEls = el.querySelectorAll('.slick-arrow');
-
-      for (var i = 0; i < arrowsEls.length; i++) {
-        Utils.addClass(arrowsEls[i], 'ready');
-      }
-    }
 
     function handleStringArg(){
       if('bottom' === alignArrowsY){
@@ -157,8 +149,6 @@
       toCenter = 'center' === alignArrowsY[0];
 
       if(toCenter){
-        var that = this;
-
         //when a reference is passed and we need to center vertically, we need to collect the
         //parents in order to include them in the measurement.
         function whenReferenceParentsCollected(){
@@ -172,21 +162,20 @@
 
           top += referenceEl.offsetTop + Math.floor(referenceEl.getBoundingClientRect().height / 2);
 
-          //calculation is done, now lets find the arrows and update their style.
-          if(that.appendArrowsEl.childNodes.length){
-            that.appendArrowsEl.style.top = top;
-            whenArrowsReady(that.appendArrowsEl);
-          }else{
-            //There's currently an issue with Slick, by some reason this is appending the arrows inside the slick element,
-            //basically not respecting the passed appendArrows setting.
-            var slickArrows = that.el.querySelectorAll('.slick-arrow');
+          //calculation is done, now lets find the arrows and update their style. We update the CSS rule instead of straight style modification
+          //so the top value remains and the user won't experience the top update (flickering)
+          var styleSheets = document.styleSheets[1];
+          var cssRules = styleSheets.cssRules || styleSheets.rules;
 
-            for (var i = 0; i < slickArrows.length; i++) {
-              slickArrows[i].style.top = top;
+          for (var i = 0; i < cssRules.length; i++) {
+            var rule = cssRules[i];
+
+            if(rule.selectorText == '.slick-arrow'){
+              rule.style.top = top;
             }
-
-            whenArrowsReady(that.el);
           }
+
+          Utils.addClass(that.el, 'arrows-ready');
         }
 
         //if reference offsetParent is not slick's topmost element, we collect the elements in-between and
@@ -226,7 +215,7 @@
     }else if(alignArrowsY && alignArrowsY.length > 1){
       handleArrayArg.call(this);
     }else if(!alignArrowsY){
-      whenArrowsReady(this.el);
+      Utils.addClass(this.el, 'arrows-ready');
     }
   };
 
@@ -293,6 +282,7 @@
 
     setTimeout(function(opts){
       var onResize = opts.onResize;
+      
       if(Utils.isFunction(onResize))
         onResize();
     }, 10, this.options);
@@ -378,11 +368,9 @@
     var itemsTarget = this.options.itemsTarget;
     var itemsTargetEl = this.el.querySelector(itemsTarget);
 
-    //need a deper reset?
     function wipe(){
       var childEls = [
         this.itemsTargetEl,
-        this.appendArrowsEl,
         this.appendDotsEl
       ].filter(Boolean);
 
@@ -414,24 +402,6 @@
     }else{
       wipe.call(this);
     }
-  };
-  
-  //if no vertical align was requested, we shall avoid creating arrows placeholder and not
-  //passing any setting to slick.
-  Carousel.prototype.handleArrows = function(){
-    if(!this.options.alignArrowsY){
-      return;
-    }
-
-    var arrowsId = 'carousel-arrows-' + this.el.id;
-    
-    this.appendArrowsEl = document.createElement('div');
-    this.appendArrowsEl.className = 'carousel-arrows';
-    this.appendArrowsEl.id = arrowsId;
-    
-    this.el.appendChild(this.appendArrowsEl);
-
-    this.appendArrows = '#' + arrowsId;
   };
 
   Carousel.prototype.handleDots = function(){
@@ -531,7 +501,6 @@
       //if user don't pass where nav dots should be, we render a placeholder
       if(moreThanOne){
         this.handleDots();
-        this.handleArrows();
         this.startSlick(itemsTargetEl);
       }else{
         this.onReady();
