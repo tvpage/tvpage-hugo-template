@@ -380,22 +380,25 @@
 
     //need a deper reset?
     function wipe(){
-      this.el.innerHTML = '';
-      this.$slickEl = null;
-      this.appendDots = null;
-      
       var childEls = [
         this.itemsTargetEl,
         this.appendArrowsEl,
         this.appendDotsEl
-      ];
+      ].filter(Boolean);
+
       var childElsLength = childEls.length;
 
       for (var i = 0; i < childElsLength; i++) {
-        if(childEls[i]){
-          Utils.remove(childEls[i]);
+        var childEl = childEls[i];
+        
+        if(childEl){
+          Utils.remove(childEl);
         }
       }
+
+      this.el.innerHTML = '';
+      this.$slickEl = null;
+      this.appendDots = null;
     }
 
     if(itemsTarget && itemsTargetEl && Utils.isFunction($(itemsTargetEl).slick)){
