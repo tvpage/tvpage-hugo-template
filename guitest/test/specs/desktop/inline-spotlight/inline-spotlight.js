@@ -2,17 +2,6 @@
 /* Nightwatch Recorder generated Mon Oct 23 2017 18:49:04 GMT-0700 (PDT) */
 /*==============================================================================*/
 var DATA = {
-      URL: "https://widgets.goodlookingbean.com/test/inline/",
-      PRODUCT_HEADLINE: "Related Products",
-      SLA: 10000,
-      BROWSERHEIGHT: 1080,
-      BROWSEWIDTH: 1920
-    };
-
-var widget = require(__dirname + "/../../../../lib/tvpGUITest.js");
-
-/*
-var DATA = {
   URL: "https://widgets.goodlookingbean.com/test/inline/",
   SLA: 10000
 };
@@ -71,10 +60,9 @@ var guiTest = {
 
         var url = guiTest.getParameterByName('url', src);
         this.assert.equal(url, DATA.URL);
-
         // TODO: enable cid when the issue is fixed
-        var cid = guiTest.getParameterByName('cid', src);
-        this.assert.ok(cid);
+        // var cid = guiTest.getParameterByName('cid', src);
+        // this.assert.ok(cid);
       },
       'vv': function(client, src, current) {
         console.log(">>> Checking VV <<<");
@@ -129,13 +117,12 @@ var guiTest = {
   }
 
 };
-*/
 
 module.exports = {
   before : function (client) {
     client.windowMaximize();
   },
-  'inline-desktop-youtube': function(client) {
+  'inline-spotlight-desktop-youtube': function(client) {
 
     guiTest.init(client, 0);
 

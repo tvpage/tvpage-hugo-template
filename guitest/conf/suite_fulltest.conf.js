@@ -22,8 +22,14 @@ nightwatch_config = {
         'os_version': '10',
         'browser': 'Chrome',
         'browser_version': '61.0',
+        'resolution': '1920x1080'
+        // 'os': 'Windows',
+        // 'os_version': '10',
+        // 'browser': 'Chrome',
+        // 'browser_version': '61.0',
+        // 'resolution': '1920x1080'
       },
-      filter: "desktop/carousel/W10GC61.js"
+      filter: "desktop/carousel/test.js"
     },
     CarouselW10FF55: {
       desiredCapabilities: {
@@ -286,18 +292,21 @@ nightwatch_config = {
     SoloGooglepixelAndroid8: {
       desiredCapabilities: {
         'build': 'SoloGooglepixelAndroid8',
-        'device': 'Google Pixel',
-        'realMobile': 'true',
-        'os_version': '8.0'
+        // 'device': 'Google Pixel',
+        // 'realMobile': 'true',
+        // 'os_version': '8.0'
       },
       filter: "desktop/solo/solo.js"
     },
     SoloNexus6Android6: {
       desiredCapabilities: {
         'build': 'SoloNexus6Android6',
-        'device': 'Google Nexus 6',
-        'realMobile': 'true',
-        'os_version': '6.0'
+        'browserName': 'android',
+        'platform': 'ANDROID',
+        'device': 'Google Nexus 5'
+        // 'device': 'Google Nexus 6',
+        // 'realMobile': 'true',
+        // 'os_version': '6.0'
       },
       filter: "desktop/solo/solo.js"
     },
@@ -446,8 +455,9 @@ nightwatch_config = {
         'os_version': '10',
         'browser': 'Chrome',
         'browser_version': '61.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/solo-cta/solo-cta.js"
+      filter: "desktop/solo-cta/test.js"
     },
     SoloCtaW10FF55: {
       desiredCapabilities: {
@@ -455,9 +465,10 @@ nightwatch_config = {
         'os': 'Windows',
         'os_version': '10',
         'browser': 'Firefox',
-        'browser_version': '55.0'
+        'browser_version': '55.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/solo-cta/solo-cta.js"
+      filter: "desktop/solo-cta/test.ff.js"
     },
     SoloCtaW10IE11: {
       desiredCapabilities: {
@@ -466,8 +477,9 @@ nightwatch_config = {
         'os_version': '10',
         'browser': 'IE',
         'browser_version': '11.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/solo-cta/solo-cta.js"
+      filter: "desktop/solo-cta/test.ie.js"
     },
     SoloCtaW10E15: {
       desiredCapabilities: {
@@ -477,7 +489,7 @@ nightwatch_config = {
         'browser': 'Edge',
         'browser_version': '15.0'
       },
-      filter: "desktop/solo-cta/solo-cta.js"
+      filter: "desktop/solo-cta/test.eg.js"
     },
     SoloCtaWin8GC61: {
       desiredCapabilities: {
@@ -526,8 +538,9 @@ nightwatch_config = {
         'os_version': 'Sierra',
         'browser': 'Chrome',
         'browser_version': '61.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/solo-cta/solo-cta.js"
+      filter: "desktop/solo-cta/test.js"
     },
     SoloCtaOSXSierraFF55: {
       desiredCapabilities: {
@@ -535,9 +548,10 @@ nightwatch_config = {
         'os': 'OS X',
         'os_version': 'Sierra',
         'browser': 'Firefox',
-        'browser_version': '55.0'
+        'browser_version': '55.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/solo-cta/solo-cta.js"
+      filter: "desktop/solo-cta/test.ff.js"
     },
     SoloCtaOSXHighSierraGC61: {
       desiredCapabilities: {
@@ -545,19 +559,21 @@ nightwatch_config = {
         'os': 'OS X',
         'os_version': 'High Sierra',
         'browser': 'Chrome',
-        'browser_version': '61.0'
+        'browser_version': '61.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/solo-cta/solo-cta.js"
+      filter: "desktop/solo-cta/test.js"
     },
-    SoloCtaOSXHighSierraFF55: {
+    SoloCtaOSXHighSierraFF57: {
       desiredCapabilities: {
-        'build': 'SoloCtaOSXHighSierraFF55',
+        'build': 'SoloCtaOSXHighSierraFF57',
         'os': 'OS X',
         'os_version': 'High Sierra',
         'browser': 'Firefox',
-        'browser_version': '55.0'
+        'browser_version': '57.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/solo-cta/solo-cta.js"
+      filter: "desktop/solo-cta/test.ff.js"
     },
     SoloCtaGooglepixelAndroid8: {
       desiredCapabilities: {
@@ -584,8 +600,9 @@ nightwatch_config = {
         'os_version': '10',
         'browser': 'Chrome',
         'browser_version': '61.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/carousel-spotlight/carousel-spotlight.js"
+      filter: "desktop/carousel-spotlight/test.js"
     },
     CarouselSpotlightW10FF55: {
       desiredCapabilities: {
@@ -593,9 +610,10 @@ nightwatch_config = {
         'os': 'Windows',
         'os_version': '10',
         'browser': 'Firefox',
-        'browser_version': '55.0'
+        'browser_version': '55.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/carousel-spotlight/carousel-spotlight.js"
+      filter: "desktop/carousel-spotlight/test.ff.js"
     },
     CarouselSpotlightW10IE11: {
       desiredCapabilities: {
@@ -604,8 +622,9 @@ nightwatch_config = {
         'os_version': '10',
         'browser': 'IE',
         'browser_version': '11.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/carousel-spotlight/carousel-spotlight.js"
+      filter: "desktop/carousel-spotlight/test.ie.js"
     },
     CarouselSpotlightW10E15: {
       desiredCapabilities: {
@@ -613,9 +632,10 @@ nightwatch_config = {
         'os': 'Windows',
         'os_version': '10',
         'browser': 'Edge',
-        'browser_version': '15.0'
+        'browser_version': '15.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/carousel-spotlight/carousel-spotlight.js"
+      filter: "desktop/carousel-spotlight/test.ie.js"
     },
     CarouselSpotlightWin8GC61: {
       desiredCapabilities: {
@@ -624,8 +644,8 @@ nightwatch_config = {
         'os_version': '8.1',
         'browser': 'Chrome',
         'browser_version': '61.0',
-      },
-      filter: "desktop/carousel-spotlight/carousel-spotlight.js"
+        'resolution': '1920x1080'      },
+      filter: "desktop/carousel-spotlight/test.js"
     },
     CarouselSpotlightW8IE11: {
       desiredCapabilities: {
@@ -633,9 +653,10 @@ nightwatch_config = {
         'os': 'Windows',
         'os_version': '8.1',
         'browser': 'IE',
-        'browser_version': '11.0'
+        'browser_version': '11.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/carousel-spotlight/carousel-spotlight.js"
+      filter: "desktop/carousel-spotlight/test.ie.js"
     },
     CarouselSpotlightW8FF55: {
       desiredCapabilities: {
@@ -643,9 +664,10 @@ nightwatch_config = {
         'os': 'Windows',
         'os_version': '8.1',
         'browser': 'Firefox',
-        'browser_version': '55.0'
+        'browser_version': '55.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/carousel-spotlight/carousel-spotlight.js"
+      filter: "desktop/carousel-spotlight/test.ff.js"
     },
     CarouselSpotlightOSXSierraS10: {
       desiredCapabilities: {
@@ -653,9 +675,11 @@ nightwatch_config = {
         'os': 'OS X',
         'os_version': 'Sierra',
         'browser': 'Safari',
-        'browser_version': '10.1'
+        'browser_version': '10.1',
+        'browserstack.selenium_version': '2.53.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/carousel-spotlight/carousel-spotlight.js"
+      filter: "desktop/carousel-spotlight/test.sf.js"
     },
     CarouselSpotlightOSXSierraGC61: {
       desiredCapabilities: {
@@ -664,8 +688,9 @@ nightwatch_config = {
         'os_version': 'Sierra',
         'browser': 'Chrome',
         'browser_version': '61.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/carousel-spotlight/carousel-spotlight.js"
+      filter: "desktop/carousel-spotlight/test.js"
     },
     CarouselSpotlightOSXSierraFF55: {
       desiredCapabilities: {
@@ -673,9 +698,10 @@ nightwatch_config = {
         'os': 'OS X',
         'os_version': 'Sierra',
         'browser': 'Firefox',
-        'browser_version': '55.0'
+        'browser_version': '55.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/carousel-spotlight/carousel-spotlight.js"
+      filter: "desktop/carousel-spotlight/test.ff.js"
     },
     CarouselSpotlightOSXHighSierraGC61: {
       desiredCapabilities: {
@@ -683,9 +709,10 @@ nightwatch_config = {
         'os': 'OS X',
         'os_version': 'High Sierra',
         'browser': 'Chrome',
-        'browser_version': '61.0'
+        'browser_version': '61.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/carousel-spotlight/carousel-spotlight.js"
+      filter: "desktop/carousel-spotlight/test.js"
     },
     CarouselSpotlightOSXHighSierraFF55: {
       desiredCapabilities: {
@@ -693,9 +720,23 @@ nightwatch_config = {
         'os': 'OS X',
         'os_version': 'High Sierra',
         'browser': 'Firefox',
-        'browser_version': '55.0'
+        'browser_version': '55.0',
+        'resolution': '1920x1080' 
       },
-      filter: "desktop/carousel-spotlight/carousel-spotlight.js"
+      filter: "desktop/carousel-spotlight/test.ff.js"
+    },
+    CarouselSpotlightOSXHighSierraS11: {
+      desiredCapabilities: {
+        'build': 'CarouselSpotlightOSXHighSierraS11',
+        'os': 'OS X',
+        'os_version': 'High Sierra',
+        'browser': 'Safari',
+        'browser_version': '11',
+        'browserstack.safari.driver': '2.48',
+        'browserstack.safari.allowAllCookies': true,
+        'resolution': '1920x1080'
+      },
+      filter: "desktop/carousel-spotlight/test.sf.js"
     },
     CarouselSpotlightGooglepixelAndroid8: {
       desiredCapabilities: {
@@ -722,8 +763,9 @@ nightwatch_config = {
         'os_version': '10',
         'browser': 'Chrome',
         'browser_version': '61.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/inline/inline.js"
+      filter: "desktop/inline/test.js"
     },
     InlineW10FF55: {
       desiredCapabilities: {
@@ -731,9 +773,10 @@ nightwatch_config = {
         'os': 'Windows',
         'os_version': '10',
         'browser': 'Firefox',
-        'browser_version': '55.0'
+        'browser_version': '55.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/inline/inline.js"
+      filter: "desktop/inline/test.ff.js"
     },
     InlineW10IE11: {
       desiredCapabilities: {
@@ -742,8 +785,8 @@ nightwatch_config = {
         'os_version': '10',
         'browser': 'IE',
         'browser_version': '11.0',
-      },
-      filter: "desktop/inline/inline.js"
+        'resolution': '1920x1080'      },
+      filter: "desktop/inline/test.ie.js"
     },
     InlineW10E15: {
       desiredCapabilities: {
@@ -751,9 +794,10 @@ nightwatch_config = {
         'os': 'Windows',
         'os_version': '10',
         'browser': 'Edge',
-        'browser_version': '15.0'
+        'browser_version': '15.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/inline/inline.js"
+      filter: "desktop/inline/test.eg.js"
     },
     InlineWin8GC61: {
       desiredCapabilities: {
@@ -762,8 +806,9 @@ nightwatch_config = {
         'os_version': '8.1',
         'browser': 'Chrome',
         'browser_version': '61.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/inline/inline.js"
+      filter: "desktop/inline/test.js"
     },
     InlineW8IE11: {
       desiredCapabilities: {
@@ -771,9 +816,10 @@ nightwatch_config = {
         'os': 'Windows',
         'os_version': '8.1',
         'browser': 'IE',
-        'browser_version': '11.0'
+        'browser_version': '11.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/inline/inline.js"
+      filter: "desktop/inline/test.ie.js"
     },
     InlineW8FF55: {
       desiredCapabilities: {
@@ -781,19 +827,21 @@ nightwatch_config = {
         'os': 'Windows',
         'os_version': '8.1',
         'browser': 'Firefox',
-        'browser_version': '55.0'
+        'browser_version': '55.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/inline/inline.js"
+      filter: "desktop/inline/test.ff.js"
     },
     InlineOSXSierraS10: {
       desiredCapabilities: {
         'build': 'InlineOSXSierraS10',
         'os': 'OS X',
         'os_version': 'Sierra',
-        'browser': 'Safari',
-        'browser_version': '10.1'
+        'browserName': 'Safari',
+        'browser_version': '10.1',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/inline/inline.js"
+      filter: "desktop/inline/test.sf.js"
     },
     InlineOSXSierraGC61: {
       desiredCapabilities: {
@@ -802,8 +850,9 @@ nightwatch_config = {
         'os_version': 'Sierra',
         'browser': 'Chrome',
         'browser_version': '61.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/inline/inline.js"
+      filter: "desktop/inline/test.js"
     },
     InlineOSXSierraFF55: {
       desiredCapabilities: {
@@ -811,9 +860,21 @@ nightwatch_config = {
         'os': 'OS X',
         'os_version': 'Sierra',
         'browser': 'Firefox',
-        'browser_version': '55.0'
+        'browser_version': '55.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/inline/inline.js"
+      filter: "desktop/inline/test.ff.js"
+    },
+    InlineOSXHighSierraSafari: {
+      desiredCapabilities: {
+        'build': 'InlineOSXHighSierraSafari',
+        'os': 'OS X',
+        'os_version': 'High Sierra',
+        'browser': 'Sarafi',
+        'browser_version': '11',
+        'resolution': '1920x1080'
+      },
+      filter: "desktop/inline/test.sf.js"
     },
     InlineOSXHighSierraGC61: {
       desiredCapabilities: {
@@ -821,9 +882,10 @@ nightwatch_config = {
         'os': 'OS X',
         'os_version': 'High Sierra',
         'browser': 'Chrome',
-        'browser_version': '61.0'
+        'browser_version': '61.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/inline/inline.js"
+      filter: "desktop/inline/test.js"
     },
     InlineOSXHighSierraFF55: {
       desiredCapabilities: {
@@ -831,18 +893,22 @@ nightwatch_config = {
         'os': 'OS X',
         'os_version': 'High Sierra',
         'browser': 'Firefox',
-        'browser_version': '55.0'
+        'browser_version': '55.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/inline/inline.js"
+      filter: "desktop/inline/test.ff.js"
     },
     InlineGooglepixelAndroid8: {
       desiredCapabilities: {
         'build': 'InlineGooglepixelAndroid8',
-        'device': 'Google Pixel',
-        'realMobile': 'true',
-        'os_version': '8.0'
-      },
-      filter: "desktop/inline/inline.js"
+        //'device': 'Google Pixel',
+        //'realMobile': 'true',
+        //'os_version': '8.0'
+        'browserName': 'android',
+        'platform': 'ANDROID',
+        'device': 'Google Nexus 5'
+        },
+      filter: "mobile/inline/test.js"
     },
     InlineNexus6Android6: {
       desiredCapabilities: {
@@ -852,6 +918,145 @@ nightwatch_config = {
         'os_version': '6.0'
       },
       filter: "desktop/inline/inline.js"
+    },
+    // Inline spotlight
+    InlineSpotlightW10GC61: {
+      desiredCapabilities: {
+        'build': 'InlineSpotlightW10GC61',
+        'os': 'Windows',
+        'os_version': '10',
+        'browser': 'Chrome',
+        'browser_version': '61.0',
+      },
+      filter: "desktop/inline-spotlight/inline-spotlight.js"
+    },
+    InlineSpotlightW10FF55: {
+      desiredCapabilities: {
+        'build': 'InlineSpotlightWin10FF55',
+        'os': 'Windows',
+        'os_version': '10',
+        'browser': 'Firefox',
+        'browser_version': '55.0'
+      },
+      filter: "desktop/inline-spotlight/inline-spotlight.js"
+    },
+    InlineSpotlightW10IE11: {
+      desiredCapabilities: {
+        'build': 'InlineSpotlightW10IE11',
+        'os': 'Windows',
+        'os_version': '10',
+        'browser': 'IE',
+        'browser_version': '11.0',
+      },
+      filter: "desktop/inline-spotlight/inline-spotlight.js"
+    },
+    InlineSpotlightW10E15: {
+      desiredCapabilities: {
+        'build': 'InlineSpotlightW10E15',
+        'os': 'Windows',
+        'os_version': '10',
+        'browser': 'Edge',
+        'browser_version': '15.0'
+      },
+      filter: "desktop/inline-spotlight/inline-spotlight.js"
+    },
+    InlineSpotlightWin8GC61: {
+      desiredCapabilities: {
+        'build': 'InlineSpotlightW8GC61',
+        'os': 'Windows',
+        'os_version': '8.1',
+        'browser': 'Chrome',
+        'browser_version': '61.0',
+      },
+      filter: "desktop/inline-spotlight/inline-spotlight.js"
+    },
+    InlineSpotlightW8IE11: {
+      desiredCapabilities: {
+        'build': 'InlineSpotlightW8IE11',
+        'os': 'Windows',
+        'os_version': '8.1',
+        'browser': 'IE',
+        'browser_version': '11.0'
+      },
+      filter: "desktop/inline-spotlight/inline-spotlight.js"
+    },
+    InlineSpotlightW8FF55: {
+      desiredCapabilities: {
+        'build': 'InlineSpotlightW8FF55',
+        'os': 'Windows',
+        'os_version': '8.1',
+        'browser': 'Firefox',
+        'browser_version': '55.0'
+      },
+      filter: "desktop/inline-spotlight/inline-spotlight.js"
+    },
+    InlineSpotlightOSXSierraS10: {
+      desiredCapabilities: {
+        'build': 'InlineSpotlightOSXSierraS10',
+        'os': 'OS X',
+        'os_version': 'Sierra',
+        'browser': 'Safari',
+        'browser_version': '10.1'
+      },
+      filter: "desktop/inline-spotlight/inline-spotlight.js"
+    },
+    InlineSpotlightOSXSierraGC61: {
+      desiredCapabilities: {
+        'build': 'InlineSpotlightOSXSierraGC61',
+        'os': 'OS X',
+        'os_version': 'Sierra',
+        'browser': 'Chrome',
+        'browser_version': '61.0',
+      },
+      filter: "desktop/inline-spotlight/inline-spotlight.js"
+    },
+    InlineSpotlightOSXSierraFF55: {
+      desiredCapabilities: {
+        'build': 'InlineSpotlightOSXSierraFF55',
+        'os': 'OS X',
+        'os_version': 'Sierra',
+        'browser': 'Firefox',
+        'browser_version': '55.0'
+      },
+      filter: "desktop/inline-spotlight/inline-spotlight.js"
+    },
+    InlineSpotlightOSXHighSierraGC61: {
+      desiredCapabilities: {
+        'build': 'InlineSpotlightOSXHighSierraGC61',
+        'os': 'OS X',
+        'os_version': 'High Sierra',
+        'browser': 'Chrome',
+        'browser_version': '61.0'
+      },
+      filter: "desktop/inline/inline.js"
+    },
+    InlineSpotlightOSXHighSierraFF55: {
+      desiredCapabilities: {
+        'build': 'InlineSpotlightOSXHighSierraFF55',
+        'os': 'OS X',
+        'os_version': 'High Sierra',
+        'browser': 'Firefox',
+        'browser_version': '55.0'
+      },
+      filter: "desktop/inline-spotlight/inline-spotlight.js"
+    },
+    InlineSpotlightGooglepixelAndroid8: {
+      desiredCapabilities: {
+        'build': 'InlineSpotlightGooglepixelAndroid8',
+        'device': 'Google Pixel',
+        'realMobile': 'true',
+        'os_version': '8.0'
+      },
+      filter: "desktop/inline-spotlight/inline-spotlight.js"
+    },
+    InlineSpotlightNexus6Android6: {
+      desiredCapabilities: {
+        'build': 'InlineSpotlightNexus6Android6',
+        'device': 'Google Nexus 6',
+        'realMobile': 'true',
+        'os_version': '6.0'
+      },
+      filter: "desktop/inline-spotlight/inline-spotlight.js"
     },
   }
 };

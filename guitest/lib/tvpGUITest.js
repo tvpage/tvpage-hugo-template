@@ -7,8 +7,14 @@ exports.tvpGUITest = function (options) {
       isFullScreen = false,
       isMobile = (options !== undefined && options.isMobile ? options.isMobile : false),
       isFF = (options !== undefined && options.isFF ? options.isFF : false),
+      isIE = (options !== undefined && options.isIE ? options.isIE : false),
+      isEdge = (options !== undefined && options.isEdge ? options.isEdge : false),
+      isSafari = (options !== undefined && options.isSafari ? options.isSafari : false),
       orientation =  (options !== undefined && options.orientation ? options.orientation : 'PORTRAIT'),
-      hasModal = (options !== undefined && options.hasModal ? options.hasModal : true),
+      aReset = (options !== undefined && options.aReset ? options.aReset : false),
+      loginId = (options !== undefined && options.loginId ? options.loginId : 1758799),
+      channelId = (options !== undefined && options.channelId ? options.channelId : 66133904),
+      initialCI = (options !== undefined && options.initialCI !== undefined ? options.initialCI : 1),
 
       modalOverlay = options.modalOverlay,
       modalCloseId = options.modalCloseId,
@@ -29,7 +35,8 @@ exports.tvpGUITest = function (options) {
         'vv': 0,
         'pi': 0,
         'pk': 0
-      };
+      },
+      vids = [];
 
   if (DATA.SLA === undefined)
     DATA.SLA = SECOND;
@@ -69,6 +76,9 @@ exports.tvpGUITest = function (options) {
   var inArray = function(needle, haystack, isIndex) {
     var found = false;
 
+    if (haystack === undefined)
+      return false;
+
     haystack.forEach(function(value, i) {
       if (needle == value) {
         found = (isIndex === true ? i : true);
@@ -90,38 +100,50 @@ exports.tvpGUITest = function (options) {
     ICON_FULL_SCREEN: "M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z",
     ICON_PLAYING: "M8 5v14l11-7z",
     ICON_PAUSE: "M6 19h4V5H6v14zm8-14v14h4V5h-4z",
-    init: function (browser, type, id, count, target) {
-      targetIframeId = count;
+    init: function (browser, type, id, targetIframe, target) {
+      var THAT = this;
 
-      client = browser.url(DATA.URL, function (result) {
-          msg = type;
-          log();
+      targetIframeId = targetIframe;
+      parent = target;
+      client = browser;
 
+      return client.url(DATA.URL, function (r) {
           if (isMobile === false) {
-            this.resizeWindow(DATA.BROWSEWIDTH, DATA.BROWSERHEIGHT);
+            if (isSafari !== true) {
+              this.resizeWindow(DATA.BROWSEWIDTH, DATA.BROWSERHEIGHT);
+            }
           }
 
           if (isMobile === true && orientation !== undefined) {
             this.setOrientation(orientation);
           }
         })
-        .pause(2*SECOND);
+        .pause(2*SECOND, function (r) {
+          if (parent !== "") {
+            this.waitForElementVisible(id + " iframe[gesture=media]", DATA.SLA);
+          }
           
-      client.waitForElementVisible(id + " iframe[gesture=media]", DATA.SLA);
+          if (targetIframeId !== undefined) {
+            // CI check for Initial Widget Load
+            THAT.analytics(targetIframeId, ['ci'], {
+              LOGIN_ID: loginId,
+              CHANNEL_ID: channelId,
+              COUNTS: {"ci": initialCI},
+              TARGET_IFRAME: targetIframeId
+            });
+          }
+        });
 
-      parent = target;
-
-      if (count !== undefined)
-        client.frame(targetIframeId);
-
-      return client;
+//      return client;
     },
     widgetTitle: function (iframeId, target, expected) {
+      var THAT = this;
+
       client.element(selectorType)
         .waitForElementVisible(iframeId, DATA.SLA)
-        .waitForElementVisible(iframeId + " " + target, DATA.SLA);
-
-      this.text(iframeId + " " + target, expected);
+        .waitForElementVisible(iframeId + " " + target, DATA.SLA, function (r) {
+          THAT.text(iframeId + " " + target, expected);
+        });
     },
     widgetNav: function (iframeId, count, skip) {
       if(skip){
@@ -225,14 +247,16 @@ exports.tvpGUITest = function (options) {
 
       targetIframeId = targetIframe;
 
-      client
-        .waitForElementVisible(iframeId, DATA.SLA)
-        .waitForElementVisible(iframeId + " iframe.tvp-iframe-modal[gesture='media']", 10000)
-        .frame(targetIframeId),
-
-      // client.expect.element(target).to.be.present;
-      // client.expect.element(target + " div#tvplayer-playbutton").to.be.present;
-      // client.expect.element(target + " div#tvplayer-playbutton-icon").to.be.present;
+      if (isSafari === true) {
+        client
+          .waitForElementPresent(iframeId, DATA.SLA)
+          .frame(targetIframeId);
+      } else {
+        client
+          .waitForElementVisible(iframeId, DATA.SLA)
+          .waitForElementVisible(iframeId + " iframe.tvp-iframe-modal[gesture='media']", DATA.SLA)
+          .frame(targetIframeId);
+      }
 
       this.pause();
     },
@@ -268,7 +292,7 @@ exports.tvpGUITest = function (options) {
       client.click(featuredId + " a[data-id='" + product.ID + "']");
     },
 
-    productModal: function (skip, product) {
+    productModal: function (skip, product, productTarget, productClick) {
       if (product === undefined) {
         product = {
           "ID": 83102610,
@@ -280,14 +304,23 @@ exports.tvpGUITest = function (options) {
         }
       }
 
-      var regex = (product.TITLE_REGEX !== undefined ? product.TITLE_REGEX : /\ /i);
+      if (productTarget === undefined) {
+        productTarget = "a#tvp-product-" + product.ID;
+      }
 
-      client.waitForElementVisible(parent, DATA.SLA);
+      if (productClick === undefined) {
+        productClick = '';
+      }
 
-      client.expect.element(parent + " a#tvp-product-" + product.ID).to.be.visible;
-      client.expect.element(parent + " a#tvp-product-" + product.ID).to.have.attribute('href', product.URL);
+      var regex = (product.TITLE_REGEX !== undefined ? product.TITLE_REGEX : /\ /i);console.log(parent);
 
-      client.click(parent + " a#tvp-product-" + product.ID);
+      if (isSafari !== true) {
+        client.waitForElementVisible(parent, DATA.SLA);
+        client.expect.element(parent + " " + productTarget).to.be.visible;
+        client.expect.element(parent + " " + productTarget).to.have.attribute('href', product.URL);
+      }
+
+      client.click(parent + " " + productTarget + " " + productClick);
 
       if(skip){
         return;
@@ -295,7 +328,7 @@ exports.tvpGUITest = function (options) {
 
       // Product pop-up
       client
-        .moveToElement(parent + " a#tvp-product-" + product.ID, 70, 70)
+        .moveToElement(parent + " " + productTarget, 70, 70)
         .pause(2*SECOND);
 
       // if (isMobile === false) {
@@ -452,17 +485,24 @@ exports.tvpGUITest = function (options) {
       if (playerParent !== undefined)
         parent = playerParent;
 
-      client.waitForElementVisible(parent + ' div#tvplayer-playbutton-icon', DATA.SLA)
-      client.expect.element(parent + " #tvplayer-playbutton-icon").to.be.present,
+      if (isFF === true) {
+        client.waitForElementPresent(parent + ' div#tvplayer-playbutton-icon', DATA.SLA),
+        client.expect.element(parent + " #tvplayer-playbutton-icon").to.be.present;
+      } else {
+        client.waitForElementVisible(parent + ' div#tvplayer-playbutton-icon', DATA.SLA),
+        client.expect.element(parent + " #tvplayer-playbutton-icon").to.be.present;
+      }
 
-      client.waitForElementVisible(parent + ' div#tvplayer-playbutton-icon', DATA.SLA)
-      client.expect.element(parent + " #tvplayer-playbutton-icon").to.be.present,
+      if (isFF === true || isEdge === true || isIE === true) {
+        client.click(parent + ' div#tvplayer-playbutton-icon');
+      } else {
+        this.moveAndClick(parent + ' div#tvplayer-playbutton-icon', 12, 15);        
+      }
 
-      this.moveAndClick(parent + ' div#tvplayer-playbutton-icon', 12, 15),
       client.waitForElementPresent(parent + " div#tvp-spinner", DATA.SLA),
       client.waitForElementNotVisible(parent + ' div#tvp-spinner', DATA.SLA);
 
-      if (isFF !== true) {
+      if (isFF !== true && isEdge !== true && isIE !== true) {
         client.waitForElementNotPresent(parent + ' div#tvplayer-playbutton', DATA.SLA),
         client.waitForElementNotPresent(parent + ' div#tvplayer-playbutton-icon', DATA.SLA);
       }
@@ -630,124 +670,177 @@ exports.tvpGUITest = function (options) {
     end: function () {
       client.end();
     },
+    analyticReset: function () {
+      aCounts = {'ci': 0, 'vv': 0, 'pi': 0, 'pk': 0};
+    },
     analytics: function(frame, events, aData) {
-      var tests = {
-        'ci': function(client, src, current) {
-          console.log(">>> Checking CI <<<");
+      var widgetTest = this,
+          tests = {
+            'ci': function(client, src, current) {
+              console.log(">>> Checking CI <<<");
 
-          client.waitForElementVisible('p#analtyticsTestCI', 6000);
-          client.expect.element('p#analtyticsTestCI').to.be.present;
-          this.assert.equal(aCounts['ci'], 1);
+              client.waitForElementVisible('p.analtyticsTestCI', 6000);
+              client.expect.element('p.analtyticsTestCI').to.be.present;
+              this.assert.ok(aCounts['ci'] > 0);
 
-          var li = getParameterByName('li', src);
-          this.assert.equal(li, aData.LOGIN_ID);
+              var li = getParameterByName('li', src);
+              this.assert.equal(li, aData.LOGIN_ID);
 
-          var url = getParameterByName('url', src);
-          this.assert.equal(url, DATA.URL);
+              var url = getParameterByName('url', src);
+              this.assert.equal(url, DATA.URL);
 
-          var cid = getParameterByName('cid', src);
-          this.assert.ok(cid);
-        },
-        'vv': function(client, src, current) {
-          console.log(">>> Checking VV <<<");
+              var cid = getParameterByName('cid', src);
+              this.assert.ok(cid);
+            },
+            'vv': function(client, src, current) {
+              console.log(">>> Checking VV <<<");
 
-          var li = getParameterByName('li', src);
-          this.assert.equal(li, aData.LOGIN_ID);
+              var li = getParameterByName('li', src);
+              this.assert.equal(li, aData.LOGIN_ID);
 
-          var url = getParameterByName('url', src);
-          this.assert.equal(url, DATA.URL);
+              var url = getParameterByName('url', src);
+              this.assert.equal(url, DATA.URL);
 
-          var pg = getParameterByName('pg', src);
-          this.assert.equal(pg, aData.CHANNEL_ID);
+              var pg = getParameterByName('pg', src);
+              this.assert.equal(pg, aData.CHANNEL_ID);
 
-          var vd = getParameterByName('vd', src);
-          this.assert.equal(vd, aData.VIDS[current]);
+              var vd = getParameterByName('vd', src);
 
-          client.waitForElementPresent('p.analtyticsTestVV', 6000);
-          client.expect.element('p.analtyticsTestVV').to.be.present;
+              // checking if videos already played
+              this.assert.equal(false, inArray(aData.VIDS[current], vids));
+              this.assert.equal(vd, aData.VIDS[current]);
 
-          var vvs = getParameterByName('vvs', src);
-          this.assert.ok(vvs);
+              vids.push(aData.VIDS[current]);
 
-          DATA.vvs = vvs;
-        },
-        'pi': function(client, src, current) {
-          var THAT = this;
-          console.log(">>> Checking PI ");
+              client.waitForElementPresent('p.analtyticsTestVV', 6000);
+              client.expect.element('p.analtyticsTestVV').to.be.present;
 
-          var url = getParameterByName('url', src);
-          this.assert.equal(url, DATA.URL);
-          var li = getParameterByName('li', src);
-          this.assert.equal(li, aData.LOGIN_ID);
-          var pg = getParameterByName('pg', src);
-          this.assert.equal(pg, aData.CHANNEL_ID);
+              var vvs = getParameterByName('vvs', src);
+              this.assert.ok(vvs);
 
-          var cid = getParameterByName('cid', src);
-          this.assert.ok(cid);
+              DATA.vvs = vvs;
+            },
+            'pi': function(client, src, current) {
+              var THAT = this;
+              console.log(">>> Checking PI ");
 
-          var vd = getParameterByName('vd', src);
-          THAT.assert.equal(vd, aData.VIDS[current]);
+              var url = getParameterByName('url', src);
+              this.assert.equal(url, DATA.URL);
+              var li = getParameterByName('li', src);
+              this.assert.equal(li, aData.LOGIN_ID);
+              var pg = getParameterByName('pg', src);
+              this.assert.equal(pg, aData.CHANNEL_ID);
 
-          var productId = getParameterByName('ct', src);
+              var cid = getParameterByName('cid', src);
+              this.assert.ok(cid !== "");
 
-          console.log("Expected Product ID: " + productId);
-          var found = inArray(productId, aData.PIDS[current]);
-          this.assert.equal(found, true);
-        },
-        'pk': function(client, src, current) {
-          console.log(">>> Checking PK <<<");
+              var vd = getParameterByName('vd', src);
+              THAT.assert.equal(vd, aData.VIDS[current]);
 
-          client.waitForElementVisible('p.analtyticsTestPK', 6000);
-          client.expect.element('p.analtyticsTestPK').to.be.present;
-          var url = getParameterByName('url', src);
-          this.assert.equal(url, DATA.URL);
+              var productId = getParameterByName('ct', src);
 
-          var li = getParameterByName('li', src);
-          this.assert.equal(li, aData.LOGIN_ID);
+              console.log("Expected Product ID: " + productId);
+              var found = inArray(productId, aData.PIDS[current]);
+              this.assert.equal(found, true);
+            },
+            'pk': function(client, src, current) {
+              console.log(">>> Checking PK <<<");
 
-          var pg = getParameterByName('pg', src);
-          this.assert.equal(pg, aData.CHANNEL_ID);
+              client.waitForElementVisible('p.analtyticsTestPK', 6000);
+              client.expect.element('p.analtyticsTestPK').to.be.present;
+              var url = getParameterByName('url', src);
+              this.assert.equal(url, DATA.URL);
 
-          var cid = getParameterByName('cid', src);
-          this.assert.ok(cid);
+              var li = getParameterByName('li', src);
+              this.assert.equal(li, aData.LOGIN_ID);
 
-          var vd = getParameterByName('vd', src);
-          this.assert.equal(vd, aData.VIDS[current]);
+              var pg = getParameterByName('pg', src);
+              this.assert.equal(pg, aData.CHANNEL_ID);
 
-          var ct = getParameterByName('ct', src);
-          this.assert.equal(ct, aData.PKIDS[current]);
+              var cid = getParameterByName('cid', src);
+              this.assert.ok(cid);
 
-          client.elements("class name", "analtyticsTestPK", function(result) {
-            this.assert.ok(aCounts['pk'] <= result.value.length);
-          });
-        }
-      };
+              var vd = getParameterByName('vd', src);
+              this.assert.equal(vd, aData.VIDS[current]);
 
-      client.frame(frame).elements("tag name", "script", function(result) {
-        console.log(">>> Widget Analytics Testing <<<");
+              var ct = getParameterByName('ct', src);
+              this.assert.equal(ct, aData.PKIDS[current]);
 
-        result.value.forEach(function(script) {
-          client.elementIdAttribute(script.ELEMENT, 'src', function(res) {
-            var src = res.value,
-                THAT = this;
+              client.elements("class name", "analtyticsTestPK", function(result) {
+                this.assert.ok(aCounts['pk'] <= result.value.length);
+              });
+            }
+          };
 
-            events.forEach(function (key, index) {
-              if (src.indexOf('rt=' + key) >= 0) {
-                var vd = getParameterByName('vd', src),
-                    current = inArray(vd, aData.VIDS, true);
+      // if (mIframe !== undefined) {
+      //   client
+      //     .frame(mIframe)
+      //     .elements("tag name", "script", function(elements) {
+      //       console.log(">>> Checking CI Event on Landing Page");
 
-                aCounts[key]++;
+      //       elements.value.forEach(function(script) {
+      //         client.elementIdAttribute(script.ELEMENT, 'src', function(element) {
+      //           var src = element.value,
+      //               key = 'ci',
+      //               THAT = this;
 
-                var test = tests[key].bind(THAT, client, src, current);
-                test();
-              }
+      //           if (src.indexOf('rt=' + key) >= 0) {
+      //             var test = tests[key].bind(THAT, client, src, undefined);
+
+      //             aCounts[key]++;
+      //             test();
+      //           }
+      //         });
+      //       });
+      //     })
+      //     .frameParent();
+      // }
+
+      client
+        .frameParent()
+        .frame(frame)
+        .elements("tag name", "script", function(result) {
+          console.log(">>> Widget Analytics Testing [" + frame + "] <<<");
+
+          result.value.forEach(function(script, rIndex) {
+            client.elementIdAttribute(script.ELEMENT, 'src', function(element) {
+              var src = element.value,
+                  THAT = this;
+              events.forEach(function (key, eIndex) {
+
+                if (src.indexOf('rt=' + key) >= 0) {
+                  var vd = getParameterByName('vd', src),
+                      current = inArray(vd, aData.VIDS, true);
+
+                  aCounts[key]++;
+
+                  var test = tests[key].bind(THAT, client, src, current);
+                  test();
+                }
+
+                // Checking counts if loop reaches end of script list and event list
+                if (eIndex == (events.length - 1) && rIndex == (result.value.length - 1)) {
+                  console.log(">>> Analytic Events Count Check <<<");
+                  events.forEach(function (event) {
+                    console.log("Expected [" + event + "] " + aData.COUNTS[event]);
+                    console.log("Actual [" + event + "] " + aCounts[event]);
+                    THAT.assert.equal(aCounts[event], aData.COUNTS[event]);
+                  });
+
+                  if (aReset === true) {
+                    widgetTest.analyticReset();
+                  }
+
+                  THAT.frameParent();
+
+                  if (aData.TARGET_IFRAME !== undefined) {
+                    THAT.frame(aData.TARGET_IFRAME);
+                  }
+                }
+              });
             });
           });
-        });
-      });
-    },
-    getAnalyticCounts: function () {
-      return aCounts;
+        })
     }
   };
 };
