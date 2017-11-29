@@ -243,38 +243,36 @@ function getPlayerUrl(){
 //refer to https://jsperf.com/insertadjacenthtml-perf/3
 function widgetRender(){
   var targetElement = getById(config.targetEl);
-  var initialHTML = getInitialHTML({
-    iframe:false
-  });
-  targetElement.insertAdjacentHTML('beforebegin', initialHTML);
+  targetElement.insertAdjacentHTML('beforebegin', getInitialHTML());
+
   remove(targetElement);
 
   holder = getById(id + "-holder");
-  
-  addClass(holder, 'initialized');
-  
-  var videos = config.channel.videos;
-  var firstVideo = videos[0];
-  
-  config.channel.firstVideo = firstVideo;
 
-  var overlayEl = document.createElement("div");
+  var iframe = holder.querySelector("iframe");
+  var iframeDocument = iframe.contentWindow.document;
+  var libsPath = baseUrl + '/libs';
 
-  overlayEl.className = "tvp-cta-overlay";
-  overlayEl.style.backgroundImage = "url(" + firstVideo.asset.thumbnailUrl + ")";
-  overlayEl.innerHTML = config.templates.base + "<div class='tvp-cta-text'>" + firstVideo.title + "</div>";
+  iframeDocument.open().write(getIframeHtml({
+    id: id,
+    domain: baseUrl,
+    context: config,
+    html: templates.base,
+    eventPrefix: eventPrefix,
+    js: [
+      '//a.tvpage.com/tvpa.min.js',
+      debug ? libsPath + '/analytics.js' : '',
+      debug ? libsPath + '/utils.js' : '',
+      debug ? javascriptPath + '/index.js' : '',
+      debug ? "" : javascriptPath + '/scripts.min.js'
+    ],
+    css: [
+      debug ? cssPath + '/styles.css' : '',
+      debug ? '' : cssPath + '/styles.min.css'
+    ]
+  }));
 
-  holder.appendChild(overlayEl);
-  
-  function onClick(e){
-    window.postMessage({
-      event: eventPrefix + ':widget_click',
-      clicked: firstVideo.id
-    }, '*');
-  }
-  
-  holder.removeEventListener("click", onClick, false);
-  holder.addEventListener("click", onClick, false);
+  iframeDocument.close();
   
   if(debug){
     console.log('renders initial dom (iframe w/skeleton)', performance.now() - startTime);
