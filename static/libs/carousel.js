@@ -185,7 +185,7 @@
             return;
           }
 
-          var cssRules = slickStyleSheet.cssRules || slickStyleSheet.rules;
+          var cssRules = (slickStyleSheet.cssRules || slickStyleSheet.rules) || [];
 
           for (var i = 0; i < cssRules.length; i++) {
             var rule = cssRules[i];
