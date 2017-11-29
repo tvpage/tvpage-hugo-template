@@ -106,7 +106,7 @@
 
     function onVideosCarouselLoad(data){
       player.addAssets(data);
-      channelVideos = channelVideos.concat(data);
+      config.channel.videos = channelVideos.concat(data);
     }
 
     videosCarousel = new Carousel('videos',{
@@ -203,7 +203,7 @@
       if(target){
         var targetId = target.getAttribute('data-id');
 
-        if(target && targetId){
+        if(targetId){
           featuredProduct.data = productsCarousel.getDataItemById(targetId);
           featuredProduct.render();
         }
@@ -349,7 +349,6 @@
           ready = false;
 
       if(ready){
-
         if(Utils.isMobile)
           Utils.addClass(body,'mobile');
 
