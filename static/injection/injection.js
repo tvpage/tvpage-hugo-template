@@ -22,6 +22,13 @@ var createEl = function(els,id){
     el.appendChild(target);
   }
 };
+/*s=source t=type*/
+var createResource = function(s,t){
+    var js = document.createElement(t);
+    var targetJS = document.getElementsByTagName(t)[0];
+    js.src = s;
+    targetJS.parentNode.insertBefore(js,targetJS);
+}
 var widget = {
   solo_cta :{
     large : false,
@@ -30,8 +37,6 @@ var widget = {
       return function(){
         var id = "solo-cta-2";
         (function(d, s) {
-          __TVPage__ = window.__TVPage__ || {};
-          __TVPage__.config = __TVPage__.config || {};
           __TVPage__.config[id] = {
             debug: Number(""),
             targetEl: id,
@@ -39,8 +44,8 @@ var widget = {
               id: '66133904'
             }
           };
-          var js = d.createElement(s),
-          fjs = d.getElementsByTagName(s)[0];js.src = 'https:\/\/widgets.goodlookingbean.com\/tvpwidget\/solo-cta-2/index.js';fjs.parentNode.insertBefore(js, fjs);
+          var jsSrc = 'https:\/\/widgets.goodlookingbean.com\/tvpwidget\/solo-cta-2/index.js';
+          createResource(jsSrc,s);
         }(document, 'script'));
       }
     },
@@ -49,16 +54,14 @@ var widget = {
       return function(){
         var id = "solo-1";
         (function(d, s) {
-          __TVPage__ = window.__TVPage__ || {};
-          __TVPage__.config = __TVPage__.config || {};
           __TVPage__.config[id] = {
             debug: Number("") || 0,
             targetEl: id
           };
 
           window.addEventListener("load", function() {
-            var js = d.createElement(s),
-            fjs = d.getElementsByTagName(s)[0];js.src = 'https:\/\/www.goodlookingbean.com\/tvpwidget\/solo-1/index.js';fjs.parentNode.insertBefore(js, fjs);
+            var jsSrc = 'https:\/\/www.goodlookingbean.com\/tvpwidget\/solo-1/index.js';
+            createResource(jsSrc,s);
           }, false);
           }(document, 'script'));
       }
@@ -71,16 +74,14 @@ var widget = {
       return function(){
         var id = "solo-1";
         (function(d, s) {
-        __TVPage__ = window.__TVPage__ || {};
-        __TVPage__.config = __TVPage__.config || {};
         __TVPage__.config[id] = {
           debug: Number("") || 0,
           targetEl: id
         };
 
         window.addEventListener("load", function() {
-          var js = d.createElement(s),
-          fjs = d.getElementsByTagName(s)[0];js.src = 'https:\/\/www.goodlookingbean.com\/tvpwidget\/solo-1/index.js';fjs.parentNode.insertBefore(js, fjs);
+          var jsSrc = 'https:\/\/www.goodlookingbean.com\/tvpwidget\/solo-1/index.js';
+          createResource(jsSrc,s)
         }, false);
         }(document, 'script'));
       };
@@ -90,8 +91,6 @@ var widget = {
       return function(){
         var id = "solo-2";
         (function(d, s) {
-          __TVPage__ = window.__TVPage__ || {};
-          __TVPage__.config = __TVPage__.config || {};
           __TVPage__.config[id] = {
 
             debug: Number(""),
@@ -101,8 +100,8 @@ var widget = {
             },
           };
 
-          var js = d.createElement(s),
-          fjs = d.getElementsByTagName(s)[0];js.src = 'https:\/\/widgets.goodlookingbean.com\/tvpwidget\/solo-2/index.js';fjs.parentNode.insertBefore(js, fjs);
+          var jsSrc = 'https:\/\/widgets.goodlookingbean.com\/tvpwidget\/solo-2/index.js';
+          createResource(jsSrc,s);
         }(document, 'script'));
       }
     }
@@ -114,16 +113,14 @@ var widget = {
       return function(){
         var id = "carousel-1";
         (function(d, s) {
-          __TVPage__ = window.__TVPage__ || {};
-          __TVPage__.config = __TVPage__.config || {};
           __TVPage__.config[id] = {
             debug: Number("") || 0,
             targetEl: id
           };
 
           window.addEventListener("load", function() {
-            var js = d.createElement(s),
-            fjs = d.getElementsByTagName(s)[0];js.src = 'https:\/\/www.goodlookingbean.com\/tvpwidget\/carousel-1/index.js';fjs.parentNode.insertBefore(js, fjs);
+            var jsSrc = 'https:\/\/www.goodlookingbean.com\/tvpwidget\/carousel-1/index.js';
+            createResource(jsSrc,s);
           }, false);
         }(document, 'script'));
       }
@@ -133,8 +130,6 @@ var widget = {
       return function(){
         var id = "carousel-2";
         (function(d, s) {
-          __TVPage__ = window.__TVPage__ || {};
-          __TVPage__.config = __TVPage__.config || {};
           __TVPage__.config[id] = {
 
             debug: Number(""),
@@ -144,8 +139,8 @@ var widget = {
             }
           };
 
-          var js = d.createElement(s),
-          fjs = d.getElementsByTagName(s)[0];js.src = 'https:\/\/widgets.goodlookingbean.com\/tvpwidget\/carousel-2/index.js';fjs.parentNode.insertBefore(js, fjs);
+          var jsSrc = 'https:\/\/widgets.goodlookingbean.com\/tvpwidget\/carousel-2/index.js';
+          createResource(jsSrc,s);
         }(document, 'script'));
       }
     }
@@ -157,8 +152,6 @@ var widget = {
       return function(){
         var id = "carousel-spotlight-2";
         (function(d, s) {
-          __TVPage__ = window.__TVPage__ || {};
-          __TVPage__.config = __TVPage__.config || {};
           __TVPage__.config[id] = {
             debug: Number(""),
             targetEl: id,
@@ -167,8 +160,8 @@ var widget = {
             }
           };
 
-          var js = d.createElement(s),
-          fjs = d.getElementsByTagName(s)[0];js.src = 'https:\/\/widgets.goodlookingbean.com\/tvpwidget\/carousel-spotlight-2\//index.js';fjs.parentNode.insertBefore(js, fjs);
+          var jsSrc = 'https:\/\/widgets.goodlookingbean.com\/tvpwidget\/carousel-spotlight-2\//index.js';
+          createResource(jsSrc,s);
         }(document, 'script'));
       };
     },
@@ -177,16 +170,14 @@ var widget = {
       return function(){
         var id = "carousel-spotlight-1";
         (function(d, s) {
-          __TVPage__ = window.__TVPage__ || {};
-          __TVPage__.config = __TVPage__.config || {};
           __TVPage__.config[id] = {
             debug: Number("") || 0,
             targetEl: id
           };
 
           window.addEventListener("load", function() {
-            var js = d.createElement(s),
-            fjs = d.getElementsByTagName(s)[0];js.src = 'https:\/\/www.goodlookingbean.com\/tvpwidget\/carousel-spotlight-1/index.js';fjs.parentNode.insertBefore(js, fjs);
+            var jsSrc = 'https:\/\/www.goodlookingbean.com\/tvpwidget\/carousel-spotlight-1/index.js';
+            createResource(jsSrc,s);
           }, false);
         }(document, 'script'));
       };
@@ -199,8 +190,6 @@ var widget = {
       return function(){
         var id = "inline-2";
         (function(d,s){
-          window.__TVPage__ = window.__TVPage__ || {};
-          __TVPage__.config = __TVPage__.config || {};
           __TVPage__.config[id] = {
             debug: Number("") || 0,
             targetEl: id,
@@ -213,8 +202,8 @@ var widget = {
             }
           };
           window.addEventListener("load", function() {
-            var js = d.createElement(s),
-            fjs = d.getElementsByTagName(s)[0];js.src = 'https:\/\/widgets.goodlookingbean.com\/tvpwidget\/inline-2/index.js';fjs.parentNode.insertBefore(js, fjs);
+            var jsSrc = 'https:\/\/widgets.goodlookingbean.com\/tvpwidget\/inline-2/index.js';
+            createResource(jsSrc,s);
           }, false);
         }(document, "script"));
       };
@@ -224,16 +213,14 @@ var widget = {
       return function(){
         var id = "inline-1";
         (function(d,s){
-          window.__TVPage__ = window.__TVPage__ || {};
-          __TVPage__.config = __TVPage__.config || {};
           __TVPage__.config[id] = {
             targetEl: id,
             debug: Number("") || 0
           };
 
           window.addEventListener("load", function() {
-            var js = d.createElement(s),
-            fjs = d.getElementsByTagName(s)[0];js.src = 'https:\/\/www.goodlookingbean.com\/tvpwidget\/inline-1/index.js';fjs.parentNode.insertBefore(js, fjs);
+            var jsSrc = 'https:\/\/www.goodlookingbean.com\/tvpwidget\/inline-1/index.js';
+            createResource(jsSrc,s);
           }, false);
 
         }(document, "script"));
@@ -248,8 +235,6 @@ var widget = {
       return function(){
         var id = "inline-spotlight-2";
         (function(d, s) {
-        __TVPage__ = window.__TVPage__ || {};
-        __TVPage__.config = __TVPage__.config || {};
         __TVPage__.config[id] = {
             debug: Number(""),
             targetEl: id,
@@ -258,8 +243,8 @@ var widget = {
             }
         };
 
-        var js = d.createElement(s),
-        fjs = d.getElementsByTagName(s)[0];js.src = 'https:\/\/widgets.goodlookingbean.com\/tvpwidget\/inline-spotlight-2/index.js';fjs.parentNode.insertBefore(js, fjs);
+        var jsSrc = 'https:\/\/widgets.goodlookingbean.com\/tvpwidget\/inline-spotlight-2/index.js';
+        createResource(jsSrc,s);
         }(document, 'script'));
       };
     },
@@ -268,16 +253,14 @@ var widget = {
       return function(){
         var id = "inline-spotlight-1";
         (function(d, s) {
-        __TVPage__ = window.__TVPage__ || {};
-        __TVPage__.config = __TVPage__.config || {};
         __TVPage__.config[id] = {
           debug: Number("") || 0,
           targetEl: id
         };
 
         window.addEventListener("load", function() {
-          var js = d.createElement(s),
-          fjs = d.getElementsByTagName(s)[0];js.src = 'https:\/\/www.goodlookingbean.com\/tvpwidget\/inline-spotlight-1/index.js';fjs.parentNode.insertBefore(js, fjs);
+          var jsSrc = 'https:\/\/www.goodlookingbean.com\/tvpwidget\/inline-spotlight-1/index.js';
+          createResource(jsSrc,s);
         }, false);
         }(document, 'script'));
       };
@@ -290,16 +273,14 @@ var widget = {
       return function(){
         var id = "sidebar-1";
         (function(d, s) {
-          __TVPage__ = window.__TVPage__ || {};
-          __TVPage__.config = __TVPage__.config || {};
           __TVPage__.config[id] = {
             debug: Number("") || 0,
             targetEl: id
           };
 
           window.addEventListener("load", function() {
-            var js = d.createElement(s),
-            fjs = d.getElementsByTagName(s)[0];js.src = 'https:\/\/widgets.goodlookingbean.com\/tvpwidget\/sidebar-1/index.js';fjs.parentNode.insertBefore(js, fjs);
+            var jsSrc = 'https:\/\/widgets.goodlookingbean.com\/tvpwidget\/sidebar-1/index.js';
+            createResource(jsSrc,s);
           }, false);
         }(document, 'script'));
       }
@@ -309,16 +290,14 @@ var widget = {
       return function(){
         var id = "sidebar-1";
         (function(d, s) {
-         __TVPage__ = window.__TVPage__ || {};
-         __TVPage__.config = __TVPage__.config || {};
          __TVPage__.config[id] = {
            debug: Number("") || 0,
            targetEl: id
          };
 
          window.addEventListener("load", function() {
-           var js = d.createElement(s),
-           fjs = d.getElementsByTagName(s)[0];js.src = 'https:\/\/www.goodlookingbean.com\/tvpwidget\/sidebar-1/index.js';fjs.parentNode.insertBefore(js, fjs);
+           var jsSrc = 'https:\/\/www.goodlookingbean.com\/tvpwidget\/sidebar-1/index.js';
+           createResource(jsSrc,s);
          }, false);
        }(document, 'script'));
       };
@@ -330,6 +309,11 @@ var getContainer = function(selector){
   var container = document.getElementsByClassName(selector);
   return container;
 }
+var initializeGlobal = function(){
+  __TVPage__ = window.__TVPage__ || {};
+  __TVPage__.config = __TVPage__.config || {};
+         
+};
 window.startTime = "performance" in window ? window.performance.now() : new Date();
 var containerShort = getContainer(shortEl);
 var containerLarge = getContainer(largeEl);
@@ -342,6 +326,7 @@ if(widgetTested){
     els = containerShort;
 
   if(els.length){
+    initializeGlobal();
     if(testNew){
       var run = widgetTested.newWidget(els);
       run();
