@@ -15,12 +15,10 @@ var widgetToTest = "carousel";
 var testNew = true;
 
 var createEl = function(els,id){
-  if(els.length>0){
     var el = els[0];
     var target = document.createElement("div");
     target.id = id;
     el.appendChild(target);
-  }
 };
 /*s=source t=type*/
 var createResource = function(s,t){
@@ -299,21 +297,15 @@ var initializeGlobal = function(){
          
 };
 var widgetTested = widgetToTest in widget ? widget[widgetToTest] : null;
-var choseContainer = function(){
-    return widgetTested.large ? getContainer(largeEl) : getContainer(shortEl);
-  };
-var run = function(els){
+if(widgetTested){
+  var els = widgetTested.large ? getContainer(largeEl) : getContainer(shortEl);
+  if(els.length){
+    initializeGlobal();
     if(testNew){
       widgetTested.newWidget(els);
     }else{
       widgetTested.oldWidget(els);
     }
-  };
-if(widgetTested){
-  var els = choseContainer();
-  if(els.length){
-    initializeGlobal();
-    run(els);  
   }
 }else{
   console.info("widget not found : ",widgetToTest);
