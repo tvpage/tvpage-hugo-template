@@ -32,9 +32,7 @@ var createResource = function(s,t){
 var widget = {
   solo_cta :{
     large : false,
-    newWidget : function(els){
-      
-      
+    newWidget : function(els){     
         var id = "solo-cta-2";
         createEl(els,id);
         (function(d, s) {
@@ -50,9 +48,7 @@ var widget = {
         }(document, 'script'));
       
     },
-    oldWidget : function(els){
-      
-      
+    oldWidget : function(els){      
         var id = "solo-1";
         createEl(els,id);
         (function(d, s) {
@@ -71,9 +67,7 @@ var widget = {
   },
   solo : {
     large : false,
-    newWidget : function(){
-      
-      
+    newWidget : function(){      
         var id = "solo-1";
         createEl(els,id);
         (function(d, s) {
@@ -89,10 +83,8 @@ var widget = {
         }(document, 'script'));
       
     },
-    oldWidget : function(){
-      
-      
-        var id = "solo-2";
+    oldWidget : function(){      
+      var id = "solo-2";
         createEl(els,id);
         (function(d, s) {
           __TVPage__.config[id] = {
@@ -112,9 +104,7 @@ var widget = {
   },
   carousel : {
     large : true,
-    oldWidget : function(els){
-      
-      
+    oldWidget : function(els){      
         var id = "carousel-1";
         createEl(els,id);
         (function(d, s) {
@@ -131,7 +121,6 @@ var widget = {
       
     },
     newWidget : function(els){
-      
         var id = "carousel-2";
         createEl(els,id);
         (function(d, s) {
@@ -169,8 +158,7 @@ var widget = {
         }(document, 'script'));
       
     },
-    oldWidget : function(els){
-      
+    oldWidget : function(els){      
         var id = "carousel-spotlight-1";
         createEl(els,id);
         (function(d, s) {
@@ -188,8 +176,7 @@ var widget = {
   },
   inline : {
     large : true,
-    newWidget : function(els){
-      
+    newWidget : function(els){      
         var id = "inline-2";
         createEl(els,id);
         (function(d,s){
@@ -211,8 +198,7 @@ var widget = {
         }(document, "script"));
       
     },
-    oldWidget : function(els){
-      
+    oldWidget : function(els){      
         var id = "inline-1";
         createEl(els,id);
         (function(d,s){
@@ -232,8 +218,7 @@ var widget = {
   },
   inline_spotlight:{
     large : true,
-    newWidget : function(els){
-      
+    newWidget : function(els){      
         var id = "inline-spotlight-2";
         createEl(els,id);
         (function(d, s) {
@@ -250,8 +235,7 @@ var widget = {
         }(document, 'script'));
       
     },
-    oldWidget : function(els){     
-      
+    oldWidget : function(els){    
         var id = "inline-spotlight-1";
         createEl(els,id);
         (function(d, s) {
@@ -270,8 +254,7 @@ var widget = {
   },
   sidebar : {
     large : false,
-    newWidget : function(els){
-      
+    newWidget : function(els){      
         var id = "sidebar-1";
         createEl(els, id);
         (function(d, s) {
@@ -287,8 +270,7 @@ var widget = {
         }(document, 'script'));
       
     },
-    oldWidget : function(els){
-     
+    oldWidget : function(els){     
         var id = "sidebar-1";
         createEl(els, id);
         (function(d, s) {
@@ -317,24 +299,22 @@ var initializeGlobal = function(){
          
 };
 var widgetTested = widgetToTest in widget ? widget[widgetToTest] : null;
-if(widgetTested){
-  var els = null;
-  var choseContainer = function(){
+var choseContainer = function(){
     return widgetTested.large ? getContainer(largeEl) : getContainer(shortEl);
-  }
-  var run = function(){
+  };
+var run = function(els){
     if(testNew){
       widgetTested.newWidget(els);
     }else{
       widgetTested.oldWidget(els);
     }
-  }
-  els = choseContainer();
+  };
+if(widgetTested){
+  var els = choseContainer();
   if(els.length){
     initializeGlobal();
-    run();  
+    run(els);  
   }
-  
 }else{
   console.info("widget not found : ",widgetToTest);
 }
