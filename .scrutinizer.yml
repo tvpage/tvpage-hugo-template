@@ -70,3 +70,6 @@ build_failure_conditions:
     
     # Code Coverage drops below 60%
     - 'project.metric("scrutinizer.test_coverage", < 0.60)'
+tools:
+    js_hint:
+        use_native_config: true
