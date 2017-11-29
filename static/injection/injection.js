@@ -311,28 +311,28 @@ var getContainer = function(selector){
   return container;
 }
 var initializeGlobal = function(){
+  window.startTime = "performance" in window ? window.performance.now() : new Date();
   __TVPage__ = window.__TVPage__ || {};
   __TVPage__.config = __TVPage__.config || {};
          
 };
-window.startTime = "performance" in window ? window.performance.now() : new Date();
-var containerShort = getContainer(shortEl);
-var containerLarge = getContainer(largeEl);
 var widgetTested = widgetToTest in widget ? widget[widgetToTest] : null;
 if(widgetTested){
   var els = null;
-  if(widgetTested.large)
-    els = containerLarge;
-  else
-    els = containerShort;
-
-  if(els.length){
-    initializeGlobal();
+  var choseContainer = function(){
+    return widgetTested.large ? getContainer(largeEl) : getContainer(shortEl);
+  }
+  var run = function(){
     if(testNew){
       widgetTested.newWidget(els);
     }else{
       widgetTested.oldWidget(els);
     }
+  }
+  els = choseContainer();
+  if(els.length){
+    initializeGlobal();
+    run();  
   }
   
 }else{
