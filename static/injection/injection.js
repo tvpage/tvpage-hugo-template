@@ -284,7 +284,6 @@ var widget = {
     }
   }
 }
-
 var getContainer = function(selector){
   var container = document.getElementsByClassName(selector);
   return container;
