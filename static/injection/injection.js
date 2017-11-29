@@ -33,9 +33,10 @@ var widget = {
   solo_cta :{
     large : false,
     newWidget : function(els){
-      createEl(els,"solo-cta-2");
-      return function(){
+      
+      
         var id = "solo-cta-2";
+        createEl(els,id);
         (function(d, s) {
           __TVPage__.config[id] = {
             debug: Number(""),
@@ -47,12 +48,13 @@ var widget = {
           var jsSrc = 'https:\/\/widgets.goodlookingbean.com\/tvpwidget\/solo-cta-2/index.js';
           createResource(jsSrc,s);
         }(document, 'script'));
-      }
+      
     },
     oldWidget : function(els){
-      createEl(els,"solo-1");
-      return function(){
+      
+      
         var id = "solo-1";
+        createEl(els,id);
         (function(d, s) {
           __TVPage__.config[id] = {
             debug: Number("") || 0,
@@ -64,15 +66,16 @@ var widget = {
             createResource(jsSrc,s);
           }, false);
           }(document, 'script'));
-      }
+      
     }
   },
   solo : {
     large : false,
     newWidget : function(){
-      createEl(els,"solo-1");
-      return function(){
+      
+      
         var id = "solo-1";
+        createEl(els,id);
         (function(d, s) {
         __TVPage__.config[id] = {
           debug: Number("") || 0,
@@ -84,12 +87,13 @@ var widget = {
           createResource(jsSrc,s)
         }, false);
         }(document, 'script'));
-      };
+      
     },
     oldWidget : function(){
-      createEl(els,"solo-2");
-      return function(){
+      
+      
         var id = "solo-2";
+        createEl(els,id);
         (function(d, s) {
           __TVPage__.config[id] = {
 
@@ -103,15 +107,16 @@ var widget = {
           var jsSrc = 'https:\/\/widgets.goodlookingbean.com\/tvpwidget\/solo-2/index.js';
           createResource(jsSrc,s);
         }(document, 'script'));
-      }
+      
     }
   },
   carousel : {
     large : true,
     oldWidget : function(els){
-      createEl(els,"carousel-1");
-      return function(){
+      
+      
         var id = "carousel-1";
+        createEl(els,id);
         (function(d, s) {
           __TVPage__.config[id] = {
             debug: Number("") || 0,
@@ -123,12 +128,12 @@ var widget = {
             createResource(jsSrc,s);
           }, false);
         }(document, 'script'));
-      }
+      
     },
     newWidget : function(els){
-      createEl(els,"carousel-2");
-      return function(){
+      
         var id = "carousel-2";
+        createEl(els,id);
         (function(d, s) {
           __TVPage__.config[id] = {
 
@@ -142,15 +147,14 @@ var widget = {
           var jsSrc = 'https:\/\/widgets.goodlookingbean.com\/tvpwidget\/carousel-2/index.js';
           createResource(jsSrc,s);
         }(document, 'script'));
-      }
+      
     }
   },
   carousel_spotlight : {
     large: true,
     newWidget : function(els){
-      createEl(els,"carousel-spotlight-2");
-      return function(){
         var id = "carousel-spotlight-2";
+        createEl(els,id);
         (function(d, s) {
           __TVPage__.config[id] = {
             debug: Number(""),
@@ -163,12 +167,12 @@ var widget = {
           var jsSrc = 'https:\/\/widgets.goodlookingbean.com\/tvpwidget\/carousel-spotlight-2\//index.js';
           createResource(jsSrc,s);
         }(document, 'script'));
-      };
+      
     },
     oldWidget : function(els){
-      createEl(els,"carousel-spotlight-1");
-      return function(){
+      
         var id = "carousel-spotlight-1";
+        createEl(els,id);
         (function(d, s) {
           __TVPage__.config[id] = {
             debug: Number("") || 0,
@@ -180,15 +184,14 @@ var widget = {
             createResource(jsSrc,s);
           }, false);
         }(document, 'script'));
-      };
     }
   },
   inline : {
     large : true,
     newWidget : function(els){
-      createEl(els,"inline-2");
-      return function(){
+      
         var id = "inline-2";
+        createEl(els,id);
         (function(d,s){
           __TVPage__.config[id] = {
             debug: Number("") || 0,
@@ -206,12 +209,12 @@ var widget = {
             createResource(jsSrc,s);
           }, false);
         }(document, "script"));
-      };
+      
     },
     oldWidget : function(els){
-      createEl(els,"inline-1");
-      return function(){
+      
         var id = "inline-1";
+        createEl(els,id);
         (function(d,s){
           __TVPage__.config[id] = {
             targetEl: id,
@@ -225,15 +228,14 @@ var widget = {
 
         }(document, "script"));
 
-      };
     }
   },
   inline_spotlight:{
     large : true,
     newWidget : function(els){
-      createEl(els,"inline-spotlight-2");
-      return function(){
+      
         var id = "inline-spotlight-2";
+        createEl(els,id);
         (function(d, s) {
         __TVPage__.config[id] = {
             debug: Number(""),
@@ -246,12 +248,12 @@ var widget = {
         var jsSrc = 'https:\/\/widgets.goodlookingbean.com\/tvpwidget\/inline-spotlight-2/index.js';
         createResource(jsSrc,s);
         }(document, 'script'));
-      };
+      
     },
-    oldWidget : function(els){
-      createEl(els,"inline-spotlight-1");
-      return function(){
+    oldWidget : function(els){     
+      
         var id = "inline-spotlight-1";
+        createEl(els,id);
         (function(d, s) {
         __TVPage__.config[id] = {
           debug: Number("") || 0,
@@ -263,15 +265,15 @@ var widget = {
           createResource(jsSrc,s);
         }, false);
         }(document, 'script'));
-      };
+      
     }
   },
   sidebar : {
     large : false,
     newWidget : function(els){
-      createEl(els, "sidebar-1");
-      return function(){
+      
         var id = "sidebar-1";
+        createEl(els, id);
         (function(d, s) {
           __TVPage__.config[id] = {
             debug: Number("") || 0,
@@ -283,12 +285,12 @@ var widget = {
             createResource(jsSrc,s);
           }, false);
         }(document, 'script'));
-      }
+      
     },
     oldWidget : function(els){
-      createEl(els, "sidebar-1");
-      return function(){
+     
         var id = "sidebar-1";
+        createEl(els, id);
         (function(d, s) {
          __TVPage__.config[id] = {
            debug: Number("") || 0,
@@ -300,7 +302,6 @@ var widget = {
            createResource(jsSrc,s);
          }, false);
        }(document, 'script'));
-      };
     }
   }
 }
@@ -328,11 +329,9 @@ if(widgetTested){
   if(els.length){
     initializeGlobal();
     if(testNew){
-      var run = widgetTested.newWidget(els);
-      run();
+      widgetTested.newWidget(els);
     }else{
-      var run = widgetTested.oldWidget(els);
-      run();
+      widgetTested.oldWidget(els);
     }
   }
   
