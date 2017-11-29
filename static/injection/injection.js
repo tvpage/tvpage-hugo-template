@@ -5,7 +5,6 @@ var largeEl = "topContent";
 //qvc.com
 //var shortEl = "buyBoxPricing";
 //var largeEl = "itemNo";
-
 //homedepot.com
 //var shortEl = "buybox";
 //var largeEl = "card__body scrollTouch";
