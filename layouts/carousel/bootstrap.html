@@ -29,7 +29,7 @@
 
 	var config = {{ $.Scratch.Get "config" | jsonify }};
 
-	config.type = {{ $type }};
+	config.type = "{{ $type }}";
 
 	//we removed the forward slash that hugo adds on local development
 	var baseUrl;
