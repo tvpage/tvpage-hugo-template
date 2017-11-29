@@ -2,6 +2,9 @@ var body = document.body;
 var userAgent = navigator.userAgent;
 var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
 var iOS = /iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(userAgent) && !window.MSStream;
+var initialHtml = '<div id="{id}-holder" class="tvp-{type}-holder">' +
+'<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe>' +
+'</div>';
 var iframeHtmlStart = '<head><base target="_blank"/></head><body class="{className}"' +
 'data-domain="{domain}" data-id="{id}" onload="startTime={startTime};' +
 'var d=document,h=d.head,' +
@@ -181,12 +184,7 @@ function getIframeHtml(o){
         return l;
       };
 
-  html += load(o.js, 'JavaScript') + 
-  load(o.css, 'CSS', 'function(){' +
-  '   var skel = document.getElementById(\'skeleton\');' +
-  '   skel && skel.classList.remove(\'hide\');' +
-  '}'
-  );
+  html += load(o.js, 'JavaScript') + load(o.css, 'CSS');
 
   html += '">';//closing the body tag
   html += '<style>' + (o.style || '') + '</style>';
@@ -196,34 +194,21 @@ function getIframeHtml(o){
 };
 
 //we have a generic host css per widget type that we only include once.
-function getInitialHTML(options){
-  var opts = options || {};
-  var hostStylesId = 'tvp-' + type + '-host';
-
-  if(!getById(hostStylesId)){
-    var hostStylesEl = createEl('style');
-    hostStylesEl.id = hostStylesId;
-    hostStylesEl.innerHTML = isMobile ? css.mobile.host : css.host;
-    document.head.appendChild(hostStylesEl);
-  }
+function getInitialHTML(){
+  var html = "";
+  var styleId = 'tvp-' + type + '-host';
   
-  var hostCustom = 'host-custom';
-  var hostCustomStyles = isMobile ? css.mobile[hostCustom] : css[hostCustom];
-  var html = '';
+  var hostStyles = isMobile ? css.mobile.host : css.host;
 
+  if (!getById(styleId))
+    html += '<style id="' + styleId + '">' + hostStyles + '</style>';
+  
+  var hostCustomStyles = isMobile ? css.mobile['host-custom'] : css['host-custom'];
+  
   if(!isUndefined(hostCustomStyles))
     html += '<style>' + hostCustomStyles + '</style>';
 
-  var withIframe = isUndefined(opts.iframe) ? true : opts.iframe;
-  var initHTML = '<div id="{id}-holder" class="tvp-{type}-holder">';
-
-  if(withIframe){
-    initHTML += '<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe>';
-  }
-  
-  initHTML += '</div>';
-
-  html += tmpl(initHTML, config);
+  html += tmpl(initialHtml, config);
 
   return html;
 }
@@ -258,6 +243,8 @@ function widgetRender(){
     domain: baseUrl,
     context: config,
     html: templates.base,
+    style: isMobile ? css.mobile['host-custom'] : css['host-custom'],
+    className: "tvp-solo-cta-iframe-body",
     eventPrefix: eventPrefix,
     js: [
       '//a.tvpage.com/tvpa.min.js',
@@ -331,6 +318,10 @@ window.addEventListener("message", function(e){
 
   var eventType = getEventType(e);
 
+  if('widget_ready' || 'widget_resize' === eventType){
+    widgetResize(e);
+  }
+
   if('widget_click' === eventType){
     onWidgetClick(e);
   }
@@ -367,6 +358,11 @@ window.addEventListener("message", function(e){
 });
 
 //event handlers
+
+function widgetResize(e) {
+  holder.style.height = e.data.height + 'px';
+}
+
 function onWidgetPlayerChange(e){
   config.onPlayerChange(e.data.e, e.data.stateData);
 }

@@ -23,6 +23,7 @@ module.exports = function(grunt) {
         desktop: {
           files: {
             'dist/css/styles.min.css': [
+              'css/styles.css',
               '../bootstrap/dist/css/bootstrap.css',
               '../slick/slick.css'
             ],
