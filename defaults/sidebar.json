@@ -57,7 +57,7 @@
           "type": "text",
           "label": "Items Per Page",
           "code": "items_per_page",
-          "value": 6
+          "value": 4
         },
         {
           "for": "sidebar",
@@ -92,7 +92,7 @@
           "type": "text",
           "label": "Mobile Modal Body Padding",
           "code": "mobile_modal_body_padding",
-          "value": "0px"
+          "value": "10px"
         },
         {
           "for": "mobile",
@@ -134,7 +134,7 @@
           "type": "text",
           "label": "Mobile Modal Close Button Top",
           "code": "mobile_modal_close_button_top",
-          "value": "4px"
+          "value": "10px"
         },
         {
           "for": "mobile",
@@ -463,7 +463,7 @@
           "type": "text",
           "label": "Mobile Modal Close Button Right",
           "code": "mobile_modal_close_button_right",
-          "value": "4px"
+          "value": "10px"
         },
         {
           "for": "modal",
@@ -799,7 +799,7 @@
           "type": "text",
           "label": "Modal Close Button Border Radius",
           "code": "modal_close_button_border_radius",
-          "value": "50%"
+          "value": "0"
         },
         {
           "for": "modal",

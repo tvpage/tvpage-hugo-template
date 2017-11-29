@@ -9,7 +9,7 @@ div[class^="tvp-"] {
   bottom: 0;
   left: 0;
   z-index: 1040;
-  background-color: black;
+  background-color: transparent;
   opacity: 0.5;
 }
 
@@ -21,7 +21,6 @@ div[class^="tvp-"] {
   bottom: 0;
   left: 0;
   z-index: 1050;
-  -webkit-overflow-scrolling: touch;
   outline: 0;
   overflow-x: hidden;
   overflow-y: auto;
@@ -62,8 +61,7 @@ div[class^="tvp-"] {
 .tvp-iframe-holder {
   height: 0;
   position: relative;
-  -webkit-transition: height ease-out 0.0001s;
-          transition: height ease-out 0.0001s;
+  transition: height ease-out 0.0001s;
 }
 
 /*This is the gallery iframe*/

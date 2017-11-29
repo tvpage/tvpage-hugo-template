@@ -15,13 +15,14 @@
 ".tvp-sidebar-holder > iframe {" +
     "top: 0;" +
     "left: 0;" +
-    "width: 100%;" +
+    "width: 1px;" +
+    "min-width: 100%;" +
     "height: 100%;" +
     "position: absolute;" +
 "}" +
 
 ".tvp-hidden {" +
-    "display: none;" +
+    "display: none !important;" +
 "}" +
 
 ".tvp-modal-open {" +
@@ -35,6 +36,8 @@
     "bottom: 0;" +
     "left: 0;" +
     "z-index: 1040;" +
+    "background-color: #000;" +
+    "opacity: .5;" +
 "}" +
 
 ".tvp-modal {" +
@@ -56,7 +59,7 @@
 ".tvp-modal-wrapper {" +
     "position: relative;" +
     "width: auto;" +
-    "margin: 10px;" +
+    "margin: 5px;" +
 "}" +
 
 ".tvp-modal-wrapper.centered {" +
@@ -67,9 +70,9 @@
     "transform: translateY(-50%);" +
 "}" +
 
-"@media (min-width :768px) {" +
+"@media (min-width :900px) {" +
     ".tvp-modal-wrapper {" +
-        "width: 728px;" +
+        "width: 890px;" +
         "margin: 30px auto;" +
     "}" +
 "}" +
@@ -85,20 +88,15 @@
     "border: 0;" +
     "width: 100%;" +
     "height: 100%;" +
-    "opacity: 0;" +
+    "position: absolute;" +
+    "top: 0;" +
+    "left: 0;" +
+"}" +
+
+".mobile .tvp-iframe-modal {" +
     "position: relative;" +
     "top: auto;" +
     "left: auto;" +
-"}" +
-
-".no-products .tvp-iframe-modal," +
-".products .tvp-iframe-modal {" +
-    "opacity: 1;" +
-"}" +
-
-".tvp-no-products-banner{" +
-    "height: 100%;" +
-    "width: 100%;" +
 "}" +
 
 ".tvp-modal-header:after {" +
@@ -114,6 +112,7 @@
 
 ".tvp-modal-title.bottom {" +
   "float: none;" +
+  "padding: 0 0 30px 10px;" +
 "}" +
 
 ".tvp-products-headline {" +
@@ -129,13 +128,8 @@
     "padding-bottom: 46.47%;" +
 "}" +
 
-".tvp-modal-iframe-holder.products {" +
-    "padding-bottom: 0;" +
-    "height: auto;" +
-"}" +
-
-".tvp-modal-iframe-holder.no-products {" +
-    "padding-bottom: 56.49%;" +
+".tvp-title {" +
+    "height: 22px;" +
 "}" +
 
 ".tvp-modal-body {" +
