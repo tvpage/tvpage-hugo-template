@@ -3,7 +3,25 @@
       id = body.getAttribute('data-id'),
       config = window.parent.__TVPage__.config[id],
       eventPrefix = config.events.prefix,
+      overlayEl,
       apiBaseUrl = config.api_base_url;
+
+  function handleListeners(e){
+    var props = {};
+
+    if(e.type == 'resize') {
+      props = {
+        event: eventPrefix + ':widget_resize',
+        height: Math.floor(overlayEl.getBoundingClientRect().height)
+      };
+    }else{
+       props = {
+        event: eventPrefix + ':widget_click',
+        clicked: e.id
+      };
+    }
+    Utils.sendMessage(props);
+  }
 
   function renderCta(){
     var videos = config.channel.videos,
@@ -11,35 +29,18 @@
     
     config.channel.firstVideo = firstVideo;
 
-    var overlayEl = Utils.getByClass('tvp-cta-overlay'),
-        ctaText = Utils.getByClass('tvp-cta-text');
+    overlayEl = Utils.getByClass('tvp-cta-overlay');
+    var ctaText = Utils.getByClass('tvp-cta-text');
 
     overlayEl.style.backgroundImage = "url(" + firstVideo.asset.thumbnailUrl + ")";
     ctaText.innerHTML = firstVideo.title;
 
-    Utils.sendMessage({
-      event: eventPrefix + ':widget_ready',
-      height: Math.floor(overlayEl.getBoundingClientRect().height)
-    });
+    handleListeners({type:'resize'});
 
-    function onClick(e){
-      Utils.sendMessage({
-            event: eventPrefix + ':widget_click',
-            clicked: firstVideo.id
-        });
-    }
-
-    function onResize(){
-      Utils.sendMessage({
-        event: eventPrefix + ':widget_resize',
-        height: Math.floor(overlayEl.getBoundingClientRect().height)
-      });
-    }
-    
-    overlayEl.removeEventListener("click", onClick, false);
-    overlayEl.addEventListener("click", onClick, false);
-    window.removeEventListener("resize", onResize, false);
-    window.addEventListener("resize", onResize, false);
+    overlayEl.removeEventListener("click", handleListeners, false);
+    overlayEl.addEventListener("click", handleListeners.bind(null,firstVideo), false);
+    window.removeEventListener("resize", handleListeners, false);
+    window.addEventListener("resize", handleListeners, false);
   }
 
   function initAnalytics(){
@@ -52,9 +53,7 @@
 
     if (config.firstPartyCookies && config.cookieDomain)
     analyticsConfig.firstPartyCookieDomain = config.cookieDomain;
-
     analytics.initConfig(analyticsConfig);
-
     analytics.track('ci', {
       li: config.loginId
     });
@@ -82,10 +81,9 @@
       depsCheck = 0,
       depsCheckLimit = 1000;
 
-  (function initSolo() {
+  (function initCta() {
     setTimeout(function() {
-      console.log('deps poll...');
-      
+      if(config.debug)console.log('deps poll...');
       var ready = true;
       for (var i = 0; i < deps.length; i++)
         
@@ -99,7 +97,7 @@
         initAnalytics();
         loadVideos()
       }else if(++depsCheck < depsCheckLimit){
-        initSolo()
+        initCta()
       }
     },5);
   })();
