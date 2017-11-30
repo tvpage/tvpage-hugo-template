@@ -8,6 +8,31 @@
   var eventPrefix = config.events.prefix;
   var productsEndpoint = apiBaseUrl + '/videos/' + config.clicked + '/products';
   var productsCarousel;
+  var analytics;
+  var player;
+
+  function pkTrack(id){
+    analytics.track('pk',{
+      vd: player.getCurrentAsset().assetId,
+      ct: id,
+      pg: config.channelId
+    });
+  }
+
+  function piTrack(item){
+      analytics.track('pi',{
+          vd: item.entityIdParent,
+          ct: item.id,
+          pg: config.channelId
+      });
+  }
+
+  function handleClick(e){
+    if(e && e.target){
+        var realTarget = Utils.getRealTargetByClass(e.target, productsCarousel.itemClass.substr(1));
+        pkTrack(Utils.attr(realTarget,'data-id'));
+      }
+  }
   
   function onWidgetResize(){
     Utils.sendMessage({
@@ -39,6 +64,7 @@
 
   function initProducts() {
     function parseProducts(item){
+      piTrack(item);
       item.title = Utils.trimText(item.title || '', 35);
       item.price = Utils.trimPrice(item.price || '');
       item.actionText = item.actionText || 'View Details';
@@ -62,6 +88,7 @@
       },
       parse: parseProducts,
       onResize:onWidgetResize,
+      onClick: handleClick,
       responsive: [
         {
           breakpoint: 499,
@@ -85,6 +112,7 @@
   }
 
   function onPlayerNext(next) {
+    console.log(next)
     if (config.merchandise && next) {
       productsCarousel.endpoint = apiBaseUrl + '/videos/' + next.assetId + '/products';
       productsCarousel.load('render');
@@ -98,13 +126,10 @@
 
   function initPlayer() {
     var playerConfig = Utils.copy(config);
-
     playerConfig.data = config.channel.videos;
     playerConfig.onResize = onWidgetResize;
     playerConfig.onNext = onPlayerNext;
-
-    var player = new Player('tvp-player-el', playerConfig, config.clicked);
-
+    player = new Player('tvp-player-el', playerConfig, config.clicked);
     player.initialize();
   };
 
@@ -143,7 +168,9 @@
 
         initPlayer();
         initAnalytics();
-        initProducts();
+        if (config.merchandise) {
+          initProducts();
+        }
       } else if (++depsCheck < depsCheckLimit) {
         initModal()
       }
