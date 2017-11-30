@@ -113,7 +113,7 @@
   var depsCheckLimit = 1000;
   var deps = ['jQuery','Carousel','Utils','Analytics'];
 
-  (function initCarousel() {
+  (function initCarousel(){
     setTimeout(function() {
       console.log('deps poll...');
       
