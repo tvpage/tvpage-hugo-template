@@ -5,7 +5,7 @@
       eventPrefix = config.events.prefix,
       apiBaseUrl = config.api_base_url;
 
-  function renderCta(){  
+  function initCTA(){
     var videos = config.channel.videos,
         firstVideo = videos[0];
     
@@ -64,7 +64,7 @@
       depsCheck = 0,
       depsCheckLimit = 1000;
 
-  (function initSolo() {
+  (function initSoloCTA() {
     setTimeout(function() {
       console.log('deps poll...');
       
@@ -77,10 +77,10 @@
         }
 
       if(ready){
-        renderCta();
+        initCTA();
         initAnalytics();
       }else if(++depsCheck < 200){
-        initSolo()
+        initSoloCTA()
       }
     },5);
   })();

@@ -144,7 +144,6 @@
         initPlayer();
         initAnalytics();
         initProducts();
-
       } else if (++depsCheck < depsCheckLimit) {
         initModal()
       }
