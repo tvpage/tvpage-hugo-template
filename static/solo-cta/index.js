@@ -2,6 +2,9 @@ var body = document.body;
 var userAgent = navigator.userAgent;
 var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
 var iOS = /iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(userAgent) && !window.MSStream;
+var initialHtml = '<div id="{id}-holder" class="tvp-{type}-holder">' +
+'<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe>' +
+'</div>';
 var iframeHtmlStart = '<head><base target="_blank"/></head><body class="{className}"' +
 'data-domain="{domain}" data-id="{id}" onload="startTime={startTime};' +
 'var d=document,h=d.head,' +
@@ -140,6 +143,7 @@ var mobilePath;
 
 config.id = id;
 config.loginId = config.loginId || config.loginid;
+config.channel = config.channel || {};
 config.channelId = (config.channelId || config.channelid) || config.channel.id;
 config.events = {};
 config.events.prefix = eventPrefix;
@@ -180,12 +184,7 @@ function getIframeHtml(o){
         return l;
       };
 
-  html += load(o.js, 'JavaScript') + 
-  load(o.css, 'CSS', 'function(){' +
-  '   var skel = document.getElementById(\'skeleton\');' +
-  '   skel && skel.classList.remove(\'hide\');' +
-  '}'
-  );
+  html += load(o.js, 'JavaScript') + load(o.css, 'CSS');
 
   html += '">';//closing the body tag
   html += '<style>' + (o.style || '') + '</style>';
@@ -195,34 +194,21 @@ function getIframeHtml(o){
 };
 
 //we have a generic host css per widget type that we only include once.
-function getInitialHTML(options){
-  var opts = options || {};
-  var hostStylesId = 'tvp-' + type + '-host';
-
-  if(!getById(hostStylesId)){
-    var hostStylesEl = createEl('style');
-    hostStylesEl.id = hostStylesId;
-    hostStylesEl.innerHTML = isMobile ? css.mobile.host : css.host;
-    document.head.appendChild(hostStylesEl);
-  }
+function getInitialHTML(){
+  var html = "";
+  var styleId = 'tvp-' + type + '-host';
   
-  var hostCustom = 'host-custom';
-  var hostCustomStyles = isMobile ? css.mobile[hostCustom] : css[hostCustom];
-  var html = '';
+  var hostStyles = isMobile ? css.mobile.host : css.host;
 
+  if (!getById(styleId))
+    html += '<style id="' + styleId + '">' + hostStyles + '</style>';
+  
+  var hostCustomStyles = isMobile ? css.mobile['host-custom'] : css['host-custom'];
+  
   if(!isUndefined(hostCustomStyles))
     html += '<style>' + hostCustomStyles + '</style>';
 
-  var withIframe = isUndefined(opts.iframe) ? true : opts.iframe;
-  var initHTML = '<div id="{id}-holder" class="tvp-{type}-holder">';
-
-  if(withIframe){
-    initHTML += '<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe>';
-  }
-  
-  initHTML += '</div>';
-
-  html += tmpl(initHTML, config);
+  html += tmpl(initialHtml, config);
 
   return html;
 }
@@ -242,37 +228,38 @@ function getPlayerUrl(){
 //refer to https://jsperf.com/insertadjacenthtml-perf/3
 function widgetRender(){
   var targetElement = getById(config.targetEl);
-  var initialHTML = getInitialHTML({
-    iframe:false
-  });
-  targetElement.insertAdjacentHTML('beforebegin', initialHTML);
+  targetElement.insertAdjacentHTML('beforebegin', getInitialHTML());
+
   remove(targetElement);
 
   holder = getById(id + "-holder");
-  
-  addClass(holder, 'initialized');
-  
-  var videos = config.channel.videos;
-  var firstVideo = videos[0];
-  
-  config.channel.firstVideo = firstVideo;
 
-  var overlayEl = document.createElement("div");
+  var iframe = holder.querySelector("iframe");
+  var iframeDocument = iframe.contentWindow.document;
+  var libsPath = baseUrl + '/libs';
 
-  overlayEl.className = "tvp-cta-overlay";
-  overlayEl.style.backgroundImage = "url(" + firstVideo.asset.thumbnailUrl + ")";
-  overlayEl.innerHTML = config.templates.cta + "<div class='tvp-cta-text'>" + firstVideo.title + "</div>";
+  iframeDocument.open().write(getIframeHtml({
+    id: id,
+    domain: baseUrl,
+    context: config,
+    html: templates.base,
+    style: isMobile ? css.mobile['host-custom'] : css['host-custom'],
+    className: "tvp-solo-cta-iframe-body",
+    eventPrefix: eventPrefix,
+    js: [
+      '//a.tvpage.com/tvpa.min.js',
+      debug ? libsPath + '/analytics.js' : '',
+      debug ? libsPath + '/utils.js' : '',
+      debug ? javascriptPath + '/index.js' : '',
+      debug ? "" : javascriptPath + '/scripts.min.js'
+    ],
+    css: [
+      debug ? cssPath + '/styles.css' : '',
+      debug ? '' : cssPath + '/styles.min.css'
+    ]
+  }));
 
-  holder.appendChild(overlayEl);
-  
-  function onClick(){
-    window.postMessage({
-      event: eventPrefix + ':widget_click'
-    }, '*');
-  }
-  
-  holder.removeEventListener("click", onClick, false);
-  holder.addEventListener("click", onClick, false);
+  iframeDocument.close();
   
   if(debug){
     console.log('renders initial dom (iframe w/skeleton)', performance.now() - startTime);
@@ -329,15 +316,31 @@ window.addEventListener("message", function(e){
     return;
   }
 
-  var eventType = getEventType(e)
+  var eventType = getEventType(e);
+
+  if('widget_ready' || 'widget_resize' === eventType){
+    widgetResize(e);
+  }
 
   if('widget_click' === eventType){
     onWidgetClick(e);
   }
 
+  if('widget_modal_no_products' === eventType){
+    onWidgetModalNoProducts(e);
+  }
+
+  if('widget_modal_products' === eventType){
+    onWidgetModalProducts(e); 
+  }
+
   //normalize this to form part of the std
   if('widget_modal_initialized' === eventType){
     onWidgetModalInitialized(e);
+  }
+
+  if('widget_modal_resize' === eventType){
+    onWidgetModalResize(e);
   }
 
   //? how to order this?
@@ -355,6 +358,11 @@ window.addEventListener("message", function(e){
 });
 
 //event handlers
+
+function widgetResize(e) {
+  holder.style.height = e.data.height + 'px';
+}
+
 function onWidgetPlayerChange(e){
   config.onPlayerChange(e.data.e, e.data.stateData);
 }
@@ -397,38 +405,90 @@ function closeModalFromOverlay(e){
   }
 }
 
-function onWidgetClick(e) {
-  var modalContainerEl = createEl('div');
-  modalContainerEl.innerHTML = templates['modal'];
-  body.appendChild(modalContainerEl);
+function onWidgetModalResize(e){
+  iframeModal.style.height = e.data.height;
+}
 
-  modal = getById("tvp-modal-" + id);
-  modal.querySelector('.tvp-modal-title').innerHTML = config.channel.firstVideo.title || "";
-  addClass(modal, isMobile ? "mobile" : "desktop");
-  
-  if (config.modal_title_position.trim().length && "bottom" === config.modal_title_position) {
-    var modalTitleEl = modal.querySelector("#tvp-modal-title-" + id);
-    addClass(modalTitleEl,"bottom")
-    modal.querySelector(".tvp-modal-body").appendChild(modalTitleEl);
+function onWidgetClick(e) {
+  if(!modalInitialized){
+    modalInitialized = true;
+
+    //external render
+    var modalContainer = createEl('div');
+    modalContainer.innerHTML = templates.modal.base;
+    body.appendChild(modalContainer);
+
+    iframeModalHolder = getById('tvp-modal-iframe-holder-' + id);
+    iframeModal = null;
+    iframeModalDocument = null;
+    modal = getById("tvp-modal-" + id);
+
+    addClass(modal, isMobile ? "mobile" : "desktop");
+
+    if (config.modal_title_position.trim().length && "bottom" === config.modal_title_position) {
+      var modalTitleEl = modal.querySelector("#tvp-modal-title-" + id);
+      addClass(modalTitleEl,"bottom")
+      modal.querySelector(".tvp-modal-body").appendChild(modalTitleEl);
+    }
+
+    function closeModal() {
+      addClass(modal, 'tvp-hidden');
+      addClass('tvp-modal-overlay-' + id, 'tvp-hidden');
+
+      removeClass(iframeModalHolder, 'products');
+      removeClass(iframeModalHolder, 'no-products');
+      removeClass(modal.querySelector('.tvp-products-headline'), 'active');
+
+      remove(iframeModal);
+
+      if (config.fix_page_scroll)
+        removeClass(body, 'tvp-modal-open');
+
+      window.postMessage({
+        event: eventPrefix + ':modal_close'
+      }, '*');
+    };
+
+    getById("tvp-modal-close-" + id).addEventListener('click', closeModal, false);
+
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal || !modal.contains(e.target)) {
+        closeModal();
+      }
+    }, false);
   }
-  
+
+  //modal initialization
+  var videos = config.channel.videos;
+  var selected = null;
+  var clicked = e.data.clicked;
+
+  for (var i = 0; i < videos.length; i++)
+    if (videos[i].id === clicked)
+      selected = videos[i];
+
+  if(!selected)
+    return;
+
+  config.clicked = clicked;
+
+  modal.querySelector('.tvp-modal-title').innerHTML = selected.title || "";
+
   removeClass(modal, 'tvp-hidden');
   removeClass('tvp-modal-overlay-' + id, 'tvp-hidden');
-
-  if (config.fix_page_scroll) {
-    addClass(body, 'tvp-modal-open');
-  }
-
-  iframeModalHolder = getById('tvp-modal-iframe-holder-' + id);
-  iframeModalHolder.innerHTML = '<iframe class="tvp-iframe-modal" src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe>';
+  
+  //render the iframe contents
+  iframeModalHolder.innerHTML = templates.modal.iframe;
   iframeModal = iframeModalHolder.querySelector('.tvp-iframe-modal');
   iframeModalDocument = iframeModal.contentWindow.document;
   iframeModalDocument.open().write(getIframeHtml({
     id: id,
     domain: baseUrl,
-    style: css.modal,
-    className: isMobile ? " mobile" : "",
-    html: templates["modal-content" + (isMobile ? "-mobile" : "")],
+    context: config,
+    eventPrefix: eventPrefix,
+    style: isMobile ? css.mobile.modal.content : css.modal.content,
+    className: isMobile ? "mobile" : "",
+    html: (isMobile ? templates.modal.body : templates.modal.body),
     js: [
       "//a.tvpage.com/tvpa.min.js",
       '//imasdk.googleapis.com/js/sdkloader/ima3.js',
@@ -436,27 +496,30 @@ function onWidgetClick(e) {
       debug ? baseUrl + "/libs/utils.js" : "",
       debug ? baseUrl + "/libs/analytics.js" : "",
       debug ? baseUrl + "/libs/player.js" : "",
-      debug ? javascriptPath + "/modal/index.js" : "",
-      debug ? "" : javascriptPath + "/modal/scripts.min.js"
+      debug && isMobile ? "/libs/carousel.js" : "",
+      debug && isMobile ? javascriptPath + "/vendor/jquery.js" : "",
+      debug ? javascriptPath + "/" + mobilePath + "/modal/index.js" : "",
+      debug && !isMobile ? javascriptPath + "/vendor/perfect-scrollbar.min.js" : "",
+      debug ? "" : javascriptPath  + "/" +  mobilePath + "/modal/scripts.min.js"
     ],
     css: [
-      debug ? cssPath + mobilePath + "/modal/styles.css" : "",
-      debug ? "" : cssPath + mobilePath + "/modal/styles.min.css"
+      debug ? cssPath + "/" + mobilePath + "/modal/styles.css" : "",
+      debug && !isMobile ? cssPath + "/vendor/perfect-scrollbar.min.css" : "",
+      debug ? baseUrl + '/bootstrap/dist/css/bootstrap.css' : '',
+      debug ? "" : cssPath + "/" + mobilePath + "/modal/styles.min.css",
+      debug ? baseUrl + '/slick/slick.css' : '',
+      isMobile ? baseUrl + '/slick/mobile/custom.css' : '',
+      !isMobile ? baseUrl + '/slick/custom.css' : ''
     ]
   }));
-
   iframeModalDocument.close();
   
-  var modalCloseEl = getById("tvp-modal-close-" + id);
-
-  modalCloseEl.removeEventListener('click', closeModal, false);
-  modalCloseEl.addEventListener('click', closeModal, false);
-  
-  modal.removeEventListener('click', closeModalFromOverlay, false);
-  modal.addEventListener('click', closeModalFromOverlay, false);
+  if (config.fix_page_scroll)
+    addClass(body, 'tvp-modal-open');
 }
 
 function onWidgetModalInitialized(e) {
+  iframeModal.style.height = e.data.height;
   var onOrientationChange = function() {
     if (iOS && iframeModal && iframeModal.contentWindow) {
       var width = iframeModal.parentNode.offsetWidth;
@@ -475,4 +538,38 @@ function onWidgetModalInitialized(e) {
 
 function handlePlayerNext(e) {
   getById('tvp-modal-title-' + id).innerHTML = e.data.next.assetTitle || "";
+}
+
+function onWidgetModalNoProducts(e) {
+  removeClass(iframeModalHolder, 'products');
+  addClass(iframeModalHolder, 'no-products');
+
+  if(isMobile || !config.products_headline_display)
+    return;
+  
+  var headlineEl = modal.querySelector('.tvp-products-headline');
+  if (headlineEl) {
+    remove(headlineEl);
+  }
+}
+
+function onWidgetModalProducts(e){
+  removeClass(iframeModalHolder, 'no-products');
+  addClass(iframeModalHolder, 'products');
+
+  if (isMobile || modal.querySelector('.tvp-products-headline') || !config.products_headline_display)
+    return;
+
+  var headlineEl = createEl('div');
+  headlineEl.className = 'tvp-products-headline';
+  headlineEl.innerHTML = config.products_headline_text;
+  headlineEl.addEventListener('click',function(){
+    if (this.classList.contains('active')) {
+      removeClass(this,'active')
+    } else {
+      addClass(this,'active')
+    }
+  });
+
+  modal.querySelector('.tvp-modal-header').appendChild(headlineEl);
 }
