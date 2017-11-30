@@ -143,8 +143,9 @@
 
         initPlayer();
         initAnalytics();
-        initProducts();
-
+        if (config.merchandise) {
+          initProducts();
+        }
       } else if (++depsCheck < depsCheckLimit) {
         initModal()
       }

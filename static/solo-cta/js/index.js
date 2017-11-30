@@ -5,7 +5,7 @@
       eventPrefix = config.events.prefix,
       apiBaseUrl = config.api_base_url;
 
-  function renderCta(){  
+  function renderCta(){
     var videos = config.channel.videos,
         firstVideo = videos[0];
     
@@ -59,6 +59,24 @@
       li: config.loginId
     });
   }
+
+  function onLoadVideos(data){
+    config.channel.videos = data;
+  }
+
+  function loadVideos(){
+    var vidParams = {
+      p: 0,
+      n: 100,
+      o: config.videos_order_by,
+      od: config.videos_order_direction,
+      'X-login-id': config.loginId
+    };
+    Utils.loadScript({
+      base: config.api_base_url + '/channels/' + config.channelId + '/videos',
+      params: vidParams
+    }, onLoadVideos);
+  }
  
   var deps = ['Utils', 'Analytics'],
       depsCheck = 0,
@@ -79,7 +97,8 @@
       if(ready){
         renderCta();
         initAnalytics();
-      }else if(++depsCheck < 200){
+        loadVideos()
+      }else if(++depsCheck < depsCheckLimit){
         initSolo()
       }
     },5);
