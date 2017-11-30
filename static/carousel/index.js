@@ -119,33 +119,6 @@ function getEventType(e){
   return eArr[0] === eventPrefix ? eArr[1] : '';
 }
 
-//We merge the defaults, the .md file's params and the runtime input into one config object.
-if (!isObject(config) || !hasKey(config, "name") || config.name.length <= 0)
-  throw new Error('Widget must have a config and name (id)');
-
-var tvpage = window.__TVPage__ = window.__TVPage__ || {};
-var id = config.name;
-
-if(hasKey(tvpage.config, id) && isObject(tvpage.config[id])){
-  var runTime = tvpage.config[id];
-  for (var key in runTime)
-    config[key] = runTime[key];
-}
-
-if (!hasKey(config,"targetEl") || !getById(config.targetEl))
-  throw new Error("Must provide a targetEl");
-
-if(!hasKey(config,'channel') && !hasKey(config,'channelId') && !hasKey(config,'channelid'))
-  throw new Error('Widget config missing channel obj');
-
-var __windowCallbackFunc__ = null,
-    onChange = config.onChange;
-
-if(isFunction(onChange)){
-  __windowCallbackFunc__ = onChange;
-  delete config.onChange;
-}
-
 //we add the preconnect hints as soon as we can
 var preConnectLink = createEl('link');
 preConnectLink.rel = 'preconnect';
@@ -254,48 +227,77 @@ function getPlayerUrl(){
   return url;
 }
 
-//Here's the first HTML write we do to the host page, this is the fastest way to do it
-//refer to https://jsperf.com/insertadjacenthtml-perf/3
 function widgetRender(){
-  var targetElement = getById(config.targetEl);
-  targetElement.insertAdjacentHTML('beforebegin',getInitialHtml());
-  remove(targetElement);
+  //here's the first HTML write we do to the host page, this is the fastest way to do it
+  //refer to https://jsperf.com/insertadjacenthtml-perf/3  
+  function render(){
+    var targetElement = getById(config.targetEl);
+    targetElement.insertAdjacentHTML('beforebegin',getInitialHtml());
+    remove(targetElement);
+  
+    holder = getById(id + "-holder");
+  
+    var iframe = holder.querySelector("iframe");
+    var iframeDocument = iframe.contentWindow.document;
+    var libsPath = baseUrl + '/libs';
+  
+    iframeDocument.open().write(getIframeHtml({
+      id: id,
+      domain: baseUrl,
+      context: config,
+      html: templates.base,
+      eventPrefix: eventPrefix,
+      js: [
+        '//a.tvpage.com/tvpa.min.js',
+        debug ? javascriptPath + '/vendor/jquery.js' : '',
+        debug ? libsPath + '/utils.js' : '',
+        debug ? libsPath + '/analytics.js' : '',
+        debug ? libsPath + '/carousel.js' : '',
+        debug ? javascriptPath + '/index.js' : '',
+        debug ? "" : javascriptPath + '/scripts.min.js'
+      ],
+      css: [
+        debug ? baseUrl + '/slick/slick.css' : '',
+        isMobile ? baseUrl + '/slick/mobile/custom.css' : '',
+        !isMobile ? baseUrl + '/slick/custom.css' : '',
+        debug ? baseUrl + '/bootstrap/dist/css/bootstrap.css' : '',
+        debug ? cssPath + '/styles.css' : '',
+        debug ? '' : cssPath + '/styles.min.css'
+      ]
+    }));
+  
+    iframeDocument.close();
+  }
 
-  holder = getById(id + "-holder");
-
-  var iframe = holder.querySelector("iframe");
-  var iframeDocument = iframe.contentWindow.document;
-  var libsPath = baseUrl + '/libs';
-
-  iframeDocument.open().write(getIframeHtml({
-    id: id,
-    domain: baseUrl,
-    context: config,
-    html: templates.base,
-    eventPrefix: eventPrefix,
-    js: [
-      '//a.tvpage.com/tvpa.min.js',
-      debug ? javascriptPath + '/vendor/jquery.js' : '',
-      debug ? libsPath + '/utils.js' : '',
-      debug ? libsPath + '/analytics.js' : '',
-      debug ? libsPath + '/carousel.js' : '',
-      debug ? javascriptPath + '/index.js' : '',
-      debug ? "" : javascriptPath + '/scripts.min.js'
-    ],
-    css: [
-      debug ? baseUrl + '/slick/slick.css' : '',
-      isMobile ? baseUrl + '/slick/mobile/custom.css' : '',
-      !isMobile ? baseUrl + '/slick/custom.css' : '',
-      debug ? baseUrl + '/bootstrap/dist/css/bootstrap.css' : '',
-      debug ? cssPath + '/styles.css' : '',
-      debug ? '' : cssPath + '/styles.min.css'
-    ]
-  }));
-
-  iframeDocument.close();
-
-  if(debug){
-    logSnapshot('renders initial dom (iframe w/skeleton)');
+  //we will poll if the target element is not in the page immediately, this is required to cover
+  //scenarios where customer add this element lazily.
+  if(getById(config.targetEl)){
+    render();
+  }else{
+    var targetElCheck = 0;
+    var targetElCheckLimit = 1000;
+    
+    (function checkTargetEl(){
+      setTimeout(function() {
+        console.log('targetEl poll...');
+        
+        var ready = true;
+        if(!getById(config.targetEl))
+          ready = false;
+    
+        if(ready){
+          render();
+          
+          if(debug){
+            logSnapshot('renders initial dom (iframe w/skeleton)');
+          }
+        }else if(++targetElCheck < targetElCheckLimit){
+          checkTargetEl()
+        }else{
+          throw new Error("targetEl doesn't exist on page");
+        }
+      },5);
+    })();
   }
 }
 
