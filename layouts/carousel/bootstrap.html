@@ -28,6 +28,7 @@
 (function(){
 
 	var config = {{ $.Scratch.Get "config" | jsonify }};
+	config.type = "{{ $type }}";
 
 	config.type = "{{ $type }}";
 

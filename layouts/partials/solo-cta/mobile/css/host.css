@@ -12,15 +12,19 @@
   "height: 0;" +
   "position: relative;" +
   "padding-top: 0%;" +
-  "visibility: hidden;" +
-  "opacity: 0;" +
   "background-color: black;" +
 "}" +
 
-".tvp-solo-cta-holder.initialized {" +
-  "visibility: visible;" +
-  "opacity: 1;" +
-"}" +
+".tvp-solo-cta-holder > iframe {" +
+  "position: absolute;"+
+  "top:0;"+
+  "bottom: 0;"+
+  "right: 0;"+
+  "left: 0;"+
+  "width: 1px;"+
+  "min-width: 100%;"+
+  "height: 100%;"+
+"}"+
 
 ".tvp-cta-overlay {" +
   "cursor: pointer;" +
@@ -66,7 +70,7 @@
 "}" +
 
 ".tvp-hidden {" +
-    "display: none;" +
+    "display: none !important;" +
 "}" +
 
 ".tvp-modal-open {" +
@@ -114,6 +118,13 @@
     "transform: translateY(-50%);" +
 "}" +
 
+"@media (min-width :768px) {" +
+    ".tvp-modal-wrapper {" +
+        "width: 728px;" +
+        "margin: 30px auto;" +
+    "}" +
+"}" +
+
 ".tvp-modal-content {" +
      "position: relative;" +
      "background-clip: padding-box;" +
@@ -125,13 +136,6 @@
     "border: 0;" +
     "width: 100%;" +
     "height: 100%;" +
-    "position: absolute;" +
-    "top: 0;" +
-    "left: 0;" +
-    "opacity: 0;" +
-    "-webkit-transition: all .05s ease-in-out;" +
-    "transition: all .05s ease-in-out;" +
-    "opacity: 1;" +
 "}" +
 
 ".tvp-modal-header:after {" +
@@ -150,16 +154,27 @@
   "padding: 0 0 30px 10px;" +
 "}" +
 
+".tvp-products-headline {" +
+    "float: right;" +
+    "margin: 0;" +
+    "position: relative;" +
+"}" +
+
 ".tvp-modal-iframe-holder {" +
-    "height: 0;" +
     "width: 100%;" +
     "position: relative;" +
-    "padding-bottom: 58%;" +
+"}" +
+
+".tvp-title {" +
+    "height: 22px;" +
 "}" +
 
 ".tvp-modal-body {" +
     "position: relative;" +
-    "padding: 0;" +
+"}" +
+
+".tvp-modal-close-svg > path:nth-child(2){ " +
+  "fill: none;" +
 "}" +
 
 ".tvp-modal-close {" +
@@ -171,15 +186,4 @@
     "background-position: 0 0;" +
     "background-repeat: no-repeat;" +
     "background-size: contain;" +
-"}" +
-
-".tvp-modal-close-svg > path:nth-child(2){ " +
-  "fill: none;" +
-"}" +
-
-"@media (min-width :768px) {" +
-    ".tvp-modal-wrapper {" +
-        "width: 728px;" +
-        "margin: 30px auto;" +
-    "}" +
 "}"
