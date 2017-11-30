@@ -17,7 +17,7 @@
     }else{
        props = {
         event: eventPrefix + ':widget_click',
-        clicked: e.id
+        clicked: config.channel.firstVideo.id
       };
     }
     Utils.sendMessage(props);
@@ -38,7 +38,7 @@
     handleListeners({type:'resize'});
 
     overlayEl.removeEventListener("click", handleListeners, false);
-    overlayEl.addEventListener("click", handleListeners.bind(null,firstVideo), false);
+    overlayEl.addEventListener("click", handleListeners, false);
     window.removeEventListener("resize", handleListeners, false);
     window.addEventListener("resize", handleListeners, false);
   }
