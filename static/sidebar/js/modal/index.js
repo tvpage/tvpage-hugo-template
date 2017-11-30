@@ -1,107 +1,133 @@
-(function(window,document){
-    var analytics,
-        channelId,
-        eventName,
-        body = document.body;
+(function(){
+    var body = document.body;
+    var id = body.getAttribute('data-id');
+    var config = window.parent.__TVPage__.config[id];
+    var eventPrefix = config.events.prefix;
+    var mainEl;
+    var productsEl;
+    var analytics;
 
-    var eventPrefix = "tvp_" + (body.getAttribute("data-id") || "").replace(/-/g,'_');
-
-    var pkTrack = function(){
-        analytics.track('pk',{
-            vd: this.getAttribute('data-vd'),
-            ct: this.id.split('-').pop(),
-            pg: channelId
-        });
-    };
-
-    var checkProducts = function(data,el){
-        if (!data || !data.length) {
-            el.classList.add('tvp-no-products');
-            eventName = eventPrefix + ':modal_no_products';
-            notify();
-        }else{
-            el.classList.remove('tvp-no-products');
-            eventName = eventPrefix + ':modal_products';
-            notify();
+    function getWidgetHeight(){
+        var height = Math.floor(mainEl.getBoundingClientRect().height);
+        
+        var bodyPaddingTop = Utils.getStyle(body, 'padding-top');
+        if(bodyPaddingTop){
+            bodyPaddingTop = parseInt(bodyPaddingTop);
         }
+
+        var bodyPaddingBottom = Utils.getStyle(body, 'padding-bottom');
+        if(bodyPaddingBottom){
+            bodyPaddingBottom = parseInt(bodyPaddingBottom);
+        }
+
+        return height + bodyPaddingTop + bodyPaddingBottom;
+    }
+
+    function pkTrack(){
+        analytics.track('pk',{
+            vd: Utils.attr(this,'data-vd'),
+            ct: this.id.split('-').pop(),
+            pg: config.channelId
+        });
+    }
+
+    function onLoadProducts(data) {
+        render(data);
     };
 
-    var notify = function(argument) {
-        setTimeout(function(){
-            if (window.parent) {
-                window.parent.postMessage({event: eventName}, '*');
+    function loadProducts(vid, cback) {
+        if (!vid || !cback) {
+            return;
+        }
+        
+        Utils.loadScript({
+            base: config.api_base_url + '/videos/' + vid + '/products',
+            params: {
+                'X-login-id': config.loginId,
+                o: config.products_order_by,
+                od: config.products_order_direction
             }
-        },0);
+        }, cback);
     };
 
-    var loadProducts = function(videoId,settings,fn){
-        if (!videoId) return;
-        var src = settings.api_base_url + '/videos/' + videoId + '/products?X-login-id=' + settings.loginId;
-        var cbName = 'tvp_' + Math.floor(Math.random() * 555);
-        src += '&callback='+cbName;
-        var script = document.createElement('script');
-        script.src = src;
-        window[cbName || 'callback'] = function(data){
-            if (data && data.length && 'function' === typeof fn) {
-                fn(data);
-            } else {
-                fn([]);
-            }
-        };
-        body.appendChild(script);
+    function getProductRating(product){
+        var attr = config.product_rating_attribute;
+        var rating = 0;
+        
+        if (!!product[attr]) {
+          rating = Number(product[attr]);
+        }
+
+        return rating;
     };
 
-    var render = function(data, config){
+    function getProductReview(product){
+        var attr = config.product_review_attribute;
+        var review = 0;
+        
+        if (!!product[attr]) {
+          review = Number(product[attr]);
+        }
+
+        return review;
+    };
+
+    function render(data){
         var productsHtml = "";
         var popupsHtml = "";
+        var dataLength = data.length;
 
-        for (var i = 0; i < data.length; i++) {
+        function piTrack(p){
+            analytics.track('pi',{
+                vd: p.entityIdParent,
+                ct: p.id,
+                pg: config.channelId
+            });
+        }
+
+        for (var i = 0; i < dataLength; i++) {
             var product = data[i];
             
-            product.title = !Utils.isEmpty(product.title) ? Utils.trimText(product.title, 50) : '';
-            product.price = !Utils.isEmpty(product.price) ? Utils.trimPrice(product.price) : '';
+            product.title = Utils.trimText(product.title || '',50);
+            product.price = Utils.trimPrice(product.price || '');
 
-            var productRating = Utils.isset(product[config.product_rating_attribute]) ? product[config.product_rating_attribute] : 0;
-            if (null !== productRating) {
-              productRating = Number(productRating);
-            }
-
+            var rating = getProductRating(product);
             var ratingReviewsHtml = "";
-            if (productRating > 0) {
-              var fulls = 0;
-              var half = false;
-              if (productRating % 1 != 0) {
-                half = true;
-                fulls = Math.floor(productRating);
-              } else {
-                fulls = productRating;
-              }
+
+            if (rating > 0) {
+              
+              var hasFrac = rating % 1 != 0;
+              var fulls = hasFrac ? Math.floor(rating) : rating;
 
               var empties = 0;
-              if (4 === fulls && half) {
+              if (4 === fulls && hasFrac) {
                 empties = 0;
-              } else if (1 === fulls && half) {
+              } else if (1 === fulls && hasFrac) {
                 empties = 3;
-              } else if (half) {
+              } else if (hasFrac) {
                 empties = (5 - fulls) - 1;
               } else {
                 empties = 5 - fulls;
               }
 
               ratingReviewsHtml = '<ul class="tvp-product-rating">';
+              
               for (var j = 0; j < fulls; j++) {
                 ratingReviewsHtml += '<li class="tvp-rate full"></li>';
               }
-              if (half) {
+              
+              if (hasFrac) {
                 ratingReviewsHtml += '<li class="tvp-rate half"></li>';
               }
+
               for (var k = 0; k < empties; k++) {
                 ratingReviewsHtml += '<li class="tvp-rate empty"></li>';
               }
 
-              var productReview = Utils.isset(product[config.product_review_attribute]) ? product[config.product_review_attribute] : 0;
-              if (null !== productReview && productReview > 0) {
-                ratingReviewsHtml += '<li class="tvp-reviews">' + productReview + ' Reviews </li>';
+
+              var review = getProductReview(product);
+              if (review > 0) {
+                ratingReviewsHtml += '<li class="tvp-reviews">' + review + ' Reviews </li>';
               }
 
               ratingReviewsHtml += '</ul>';
@@ -109,14 +135,12 @@
 
             product.ratingReviews = ratingReviewsHtml;
 
-            productsHtml += Utils.tmpl(config.templates["modal-content"].product, product);
-            popupsHtml += Utils.tmpl(config.templates["modal-content"].popup, product);
+            var template = config.templates.modal.content;
 
-            analytics.track('pi',{
-                vd: product.entityIdParent,
-                ct: product.id,
-                pg: channelId
-            });
+            productsHtml += Utils.tmpl(template.product, product);
+            popupsHtml += Utils.tmpl(template.popup, product);
+
+            piTrack(product);
         }
 
         var holder = Utils.getByClass('tvp-products-holder');
@@ -221,140 +245,94 @@
 
     };
 
-    var initialize = function(){
-        var el = Utils.getByClass('iframe-content');
-        var products = Utils.getByClass('tvp-products-holder');
-        var resizeProducts = function(height){
-            products.style.height = height + 'px';
-        };
+    function onPlayerResize(initial, size){
+        productsEl.style.height = size[1] + 'px';
 
-        var playerEl = Utils.getByClass('tvp-player-holder');
-        resizeProducts(playerEl.offsetHeight);
-
-        var initPlayer = function(data){
-            var s = JSON.parse(JSON.stringify(data.runTime));
-            var player = null;
-
-            s.data = data.data;
-
-            s.onResize = function(initial, size){
-                resizeProducts(size[1]);
-                if (window.parent) {
-                    window.parent.postMessage({
-                        event: eventPrefix + ':modal_resize',
-                        height: (el.offsetHeight + 20) + 'px'
-                    }, '*');
-                }
-            };
-
-            s.onNext = function(next){
-                if (!next) return;
-
-                data.runTime.loginId = data.runTime.loginId || data.runTime.loginid;
-
-                if (Utils.isset(next,'products')) {
-                    render(next.products,data.runTime);
-                } else {
-                  if (!data.runTime.merchandise) {
-                    el.classList.add('tvp-no-products');
-                    eventName = eventPrefix + ':modal_no_products';
-                    notify();
-                  } else {
-                    loadProducts(next.assetId,data.runTime,function(products){
-                      setTimeout(function(){
-                        checkProducts(products,el);
-                        render(products,data.runTime);
-                        player.resize();
-                      },0);
-                    });
-                  }
-                }
-
-                if (window.parent) {
-                    window.parent.postMessage({
-                        event: eventPrefix + ':player_next',
-                        next: next
-                    }, '*');
-                }
-            };
-
-            player = new Player('tvp-player-el',s,data.selectedVideo.id);
-            window.addEventListener('resize', Utils.debounce(function(){
-                player.resize();
-            },85));
-        };
-
-        window.addEventListener('message', function(e){
-            if (!e || !Utils.isset(e, 'data') || !Utils.isset(e.data, 'event')) return;
-            var data = e.data;
-
-            if (eventPrefix + ':modal_data' === data.event) {
-
-                initPlayer(data);
-
-                var settings = data.runTime;
-                var loginId = settings.loginId || settings.loginid;
-                
-                settings.loginId = loginId;
-
-                channelId = Utils.isset(settings.channel) && Utils.isset(settings.channel.id) ? settings.channel.id : (settings.channelId || settings.channelid);
-                analytics =  new Analytics();
-                analytics.initConfig({
-                    logUrl: settings.api_base_url + '/__tvpa.gif',
-                    domain: Utils.isset(location,'hostname') ?  location.hostname : '',
-                    loginId: loginId,
-                    firstPartyCookies: settings.firstpartycookies,
-                    cookieDomain: settings.cookiedomain
-                });
-                analytics.track('ci', {
-                    li: loginId
-                });
-
-                var selectedVideo = data.selectedVideo;
-                if (Utils.isset(selectedVideo,'products')) {
-                    render(selectedVideo.products,settings);
-                } else {
-                    if (!settings.merchandise) {
-                        el.classList.add('tvp-no-products');
-                        eventName = eventPrefix + ':modal_no_products';
-                        notify();
-                    }else{
-                        loadProducts(selectedVideo.id, settings,
-                            function(products){
-                            setTimeout(function(){
-                                checkProducts(products,el);
-                                render(products,settings);
-                            },0);
-                        });
-                    }
-                }
-            }
+        Utils.sendMessage({
+            event: eventPrefix + ':widget_modal_resize',
+            height: getWidgetHeight() + 'px'
         });
-
-        setTimeout(function(){
-            if (window.parent) {
-                window.parent.postMessage({
-                    event: eventPrefix + ':modal_initialized',
-                    height: (el.offsetHeight + 20) + 'px'
-                }, '*');
-            }
-        },0);
-    };
-
-    var not = function(obj){return 'undefined' === typeof obj};
-    if (not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player) || not(window.Ps)) {
-        var libsCheck = 0;
-        (function libsReady() {
-            setTimeout(function(){
-                if (not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player) || not(window.Ps)) {
-                    (++libsCheck < 200) ? libsReady() : console.warn('limit reached');
-                } else {
-                    initialize();
-                }
-            },150);
-        })();
-    } else {
-        initialize();
     }
 
-}(window, document));
+    function onPlayerNext(next){
+        if (config.merchandise && next) {
+            loadProducts(next.assetId, function(data){
+                render(data);
+            });
+        }
+
+        Utils.sendMessage({
+            event: eventPrefix + ':player_next',
+            next: next
+        });
+    }
+
+    function initPlayer(){
+        var playerConfig = Utils.copy(config);
+
+        playerConfig.data = config.channel.videos;
+        playerConfig.onResize = onPlayerResize;
+        playerConfig.onNext = onPlayerNext;
+
+        var player = new Player('tvp-player-el', playerConfig, config.clicked);
+        
+        player.initialize();
+    };
+
+    function initAnalytics(){
+        analytics =  new Analytics();
+        analytics.initConfig({
+            domain: location.hostname || '',
+            logUrl: config.api_base_url + '/__tvpa.gif',
+            loginId: config.loginId,
+            firstPartyCookies: config.firstpartycookies,
+            cookieDomain: config.cookiedomain
+        });
+        analytics.track('ci', {
+            li: config.loginId
+        });
+    };
+    
+    var depsCheck = 0;
+    var deps = ['TVPage', 'Utils', 'Analytics', 'Player', 'Ps'];
+
+    (function initModal() {
+        setTimeout(function() {
+            if(config.debug){
+                console.log('deps poll...');
+            }
+        
+        var ready = true;
+        for (var i = 0; i < deps.length; i++)
+            if ('undefined' === typeof window[deps[i]])
+            ready = false;
+
+        if(ready){
+            mainEl = Utils.getById(id);
+            
+            //We set the height of the player to the products element, we also do this on player resize, we
+            //want the products scroller to have the same height as the player.
+            productsEl = mainEl.querySelector('.tvp-products-holder');
+            productsEl.style.height = mainEl.querySelector('.tvp-player-holder').offsetHeight + 'px';
+
+            initPlayer();
+            initAnalytics();
+
+            if (config.merchandise) {
+                loadProducts(config.clicked, function(data){
+                    render(data);
+                });
+            }
+
+            Utils.sendMessage({
+                event: eventPrefix + ':widget_modal_initialized',
+                height: getWidgetHeight() + 'px'
+            });
+
+        }else if(++depsCheck < 200){
+            initModal()
+        }
+        },10);
+    })();
+
+}());

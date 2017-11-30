@@ -1,24 +1,48 @@
-{{- partial "settings.html" . -}}
+{{- $type := .Type -}}
+{{- $defaults := getJSON (printf "themes/tvpage/defaults/%s.json" $type) -}}
+
+{{- range $defaults.option -}}
+{{- $.Scratch.SetInMap "config" .code .value -}}
+{{- end -}}
+
+{{- range readDir "/" -}}
+{{- if eq .Name "defaults" -}}
+	{{- if (where (readDir "defaults/") "Name" (printf "%s.json" $type)) -}}
+		{{- range (getJSON (printf "defaults/%s.json" $type)).option -}}
+		{{- $.Scratch.SetInMap "config" .code .value -}}
+		{{- end -}}
+	{{- end -}}
+{{- end -}}
+{{- end -}}
+
+{{- range $i, $param := .Params -}}
+{{- $.Scratch.SetInMap "config" $i . -}}
+{{- end -}}
+
+{{- range $i, $param := .Site.Params -}}
+{{- $.Scratch.SetInMap "config" $i . -}}
+{{- end -}}
+
+{{- $.Scratch.Set "settings" ($.Scratch.Get "config") -}}
+
 (function(){
 
-	var bootstrap = {{ $.Scratch.Get "settings" | jsonify }};
-	bootstrap.baseUrl = "{{ $.Site.BaseURL }}";
-	bootstrap.templates = {
-		inline: {{- (partial (printf "%s/inline.html" .Type) .) -}},
-		inline_item: {{- (partial (printf "%s/inline-item.html" .Type) .) -}},
-		inline_carousel_next_arrow: {{- (partial (printf "%s/inline-carousel-next-arrow.html" .Type) .) -}},
-		inline_carousel_previous_arrow: {{- (partial (printf "%s/inline-carousel-previous-arrow.html" .Type) .) -}},
-		featured_product: {{- (partial (printf "%s/featured-product.html" .Type) .) -}},
-		product: {{- (partial (printf "%s/product-item.html" .Type) .) -}},
-		product_nav: {{- (partial (printf "%s/product-scroller-nav.html" .Type) .) -}},
-		play_icon: {{- (partial (printf "%s/play-icon.html" .Type) .) -}}
-	};
+	var config = {{ $.Scratch.Get "config" | jsonify }};
 
-	bootstrap.css = {
-		host: {{- (partial (printf "%s/host.css" .Type) .) | htmlUnescape | safeHTML -}},
-		'host-custom': {{- (partial (printf "%s/host-custom.css" .Type) .) | htmlUnescape | safeHTML -}},
-		inline: {{- (partial (printf "%s/inline.css" .Type) .) | htmlUnescape | safeHTML -}}
-	};
+	//we removed the forward slash that hugo adds on local development
+	var baseUrl;
+	{{- if (getenv "HUGO_DEBUG") -}}
+		baseUrl = "{{ trim $.Site.BaseURL "/" }}";
+	{{- else -}}
+		baseUrl = "{{ $.Site.BaseURL }}";
+	{{- end -}}
+	config.baseUrl = baseUrl;
 
-	{{- (readFile "/themes/tvpage/static/inline/index.js") | htmlUnescape | safeHTML -}}
+	{{- (readFile (printf "/themes/tvpage/static/%s/config.js" $type) ) | htmlUnescape | safeHTML -}}
+
+	config.templates = {{- (partial (printf "%s/templates/index.html" $type) .) -}};
+	config.css = {{- (partial (printf "%s/css/index.html" $type) .) -}};
+	
+	{{- (readFile (printf "/themes/tvpage/static/%s/index.js" $type) ) | htmlUnescape | safeHTML -}}
+	
 }());

@@ -7,35 +7,6 @@ body {
   padding: 0;
 }
 
-.slick-dotted.slick-slider{
-  margin-bottom: 0 !important;
-}
-
-.slick-slide {
-  height: auto !important;
-}
-
-.slick-arrow {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  margin: auto 0;
-  background: black;
-  width: 20px;
-  height: 20px;
-  z-index: 9999;
-  color: transparent;
-  border: 0;
-}
-
-.slick-arrow.slick-prev {
-  left: 0;
-}
-
-.slick-arrow.slick-next {
-  right: 0;
-}
-
 .tvp-clearfix:before,
 .tvp-clearfix:after {
  display: table;
@@ -43,72 +14,8 @@ body {
  clear: both;
 }
 
-.tvp-slider-dots{
-  position: absolute;
-  width: 50%;
-  height: 12px;
-  text-align: center;
-  right: 0;
-  display: block;
-  padding: 0;
-  list-style: none;
-  margin: 12px 0;
-}
-
-.tvp-slider-dots li {
-  position: relative;
-  display: inline-block;
-  top: 50%;
-  width: 20px;
-  height: 20px;
-  margin: 0;
-  padding: 0;
-  cursor: pointer;
-  -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
-}
-
-.tvp-slider-dots li button {
-  font-size: 0;
-  line-height: 0;
-  display: block;
-  width: 20px;
-  height: 20px;
-  padding: 0;
-  cursor: pointer;
-  color: transparent;
-  border: 0;
-  outline: none;
-  background: transparent;
-  background-repeat: no-repeat;
-}
-
-.tvp-slider-dots li.slick-active button:before {
-    opacity: 1;
-}
-
-.tvp-slider-dots li button:hover,
-.tvp-slider-dots li button:focus {
-    outline: none;
-}
-
-.tvp-slider-dots li button:before {
-  line-height: 20px;
-  position: absolute;
- top: 0;
-  left: 0;
-  width: 20px;
-  height: 20px;
-  content: '•';
-  text-align: center;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
 .tvp-products-text {
   position: relative;
-  float: left;
-  width: 100%;
 }
 
 .tvp-player {
@@ -116,14 +23,14 @@ body {
   width: 100%;
   position: relative;
   padding-bottom: 56.25%;
-  background-color: black;
+  background-color: transparent;
 }
 
 #tvp-player-el {
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  background-color: black;
+  background-color: transparent;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -135,7 +42,6 @@ body {
 }
 
 .tvp-products.enabled {
-  padding: 15px 0;
   background-color: white;
 }
 
@@ -166,16 +72,9 @@ body {
 }
 
 .tvp-product {
-  border: 1px solid #333;
   display: block;
   overflow: hidden;
-  padding: 5px;
-  z-index: 9999;
   position: relative;
-}
-
-.tvp-product {
-  margin-bottom: 0;
 }
 
 .tvp-product-cta {

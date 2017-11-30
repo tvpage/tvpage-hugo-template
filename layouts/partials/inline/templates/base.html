@@ -1,0 +1,51 @@
+'<div id="skeleton" class="skeleton">' +
+  
+  '<div class="row justify-content-start">' +
+    '<div class="col">' +
+      '<h3 id="widget-title" class="widget-title"></h3>' +
+    '</div>' +
+  '</div>' +
+
+  '<div class="row mt-2">' +
+    '<div class="col-md-6">'+
+      '<div class="player-holder fluid-y">'+
+        '<div id="player-el"></div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="col-md-3 hidden-sm-down">'+
+      '<div id="featured-product">' +
+        '<div class="skeleton-bg w-50 mx-auto mt-2 mb-1">' +
+          '<div class="product-image fluid-y"></div>' +
+        '</div>' +
+        '<p class="product-title mb-1"></p>' +
+        '<p class="product-price mb-1"></p>' +
+      '</div>' +
+    '</div>' +
+    '<div id="products" class="col-md-3 mt-3 m0-md">' +
+      {{ range seq 3 }}
+      '<div class="row mb-2">' +
+        '<div class="col-3">' +
+          '<div class="skeleton-bg">' +
+            '<div class="product-image fluid-y"></div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="col-9">' +
+          '<p class="product-title m-0"></p>' +
+        '</div>' +
+      '</div>' +
+      {{ end }}
+    '</div>' +
+  '</div>' +
+
+  '<div class="row mt-2 videos-skel-delete">' +
+    {{ range (seq 4) }}
+    '<div class="col-3">' +
+      '<div class="video-image fluid-y skeleton-bg mb-2"></div>' +
+      '<p class="video-title"></p>' +
+    '</div>' +
+    {{ end }}
+  '</div>' +
+
+  '<div id="videos" class="mt-3 col-x-pull"></div>' +
+  
+'</div>'

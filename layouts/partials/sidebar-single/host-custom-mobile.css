@@ -19,8 +19,8 @@
 "}" +
 
 ".tvp-modal-header {" +
-    "padding:{{ ($.Scratch.Get "settings").modal_header_padding }};" +
-    "border-bottom:{{ ($.Scratch.Get "settings").modal_header_border_bottom }};" +
+    "padding:{{ ($.Scratch.Get "settings").modal_header_padding_mobile }};" +
+    "border-bottom:{{ ($.Scratch.Get "settings").modal_header_border_bottom_mobile }};" +
 "}" +
 
 ".tvp-modal-content {" +

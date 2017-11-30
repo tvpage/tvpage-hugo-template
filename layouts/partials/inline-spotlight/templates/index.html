@@ -1,0 +1,22 @@
+{
+  base: {{- (partial (printf "%s/templates/base.html" .Type) .) -}},
+  products: {
+    list: {{- (partial (printf "%s/templates/products/list.html" .Type) .) -}},
+    item: {{- (partial (printf "%s/templates/products/item.html" .Type) .) -}}
+  },
+  videos: {
+    list: {{- (partial (printf "%s/templates/videos/list.html" .Type) .) -}},
+    item: {{- (partial (printf "%s/templates/videos/item.html" .Type) .) -}}
+  },
+  mobile: {
+    base: {{- (partial (printf "%s/mobile/templates/base.html" .Type) .) -}},
+    products: {
+      list: {{- (partial (printf "%s/mobile/templates/products/list.html" .Type) .) -}},
+      item: {{- (partial (printf "%s/mobile/templates/products/item.html" .Type) .) -}}
+    },
+    videos: {
+      list: {{- (partial (printf "%s/mobile/templates/videos/list.html" .Type) .) -}},
+      item: {{- (partial (printf "%s/mobile/templates/videos/item.html" .Type) .) -}}
+    }
+  }
+}
