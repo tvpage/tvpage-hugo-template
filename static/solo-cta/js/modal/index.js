@@ -288,9 +288,6 @@
             firstPartyCookies: config.firstpartycookies,
             cookieDomain: config.cookiedomain
         });
-        analytics.track('ci', {
-            li: config.loginId
-        });
     };
 
     var deps = ['TVPage', 'Utils', 'Player', 'Analytics', 'Ps'],
