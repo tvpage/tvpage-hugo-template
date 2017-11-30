@@ -20,7 +20,7 @@ module.exports = {
   widgetNavHolder: "div#videos div.slick-carousel.slick-initialized.slick-slider",
   widgetNavPrev: "button.slick-prev ",
   widgetNavNext: "button.slick-next",
-  widgetPlayerButton: "div.video-image-icon",
+  PLAY_BUTTON: "div.video-image-icon",
   modalId: "div#tvp-modal-carousel-2",
   modalCloseId: "div#tvp-modal-close-carousel-2",
   modalOverlay: "div#tvp-modal-overlay-carousel-2",
@@ -139,7 +139,7 @@ module.exports = {
           'widgetNavHolder': this.widgetNavHolder,
           'widgetNavPrev': this.widgetNavPrev,
           'widgetNavNext': this.widgetNavNext,
-          'widgetPlayerButton': this.widgetPlayerButton,
+          'PLAY_BUTTON': this.PLAY_BUTTON,
           'DATA': DATA,
           'aReset': true,
           'initialCI': 0
@@ -149,8 +149,8 @@ module.exports = {
 
     carousel.widgetTitle(this.widgetIframeId, this.widgetTitleId, "Recommended Videos"),
     //carousel.widgetNav(this.widgetIframeId, 12),
-    carousel.modalSanity(this.modalId, this.firstVideoId, 'Double wall insulated mug'),
-    carousel.modalLoadPerformance(this.widgetIFrameHolder, this.firstVideoId, this.playerIframId + " > " + this.playerHolder, 1);
+    carousel.modalSanity(this.modalId, this.firstVideoId, 'Double wall insulated mug', 1, true);
+    //carousel.modalLoadPerformance(this.widgetIFrameHolder, this.firstVideoId, this.playerIframId + " > " + this.playerHolder, 1);
 
     var product = {
         "ID": 83102933,
@@ -161,7 +161,7 @@ module.exports = {
         "PRICE": "$199.99"
       }
 
-    carousel.productModal(false, product),
+    carousel.productModal(false, product, undefined, undefined, 1),
     client.windowHandles(function (result) {
       this.switchWindow(result.value[1]),
       this.closeWindow(),
@@ -190,6 +190,11 @@ module.exports = {
     // }),
     carousel.playerStart(70, 70, this.playerIframId + " > " + this.playerHolder),
     carousel.pause(5),
+    carousel.analytics(0, ['ci'], {
+      LOGIN_ID: 1758799,
+      CHANNEL_ID: 66133904,
+      SKIP_COUNT: true,
+    }),
     carousel.analytics(1, ['ci','vv','pi','pk'], {
       LOGIN_ID: 1758799,
       CHANNEL_ID: 66133904,
@@ -199,7 +204,7 @@ module.exports = {
         [83102933,83102936,83102939,83102914,83102916,83102920,83102919,83102921,83102918,83102928,83102927,83102923],
         [83102606,83096473,83096474,83102585,83102603,83106094]
       ],
-      COUNTS: {"ci": 2, "pi": 18, "vv": 2, "pk": 2}
+      COUNTS: {"ci": 2, "pi": 18, "vv": 2, "pk": 1}
     }),
     carousel.pause(10),
     carousel.end();

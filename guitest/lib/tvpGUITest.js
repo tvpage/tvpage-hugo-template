@@ -2,7 +2,7 @@
 exports.tvpGUITest = function (options) {
   const SECOND = 2000;
 
-  var client, targetIframeId, parent, msg,
+  var client, TARGET_IFRAME, parent, msg,
       isPlaying = false,
       isFullScreen = false,
       isMobile = (options !== undefined && options.isMobile ? options.isMobile : false),
@@ -11,23 +11,23 @@ exports.tvpGUITest = function (options) {
       isEdge = (options !== undefined && options.isEdge ? options.isEdge : false),
       isSafari = (options !== undefined && options.isSafari ? options.isSafari : false),
       orientation =  (options !== undefined && options.orientation ? options.orientation : 'PORTRAIT'),
-      aReset = (options !== undefined && options.aReset ? options.aReset : false),
+      ANALYTIC_RESET = (options !== undefined && options.ANALYTIC_RESET ? options.ANALYTIC_RESET : false),
       loginId = (options !== undefined && options.loginId ? options.loginId : 1758799),
       channelId = (options !== undefined && options.channelId ? options.channelId : 66133904),
       initialCI = (options !== undefined && options.initialCI !== undefined ? options.initialCI : 1),
 
-      modalOverlay = options.modalOverlay,
-      modalCloseId = options.modalCloseId,
-      modalTitle = options.modalTitle,
-      modalCloseButton = options.modalCloseButton,
-      modalIframeHolder = options.modalIframeHolder,
+      ELEMENT_MODAL_OVERLAY = options.ELEMENT_MODAL_OVERLAY,
+      ELEMENT_MODAL_CLOSE = options.ELEMENT_MODAL_CLOSE,
+      ELEMENT_MODAL_TITLE = options.ELEMENT_MODAL_TITLE,
+      ELEMENT_MODAL_CLOSE_BUTTON = options.ELEMENT_MODAL_CLOSE_BUTTON,
+      ELEMENT_MODAL_IFRAME_HOLDER = options.ELEMENT_MODAL_IFRAME_HOLDER,
       widgetNavHolder = options.widgetNavHolder,
       widgetNavPrev = options.widgetNavPrev,
       widgetNavNext = options.widgetNavNext,
-      widgetPlayerButton = options.widgetPlayerButton,
+      ELEMENT_MODAL_OPEN = options.ELEMENT_MODAL_OPEN,
 
       DATA = (options !== undefined && options.DATA !== undefined ? options.DATA : {}),
-      selectorType = (options !== undefined && options.selectorType !== undefined ? options.selectorType : "css selector"),
+      SELECTOR_TYPE = (options !== undefined && options.SELECTOR_TYPE !== undefined ? options.SELECTOR_TYPE : "css selector"),
       debug = false;
 
   var aCounts = {
@@ -100,10 +100,10 @@ exports.tvpGUITest = function (options) {
     ICON_FULL_SCREEN: "M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z",
     ICON_PLAYING: "M8 5v14l11-7z",
     ICON_PAUSE: "M6 19h4V5H6v14zm8-14v14h4V5h-4z",
-    init: function (browser, type, id, targetIframe, target) {
+    init: function (browser, type, widgetHolder, targetIframe, target) {
       var THAT = this;
 
-      targetIframeId = targetIframe;
+      TARGET_IFRAME = targetIframe;
       parent = target;
       client = browser;
 
@@ -120,47 +120,57 @@ exports.tvpGUITest = function (options) {
         })
         .pause(2*SECOND, function (r) {
           if (parent !== "") {
-            this.waitForElementVisible(id + " iframe[gesture=media]", DATA.SLA);
+            this.waitForElementVisible(widgetHolder + " iframe[gesture=media]", DATA.SLA);
           }
           
-          if (targetIframeId !== undefined) {
+          if (TARGET_IFRAME !== undefined) {
             // CI check for Initial Widget Load
-            THAT.analytics(targetIframeId, ['ci'], {
+            THAT.analytics(TARGET_IFRAME, ['ci'], {
               LOGIN_ID: loginId,
               CHANNEL_ID: channelId,
-              COUNTS: {"ci": initialCI},
-              TARGET_IFRAME: targetIframeId
+              COUNTS: {"ci": initialCI}
+              //,
+              //TARGET_IFRAME: TARGET_IFRAME
             });
           }
         });
 
 //      return client;
     },
-    widgetTitle: function (iframeId, target, expected) {
+
+    widgetTitle: function (target, title, expected) {
       var THAT = this;
 
-      client.element(selectorType)
-        .waitForElementVisible(iframeId, DATA.SLA)
-        .waitForElementVisible(iframeId + " " + target, DATA.SLA, function (r) {
-          THAT.text(iframeId + " " + target, expected);
+      client
+        .frame(TARGET_IFRAME)
+        .element(SELECTOR_TYPE)
+        .waitForElementVisible(target, DATA.SLA)
+        .waitForElementVisible(target + " " + title, DATA.SLA, function (r) {
+          THAT.text(target + " " + title, expected);
         });
+
+      return this;
     },
-    widgetNav: function (iframeId, count, skip) {
+
+    widgetNav: function (target, count, skip) {
       if(skip){
         return;
       }
       var index = 1;
 
-      client.element(selectorType)
-        .waitForElementVisible(iframeId + " " + widgetNavHolder, DATA.SLA);
+      client
+        .frameParent()
+        .frame(TARGET_IFRAME)
+        .element(SELECTOR_TYPE)
+        .waitForElementVisible(target + " " + widgetNavHolder, DATA.SLA);
 
-      client.element(selectorType)
-        .waitForElementVisible(iframeId + " " + widgetNavPrev, DATA.SLA)
-        .waitForElementVisible(iframeId + " " + widgetNavNext, DATA.SLA);
+      client.element(SELECTOR_TYPE)
+        .waitForElementVisible(target + " " + widgetNavPrev, DATA.SLA)
+        .waitForElementVisible(target + " " + widgetNavNext, DATA.SLA);
 
       for (i=0;i < count;i++) {
-        client.element(selectorType)
-        .click(iframeId +  " " + widgetNavNext)
+        client.element(SELECTOR_TYPE)
+        .click(target +  " " + widgetNavNext)
         .pause(SECOND);
 
         index++;
@@ -168,8 +178,8 @@ exports.tvpGUITest = function (options) {
       }
 
       for (i=0;i < count;i++) {
-        client.element(selectorType)
-        .click(iframeId + " " + widgetNavPrev)
+        client.element(SELECTOR_TYPE)
+        .click(target + " " + widgetNavPrev)
         .pause(SECOND);
 
         client.expect.element("div[data-slick-index='" + index-- + "']").to.have.attribute('aria-hidden').which.equals('false');
@@ -186,12 +196,18 @@ exports.tvpGUITest = function (options) {
         button = "left";
 
       if (isVisible === true) {
-        client.element(selectorType)
+        client
+          .frameParent()
+          .frame(TARGET_IFRAME)
+          .element(SELECTOR_TYPE)
           .waitForElementVisible(target, DATA.SLA)
           .moveToElement(target, x, y)
           .mouseButtonClick(button);
       } else {
-        client.element(selectorType)
+        client
+          .frameParent()
+          .frame(TARGET_IFRAME)
+          .element(SELECTOR_TYPE)
           .waitForElementPresent(target, DATA.SLA)
           .moveToElement(target, x, y)
           .mouseButtonClick(button);
@@ -199,75 +215,85 @@ exports.tvpGUITest = function (options) {
     },
     modalLoad: function (target, x, y) {
       client
-        .waitForElementPresent(target + " " + widgetPlayerButton, DATA.SLA)
-        .click(target + " " + widgetPlayerButton);
-
-      client.frameParent();
+        .frameParent()
+        .frame(TARGET_IFRAME)
+        .waitForElementPresent(target + " " + ELEMENT_MODAL_OPEN, DATA.SLA)
+        .click(target + " " + ELEMENT_MODAL_OPEN);
     },
-    modalSanity: function (modalId, videoId, videoTitle, targetIframe, skip) {
-      if (targetIframe !== undefined) {
-        targetIframeId = targetIframe;
-        client.frame(targetIframeId);
-      }
-
-      this.modalLoad(videoId, 160, 100),
-      this.pause(),
+    modalSanity: function (target, video, videoTitle, targetIframe, skip, hasProductHeadline) {
+      this.modalLoad(video, 160, 100),
+      this.pause();
 
       client
-        .waitForElementVisible(modalId, DATA.SLA)
-        .waitForElementVisible(modalId + ' h4#' + modalTitle, DATA.SLA)
-        .waitForElementVisible(modalId + ' div#' + modalCloseButton, DATA.SLA)
-        .pause(SECOND),
+        .frameParent()
+        .waitForElementVisible(target, DATA.SLA)
+        .waitForElementVisible(target + " " + ELEMENT_MODAL_TITLE, DATA.SLA)
+        .waitForElementVisible(target + " " + ELEMENT_MODAL_CLOSE_BUTTON, DATA.SLA)
+        .pause(SECOND);
 
-      client.expect.element(modalId + ' h4#' + modalTitle).text.to.equal(videoTitle),
-      client.expect.element(modalId + ' div#' + modalCloseButton).to.be.present;
+      client.expect.element(target + " " + ELEMENT_MODAL_TITLE).text.to.equal(videoTitle),
+      client.expect.element(target + " " + ELEMENT_MODAL_CLOSE_BUTTON).to.be.present;
 
-      if (isMobile === false) {
-        client.waitForElementVisible(modalId + ' div.tvp-products-headline', 10000),
-        client.expect.element(modalId + ' div.tvp-products-headline').text.to.equal(DATA.PRODUCT_HEADLINE);
-      } else {
-        client.frame(2),
-        client.waitForElementVisible('p.tvp-products-text', DATA.SLA),
-        client.expect.element('p.tvp-products-text').text.to.equal(DATA.PRODUCT_HEADLINE);
+      if (targetIframe !== undefined) {
+        TARGET_IFRAME = targetIframe;
       }
 
-      if(! skip){
-        this.modalClose(modalId);        
+      client
+        .frameParent()
+        .frame(TARGET_IFRAME)
+
+      if (hasProductHeadline === true) {
+        if (isMobile === false) {
+          client.waitForElementVisible(target + ' div.tvp-products-headline', DATA.SLA);
+          client.expect.element(target + ' div.tvp-products-headline').text.to.equal(DATA.PRODUCT_HEADLINE);
+        } else {
+          client
+            .frame(2)
+            .waitForElementVisible('p.tvp-products-text', DATA.SLA);
+
+          client.expect.element('p.tvp-products-text').text.to.equal(DATA.PRODUCT_HEADLINE);
+        }
       }
+
+      if(!skip){
+        this.modalClose(target);        
+      }
+
+      return this;
     },
-    modalLoadPerformance: function (iframeId, videoId, target, targetIframe, skip) {
-      if(! skip){
+    modalLoadPerformance: function (target, video, target, targetIframe, skip) {
+      if(!skip){
         client.frameParent()
-          .pause(SECOND)
-          .frame(targetIframeId),
-        this.modalLoad(videoId, 160, 100),
+          .pause(SECOND),
+        //  .frame(TARGET_IFRAME),
+        this.modalLoad(video, 160, 100),
         this.pause();
       }
       
 
-      targetIframeId = targetIframe;
+      TARGET_IFRAME = targetIframe;
 
       if (isSafari === true) {
         client
-          .waitForElementPresent(iframeId, DATA.SLA)
-          .frame(targetIframeId);
+          .waitForElementPresent(target, DATA.SLA)
+          .frame(TARGET_IFRAME);
       } else {
         client
-          .waitForElementVisible(iframeId, DATA.SLA)
-          .waitForElementVisible(iframeId + " iframe.tvp-iframe-modal[gesture='media']", DATA.SLA)
-          .frame(targetIframeId);
+          .waitForElementVisible(target, DATA.SLA)
+          .waitForElementVisible(target + " iframe.tvp-iframe-modal[gesture='media']", DATA.SLA)
+          .frame(TARGET_IFRAME);
       }
 
       this.pause();
     },
-    modalClose: function (modalId) {
+    modalClose: function (target) {
       client.frameParent(),
       this.pause();
 
-      this.moveAndClick(modalId + " " + modalCloseId, DATA.SLA, 10, 10, 'left', true);
+      this.moveAndClick(target + " " + ELEMENT_MODAL_CLOSE, DATA.SLA, 10, 10, 'left', true);
 
-      client.expect.element(modalOverlay).to.have.css('display', 'hidden');
-      client.expect.element(modalId).to.have.css('display', 'none');
+      client.expect.element(ELEMENT_MODAL_OVERLAY).to.have.css('display', 'hidden');
+      client.expect.element(target).to.have.css('display', 'none');
 
       this.pause();
     },
@@ -292,7 +318,9 @@ exports.tvpGUITest = function (options) {
       client.click(featuredId + " a[data-id='" + product.ID + "']");
     },
 
-    productModal: function (skip, product, productTarget, productClick) {
+    productSanity: function (product, productTarget, productClick, productIframe, isPopup) {
+      var THAT = this;
+
       if (product === undefined) {
         product = {
           "ID": 83102610,
@@ -312,39 +340,66 @@ exports.tvpGUITest = function (options) {
         productClick = '';
       }
 
-      var regex = (product.TITLE_REGEX !== undefined ? product.TITLE_REGEX : /\ /i);console.log(parent);
-
-      if (isSafari !== true) {
-        client.waitForElementVisible(parent, DATA.SLA);
-        client.expect.element(parent + " " + productTarget).to.be.visible;
-        client.expect.element(parent + " " + productTarget).to.have.attribute('href', product.URL);
+      if (productIframe === undefined) {
+        productIframe = TARGET_IFRAME;
       }
 
-      client.click(parent + " " + productTarget + " " + productClick);
+      var regex = (product.TITLE_REGEX !== undefined ? product.TITLE_REGEX : /\ /i);
 
-      if(skip){
-        return;
+      if (isSafari !== true) {
+        client
+          .frameParent()
+          .frame(productIframe)
+          .waitForElementVisible(parent, DATA.SLA);
+          
+          client.expect.element(parent + " " + productTarget).to.be.visible;
+          client.expect.element(parent + " " + productTarget).to.have.attribute('href', product.URL);
+
+        client
+          .click(parent + " " + productTarget + " " + productClick)
+          .pause(2*SECOND);
+      } else {
+        client
+          .frameParent()
+          .frame(productIframe)
+          .click(parent + " " + productTarget + " " + productClick)
+          .pause(2*SECOND);
+      }
+
+      if (isPopup === false) {
+        return this.windowHandles(0, 1);
       }
 
       // Product pop-up
       client
         .moveToElement(parent + " " + productTarget, 70, 70)
-        .pause(2*SECOND);
+        .pause(2*SECOND, function (r) {
+        // if (isMobile === false) {
+        //   client.expect.element(parent + " a#tvp-product-" + product.ID).to.have.attribute('class', 'tvp-product active');
+        //   client.expect.element(parent + " a#tvp-product-popup-" + product.ID).to.be.present;
+        //   client.expect.element(parent + " a#tvp-product-popup-" + product.ID).to.have.attribute('href', product.URL);
+        //   client.expect.element(parent + " a#tvp-product-popup-" + product.ID + " > div.tvp-product-popup-image").to.have.css("background-image", "url(" + product.IMG + ");");
+        //   client.expect.element(parent + " a#tvp-product-popup-" + product.ID + " > p.tvp-product-title").text.to.match(regex);
+        //   client.expect.element(parent + " a#tvp-product-popup-" + product.ID + " > p.tvp-product-price").text.to.equal(product.PRICE);
+        //   client.expect.element(parent + " a#tvp-product-popup-" + product.ID + " > button.tvp-product-cta").to.be.present;
+        //   client.expect.element(parent + " div.tvp-inner-arrow-indicator").to.be.present;
+        // }
+        });
 
-      // if (isMobile === false) {
-      //   client.expect.element(parent + " a#tvp-product-" + product.ID).to.have.attribute('class', 'tvp-product active');
-      //   client.expect.element(parent + " a#tvp-product-popup-" + product.ID).to.be.present;
-      //   client.expect.element(parent + " a#tvp-product-popup-" + product.ID).to.have.attribute('href', product.URL);
-      //   client.expect.element(parent + " a#tvp-product-popup-" + product.ID + " > div.tvp-product-popup-image").to.have.css("background-image", "url(" + product.IMG + ");");
-      //   client.expect.element(parent + " a#tvp-product-popup-" + product.ID + " > p.tvp-product-title").text.to.match(regex);
-      //   client.expect.element(parent + " a#tvp-product-popup-" + product.ID + " > p.tvp-product-price").text.to.equal(product.PRICE);
-      //   client.expect.element(parent + " a#tvp-product-popup-" + product.ID + " > button.tvp-product-cta").to.be.present;
-      //   client.expect.element(parent + " div.tvp-inner-arrow-indicator").to.be.present;
-      // }
-
-      client.pause(SECOND);
+      return this.windowHandles(0, 1);
     },
-    productModalLink: function (skip, product) {
+    windowHandles: function (current, target) {
+      client
+        .frameParent()
+        .windowHandles(function(r) {
+          this.switchWindow(r.value[target]),
+          this.closeWindow(),
+          this.switchWindow(r.value[current]);
+        });
+
+      return this;
+    },
+    productSanityLink: function (skip, product) {
       if (product === undefined) {
         product = {
           "ID": 83102610,
@@ -365,9 +420,9 @@ exports.tvpGUITest = function (options) {
             this.closeWindow();
 
             this.switchWindow(result.value[0]);
-            this.waitForElementVisible("div#" + modalIframeHolder, DATA.SLA);
+            this.waitForElementVisible("div#" + ELEMENT_MODAL_IFRAME_HOLDER, DATA.SLA);
             this.waitForElementVisible("iframe.tvp-iframe-modal[gesture='media']", DATA.SLA);
-            this.frame(targetIframeId);
+            this.frame(TARGET_IFRAME);
           })
           .pause(2*SECOND);
       } else {
@@ -388,7 +443,7 @@ exports.tvpGUITest = function (options) {
             this.switchWindow(result.value[0]),
             this.waitForElementVisible("div#tvp-modal-iframe-holder-carousel-1", DATA.SLA),
             this.waitForElementVisible("iframe.tvp-iframe-modal[gesture='media']", DATA.SLA),
-            this.frame(targetIframeId);
+            this.frame(TARGET_IFRAME);
           })
           .pause(5*SECOND);
 
@@ -411,7 +466,7 @@ exports.tvpGUITest = function (options) {
             this.switchWindow(result.value[0]),
             this.waitForElementVisible("div#tvp-modal-iframe-holder-carousel-1", DATA.SLA),
             this.waitForElementVisible("iframe.tvp-iframe-modal[gesture='media']", DATA.SLA),
-            this.frame(targetIframeId);
+            this.frame(TARGET_IFRAME);
           })
           .pause(5*SECOND);
 
@@ -434,7 +489,7 @@ exports.tvpGUITest = function (options) {
             this.switchWindow(result.value[0]),
             this.waitForElementVisible("div#tvp-modal-iframe-holder-carousel-1", DATA.SLA),
             this.waitForElementVisible("iframe.tvp-iframe-modal[gesture='media']", DATA.SLA),
-            this.frame(targetIframeId);
+            this.frame(TARGET_IFRAME);
           })
           .pause(5*SECOND);
 
@@ -457,18 +512,18 @@ exports.tvpGUITest = function (options) {
             this.switchWindow(result.value[0]),
             this.waitForElementVisible("div#tvp-modal-iframe-holder-carousel-1", DATA.SLA),
             this.waitForElementVisible("iframe.tvp-iframe-modal[gesture='media']", DATA.SLA),
-            this.frame(targetIframeId);
+            this.frame(TARGET_IFRAME);
           })
           .pause(5*SECOND);
       }
     },
     playerLoadPerformance: function (count) {
-      targetIframeId = count;
+      TARGET_IFRAME = count;
 
       if (count !== undefined)
-        client.frame(targetIframeId);
+        client.frame(TARGET_IFRAME);
 
-      client.element(selectorType)
+      client.element(SELECTOR_TYPE)
         .waitForElementVisible(parent + " div#tvplayer-playbutton", DATA.SLA)
         .waitForElementPresent(parent + " div#ControlBarFloater", DATA.SLA);
 
@@ -481,16 +536,24 @@ exports.tvpGUITest = function (options) {
       // tvplayer icon check
       // client.expect.element(parent + " #tvplayer-playbutton-icon").to.be.present;
     },
-    playerStart: function (x, y, playerParent) {
+
+    playerStart: function (videoIframe, playerParent, x, y) {
+      if (videoIframe === undefined)
+        videoIframe = TARGET_IFRAME;
+
       if (playerParent !== undefined)
         parent = playerParent;
 
+      client
+        .frameParent()
+        .frame(videoIframe);
+
       if (isFF === true) {
         client.waitForElementPresent(parent + ' div#tvplayer-playbutton-icon', DATA.SLA),
-        client.expect.element(parent + " #tvplayer-playbutton-icon").to.be.present;
+        client.expect.element(parent + " div#tvplayer-playbutton-icon").to.be.present;
       } else {
         client.waitForElementVisible(parent + ' div#tvplayer-playbutton-icon', DATA.SLA),
-        client.expect.element(parent + " #tvplayer-playbutton-icon").to.be.present;
+        client.expect.element(parent + " div#tvplayer-playbutton-icon").to.be.present;
       }
 
       if (isFF === true || isEdge === true || isIE === true) {
@@ -507,15 +570,17 @@ exports.tvpGUITest = function (options) {
         client.waitForElementNotPresent(parent + ' div#tvplayer-playbutton-icon', DATA.SLA);
       }
 
-      this.pause(3);
-
       isPlaying = true;
+
+      return this.pause(3);
     },
+
     playerSanity: function () {
       this.playerStart(),
       this.playerShowControl('div#ControlBarFloater > div.tvp-parent-seekbar'),
       this.playerTime();
     },
+
     playerClickPause: function () {
       this.moveAndClick(parent + ' div#ControlBarFloater > div.tvp-control-playpause', 15, 15);
 
@@ -530,7 +595,7 @@ exports.tvpGUITest = function (options) {
       this.pause(1);
     },
     playerClickOverlay: function () {
-      client.element(selectorType)
+      client.element(SELECTOR_TYPE)
         .waitForElementPresent(paernt + ' div.tvp-control-overlay', DATA.SLA)
         .click(parent + ' div.tvp-control-overlay');
     },
@@ -570,7 +635,7 @@ exports.tvpGUITest = function (options) {
           y = 20;
         }
 
-        client.element(selectorType)
+        client.element(SELECTOR_TYPE)
           .moveToElement(parent + ' div.tvp-control-overlay', x, y)
           .mouseButtonDown("left")
           .pause(SECOND)
@@ -581,7 +646,7 @@ exports.tvpGUITest = function (options) {
           client.waitForElementVisible(parent + " " + target, DATA.SLA);
         }
       } else {
-        client.element(selectorType)
+        client.element(SELECTOR_TYPE)
           .moveToElement(parent + ' div.tvp-control-overlay', x, y)
           .waitForElementPresent(parent + " " + target, DATA.SLA)
           .pause(SECOND);
@@ -629,7 +694,7 @@ exports.tvpGUITest = function (options) {
     playerTime: function () {
       this.playerShowControl("div#CtrlTime")
 
-      client.element(selectorType)
+      client.element(SELECTOR_TYPE)
         .pause(2*SECOND)
         .waitForElementPresent(parent + ' div#CtrlTime', DATA.SLA)
         .getText(parent + " div#CtrlTime", function (result) {
@@ -647,7 +712,7 @@ exports.tvpGUITest = function (options) {
         });
     },
     text: function (selector, expected) {
-      client.element(selectorType)
+      client.element(SELECTOR_TYPE)
         .getText(selector, function (result) {
             this.assert.equal(typeof result, "object");
             this.assert.equal(result.status, 0);
@@ -655,26 +720,31 @@ exports.tvpGUITest = function (options) {
         });
     },
     iframe: function (count) {
-      targetIframeId = count;
-      client.frame(targetIframeId);
+      TARGET_IFRAME = count;
+      client.frame(TARGET_IFRAME);
     },
     keys: function (key, callback) {
       client.keys(key, callback);
     },
     pause: function (count) {
-      if (count === undefined)
+      if (count === undefined) {
         count = 1;
+      }
 
       client.pause(count * SECOND);
+
+      return this;
     },
     end: function () {
       client.end();
+      return this;
     },
     analyticReset: function () {
       aCounts = {'ci': 0, 'vv': 0, 'pi': 0, 'pk': 0};
     },
     analytics: function(frame, events, aData) {
       var widgetTest = this,
+          skipCount = (aData.SKIP_COUNT !== undefined ? aData.SKIP_COUNT : false),
           tests = {
             'ci': function(client, src, current) {
               console.log(">>> Checking CI <<<");
@@ -819,7 +889,7 @@ exports.tvpGUITest = function (options) {
                 }
 
                 // Checking counts if loop reaches end of script list and event list
-                if (eIndex == (events.length - 1) && rIndex == (result.value.length - 1)) {
+                if (skipCount === false && eIndex == (events.length - 1) && rIndex == (result.value.length - 1)) {
                   console.log(">>> Analytic Events Count Check <<<");
                   events.forEach(function (event) {
                     console.log("Expected [" + event + "] " + aData.COUNTS[event]);
@@ -827,14 +897,8 @@ exports.tvpGUITest = function (options) {
                     THAT.assert.equal(aCounts[event], aData.COUNTS[event]);
                   });
 
-                  if (aReset === true) {
+                  if (ANALYTIC_RESET === true) {
                     widgetTest.analyticReset();
-                  }
-
-                  THAT.frameParent();
-
-                  if (aData.TARGET_IFRAME !== undefined) {
-                    THAT.frame(aData.TARGET_IFRAME);
                   }
                 }
               });
