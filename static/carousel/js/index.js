@@ -91,21 +91,12 @@
   };
 
   function initAnalytics(){
-    var analytics = new Analytics();
-    var analyticsConfig = {
-      domain: location.hostname || '',
-      logUrl: apiBaseUrl + '/__tvpa.gif',
-      li: config.loginId
-    };
+    var analytics = new Analytics({
+      domain: location.hostname
+    }, config);
 
-    if (config.firstPartyCookies && config.cookieDomain)
-        analyticsConfig.firstPartyCookieDomain = config.cookieDomain;
-
-    analytics.initConfig(analyticsConfig);
-
-    analytics.track('ci', {
-      li: config.loginId
-    });
+    analytics.init();
+    analytics.track('ci');
   }
 
   //The global deps of the carousel have to be present before executing its logic.
@@ -123,6 +114,7 @@
           ready = false;
 
       if(ready){
+
         //add widget title
         var widgetTitleEl = Utils.getById('widget-title');
         widgetTitleEl.innerHTML = config.title_text;

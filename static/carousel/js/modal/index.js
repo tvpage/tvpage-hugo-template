@@ -280,17 +280,11 @@
     };
 
     function initAnalytics(){
-        analytics =  new Analytics();
-        analytics.initConfig({
-            domain: location.hostname || '',
-            logUrl: config.api_base_url + '/__tvpa.gif',
-            loginId: config.loginId,
-            firstPartyCookies: config.firstpartycookies,
-            cookieDomain: config.cookiedomain
-        });
-        analytics.track('ci', {
-            li: config.loginId
-        });
+        analytics = new Analytics({
+          domain: location.hostname
+        }, config);
+        
+        analytics.init();
     };
     
     var depsCheck = 0;

@@ -37,7 +37,7 @@
           "type": "boolean",
           "label": "Autoplay",
           "code": "autoplay",
-          "value": false
+          "value": true
       },
       {
           "for": "player",

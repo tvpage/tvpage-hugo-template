@@ -308,6 +308,30 @@
   };
 
   Utils.getStyle = getStyle;
+
+  Utils.onGlobalReady = function(globalsArray, cback){
+    var gsCheck = 0;
+    var gsCheckLimit = 1000;
+    var gs = globalsArray || [];
+
+    (function gsPoller() {
+      setTimeout(function() {
+        console.log('deps poll...');
+        
+        var ready = true;
+        for (var i = 0; i < gs.length; i++)
+          if ('undefined' === typeof window[gs[i]])
+            ready = false;
+
+        if(ready){
+          if(isFunction(cback))
+            cback();
+        }else if(++gsCheck < gsCheckLimit){
+          gsPoller()
+        }
+      },10);
+    })();
+  };
     
   window.Utils = Utils;
 
