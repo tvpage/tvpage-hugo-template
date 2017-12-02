@@ -20,7 +20,7 @@ module.exports = {
   widgetNavHolder: "div#videos div.slick-solo-cta.slick-initialized.slick-slider",
   widgetNavPrev: "button.slick-prev ",
   widgetNavNext: "button.slick-next",
-  widgetPlayerButton: "div.video-image-icon",
+  PLAY_BUTTON: "div.video-image-icon",
   modalId: "div#tvp-modal-solo-cta-2",
   modalCloseId: "div#tvp-modal-close-solo-cta-2",
   modalOverlay: "div#tvp-modal-overlay-solo-cta-2",
@@ -139,7 +139,7 @@ module.exports = {
           'widgetNavHolder': this.widgetNavHolder,
           'widgetNavPrev': this.widgetNavPrev,
           'widgetNavNext': this.widgetNavNext,
-          'widgetPlayerButton': this.widgetPlayerButton,
+          'PLAY_BUTTON': this.PLAY_BUTTON,
           'DATA': DATA,
           'isIE': true
         }),

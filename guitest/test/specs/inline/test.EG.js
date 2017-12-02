@@ -1,6 +1,96 @@
+/*==============================*/
+/* Nightwatch Inline Automation */
+/*==============================*/
+var ANALYTIC = require(__dirname + "/../analytics/inline.counts.js"),
+    AUTO = require(__dirname + "/../../../lib/tvpGUITest.js"),
+    DATA = {
+      BASE_URL: "https://widgets.goodlookingbean.com/test/",
+      SLA: 10000,
+      BROWSERHEIGHT: 1080,
+      BROWSEWIDTH: 1920,
+
+      WIDGET_TYPE: 'inline',
+      WIDGET_CI: {MIN:0, MAX:1},
+      LOGIN_ID: 1758799,
+      CHANNEL_ID: 66133904
+    };
+
+
+module.exports = {
+  ELEMENT_WIDGET_HOLDER: "div#inline-2-holder",
+  ELEMENT_WIDGET: 'div#skeleton',
+  ELEMENT_WIDGET_TITLE: "h3#widget-title",
+
+  ELEMENT_MODAL_HOLDER: "div#tvp-modal-inline-2",
+  ELEMENT_MODAL_OPEN: "div.video-image-icon",
+  ELEMENT_MODAL: "div#tvp-modal-inline-2",
+  ELEMENT_MODAL_CLOSE: "div#tvp-modal-close-inline-2",
+  ELEMENT_MODAL_OVERLAY: "div#tvp-modal-overlay-inline-2",
+  ELEMENT_MODAL_CLOSE_BUTTON: 'div#tvp-modal-close-inline-2',
+  ELEMENT_MODAL_TITLE: 'h4#tvp-modal-title-inline-2',
+  ELEMENT_MODAL_IFRAME_HOLDER: 'tvp-modal-iframe-holder-inline-2',
+
+  ELEMENT_PLAYER_HOLDER: "div.player-holder",
+  ELEMENT_PRODUCT_HOLDER: "a[data-id='83102933']",
+  ELEMENT_VIDEO_CONTENT: 'div#skeleton',
+  ELEMENT_FIRST_VIDEO: 'div[data-id="65981962"]',
+
+  IFRAME_WIDGET: 0,
+
+  'inline-analytics': function (browser) {
+
+    var widget = AUTO.tvpGUITest({
+          ELEMENT_MODAL_OVERLAY: this.ELEMENT_MODAL_OVERLAY,
+          ELEMENT_MODAL_CLOSE: this.ELEMENT_MODAL_CLOSE,
+          ELEMENT_MODAL_CLOSE_BUTTON: this.ELEMENT_MODAL_CLOSE_BUTTON,
+          ELEMENT_MODAL_TITLE: this.ELEMENT_MODAL_TITLE,
+          ELEMENT_MODAL_IFRAME_HOLDER: this.ELEMENT_MODAL_IFRAME_HOLDER,
+          ELEMENT_MODAL_OPEN: this.ELEMENT_MODAL_OPEN,
+          DATA: DATA,
+          IS_EDGE: true
+        }),
+        product = {
+          ID: 83102933,
+          URL: "http://www.gourmia.com/item.asp?item=10096",
+          SECURE_URL: "http://http://www.gourmia.com/item.asp?item=10096",
+          TITLE_REGEX: /Gourmia\ GDK380\ Multi\ Function\ Digital\ Tea\ Kettle,\ \.\.\./i,
+          IMG: "http://www.gourmia.com/itemimageslarge/GDK380-Small.png",
+          PRICE: "$199.99"
+        },
+        parent = this.ELEMENT_VIDEO_CONTENT,
+        client = widget.init(browser, "[" + browser.test_settings + "] Inline Widget Analytics", this.ELEMENT_WIDGET_HOLDER, this.IFRAME_WIDGET, parent),
+        expected = ANALYTIC.counts;
+
+    widget
+      .widgetTitle(this.ELEMENT_WIDGET, this.ELEMENT_WIDGET_TITLE, "Double wall insulated mug")
+
+      // On IE, order of element is very important, make sure targetting very exact element to click (specifiy product title element to open link)
+      .productSanity(product, this.ELEMENT_PRODUCT_HOLDER, "p.product-title", this.IFRAME_WIDGET, false)
+      .pause(5)
+
+      .playerStartPause(this.IFRAME_WIDGET, this.ELEMENT_VIDEO_CONTENT + " " + this.ELEMENT_PLAYER_HOLDER)
+      .pause(25)
+      .playerStartPause(this.IFRAME_WIDGET, this.ELEMENT_VIDEO_CONTENT + " " + this.ELEMENT_PLAYER_HOLDER)
+      .pause(10)
+
+      // Stopping video to stop triggering vt events
+      .playerStartPause(this.IFRAME_WIDGET, this.ELEMENT_VIDEO_CONTENT + " " + this.ELEMENT_PLAYER_HOLDER, false)
+      .pause(5)
+      .playerStartPause(this.IFRAME_WIDGET, this.ELEMENT_VIDEO_CONTENT + " " + this.ELEMENT_PLAYER_HOLDER, false)
+      .pause(15)
+      .playerStartPause(this.IFRAME_WIDGET, this.ELEMENT_VIDEO_CONTENT + " " + this.ELEMENT_PLAYER_HOLDER, false)
+      .pause(5)
+
+      .analytics(this.IFRAME_WIDGET, ['ci','vv','vt', 'vtp', 'pi','pk'], expected[this.IFRAME_WIDGET])
+      .end();
+  }
+
+};
+
 /*==============================================================================*/
 /* Nightwatch Recorder generated Mon Oct 23 2017 18:49:04 GMT-0700 (PDT) */
 /*==============================================================================*/
+/*
 var DATA = {
       URL: "https://widgets.goodlookingbean.com/test/inline/",
       PRODUCT_HEADLINE: "Related Products",
@@ -30,7 +120,7 @@ module.exports = {
   modalCloseButton: 'tvp-modal-close-carousel-spotlight-2',
   modalTitle: 'tvp-modal-title-carousel-spotlight-2',
   modalIframeHolder: 'tvp-modal-iframe-holder-carousel-spotlight-2',
-
+*/
   // 'inline-youtube-sanity': function (browser) {
   //   var inline = widget.tvpGUITest({
   //         'modalOverlay': this.modalOverlay,
@@ -128,7 +218,7 @@ module.exports = {
   //   client.expect.element(this.modalId).to.have.css('width', 480);
   //   inline.end();
   // },
-
+/*
   'inline-youtube-sanity-analytics': function (browser) {
     var inline = widget.tvpGUITest({
           'modalOverlay': this.modalOverlay,
@@ -141,8 +231,7 @@ module.exports = {
           'widgetNavNext': this.widgetNavNext,
           'widgetPlayerButton': this.widgetPlayerButton,
           'DATA': DATA,
-          'aReset': true,
-          'isFF': true
+          'aReset': true
         }),
         parent = this.playerIframId + " " + this.productHolder;
         client = inline.init(browser, "Inline Widget Analytics", "div#inline-2-holder", 0, parent);
@@ -205,3 +294,4 @@ module.exports = {
     inline.end();
   }
 };
+*/

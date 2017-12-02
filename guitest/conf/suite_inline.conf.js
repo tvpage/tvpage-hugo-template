@@ -1,6 +1,6 @@
 
 nightwatch_config = {
-  src_folders : [ "test/specs/" ],
+  src_folders : [ "test/specs/inline/" ],
 
   selenium : {
     "start_process" : false,
@@ -12,140 +12,142 @@ nightwatch_config = {
     'browserstack.user': process.env.BROWSERSTACK_USERNAME || 'pascualtorres1',
     'browserstack.key': process.env.BROWSERSTACK_ACCESS_KEY || '2ATTF6UbzybcwfcideHN',
     'browserstack.debug': true,
+    'resolution': '1920x1080'
   },
 
   test_settings: {
-    default: {
-      'resolution': '1920x1080'
-    },
-    SidebarW10GC: {
+    default: {},
+    InlineW10GC: {
       desiredCapabilities: {
-        'build': 'SidebarW10GC',
+        'build': 'InlineW10GC',
         'os': 'Windows',
         'os_version': '10',
         'browser': 'Chrome',
         'browser_version': '61.0'
       },
-      filter: "desktop/sidebar/test.js"      
+      filter: "desktop/inline/test.GC.js"      
     },
-    SidebarW10FF: {
+    InlineW10FF: {
       desiredCapabilities: {
-        'build': 'SidebarW10FF',
+        'build': 'InlineW10FF',
         'os': 'Windows',
         'os_version': '10',
         'browser': 'Firefox',
         'browser_version': '57.0'
       },
-      filter: "desktop/sidebar/test.ff.js"
+      filter: "desktop/inline/test.FF.js"
     },
-    SidebarW10IE: {
+    InlineW10IE: {
       desiredCapabilities: {
-        'build': 'SidebarW10IE',
+        'build': 'InlineW10IE',
         'os': 'Windows',
         'os_version': '10',
+        'platform': 'Windows 10',
         'browser': 'IE',
         'browser_version': '11'
       },
-      filter: "desktop/sidebar/test.ie.js"
+      filter: "desktop/inline/test.IE.js"
     },
-    SidebarW10Edge: {
+    InlineW10Edge: {
       desiredCapabilities: {
-        'build': 'SidebarW10Edge',
+        'build': 'InlineW10Edge',
         'os': 'Windows',
         'os_version': '10',
+        'platform': 'Windows 10',
         'browser': 'Edge',
         'browser_version': '15.0'
       },
-      filter: "desktop/sidebar/test.eg.js"
+      filter: "desktop/inline/test.EG.js"
     },
-    SidebarW81GC: {
+    InlineW81GC: {
       desiredCapabilities: {
-        'build': 'SidebarW81GC',
+        'build': 'InlineW81GC',
         'os': 'Windows',
         'os_version': '8.1',
         'browser': 'Chrome',
         'browser_version': '61.0'
       },
-      filter: "desktop/sidebar/test.js"      
+      filter: "desktop/inline/test.GC.js"      
     },
-    SidebarW81FF: {
+    InlineW81FF: {
       desiredCapabilities: {
-        'build': 'SidebarW81FF',
+        'build': 'InlineW81FF',
         'os': 'Windows',
         'os_version': '8.1',
         'browser': 'Firefox',
         'browser_version': '57.0'
       },
-      filter: "desktop/sidebar/test.ff.js"
+      filter: "desktop/inline/test.FF.js"
     },
-    SidebarW81IE: {
+    InlineW81IE: {
       desiredCapabilities: {
-        'build': 'SidebarW81IE',
+        'build': 'InlineW81IE',
         'os': 'Windows',
         'os_version': '8.1',
         'browser': 'IE',
         'browser_version': '11'
       },
-      filter: "desktop/sidebar/test.ie.js"
+      filter: "desktop/inline/test.IE.js"
     },
-    SidebarOSXHSSafari: {
+    InlineOSXHSSafari: {
       desiredCapabilities: {
-        'build': 'SidebarOSXHSSafari',
+        'build': 'InlineOSXHSSafari',
         'os': 'OS X',
         'os_version': 'High Sierra',
         'browser': 'Safari',
-        'browser_version': '11.0'      },
-      filter: "desktop/sidebar/test.sf.js"
+        'browser_version': '11.0'
     },
-    SidebarOSXHSGC: {
+      filter: "desktop/inline/test.SF.js"
+    },
+    InlineOSXHSGC: {
       desiredCapabilities: {
-        'build': 'SidebarOSXHSGC',
+        'build': 'InlineOSXHSGC',
         'os': 'OS X',
         'os_version': 'High Sierra',
         'browser': 'Chrome',
         'browser_version': '61.0'
       },
-      filter: "desktop/sidebar/test.js"
+      filter: "desktop/inline/test.GC.js"
     },
-    SidebarOSXHSFF: {
+    InlineOSXHSFF: {
       desiredCapabilities: {
-        'build': 'SidebarOSXHSFF',
+        'build': 'InlineOSXHSFF',
         'os': 'OS X',
         'os_version': 'High Sierra',
         'browser': 'Firefox',
         'browser_version': '56.0'
       },
-      filter: "desktop/sidebar/test.ff.js"
+      filter: "desktop/inline/test.FF.js"
     },
-    SidebarOSXSSafari: {
+    InlineOSXSSafari: {
       desiredCapabilities: {
-        'build': 'SidebarOSXSSafari',
+        'build': 'InlineOSXSSafari',
         'os': 'OS X',
         'os_version': 'High Sierra',
         'browser': 'Safari',
         'browser_version': '11.0'
       },
-      filter: "desktop/sidebar/test.sf.js"
+      filter: "desktop/inline/test.SF.js"
     },
-    SidebarOSXSGC: {
+    InlineOSXSGC: {
       desiredCapabilities: {
-        'build': 'SidebarOSXSGC',
+        'build': 'InlineOSXSGC',
         'os': 'OS X',
         'os_version': 'High Sierra',
         'browser': 'Chrome',
         'browser_version': '61.0'
       },
-      filter: "desktop/sidebar/test.js"
+      filter: "desktop/inline/test.GC.js"
     },
-    SidebarOSXSFF: {
+    InlineOSXSFF: {
       desiredCapabilities: {
-        'build': 'SidebarOSXSFF',
+        'build': 'InlineOSXSFF',
         'os': 'OS X',
         'os_version': 'High Sierra',
         'browser': 'Firefox',
         'browser_version': '56.0'
       },
-      filter: "desktop/sidebar/test.ff.js"
+      filter: "desktop/inline/test.FF.js"
     },
   }
 };
@@ -161,6 +163,8 @@ for(var i in nightwatch_config.test_settings){
   for(var j in nightwatch_config.common_capabilities){
     config['desiredCapabilities'][j] = config['desiredCapabilities'][j] || nightwatch_config.common_capabilities[j];
   }
+
+  console.log(config);
 }
 
 module.exports = nightwatch_config;

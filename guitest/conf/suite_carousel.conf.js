@@ -18,134 +18,135 @@ nightwatch_config = {
     default: {
       'resolution': '1920x1080'
     },
-    SidebarW10GC: {
+    CarouselW10GC: {
       desiredCapabilities: {
-        'build': 'SidebarW10GC',
+        'build': 'CarouselW10GC',
         'os': 'Windows',
         'os_version': '10',
         'browser': 'Chrome',
         'browser_version': '61.0'
       },
-      filter: "desktop/sidebar/test.js"      
+      filter: "desktop/carousel/test.js"      
     },
-    SidebarW10FF: {
+    CarouselW10FF: {
       desiredCapabilities: {
-        'build': 'SidebarW10FF',
+        'build': 'CarouselW10FF',
         'os': 'Windows',
         'os_version': '10',
         'browser': 'Firefox',
         'browser_version': '57.0'
       },
-      filter: "desktop/sidebar/test.ff.js"
+      filter: "desktop/carousel/test.ff.js"
     },
-    SidebarW10IE: {
+    CarouselW10IE: {
       desiredCapabilities: {
-        'build': 'SidebarW10IE',
+        'build': 'CarouselW10IE',
         'os': 'Windows',
         'os_version': '10',
         'browser': 'IE',
         'browser_version': '11'
       },
-      filter: "desktop/sidebar/test.ie.js"
+      filter: "desktop/carousel/test.ie.js"
     },
-    SidebarW10Edge: {
+    CarouselW10Edge: {
       desiredCapabilities: {
-        'build': 'SidebarW10Edge',
+        'build': 'CarouselW10Edge',
         'os': 'Windows',
         'os_version': '10',
         'browser': 'Edge',
         'browser_version': '15.0'
       },
-      filter: "desktop/sidebar/test.eg.js"
+      filter: "desktop/carousel/test.eg.js"
     },
-    SidebarW81GC: {
+    CarouselW81GC: {
       desiredCapabilities: {
-        'build': 'SidebarW81GC',
+        'build': 'CarouselW81GC',
         'os': 'Windows',
         'os_version': '8.1',
         'browser': 'Chrome',
         'browser_version': '61.0'
       },
-      filter: "desktop/sidebar/test.js"      
+      filter: "desktop/carousel/test.js"      
     },
-    SidebarW81FF: {
+    CarouselW81FF: {
       desiredCapabilities: {
-        'build': 'SidebarW81FF',
+        'build': 'CarouselW81FF',
         'os': 'Windows',
         'os_version': '8.1',
         'browser': 'Firefox',
         'browser_version': '57.0'
       },
-      filter: "desktop/sidebar/test.ff.js"
+      filter: "desktop/carousel/test.ff.js"
     },
-    SidebarW81IE: {
+    CarouselW81IE: {
       desiredCapabilities: {
-        'build': 'SidebarW81IE',
+        'build': 'CarouselW81IE',
         'os': 'Windows',
         'os_version': '8.1',
         'browser': 'IE',
         'browser_version': '11'
       },
-      filter: "desktop/sidebar/test.ie.js"
+      filter: "desktop/carousel/test.ie.js"
     },
-    SidebarOSXHSSafari: {
+    CarouselOSXHSSafari: {
       desiredCapabilities: {
-        'build': 'SidebarOSXHSSafari',
-        'os': 'OS X',
-        'os_version': 'High Sierra',
-        'browser': 'Safari',
-        'browser_version': '11.0'      },
-      filter: "desktop/sidebar/test.sf.js"
-    },
-    SidebarOSXHSGC: {
-      desiredCapabilities: {
-        'build': 'SidebarOSXHSGC',
-        'os': 'OS X',
-        'os_version': 'High Sierra',
-        'browser': 'Chrome',
-        'browser_version': '61.0'
-      },
-      filter: "desktop/sidebar/test.js"
-    },
-    SidebarOSXHSFF: {
-      desiredCapabilities: {
-        'build': 'SidebarOSXHSFF',
-        'os': 'OS X',
-        'os_version': 'High Sierra',
-        'browser': 'Firefox',
-        'browser_version': '56.0'
-      },
-      filter: "desktop/sidebar/test.ff.js"
-    },
-    SidebarOSXSSafari: {
-      desiredCapabilities: {
-        'build': 'SidebarOSXSSafari',
+        'build': 'CarouselOSXHSSafari',
         'os': 'OS X',
         'os_version': 'High Sierra',
         'browser': 'Safari',
         'browser_version': '11.0'
       },
-      filter: "desktop/sidebar/test.sf.js"
+      filter: "desktop/carousel/test.sf.js"
     },
-    SidebarOSXSGC: {
+    CarouselOSXHSGC: {
       desiredCapabilities: {
-        'build': 'SidebarOSXSGC',
+        'build': 'CarouselOSXHSGC',
         'os': 'OS X',
         'os_version': 'High Sierra',
         'browser': 'Chrome',
         'browser_version': '61.0'
       },
-      filter: "desktop/sidebar/test.js"
+      filter: "desktop/carousel/test.js"
     },
-    SidebarOSXSFF: {
+    CarouselOSXHSFF: {
       desiredCapabilities: {
-        'build': 'SidebarOSXSFF',
+        'build': 'CarouselOSXHSFF',
         'os': 'OS X',
         'os_version': 'High Sierra',
         'browser': 'Firefox',
         'browser_version': '56.0'
       },
-      filter: "desktop/sidebar/test.ff.js"
+      filter: "desktop/carousel/test.ff.js"
+    },
+    CarouselOSXSSafari: {
+      desiredCapabilities: {
+        'build': 'CarouselOSXSSafari',
+        'os': 'OS X',
+        'os_version': 'High Sierra',
+        'browser': 'Safari',
+        'browser_version': '11.0'
+      },
+      filter: "desktop/carousel/test.sf.js"
+    },
+    CarouselOSXSGC: {
+      desiredCapabilities: {
+        'build': 'CarouselOSXSGC',
+        'os': 'OS X',
+        'os_version': 'High Sierra',
+        'browser': 'Chrome',
+        'browser_version': '61.0'
+      },
+      filter: "desktop/carousel/test.js"
+    },
+    CarouselOSXSFF: {
+      desiredCapabilities: {
+        'build': 'CarouselOSXSFF',
+        'os': 'OS X',
+        'os_version': 'High Sierra',
+        'browser': 'Firefox',
+        'browser_version': '56.0'
+      },
+      filter: "desktop/carousel/test.ff.js"
     },
   }
 };

@@ -23,11 +23,6 @@ nightwatch_config = {
         'browser': 'Chrome',
         'browser_version': '61.0',
         'resolution': '1920x1080'
-        // 'os': 'Windows',
-        // 'os_version': '10',
-        // 'browser': 'Chrome',
-        // 'browser_version': '61.0',
-        // 'resolution': '1920x1080'
       },
       filter: "desktop/carousel/test.js"
     },
