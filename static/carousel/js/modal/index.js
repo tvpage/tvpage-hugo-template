@@ -4,24 +4,10 @@
     var config = window.parent.__TVPage__.config[id];
     var eventPrefix = config.events.prefix;
     var mainEl;
-    var productsEl;
+    var productsRail;
     var analytics;
-
-    function getWidgetHeight(){
-        var height = Math.floor(mainEl.getBoundingClientRect().height);
-        
-        var bodyPaddingTop = Utils.getStyle(body, 'padding-top');
-        if(bodyPaddingTop){
-            bodyPaddingTop = parseInt(bodyPaddingTop);
-        }
-
-        var bodyPaddingBottom = Utils.getStyle(body, 'padding-bottom');
-        if(bodyPaddingBottom){
-            bodyPaddingBottom = parseInt(bodyPaddingBottom);
-        }
-
-        return height + bodyPaddingTop + bodyPaddingBottom;
-    }
+    var apiBaseUrl = config.api_base_url;
+    var skeletonEl = document.getElementById('skeleton');
 
     function pkTrack(){
         analytics.track('pk',{
@@ -41,7 +27,7 @@
         }
         
         Utils.loadScript({
-            base: config.api_base_url + '/videos/' + vid + '/products',
+            base: apiBaseUrl + '/videos/' + vid + '/products',
             params: {
                 'X-login-id': config.loginId,
                 o: config.products_order_by,
@@ -246,11 +232,9 @@
     };
 
     function onPlayerResize(initial, size){
-        productsEl.style.height = size[1] + 'px';
-
         Utils.sendMessage({
             event: eventPrefix + ':widget_modal_resize',
-            height: getWidgetHeight() + 'px'
+            //height: getWidgetHeight() + 'px'
         });
     }
 
@@ -274,7 +258,7 @@
         playerConfig.onResize = onPlayerResize;
         playerConfig.onNext = onPlayerNext;
 
-        var player = new Player('tvp-player-el', playerConfig, config.clicked);
+        var player = new Player('player-el', playerConfig, config.clicked);
         
         player.initialize();
     };
@@ -283,7 +267,7 @@
         analytics =  new Analytics();
         analytics.initConfig({
             domain: location.hostname || '',
-            logUrl: config.api_base_url + '/__tvpa.gif',
+            logUrl: apiBaseUrl + '/__tvpa.gif',
             loginId: config.loginId,
             firstPartyCookies: config.firstpartycookies,
             cookieDomain: config.cookiedomain
@@ -292,9 +276,40 @@
             li: config.loginId
         });
     };
+
+    function initProducts(style){
+        if (!config.merchandise) {
+            if(config.debug){
+                console.log("products off");
+            }
+
+            return;
+        }
+
+        // We set the height of the player to the products element, we also do this on player resize, we
+        // want the products scroller to have the same height as the player.
+        style = style || 'default';
+
+        if('default' === style){
+            productsRail = new Rail('products',{
+                snapReference: '[rail-ref]',
+                endpoint: apiBaseUrl + '/videos/' + config.clicked + '/products',
+                templates: {
+                    list: config.templates.modal.products.list,
+                    item: config.templates.modal.products.item
+                },
+                onReady:function(){
+                    Utils.remove(skeletonEl.querySelector('.products-skel-delete'));
+                }
+            }, config);
+            
+            productsRail.init();
+            productsRail.load('render');
+        }
+    }
     
     var depsCheck = 0;
-    var deps = ['TVPage', 'Utils', 'Analytics', 'Player', 'Ps'];
+    var deps = ['TVPage', 'Utils', 'Analytics', 'Player', 'Ps', 'jQuery'];
 
     (function initModal() {
         setTimeout(function() {
@@ -308,31 +323,69 @@
             ready = false;
 
         if(ready){
-            mainEl = Utils.getById(id);
-            
-            //We set the height of the player to the products element, we also do this on player resize, we
-            //want the products scroller to have the same height as the player.
-            productsEl = mainEl.querySelector('.tvp-products-holder');
-            productsEl.style.height = mainEl.querySelector('.tvp-player-holder').offsetHeight + 'px';
 
-            initPlayer();
-            initAnalytics();
+            //we can reduce this maddness
+            $.ajax({
+                dataType: 'script',
+                cache: true,          
+                url: config.baseUrl + '/bootstrap/js/util.js'
+              }).done(function(){
+                $.ajax({
+                    dataType: 'script',
+                    cache: true,          
+                    url: config.baseUrl + '/bootstrap/js/modal.js'
+                }).done(function(){
+                    var $modalElement = $('#modalElement');
 
-            if (config.merchandise) {
-                loadProducts(config.clicked, function(data){
-                    render(data);
+                    $modalElement.on('show.bs.modal', function(e){
+                        initPlayer();
+                        initProducts();
+                    });
+
+                    $modalElement.on('hidden.bs.modal', function(e){
+                        Utils.sendMessage({
+                            event: eventPrefix + ':widget_modal_close'
+                        });
+                    });
+
+                    $modalElement.modal('show');
+
+                    Utils.sendMessage({
+                        event: eventPrefix + ':widget_modal_initialized'
+                    });
+
+                    initAnalytics();
                 });
-            }
-
-            Utils.sendMessage({
-                event: eventPrefix + ':widget_modal_initialized',
-                height: getWidgetHeight() + 'px'
-            });
+              });
 
         }else if(++depsCheck < 200){
             initModal()
         }
         },10);
+    })();
+
+    //we check when critical css has loaded/parsed. At this step, we have data to
+    //update the skeleton. We wait until css has really executed in order to send
+    //the right measurements.
+    var cssLoadedCheck = 0;
+    var cssLoadedCheckLimit = 1000;
+
+    (function cssPoll() {
+        setTimeout(function() {
+          console.log('css loaded poll...');
+          
+          if('hidden' === Utils.getStyle(Utils.getById('bs-checker'), 'visibility')){
+            //add widget title
+            // var widgetTitleEl = Utils.getById('widget-title');
+            // widgetTitleEl.innerHTML = firstVideo.title;
+            // Utils.addClass(widgetTitleEl, 'ready');
+
+            skeletonEl.classList.remove('hide');
+
+          }else if(++cssLoadedCheck < cssLoadedCheckLimit){
+            cssPoll()
+          }
+        },50);
     })();
 
 }());

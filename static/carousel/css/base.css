@@ -1,0 +1,71 @@
+/* turn focus state off */
+*:focus {
+  outline: none;
+}
+
+.hide {
+  opacity: 0; 
+  visibility: hidden;
+}
+
+.o-hidden {
+  overflow: hidden;
+}
+
+.clickable {
+  cursor:pointer; 
+}
+
+.fluid-y {
+  height: 0;
+  width: 100%;
+  position: relative;
+}
+
+.abs-center {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.abs-bottom {
+  position: absolute;
+  bottom: 0;
+}
+
+.col-x-push {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+.col-x-pull {
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+/* thumbnail sizes */
+.thumb-sm {
+  max-width: 50px;
+}
+
+.thumb-md {
+  max-width: 100px;
+}
+
+.bg-default {
+  background-repeat: no-repeat;
+  background-position: center;
+  position: relative;
+}
+
+/* backgrounds */
+.white-bg {
+  background-color: white;
+}
+
+.skeleton-bg {
+  background-color: #efefef;
+}

@@ -263,6 +263,7 @@ function widgetRender(){
     ],
     css: [
       debug ? baseUrl + '/bootstrap/dist/css/bootstrap.css' : '',
+      debug ? paths.css + '/base.css' : '',
       debug ? baseUrl + '/slick/slick.css' : '',
       isMobile ? baseUrl + '/slick/mobile/custom.css' : '',
       !isMobile ? baseUrl + '/slick/custom.css' : '',

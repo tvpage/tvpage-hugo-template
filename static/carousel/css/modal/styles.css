@@ -13,14 +13,27 @@ html {
 
 body  {
   margin: 0;
-  padding: 10px;
+  padding: 0;
   height: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
-.tvp-no-products .tvp-player-holder {
+.player-holder {
+  padding-bottom: 56.25%;
+}
+
+.skeleton .player-holder {
+  background-color: #efefef;
+}
+
+.product-image {
+  padding-bottom: 100%;
+  background-size: cover;
+}
+
+/*.tvp-no-products .tvp-player-holder {
   width: 100%;
 }
 
@@ -200,4 +213,4 @@ body  {
   .tvp-arrow-indicator {
     display: none!important;
   }
-}
+}*/

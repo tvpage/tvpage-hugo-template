@@ -1,19 +1,39 @@
-'<div id="tvp-modal-overlay-{{ ($.Scratch.Get "settings").name }}" class="tvp-modal-overlay tvp-hidden"></div>' +
-'<div id="tvp-modal-{{ ($.Scratch.Get "settings").name }}" class="tvp-modal tvp-hidden">' +
-    '<div class="tvp-modal-wrapper {{ if ($.Scratch.Get "settings").video_modal_center }}centered{{end}}">' +
-        '<div class="tvp-modal-content">' +
-            '<div id="tvp-modal-header-{{ ($.Scratch.Get "settings").name }}" class="tvp-modal-header">' +
-                '<div id="tvp-modal-close-{{ ($.Scratch.Get "settings").name }}" class="tvp-modal-close">' +
-                    '<svg class="tvp-modal-close-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">' +
-                        '<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>' +
-                        '<path d="M0 0h24v24H0z"></path>' +
-                    '</svg>' +
+'<div id="skeleton" class="skeleton hide">' +
+  
+    '<div class="modal fade" id="modalElement" tabindex="-1" role="dialog" aria-labelledby="modalElementTitle" aria-hidden="true">' +
+        '<div class="modal-dialog modal-lg" role="document">' +
+            '<div class="modal-content">' +
+              '<div class="modal-header">' +
+                '<h5 class="modal-title" id="modalElementTitle">{title}</h5>' +
+                '<button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
+                  '<span aria-hidden="true"><i class="material-icons">close</i></span>' +
+                '</button>' +
+              '</div>' +
+              '<div class="modal-body">' +
+
+                '<div class="row mt-2">' +
+                  '<div class="col-10">'+
+                    '<div class="player-holder fluid-y" rail-ref>'+
+                      '<div id="player-el"></div>' +
+                    '</div>' +
+                  '</div>' +
+                  '<div class="pl-0 col-2 o-hidden products-skel-delete">' +
+                    {{ range seq 2 }}
+                      '<div class="row">' +
+                        '<div class="col-12 mb-2">' +
+                          '<div class="product-image fluid-y skeleton-bg"></div>' +
+                        '</div>' +
+                      '</div>' +
+                    {{ end }}
+                  '</div>' +
+
+                  '<div id="products" class="pl-0 col-2 o-hidden"></div>' +
+                  
                 '</div>' +
-                '<h4 id="tvp-modal-title-{{ ($.Scratch.Get "settings").name }}" class="tvp-modal-title"></h4>' +
-            '</div>' +
-            '<div class="tvp-modal-body">' +
-                '<div id="tvp-modal-iframe-holder-{{ ($.Scratch.Get "settings").name }}" class="tvp-modal-iframe-holder"></div>' +
+
+              '</div>' +
             '</div>' +
         '</div>' +
     '</div>' +
+  
 '</div>'

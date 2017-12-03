@@ -2,6 +2,8 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:300,600);
 @import url(https://fonts.googleapis.com/icon?family=Material+Icons);
 
+@import "node_modules/bootstrap/scss/functions";
+
 // Custom code and variables
 @import "bootstrap/scss/custom_variables";
 
@@ -14,7 +16,8 @@
 
 // Core CSS
 @import "node_modules/bootstrap/scss/reboot";
-@import "node_modules/bootstrap/scss/normalize";
+//is making grunt plugin break
+//@import "node_modules/bootstrap/scss/normalize";
 @import "node_modules/bootstrap/scss/type";
 @import "node_modules/bootstrap/scss/images";
 //@import "node_modules/bootstrap/scss/code";
@@ -43,7 +46,7 @@
 @import "node_modules/bootstrap/scss/close";
 
 // Components w/ JavaScript
-// @import "node_modules/bootstrap/scss/modal";
+@import "node_modules/bootstrap/scss/modal";
 // @import "node_modules/bootstrap/scss/tooltip";
 // @import "node_modules/bootstrap/scss/popover";
 // @import "node_modules/bootstrap/scss/carousel";
