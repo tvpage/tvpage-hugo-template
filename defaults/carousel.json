@@ -46,7 +46,19 @@
             "label": "Title Text",
             "code": "title_text",
             "value": "Recommended Videos"
-        },
+      },
+      {
+        "type": "text",
+        "label": "Videos Order By",
+        "code": "videos_order_by",
+        "value": "sortOrder"
+      },
+      {
+        "type": "text",
+        "label": "Videos Order Direction",
+        "code": "videos_order_direction",
+        "value": "DESC"
+      },
         {
             "for": "carousel",
             "type": "text",
