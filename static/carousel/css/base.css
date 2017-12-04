@@ -46,6 +46,10 @@
   margin-right: -15px;
 }
 
+.bordered {
+  border: 1px solid;
+}
+
 /* thumbnail sizes */
 .thumb-sm {
   max-width: 50px;
@@ -61,11 +65,8 @@
   position: relative;
 }
 
-/* backgrounds */
-.white-bg {
-  background-color: white;
-}
 
+/* backgrounds */
 .skeleton-bg {
   background-color: #efefef;
 }

@@ -122,14 +122,8 @@
 /* tvpage overrides for functionality */
 .slick-carousel
 {
-    height: 100px;
-    overflow: hidden;
-}
-
-.slick-carousel.slick-initialized
-{
-    height: auto;
-    overflow: visible;
+    height: 80px;
+    overflow-y: hidden;
 }
 
 .slick-slide

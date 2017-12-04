@@ -251,10 +251,14 @@
 
     var arrowEls = this.el.querySelectorAll('.slick-arrow');
     var arrowElsLength = arrowEls.length;
+    var slickEl = this.el.querySelector('.slick-carousel');
 
     for (var i = 0; i < arrowElsLength; i++) {
-      this.el.querySelector('.slick-carousel').appendChild(arrowEls[i]);
+      slickEl.appendChild(arrowEls[i]);
     }
+
+    slickEl.style.height = 'auto';
+    slickEl.style.overflow = 'visible';
 
     this.onReady();
   };
@@ -371,7 +375,15 @@
   };
 
   Carousel.prototype.renderItem = function(item){
-    return Utils.tmpl(this.templates.item, item);
+    var html = "";
+
+    try{
+      html = Utils.tmpl(this.templates.item, item);
+    }catch(e){
+      console.log('render error ', e)
+    }
+
+    return html;
   };
 
   Carousel.prototype.renderBatch = function(batch){

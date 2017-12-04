@@ -195,13 +195,9 @@ function getInitialHtml(){
   
   var hostStyles = isMobile ? css.mobile.host : css.host;
 
-  if (!getById(styleId))
+  if(!getById(styleId)){
     html += '<style id="' + styleId + '">' + hostStyles + '</style>';
-  
-  var hostCustomStyles = isMobile ? css.mobile['host-custom'] : css['host-custom'];
-  
-  if(!isUndefined(hostCustomStyles))
-    html += '<style>' + hostCustomStyles + '</style>';
+  }
 
   html += tmpl(initialHtml, config);
 

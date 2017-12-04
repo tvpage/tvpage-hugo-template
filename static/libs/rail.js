@@ -5,7 +5,9 @@
     this.templates = this.options.templates;
     this.config = globalConfig || {};
     this.endpoint = this.options.endpoint;
+    this.itemClass = '.rail-item';
     this.el = document.getElementById(sel);
+    this.railEl;
     this.itemsPerPage = 1;
     this.itemsPerRow = 1;
   }
@@ -19,12 +21,43 @@
     }
   };
 
+  Rail.prototype.getDataItemById = function(id){
+    var itemsLength = this.data.length;
+
+    for (var i = 0; i < itemsLength; i++) {
+      var item = this.data[i];
+      
+      if (item.id === id)
+        return item;
+    }
+  };
+
+  Rail.prototype.handleHover = function(){
+    var defaultStop = this.options.overDefaultStop;
+    var optOnOver = this.options.onOver;
+    var onOver = Utils.isFunction(optOnOver) ? optOnOver : function(e){
+      if(defaultStop){
+        Utils.stopEvent(e);
+      }
+    };
+
+    var items = this.el.querySelectorAll(this.itemClass);
+    var itemsLength = items.length;
+
+    for (var i = 0; i < itemsLength; i++) {
+      items[i].removeEventListener('mouseover', onOver, false);
+      items[i].addEventListener('mouseover', onOver, false);
+    }    
+  };
+
   Rail.prototype.onReady = function(){
     var onReady = this.options.onReady;
     
     if(Utils.isFunction(onReady)){
       onReady();
     }
+
+    this.handleHover();
   };
 
   Rail.prototype.render = function(){
@@ -72,8 +105,7 @@
     }
 
     if(moreThan2){
-      var productRailEl = Utils.createEl('div');
-      var snapReferenceEl = document.querySelector(this.options.snapReference);
+      var snapReferenceHeight = document.querySelector(this.options.snapReference).offsetHeight;
       var snapReferenceHeightCheck = 0;
       var snapReferenceHeightCheckLimit = 1000;
       var that = this;
@@ -81,12 +113,22 @@
       (function getReferenceHeight(currentParent){
         setTimeout(function() {
 
-          if(snapReferenceEl.offsetHeight > 0){
-            productRailEl.style.height = snapReferenceEl.offsetHeight + 'px';
+          if(snapReferenceHeight > 0){
+            //the actual rail element, the one powered by PS
+            var productRailEl = Utils.createEl('div');
+            productRailEl.style.height = snapReferenceHeight + 'px';
             productRailEl.className = 'rail';   
             productRailEl.innerHTML = renderPages.call(that);
 
-            that.el.appendChild(productRailEl);
+            //we need this holder to wrap/hide PS scrollbars
+            var productRailElHolderEl = Utils.createEl('div');
+            productRailElHolderEl.style.position = 'relative';
+            productRailElHolderEl.className = 'o-hidden';
+            productRailElHolderEl.appendChild(productRailEl);
+            
+            that.railEl = productRailEl;
+            
+            that.el.appendChild(productRailElHolderEl);
 
             Ps.initialize(productRailEl, {
               suppressScrollX: true

@@ -1,16 +1,10 @@
-'<div data-id="{id}" class="carousel-item clickable">' +
+'<div data-id="{id}" class="carousel-item">' +
     
-  '<a class="product d-block p-2" href="{linkUrl}" class="product-item" data-id="{id}">' +
-    '<div class="row">' +
-      '<div class="col-4 col-sm-5">' +
-        '<div class="product-image bg-default fluid-y" style="background-image:url({imageUrl});"></div>' +
-      '</div>' +
-
-      '<div class="col-8 col-sm-7">' +
-        '<p class="product-title mb-2 ready">{title}</p>' +
-        '<button type="button" class="btn-sm btn-primary">{actionText}</button>' +
-      '</div>' +
+    '<div class="product{className} mx-2">' +
+    '<div class="product-image bg-default" style="background-image:url({imageUrl})">' +
+      '<div class="product-image-overlay abs-center"></div>' +
     '</div>' +
-  '</a>' +
-
+    '<p class="product-title m-0 ready d-none">{title}</p>' +
+  '</div>' +
+ 
 '</div>'

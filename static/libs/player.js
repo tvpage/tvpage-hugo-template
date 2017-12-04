@@ -127,6 +127,7 @@
   Player.prototype.getParentSize = function(param){
     var el = this.el.parentNode;
     var size = null;
+
     if('width' === param){
       size = el.offsetWidth;
     } else if('height' === param){
@@ -142,11 +143,12 @@
     var width = arguments[0] || this.getParentSize('width');
     var height = arguments[1] || this.getParentSize('height');
     
-    if (this.instance)
+    if(this.instance){
       this.instance.resize(width,height);
+    }
   
     this.initialResize = false;
-    
+
     if (this.onResize)
       this.onResize(this.initialResize,[width,height]);
   };
