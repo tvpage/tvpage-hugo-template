@@ -1,3 +1,18 @@
+//we add the preconnect hints as soon as we can
+(function addHTMLHints(){
+  [
+    config.api_base_url,
+    config.baseUrl
+  ].forEach(function(href){
+    var link = document.createElement('link');
+
+    link.rel = 'preconnect';
+    link.href = href;
+
+    document.head.appendChild(link);
+  });
+})();
+
 var body = document.body;
 var userAgent = navigator.userAgent;
 var isFirefox = /Firefox/i.test(userAgent);
@@ -116,18 +131,13 @@ function getEventName(e){
   return eArr[0] === eventPrefix ? eArr[1] : '';
 }
 
-//we add the preconnect hints as soon as we can
-var preConnectLink = createEl('link');
-preConnectLink.rel = 'preconnect';
-preConnectLink.href = config.api_base_url;
-document.head.appendChild(preConnectLink);
-
 //here we start with the actual logic that will prepare the iframe(s) content and inject it
 //to the page.
 var debug = config.debug;
 var type = config.type;
 var css = config.css;
 var baseUrl = config.baseUrl;
+var libsPath = baseUrl + '/libs';
 var static = baseUrl + '/' + type;
 var dist = debug ? '/' : '/dist/';
 var eventPrefix = ('tvp_' + id).replace(/-/g, '_');
@@ -182,7 +192,11 @@ function getIframeHtml(o){
   html += load(o.js, 'JavaScript') + load(o.css, 'CSS');
   html += '">';//closing the body tag
   html += '<div id="bs-checker" class="invisible"></div>';//helper to check bs is loaded
-  html += '<style>' + (o.style || '') + '</style>';
+  
+  if(o.style){
+    html += '<style>' + o.style + '</style>';
+  }
+  
   html += tmpl((o.html || '').trim(), o.context);
 
   return html;
@@ -227,13 +241,13 @@ function widgetRender(){
   
     var iframe = holder.querySelector("iframe");
     var iframeDocument = iframe.contentWindow.document;
-    var libsPath = baseUrl + '/libs';
   
     iframeDocument.open().write(getIframeHtml({
       id: id,
       domain: baseUrl,
       context: config,
       html: templates.base,
+      className: isMobile ? "mobile" : "",
       eventPrefix: eventPrefix,
       js: [
         '//a.tvpage.com/tvpa.min.js',
@@ -245,10 +259,10 @@ function widgetRender(){
         debug ? "" : javascriptPath + '/scripts.min.js'
       ],
       css: [
+        debug ? baseUrl + '/bootstrap/dist/css/bootstrap.css' : '',
         debug ? baseUrl + '/slick/slick.css' : '',
         isMobile ? baseUrl + '/slick/mobile/custom.css' : '',
         !isMobile ? baseUrl + '/slick/custom.css' : '',
-        debug ? baseUrl + '/bootstrap/dist/css/bootstrap.css' : '',
         debug ? cssPath + '/styles.css' : '',
         debug ? '' : cssPath + '/styles.min.css'
       ]
@@ -392,11 +406,7 @@ function widgetModalRender(){
   }
   
   if(iframeModal){
-    if(config.debug){
-      console.log("modal already exists");
-    }
-
-   return; 
+   return;
   }
 
   var modalTargetEl = createEl('div');
@@ -424,10 +434,10 @@ function widgetModalRender(){
       "//a.tvpage.com/tvpa.min.js",
       '//imasdk.googleapis.com/js/sdkloader/ima3.js',
       getPlayerUrl(),
-      debug ? baseUrl + "/libs/utils.js" : "",
-      debug ? baseUrl + "/libs/analytics.js" : "",
-    debug ? baseUrl + "/libs/player.js" : "",
-      debug ? baseUrl + "/libs/carousel.js" : "",
+      debug ? libsPath + "/utils.js" : "",
+      debug ? libsPath + "/analytics.js" : "",
+      debug ? libsPath + "/player.js" : "",
+      debug ? libsPath + "/carousel.js" : "",
 
       //this has to be an option
       debug ? baseUrl + "/libs/rail.js" : "",
@@ -440,11 +450,11 @@ function widgetModalRender(){
     css: [
       debug ? baseUrl + '/bootstrap/dist/css/bootstrap.css' : '',
       debug ? cssPath + "/base.css" : '',
-      debug ? cssPath + "/" + mobilePath + "/modal/styles.css" : '',
       debug && isMobile ? baseUrl + "/slick/slick.css" : '',
       isMobile ? baseUrl + '/slick/mobile/custom.css' : '',
       !isMobile ? baseUrl + '/slick/custom.css' : '',
       debug && !isMobile ? cssPath + "/vendor/perfect-scrollbar.min.css" : "",
+      debug ? cssPath + "/" + mobilePath + "/modal/styles.css" : '',
       debug ? "" : cssPath + "/" + mobilePath + "/modal/styles.min.css"
     ]
   }));

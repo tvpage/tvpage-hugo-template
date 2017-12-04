@@ -122,12 +122,12 @@
   color:white
 }
 
-:not(.mobile) .video:hover .video-image-overlay {
+body:not(.mobile) .video:hover .video-image-overlay {
   opacity: 1;
   visibility: visible;
 }
 
-:not(.mobile) .video:hover .video-image-icon {
+body:not(.mobile) .video:hover .video-image-icon {
   background-color: #000000;
 }
 

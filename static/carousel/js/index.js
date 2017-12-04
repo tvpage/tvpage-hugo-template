@@ -11,17 +11,45 @@
   var skeletonEl = document.getElementById('skeleton');
   var videosCarousel;
 
+  function sendResizeMessage(){
+    Utils.sendMessage({
+      event: eventPrefix + ':widget_resize',
+      height: Utils.getWidgetHeight()
+    });
+  }
+
+  //we check when critical css has loaded/parsed. At this step, we have data to
+  //update the skeleton. We wait until css has really executed in order to send
+  //the right measurements.
+  var cssLoadedCheck = 0;
+  var cssLoadedCheckLimit = 1000;
+
+  (function cssPoll() {
+    setTimeout(function() {
+      console.log('css loaded poll...');
+
+      var bsCheckerEl = document.getElementById('bs-checker');
+      var bsCheckerElVisibility = getComputedStyle(bsCheckerEl, null).getPropertyValue('visibility');
+
+      if ('hidden' === bsCheckerElVisibility) {
+        var widgetTitleEl = Utils.getById('widget-title');
+        widgetTitleEl.innerHTML = config.title_text;
+        Utils.addClass(widgetTitleEl, 'ready');
+
+        skeletonEl.style.visibility = 'visible';
+        skeletonEl.style.opacity = '1';
+
+        sendResizeMessage();
+      } else if (++cssLoadedCheck < cssLoadedCheckLimit) {
+        cssPoll()
+      }
+    }, 5);
+  })();
+
   //a videos section will be initialized
-  function initVideos(){
-    function onResize(){
-      Utils.sendMessage({
-        event: eventPrefix + ':widget_resize',
-        height: Utils.getWidgetHeight()
-      });
-    }
-    
-    function onClick(e){
-      if(e && e.target){
+  function initVideos() {
+    function onClick(e) {
+      if (e && e.target) {
         var realTarget = Utils.getRealTargetByClass(e.target, videosCarousel.itemClass.substr(1));
 
         Utils.sendMessage({
@@ -31,28 +59,28 @@
       }
     }
 
-    function onReady(){
+    function onReady() {
       Utils.remove(skeletonEl.querySelector('.videos-skel-delete'));
-      
+
       Utils.sendMessage({
         event: eventPrefix + ':widget_ready',
         height: Utils.getWidgetHeight()
       });
-      
+
       videosCarousel.loadNext('render');
     }
 
-    function onLoad(data){
+    function onLoad(data) {
       config.channel.videos = config.channel.videos.concat(data);
     }
 
-    function parseVideos(item){
+    function parseVideos(item) {
       item.title = Utils.trimText(item.title, 35);
 
       return item;
     }
 
-    videosCarousel = new Carousel('videos',{
+    videosCarousel = new Carousel('videos', {
       alignArrowsY: ['center', '.video-image-icon'],
       endpoint: videosEndpoint,
       params: Utils.addProps({
@@ -70,19 +98,17 @@
         list: templates.videos.list,
         item: templates.videos.item
       },
-      responsive: [
-        {
-          breakpoint: 576,
-          settings: {
-            slidesToShow: 1,
-            slidesToScroll: 1
-          }
+      responsive: [{
+        breakpoint: 576,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1
         }
-      ],
+      }],
       onClick: onClick,
       onReady: onReady,
       onLoad: onLoad,
-      onResize: onResize,
+      onResize: sendResizeMessage,
       parse: parseVideos
     }, config);
 
@@ -90,7 +116,7 @@
     videosCarousel.render();
   };
 
-  function initAnalytics(){
+  function initAnalytics() {
     var analytics = new Analytics();
     var analyticsConfig = {
       domain: location.hostname || '',
@@ -99,7 +125,7 @@
     };
 
     if (config.firstPartyCookies && config.cookieDomain)
-        analyticsConfig.firstPartyCookieDomain = config.cookieDomain;
+      analyticsConfig.firstPartyCookieDomain = config.cookieDomain;
 
     analytics.initConfig(analyticsConfig);
 
@@ -111,51 +137,25 @@
   //The global deps of the carousel have to be present before executing its logic.
   var depsCheck = 0;
   var depsCheckLimit = 1000;
-  var deps = ['jQuery','Carousel','Utils','Analytics'];
+  var deps = ['jQuery', 'Carousel', 'Utils', 'Analytics'];
 
-  (function initCarousel(){
+  (function initCarousel() {
     setTimeout(function() {
       console.log('deps poll...');
-      
+
       var ready = true;
       for (var i = 0; i < deps.length; i++)
         if ('undefined' === typeof window[deps[i]])
           ready = false;
 
-      if(ready){
+      if (ready) {
         initAnalytics();
         initVideos();
 
-      }else if(++depsCheck < depsCheckLimit){
+      } else if (++depsCheck < depsCheckLimit) {
         initCarousel()
       }
-    },5);
+    }, 5);
   })();
-
-    //we check when critical css has loaded/parsed. At this step, we have data to
-    //update the skeleton. We wait until css has really executed in order to send
-    //the right measurements.
-    var cssLoadedCheck = 0;
-    var cssLoadedCheckLimit = 1000;
-
-    (function cssPoll(){
-        setTimeout(function(){
-          console.log('css loaded poll...');
-        
-          var bsCheckerEl = document.getElementById('bs-checker');
-          var bsCheckerElVisibility = getComputedStyle(bsCheckerEl,null).getPropertyValue('visibility');
-
-          if('hidden' === bsCheckerElVisibility){
-            //add widget title
-            var widgetTitleEl = Utils.getById('widget-title');
-            widgetTitleEl.innerHTML = config.title_text;
-            Utils.addClass(widgetTitleEl, 'ready');
-
-            skeletonEl.classList.remove('hide');
-          }else if(++cssLoadedCheck < cssLoadedCheckLimit){
-            cssPoll()
-          }
-        },50);
-    })();
 
 }());
