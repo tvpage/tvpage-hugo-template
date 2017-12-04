@@ -1,0 +1,61 @@
+filter:
+    excluded_paths:
+        - '*.min.js'
+        - '*/vendor/*'
+        - '*/build/*'
+        - '*/dist/*'
+        - '*/test/*'
+        - '*/captivate/*'
+        - '*build.min.js*'
+        - '*build.js*'
+        - '*text.js*'
+        - '*gruntfile.js*'
+        - '*Gruntfile.js*'
+        - '*/guitest/*'
+        
+checks:
+    javascript:
+        var_never_initialized: true
+        unsafe_mutable_variable_usage: true
+        no_use_before_define: true
+        no_undef: true
+        no_inner_declarations: true
+        no_eval: true
+        no_implied_eval: true
+        no_debugger: true
+        check_too_many_arguments: true
+        no_loop_var_assign: true
+
+build:
+    dependencies:
+        before:
+            - cd static && npm install
+            - cd ../guitest && npm install
+
+    tests:
+        override:
+            -
+                command: 'cd ../static && npm test'
+                coverage:
+                    file: 'static/coverage/clover.xml'
+                    format: 'clover'
+            -
+                command: 'npm run check'
+            -
+                command: ' cd ../guitest && node_modules/.bin/nightwatch -c conf/suite_fulltest.conf.js -e SoloW10GC61'
+
+build_failure_conditions:
+    # No new classes/methods with a rating of D or worse
+    - 'elements.rating(<= D).new.exists'
+    
+    # Code Quality Rating drops below 6
+    - 'project.metric("scrutinizer.quality", < 6)'
+
+    # No new coding style issues allowed
+    - 'issues.label("coding-style").severity(>= MINOR).new.exists'
+
+    # New issues of major or higher severity
+    - 'issues.severity(>= MAJOR).new.exists'
+    
+    # Code Coverage drops below 60%
+    - 'project.metric("scrutinizer.test_coverage", < 0.60)'

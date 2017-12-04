@@ -7,6 +7,18 @@
           "value": "//api.tvpage.com/v1"
         },
         {
+            "type": "text",
+            "label": "Videos Order By",
+            "code": "videos_order_by",
+            "value": "sortOrder"
+        },
+        {
+            "type": "text",
+            "label": "Videos Order Direction",
+            "code": "videos_order_direction",
+            "value": "ASC"
+        },
+        {
           "for": "player",
           "type": "text",
           "label": "Player Version",
@@ -53,6 +65,20 @@
           "label": "Items Per Row",
           "code": "items_per_row",
           "value": 1
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Products Order By",
+            "code": "products_order_by",
+            "value": "sortOrder"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Products Order Direction",
+            "code": "products_order_direction",
+            "value": "ASC"
         },
         {
           "for": "mobile",
@@ -571,6 +597,13 @@
           "label": "Iframe Modal Body Padding",
           "code": "iframe_modal_body_padding",
           "value": "10px"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Iframe Content Padding",
+          "code": "iframe_content_padding",
+          "value": "5px"
         },
         {
           "for": "modal",

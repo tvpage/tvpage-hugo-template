@@ -113,7 +113,7 @@ if ( !config.hasOwnProperty('targetEl') ||  !document.getElementById(config.targ
 
 var targetElement = document.getElementById(config.targetEl);
 targetElement.insertAdjacentHTML('beforebegin', hostCssTag + '<style>' + config.css["host-custom" + (utils.isMobile ? "-mobile" : "")] + '</style><div id="' + id + '-holder" class="tvp-sidebar-holder">'+
-'<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe></div>');
+'<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe></div>');
 targetElement.parentNode.removeChild(targetElement);
 
 config.id = id;
@@ -147,7 +147,9 @@ var iframeContent = utils.getIframeHtml({
     domain: config.baseUrl,
     style: config.css.sidebar,
     js: [
-        config.debug ? config.jsPath + "libs/utils.js" : "",
+        "//a.tvpage.com/tvpa.min.js",
+        config.debug ? config.baseUrl + 'libs/analytics.js' : "",
+        config.debug ? config.baseUrl + "libs/utils.js" : "",
         config.debug ? config.jsPath + "grid.js" : "",
         config.debug ? config.jsPath + "index.js" : "",
         config.debug ? "" : config.jsPath + "scripts.min.js"
@@ -227,12 +229,19 @@ function handlePostMessages(e){
     case 'render':
       handleRender(e);
       break;
+    case 'onPlayerChange':
+      handleOnPlayerChange(e);
+      break;
     default: 
       // do nothing
   }
 
   handleCallback(e);
 };
+
+function handleOnPlayerChange(e){
+  config.onPlayerChange(e.data.e, e.data.stateData);
+}
 
 function handleCallback(e){
   if (__windowCallbackFunc__) 
@@ -252,6 +261,8 @@ function handleVideoClick(e){
 
     //performant way to clone object http://jsben.ch/#/bWfk9
     var configCopy = JSON.parse(JSON.stringify(config));
+    configCopy.onPlayerChange = !!config.onPlayerChange;
+    
     delete configCopy.no_products_banner;
 
     clickData = {
@@ -268,7 +279,7 @@ function handleVideoClick(e){
         utils.addClass(document.body, 'tvp-modal-open');
     }
 
-    iframeModalHolder.innerHTML =  '<iframe class="tvp-iframe-modal" src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe>';
+    iframeModalHolder.innerHTML =  '<iframe class="tvp-iframe-modal" src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe>';
     iframeModal = iframeModalHolder.querySelector('.tvp-iframe-modal');
     iframeModalDocument = iframeModal.contentWindow.document;
     
@@ -290,9 +301,9 @@ function handleVideoClick(e){
           playerUrl,
           config.debug && utils.isMobile ? config.jsPath + "/vendor/jquery.js" : "",
           config.debug && !utils.isMobile ? config.jsPath + "/vendor/perfect-scrollbar.min.js" : "",
-          config.debug ? config.jsPath + "/libs/utils.js" : "",
-          config.debug ? config.jsPath + "/libs/analytics.js" : "",
-          config.debug ? config.jsPath + "/libs/player.js" : "",
+          config.debug ? config.baseUrl + "libs/utils.js" : "",
+          config.debug ? config.baseUrl + "libs/analytics.js" : "",
+          config.debug ? config.baseUrl + "libs/player.js" : "",
           config.debug ? config.jsPath + "/" + config.mobilePath + "modal/index.js" : "",
           config.debug ? "" : config.jsPath + config.mobilePath + "modal/scripts.min.js"
       ],
