@@ -1,19 +1,8 @@
-/*==============================*/
+/*===============================*/
 /* Nightwatch Sidebar Automation */
-/*==============================*/
-var ANALYTIC = require(__dirname + "/analytic.counts.safari.js"),
-    AUTO = require(__dirname + "/../../../../lib/tvpGUITest.js"),
-    DATA = {
-      BASE_URL: "https://widgets.goodlookingbean.com/test/",
-      SLA: 10000,
-      BROWSERHEIGHT: 1080,
-      BROWSEWIDTH: 1920,
-
-      WIDGET_TYPE: 'sidebar',
-      WIDGET_CI: {MIN:0, MAX:1},
-      LOGIN_ID: 1758799,
-      CHANNEL_ID: 66133904
-    };
+/*===============================*/
+var SIDEBAR = require(__dirname + "/../../../data/sidebar.js"),
+    AUTO = require(__dirname + "/../../../lib/tvpGUITest.js");
 
 module.exports = {
   ELEMENT_WIDGET_HOLDER: "div#sidebar-2-holder",
@@ -27,7 +16,6 @@ module.exports = {
   ELEMENT_MODAL_CLOSE_BUTTON: 'div#tvp-modal-close-sidebar-2',
   ELEMENT_MODAL_TITLE: 'h4#tvp-modal-title-sidebar-2',
   ELEMENT_MODAL_IFRAME_HOLDER: 'tvp-modal-iframe-holder-sidebar-2',
-
   ELEMENT_PLAYER_HOLDER: "div.tvp-player-holder",
   ELEMENT_PRODUCT_HOLDER: "div.tvp-products-holder",
   ELEMENT_VIDEO_CONTENT: 'div#sidebar-2',
@@ -45,24 +33,14 @@ module.exports = {
           ELEMENT_MODAL_TITLE: this.ELEMENT_MODAL_TITLE,
           ELEMENT_MODAL_IFRAME_HOLDER: this.ELEMENT_MODAL_IFRAME_HOLDER,
           ELEMENT_MODAL_OPEN: this.ELEMENT_MODAL_OPEN,
-          DATA: DATA,
-          ANALYTIC_RESET: true,
-
-          WIDGET_TYPE: 'sidebar',
-          WIDGET_CI: {MIN:0, MAX:1},
+          DATA: SIDEBAR.data,
           IS_SAFARI: true
         }),
-        product = {
-          ID: 83102933,
-          URL: "http://www.gourmia.com/item.asp?item=10096",
-          SECURE_URL: "http://http://www.gourmia.com/item.asp?item=10096",
-          TITLE_REGEX: /Gourmia\ GDK380\ Multi\ Function\ Digital\ Tea\ Kettle,\ \.\.\./i,
-          IMG: "http://www.gourmia.com/itemimageslarge/GDK380-Small.png",
-          PRICE: "$199.99"
-        },
+        product = SIDEBAR.product,
         parent = this.ELEMENT_VIDEO_CONTENT + " > " + this.ELEMENT_PRODUCT_HOLDER,
-        client = widget.init(browser, "Sidebar Widget Analytics", this.ELEMENT_WIDGET_HOLDER, this.IFRAME_WIDGET, parent),
-        expected =  ANALYTIC.counts;
+        environment = browser.options.desiredCapabilities.build,
+        client = widget.init(browser, "[" + environment + "] Widget Analytics", this.ELEMENT_WIDGET_HOLDER, this.IFRAME_WIDGET, parent),
+        expected =  SIDEBAR.analytics_safari;
 
     widget
       .widgetTitle(this.ELEMENT_WIDGET, this.ELEMENT_WIDGET_TITLE, "Recommended Videos")

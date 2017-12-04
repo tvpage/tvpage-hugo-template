@@ -33,9 +33,10 @@ module.exports = {
           ELEMENT_MODAL_TITLE: this.ELEMENT_MODAL_TITLE,
           ELEMENT_MODAL_IFRAME_HOLDER: this.ELEMENT_MODAL_IFRAME_HOLDER,
           ELEMENT_MODAL_OPEN: this.ELEMENT_MODAL_OPEN,
-          DATA: CAROUSEL_SPOTLIGHT.data
+          DATA: CAROUSEL_SPOTLIGHT.data,
+          IS_SAFARI: true
         }),
-        product = CAROUSEL_SPOTLIGHT.prodcut,
+        product = CAROUSEL_SPOTLIGHT.product,
         parent = this.ELEMENT_VIDEO_CONTENT + " > " + this.ELEMENT_PRODUCT_HOLDER,
         environment = browser.options.desiredCapabilities.build,
         client = widget.init(browser, "[" + environment + "] Widget Analytics", this.ELEMENT_WIDGET_HOLDER, this.IFRAME_WIDGET, parent),
@@ -44,7 +45,7 @@ module.exports = {
     widget
       .widgetTitle(this.ELEMENT_WIDGET, this.ELEMENT_WIDGET_TITLE, "Recommended Videos")
       .modalSanity(this.ELEMENT_MODAL, this.ELEMENT_FIRST_VIDEO, 'Double wall insulated mug', this.IFRAME_MODAL, true)
-      .productSanity(product, 'a[data-id="83102933"]', undefined, this.IFRAME_MODAL, false)
+      .productSanity(product, 'a[data-id="83102933"]', 'p.product-title', this.IFRAME_MODAL, false)
       .pause(5)
       .playerStartPause(this.IFRAME_MODAL, this.ELEMENT_VIDEO_CONTENT + " > " + this.ELEMENT_PLAYER_HOLDER)
       .pause(25)

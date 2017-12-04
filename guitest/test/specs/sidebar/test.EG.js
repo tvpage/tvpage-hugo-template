@@ -1,19 +1,8 @@
-/*==============================*/
+/*===============================*/
 /* Nightwatch Sidebar Automation */
-/*==============================*/
-var ANALYTIC = require(__dirname + "/../analytics/sidebar.counts.js"),
-    AUTO = require(__dirname + "/../../../lib/tvpGUITest.js"),
-    DATA = {
-      BASE_URL: "https://widgets.goodlookingbean.com/test/",
-      SLA: 10000,
-      BROWSERHEIGHT: 1080,
-      BROWSEWIDTH: 1920,
-
-      WIDGET_TYPE: 'sidebar',
-      WIDGET_CI: {MIN:0, MAX:1},
-      LOGIN_ID: 1758799,
-      CHANNEL_ID: 66133904
-    };
+/*===============================*/
+var SIDEBAR = require(__dirname + "/../../../data/sidebar.js"),
+    AUTO = require(__dirname + "/../../../lib/tvpGUITest.js");
 
 module.exports = {
   ELEMENT_WIDGET_HOLDER: "div#sidebar-2-holder",
@@ -44,24 +33,14 @@ module.exports = {
           ELEMENT_MODAL_TITLE: this.ELEMENT_MODAL_TITLE,
           ELEMENT_MODAL_IFRAME_HOLDER: this.ELEMENT_MODAL_IFRAME_HOLDER,
           ELEMENT_MODAL_OPEN: this.ELEMENT_MODAL_OPEN,
-          DATA: DATA,
-          ANALYTIC_RESET: true,
-          WIDGET_TYPE: 'sidebar',
-          WIDGET_CI: {MIN:0, MAX:1},
+          DATA: SIDEBAR.data,
           IS_EDGE: true
         }),
-        product = {
-          ID: 83102933,
-          URL: "http://www.gourmia.com/item.asp?item=10096",
-          SECURE_URL: "http://http://www.gourmia.com/item.asp?item=10096",
-          TITLE_REGEX: /Gourmia\ GDK380\ Multi\ Function\ Digital\ Tea\ Kettle,\ \.\.\./i,
-          IMG: "http://www.gourmia.com/itemimageslarge/GDK380-Small.png",
-          PRICE: "$199.99"
-        },
+        product = SIDEBAR.product,
         parent = this.ELEMENT_VIDEO_CONTENT + " > " + this.ELEMENT_PRODUCT_HOLDER,
         environment = browser.options.desiredCapabilities.build,
         client = widget.init(browser, "[" + environment + "] Widget Analytics", this.ELEMENT_WIDGET_HOLDER, this.IFRAME_WIDGET, parent),
-        expected =  ANALYTIC.counts;
+        expected =  SIDEBAR.analytics;
 
     widget
       .widgetTitle(this.ELEMENT_WIDGET, this.ELEMENT_WIDGET_TITLE, "Recommended Videos")

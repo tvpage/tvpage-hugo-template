@@ -109,9 +109,7 @@ exports.tvpGUITest = function (options) {
       CLIENT
         .url(WIDGET_URL, function (r) {
           if (IS_MOBILE === false) {
-            //if (IS_SAFARI !== true) {
-              this.resizeWindow(DATA.BROWSEWIDTH, DATA.BROWSERHEIGHT);
-            //}
+            this.resizeWindow(DATA.BROWSEWIDTH, DATA.BROWSERHEIGHT);
           }
 
           if (IS_MOBILE === true && ORIENTATION !== undefined) {
@@ -124,13 +122,15 @@ exports.tvpGUITest = function (options) {
         CLIENT.waitForElementVisible(widgetHolder + " iframe[gesture=media]", DATA.SLA);
       }
 
-      // CI check for Initial Widget Load
-      this.analytics(TARGET_IFRAME, ['ci'], {
-        LOGIN_ID: DATA.LOGIN_ID,
-        CHANNEL_ID: DATA.CHANNEL_ID,
-        COUNTS: {"ci": DATA.WIDGET_CI},
-        RESET: true
-      });
+      if (DATA.SKIP_INIT_COUNT !== true) {
+        // CI check for Initial Widget Load
+        this.analytics(TARGET_IFRAME, ['ci'], {
+          LOGIN_ID: DATA.LOGIN_ID,
+          CHANNEL_ID: DATA.CHANNEL_ID,
+          COUNTS: {"ci": DATA.WIDGET_CI},
+          RESET: true
+        });
+      }
 
       return CLIENT;
     },
@@ -538,19 +538,19 @@ exports.tvpGUITest = function (options) {
       // CLIENT.expect.element(PARENT + " #tvplayer-playbutton-icon").to.be.present;
     },
 
-    playerStartPause: function (videoIframe, playerParent, isStart, x, y) {
-      if (videoIframe === undefined)
-        videoIframe = TARGET_IFRAME;
+    playerStartPause: function (iframe, parent, isStart, x, y) {
+      if (iframe === undefined)
+        iframe = TARGET_IFRAME;
 
-      if (playerParent !== undefined)
-        PARENT = playerParent;
+      if (parent !== undefined)
+        PARENT = parent;
 
       if (isStart === undefined)
         isStart = true;
 
       CLIENT
         .frameParent()
-        .frame(videoIframe);
+        .frame(iframe);
 
       if (isStart === false) {
         CLIENT.waitForElementPresent(PARENT + ' div.tvp-control-overlay', DATA.SLA);
@@ -766,9 +766,11 @@ exports.tvpGUITest = function (options) {
             'ci': function(client, params, videoIndex) {
               console.log(">>> Checking CI <<<");
 
-              client.waitForElementVisible('p.analtyticsTestCI', 6000);
-              client.expect.element('p.analtyticsTestCI').to.be.present;
-              this.assert.ok(aCounts['ci'] > 0);
+              if (config.SKIP_CHECK_ELEMENT !== true) {
+                client.waitForElementVisible('p.analtyticsTestCI', 6000);
+                client.expect.element('p.analtyticsTestCI').to.be.present;
+                this.assert.ok(aCounts['ci'] > 0);
+              }
 
               var li = params.get('li');
               this.assert.equal(li, DATA.LOGIN_ID);
@@ -801,8 +803,10 @@ exports.tvpGUITest = function (options) {
 
               vids.push(config.VIDS[videoIndex]);
 
-              client.waitForElementPresent('p.analtyticsTestVV', 6000);
-              client.expect.element('p.analtyticsTestVV').to.be.present;
+              if (config.SKIP_CHECK_ELEMENT !== true) {
+                client.waitForElementPresent('p.analtyticsTestVV', 6000);
+                client.expect.element('p.analtyticsTestVV').to.be.present;
+              }
 
               var vvs = params.get('vvs');
               this.assert.ok(vvs);
@@ -837,10 +841,11 @@ exports.tvpGUITest = function (options) {
               this.assert.equal(vvs, VVS);
 
               var vdr = params.get('vdr'),
-                  VDR = findKeys('VID', 'VDR', vd, config.VDRS)
+                  VDR = findKeys('VID', 'VDR', vd, config.VDRS);
 
+              console.log(">>> Expected VDR: " + vdr + " <<<");
               if (typeof VDR === 'object') {
-                this.assert.ok(true, (VDR.MIN <= vdr && VDR.MAX >= vdr));
+                this.assert.ok((VDR.MIN <= vdr && VDR.MAX >= vdr));
               } else {
                 this.assert.equal(vdr, VDR);
               }
@@ -912,8 +917,10 @@ exports.tvpGUITest = function (options) {
             'pk': function(client, params, videoIndex) {
               console.log(">>> Checking PK <<<");
 
-              client.waitForElementVisible('p.analtyticsTestPK', 6000);
-              client.expect.element('p.analtyticsTestPK').to.be.present;
+              if (config.SKIP_CHECK_ELEMENT !== true) {
+                client.waitForElementVisible('p.analtyticsTestPK', 6000);
+                client.expect.element('p.analtyticsTestPK').to.be.present;
+              }
 
               var url = params.get('url');
               this.assert.equal(url, WIDGET_URL);
@@ -944,9 +951,15 @@ exports.tvpGUITest = function (options) {
 
           result.value.forEach(function(script, rIndex) {
             CLIENT.elementIdAttribute(script.ELEMENT, 'src', function(element) {
-              var url = new URL(element.value),
-                  params = new URLSearchParams(url.searchParams),
-                  THAT = this;
+              try {
+                var url = new URL(element.value),
+                    params = new URLSearchParams(url.searchParams);
+              } catch(e) {
+                console.log(">>> Invalid Analytic URL: " + element.value + " <<<");
+                var params = new URLSearchParams("");
+              }
+
+              var THAT = this;
 
               events.forEach(function (key, eIndex) {
                 if (params.get('rt') == key) {
@@ -960,7 +973,7 @@ exports.tvpGUITest = function (options) {
                 }
 
                 // Checking counts if loop reaches end of script list and event list
-                if (skipCount === false && eIndex == (events.length - 1) && rIndex == (result.value.length - 1)) {
+                if (skipCount !== true && eIndex == (events.length - 1) && rIndex == (result.value.length - 1)) {
                   console.log(">>> Analytic Events Count Check <<<");
 
                   events.forEach(function (event) {
