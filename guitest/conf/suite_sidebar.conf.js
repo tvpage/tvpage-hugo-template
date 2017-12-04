@@ -1,6 +1,6 @@
 
 nightwatch_config = {
-  src_folders : [ "test/specs/" ],
+  src_folders : [ "test/specs/sidebar" ],
 
   selenium : {
     "start_process" : false,
@@ -15,137 +15,149 @@ nightwatch_config = {
   },
 
   test_settings: {
-    default: {
-      'resolution': '1920x1080'
-    },
-    SidebarW10GC: {
+    default: {},
+    W10GC: {
       desiredCapabilities: {
         'build': 'SidebarW10GC',
         'os': 'Windows',
         'os_version': '10',
         'browser': 'Chrome',
-        'browser_version': '61.0'
+        'browser_version': '61.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/sidebar/test.js"      
+      filter: "test.GC.js"      
     },
-    SidebarW10FF: {
+    W10FF: {
       desiredCapabilities: {
         'build': 'SidebarW10FF',
         'os': 'Windows',
         'os_version': '10',
         'browser': 'Firefox',
-        'browser_version': '57.0'
+        'browser_version': '57.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/sidebar/test.ff.js"
+      filter: "test.FF.js"
     },
-    SidebarW10IE: {
+    W10IE: {
       desiredCapabilities: {
         'build': 'SidebarW10IE',
         'os': 'Windows',
         'os_version': '10',
         'browser': 'IE',
-        'browser_version': '11'
+        'browser_version': '11',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/sidebar/test.ie.js"
+      filter: "test.IE.js"
     },
-    SidebarW10Edge: {
+    W10Edge: {
       desiredCapabilities: {
         'build': 'SidebarW10Edge',
         'os': 'Windows',
         'os_version': '10',
         'browser': 'Edge',
-        'browser_version': '15.0'
+        'browser_version': '15.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/sidebar/test.eg.js"
+      filter: "test.EG.js"
     },
-    SidebarW81GC: {
+    W81GC: {
       desiredCapabilities: {
         'build': 'SidebarW81GC',
         'os': 'Windows',
         'os_version': '8.1',
         'browser': 'Chrome',
-        'browser_version': '61.0'
+        'browser_version': '61.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/sidebar/test.js"      
+      filter: "test.GC.js"      
     },
-    SidebarW81FF: {
+    W81FF: {
       desiredCapabilities: {
         'build': 'SidebarW81FF',
         'os': 'Windows',
         'os_version': '8.1',
         'browser': 'Firefox',
-        'browser_version': '57.0'
+        'browser_version': '57.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/sidebar/test.ff.js"
+      filter: "test.FF.js"
     },
-    SidebarW81IE: {
+    W81IE: {
       desiredCapabilities: {
         'build': 'SidebarW81IE',
         'os': 'Windows',
         'os_version': '8.1',
         'browser': 'IE',
-        'browser_version': '11'
+        'browser_version': '11',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/sidebar/test.ie.js"
+      filter: "test.IE.js"
     },
-    SidebarOSXHSSafari: {
+    OSXHSSafari: {
       desiredCapabilities: {
         'build': 'SidebarOSXHSSafari',
         'os': 'OS X',
         'os_version': 'High Sierra',
         'browser': 'Safari',
-        'browser_version': '11.0'      },
-      filter: "desktop/sidebar/test.sf.js"
+        'browser_version': '11.0',
+        'resolution': '1920x1080'
+      },
+      filter: "test.SF.js"
     },
-    SidebarOSXHSGC: {
+    OSXHSGC: {
       desiredCapabilities: {
         'build': 'SidebarOSXHSGC',
         'os': 'OS X',
         'os_version': 'High Sierra',
         'browser': 'Chrome',
-        'browser_version': '61.0'
+        'browser_version': '61.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/sidebar/test.js"
+      filter: "test.GC.js"
     },
-    SidebarOSXHSFF: {
+    OSXHSFF: {
       desiredCapabilities: {
         'build': 'SidebarOSXHSFF',
         'os': 'OS X',
         'os_version': 'High Sierra',
         'browser': 'Firefox',
-        'browser_version': '56.0'
+        'browser_version': '56.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/sidebar/test.ff.js"
+      filter: "test.FF.js"
     },
-    SidebarOSXSSafari: {
+    OSXSSafari: {
       desiredCapabilities: {
         'build': 'SidebarOSXSSafari',
         'os': 'OS X',
         'os_version': 'High Sierra',
         'browser': 'Safari',
-        'browser_version': '11.0'
+        'browser_version': '11.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/sidebar/test.sf.js"
+      filter: "test.SF.js"
     },
-    SidebarOSXSGC: {
+    OSXSGC: {
       desiredCapabilities: {
         'build': 'SidebarOSXSGC',
         'os': 'OS X',
         'os_version': 'High Sierra',
         'browser': 'Chrome',
-        'browser_version': '61.0'
+        'browser_version': '61.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/sidebar/test.js"
+      filter: "test.GC.js"
     },
-    SidebarOSXSFF: {
+    OSXSFF: {
       desiredCapabilities: {
         'build': 'SidebarOSXSFF',
         'os': 'OS X',
         'os_version': 'High Sierra',
         'browser': 'Firefox',
-        'browser_version': '56.0'
+        'browser_version': '56.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/sidebar/test.ff.js"
+      filter: "test.FF.js"
     },
   }
 };

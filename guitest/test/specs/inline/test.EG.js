@@ -15,7 +15,6 @@ var ANALYTIC = require(__dirname + "/../analytics/inline.counts.js"),
       CHANNEL_ID: 66133904
     };
 
-
 module.exports = {
   ELEMENT_WIDGET_HOLDER: "div#inline-2-holder",
   ELEMENT_WIDGET: 'div#skeleton',
@@ -58,7 +57,8 @@ module.exports = {
           PRICE: "$199.99"
         },
         parent = this.ELEMENT_VIDEO_CONTENT,
-        client = widget.init(browser, "[" + browser.test_settings + "] Inline Widget Analytics", this.ELEMENT_WIDGET_HOLDER, this.IFRAME_WIDGET, parent),
+        environment = browser.options.desiredCapabilities.build,
+        client = widget.init(browser, "[" + browser.test_settings + "] Widget Analytics", this.ELEMENT_WIDGET_HOLDER, this.IFRAME_WIDGET, parent),
         expected = ANALYTIC.counts;
 
     widget

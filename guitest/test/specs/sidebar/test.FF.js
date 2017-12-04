@@ -1,8 +1,8 @@
 /*==============================*/
 /* Nightwatch Sidebar Automation */
 /*==============================*/
-var ANALYTIC = require(__dirname + "/analytic.counts.js"),
-    AUTO = require(__dirname + "/../../../../lib/tvpGUITest.js"),
+var ANALYTIC = require(__dirname + "/../analytics/sidebar.counts.js"),
+    AUTO = require(__dirname + "/../../../lib/tvpGUITest.js"),
     DATA = {
       BASE_URL: "https://widgets.goodlookingbean.com/test/",
       SLA: 10000,
@@ -27,7 +27,6 @@ module.exports = {
   ELEMENT_MODAL_CLOSE_BUTTON: 'div#tvp-modal-close-sidebar-2',
   ELEMENT_MODAL_TITLE: 'h4#tvp-modal-title-sidebar-2',
   ELEMENT_MODAL_IFRAME_HOLDER: 'tvp-modal-iframe-holder-sidebar-2',
-
   ELEMENT_PLAYER_HOLDER: "div.tvp-player-holder",
   ELEMENT_PRODUCT_HOLDER: "div.tvp-products-holder",
   ELEMENT_VIDEO_CONTENT: 'div#sidebar-2',
@@ -50,7 +49,7 @@ module.exports = {
 
           WIDGET_TYPE: 'sidebar',
           WIDGET_CI: {MIN:0, MAX:1},
-          IS_IE: true
+          IS_FF: true
         }),
         product = {
           ID: 83102933,
@@ -61,7 +60,8 @@ module.exports = {
           PRICE: "$199.99"
         },
         parent = this.ELEMENT_VIDEO_CONTENT + " > " + this.ELEMENT_PRODUCT_HOLDER,
-        client = widget.init(browser, "Sidebar Widget Analytics", this.ELEMENT_WIDGET_HOLDER, this.IFRAME_WIDGET, parent),
+        environment = browser.options.desiredCapabilities.build,
+        client = widget.init(browser, "[" + environment + "] Widget Analytics", this.ELEMENT_WIDGET_HOLDER, this.IFRAME_WIDGET, parent),
         expected =  ANALYTIC.counts;
 
     widget

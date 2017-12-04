@@ -1,6 +1,6 @@
 
 nightwatch_config = {
-  src_folders : [ "test/specs/desktop/inline-spotlight"],
+  src_folders : [ "test/specs/inline-spotlight"],
 
   selenium : {
     "start_process" : false,
@@ -15,137 +15,149 @@ nightwatch_config = {
   },
 
   test_settings: {
-    default: {
-      'resolution': '1920x1080'
-    },
-    InlineSpotlightW10GC: {
+    default: {},
+    W10GC: {
       desiredCapabilities: {
         'build': 'InlineSpotlightW10GC',
         'os': 'Windows',
         'os_version': '10',
         'browser': 'Chrome',
-        'browser_version': '61.0'
+        'browser_version': '61.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/inline-spotlight/test.js"      
+      filter: "test.GC.js"
     },
-    InlineSpotlightW10FF: {
+    W10FF: {
       desiredCapabilities: {
         'build': 'InlineSpotlightW10FF',
         'os': 'Windows',
         'os_version': '10',
         'browser': 'Firefox',
-        'browser_version': '57.0'
+        'browser_version': '57.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/inline-spotlight/test.ff.js"
+      filter: "test.FF.js"
     },
-    InlineSpotlightW10IE: {
+    W10IE: {
       desiredCapabilities: {
         'build': 'InlineSpotlightW10IE',
         'os': 'Windows',
         'os_version': '10',
         'browser': 'IE',
-        'browser_version': '11'
+        'browser_version': '11',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/inline-spotlight/test.ie.js"
+      filter: "test.IE.js"
     },
-    InlineSpotlightW10Edge: {
+    W10Edge: {
       desiredCapabilities: {
         'build': 'InlineSpotlightW10Edge',
         'os': 'Windows',
         'os_version': '10',
         'browser': 'Edge',
-        'browser_version': '15.0'
+        'browser_version': '15.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/inline-spotlight/test.eg.js"
+      filter: "test.EG.js"
     },
-    InlineSpotlightW81GC: {
+    W81GC: {
       desiredCapabilities: {
         'build': 'InlineSpotlightW81GC',
         'os': 'Windows',
         'os_version': '8.1',
         'browser': 'Chrome',
-        'browser_version': '61.0'
+        'browser_version': '61.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/inline-spotlight/test.js"      
+      filter: "test.GC.js"      
     },
-    InlineSpotlightW81FF: {
+    W81FF: {
       desiredCapabilities: {
         'build': 'InlineSpotlightW81FF',
         'os': 'Windows',
         'os_version': '8.1',
         'browser': 'Firefox',
-        'browser_version': '57.0'
+        'browser_version': '57.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/inline-spotlight/test.ff.js"
+      filter: "test.FF.js"
     },
-    InlineSpotlightW81IE: {
+    W81IE: {
       desiredCapabilities: {
         'build': 'InlineSpotlightW81IE',
         'os': 'Windows',
         'os_version': '8.1',
         'browser': 'IE',
-        'browser_version': '11'
+        'browser_version': '11',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/inline-spotlight/test.ie.js"
+      filter: "test.IE.js"
     },
-    InlineSpotlightOSXHSSafari: {
+    OSXHSSafari: {
       desiredCapabilities: {
         'build': 'InlineSpotlightOSXHSSafari',
         'os': 'OS X',
         'os_version': 'High Sierra',
         'browser': 'Safari',
-        'browser_version': '11.0'    },
-      filter: "desktop/inline-spotlight/test.sf.js"
+        'browser_version': '11.0',
+        'resolution': '1920x1080'
+      },
+      filter: "test.SF.js"
     },
-    InlineSpotlightOSXHSGC: {
+    OSXHSGC: {
       desiredCapabilities: {
         'build': 'InlineSpotlightOSXHSGC',
         'os': 'OS X',
         'os_version': 'High Sierra',
         'browser': 'Chrome',
-        'browser_version': '61.0'
+        'browser_version': '61.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/inline-spotlight/test.js"
+      filter: "test.GC.js"
     },
-    InlineSpotlightOSXHSFF: {
+    OSXHSFF: {
       desiredCapabilities: {
         'build': 'InlineSpotlightOSXHSFF',
         'os': 'OS X',
         'os_version': 'High Sierra',
         'browser': 'Firefox',
-        'browser_version': '56.0'
+        'browser_version': '56.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/inline-spotlight/test.ff.js"
+      filter: "test.FF.js"
     },
-    InlineSpotlightOSXSSafari: {
+    OSXSSafari: {
       desiredCapabilities: {
         'build': 'InlineSpotlightOSXSSafari',
         'os': 'OS X',
         'os_version': 'High Sierra',
         'browser': 'Safari',
-        'browser_version': '11.0'
+        'browser_version': '11.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/inline-spotlight/test.sf.js"
+      filter: "test.SF.js"
     },
-    InlineSpotlightOSXSGC: {
+    OSXSGC: {
       desiredCapabilities: {
         'build': 'InlineSpotlightOSXSGC',
         'os': 'OS X',
         'os_version': 'High Sierra',
         'browser': 'Chrome',
-        'browser_version': '61.0'
+        'browser_version': '61.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/inline-spotlight/test.js"
+      filter: "test.GC.js"
     },
-    InlineSpotlightOSXSFF: {
+    OSXSFF: {
       desiredCapabilities: {
         'build': 'InlineSpotlightOSXSFF',
         'os': 'OS X',
         'os_version': 'High Sierra',
         'browser': 'Firefox',
-        'browser_version': '56.0'
+        'browser_version': '56.0',
+        'resolution': '1920x1080'
       },
-      filter: "desktop/inline-spotlight/test.ff.js"
+      filter: "test.FF.js"
     },
   }
 };
@@ -164,3 +176,4 @@ for(var i in nightwatch_config.test_settings){
 }
 
 module.exports = nightwatch_config;
+

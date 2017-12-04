@@ -1,8 +1,8 @@
 /*==============================*/
 /* Nightwatch Inline Spotlight Automation */
 /*==============================*/
-var ANALYTIC = require(__dirname + "/analytic.counts.js"),
-    AUTO = require(__dirname + "/../../../../lib/tvpGUITest.js"),
+var ANALYTIC = require(__dirname + "/../analytics/inline-spotlight.counts.js"),
+    AUTO = require(__dirname + "/../../../lib/tvpGUITest.js"),
     DATA = {
       BASE_URL: "https://widgets.goodlookingbean.com/test/",
       SLA: 10000,
@@ -57,7 +57,8 @@ module.exports = {
           PRICE: "$199.99"
         },
         parent = this.ELEMENT_VIDEO_CONTENT,
-        client = widget.init(browser, "Inline Spotlight Widget Analytics", this.ELEMENT_WIDGET_HOLDER, this.IFRAME_WIDGET, parent),
+        environment = browser.options.desiredCapabilities.build,
+        client = widget.init(browser, "[" + environment + "] Widget Analytics", this.ELEMENT_WIDGET_HOLDER, this.IFRAME_WIDGET, parent),
         expected = ANALYTIC.counts;
 
     widget

@@ -1,6 +1,6 @@
 
 nightwatch_config = {
-  src_folders : [ "test/specs/carousel" ],
+  src_folders : [ "test/specs/carousel-spotlight" ],
 
   selenium : {
     "start_process" : false,
@@ -18,7 +18,7 @@ nightwatch_config = {
     default: {},
     W10GC: {
       desiredCapabilities: {
-        'build': 'CarouselW10GC',
+        'build': 'CarouselSpotlightW10GC',
         'os': 'Windows',
         'os_version': '10',
         'browser': 'Chrome',
@@ -29,7 +29,7 @@ nightwatch_config = {
     },
     W10FF: {
       desiredCapabilities: {
-        'build': 'CarouselW10FF',
+        'build': 'CarouselSpotlightW10FF',
         'os': 'Windows',
         'os_version': '10',
         'browser': 'Firefox',
@@ -40,7 +40,7 @@ nightwatch_config = {
     },
     W10IE: {
       desiredCapabilities: {
-        'build': 'CarouselW10IE',
+        'build': 'CarouselSpotlightW10IE',
         'os': 'Windows',
         'os_version': '10',
         'browser': 'IE',
@@ -51,7 +51,7 @@ nightwatch_config = {
     },
     W10Edge: {
       desiredCapabilities: {
-        'build': 'CarouselW10Edge',
+        'build': 'CarouselSpotlightW10Edge',
         'os': 'Windows',
         'os_version': '10',
         'browser': 'Edge',
@@ -62,7 +62,7 @@ nightwatch_config = {
     },
     W81GC: {
       desiredCapabilities: {
-        'build': 'CarouselW81GC',
+        'build': 'CarouselSpotlightW81GC',
         'os': 'Windows',
         'os_version': '8.1',
         'browser': 'Chrome',
@@ -73,7 +73,7 @@ nightwatch_config = {
     },
     W81FF: {
       desiredCapabilities: {
-        'build': 'CarouselW81FF',
+        'build': 'CarouselSpotlightW81FF',
         'os': 'Windows',
         'os_version': '8.1',
         'browser': 'Firefox',
@@ -84,7 +84,7 @@ nightwatch_config = {
     },
     W81IE: {
       desiredCapabilities: {
-        'build': 'CarouselW81IE',
+        'build': 'CarouselSpotlightW81IE',
         'os': 'Windows',
         'os_version': '8.1',
         'browser': 'IE',
@@ -95,7 +95,7 @@ nightwatch_config = {
     },
     OSXHSSafari: {
       desiredCapabilities: {
-        'build': 'CarouselOSXHSSafari',
+        'build': 'CarouselSpotlightOSXHSSafari',
         'os': 'OS X',
         'os_version': 'High Sierra',
         'browser': 'Safari',
@@ -106,7 +106,7 @@ nightwatch_config = {
     },
     OSXHSGC: {
       desiredCapabilities: {
-        'build': 'CarouselOSXHSGC',
+        'build': 'CarouselSpotlightOSXHSGC',
         'os': 'OS X',
         'os_version': 'High Sierra',
         'browser': 'Chrome',
@@ -117,7 +117,7 @@ nightwatch_config = {
     },
     OSXHSFF: {
       desiredCapabilities: {
-        'build': 'CarouselOSXHSFF',
+        'build': 'CarouselSpotlightOSXHSFF',
         'os': 'OS X',
         'os_version': 'High Sierra',
         'browser': 'Firefox',
@@ -128,7 +128,7 @@ nightwatch_config = {
     },
     OSXSSafari: {
       desiredCapabilities: {
-        'build': 'CarouselOSXSSafari',
+        'build': 'CarouselSpotlightOSXSSafari',
         'os': 'OS X',
         'os_version': 'High Sierra',
         'browser': 'Safari',
@@ -139,7 +139,7 @@ nightwatch_config = {
     },
     OSXSGC: {
       desiredCapabilities: {
-        'build': 'CarouselOSXSGC',
+        'build': 'CarouselSpotlightOSXSGC',
         'os': 'OS X',
         'os_version': 'High Sierra',
         'browser': 'Chrome',
@@ -150,7 +150,7 @@ nightwatch_config = {
     },
     OSXSFF: {
       desiredCapabilities: {
-        'build': 'CarouselOSXSFF',
+        'build': 'CarouselSpotlightOSXSFF',
         'os': 'OS X',
         'os_version': 'High Sierra',
         'browser': 'Firefox',

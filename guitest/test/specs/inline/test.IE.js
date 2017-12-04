@@ -57,7 +57,8 @@ module.exports = {
           PRICE: "$199.99"
         },
         parent = this.ELEMENT_VIDEO_CONTENT,
-        client = widget.init(browser, "Sidebar Widget Analytics", this.ELEMENT_WIDGET_HOLDER, this.IFRAME_WIDGET, parent),
+        environment = browser.options.desiredCapabilities.build,
+        client = widget.init(browser, "[" + environment + "] Widget Analytics", this.ELEMENT_WIDGET_HOLDER, this.IFRAME_WIDGET, parent),
         expected = ANALYTIC.counts;
 
     widget
