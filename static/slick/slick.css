@@ -120,13 +120,14 @@
 
 
 /* tvpage overrides for functionality */
-.slick-carousel
-{
-    height: 80px;
-    overflow-y: hidden;
-}
-
 .slick-slide
 {
     height: auto;
+}
+
+.slick-carousel < div.ready {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }

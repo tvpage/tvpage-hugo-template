@@ -2,6 +2,9 @@
     var body = document.body;
     var id = body.getAttribute('data-id');
     var config = window.parent.__TVPage__.config[id];
+    var videos = config.channel.videos;
+    var clickedVideoId = config.clicked;
+    var clickedVideo;
     var eventPrefix = config.events.prefix;
     var mainEl;
     var productsRail;
@@ -24,32 +27,35 @@
         }
 
         Utils.sendMessage({
-            event: eventPrefix + ':widget_modal_resize',
-            //height: getWidgetHeight() + 'px'
+            event: eventPrefix + ':widget_modal_resize'
         });
     }
 
-    function onPlayerNext(next){
-        // if (config.merchandise && next) {
-        //     loadProducts(next.assetId, function(data){
-        //         render(data);
-        //     });
-        // }
+    function updateModalTitle(title){
+        if(!title)
+          debugger
+        document.getElementById('modalElementTitle').innerHTML = title || '';
+    }
 
-        // Utils.sendMessage({
-        //     event: eventPrefix + ':player_next',
-        //     next: next
-        // });
+    function onPlayerNext(nextVideo){
+        if (!config.merchandise) {
+            return;
+        }
+
+        updateModalTitle(nextVideo.assetTitle);
+
+        productsRail.endpoint = apiBaseUrl + '/videos/' + nextVideo.assetId + '/products';
+        productsRail.load('render');
     }
 
     function initPlayer(){
         var playerConfig = Utils.copy(config);
 
-        playerConfig.data = config.channel.videos;
+        playerConfig.data = videos;
         playerConfig.onResize = onPlayerResize;
         playerConfig.onNext = onPlayerNext;
 
-        var player = new Player('player-el', playerConfig, config.clicked);
+        var player = new Player('player-el', playerConfig, clickedVideoId);
         
         player.initialize();
     };
@@ -102,34 +108,39 @@
         }
 
         function hideAllPopOvers(){
-            productsRail.el.querySelectorAll('.pop-over.active').forEach(function(item){
-                Utils.removeClass(item, 'active');
+            productsRail.el.querySelectorAll('.pop-over.show').forEach(function(item){
+                Utils.removeClass(item, 'show');
             });
+
+            var popOverPointerEl = productsRail.el.querySelector('.pop-over-pointer');
+
+            if(popOverPointerEl){
+                Utils.removeClass(popOverPointerEl, 'show');
+            }
         }
 
         function renderPopOver(railEl, product){
             var productPopOverEl = Utils.createEl('div');
 
             productPopOverEl.id = 'pop-over-' + product.id;
-            productPopOverEl.className = 'pop-over';
+            productPopOverEl.className = 'pop-over fade';
             productPopOverEl.innerHTML = Utils.tmpl(templates.products.itemPopOver, product);
 
             productsRail.el.appendChild(productPopOverEl);
             productPopOverEl.style.top = getPopOverTop(railEl, productPopOverEl);
-            Utils.addClass(productPopOverEl, 'active');
+            Utils.addClass(productPopOverEl, 'show');
         }
 
         function renderPopOverPointer(railEl, product){
             var popOverPointerEl = Utils.createEl('div');
-            popOverPointerEl.className = 'pop-over-pointer';
-            //popOverPointerEl.innerHTML = '<div></div>';
+            popOverPointerEl.className = 'pop-over-pointer fade';
 
             productsRail.el.appendChild(popOverPointerEl);
             popOverPointerEl.style.top = getPopOverTop(railEl, popOverPointerEl);
-            Utils.addClass(popOverPointerEl, 'active');
+            Utils.addClass(popOverPointerEl, 'show');
         }
 
-        function onProductsRailOver(e){
+        function onProductsItemOver(e){
             hideAllPopOvers();
 
             var target = Utils.getRealTargetByClass(e.target, 'rail-item');
@@ -143,7 +154,7 @@
 
             if(productPopOverEl){
                 productPopOverEl.style.top = getPopOverTop(target, productPopOverEl);
-                Utils.addClass(productPopOverEl, 'active');
+                Utils.addClass(productPopOverEl, 'show');
             }else{
                 renderPopOver(target, product);
             }
@@ -152,7 +163,7 @@
 
             if(popOverPointerEl){
                 popOverPointerEl.style.top = getPopOverTop(target, popOverPointerEl);
-                Utils.addClass(popOverPointerEl, 'active');
+                Utils.addClass(popOverPointerEl, 'show');
             }else{
                 renderPopOverPointer(target, product);
             }
@@ -167,7 +178,7 @@
 
             productsRail = new Rail('products',{
                 snapReference: '[rail-ref]',
-                endpoint: apiBaseUrl + '/videos/' + config.clicked + '/products',
+                endpoint: apiBaseUrl + '/videos/' + clickedVideoId + '/products',
                 templates: {
                     list: templates.products.list,
                     item: templates.products.item
@@ -184,9 +195,14 @@
                     item.actionText = item.actionText || 'View Details';
                 },
                 onReady:function(){
-                    Utils.remove(skeletonEl.querySelector('.products-skel-delete'));
+                    var productsSkelEl = skeletonEl.querySelector('.products-skel-delete');
+
+                    if(productsSkelEl){
+                        Utils.remove(productsSkelEl);
+                    }
                 },
-                onOver: onProductsRailOver
+                onItemOver: onProductsItemOver,
+                onLeave: hideAllPopOvers
             }, config);
             
             productsRail.init();
@@ -257,18 +273,21 @@
     var cssLoadedCheck = 0;
     var cssLoadedCheckLimit = 1000;
 
-    (function cssPoll() {
-        setTimeout(function() {
+    (function cssPoll(){
+        setTimeout(function(){
           console.log('css loaded poll...');
-          
-          if('hidden' === Utils.getStyle(Utils.getById('bs-checker'), 'visibility')){
-            //add widget title
-            // var widgetTitleEl = Utils.getById('widget-title');
-            // widgetTitleEl.innerHTML = firstVideo.title;
-            // Utils.addClass(widgetTitleEl, 'ready');
+        
+          var bsCheckerEl = document.getElementById('bs-checker');
+          var bsCheckerElVisibility = getComputedStyle(bsCheckerEl,null).getPropertyValue('visibility');
+
+          if('hidden' === bsCheckerElVisibility){
+            var clickedVideo = videos.filter(function(video){
+                return clickedVideoId == video.id;
+            }).pop();
+
+            updateModalTitle(clickedVideo.title);
 
             skeletonEl.classList.remove('hide');
-
           }else if(++cssLoadedCheck < cssLoadedCheckLimit){
             cssPoll()
           }

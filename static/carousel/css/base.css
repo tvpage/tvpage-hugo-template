@@ -1,11 +1,24 @@
 /* turn focus state off */
-*:focus {
-  outline: none;
+*:focus,
+*:active {
+  outline: none !important;
 }
 
 .hide {
   opacity: 0; 
   visibility: hidden;
+}
+
+.relative {
+  position: relative;
+}
+
+.hide-abs {
+  position: absolute !important;
+  bottom: -5000px;
+  width: 100%;
+  left: 0;
+  right: 0;
 }
 
 .o-hidden {

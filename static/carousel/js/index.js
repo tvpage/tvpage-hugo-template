@@ -132,28 +132,30 @@
     },5);
   })();
 
-  //we check when critical css has loaded/parsed. At this step, we have data to
+    //we check when critical css has loaded/parsed. At this step, we have data to
     //update the skeleton. We wait until css has really executed in order to send
     //the right measurements.
     var cssLoadedCheck = 0;
     var cssLoadedCheckLimit = 1000;
 
-    (function cssPoll() {
-      setTimeout(function() {
-        console.log('css loaded poll...');
+    (function cssPoll(){
+        setTimeout(function(){
+          console.log('css loaded poll...');
         
-        if('hidden' === Utils.getStyle(Utils.getById('bs-checker'), 'visibility')){
-          skeletonEl.classList.remove('hide');
+          var bsCheckerEl = document.getElementById('bs-checker');
+          var bsCheckerElVisibility = getComputedStyle(bsCheckerEl,null).getPropertyValue('visibility');
 
-          //add widget title
-          var widgetTitleEl = Utils.getById('widget-title');
-          widgetTitleEl.innerHTML = config.title_text;
-          Utils.addClass(widgetTitleEl, 'ready');
+          if('hidden' === bsCheckerElVisibility){
+            //add widget title
+            var widgetTitleEl = Utils.getById('widget-title');
+            widgetTitleEl.innerHTML = config.title_text;
+            Utils.addClass(widgetTitleEl, 'ready');
 
-        }else if(++cssLoadedCheck < cssLoadedCheckLimit){
-          cssPoll()
-        }
-      },50);
+            skeletonEl.classList.remove('hide');
+          }else if(++cssLoadedCheck < cssLoadedCheckLimit){
+            cssPoll()
+          }
+        },50);
     })();
 
 }());

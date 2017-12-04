@@ -7,6 +7,11 @@
   z-index: 1000 !important;
 }
 
+.image-overlay {
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.2);
+}
+
 .player-holder {
   padding-bottom: 56.25%;
 }
@@ -23,25 +28,18 @@
 .pop-over {
   position: absolute;
   top: 0;
-  right: 120.5%;
+  right: 118%;
   z-index: 10000;
   background: white;
-  opacity: 0;
-  visibility: hidden;
-}
-
-.pop-over.active {
-  opacity: 1;
-  visibility: visible;
 }
 
 .pop-over-pointer {
   width: 15px; 
   height: 25px; 
   position: absolute;
-  left: -17px;
+  left: -14px;
   background-color: transparent;
-  z-index: 11000;
+  z-index: 10100;
 }
 
 .pop-over-pointer:before {
@@ -72,6 +70,19 @@
   margin-right: auto;
 }
 
+.pop-over-patch {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 25px;
+  right: -28px;
+  background: transparent !important; 
+}
+
 .product {
   border: 1px solid; 
+}
+
+.product:hover .image-overlay{
+  opacity: 1;
 }

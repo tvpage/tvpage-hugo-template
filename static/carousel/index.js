@@ -344,6 +344,7 @@ window.addEventListener("message", function(e){
   }
 
   if('widget_resize' === eventName){
+    console.log('### widget_resize')
     onWidgetResize(e);
   }
 

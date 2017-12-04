@@ -32,10 +32,23 @@
     }
   };
 
-  Rail.prototype.handleHover = function(){
-    var defaultStop = this.options.overDefaultStop;
-    var optOnOver = this.options.onOver;
-    var onOver = Utils.isFunction(optOnOver) ? optOnOver : function(e){
+  Rail.prototype.handleLeave = function(){
+    var defaultStop = this.options.leaveDefaultStop;
+    var optOnLeave = this.options.onLeave;
+    var onLeave = Utils.isFunction(optOnLeave) ? optOnLeave : function(e){
+      if(defaultStop){
+        Utils.stopEvent(e);
+      }
+    };
+
+    this.el.removeEventListener('mouseleave', onLeave, false);
+    this.el.addEventListener('mouseleave', onLeave, false);
+  };
+
+  Rail.prototype.handleItemOver = function(){
+    var defaultStop = this.options.itemOverDefaultStop;
+    var optOnItemOver = this.options.onItemOver;
+    var onItemOver = Utils.isFunction(optOnItemOver) ? optOnItemOver : function(e){
       if(defaultStop){
         Utils.stopEvent(e);
       }
@@ -45,9 +58,9 @@
     var itemsLength = items.length;
 
     for (var i = 0; i < itemsLength; i++) {
-      items[i].removeEventListener('mouseover', onOver, false);
-      items[i].addEventListener('mouseover', onOver, false);
-    }    
+      items[i].removeEventListener('mouseover', onItemOver, false);
+      items[i].addEventListener('mouseover', onItemOver, false);
+    }
   };
 
   Rail.prototype.onReady = function(){
@@ -57,7 +70,17 @@
       onReady();
     }
 
-    this.handleHover();
+    this.handleItemOver();
+    this.handleLeave();
+  };
+
+  Rail.prototype.clean = function(){
+    if(this.ps){
+      this.ps.destroy();
+      this.ps = null;  
+    }
+
+    this.el.innerHTML = "";
   };
 
   Rail.prototype.render = function(){
@@ -66,6 +89,8 @@
 
     //if no data to render
     if(!allLength){
+      this.clean();
+
       return;
     }
 
@@ -117,7 +142,10 @@
             //the actual rail element, the one powered by PS
             var productRailEl = Utils.createEl('div');
             productRailEl.style.height = snapReferenceHeight + 'px';
-            productRailEl.className = 'rail';   
+            productRailEl.className = 'rail';
+
+            that.clean();
+
             productRailEl.innerHTML = renderPages.call(that);
 
             //we need this holder to wrap/hide PS scrollbars
@@ -130,7 +158,7 @@
             
             that.el.appendChild(productRailElHolderEl);
 
-            Ps.initialize(productRailEl, {
+            that.ps = Ps.initialize(productRailEl, {
               suppressScrollX: true
             });
 
