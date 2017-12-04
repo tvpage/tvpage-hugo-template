@@ -48,6 +48,18 @@
             "value": ["//fonts.googleapis.com/css?family=Open+Sans:600,700,800"]
         },
         {
+            "type": "text",
+            "label": "Videos Order By",
+            "code": "videos_order_by",
+            "value": "sortOrder"
+          },
+          {
+            "type": "text",
+            "label": "Videos Order Direction",
+            "code": "videos_order_direction",
+            "value": "DESC"
+          },
+        {
             "for": "inline",
             "type": "text",
             "label": "iFrame Holder Background Color",

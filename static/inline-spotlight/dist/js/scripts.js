@@ -386,26 +386,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                 }
             }
 
-<<<<<<< HEAD
-            var analytics =  new Analytics(),
-                config = {
-                    domain: isset(location,'hostname') ?  location.hostname : '',
-                    loginId: asset.loginId
-                };
-
-            //Update tvpa analytics configuration depending on the video type
-            //(exhange or standard)
-            if (isset(asset,'analyticsLogUrl')) {
-                config.logUrl = asset.analyticsLogUrl;
-                analytics.initConfig(config);
-            } else {
-                config.logUrl = '\/\/api.tvpage.com\/v1\/__tvpa.gif';
-                analytics.initConfig(config);
-            }
-            if (willCue && !immediate) this.instance.cueVideo(asset);                
-=======
-            if (willCue) this.instance.cueVideo(asset);                
->>>>>>> b25115f99794ef5047967683dfa14bb945dcdef6
+            if (willCue) this.instance.cueVideo(asset);
             else this.instance.loadVideo(asset);
 
             // this will fix the continues loading of youtube type video on iOS (iPad/iPhone)            
@@ -608,19 +589,6 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
     var productRatingEmptyIsBordered = false;
     var hasProducts = true;
     var firstRender = true;
-
-
-    var dynamicSort = function(property) {
-        var sortOrder = 1;
-        if(property[0] === "-") {
-            sortOrder = -1;
-            property = property.substr(1);
-        }
-        return function (a,b) {
-            var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
-            return result * sortOrder;
-        }
-    };
 
     var renderedApproach = function () {
         if (document.body.clientWidth < breakpoint) {
@@ -1053,10 +1021,10 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             var getChannelVideos = function(callback){
                 var channel_id = Utils.isEmpty(channel) ? channelId : channel.id;
                 var params = channel.parameters || {};
-                var src = options.api_base_url+ '/channels/' + channel_id + '/videos?X-login-id=' + loginId + '&od=DESC&o=date_created';
+                var src = options.api_base_url+ '/channels/' + channel_id + '/videos?X-login-id=' + loginId;
                 for (var p in params) { src += '&' + p + '=' + params[p];}
                 var cbName = options.callbackName || 'tvp_' + Math.floor(Math.random() * 555);
-                src += '&p=' + page + '&n=' + itemsPerPage + '&callback='+cbName;
+                src += '&p=' + page + '&n=' + itemsPerPage + '&o=' + options.videos_order_by + '&od=' + options.videos_order_direction + '&callback='+cbName; 
                 var script = document.createElement('script');
                 script.src = src;
                 window[cbName || 'callback'] = callback;
@@ -1179,8 +1147,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
         };
 
         load(function(data){
-            var sortedData = data.sort(dynamicSort(Utils.isset(options, 'sort_videos_by') ? options.sort_videos_by : 'title'));
-            render(sortedData);
+            render(data);
         });
     }
 

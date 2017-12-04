@@ -22,19 +22,6 @@
     var hasProducts = true;
     var firstRender = true;
 
-
-    var dynamicSort = function(property) {
-        var sortOrder = 1;
-        if(property[0] === "-") {
-            sortOrder = -1;
-            property = property.substr(1);
-        }
-        return function (a,b) {
-            var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
-            return result * sortOrder;
-        }
-    };
-
     var renderedApproach = function () {
         if (document.body.clientWidth < breakpoint) {
             return 'mobile';
@@ -466,10 +453,10 @@
             var getChannelVideos = function(callback){
                 var channel_id = Utils.isEmpty(channel) ? channelId : channel.id;
                 var params = channel.parameters || {};
-                var src = options.api_base_url+ '/channels/' + channel_id + '/videos?X-login-id=' + loginId + '&od=DESC&o=date_created';
+                var src = options.api_base_url+ '/channels/' + channel_id + '/videos?X-login-id=' + loginId;
                 for (var p in params) { src += '&' + p + '=' + params[p];}
                 var cbName = options.callbackName || 'tvp_' + Math.floor(Math.random() * 555);
-                src += '&p=' + page + '&n=' + itemsPerPage + '&callback='+cbName;
+                src += '&p=' + page + '&n=' + itemsPerPage + '&o=' + options.videos_order_by + '&od=' + options.videos_order_direction + '&callback='+cbName; 
                 var script = document.createElement('script');
                 script.src = src;
                 window[cbName || 'callback'] = callback;
@@ -592,8 +579,7 @@
         };
 
         load(function(data){
-            var sortedData = data.sort(dynamicSort(Utils.isset(options, 'sort_videos_by') ? options.sort_videos_by : 'title'));
-            render(sortedData);
+            render(data);
         });
     }
 
