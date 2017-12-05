@@ -127,8 +127,8 @@
             o: config.products_order_by,
             od: config.products_order_direction
           },
-          slidesToShow: 1,
-          slidesToScroll: 1,
+          slidesToShow: 2,
+          slidesToScroll: 2,
           itemsTarget: '.slick-carousel',
           arrows: false,
           dots: true,
@@ -151,17 +151,17 @@
 
             Utils.removeClass(productsCarousel.el, 'hide-abs');
           },
-          // responsive: [
-          //   {
-          //   breakpoint: 768,
-          //   settings: {
-          //     arrows: false,
-          //     dots: true,
-          //     slidesToShow: 1,
-          //     slidesToScroll: 1
-          //   }
-          // }
-          // ]
+          responsive: [
+            {
+            breakpoint: 1024,
+            settings: {
+              arrows: false,
+              dots: true,
+              slidesToShow: 1,
+              slidesToScroll: 1
+            }
+          }
+          ]
         }, config);
   
         productsCarousel.initialize();

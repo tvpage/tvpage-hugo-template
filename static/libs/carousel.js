@@ -479,8 +479,6 @@
     }
 
     this.parse();
-    
-    this.moreThan1Page = allLength >= this.slidesToShow;
 
     var willUpdate = this.page > 0 ? true : false;
     var pages = this.itemsPerPage > 0 ? Utils.rowerize(all, this.itemsPerPage) : [all];
@@ -488,6 +486,7 @@
     var pageWrapStart = this.options.pageWrapStart;
     var pageWrapEnd = this.options.pageWrapEnd;
     var hasPageWrap = pageWrapStart && pageWrapEnd;
+    var moreThan1Page = this.loadMore ? allLength >= this.slidesToShow : allLength > this.slidesToShow;
 
     function renderPages(offset, onArray){
       var html = onArray ? [] : '';
@@ -534,7 +533,7 @@
 
       this.el.appendChild(itemsTargetEl);
 
-      if(this.moreThan1Page){
+      if(moreThan1Page){
         this.startSlick(itemsTargetEl);
       }else{
         this.onReady();
