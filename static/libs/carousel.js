@@ -20,6 +20,7 @@
     this.dotsPosition = this.getOption(this.options.dotsPosition, 'bottom');
     this.slidesToShow = this.getOption(this.options.slidesToShow, 1);
     this.slidesToScroll = this.getOption(this.options.slidesToScroll, 1);
+    this.slickArrowStyleEl;
     this.slideCompare;
     this.onReadyCalled = false;
 
@@ -177,40 +178,23 @@
             top += parents[i].offsetTop;
           }
 
-          top += referenceEl.offsetTop + Math.floor(referenceEl.getBoundingClientRect().height / 2);
-
           //calculation is done, now lets find the arrows and update their style. We update the CSS rule instead of straight style modification
           //so the top value remains and the user won't experience the top update (flickering)
-          var allStyleSheets = document.styleSheets;
-          var allStyleSheetsLength = allStyleSheets.length;
-          var slickStyleSheet;
-          var slickStyleSheetId = 'slick/' + (Utils.isMobile ? 'mobile/' : '')  + 'custom.css';
+          top += referenceEl.offsetTop + Math.floor(referenceEl.getBoundingClientRect().height / 2);
 
-          for (var i = 0; i < allStyleSheetsLength; i++) {
-            var styleSheetHref = allStyleSheets[i].href;
+          var arrowTopStyleSheet = Utils.createEl('style');
+          var arrowTopStyleSheetId = 'slick-arrow';
+
+          if(this.slickArrowStyleEl){
+            this.slickArrowStyleEl.innerHTML = '.slick-arrow{top:' + top + 'px;}';
+          }else{
+            var arrowTopStyleSheet = Utils.createEl('style');
+            arrowTopStyleSheet.id = arrowTopStyleSheetId;
+            arrowTopStyleSheet.innerHTML = '.slick-arrow{top:' + top + 'px;}';
             
-            if(styleSheetHref && -1 !== styleSheetHref.search(slickStyleSheetId)){
-              slickStyleSheet = allStyleSheets[i];
-            }
-          }
+            document.head.appendChild(arrowTopStyleSheet);
 
-          if(!slickStyleSheet){
-            if(that.config.debug) {
-              console.log("can't find slick's stylesheets");
-            }
-
-            return;
-          }
-
-          var cssRules = (slickStyleSheet.cssRules || slickStyleSheet.rules) || [];
-
-          for (var i = 0; i < cssRules.length; i++) {
-            var rule = cssRules[i];
-
-            if(rule.selectorText == '.slick-arrow'){
-              
-              rule.style.top = top;
-            }
+            this.slickArrowStyleEl = arrowTopStyleSheet;
           }
 
           Utils.addClass(that.el, 'arrows-ready');
