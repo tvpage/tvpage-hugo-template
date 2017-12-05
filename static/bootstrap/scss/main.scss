@@ -2,7 +2,7 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:300,600);
 @import url(https://fonts.googleapis.com/icon?family=Material+Icons);
 
-// Custom code and variables
+// Custom variables
 @import "bootstrap/scss/custom_variables";
 
 // Core variables and mixins
@@ -55,15 +55,5 @@
 // Utility classes
 @import "node_modules/bootstrap/scss/utilities";
 
-//slider pulls
-$slider_pull_x:   1rem !default;
-
-.slider-pull-x-1 {
-  margin-left: -($slider_pull_x * .25) !important;
-  margin-right: -($slider_pull_x * .25) !important;
-}
-
-.slider-pull-x-2 {
-  margin-left: -($slider_pull_x * .5) !important;
-  margin-right: -($slider_pull_x * .5) !important;
-}
+// Custom base CSS, mostly bootstrap like helpers, enhancements, etc.
+@import "bootstrap/scss/base";

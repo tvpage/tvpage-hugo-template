@@ -39,27 +39,16 @@
       slidesToScroll: this.slidesToScroll,
       infinite: options.infinite || false,
       arrows: this.arrows,
+      dots: this.dots,
       appendArrows: this.appendArrows,
       appendDots: this.appendDots,
-      customPaging: function (s, k) {
+      customPaging: function(s, k){
         return '<button class="btn-primary carousel-dot carousel-dot-' + k + '"></button>';
       }
     };
 
     if(!!options.responsive && options.responsive.length){
       slickConfig.responsive = options.responsive;
-    }
-
-    if(this.moreThan1Page){
-      slickConfig.dots = this.config.navigation_bullets && this.dots;
-    }else if (slickConfig.responsive.length){
-      slickConfig.responsive.map(function(obj){
-        if(obj && obj.settings && obj.settings.dots){
-          obj.settings.dots = false;
-        }
-
-        return obj;
-      });
     }
 
     slickConfig = Utils.removeObjNulls(slickConfig);
@@ -345,6 +334,9 @@
   };
 
   Carousel.prototype.startSlick = function(slickEl){
+    //prep before slick init goes here
+    this.handleDots();
+
     var that = this;
 
     if (Utils.isUndefined($.fn.slick)) {
@@ -448,7 +440,7 @@
 
     this.appendDotsEl = document.createElement('div');
     this.appendDotsEl.id = dotsId;
-    this.appendDotsEl.className = 'col pt-3';
+    this.appendDotsEl.className = 'col py-2';
 
     var dotsClass = this.options.dotsClass;
     
@@ -487,7 +479,8 @@
     }
 
     this.parse();
-    this.moreThan1Page = allLength > this.slidesToShow;
+    
+    this.moreThan1Page = allLength >= this.slidesToShow;
 
     var willUpdate = this.page > 0 ? true : false;
     var pages = this.itemsPerPage > 0 ? Utils.rowerize(all, this.itemsPerPage) : [all];
@@ -542,10 +535,10 @@
       this.el.appendChild(itemsTargetEl);
 
       if(this.moreThan1Page){
-        this.handleDots();
+        this.startSlick(itemsTargetEl);
+      }else{
+        this.onReady();
       }
-
-      this.startSlick(itemsTargetEl);
     }
   };
 

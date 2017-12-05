@@ -1,10 +1,20 @@
 '<div data-id="{id}" class="carousel-item">' +
-    
-    '<div class="product{className} mx-2">' +
-    '<div class="product-image bg-default" style="background-image:url({imageUrl})">' +
-      '<div class="product-image-overlay abs-center"></div>' +
+
+  '<div class="product{className} p-2">' +
+  
+    '<div class="row">' +
+      '<div class="col-3 pr-0">' +
+        '<div class="product-image bg-default" style="background-image:url({imageUrl})">' +
+          '<div class="product-image-overlay abs-center"></div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="col-9">' +
+        '<p class="product-title mb-1 ready">{title}</p>' +
+        '<p class="product-brand m-0">{brand}</p>' +
+        '<p class="product-price m-0 ready">{price}</p>' +
+      '</div>' +
     '</div>' +
-    '<p class="product-title m-0 ready d-none">{title}</p>' +
+
   '</div>' +
  
 '</div>'

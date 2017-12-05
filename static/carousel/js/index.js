@@ -76,13 +76,9 @@
     }
 
     function parseVideos(item) {
-      var charSize = 35;
-      
-      if(Utils.isMobile && Utils.getWindowWidth() < 425){
-        charSize = 15;
+      if(Utils.isMobile){
+        item.title = Utils.trimText(item.title, 40);
       }
-
-      item.title = Utils.trimText(item.title, charSize);
 
       return item;
     }
@@ -98,7 +94,7 @@
       data: channelVideos,
       dotsCenter: true,
       slidesToShow: 3,
-      slidesToScroll: 1,
+      slidesToScroll: 3,
       itemsTarget: '.slick-carousel',
       itemsPerPage: 3,
       templates: {
@@ -106,11 +102,12 @@
         item: templates.videos.item
       },
       responsive: [{
-        breakpoint: 425,
+        breakpoint: 400,
         settings: {
           arrows: false,
           dots: true,
-          slidesToScroll: 3
+          slidesToShow: 2,
+          slidesToScroll: 2
         }
       }],
       onClick: onClick,

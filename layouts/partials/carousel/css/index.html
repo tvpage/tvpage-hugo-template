@@ -1,10 +1,6 @@
 {
   host: {{- (partial (printf "%s/css/host.css" .Type) .) | htmlUnescape | safeHTML -}},
-  modal:{    
-  },
   mobile: {
     host: {{- (partial (printf "%s/mobile/css/host.css" .Type) .) | htmlUnescape | safeHTML -}},
-    modal: {
-    }
   }
 }

@@ -1,18 +1,23 @@
-/*player overrides*/
-.tvplayer-overlay-thumbnail{
-  z-index: 100 !important;
-}
-
-.tvplayer-overlay{
-  z-index: 1000 !important;
-}
-
-.player-holder {
-  padding-bottom: 56.25%;
-}
-
 .skeleton .player-holder {
   background-color: #efefef;
+}
+
+.skeleton .product-title:not(.ready) {
+  background-color: #efefef;
+}
+
+.skeleton .product-title:not(.ready):before {
+  content: "...";
+  color: transparent;
+}
+
+.skeleton .product-price:not(.ready) {
+  background-color: #efefef;
+}
+
+.skeleton .product-price:not(.ready):before {
+  content: "..................................";
+  color: transparent;
 }
 
 .product-image {
@@ -22,4 +27,15 @@
 
 .product {
   border: 1px solid; 
+}
+
+.product-title{
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.player-holder {
+  padding-bottom: 56.25%;
 }

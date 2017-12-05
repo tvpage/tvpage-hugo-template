@@ -24,13 +24,11 @@ module.exports = function(grunt) {
           files: {
             'dist/css/styles.min.css': [
               '../bootstrap/dist/css/bootstrap.css',
-              'css/base.css',
               '../slick/slick.css',
               'css/styles.css'
             ],
             'dist/css/modal/styles.min.css': [
               '../bootstrap/dist/css/bootstrap.css',
-              'css/base.css',
               'css/vendor/perfect-scrollbar.min.css',
               'css/modal/styles.css'
             ]
@@ -40,7 +38,6 @@ module.exports = function(grunt) {
           files: {
             'dist/css/mobile/modal/styles.min.css': [
               '../bootstrap/dist/css/bootstrap.css',
-              'css/base.css',
               '../slick/slick.css',
               'css/mobile/modal/styles.css'
             ]

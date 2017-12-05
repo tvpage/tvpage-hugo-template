@@ -127,9 +127,11 @@
             o: config.products_order_by,
             od: config.products_order_direction
           },
-          slidesToShow: 4,
+          slidesToShow: 1,
           slidesToScroll: 1,
           itemsTarget: '.slick-carousel',
+          arrows: false,
+          dots: true,
           dotsCenter: true,
           templates: {
             list: templates.products.list,
@@ -139,6 +141,8 @@
             item.title = Utils.trimText(item.title || '', 35);
             item.price = Utils.trimPrice(item.price || '');
             item.actionText = item.actionText || 'View Details';
+            item.brand = item.brand || '';
+
             return item;
           },
           onNoData: removeProductsSkelEl,
@@ -147,16 +151,17 @@
 
             Utils.removeClass(productsCarousel.el, 'hide-abs');
           },
-          responsive: [
-            {
-            breakpoint: 425,
-            settings: {
-              arrows: false,
-              dots: true,
-              slidesToScroll: 4
-            }
-          }
-          ]
+          // responsive: [
+          //   {
+          //   breakpoint: 768,
+          //   settings: {
+          //     arrows: false,
+          //     dots: true,
+          //     slidesToShow: 1,
+          //     slidesToScroll: 1
+          //   }
+          // }
+          // ]
         }, config);
   
         productsCarousel.initialize();

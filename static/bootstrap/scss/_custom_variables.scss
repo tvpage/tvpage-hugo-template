@@ -93,7 +93,7 @@ $primary:       #1a1a1a !default;
 // // Quickly modify global styling by enabling or disabling optional features.
 
 // $enable-caret:              true !default;
-// $enable-rounded:            true !default;
+$enable-rounded:            false !default;
 // $enable-shadows:            false !default;
 // $enable-gradients:          false !default;
 // $enable-transitions:        true !default;
@@ -221,7 +221,7 @@ $primary:       #1a1a1a !default;
 // $font-family-base:            $font-family-sans-serif !default;
 // // stylelint-enable value-keyword-case
 
-// $font-size-base:              1rem !default; // Assumes the browser default, typically `16px`
+$font-size-base:              1rem !default; // Assumes the browser default, typically `16px`
 // $font-size-lg:                ($font-size-base * 1.25) !default;
 // $font-size-sm:                ($font-size-base * .875) !default;
 

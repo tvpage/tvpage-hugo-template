@@ -260,7 +260,6 @@ function widgetRender(){
       ],
       css: [
         debug ? baseUrl + '/bootstrap/dist/css/bootstrap.css' : '',
-        debug ? cssPath + "/base.css" : '',
         debug ? baseUrl + '/slick/slick.css' : '',
         isMobile ? baseUrl + '/slick/mobile/custom.css' : '',
         !isMobile ? baseUrl + '/slick/custom.css' : '',
@@ -450,7 +449,6 @@ function widgetModalRender(){
     ],
     css: [
       debug ? baseUrl + '/bootstrap/dist/css/bootstrap.css' : '',
-      debug ? cssPath + "/base.css" : '',
       debug && isMobile ? baseUrl + "/slick/slick.css" : '',
       isMobile ? baseUrl + '/slick/mobile/custom.css' : '',
       !isMobile ? baseUrl + '/slick/custom.css' : '',
