@@ -44,8 +44,9 @@ exports.analytics = [
       {VID: 83106081, VTP: {MIN:25, MAX:85}}, // Based on playing time / video length
       {VID: 83093960, VTP: {MIN:25, MAX:85}}
     ],
-    COUNTS: {"ci": 1, "vv": 2, "vt": {MIN: 22, MAX: 24}, "vtp": {MIN:3, MAX: 4}},
-    SKIP_CHECK_ELEMENT: true
+    COUNTS: {"ci": 1, "vv": 2, "vt": {MIN: 22, MAX: 24}, "vtp": {MIN:1, MAX: 3}},
+    SKIP_CHECK_ELEMENT: true,
+    SKIP_CID: true
     // COUNTS: {"ci": 2, "pi": 18, "vv": 2, "pk": 1}
   }
 ];

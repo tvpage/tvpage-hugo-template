@@ -1,7 +1,7 @@
 /*============================*/
 /* Nightwatch Solo Automation */
 /*============================*/
-var SOLO = require(__dirname + "/../../../solo/solo.js"),
+var SOLO = require(__dirname + "/../../../data/solo.js"),
     AUTO = require(__dirname + "/../../../lib/tvpGUITest.js");
    
 module.exports = {
