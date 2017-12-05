@@ -440,7 +440,7 @@
 
     this.appendDotsEl = document.createElement('div');
     this.appendDotsEl.id = dotsId;
-    this.appendDotsEl.className = 'col py-2';
+    this.appendDotsEl.className = 'col py-3';
 
     var dotsClass = this.options.dotsClass;
     

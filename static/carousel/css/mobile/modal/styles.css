@@ -36,6 +36,14 @@
   text-overflow: ellipsis;
 }
 
+.product-brand {
+  opacity: 0.8;
+}
+
+.product-price {
+  font-weight: 600;
+}
+
 .player-holder {
   padding-bottom: 56.25%;
 }

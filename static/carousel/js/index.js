@@ -76,7 +76,7 @@
     }
 
     function parseVideos(item) {
-      if(Utils.isMobile){
+      if(!Utils.isMobile){
         item.title = Utils.trimText(item.title, 40);
       }
 
