@@ -89,14 +89,6 @@
       return;
     }
 
-    Utils.removeClass(this.el, 'hide-abs');
-
-    var absPosReady = this.options.absPosReady || false;
-
-    if(absPosReady){
-      this.el.style = "position:absolute;bottom:0;left:0;right:0;";
-    }
-
     var onReady = this.options.onReady;
 
     if(Utils.isFunction(onReady)){

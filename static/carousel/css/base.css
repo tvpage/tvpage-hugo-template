@@ -19,6 +19,7 @@
   width: 100%;
   left: 0;
   right: 0;
+  margin: 0 auto !important;
 }
 
 .o-hidden {
@@ -72,6 +73,11 @@
   max-width: 100px;
 }
 
+/* backgrounds */
+.skeleton-bg {
+  background-color: #efefef;
+}
+
 .bg-default {
   background-repeat: no-repeat;
   background-position: center;
@@ -79,7 +85,10 @@
 }
 
 
-/* backgrounds */
-.skeleton-bg {
-  background-color: #efefef;
-}
+@media screen and (min-width: 768px) {
+  
+    .m0-md{
+      margin: 0 !important;
+    }
+   
+  }

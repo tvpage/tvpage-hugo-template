@@ -43,7 +43,7 @@
     })();
   
     function pkTrack() {
-      analytics.track('pk', {
+    analytics.track('pk', {
         vd: Utils.attr(this, 'data-vd'),
         ct: this.id.split('-').pop(),
         pg: config.channelId
@@ -119,11 +119,7 @@
       var templates = config.templates.mobile.modal;
   
       if ('default' === style) {
-        productsCarousel = new Carousel('products', {
-  
-          //nonsense option, update such approach to be more easy to reason about
-          absPosReady: true,
-  
+        productsCarousel = new Carousel('products',{
           clean: true,
           loadMore: false,
           endpoint: productsEndpoint,
@@ -147,15 +143,9 @@
           },
           onNoData: removeProductsSkelEl,
           onReady: function(){
-            setTimeout(function(){
-              removeProductsSkelEl();
-              
-              productsCarousel.el.style.position = 'relative';
-              
-              setTimeout(function() {
-                Utils.addClass(productsCarousel.el, 'show');
-              }, 0);
-            }, 100);
+            removeProductsSkelEl();
+
+            Utils.removeClass(productsCarousel.el, 'hide-abs');
           },
           responsive: [
             {

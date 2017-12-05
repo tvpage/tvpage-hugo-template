@@ -59,25 +59,16 @@
       }
     }
 
-    function onReady() {
+    function onReady(){
       var videosSkelEl = skeletonEl.querySelector('.videos-skel-delete');
 
       if (videosSkelEl) {
         Utils.remove(videosSkelEl);
-
-        videosCarousel.el.style.position = 'relative';
-
-        setTimeout(function() {
-          Utils.addClass(videosCarousel.el, 'show');
-
-          Utils.sendMessage({
-            event: eventPrefix + ':widget_ready',
-            height: Utils.getWidgetHeight()
-          });
-        }, 0);
-
-        videosCarousel.loadNext('render');
       }
+
+      Utils.removeClass(videosCarousel.el, 'hide-abs');
+
+      videosCarousel.loadNext('render');
     }
 
     function onLoad(data) {
@@ -97,10 +88,6 @@
     }
 
     videosCarousel = new Carousel('videos', {
-
-      //nonsense option, update such approach to be more easy to reason about
-      absPosReady: true,
-
       alignArrowsY: ['center', '.video-image-icon'],
       endpoint: videosEndpoint,
       params: Utils.addProps({

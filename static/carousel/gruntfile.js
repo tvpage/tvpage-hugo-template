@@ -24,6 +24,7 @@ module.exports = function(grunt) {
           files: {
             'dist/css/styles.min.css': [
               '../bootstrap/dist/css/bootstrap.css',
+              'css/base.css',
               '../slick/slick.css',
               'css/styles.css'
             ],
