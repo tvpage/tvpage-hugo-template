@@ -21,6 +21,7 @@
     this.slidesToShow = this.getOption(this.options.slidesToShow, 1);
     this.slidesToScroll = this.getOption(this.options.slidesToScroll, 1);
     this.slideCompare;
+    this.onReadyCalled = false;
 
     this.el = document.getElementById(sel);
     this.el.style.position = 'relative';
@@ -48,7 +49,17 @@
       slickConfig.responsive = options.responsive;
     }
 
-    slickConfig.dots = this.config.navigation_bullets && this.dots;
+    if(this.moreThan1Page){
+      slickConfig.dots = this.config.navigation_bullets && this.dots;
+    }else if (slickConfig.responsive.length){
+      slickConfig.responsive.map(function(obj){
+        if(obj && obj.settings && obj.settings.dots){
+          obj.settings.dots = false;
+        }
+
+        return obj;
+      });
+    }
 
     slickConfig = Utils.removeObjNulls(slickConfig);
 
@@ -74,6 +85,10 @@
   };
 
   Carousel.prototype.onReady = function(){
+    if(this.onReadyCalled){
+      return;
+    }
+
     Utils.removeClass(this.el, 'hide-abs');
 
     var absPosReady = this.options.absPosReady || false;
@@ -89,6 +104,8 @@
     }
 
     this.handleClick();
+
+    this.onReadyCalled = true;
   };
 
   Carousel.prototype.getArrowEls = function(){
@@ -109,11 +126,11 @@
       var firstItem = this.el.querySelector(this.itemClass);
       
       if(firstItem && !Utils.isUndefined(firstItem.firstChild)){
-        xOffset = Utils.getStyle(firstItem.firstChild,'padding-left');
+        xOffset = parseInt(Utils.getStyle(firstItem.firstChild,'padding-left'), 10);
       }
-    }
 
-    this.arrowsXOffset = xOffset;
+      xOffset += parseInt(Utils.getStyle(firstItem.firstChild,'margin-left'), 10);
+    }
 
     if(Utils.isUndefined(xOffset))
       return;
@@ -254,7 +271,7 @@
     }
 
     if(this.options.dotsCenter){
-      Utils.addClass(this.el, 'dots-centered');
+      Utils.addClass(this.el, 'dots-center');
     }
 
     var arrowEls = this.el.querySelectorAll('.slick-arrow');
@@ -455,7 +472,7 @@
 
     this.appendDotsEl = document.createElement('div');
     this.appendDotsEl.id = dotsId;
-    this.appendDotsEl.className = 'col';
+    this.appendDotsEl.className = 'col pt-3';
 
     var dotsClass = this.options.dotsClass;
     
@@ -480,13 +497,23 @@
     if(!allLength && this.options.clean){
       this.clean();
       
+      var onNoData = this.options.onNoData;
+
+      if(Utils.isFunction(onNoData)){
+        onNoData();
+      }
+
+      Utils.addClass(this.el, 'm-0');
+
       return;
+    }else{
+      Utils.removeClass(this.el, 'm-0');
     }
 
     this.parse();
+    this.moreThan1Page = allLength > this.slidesToShow;
 
     var willUpdate = this.page > 0 ? true : false;
-    var moreThanOne = allLength > 1;
     var pages = this.itemsPerPage > 0 ? Utils.rowerize(all, this.itemsPerPage) : [all];
     var pagesLength = pages.length;
     var pageWrapStart = this.options.pageWrapStart;
@@ -538,14 +565,11 @@
 
       this.el.appendChild(itemsTargetEl);
 
-      //we won't start the slick slider if there's no overflow of items
-      //if user don't pass where nav dots should be, we render a placeholder
-      if(moreThanOne){
+      if(this.moreThan1Page){
         this.handleDots();
-        this.startSlick(itemsTargetEl);
-      }else{
-        this.onReady();
       }
+
+      this.startSlick(itemsTargetEl);
     }
   };
 

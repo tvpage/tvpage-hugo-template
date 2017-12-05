@@ -88,8 +88,14 @@
     var allLength = all.length;
 
     //if no data to render
-    if(!allLength){
+    if(!allLength && this.options.clean){
       this.clean();
+
+      var onNoData = this.options.onNoData;
+
+      if(Utils.isFunction(onNoData)){
+        onNoData();
+      }
 
       return;
     }
@@ -128,6 +134,27 @@
 
       return html;
     }
+   
+    //the actual rail element, the one powered by PS
+    function renderRailEl(height, html){
+      var railEl = Utils.createEl('div');
+
+      railEl.style.height = height;
+      railEl.className = 'rail pr-3';
+      railEl.innerHTML = html;
+
+      return railEl;
+    }
+
+    //the actual rail element, the one powered by PS
+    function renderRailElHolder(){
+      var railElHolderEl = Utils.createEl('div');
+
+      railElHolderEl.style.position = 'relative';
+      railElHolderEl.className = 'o-hidden'; 
+
+      return railElHolderEl;
+    }
 
     if(moreThan2){
       var snapReferenceHeight = document.querySelector(this.options.snapReference).offsetHeight;
@@ -137,28 +164,19 @@
 
       (function getReferenceHeight(currentParent){
         setTimeout(function() {
-
           if(snapReferenceHeight > 0){
-            //the actual rail element, the one powered by PS
-            var productRailEl = Utils.createEl('div');
-            productRailEl.style.height = snapReferenceHeight + 'px';
-            productRailEl.className = 'rail';
+            var railEl = renderRailEl(snapReferenceHeight, renderPages.call(that));
+
+            that.railEl = railEl;
+
+            var railElHolderEl = renderRailElHolder();
+            railElHolderEl.appendChild(railEl);
 
             that.clean();
 
-            productRailEl.innerHTML = renderPages.call(that);
+            that.el.appendChild(railElHolderEl);
 
-            //we need this holder to wrap/hide PS scrollbars
-            var productRailElHolderEl = Utils.createEl('div');
-            productRailElHolderEl.style.position = 'relative';
-            productRailElHolderEl.className = 'o-hidden';
-            productRailElHolderEl.appendChild(productRailEl);
-            
-            that.railEl = productRailEl;
-            
-            that.el.appendChild(productRailElHolderEl);
-
-            that.ps = Ps.initialize(productRailEl, {
+            that.ps = Ps.initialize(railEl, {
               suppressScrollX: true
             });
 
@@ -171,7 +189,18 @@
         },50);
       })();
     }else{
-      this.el.innerHTML = renderPages.call(this);
+      var railEl = renderRailEl('auto', renderPages.call(this));
+      
+      this.railEl = railEl;
+      
+      var railElHolderEl = renderRailElHolder();
+      railElHolderEl.appendChild(railEl);
+      
+      this.clean();
+      
+      this.el.appendChild(railElHolderEl);
+
+      this.onReady();
     }
   };
 
@@ -197,8 +226,11 @@
       base: this.endpoint,
       params: {
         'X-login-id': this.config.loginId,
-        o: this.config.products_order_by,
-        od: this.config.products_order_direction,
+        
+        //BAD this should be passed as a setting
+        // o: this.config.products_order_by,
+        // od: this.config.products_order_direction,
+
         callback: 'tvpcallback'
       }
     },function(data){

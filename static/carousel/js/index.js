@@ -1,4 +1,4 @@
-(function(){
+(function() {
   var body = document.body;
   var id = body.getAttribute('data-id');
   var config = window.parent.__TVPage__.config[id];
@@ -11,7 +11,7 @@
   var skeletonEl = document.getElementById('skeleton');
   var videosCarousel;
 
-  function sendResizeMessage(){
+  function sendResizeMessage() {
     Utils.sendMessage({
       event: eventPrefix + ':widget_resize',
       height: Utils.getWidgetHeight()
@@ -60,14 +60,24 @@
     }
 
     function onReady() {
-      Utils.remove(skeletonEl.querySelector('.videos-skel-delete'));
+      var videosSkelEl = skeletonEl.querySelector('.videos-skel-delete');
 
-      Utils.sendMessage({
-        event: eventPrefix + ':widget_ready',
-        height: Utils.getWidgetHeight()
-      });
+      if (videosSkelEl) {
+        Utils.remove(videosSkelEl);
 
-      videosCarousel.loadNext('render');
+        videosCarousel.el.style.position = 'relative';
+
+        setTimeout(function() {
+          Utils.addClass(videosCarousel.el, 'show');
+
+          Utils.sendMessage({
+            event: eventPrefix + ':widget_ready',
+            height: Utils.getWidgetHeight()
+          });
+        }, 0);
+
+        videosCarousel.loadNext('render');
+      }
     }
 
     function onLoad(data) {
@@ -75,12 +85,22 @@
     }
 
     function parseVideos(item) {
-      item.title = Utils.trimText(item.title, 35);
+      var charSize = 35;
+      
+      if(Utils.isMobile && Utils.getWindowWidth() < 425){
+        charSize = 15;
+      }
+
+      item.title = Utils.trimText(item.title, charSize);
 
       return item;
     }
 
     videosCarousel = new Carousel('videos', {
+
+      //nonsense option, update such approach to be more easy to reason about
+      absPosReady: true,
+
       alignArrowsY: ['center', '.video-image-icon'],
       endpoint: videosEndpoint,
       params: Utils.addProps({
@@ -89,7 +109,7 @@
       }, channelParams),
       page: 0,
       data: channelVideos,
-      dots: true,
+      dotsCenter: true,
       slidesToShow: 3,
       slidesToScroll: 1,
       itemsTarget: '.slick-carousel',
@@ -99,10 +119,11 @@
         item: templates.videos.item
       },
       responsive: [{
-        breakpoint: 576,
+        breakpoint: 425,
         settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1
+          arrows: false,
+          dots: true,
+          slidesToScroll: 3
         }
       }],
       onClick: onClick,
@@ -149,6 +170,7 @@
           ready = false;
 
       if (ready) {
+        //return
         initAnalytics();
         initVideos();
 

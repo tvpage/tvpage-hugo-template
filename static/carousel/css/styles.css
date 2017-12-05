@@ -117,9 +117,15 @@
   cursor: pointer;
   z-index: 1000;
   background-color: #1a1a1a;
-  width: 45px;
-  height: 45px;
-  color:white
+  width: 25px;
+  height: 25px;
+  color:white;
+}
+
+.video-image-icon > i {
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
 }
 
 body:not(.mobile) .video:hover .video-image-overlay {
@@ -131,10 +137,17 @@ body:not(.mobile) .video:hover .video-image-icon {
   background-color: #000000;
 }
 
-.video-image-icon > i {
-  width: 34px;
-  height: 34px;
-  font-size: 34px;
+@media screen and (min-width: 570px) {
+  .video-image-icon {
+    width: 45px;
+    height: 45px;
+  }
+
+  .video-image-icon > i {
+    width: 34px;
+    height: 34px;
+    font-size: 34px;
+  }
 }
 
 @media screen and (min-width: 768px) {

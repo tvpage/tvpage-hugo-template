@@ -71,7 +71,7 @@
   cursor: pointer;
 }
 
-.dots-centered .slick-dots {
+.dots-center .slick-dots {
   text-align: center;
 }
 
@@ -91,7 +91,7 @@
   margin-right: 0;
 }
 
-.dots-centered .slick-dots {
+.dots-center .slick-dots {
   text-align: center;
 }
 

@@ -28,16 +28,21 @@
 .pop-over {
   position: absolute;
   top: 0;
-  right: 118%;
+  left: -205px;
   z-index: 10000;
   background: white;
+}
+
+.pop-over.fade:not(.show) {
+  pointer-events: none;
+  visibility: hidden;
 }
 
 .pop-over-pointer {
   width: 15px; 
   height: 25px; 
   position: absolute;
-  left: -14px;
+  left: -10px;
   background-color: transparent;
   z-index: 10100;
 }
@@ -51,9 +56,9 @@
   border-left: 13px solid #000;
   position: absolute;
   top: 0;
-  right: -2px;
   margin-left: auto;
   margin-right: auto;
+  left: 0;
 }
 
 .pop-over-pointer:after {
@@ -65,9 +70,9 @@
   border-left: 13px solid white;
   position: absolute;
   top: 0;
-  right: -1px;
   margin-left: auto;
   margin-right: auto;
+  left: -1px;
 }
 
 .pop-over-patch {

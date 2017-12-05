@@ -103,6 +103,14 @@
       if (!config.merchandise) {
         return;
       }
+
+      function removeProductsSkelEl() {
+        var productsSkelEl = skeletonEl.querySelector('.products-skel-delete');
+  
+        if (productsSkelEl) {
+          Utils.remove(productsSkelEl);
+        }
+      }
   
       // We set the height of the player to the products element, we also do this on player resize, we
       // want the products scroller to have the same height as the player.
@@ -126,6 +134,7 @@
           slidesToShow: 4,
           slidesToScroll: 1,
           itemsTarget: '.slick-carousel',
+          dotsCenter: true,
           templates: {
             list: templates.products.list,
             item: templates.products.item
@@ -136,37 +145,28 @@
             item.actionText = item.actionText || 'View Details';
             return item;
           },
-          onReady: function() {
-            setTimeout(function() {
-              var productsSkelEl = skeletonEl.querySelector('.products-skel-delete');
-  
-              if (productsSkelEl) {
-                Utils.remove(productsSkelEl);
-  
-                productsCarousel.el.style.position = 'relative';
-  
-                setTimeout(function() {
-                  Utils.addClass(productsCarousel.el, 'show');
-                }, 0);
-              }
+          onNoData: removeProductsSkelEl,
+          onReady: function(){
+            setTimeout(function(){
+              removeProductsSkelEl();
+              
+              productsCarousel.el.style.position = 'relative';
+              
+              setTimeout(function() {
+                Utils.addClass(productsCarousel.el, 'show');
+              }, 0);
             }, 100);
           },
-          // responsive: [
-          //   {
-          //     breakpoint: 499,
-          //     settings: {
-          //       slidesToShow: 4,
-          //       slidesToScroll: 1
-          //     }
-          //   },
-          //   {
-          //     breakpoint: 767,
-          //     settings: {
-          //       slidesToShow: 2,
-          //       slidesToScroll: 2
-          //     }
-          //   }
-          // ]
+          responsive: [
+            {
+            breakpoint: 425,
+            settings: {
+              arrows: false,
+              dots: true,
+              slidesToScroll: 4
+            }
+          }
+          ]
         }, config);
   
         productsCarousel.initialize();

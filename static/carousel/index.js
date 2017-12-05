@@ -260,6 +260,7 @@ function widgetRender(){
       ],
       css: [
         debug ? baseUrl + '/bootstrap/dist/css/bootstrap.css' : '',
+        debug ? cssPath + "/base.css" : '',
         debug ? baseUrl + '/slick/slick.css' : '',
         isMobile ? baseUrl + '/slick/mobile/custom.css' : '',
         !isMobile ? baseUrl + '/slick/custom.css' : '',
@@ -427,7 +428,7 @@ function widgetModalRender(){
     domain: baseUrl,
     context: config,
     eventPrefix: eventPrefix,
-    style: 'body{background:none transparent;}',
+    style: 'body{background:none transparent}',
     className: isMobile ? "mobile" : "",
     html: templates.modal.base,
     js: [
@@ -443,8 +444,8 @@ function widgetModalRender(){
       debug ? baseUrl + "/libs/rail.js" : "",
 
       debug ? javascriptPath + "/vendor/jquery.js" : "",
-      debug ? javascriptPath + "/" + mobilePath + "/modal/index.js" : "",
       debug && !isMobile ? javascriptPath + "/vendor/perfect-scrollbar.min.js" : "",
+      debug ? javascriptPath + "/" + mobilePath + "/modal/index.js" : "",
       debug ? "" : javascriptPath + "/" + mobilePath + "/modal/scripts.min.js"
     ],
     css: [
