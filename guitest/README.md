@@ -1,3 +1,56 @@
+# HUGO Template Analytics Automation
+## Requirements
+ - Node.js v9.20 or above
+ - Nightwatch Modules
+
+## Creating New Automations For New Widgets
+ - New automation file needs to be created per widgets.
+```sh
+cd ~/<HUGO Template GIT Repo>/
+cp conf/suite_new-widget.conf.js conf/suite_<new widget name>.conf.js
+```
+ - If New Widget has modal, copy automation script from existing
+```sh
+cd ~/<HUGO Template GIT Repo>/
+mkdir -p test/specs/<new widget name>
+cp test/specs/carousel/*.js test/specs/<new widget name>/
+```
+ - If New Widget has no modal, copy automation script from existing
+```sh
+cd ~/<HUGO Template GIT Repo>/
+mkdir -p test/specs/<new widget name>
+cp test/specs/inline/*.js test/specs/<new widget name>/
+```
+ - If New Widget has single video, copy automation script from existing
+```sh
+cd ~/<HUGO Template GIT Repo>/
+mkdir -p test/specs/<new widget name>
+cp test/specs/solo/*.js test/specs/<new widget name>/
+```
+ - Copy expected data and test configuration
+```sh
+cd ~/<HUGO Template GIT Repo>/
+cp data/carousel.js data/<new widget name>.js
+```
+ - Modify each test files under test/specs/<new widget name>/test.GC.js
+
+## Creating New Automations For New Browser
+ - Add new browser environment configuration on conf/suite.<widget name>.conf.js
+ - Create new test.<browser abbribiation>.js
+
+## How to run Automation for 1 environment at a time. (EX: W10 Google Chrome, W10 FF, OSX High Sierra Safari)
+```sh
+cd ~/<HUGO Template GIT Repo>/
+nightwatch -c conf/suite.<widget name>.conf.js -e W10GC
+nightwatch -c conf/suite.<widget name>.conf.js -e W10FF
+nightwatch -c conf/suite.<widget name>.conf.js -e OSXHSSafari
+```
+## How to run Automation for multiple environments (EX: W10 Google Chrome, W10 FF, W10 Edge, W81 IE, OSX High Sierra Safari)
+```sh
+cd ~/<HUGO Template GIT Repo>/
+nightwatch -c conf/suite.<widget name>.conf.js -e W10GC,W10FF,W10Edge,W81IE,OSXHSSafari
+```
+
 # Nightwatch.js Dockerfile
 Dockerfile for [Nightwatch.js](http://nightwatchjs.org/).
 
