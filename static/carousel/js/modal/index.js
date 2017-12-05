@@ -290,7 +290,6 @@
         }
 
         loadLib(baseUrl + '/bootstrap/js/util.js', onBSUtilLoad);
-
       } else if (++depsCheck < 200) {
         initModal()
       }

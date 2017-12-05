@@ -157,10 +157,8 @@
           ready = false;
 
       if (ready) {
-        //return
         initAnalytics();
         initVideos();
-
       } else if (++depsCheck < depsCheckLimit) {
         initCarousel()
       }
