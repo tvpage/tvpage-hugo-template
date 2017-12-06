@@ -1,20 +1,21 @@
-'<div id="skeleton" class="skeleton hide">' +
+'<div id="skeleton" class="skeleton" style="visibility:hidden;opacity:0;">' +
   
   '<div class="row justify-content-start">' +
     '<div class="col">' +
-      '<h3 id="widget-title" class="widget-title"></h3>' +
+      '<h4 id="widget-title" class="widget-title"></h4>' +
     '</div>' +
   '</div>' +
 
-  '<div class="row mt-2 videos-skel-delete">' +
-    {{ range (seq ($.Scratch.Get "settings").items_per_page) }}
-    '<div class="video video-{{ . }} col px-2">' +
-      '<div class="video-image fluid-y skeleton-bg mb-2 bg-default"></div>' +
-      '<p class="video-title"></p>' +
+  '<div class="relative">' +
+    '<div class="row mt-2 videos-skel-delete">' +
+      {{ range (seq ($.Scratch.Get "settings").items_per_page) }}
+        '<div class="video video-{{ . }} col px-2">' +
+            '<div class="video-image fluid-y skeleton-bg mb-2 bg-default"></div>' +
+            '<p class="video-title"></p>' +
+        '</div>' +
+      {{ end }}
     '</div>' +
-    {{ end }}
+    '<div id="videos" class="slider-pull-x-2 hide-abs"></div>' +
   '</div>' +
-  
-  '<div id="videos" class="col-x-pull"></div>' +
   
 '</div>'

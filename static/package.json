@@ -17,7 +17,7 @@
     "exit": "^0.1.2",
     "github": "^11.0.0",
     "grunt": "^1.0.1",
-    "grunt-sass": "^2.0.0",
+    "grunt-sass": "*",
     "karma": "^0.13.0",
     "karma-coverage": "^1.1.1",
     "karma-fixture": "^0.2.6",

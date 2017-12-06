@@ -20,7 +20,9 @@
     this.dotsPosition = this.getOption(this.options.dotsPosition, 'bottom');
     this.slidesToShow = this.getOption(this.options.slidesToShow, 1);
     this.slidesToScroll = this.getOption(this.options.slidesToScroll, 1);
+    this.slickArrowStyleEl;
     this.slideCompare;
+    this.onReadyCalled = false;
 
     this.el = document.getElementById(sel);
     this.el.style.position = 'relative';
@@ -37,9 +39,10 @@
       slidesToScroll: this.slidesToScroll,
       infinite: options.infinite || false,
       arrows: this.arrows,
+      dots: this.dots,
       appendArrows: this.appendArrows,
       appendDots: this.appendDots,
-      customPaging: function (s, k) {
+      customPaging: function(s, k){
         return '<button class="btn-primary carousel-dot carousel-dot-' + k + '"></button>';
       }
     };
@@ -47,8 +50,6 @@
     if(!!options.responsive && options.responsive.length){
       slickConfig.responsive = options.responsive;
     }
-
-    slickConfig.dots = this.config.navigation_bullets && this.dots;
 
     slickConfig = Utils.removeObjNulls(slickConfig);
 
@@ -74,13 +75,19 @@
   };
 
   Carousel.prototype.onReady = function(){
+    if(this.onReadyCalled){
+      return;
+    }
+
     var onReady = this.options.onReady;
-    
+
     if(Utils.isFunction(onReady)){
       onReady();
     }
 
     this.handleClick();
+
+    this.onReadyCalled = true;
   };
 
   Carousel.prototype.getArrowEls = function(){
@@ -101,11 +108,11 @@
       var firstItem = this.el.querySelector(this.itemClass);
       
       if(firstItem && !Utils.isUndefined(firstItem.firstChild)){
-        xOffset = Utils.getStyle(firstItem.firstChild,'padding-left');
+        xOffset = parseInt(Utils.getStyle(firstItem.firstChild,'padding-left'), 10);
       }
-    }
 
-    this.arrowsXOffset = xOffset;
+      xOffset += parseInt(Utils.getStyle(firstItem.firstChild,'margin-left'), 10);
+    }
 
     if(Utils.isUndefined(xOffset))
       return;
@@ -160,40 +167,23 @@
             top += parents[i].offsetTop;
           }
 
-          top += referenceEl.offsetTop + Math.floor(referenceEl.getBoundingClientRect().height / 2);
-
           //calculation is done, now lets find the arrows and update their style. We update the CSS rule instead of straight style modification
           //so the top value remains and the user won't experience the top update (flickering)
-          var allStyleSheets = document.styleSheets;
-          var allStyleSheetsLength = allStyleSheets.length;
-          var slickStyleSheet;
-          var slickStyleSheetId = 'slick/' + (Utils.isMobile ? 'mobile/' : '')  + 'custom.css';
+          top += referenceEl.offsetTop + Math.floor(referenceEl.getBoundingClientRect().height / 2);
 
-          for (var i = 0; i < allStyleSheetsLength; i++) {
-            var styleSheetHref = allStyleSheets[i].href;
+          var arrowTopStyleSheet = Utils.createEl('style');
+          var arrowTopStyleSheetId = 'slick-arrow';
+
+          if(this.slickArrowStyleEl){
+            this.slickArrowStyleEl.innerHTML = '.slick-arrow{top:' + top + 'px;}';
+          }else{
+            var arrowTopStyleSheet = Utils.createEl('style');
+            arrowTopStyleSheet.id = arrowTopStyleSheetId;
+            arrowTopStyleSheet.innerHTML = '.slick-arrow{top:' + top + 'px;}';
             
-            if(styleSheetHref && -1 !== styleSheetHref.search(slickStyleSheetId)){
-              slickStyleSheet = allStyleSheets[i];
-            }
-          }
+            document.head.appendChild(arrowTopStyleSheet);
 
-          if(!slickStyleSheet){
-            if(that.config.debug) {
-              console.log("can't find slick's stylesheets");
-            }
-
-            return;
-          }
-
-          var cssRules = (slickStyleSheet.cssRules || slickStyleSheet.rules) || [];
-
-          for (var i = 0; i < cssRules.length; i++) {
-            var rule = cssRules[i];
-
-            if(rule.selectorText == '.slick-arrow'){
-              
-              rule.style.top = top;
-            }
+            this.slickArrowStyleEl = arrowTopStyleSheet;
           }
 
           Utils.addClass(that.el, 'arrows-ready');
@@ -246,15 +236,19 @@
     }
 
     if(this.options.dotsCenter){
-      Utils.addClass(this.el, 'dots-centered');
+      Utils.addClass(this.el, 'dots-center');
     }
 
     var arrowEls = this.el.querySelectorAll('.slick-arrow');
     var arrowElsLength = arrowEls.length;
+    var slickEl = this.el.querySelector('.slick-carousel');
 
     for (var i = 0; i < arrowElsLength; i++) {
-      this.el.querySelector('.slick-carousel').appendChild(arrowEls[i]);
+      slickEl.appendChild(arrowEls[i]);
     }
+
+    slickEl.style.height = 'auto';
+    slickEl.style.overflow = 'visible';
 
     this.onReady();
   };
@@ -340,6 +334,9 @@
   };
 
   Carousel.prototype.startSlick = function(slickEl){
+    //prep before slick init goes here
+    this.handleDots();
+
     var that = this;
 
     if (Utils.isUndefined($.fn.slick)) {
@@ -371,7 +368,15 @@
   };
 
   Carousel.prototype.renderItem = function(item){
-    return Utils.tmpl(this.templates.item, item);
+    var html = "";
+
+    try{
+      html = Utils.tmpl(this.templates.item, item);
+    }catch(e){
+      console.log('render error ', e)
+    }
+
+    return html;
   };
 
   Carousel.prototype.renderBatch = function(batch){
@@ -435,7 +440,7 @@
 
     this.appendDotsEl = document.createElement('div');
     this.appendDotsEl.id = dotsId;
-    this.appendDotsEl.className = 'col';
+    this.appendDotsEl.className = 'col py-3';
 
     var dotsClass = this.options.dotsClass;
     
@@ -460,18 +465,28 @@
     if(!allLength && this.options.clean){
       this.clean();
       
+      var onNoData = this.options.onNoData;
+
+      if(Utils.isFunction(onNoData)){
+        onNoData();
+      }
+
+      Utils.addClass(this.el, 'm-0');
+
       return;
+    }else{
+      Utils.removeClass(this.el, 'm-0');
     }
 
     this.parse();
 
     var willUpdate = this.page > 0 ? true : false;
-    var moreThanOne = allLength > 1;
     var pages = this.itemsPerPage > 0 ? Utils.rowerize(all, this.itemsPerPage) : [all];
     var pagesLength = pages.length;
     var pageWrapStart = this.options.pageWrapStart;
     var pageWrapEnd = this.options.pageWrapEnd;
     var hasPageWrap = pageWrapStart && pageWrapEnd;
+    var moreThan1Page = this.loadMore ? allLength >= this.slidesToShow : allLength > this.slidesToShow;
 
     function renderPages(offset, onArray){
       var html = onArray ? [] : '';
@@ -518,10 +533,7 @@
 
       this.el.appendChild(itemsTargetEl);
 
-      //we won't start the slick slider if there's no overflow of items
-      //if user don't pass where nav dots should be, we render a placeholder
-      if(moreThanOne){
-        this.handleDots();
+      if(moreThan1Page){
         this.startSlick(itemsTargetEl);
       }else{
         this.onReady();

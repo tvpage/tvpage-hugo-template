@@ -1,3 +1,18 @@
+//we add the preconnect hints as soon as we can
+(function addHTMLHints(){
+  [
+    config.api_base_url,
+    config.baseUrl
+  ].forEach(function(href){
+    var link = document.createElement('link');
+
+    link.rel = 'preconnect';
+    link.href = href;
+
+    document.head.appendChild(link);
+  });
+})();
+
 var body = document.body;
 var userAgent = navigator.userAgent;
 var isFirefox = /Firefox/i.test(userAgent);
@@ -14,9 +29,6 @@ var iframeHtmlStart = '<head><base target="_blank"/></head><body class="{classNa
 '  var l=d.createElement(\'link\');'+
 '  l.rel=\'stylesheet\';'+
 '  l.href=u;'+
-'  if(c && \'function\' === typeof c){'+
-'   l.onload=c;'+
-'  }'+
 '  h.appendChild(l);' +
 '};';
 
@@ -114,16 +126,10 @@ function isEvent(e){
   return e && e.data && e.data.event;
 }
 
-function getEventType(e){
+function getEventName(e){
   var eArr = e.data.event.split(':');
   return eArr[0] === eventPrefix ? eArr[1] : '';
 }
-
-//we add the preconnect hints as soon as we can
-var preConnectLink = createEl('link');
-preConnectLink.rel = 'preconnect';
-preConnectLink.href = config.api_base_url;
-document.head.appendChild(preConnectLink);
 
 //here we start with the actual logic that will prepare the iframe(s) content and inject it
 //to the page.
@@ -131,6 +137,7 @@ var debug = config.debug;
 var type = config.type;
 var css = config.css;
 var baseUrl = config.baseUrl;
+var libsPath = baseUrl + '/libs';
 var static = baseUrl + '/' + type;
 var dist = debug ? '/' : '/dist/';
 var eventPrefix = ('tvp_' + id).replace(/-/g, '_');
@@ -182,15 +189,14 @@ function getIframeHtml(o){
         return l;
       };
 
-  html += load(o.js, 'JavaScript') + 
-  load(o.css, 'CSS', 'function(){' +
-  '   var skel = document.getElementById(\'skeleton\');' +
-  '   skel && skel.classList.remove(\'hide\');' +
-  '}'
-  );
-
+  html += load(o.js, 'JavaScript') + load(o.css, 'CSS');
   html += '">';//closing the body tag
-  html += '<style>' + (o.style || '') + '</style>';
+  html += '<div id="bs-checker" class="invisible"></div>';//helper to check bs is loaded
+  
+  if(o.style){
+    html += '<style>' + o.style + '</style>';
+  }
+  
   html += tmpl((o.html || '').trim(), o.context);
 
   return html;
@@ -203,13 +209,9 @@ function getInitialHtml(){
   
   var hostStyles = isMobile ? css.mobile.host : css.host;
 
-  if (!getById(styleId))
+  if(!getById(styleId)){
     html += '<style id="' + styleId + '">' + hostStyles + '</style>';
-  
-  var hostCustomStyles = isMobile ? css.mobile['host-custom'] : css['host-custom'];
-  
-  if(!isUndefined(hostCustomStyles))
-    html += '<style>' + hostCustomStyles + '</style>';
+  }
 
   html += tmpl(initialHtml, config);
 
@@ -239,13 +241,13 @@ function widgetRender(){
   
     var iframe = holder.querySelector("iframe");
     var iframeDocument = iframe.contentWindow.document;
-    var libsPath = baseUrl + '/libs';
   
     iframeDocument.open().write(getIframeHtml({
       id: id,
       domain: baseUrl,
       context: config,
       html: templates.base,
+      className: isMobile ? "mobile" : "",
       eventPrefix: eventPrefix,
       js: [
         '//a.tvpage.com/tvpa.min.js',
@@ -257,10 +259,10 @@ function widgetRender(){
         debug ? "" : javascriptPath + '/scripts.min.js'
       ],
       css: [
+        debug ? baseUrl + '/bootstrap/dist/css/bootstrap.css' : '',
         debug ? baseUrl + '/slick/slick.css' : '',
         isMobile ? baseUrl + '/slick/mobile/custom.css' : '',
         !isMobile ? baseUrl + '/slick/custom.css' : '',
-        debug ? baseUrl + '/bootstrap/dist/css/bootstrap.css' : '',
         debug ? cssPath + '/styles.css' : '',
         debug ? '' : cssPath + '/styles.min.css'
       ]
@@ -349,42 +351,28 @@ window.addEventListener("message", function(e){
     return;
   }
 
-  var eventType = getEventType(e);
+  var eventName = getEventName(e);
   
-  if('widget_ready' === eventType){
+  if('widget_ready' === eventName){
     onWidgetReady(e);
   }
 
-  if('widget_resize' === eventType){
+  if('widget_resize' === eventName){
+    console.log('### widget_resize')
     onWidgetResize(e);
   }
 
-  if('widget_videos_carousel_click' === eventType){
+  if('widget_videos_carousel_click' === eventName){
     onWidgetVideosCarouselClick(e);
   }
 
-  //check if you need this
-  if('render' === eventType){
-    onRender(e); 
-  }
-
-  //normalize this to form part of the std
-  if('widget_modal_initialized' === eventType){
-    onWidgetModalInitialized(e);
-  }
-
-  if('widget_modal_resize' === eventType){
-    onWidgetModalResize(e);
+  if('widget_modal_close' === eventName){
+    onWidgetModalClose(e);
   }
 
   //? how to order this?
-  if('widget_player_change' === eventType){
+  if('widget_player_change' === eventName){
     onWidgetPlayerChange(e);
-  }
-
-  //listen to the onstatechange instead and check for video ended (this shall pass the video)
-  if('player_next' === eventType){
-    handlePlayerNext(e);
   }
 
   if (__windowCallbackFunc__)
@@ -404,73 +392,88 @@ function onWidgetPlayerChange(e){
   config.onPlayerChange(e.data.e, e.data.stateData);
 }
 
-function onRender(e) {
-  addClass(holder, "initialized");
+var iframeModal;
+
+function onWidgetModalClose(e){
+  remove(iframeModal);
+
+  iframeModal = null;
+}
+
+function widgetModalRender(){
+  if(!document.body){
+    throw new Error("document body doesn't exists, try placing embed code after <body>");
+  }
   
-  if(config.background){
-    holder.style.cssText += 'background-color:' + config.background + ';';
+  if(iframeModal){
+   return;
   }
 
-  if(config.item_title_font_color){
-    var titles = iframeDocument.querySelectorAll('.tvp-video-title');
-    for (var i = 0; i < titles.length; i++) {
-      titles[i].style.cssText += 'color:' + config.item_title_font_color + ';';
-    }
+  var modalTargetEl = createEl('div');
+  modalTargetEl.id = config.id + '-modal-target';
+  
+  document.body.appendChild(modalTargetEl);
+  
+  modalTargetEl.insertAdjacentHTML('beforebegin', templates.modal.iframe);
+  
+  remove(modalTargetEl);
+
+  iframeModal = getById('tvp-' + config.id + '-modal-iframe');
+  
+  var iframeModalDocument = iframeModal.contentWindow.document;
+  
+  iframeModalDocument.open().write(getIframeHtml({
+    id: id,
+    domain: baseUrl,
+    context: config,
+    eventPrefix: eventPrefix,
+    style: 'body{background:none transparent}',
+    className: isMobile ? "mobile" : "",
+    html: templates.modal.base,
+    js: [
+      "//a.tvpage.com/tvpa.min.js",
+      '//imasdk.googleapis.com/js/sdkloader/ima3.js',
+      getPlayerUrl(),
+      debug ? libsPath + "/utils.js" : "",
+      debug ? libsPath + "/analytics.js" : "",
+      debug ? libsPath + "/player.js" : "",
+      debug ? libsPath + "/carousel.js" : "",
+
+      //this has to be an option
+      debug ? baseUrl + "/libs/rail.js" : "",
+
+      debug ? javascriptPath + "/vendor/jquery.js" : "",
+      debug && !isMobile ? javascriptPath + "/vendor/perfect-scrollbar.min.js" : "",
+      debug ? javascriptPath + "/" + mobilePath + "/modal/index.js" : "",
+      debug ? "" : javascriptPath + "/" + mobilePath + "/modal/scripts.min.js"
+    ],
+    css: [
+      debug ? baseUrl + '/bootstrap/dist/css/bootstrap.css' : '',
+      debug && isMobile ? baseUrl + "/slick/slick.css" : '',
+      isMobile ? baseUrl + '/slick/mobile/custom.css' : '',
+      !isMobile ? baseUrl + '/slick/custom.css' : '',
+      debug && !isMobile ? cssPath + "/vendor/perfect-scrollbar.min.css" : "",
+      debug ? cssPath + "/" + mobilePath + "/modal/styles.css" : '',
+      debug ? "" : cssPath + "/" + mobilePath + "/modal/styles.min.css"
+    ]
+  }));
+
+  iframeModalDocument.close();
+}
+
+function onWidgetModalLoad(data){
+  var dataLength = !!data.length ? data.length : 0;
+  
+  if(dataLength){
+    widgetModalRender();
   }
 }
 
-var modalInitialized = false;
-var iframeModalHolder;
-var iframeModal;
-var iframeModalDocument;
-var modal;
+function widgetModalLoad(data){
+  onWidgetModalLoad(data);
+}
 
-function onWidgetVideosCarouselClick(e) {
-  if(!modalInitialized){
-    modalInitialized = true;
-
-    //external render
-    var modalContainer = createEl('div');
-    modalContainer.innerHTML = templates.modal.base;
-    body.appendChild(modalContainer);
-
-    iframeModalHolder = getById('tvp-modal-iframe-holder-' + id);
-    iframeModal = null;
-    iframeModalDocument = null;
-    modal = getById("tvp-modal-" + id);
-
-    addClass(modal, isMobile ? "mobile" : "desktop");
-
-    if (config.modal_title_position.trim().length && "bottom" === config.modal_title_position) {
-      var modalTitleEl = modal.querySelector("#tvp-modal-title-" + id);
-      addClass(modalTitleEl,"bottom")
-      modal.querySelector(".tvp-modal-body").appendChild(modalTitleEl);
-    }
-
-    function closeModal() {
-      addClass(modal, 'tvp-hidden');
-      addClass('tvp-modal-overlay-' + id, 'tvp-hidden');
-
-      remove(iframeModal);
-
-      if (config.fix_page_scroll)
-        removeClass(body, 'tvp-modal-open');
-
-      window.postMessage({
-        event: eventPrefix + ':modal_close'
-      }, '*');
-    };
-
-    getById("tvp-modal-close-" + id).addEventListener('click', closeModal, false);
-
-    modal.addEventListener('click', function(e) {
-      if (e.target === modal || !modal.contains(e.target)) {
-        closeModal();
-      }
-    }, false);
-  }
-
-  //modal initialization
+function onWidgetVideosCarouselClick(e){
   var videos = config.channel.videos;
   var selected = null;
   var clicked = e.data.clicked;
@@ -484,75 +487,5 @@ function onWidgetVideosCarouselClick(e) {
 
   config.clicked = clicked;
 
-  modal.querySelector('.tvp-modal-title').innerHTML = selected.title || "";
-
-  removeClass(modal, 'tvp-hidden');
-  removeClass('tvp-modal-overlay-' + id, 'tvp-hidden');
-  
-  //render the iframe contents
-  iframeModalHolder.innerHTML = templates.modal.iframe;
-  iframeModal = iframeModalHolder.querySelector('.tvp-iframe-modal');
-  iframeModalDocument = iframeModal.contentWindow.document;
-  
-  iframeModalDocument.open().write(getIframeHtml({
-    id: id,
-    domain: baseUrl,
-    context: config,
-    eventPrefix: eventPrefix,
-    style: isMobile ? css.mobile.modal.content : css.modal.content,
-    className: isMobile ? "mobile" : "",
-    html: (isMobile ? templates.modal.body : templates.modal.body),
-    js: [
-      "//a.tvpage.com/tvpa.min.js",
-      '//imasdk.googleapis.com/js/sdkloader/ima3.js',
-      getPlayerUrl(),
-      debug ? baseUrl + "/libs/utils.js" : "",
-      debug ? baseUrl + "/libs/analytics.js" : "",
-      debug ? baseUrl + "/libs/player.js" : "",
-      debug ? baseUrl + "/libs/carousel.js" : "",
-      debug && isMobile ? javascriptPath + "/vendor/jquery.js" : "",
-      debug ? javascriptPath + "/" + mobilePath + "/modal/index.js" : "",
-      debug && !isMobile ? javascriptPath + "/vendor/perfect-scrollbar.min.js" : "",
-      debug ? "" : javascriptPath + "/" + mobilePath + "/modal/scripts.min.js"
-    ],
-    css: [
-      debug ? baseUrl + '/bootstrap/dist/css/bootstrap.css' : '',
-      debug ? cssPath + "/" + mobilePath + "/modal/styles.css" : '',
-      debug && isMobile ? baseUrl + "/slick/slick.css" : '',
-      isMobile ? baseUrl + '/slick/mobile/custom.css' : '',
-      !isMobile ? baseUrl + '/slick/custom.css' : '',
-      debug && !isMobile ? cssPath + "/vendor/perfect-scrollbar.min.css" : "",
-      debug ? "" : cssPath + "/" + mobilePath + "/modal/styles.min.css"
-    ]
-  }));
-
-  iframeModalDocument.close();
-  
-  if (config.fix_page_scroll)
-    addClass(body, 'tvp-modal-open');
-}
-
-function onWidgetModalInitialized(e) {
-  var onOrientationChange = function() {
-    if (iOS && iframeModal && iframeModal.contentWindow) {
-      var width = iframeModal.parentNode.offsetWidth;
-      iframeModal.contentWindow.window.postMessage({
-        event: eventPrefix + ':external_resize',
-        size: [width, Math.floor(width * (9 / 16))]
-      }, '*');
-    }
-  };
-  
-  var orientationChangeEvent = 'onorientationchange' in window ? 'orientationchange' : 'resize';
-  
-  window.removeEventListener(orientationChangeEvent, onOrientationChange, false);
-  window.addEventListener(orientationChangeEvent, onOrientationChange, false);
-}
-
-function handlePlayerNext(e) {
-  getById('tvp-modal-title-' + id).innerHTML = e.data.next.assetTitle || "";
-}
-
-function onWidgetModalResize(e){
-  iframeModalHolder.style.height = e.data.height;
+  widgetModalLoad(videos);
 }

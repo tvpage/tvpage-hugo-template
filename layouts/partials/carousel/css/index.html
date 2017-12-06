@@ -1,14 +1,6 @@
 {
   host: {{- (partial (printf "%s/css/host.css" .Type) .) | htmlUnescape | safeHTML -}},
-  "host-custom": {{- (partial (printf "%s/css/host-custom.css" .Type) .) | htmlUnescape | safeHTML -}},
-  modal:{
-    content: {{- (partial (printf "%s/css/modal/content.css" .Type) .) | htmlUnescape | safeHTML -}}
-  },
   mobile: {
     host: {{- (partial (printf "%s/mobile/css/host.css" .Type) .) | htmlUnescape | safeHTML -}},
-    "host-custom": {{- (partial (printf "%s/mobile/css/host-custom.css" .Type) .) | htmlUnescape | safeHTML -}},
-    modal: {
-      content: {{- (partial (printf "%s/mobile/css/modal/content.css" .Type) .) | htmlUnescape | safeHTML -}}
-    }
   }
 }

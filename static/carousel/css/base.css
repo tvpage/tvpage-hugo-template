@@ -1,0 +1,94 @@
+/* turn focus state off */
+*:focus,
+*:active {
+  outline: none !important;
+}
+
+.hide {
+  opacity: 0; 
+  visibility: hidden;
+}
+
+.relative {
+  position: relative;
+}
+
+.hide-abs {
+  position: absolute !important;
+  bottom: -5000px;
+  width: 100%;
+  left: 0;
+  right: 0;
+  margin: 0 auto !important;
+}
+
+.o-hidden {
+  overflow: hidden;
+}
+
+.clickable {
+  cursor:pointer; 
+}
+
+.fluid-y {
+  height: 0;
+  width: 100%;
+  position: relative;
+}
+
+.abs-center {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.abs-bottom {
+  position: absolute;
+  bottom: 0;
+}
+
+.col-x-push {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+.col-x-pull {
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+.bordered {
+  border: 1px solid;
+}
+
+/* thumbnail sizes */
+.thumb-sm {
+  max-width: 50px;
+}
+
+.thumb-md {
+  max-width: 100px;
+}
+
+/* backgrounds */
+.skeleton-bg {
+  background-color: #efefef;
+}
+
+.bg-default {
+  background-repeat: no-repeat;
+  background-position: center;
+  position: relative;
+}
+
+
+@media screen and (min-width: 768px) {
+  
+    .m0-md{
+      margin: 0 !important;
+    }
+   
+  }
