@@ -1,4 +1,24 @@
 
+exports.HTML = {
+  ELEMENT_WIDGET_HOLDER: "div#inline-2-holder",
+  ELEMENT_WIDGET: 'div#skeleton',
+  ELEMENT_WIDGET_TITLE: "h3#widget-title",
+  ELEMENT_MODAL_HOLDER: "div#tvp-modal-inline-2",
+  ELEMENT_MODAL_OPEN: "div.video-image-icon",
+  ELEMENT_MODAL: "div#tvp-modal-inline-2",
+  ELEMENT_MODAL_CLOSE: "div#tvp-modal-close-inline-2",
+  ELEMENT_MODAL_OVERLAY: "div#tvp-modal-overlay-inline-2",
+  ELEMENT_MODAL_CLOSE_BUTTON: 'div#tvp-modal-close-inline-2',
+  ELEMENT_MODAL_TITLE: 'h4#tvp-modal-title-inline-2',
+  ELEMENT_MODAL_IFRAME_HOLDER: 'tvp-modal-iframe-holder-inline-2',
+  ELEMENT_PLAYER_HOLDER: "div.player-holder",
+  ELEMENT_PRODUCT_HOLDER: "a[data-id='83102933']",
+  ELEMENT_PRODUCT_CLICK: "p.product-title",
+  ELEMENT_VIDEO_CONTENT: 'div#skeleton',
+  ELEMENT_FIRST_VIDEO: 'div[data-id="65981962"]',
+  IFRAME_WIDGET: 0
+};
+
 exports.data = {
   BASE_URL: "https://widgets.goodlookingbean.com/test/",
   SLA: 10000,
@@ -20,6 +40,10 @@ exports.product = {
   PRICE: "$199.99"
 };
 
+exports.analytic_events = [
+  ['ci','vv','vt', 'vtp', 'pi','pk']
+];
+
 exports.analytics = [
   {
     VIDS: [65981962,83106081],
@@ -34,7 +58,7 @@ exports.analytics = [
     ],
     VDRS: [
       {VID: 65981962, VDR: {MIN:6, MAX:7}},
-      {VID: 83106081, VDR: 423}
+      {VID: 83106081, VDR: {MIN:423, MAX:424}}
     ],
     VTPS: [
       {VID: 65981962, VTP: {MIN:50, MAX:100}}, // Min && Max value of VT percent

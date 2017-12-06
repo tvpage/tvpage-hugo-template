@@ -1,12 +1,12 @@
-/*================================*/
-/* Nightwatch Carousel Automation */
-/*================================*/
-var WIDGET = require(__dirname + "/../../../data/carousel.js"),
+/*===============================*/
+/* Nightwatch Sidebar Single Automation */
+/*===============================*/
+var WIDGET = require(__dirname + "/../../../data/sidebar-single.js"),
     AUTO = require(__dirname + "/../../../lib/tvpGUITest.js");
 
 module.exports = {
 
-  'carousel-analytics': function (browser) {
+  'sidebar-single-analytics': function (browser) {
 
     var widget = AUTO.tvpGUITest({
           ELEMENT_MODAL_OVERLAY: WIDGET.HTML.ELEMENT_MODAL_OVERLAY,
@@ -15,8 +15,7 @@ module.exports = {
           ELEMENT_MODAL_TITLE: WIDGET.HTML.ELEMENT_MODAL_TITLE,
           ELEMENT_MODAL_IFRAME_HOLDER: WIDGET.HTML.ELEMENT_MODAL_IFRAME_HOLDER,
           ELEMENT_MODAL_OPEN: WIDGET.HTML.ELEMENT_MODAL_OPEN,
-          DATA: WIDGET.data,
-          IS_SAFARI: true
+          DATA: WIDGET.data
         }),
         product = WIDGET.product,
         parent = WIDGET.HTML.ELEMENT_VIDEO_CONTENT + " > " + WIDGET.HTML.ELEMENT_PRODUCT_HOLDER,
@@ -25,9 +24,9 @@ module.exports = {
         expected =  WIDGET.analytics;
 
     widget
-      .widgetTitle(WIDGET.HTML.ELEMENT_WIDGET, WIDGET.HTML.ELEMENT_WIDGET_TITLE, "Recommended Videos")
+      .widgetTitle(WIDGET.HTML.ELEMENT_WIDGET, WIDGET.HTML.ELEMENT_WIDGET_TITLE, WIDGET.HTML.WIDGET_TITLE)
       .modalSanity(WIDGET.HTML.ELEMENT_MODAL, WIDGET.HTML.ELEMENT_FIRST_VIDEO, 'Double wall insulated mug', WIDGET.HTML.IFRAME_MODAL, true)
-      .productSanity(product, WIDGET.HTML.ELEMENT_PRODUCT_TARGET, WIDGET.HTML.ELEMENT_PRODUCT_CLICK, WIDGET.HTML.IFRAME_MODAL, false)
+      .productSanity(product, undefined, undefined, WIDGET.HTML.IFRAME_MODAL, false)
       .pause(5)
       .playerStartPause(WIDGET.HTML.IFRAME_MODAL, WIDGET.HTML.ELEMENT_VIDEO_CONTENT + " > " + WIDGET.HTML.ELEMENT_PLAYER_HOLDER)
       .pause(25)
@@ -47,6 +46,7 @@ module.exports = {
       .analytics(WIDGET.HTML.IFRAME_MODAL, WIDGET.analytic_events[WIDGET.HTML.IFRAME_MODAL], expected[WIDGET.HTML.IFRAME_MODAL])
 
       .end();
+
   }
 
 };

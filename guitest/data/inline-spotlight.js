@@ -1,4 +1,24 @@
 
+exports.HTML = {
+  ELEMENT_WIDGET_HOLDER: "div#inline-spotlight-2-holder",
+  ELEMENT_WIDGET: 'div#skeleton',
+  ELEMENT_WIDGET_TITLE: "h3#widget-title",
+  ELEMENT_MODAL_HOLDER: "div#tvp-modal-inline-spotlight-2",
+  ELEMENT_MODAL_OPEN: "div.video-image-icon",
+  ELEMENT_MODAL: "div#tvp-modal-inline-spotlight-2",
+  ELEMENT_MODAL_CLOSE: "div#tvp-modal-close-inline-spotlight-2",
+  ELEMENT_MODAL_OVERLAY: "div#tvp-modal-overlay-inline-spotlight-2",
+  ELEMENT_MODAL_CLOSE_BUTTON: 'div#tvp-modal-close-inline-spotlight-2',
+  ELEMENT_MODAL_TITLE: 'h4#tvp-modal-title-inline-spotlight-2',
+  ELEMENT_MODAL_IFRAME_HOLDER: 'tvp-modal-iframe-holder-inline-spotlight-2',
+  ELEMENT_PLAYER_HOLDER: "div.player-holder",
+  ELEMENT_PRODUCT_HOLDER: "a[data-id='83102933']",
+  ELEMENT_PRODUCT_CLICK: "p.product-title",
+  ELEMENT_VIDEO_CONTENT: 'div#skeleton',
+  ELEMENT_FIRST_VIDEO: 'div[data-id="65981962"]',
+  IFRAME_WIDGET: 0,
+};
+
 exports.data = {
   BASE_URL: "https://widgets.goodlookingbean.com/test/",
   SLA: 10000,
@@ -19,6 +39,10 @@ exports.prodcut = {
   IMG: "http://www.gourmia.com/itemimageslarge/GDK380-Small.png",
   PRICE: "$199.99"
 };
+
+exports.analytic_events = [
+  ['ci','vv','vt','vtp','pi','pk']
+];
 
 exports.analytics = [
   {

@@ -1,3 +1,23 @@
+ 
+exports.HTML = {
+  ELEMENT_WIDGET_HOLDER: "div#carousel-spotlight-2-holder",
+  ELEMENT_WIDGET: 'div#skeleton',
+  ELEMENT_WIDGET_TITLE: "h3#widget-title",
+  ELEMENT_MODAL_HOLDER: "div#tvp-modal-carousel-spotlight-2",
+  ELEMENT_MODAL_OPEN: "div.video-image-icon",
+  ELEMENT_MODAL: "div#tvp-modal-carousel-spotlight-2",
+  ELEMENT_MODAL_CLOSE: "div#tvp-modal-close-carousel-spotlight-2",
+  ELEMENT_MODAL_OVERLAY: "div#tvp-modal-overlay-carousel-spotlight-2",
+  ELEMENT_MODAL_CLOSE_BUTTON: 'div#tvp-modal-close-carousel-spotlight-2',
+  ELEMENT_MODAL_TITLE: 'h4#tvp-modal-title-carousel-spotlight-2',
+  ELEMENT_MODAL_IFRAME_HOLDER: 'tvp-modal-iframe-holder-carousel-spotlight-2',
+  ELEMENT_PLAYER_HOLDER: "div.tvp-player-holder",
+  ELEMENT_PRODUCT_HOLDER: "div.tvp-products-holder",
+  ELEMENT_VIDEO_CONTENT: 'div#carousel-spotlight-2',
+  ELEMENT_FIRST_VIDEO: 'div[data-slick-index="0"]',
+  IFRAME_WIDGET: 0,
+  IFRAME_MODAL: 1,
+};
 
 exports.data = {
   BASE_URL: "https://widgets.goodlookingbean.com/test/",
@@ -19,9 +39,15 @@ exports.product = {
   PRICE: "$199.99"
 };
 
+exports.analytic_events = [
+  ['ci'],
+  ['ci','vv','vt', 'vtp', 'pi','pk']
+];
+
 exports.analytics = [
   {
-    SKIP_COUNT: true
+    SKIP_COUNT: true,
+    COUNTS: {"ci": {MIN:0, MAX:1}}
   },
   {
     VIDS: [65981962,83106081],

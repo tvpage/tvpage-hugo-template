@@ -109,7 +109,9 @@ exports.tvpGUITest = function (options) {
       CLIENT
         .url(WIDGET_URL, function (r) {
           if (IS_MOBILE === false) {
-            this.resizeWindow(DATA.BROWSEWIDTH, DATA.BROWSERHEIGHT);
+            this
+              .setWindowPosition(0,0)
+              .resizeWindow(DATA.BROWSEWIDTH, DATA.BROWSERHEIGHT);
           }
 
           if (IS_MOBILE === true && ORIENTATION !== undefined) {
@@ -210,16 +212,34 @@ exports.tvpGUITest = function (options) {
           .moveToElement(target, x, y)
           .mouseButtonClick(button);
       }
+
+      return this;
     },
     modalLoad: function (target, x, y) {
-      CLIENT
-        .frameParent()
-        .frame(TARGET_IFRAME)
-        .waitForElementPresent(target + " " + ELEMENT_MODAL_OPEN, DATA.SLA)
-        .click(target + " " + ELEMENT_MODAL_OPEN);
+      var elementModalOpen = target + " " + ELEMENT_MODAL_OPEN;
+
+      x = (x === undefined ? 10 : x);
+      y = (y === undefined ? 10 : y);
+
+      if (IS_FF !== true && IS_EDGE !== true && IS_IE !== true) {
+        CLIENT
+          .frameParent()
+          .frame(TARGET_IFRAME)
+          .waitForElementPresent(elementModalOpen, DATA.SLA)
+          .moveToElement(elementModalOpen, x, y)
+          .mouseButtonClick('left');
+      } else {
+        CLIENT
+          .frameParent()
+          .frame(TARGET_IFRAME)
+          .waitForElementPresent(elementModalOpen, DATA.SLA)
+          .click(elementModalOpen);
+      }
+
+      return this;
     },
     modalSanity: function (target, video, videoTitle, targetIframe, skip, hasHeadline) {
-      this.modalLoad(video, 160, 100),
+      this.modalLoad(video),
       this.pause();
 
       CLIENT
@@ -314,7 +334,7 @@ exports.tvpGUITest = function (options) {
       CLIENT.click(featuredId + " a[data-id='" + product.ID + "']");
     },
 
-    productSanity: function (product, productTarget, productClick, productIframe, isPopup) {
+    productSanity: function (product, productTarget, productClick, iframe, isPopup) {
       var THAT = this;
 
       if (product === undefined) {
@@ -336,16 +356,17 @@ exports.tvpGUITest = function (options) {
         productClick = '';
       }
 
-      if (productIframe === undefined) {
-        productIframe = TARGET_IFRAME;
+      if (iframe === undefined) {
+        iframe = TARGET_IFRAME;
       }
 
-      var regex = (product.TITLE_REGEX !== undefined ? product.TITLE_REGEX : /\ /i);
+      var regex = (product.TITLE_REGEX !== undefined ? product.TITLE_REGEX : /\ /i),
+          doNotCloseWindow = false;
 
       if (IS_SAFARI !== true) {
         CLIENT
           .frameParent()
-          .frame(productIframe)
+          .frame(iframe)
           .waitForElementVisible(PARENT, DATA.SLA),
         CLIENT.expect.element(PARENT + " " + productTarget).to.be.visible,
         CLIENT.expect.element(PARENT + " " + productTarget).to.have.attribute('href', product.URL),
@@ -355,14 +376,17 @@ exports.tvpGUITest = function (options) {
       } else {
         CLIENT
           .frameParent()
-          .frame(productIframe)
+          .frame(iframe)
+          .waitForElementPresent(PARENT + " " + productTarget, DATA.SLA)
           .click(PARENT + " " + productTarget + " " + productClick, function(r) {
             this.pause(2*SECOND);
           });
+
+          doNotCloseWindow = true;
       }
 
       if (isPopup === false) {
-        return this.windowHandles(0, 1);
+        return this.windowHandles(0, 1, doNotCloseWindow);
       }
 
       // Product pop-up
@@ -384,14 +408,21 @@ exports.tvpGUITest = function (options) {
 
       return this.windowHandles(0, 1);
     },
-    windowHandles: function (current, target) {
+    windowHandles: function (current, target, noClose) {
       CLIENT
         .frameParent()
         .windowHandles(function(r) {
-          if (IS_SAFARI !== true) {
+          if (noClose !== true) {
             this
               .switchWindow(r.value[target], function(r) {
-                this.closeWindow();
+                if (IS_IE === true) {
+                  this
+                    .setWindowPosition(0,0)
+                    .resizeWindow(DATA.BROWSEWIDTH, DATA.BROWSERHEIGHT)
+                    .closeWindow();
+                } else {
+                  this.closeWindow();
+                }
               })
               .pause(2*SECOND)
               .switchWindow(r.value[current]);
@@ -760,13 +791,14 @@ exports.tvpGUITest = function (options) {
     },
     analytics: function(iframe, events, config) {
       var widgetTest = this,
-          skipCount = (config.SKIP_COUNT !== undefined ? config.SKIP_COUNT : false),
-          skipCID = (config.SKIP_CID !== undefined ? config.SKIP_CID : false),
+          skipCount = (config !== undefined && config.SKIP_COUNT !== undefined ? config.SKIP_COUNT : false),
+          skipCID = (config !== undefined && config.SKIP_CID !== undefined ? config.SKIP_CID : false),
+          skipElement = (config !== undefined && config.SKIP_CHECK_ELEMENT !== undefined ? config.SKIP_CHECK_ELEMENT : false),
           tests = {
             'ci': function(client, params, videoIndex) {
               console.log(">>> Checking CI <<<");
 
-              if (config.SKIP_CHECK_ELEMENT !== true) {
+              if (skipElement !== true) {
                 client.waitForElementVisible('p.analtyticsTestCI', 6000);
                 client.expect.element('p.analtyticsTestCI').to.be.present;
                 this.assert.ok(aCounts['ci'] > 0);
@@ -803,7 +835,7 @@ exports.tvpGUITest = function (options) {
 
               vids.push(config.VIDS[videoIndex]);
 
-              if (config.SKIP_CHECK_ELEMENT !== true) {
+              if (skipElement !== true) {
                 client.waitForElementPresent('p.analtyticsTestVV', 6000);
                 client.expect.element('p.analtyticsTestVV').to.be.present;
               }
@@ -852,7 +884,7 @@ exports.tvpGUITest = function (options) {
 
               var vct = params.get('vct');
               this.assert.ok(vct);
-              this.assert.ok((vct >= 3 && vct <= VDR));
+              this.assert.ok((vct >= 2 && vct <= VDR));
 
               var vt = params.get('vt');
               this.assert.ok(vt);
@@ -917,7 +949,7 @@ exports.tvpGUITest = function (options) {
             'pk': function(client, params, videoIndex) {
               console.log(">>> Checking PK <<<");
 
-              if (config.SKIP_CHECK_ELEMENT !== true) {
+              if (skipElement !== true) {
                 client.waitForElementVisible('p.analtyticsTestPK', 6000);
                 client.expect.element('p.analtyticsTestPK').to.be.present;
               }

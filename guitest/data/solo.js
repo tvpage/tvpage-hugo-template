@@ -1,4 +1,22 @@
 
+exports.HTML = {
+  ELEMENT_WIDGET_HOLDER: "div#solo-2-holder",
+  ELEMENT_WIDGET: 'body',
+  ELEMENT_WIDGET_TITLE: "div.tvp-cta-text",
+  ELEMENT_MODAL_HOLDER: "div#tvp-modal-solo-2",
+  ELEMENT_MODAL_OPEN: "div.video-image-icon",
+  ELEMENT_MODAL: "div#tvp-modal-solo-2",
+  ELEMENT_MODAL_CLOSE: "div#tvp-modal-close-solo-2",
+  ELEMENT_MODAL_OVERLAY: "div#tvp-modal-overlay-solo-2",
+  ELEMENT_MODAL_CLOSE_BUTTON: 'div#tvp-modal-close-solo-2',
+  ELEMENT_MODAL_TITLE: 'h4#tvp-modal-title-solo-2',
+  ELEMENT_MODAL_IFRAME_HOLDER: 'tvp-modal-iframe-holder-solo-2',
+  ELEMENT_PLAYER_HOLDER: "div.player-holder",
+  ELEMENT_VIDEO_CONTENT: 'body',
+  ELEMENT_FIRST_VIDEO: 'div.tvp-cta-overlay',
+  IFRAME_WIDGET: 0,
+};
+
 exports.data = {
   BASE_URL: "https://widgets.goodlookingbean.com/test/",
   SLA: 10000,
@@ -19,6 +37,10 @@ exports.product = {
   IMG: "http://www.gourmia.com/itemimageslarge/GDK380-Small.png",
   PRICE: "$199.99"
 };
+
+exports.analytic_events = [
+  ['ci','vv','vt','vtp']
+];
 
 exports.analytics = [
   {
@@ -44,7 +66,7 @@ exports.analytics = [
       {VID: 83106081, VTP: {MIN:25, MAX:85}}, // Based on playing time / video length
       {VID: 83093960, VTP: {MIN:25, MAX:85}}
     ],
-    COUNTS: {"ci": 1, "vv": 2, "vt": {MIN: 22, MAX: 24}, "vtp": {MIN:1, MAX: 3}},
+    COUNTS: {"ci": 1, "vv": 2, "vt": {MIN: 22, MAX: 27}, "vtp": {MIN:1, MAX: 3}},
     SKIP_CHECK_ELEMENT: true,
     SKIP_CID: true
     // COUNTS: {"ci": 2, "pi": 18, "vv": 2, "pk": 1}
