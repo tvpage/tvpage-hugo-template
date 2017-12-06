@@ -24,7 +24,7 @@ exports.data = {
 exports.time = [25, 15];
 
 exports.analytic_events = [
-  ['ci','vv','vt','vtp']
+  ['ci','vv','vt','vtp'],
   ['ci','vv','vt','vtp']
 ];
 
