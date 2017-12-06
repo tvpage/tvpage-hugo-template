@@ -7,11 +7,6 @@
   z-index: 1000 !important;
 }
 
-.image-overlay {
-  pointer-events: none;
-  background: rgba(0, 0, 0, 0.2);
-}
-
 .player-holder {
   padding-bottom: 56.25%;
 }
@@ -31,11 +26,13 @@
   left: -205px;
   z-index: 10000;
   background: white;
+  visibility: hidden;
+  opacity: 0;
 }
 
-.pop-over.fade:not(.show) {
-  pointer-events: none;
-  visibility: hidden;
+.pop-over.active {
+  visibility: visible;
+  opacity: 1;
 }
 
 .pop-over-pointer {
@@ -45,6 +42,13 @@
   left: -10px;
   background-color: transparent;
   z-index: 10100;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.pop-over-pointer.active {
+  visibility: visible;
+  opacity: 1;
 }
 
 .pop-over-pointer:before {

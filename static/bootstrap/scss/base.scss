@@ -4,6 +4,11 @@
   outline: none !important;
 }
 
+a:hover,
+a:active {
+  text-decoration: none;
+}
+
 /*player overrides*/
 .tvplayer-overlay-thumbnail{
   z-index: 100 !important;
@@ -85,6 +90,11 @@ $slider_pull_x:   1rem !default;
 
 .bordered {
   border: 1px solid;
+}
+
+.image-overlay {
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.2);
 }
 
 /* thumbnail sizes */

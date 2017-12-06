@@ -134,14 +134,14 @@
     }
 
     function hideAllPopOvers() {
-      productsRail.el.querySelectorAll('.pop-over.show').forEach(function(item) {
-        Utils.removeClass(item, 'show');
+      productsRail.el.querySelectorAll('.pop-over.active').forEach(function(item) {
+        Utils.removeClass(item, 'active');
       });
 
       var popOverPointerEl = productsRail.el.querySelector('.pop-over-pointer');
 
       if (popOverPointerEl) {
-        Utils.removeClass(popOverPointerEl, 'show');
+        Utils.removeClass(popOverPointerEl, 'active');
       }
     }
 
@@ -149,21 +149,21 @@
       var productPopOverEl = Utils.createEl('div');
 
       productPopOverEl.id = 'pop-over-' + product.id;
-      productPopOverEl.className = 'pop-over fade';
+      productPopOverEl.className = 'pop-over';
       productPopOverEl.innerHTML = Utils.tmpl(templates.products.itemPopOver, product);
 
       productsRail.el.appendChild(productPopOverEl);
       productPopOverEl.style.top = getPopOverTop(railEl, productPopOverEl);
-      Utils.addClass(productPopOverEl, 'show');
+      Utils.addClass(productPopOverEl, 'active');
     }
 
     function renderPopOverPointer(railEl, product) {
       var popOverPointerEl = Utils.createEl('div');
-      popOverPointerEl.className = 'pop-over-pointer fade';
+      popOverPointerEl.className = 'pop-over-pointer';
 
       productsRail.el.appendChild(popOverPointerEl);
       popOverPointerEl.style.top = getPopOverTop(railEl, popOverPointerEl);
-      Utils.addClass(popOverPointerEl, 'show');
+      Utils.addClass(popOverPointerEl, 'active');
     }
 
     function onProductsItemOver(e) {
@@ -180,7 +180,7 @@
 
       if (productPopOverEl) {
         productPopOverEl.style.top = getPopOverTop(target, productPopOverEl);
-        Utils.addClass(productPopOverEl, 'show');
+        Utils.addClass(productPopOverEl, 'active');
       } else {
         renderPopOver(target, product);
       }
@@ -189,7 +189,7 @@
 
       if (popOverPointerEl) {
         popOverPointerEl.style.top = getPopOverTop(target, popOverPointerEl);
-        Utils.addClass(popOverPointerEl, 'show');
+        Utils.addClass(popOverPointerEl, 'active');
       } else {
         renderPopOverPointer(target, product);
       }

@@ -75,14 +75,6 @@
       config.channel.videos = config.channel.videos.concat(data);
     }
 
-    function parseVideos(item) {
-      if(!Utils.isMobile){
-        item.title = Utils.trimText(item.title, 40);
-      }
-
-      return item;
-    }
-
     videosCarousel = new Carousel('videos', {
       alignArrowsY: ['center', '.video-image-icon'],
       endpoint: videosEndpoint,
@@ -113,8 +105,7 @@
       onClick: onClick,
       onReady: onReady,
       onLoad: onLoad,
-      onResize: sendResizeMessage,
-      parse: parseVideos
+      onResize: sendResizeMessage
     }, config);
 
     videosCarousel.initialize();
