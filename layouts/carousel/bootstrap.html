@@ -28,24 +28,14 @@
 (function(){
 
 	var config = {{ $.Scratch.Get "config" | jsonify }};
+	
 	config.type = "{{ $type }}";
-
-	//we removed the forward slash that hugo adds on local development
-	var baseUrl;
-	{{- if (getenv "HUGO_DEBUG") -}}
-		baseUrl = "{{ trim $.Site.BaseURL "/" }}";
-	{{- else -}}
-		baseUrl = "{{ $.Site.BaseURL }}";
-	{{- end -}}
-	config.baseUrl = baseUrl;
-
-	{{- (readFile (printf "/themes/tvpage/static/%s/config.js" $type) ) | htmlUnescape | safeHTML -}}
-
 	config.templates = {{- (partial (printf "%s/templates/index.html" $type) .) -}};
 	config.css = {{- (partial (printf "%s/css/index.html" $type) .) -}};
-	
-	{{- (readFile (printf "/themes/tvpage/static/%s/index.js" $type) ) | htmlUnescape | safeHTML -}}
-	
+	config.debug = {{- getenv "HUGO_DEBUG" -}};
+	config.baseUrl = "{{ $.Site.BaseURL }}";
 
+	{{- (readFile (printf "/themes/tvpage/static/%s/config.js" $type) ) | htmlUnescape | safeHTML -}}
+	{{- (readFile (printf "/themes/tvpage/static/%s/index.js" $type) ) | htmlUnescape | safeHTML -}}
 
 }());

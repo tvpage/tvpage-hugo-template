@@ -32,7 +32,7 @@
 
         if(realTarget){
           Utils.sendMessage({
-            event: eventPrefix + ':widget_videos_sidebar_click',
+            event: eventPrefix + ':widget_modal_open',
             clicked: Utils.attr(realTarget, 'data-id')
           });
         }

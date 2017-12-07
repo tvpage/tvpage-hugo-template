@@ -1,4 +1,5 @@
 {
+  iframe: '<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe>',
   base: {{- (partial (printf "%s/templates/base.html" .Type) .) -}},
   videos: {
     list: {{- (partial (printf "%s/templates/videos/list.html" .Type) .) -}},
@@ -14,6 +15,7 @@
     }
   },
   mobile: {
+    iframe: '<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe>',
     base: {{- (partial (printf "%s/mobile/templates/base.html" .Type) .) -}},
     modal: {
       iframe: '<iframe id="tvp-{{ ($.Scratch.Get "settings").name }}-modal-iframe" src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media" class="tvp-modal-iframe"></iframe>',
