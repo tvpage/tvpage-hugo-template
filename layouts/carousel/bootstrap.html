@@ -32,7 +32,7 @@
 	config.type = "{{ $type }}";
 	config.templates = {{- (partial (printf "%s/templates/index.html" $type) .) -}};
 	config.css = {{- (partial (printf "%s/css/index.html" $type) .) -}};
-	config.debug = {{- getenv "HUGO_DEBUG" -}};
+	config.debug = '{{- getenv "HUGO_DEBUG" -}}';
 	config.baseUrl = "{{ $.Site.BaseURL }}";
 
 	{{- (readFile (printf "/themes/tvpage/static/%s/config.js" $type) ) | htmlUnescape | safeHTML -}}
