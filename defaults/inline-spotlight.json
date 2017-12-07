@@ -73,7 +73,7 @@
             "type": "text",
             "label": "Play Button Background Color InActive",
             "code": "play_button_background_color_inactive",
-            "value": "#fff"
+            "value": "#e57211"
         },
         {
             "for": "inline",
@@ -87,7 +87,7 @@
             "type": "text",
             "label": "Thumbnail Play Button Icon Color",
             "code": "thumbnail_play_button_icon_color",
-            "value": "#000"
+            "value": "#fff"
         },
         {
             "for": "inline",
@@ -1172,14 +1172,14 @@
             "type": "text",
             "label": "Videos Carousel Arrow Height",
             "code": "videos_carousel_arrow_height",
-            "value": "50px"
+            "value": "30px"
         },
         {
             "for": "inline",
             "type": "text",
             "label": "Videos Carousel Arrow Width",
             "code": "videos_carousel_arrow_width",
-            "value": "50px"
+            "value": "30px"
         },
         {
             "for": "inline",

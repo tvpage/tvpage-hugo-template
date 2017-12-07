@@ -142,6 +142,7 @@ iframeDocument.open().write(utils.getIframeHtml({
         config.debug ? "" : config.jsPath + "scripts.min.js"
     ],
     css: [
+        config.debug ? config.cssPath + "overwrites.css" : "",
         config.debug ? config.cssPath + "styles.css" : "",
         config.debug ? "" : config.cssPath + "styles.min.css"
     ]

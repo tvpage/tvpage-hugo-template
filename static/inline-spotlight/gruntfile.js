@@ -35,7 +35,7 @@ module.exports = function(grunt) {
         },
         desktop: {
           files: {            
-            'dist/css/styles.min.css' : ['css/styles.css']
+            'dist/css/styles.min.css' : ['css/styles.css', 'css/overwrites.css']
           }
         }
       },
