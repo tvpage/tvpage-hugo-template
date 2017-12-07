@@ -1,4 +1,4 @@
-;(function(){
+(function(){
   if(!isObject(config) || !hasKey(config, "name") || config.name.length <= 0)
     throw new Error("widget must have config and name/id");
 
