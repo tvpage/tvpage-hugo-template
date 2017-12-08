@@ -28,13 +28,13 @@
     setTimeout(function() {
       console.log('css loaded poll...');
 
-      var bsCheckerEl = document.getElementById('bs-checker');
-      var bsCheckerElVisibility = getComputedStyle(bsCheckerEl, null).getPropertyValue('visibility');
+      var bsCheckEl = document.getElementById('bscheck');
+      var bsCheckElVisibility = getComputedStyle(bsCheckEl, null).getPropertyValue('visibility');
 
-      if ('hidden' === bsCheckerElVisibility) {
-        var widgetTitleEl = Utils.getById('widget-title');
+      if ('hidden' === bsCheckElVisibility) {
+        var widgetTitleEl = document.getElementById('widget-title');
         widgetTitleEl.innerHTML = config.title_text;
-        Utils.addClass(widgetTitleEl, 'ready');
+        widgetTitleEl.classList.add('ready');
 
         skeletonEl.style.visibility = 'visible';
         skeletonEl.style.opacity = '1';

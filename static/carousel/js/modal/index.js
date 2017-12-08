@@ -23,10 +23,10 @@
     setTimeout(function() {
       console.log('css loaded poll...');
 
-      var bsCheckerEl = document.getElementById('bs-checker');
-      var bsCheckerElVisibility = getComputedStyle(bsCheckerEl, null).getPropertyValue('visibility');
+      var bsCheckEl = document.getElementById('bscheck');
+      var bsCheckElVisibility = getComputedStyle(bsCheckEl, null).getPropertyValue('visibility');
 
-      if ('hidden' === bsCheckerElVisibility) {
+      if ('hidden' === bsCheckElVisibility) {
         var clickedVideo = videos.filter(function(video) {
           return clickedVideoId == video.id;
         }).pop();

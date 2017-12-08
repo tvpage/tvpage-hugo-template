@@ -148,7 +148,7 @@ function getIframeHtml(o){
   //closing the body tag
   html += '">';
 
-  html += '<div id="bs-checker" class="invisible"></div>';//helper to check bs is loaded
+  html += '<div id="bscheck" class="invisible"></div>';//helper to check bs is loaded
   
   if(o.style){
     html += '<style>' + o.style + '</style>';
