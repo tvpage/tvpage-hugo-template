@@ -32,7 +32,7 @@
       "type": "boolean",
       "label": "Autonext",
       "code": "autonext",
-      "value": true
+      "value": false
     }
   ]
 }
