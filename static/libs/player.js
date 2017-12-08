@@ -236,7 +236,7 @@
 
     //better for libs to expose a onPlayerChange callback and then we can use more meaningful events like
     //widget_videos_modal_player_change, etc
-    if (this.onPlayerChange && window.parent) {
+    if ( window.parent) {
       window.parent.postMessage({
         event: this.eventPrefix + ':widget_player_change',
         e: e,

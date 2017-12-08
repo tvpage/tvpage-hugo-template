@@ -40,6 +40,8 @@
         skeletonEl.style.opacity = '1';
 
         sendResizeMessage();
+        
+        Utils.logProfile(config, 'skeleton_shown');
       } else if (++cssLoadedCheck < cssLoadedCheckLimit) {
         cssPoll()
       }
@@ -56,6 +58,15 @@
           event: eventPrefix + ':widget_modal_open',
           clicked: Utils.attr(realTarget, 'data-id')
         });
+
+        //TODO: refactor utils function to allow passed obj message and cover this
+        //case here
+        if (window.parent.performance){
+          config.profiling = config.profiling || {};
+          config.profiling['modal_ready'] = {
+            start: window.parent.performance.now()
+          }
+        }
       }
     }
 
@@ -67,10 +78,25 @@
       }
 
       Utils.removeClass(videosCarousel.el, 'hide-abs');
-
+      
+      logPerformance();
+      
       videosCarousel.loadNext('render');
     }
-
+    
+    
+    function logPerformance(){
+      var profiling = config.profiling;
+      
+      for (var key in profiling) {
+        
+        Utils.profile(config, {
+          metric_type: key,
+          metric_value: profiling[key]
+        });
+      }
+    }
+    
     function onLoad(data) {
       config.channel.videos = config.channel.videos.concat(data);
     }
