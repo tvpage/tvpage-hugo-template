@@ -41,7 +41,10 @@
 
         sendResizeMessage();
         
-        Utils.logProfile(config, 'skeleton_shown');
+        Utils.profile(config, {
+          metric_type: 'skeleton_shown',
+          metric_value: window.parent.performance.now()
+        });
       } else if (++cssLoadedCheck < cssLoadedCheckLimit) {
         cssPoll()
       }
@@ -59,8 +62,6 @@
           clicked: Utils.attr(realTarget, 'data-id')
         });
 
-        //TODO: refactor utils function to allow passed obj message and cover this
-        //case here
         if (window.parent.performance){
           config.profiling = config.profiling || {};
           config.profiling['modal_ready'] = {
@@ -89,7 +90,6 @@
       var profiling = config.profiling;
       
       for (var key in profiling) {
-        
         Utils.profile(config, {
           metric_type: key,
           metric_value: profiling[key]

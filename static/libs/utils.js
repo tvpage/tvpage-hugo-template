@@ -107,15 +107,6 @@
       console.log(msg, performance.now() - startTime);
     }
   };
-  
-  Utils.logProfile = function(config, m){
-    if(!window.parent || !window.parent.performance || !config){
-      return;
-    }
-    
-    config.profiling = config.profiling || {};
-    config.profiling[m] = performance.now();
-  };
 
   Utils.attr = function(el,a) {
     return el.getAttribute(a);
@@ -262,7 +253,7 @@
   
   
   Utils.profile = function(config, params){
-    if (!config.profiling) {
+    if(!hasKey(config, 'profile') || !config.profile){
       return;
     }
     
