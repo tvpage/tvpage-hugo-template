@@ -46,7 +46,6 @@
     this.startWith = startWith || null;
     this.currentIndex = null;
     this.onReadyCalled = false;
-    this.isFullScreen = false;
   };
   
   Player.prototype.getPlayButtonOptions = function() {
@@ -143,8 +142,9 @@
   
     var width = arguments[0] || this.getParentSize('width');
     var height = arguments[1] || this.getParentSize('height');
-    
-    if(this.instance && !this.isFullScreen){
+    var isFullScreen = window.innerHeight == screen.height;
+
+    if(this.instance && !isFullScreen){
       this.instance.resize(width,height);
     }
   
@@ -157,25 +157,13 @@
   Player.prototype.handleResize = function() {
     var that = this,
         onResize = function(){
-          that.resize.call(that);
+          setTimeout(function(){
+            that.resize.call(that);
+          },0);
         };
     
     window.removeEventListener('resize', onResize, false);
     window.addEventListener('resize', onResize, false);
-  };
-  
-  //We don't want to resize the player here on fullscreen... we need the player be.
-  Player.prototype.handleFullScreen = function(){
-    if(!PlayerUtils.isUndefined(window.BigScreen)){
-      var that = this;
-
-      BigScreen.onchange = function(){
-
-        console.log("FUULL SCREEEN")
-
-        that.isFullScreen = !that.isFullScreen;
-      };
-    }
   };
 
   Player.prototype.analyticsConfig = function() {
@@ -229,7 +217,6 @@
       
       this.analyticsConfig();
       this.controlBarZindex();
-      this.handleFullScreen();
       this.handleResize();
   
       if(this.onPlayerReady){
