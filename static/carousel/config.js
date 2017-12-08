@@ -1,4 +1,10 @@
 (function(){
+  //adding the passed data
+  if(data){
+    for(var key in data)
+      config[key] = data[key];
+  }
+
   if(!isObject(config) || !hasKey(config, "name") || config.name.length <= 0)
     throw new Error("widget must have config and name/id");
 

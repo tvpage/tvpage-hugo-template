@@ -1,16 +1,19 @@
 //we add the preconnect hints as soon as we can
 (function addHTMLHints(){
-  [
+  var domains = [
     config.api_base_url,
     config.baseUrl
-  ].forEach(function(href){
+  ];
+  var domainsLength = domains.length;
+
+  for (var i = 0; i < domainsLength; i++) {
     var link = document.createElement('link');
 
     link.rel = 'preconnect';
-    link.href = href;
+    link.href = domains[i];
 
     document.head.appendChild(link);
-  });
+  }
 })();
 
 //helpers
