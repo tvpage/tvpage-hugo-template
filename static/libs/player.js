@@ -142,7 +142,11 @@
   
     var width = arguments[0] || this.getParentSize('width');
     var height = arguments[1] || this.getParentSize('height');
-    var isFullScreen = window.innerHeight == screen.height;
+    
+    var isFullScreen = document.fullscreenElement ||
+    document.webkitFullscreenElement ||
+    document.mozFullScreenElement ||
+    document.msFullscreenElement
 
     if(this.instance && !isFullScreen){
       this.instance.resize(width,height);
