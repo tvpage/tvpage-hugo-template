@@ -35,9 +35,9 @@
   };
 
   //we want to remove the extra fwd slash that HUGO adds locally
-  if(config.debug){
-    config.baseUrl = config.baseUrl.substring(0, config.baseUrl.length - 1);
-  }
+  // if(config.debug){
+  //   config.baseUrl = config.baseUrl.substring(0, config.baseUrl.length - 1);
+  // }
 
   var static = config.baseUrl + '/' + config.type;
   var dist = config.debug ? '/' : '/dist/';
