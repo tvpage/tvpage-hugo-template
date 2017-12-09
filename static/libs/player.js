@@ -1,7 +1,6 @@
 (function(){
 
-  var PlayerUtils = {
-    iOS: /iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream,
+  var Utils = {
     isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
     isEmpty: function(o) {
       for (var key in o) {
@@ -35,10 +34,10 @@
   
   //The player singleton. A small layer on top of tvpage library
   function Player(el, options, startWith) {
-    PlayerUtils.optionsCheck(options);
+    Utils.optionsCheck(options);
   
     this.options = options;
-    this.el = PlayerUtils.getElement(el);
+    this.el = Utils.getElement(el);
     this.eventPrefix = ("tvp_" + this.options.id).replace(/-/g, '_');
     this.assets = [];
     this.instance = null;
@@ -49,7 +48,7 @@
   };
   
   Player.prototype.getPlayButtonOptions = function() {
-    return PlayerUtils.compact({
+    return Utils.compact({
       height: this.getOption('play_button_height'),
       width: this.getOption('play_button_width'),
       backgroundColor: this.getOption('play_button_background_color'),
@@ -62,12 +61,12 @@
   };
   
   Player.prototype.setControlsOptions = function() {
-    this.controls = PlayerUtils.compact({
+    this.controls = Utils.compact({
       active: true,
-      seekBar: PlayerUtils.compact({
+      seekBar: Utils.compact({
         progressColor: this.getOption('progress_color')
       }),
-      floater: PlayerUtils.compact({
+      floater: Utils.compact({
         controlbarColor: this.getOption('control_bar_color'),
         iconColor: this.getOption('icon_color'),
         removeControls: this.getOption('remove_controls')
@@ -79,22 +78,22 @@
   };
   
   Player.prototype.setAdvertisingOptions = function() {
-    if (!this.options.advertising || PlayerUtils.isEmpty(this.options.advertising))
+    if (!this.options.advertising || Utils.isEmpty(this.options.advertising))
       return;
   
     var options = this.options.advertising;
   
-    this.advertising = PlayerUtils.compact({
+    this.advertising = Utils.compact({
       enabled: !!options.enabled,
       adServerUrl: options.adserverurl || null,
       adTimeout: options.adtimeout || "2000",
       maxAds: options.maxads || "100",
-      adInterval: !PlayerUtils.isUndefined(options.adinterval) ? String(options.adinterval) : "0"
+      adInterval: !Utils.isUndefined(options.adinterval) ? String(options.adinterval) : "0"
     });
   };
   
   Player.prototype.shallCue = function(auto){
-    return PlayerUtils.isMobile || (auto && !this.autonext) || !this.autoplay;
+    return Utils.isMobile || (auto && !this.autonext) || !this.autoplay;
   };
   
   Player.prototype.play = function(asset, ongoing) {
@@ -263,7 +262,7 @@
     var extras = ["preload", "poster", "overlay"];
     for (var i = 0; i < extras.length; i++) {
       var option = extras[i];
-      if (!PlayerUtils.isUndefined(this[option]) && this[option] !== null) {
+      if (!Utils.isUndefined(this[option]) && this[option] !== null) {
         config[option] = this[option];
       }
     }
@@ -271,7 +270,7 @@
   };
   
   Player.prototype.getConfig = function(){
-    return PlayerUtils.compact({
+    return Utils.compact({
       techOrder: this.getOption('tech_order'),
       mediaProviders: this.getOption('media_providers'),
       analytics: {
@@ -358,7 +357,7 @@
   };
   
   Player.prototype.buildAsset = function(obj) {
-    if (PlayerUtils.isEmpty(obj))
+    if (Utils.isEmpty(obj))
       return {};
   
     var asset = obj.asset;
@@ -388,7 +387,7 @@
   };
   
   Player.prototype.getOption = function(s){
-    return PlayerUtils.isUndefined(this.options[s]) ? null : this.options[s];
+    return Utils.isUndefined(this.options[s]) ? null : this.options[s];
   };
   
   Player.prototype.getCallable = function(s){

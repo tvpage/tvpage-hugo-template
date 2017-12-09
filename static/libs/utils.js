@@ -12,6 +12,10 @@
     return o.hasOwnProperty(k);
   }
 
+  function isNull(o){
+    return 'null' === typeof o;
+  }
+
   function hasClass(o,c) {
     return o.classList && o.classList.contains(c);
   }
@@ -102,12 +106,6 @@
     return Math.floor(getById('skeleton').getBoundingClientRect().height);
   };
 
-  Utils.logSnapshot = function(msg){
-    if(window.performance && 'undefined' !== typeof startTime){
-      console.log(msg, performance.now() - startTime);
-    }
-  };
-
   Utils.now = function(from){
     var glob = window;
 
@@ -119,6 +117,8 @@
       return glob.performance.now();
     }
   };
+
+  Utils.isNull = isNull;
 
   Utils.attr = function(el,a) {
     return el.getAttribute(a);

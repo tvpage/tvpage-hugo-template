@@ -232,10 +232,6 @@
   };
 
   Carousel.prototype.onSlickInit = function(){
-    if(this.config.debug) {
-      Utils.logSnapshot('carousel el initialized: ' + this.el.id);
-    }
-
     if(this.options.dotsCenter){
       Utils.addClass(this.el, 'dots-center');
     }

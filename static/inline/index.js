@@ -118,10 +118,8 @@ function loadScript(options, cback){
 
 //builds the document html for an iframe.
 function getIframeHtml(o){
-  o.startTime = startTime;
-
   var html = tmpl('<head><base target="_blank"/></head><body class="{className}"' +
-  'data-domain="{domain}" data-id="{id}" onload="startTime={startTime};' +
+  'data-domain="{domain}" data-id="{id}" onload="' +
   'var d=document,h=d.head,' +
   'loadJavaScript = function(u){var s=d.createElement(\'script\');s.src=u;h.appendChild(s);},' +
   'loadCSS = function(u,c){'+

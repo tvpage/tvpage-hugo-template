@@ -98,6 +98,8 @@
         height: Utils.getWidgetHeight()
       });
 
+      config.profiling['widget_ready'] = Utils.now('parent');
+
       //send the profile log of the collected metrics
       var profiling = config.profiling;
       
@@ -367,14 +369,32 @@
     }
   }
 
+  function onPlayerChange(e, currentAsset){
+    Utils.sendMessage({
+      event: eventPrefix + ':widget_player_change',
+      e: e,
+      stateData : currentAsset
+    });
+
+    //Better to track on autoplay on only, as a rule
+    // if("tvp:media:videoplaying" === e && isFirstVideoPlay){
+    //   isFirstVideoPlay = false;
+
+    //   Utils.profile(config, {
+    //     metric_type: 'video_playing',
+    //     metric_value: Utils.now('parent') - config.profiling['modal_ready'].start
+    //   });
+    // }
+  }
+
   function initPlayer(){
     var playerConfig = Utils.copy(config);
     
     //the player can take care of the ci
     playerConfig.ciTrack = true;
     playerConfig.data = config.channel.videos;
-    playerConfig.onPlayerChange = !!playerConfig.onPlayerChange;
     playerConfig.onNext = onPlayerNext;
+    playerConfig.onChange = onPlayerChange;
 
     //watch out this function triggers twice, once per media provider
     var readyCalled = false;

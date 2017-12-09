@@ -43,10 +43,7 @@
 
         sendResizeMessage();
         
-        Utils.profile(config, {
-          metric_type: 'skeleton_shown',
-          metric_value: window.parent.performance.now()
-        });
+        config.profiling['skeleton_shown'] = Utils.now('parent')
       }else if (++cssLoadedCheck < cssLoadedCheckLimit){
         cssPoll()
       }
@@ -64,8 +61,6 @@
           clicked: Utils.attr(realTarget, 'data-id')
         });
 
-        config.profiling = config.profiling || {};
-
         config.profiling['modal_ready'] = {
           start: Utils.now('parent')
         }
@@ -80,6 +75,8 @@
       }
 
       Utils.removeClass(videosCarousel.el, 'hide-abs');
+
+      config.profiling['widget_ready'] = Utils.now('parent');
       
       //send the profile log of the collected metrics
       var profiling = config.profiling;

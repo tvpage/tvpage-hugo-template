@@ -12,7 +12,7 @@
   var apiBaseUrl = config.api_base_url;
   var baseUrl = config.baseUrl;
   var skeletonEl = document.getElementById('skeleton');
-  var isFirstVideoPlay=true;
+  var isFirstVideoPlay = true;
 
   //we check when critical css has loaded/parsed. At this step, we have data to
   //update the skeleton. We wait until css has really executed in order to send
@@ -82,12 +82,12 @@
       stateData : currentAsset
     });
 
-    if("tvp:media:videoplaying" === e && !Utils.isNull(config.profiling['video_playing']) && isFirstVideoPlay){
+    if("tvp:media:videoplaying" === e && isFirstVideoPlay){
       isFirstVideoPlay = false;
 
       Utils.profile(config, {
         metric_type: 'video_playing',
-        metric_value: Utils.now('parent') - config.profiling['video_playing'].start
+        metric_value: Utils.now('parent') - config.profiling['modal_ready'].start
       });
     }
   }
@@ -289,14 +289,14 @@
         function onBSModalLoad() {
           var $modalEl = $('#modalElement');
 
-          $modalEl.on('shown.bs.modal', function(e) {
+          $modalEl.on('shown.bs.modal', function(e){
             initPlayer();
             initProducts();
             initAnalytics();
             
-            Utils.profile(config,{
+            Utils.profile(config, {
               metric_type: 'modal_ready',
-              metric_value: window.parent.performance.now() - config.profiling['modal_ready'].start
+              metric_value: Utils.now('parent') - config.profiling['modal_ready'].start
             });
           });
 
@@ -316,6 +316,8 @@
         loadLib(baseUrl + '/bootstrap/js/util.js', onBSUtilLoad);
       } else if (++depsCheck < 200) {
         initModal()
+      } else if(config.debug){
+        console.log("missing: ", missing);
       }
     }, 10);
   })();

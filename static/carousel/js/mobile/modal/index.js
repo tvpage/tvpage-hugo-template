@@ -4,7 +4,6 @@
     var config = window.parent.__TVPage__.config[id];
     var videos = config.channel.videos;
     var clickedVideoId = config.clicked;
-    var clickedVideo;
     var eventPrefix = config.events.prefix;
     var mainEl;
     var analytics;
@@ -13,6 +12,7 @@
     var baseUrl = config.baseUrl;
     var productsCarousel;
     var skeletonEl = document.getElementById('skeleton');
+    var isFirstVideoPlay = true;
   
     //we check when critical css has loaded/parsed. At this step, we have data to
     //update the skeleton. We wait until css has really executed in order to send
@@ -57,8 +57,6 @@
     }
   
     function updateModalTitle(title) {
-      if (!title)
-        debugger
       document.getElementById('modalElementTitle').innerHTML = title || '';
     }
   
@@ -72,6 +70,24 @@
       productsCarousel.endpoint = apiBaseUrl + '/videos/' + nextVideo.assetId + '/products';
       productsCarousel.load('render');
     }
+
+    function onPlayerChange(e, currentAsset){
+      Utils.sendMessage({
+        event: eventPrefix + ':widget_player_change',
+        e: e,
+        stateData : currentAsset
+      });
+
+      //need to change this approach as on mobile we do not have autoplay
+      if("tvp:media:videoplaying" === e && isFirstVideoPlay){
+        isFirstVideoPlay = false;
+  
+        Utils.profile(config, {
+          metric_type: 'video_playing',
+          metric_value: Utils.now('parent') - config.profiling['modal_ready'].start
+        });
+      }
+    }
   
     function initPlayer() {
       var playerConfig = Utils.copy(config);
@@ -79,6 +95,7 @@
       playerConfig.data = config.channel.videos;
       playerConfig.onResize = onPlayerResize;
       playerConfig.onNext = onPlayerNext;
+      playerConfig.onChange = onPlayerChange;
   
       var player = new Player('player-el', playerConfig, config.clicked);
   
@@ -210,6 +227,11 @@
               initPlayer();
               initProducts();
               initAnalytics();
+
+              Utils.profile(config, {
+                metric_type: 'modal_ready',
+                metric_value: Utils.now('parent') - config.profiling['modal_ready'].start
+              });
             });
   
             $modalEl.on('hidden.bs.modal', function(e) {
@@ -228,7 +250,7 @@
           loadLib(baseUrl + '/bootstrap/js/util.js', onBSUtilLoad);
         } else if (++depsCheck < 200) {
           initModal()
-        } else {
+        } else if(config.debug){
           console.log("missing: ", missing);
         }
       }, 10);
