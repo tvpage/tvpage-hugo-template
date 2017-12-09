@@ -29,6 +29,41 @@
   var videosCarouselReady = false;
   var analytics;
 
+  function sendResizeMessage() {
+    Utils.sendMessage({
+      event: eventPrefix + ':widget_resize',
+      height: Utils.getWidgetHeight()
+    });
+  }
+
+  //we check when critical css has loaded/parsed. At this step, we have data to
+  //update the skeleton. We wait until css has really executed in order to send
+  //the right measurements.
+  var cssLoadedCheck = 0;
+  var cssLoadedCheckLimit = 1000;
+
+  (function cssPoll() {
+    setTimeout(function() {
+      console.log('css loaded poll...');
+
+      var bsCheckEl = document.getElementById('bscheck');
+      var bsCheckElVisibility = getComputedStyle(bsCheckEl, null).getPropertyValue('visibility');
+
+      if ('hidden' === bsCheckElVisibility) {
+        var widgetTitleEl = document.getElementById('widget-title');
+        widgetTitleEl.innerHTML = firstVideo.title;
+        widgetTitleEl.classList.add('ready');
+
+        skeletonEl.style.visibility = 'visible';
+        skeletonEl.style.opacity = '1';
+
+        sendResizeMessage();
+      } else if (++cssLoadedCheck < cssLoadedCheckLimit) {
+        cssPoll()
+      }
+    }, 5);
+  })();
+
   function analyticsPKTrack(product){
     analytics.track('pk',{
       vd: product.entityIdParent,
@@ -339,8 +374,8 @@
   var depsCheckLimit = 1000;
   var deps = ['jQuery','Utils','Player', 'Carousel', 'Analytics','_tvpa'];
 
-  (function initInline() {
-    setTimeout(function() {
+  (function initInline(){
+    setTimeout(function(){
       console.log('deps poll...');
       
       var ready = true;
@@ -349,43 +384,12 @@
           ready = false;
 
       if(ready){
-        if(Utils.isMobile)
-          Utils.addClass(body,'mobile');
-
         initPlayer();
         initVideos();
         initAnalytics();
         initProducts();
-
       }else if(++depsCheck < depsCheckLimit){
         initInline()
-      }
-    },10);
-  })();
-  
-  //we check when critical css has loaded/parsed. At this step, we have data to
-  //update the skeleton. We wait until css has really executed in order to send
-  //the right measurements.
-  var cssLoadedCheck = 0;
-  var cssLoadedCheckLimit = 1000;
-
-  (function sendFirstSize() {
-    setTimeout(function() {
-      console.log('css loaded poll...');
-
-      if('hidden' === Utils.getStyle(Utils.getById('bs-checker'), 'visibility')){
-        //add widget title
-        var widgetTitleEl = Utils.getById('widget-title');
-        widgetTitleEl.innerHTML = firstVideo.title;
-        Utils.addClass(widgetTitleEl, 'ready');
-
-        Utils.sendMessage({
-          event: eventPrefix + ':widget_resize',
-          height: Utils.getWidgetHeight()
-        });
-
-      }else if(++cssLoadedCheck < cssLoadedCheckLimit){
-        sendFirstSize()
       }
     },10);
   })();

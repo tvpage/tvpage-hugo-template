@@ -101,17 +101,18 @@
   //to align the arrows again, only if the new position is diff than the existing one?
   Carousel.prototype.alignArrowsX = function(){
     var alignArrowsX = this.options.alignArrowsX;
+    var firstItem = this.el.querySelector(this.itemClass);
+
+    if((!Utils.isUndefined(alignArrowsX) && !alignArrowsX) || !firstItem){
+      return;
+    }
+
     var xOffset;
-
-    //we snap the arrow to the slide item by default, that's why we need to get the first and last item of the page
-    if(Utils.isUndefined(alignArrowsX)){
-      var firstItem = this.el.querySelector(this.itemClass);
-      
-      if(firstItem && !Utils.isUndefined(firstItem.firstChild)){
-        xOffset = parseInt(Utils.getStyle(firstItem.firstChild,'padding-left'), 10);
-      }
-
-      xOffset += parseInt(Utils.getStyle(firstItem.firstChild,'margin-left'), 10);
+    var firstItemChild = firstItem.firstChild;
+    
+    if(firstItemChild){
+      xOffset = parseInt(Utils.getStyle(firstItemChild,'padding-left'), 10);
+      xOffset += parseInt(Utils.getStyle(firstItemChild,'margin-left'), 10);
     }
 
     if(Utils.isUndefined(xOffset))

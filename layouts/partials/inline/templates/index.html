@@ -1,4 +1,5 @@
 {
+  iframe: '<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe>',
   base: {{- (partial (printf "%s/templates/base.html" .Type) .) -}},
   products: {
     featured: {{- (partial (printf "%s/templates/products/featured.html" .Type) .) -}},
@@ -10,6 +11,7 @@
     item: {{- (partial (printf "%s/templates/videos/item.html" .Type) .) -}}
   },
   mobile: {
+    iframe: '<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe>',
     base: {{- (partial (printf "%s/mobile/templates/base.html" .Type) .) -}},
     products: {
       list: {{- (partial (printf "%s/mobile/templates/products/list.html" .Type) .) -}},

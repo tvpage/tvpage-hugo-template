@@ -31,7 +31,7 @@
       var bsCheckEl = document.getElementById('bscheck');
       var bsCheckElVisibility = getComputedStyle(bsCheckEl, null).getPropertyValue('visibility');
 
-      if ('hidden' === bsCheckElVisibility) {
+      if('hidden' === bsCheckElVisibility){
         var widgetTitleEl = document.getElementById('widget-title');
         widgetTitleEl.innerHTML = config.title_text;
         widgetTitleEl.classList.add('ready');
@@ -40,7 +40,7 @@
         skeletonEl.style.opacity = '1';
 
         sendResizeMessage();
-      } else if (++cssLoadedCheck < cssLoadedCheckLimit) {
+      }else if (++cssLoadedCheck < cssLoadedCheckLimit){
         cssPoll()
       }
     }, 5);

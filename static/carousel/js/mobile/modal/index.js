@@ -24,7 +24,7 @@
       setTimeout(function() {
         console.log('css loaded poll...');
   
-        var bsCheckerEl = document.getElementById('bs-checker');
+        var bsCheckerEl = document.getElementById('bscheck');
         var bsCheckerElVisibility = getComputedStyle(bsCheckerEl, null).getPropertyValue('visibility');
   
         if ('hidden' === bsCheckerElVisibility) {

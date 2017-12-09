@@ -1,25 +1,26 @@
-var body = document.body;
-var userAgent = navigator.userAgent;
-var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
-var iOS = /iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(userAgent) && !window.MSStream;
-var initialHtml = '<div id="{id}-holder" class="tvp-{type}-holder">' +
-'<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe>' +
-'</div>';
-var iframeHtmlStart = '<head><base target="_blank"/></head><body class="{className}"' +
-'data-domain="{domain}" data-id="{id}" onload="startTime={startTime};' +
-'var d=document,h=d.head,' +
-'loadJavaScript = function(u){var s=d.createElement(\'script\');s.src=u;h.appendChild(s);},' +
-'loadCSS = function(u,c){'+
-'  var l=d.createElement(\'link\');'+
-'  l.rel=\'stylesheet\';'+
-'  l.href=u;'+
-'  if(c && \'function\' === typeof c){'+
-'   l.onload=c;'+
-'  }'+
-'  h.appendChild(l);' +
-'};';
+//we add the preconnect hints as soon as we can
+(function addHTMLHints(){
+  var domains = [
+    config.api_base_url,
+    config.baseUrl
+  ];
+  var domainsLength = domains.length;
+
+  for (var i = 0; i < domainsLength; i++) {
+    var link = document.createElement('link');
+
+    link.rel = 'preconnect';
+    link.href = domains[i];
+
+    document.head.appendChild(link);
+  }
+})();
 
 //helpers
+function isMobile() {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
 function isObject(o) {
   return "object" === typeof o;
 }
@@ -40,13 +41,20 @@ function createEl(t){
   return document.createElement(t);
 }
 
-function tmpl(t,d){
-  return t.replace(/\{([\w\.]*)\}/g, function(str, key) {
-    var keys = key.split("."),
-      v = d[keys.shift()];
-    for (var i = 0, l = keys.length; i < l; i++) v = v[keys[i]];
-    return (typeof v !== "undefined" && v !== null) ? v : "";
-  });
+function isUndefined(o){
+  return 'undefined' === typeof o;
+}
+
+function remove(el){
+  el.parentNode.removeChild(el);
+}
+
+function cleanArray(a){
+  return a.filter(Boolean);
+}
+
+function isEvent(e){
+  return e && e.data && e.data.event;
 }
 
 function logSnapshot(msg) {
@@ -55,8 +63,13 @@ function logSnapshot(msg) {
   }
 }
 
-function isUndefined(o){
-  return 'undefined' === typeof o;
+function tmpl(t,d){
+  return t.replace(/\{([\w\.]*)\}/g, function(str, key) {
+    var keys = key.split("."),
+      v = d[keys.shift()];
+    for (var i = 0, l = keys.length; i < l; i++) v = v[keys[i]];
+    return (typeof v !== "undefined" && v !== null) ? v : "";
+  });
 }
 
 function addClass(obj, c) {
@@ -75,14 +88,6 @@ function removeClass(obj, c) {
   } else {
     obj.classList.remove(c);
   }
-}
-
-function remove(el){
-  el.parentNode.removeChild(el);
-}
-
-function cleanArray(a){
-  return a.filter(Boolean);
 }
 
 function loadScript(options, cback){
@@ -106,90 +111,49 @@ function loadScript(options, cback){
 
   script.src = src + '&callback=' + cName;
 
-  body.appendChild(script);
+  document.body.appendChild(script);
 }
 
-function isEvent(e){
-  return e && e.data && e.data.event;
-}
-
-function getEventType(e){
-  var eArr = e.data.event.split(':');
-  return eArr[0] === eventPrefix ? eArr[1] : '';
-}
-
-var __windowCallbackFunc__ = null,
-    onChange = config.onChange;
-
-if(isFunction(onChange)){
-  __windowCallbackFunc__ = onChange;
-  delete config.onChange;
-}
-
-//add preconnect hint
-var preConnectLink = createEl('link');
-preConnectLink.rel = 'preconnect';
-preConnectLink.href = config.api_base_url;
-document.head.appendChild(preConnectLink);
-
-//here we start with the actual logic that will prepare the iframe(s) content and inject it
-//to the page.
-var debug = config.debug;
-var type = config.type;
-var css = config.css;
-var baseUrl = config.baseUrl;
-var static = baseUrl + '/' + type;
-var dist = debug ? '/' : '/dist/';
-var eventPrefix = ('tvp_' + id).replace(/-/g, '_');
-var templates;
-var holder;
-
-config.id = id;
-config.loginId = config.loginId || config.loginid;
-config.channelId = (config.channelId || config.channelid) || config.channel.id;
-config.events = {};
-config.events.prefix = eventPrefix;
-config.paths = {};
-config.paths.libs = baseUrl + '/libs';
-config.paths.static = static;
-config.paths.dist = dist;
-config.paths.javascript = static + dist + 'js';
-config.paths.css = static + dist + 'css';
-config.mobile = {};
-config.mobile.path = isMobile ? 'mobile' : '';
-config.mobile.prefix = isMobile ? '-mobile' : '';
-config.mobile.templates = config.templates.mobile;
-
-templates = isMobile ? config.mobile.templates : config.templates;
-
-window.__TVPage__.config[id] = config;
-
-//builds the document html for an iframe
+//builds the document html for an iframe.
 function getIframeHtml(o){
   o.startTime = startTime;
 
-  var html = tmpl(iframeHtmlStart, o),
-      load = function(arr, type, cback){
-        arr = cleanArray(arr);
-        
-        var arrLength = arr.length,
-            l = '';
+  var html = tmpl('<head><base target="_blank"/></head><body class="{className}"' +
+  'data-domain="{domain}" data-id="{id}" onload="startTime={startTime};' +
+  'var d=document,h=d.head,' +
+  'loadJavaScript = function(u){var s=d.createElement(\'script\');s.src=u;h.appendChild(s);},' +
+  'loadCSS = function(u,c){'+
+  '  var l=d.createElement(\'link\');'+
+  '  l.rel=\'stylesheet\';'+
+  '  l.href=u;'+
+  '  h.appendChild(l);' +
+  '};', o);
+  var load = function(arr, type, cback){
+    arr = cleanArray(arr);
+    
+    var ret = '';
+    var arrLength = arr.length;
 
-        for (var i = 0; i < arrLength; i++){
-          var last = arrLength == i + 1;
-          
-          l += 'load' + type + '(\'' + arr[i] + '\'' + (last && cback ? (',' + cback) : '') + ');';
-        }
+    for (var i = 0; i < arrLength; i++){
+      var last = arrLength == i + 1;
 
-        return l;
-      };
+      ret += 'load' + type + '(\'' + arr[i] + '\'' + (last && cback ? (',' + cback) : '') + ');';
+    }
 
-  html += load(o.js, 'JavaScript') + 
-  load(o.css, 'CSS', o.onCSSLoaded || 'function(){document.body.classList.add(\'css-loaded\')}');
+    return ret;
+  };
 
-  html += '">';//closing the body tag
-  html += '<div id="bs-checker" class="invisible"></div>';//helper to check bs is loaded
-  html += '<style>' + (o.style || '') + '</style>';
+  html += load(o.js, 'JavaScript') + load(o.css, 'CSS');
+  
+  //closing the body tag
+  html += '">';
+
+  html += '<div id="bscheck" class="invisible"></div>';//helper to check bs is loaded
+  
+  if(o.style){
+    html += '<style>' + o.style + '</style>';
+  }
+  
   html += tmpl((o.html || '').trim(), o.context);
 
   return html;
@@ -197,28 +161,22 @@ function getIframeHtml(o){
 
 //we have a generic host css per widget type that we only include once.
 function getInitialHtml(){
-  var hostStylesId = 'tvp-' + type + '-host';
+  var html = "";
+  var styleId = 'tvp-' + config.type + '-host';
+  var css = config.css;
+  var hostStyles = isMobile() ? css.mobile.host : css.host;
+  var templates = isMobile() ? config.mobile.templates : config.templates;
 
-  if(!getById(hostStylesId)){
-    var hostStylesEl = createEl('style');
-    hostStylesEl.id = hostStylesId;
-    hostStylesEl.innerHTML = isMobile ? css.mobile.host : css.host;
-    document.head.appendChild(hostStylesEl);
+  if(!getById(styleId)){
+    html += '<style id="' + styleId + '">' + hostStyles + '</style>';
   }
-  
-  var hostCustom = 'host-custom';
-  var hostCustomStyles = isMobile ? css.mobile[hostCustom] : css[hostCustom];
-  var html = '';
 
-  if(!isUndefined(hostCustomStyles))
-    html += '<style>' + hostCustomStyles + '</style>';
-
-  html += tmpl(initialHtml, config);
+  html += tmpl('<div id="{id}-holder" class="tvp-{type}-holder">' + templates.iframe + '</div>', config);
 
   return html;
 }
 
-//gets the player url
+//build the player url
 function getPlayerUrl(){
   var url = "https://cdnjs.tvpage.com/tvplayer/tvp-" + config.player_version + ".min.js";
   
@@ -229,57 +187,91 @@ function getPlayerUrl(){
   return url;
 }
 
-//Here's the first HTML write we do to the host page, this is the fastest way to do it
+//here's the first HTML write we do to the host page, this is the fastest way to do it
 //refer to https://jsperf.com/insertadjacenthtml-perf/3
 function widgetRender(){
-  var targetEl = getById(config.targetEl);
-  targetEl.insertAdjacentHTML('beforebegin', getInitialHtml());
-  remove(targetEl);
-
-  holder = getById(id + "-holder");
+  function render(){
+    var targetEl = getById(config.targetEl);
+    targetEl.insertAdjacentHTML('beforebegin',getInitialHtml());
+    
+    remove(targetEl);
   
-  var iframe = holder.querySelector("iframe");
-  var iframeDocument = iframe.contentWindow.document;
-  var paths = config.paths;
-
-  iframeDocument.open().write(getIframeHtml({
-    id: id,
-    domain: baseUrl,
-    context: config,
-    html: templates.base,
-    eventPrefix: eventPrefix,
-    js: [
-      '//a.tvpage.com/tvpa.min.js',
-      '//imasdk.googleapis.com/js/sdkloader/ima3.js',
-      getPlayerUrl(),
-      debug ? paths.javascript + '/vendor/jquery.js' : '',
-      debug ? paths.libs + '/utils.js' : '',
-      debug ? paths.libs + '/analytics.js' : '',
-      debug ? paths.libs + '/carousel.js' : '',
-      debug ? paths.libs + '/player.js' : '',
-      debug ? paths.javascript + '/index.js' : '',
-
-      debug ? "" : paths.javascript + "/scripts.min.js"
-    ],
-    css: [
-      debug ? baseUrl + '/bootstrap/dist/css/bootstrap.css' : '',
-      debug ? paths.css + '/base.css' : '',
-      debug ? baseUrl + '/slick/slick.css' : '',
-      isMobile ? baseUrl + '/slick/mobile/custom.css' : '',
-      !isMobile ? baseUrl + '/slick/custom.css' : '',
-      debug ? paths.css + '/styles.css' : '',
-      debug ? '' : paths.css + '/styles.min.css'
-    ]
-  }));
-
-  iframeDocument.close();
+    config.holder = getById(config.id + "-holder");
   
-  if(debug){
-    logSnapshot('renders initial dom');
+    var debug = config.debug;
+    var baseUrl = config.baseUrl;
+    var jsPath = config.paths.javascript;
+    var templates = isMobile() ? config.mobile.templates : config.templates;
+    var libsPath = baseUrl + '/libs';
+    var cssPath = config.paths.css
+    var iframe = config.holder.querySelector("iframe");
+    var iframeDocument = iframe.contentWindow.document;
+  
+    iframeDocument.open().write(getIframeHtml({
+      id: config.id,
+      domain: baseUrl,
+      context: config,
+      html: templates.base,
+      className: isMobile() ? "mobile" : "",
+      js: [
+        '//a.tvpage.com/tvpa.min.js',
+        '//imasdk.googleapis.com/js/sdkloader/ima3.js',
+        getPlayerUrl(),
+        debug ? jsPath + '/vendor/jquery.js' : '',
+        debug ? libsPath + '/utils.js' : '',
+        debug ? libsPath + '/analytics.js' : '',
+        debug ? libsPath + '/carousel.js' : '',
+        debug ? libsPath + '/player.js' : '',
+        debug ? jsPath + '/index.js' : '',
+  
+        debug ? "" : jsPath + "/scripts.min.js"
+      ],
+      css: [
+        debug ? baseUrl + '/bootstrap/dist/css/bootstrap.css' : '',
+        debug ? cssPath + '/base.css' : '',
+        debug ? baseUrl + '/slick/slick.css' : '',
+        isMobile ? baseUrl + '/slick/mobile/custom.css' : '',
+        !isMobile ? baseUrl + '/slick/custom.css' : '',
+        debug ? cssPath + '/styles.css' : '',
+        debug ? '' : cssPath + '/styles.min.css'
+      ]
+    }));
+  
+    iframeDocument.close();
+  }
+
+  //we will poll if the target element is not in the page immediately, this is required to cover
+  //scenarios where customer add this element lazily.
+  if(getById(config.targetEl)){
+    render();
+  }else{
+    var targetElCheck = 0;
+    var targetElCheckLimit = 1000;
+    
+    (function checkTargetEl(){
+      setTimeout(function() {
+        console.log('targetEl poll...');
+        
+        var ready = true;
+        if(!getById(config.targetEl))
+          ready = false;
+    
+        if(ready){
+          render();
+          
+          if(debug){
+            logSnapshot('renders initial dom (iframe w/skeleton)');
+          }
+        }else if(++targetElCheck < targetElCheckLimit){
+          checkTargetEl()
+        }else{
+          throw new Error("targetEl doesn't exist on page");
+        }
+      },5);
+    })();
   }
 }
 
-//we then add the data to the tvp global and then we fire the event that will start things in the widget side.
 function onWidgetLoad(data){
   var dataLength = !!data.length ? data.length : 0;
   
@@ -288,17 +280,14 @@ function onWidgetLoad(data){
     widgetRender();
   }
 
-  if(debug){
-    logSnapshot('videos api returned: ' + dataLength + ' item(s)');
+  if(config.debug){
+    logSnapshot('videos api returned: ' + dataLength + ' item(s) in: ')
   }
 };
 
-function holderResize(height){
-  holder.style.height = height + 'px'; 
-}
-
-//api calls/loading, is here were we call the most important api(s) and it's the start of everything.
-function widgetLoad(cback){
+//api calls/loading, is here were we call the most important api(s) and it's the start 
+//of everything.
+function widgetLoad(){
   var videosLoadParams = {
     p: 0,
     n: config.items_per_page,
@@ -314,7 +303,6 @@ function widgetLoad(cback){
       videosLoadParams[channelParam] = channelParams[channelParam];
   }
 
-  //the videos call
   loadScript({
     base: config.api_base_url + '/channels/' + config.channelId + '/videos',
     params: videosLoadParams
@@ -323,31 +311,36 @@ function widgetLoad(cback){
 
 widgetLoad();
 
-//handle events
+//handle the widget events
 window.addEventListener("message", function(e){
   if(!isEvent(e)){
     return;
   }
 
-  var eventType = getEventType(e);
+  var eventName = '';
+  var eventArr = e.data.event.split(':');
+
+  if(eventArr && eventArr.length && eventArr[0] === config.events.prefix){
+    eventName = eventArr[1];
+  }
   
-  if('widget_ready' === eventType){
+  if('widget_ready' === eventName){
     onWidgetReady(e);
   }
 
-  if('widget_resize' === eventType){
+  if('widget_resize' === eventName){
     onWidgetResize(e);
   }
 
-  if (__windowCallbackFunc__)
-    __windowCallbackFunc__(e);
+  if (config.__windowCallbackFunc__)
+    config.__windowCallbackFunc__(e);
 });
 
 //event handlers
 function onWidgetReady(e) {
-  holderResize(e.data.height)
+  config.holder.style.height = e.data.height + 'px';
 }
 
 function onWidgetResize(e) {
-  holderResize(e.data.height)
+  config.holder.style.height = e.data.height + 'px';
 }
