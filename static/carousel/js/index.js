@@ -24,8 +24,8 @@
   var cssLoadedCheck = 0;
   var cssLoadedCheckLimit = 1000;
 
-  (function cssPoll() {
-    setTimeout(function() {
+  (function cssPoll(){
+    setTimeout(function(){
       console.log('css loaded poll...');
 
       var bsCheckEl = document.getElementById('bscheck');
@@ -40,6 +40,11 @@
         skeletonEl.style.opacity = '1';
 
         sendResizeMessage();
+        
+        Utils.profile(config, {
+          metric_type: 'skeleton_shown',
+          metric_value: window.parent.performance.now()
+        });
       }else if (++cssLoadedCheck < cssLoadedCheckLimit){
         cssPoll()
       }
@@ -56,6 +61,13 @@
           event: eventPrefix + ':widget_modal_open',
           clicked: Utils.attr(realTarget, 'data-id')
         });
+
+        if (window.parent.performance){
+          config.profiling = config.profiling || {};
+          config.profiling['modal_ready'] = {
+            start: window.parent.performance.now()
+          }
+        }
       }
     }
 
@@ -67,10 +79,24 @@
       }
 
       Utils.removeClass(videosCarousel.el, 'hide-abs');
-
+      
+      logPerformance();
+      
       videosCarousel.loadNext('render');
     }
-
+    
+    
+    function logPerformance(){
+      var profiling = config.profiling;
+      
+      for (var key in profiling) {
+        Utils.profile(config, {
+          metric_type: key,
+          metric_value: profiling[key]
+        });
+      }
+    }
+    
     function onLoad(data) {
       config.channel.videos = config.channel.videos.concat(data);
     }

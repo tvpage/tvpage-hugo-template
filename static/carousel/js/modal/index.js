@@ -12,6 +12,7 @@
   var apiBaseUrl = config.api_base_url;
   var baseUrl = config.baseUrl;
   var skeletonEl = document.getElementById('skeleton');
+  var isFirstVideoPlay=true;
 
   //we check when critical css has loaded/parsed. At this step, we have data to
   //update the skeleton. We wait until css has really executed in order to send
@@ -274,6 +275,26 @@
             initPlayer();
             initProducts();
             initAnalytics();
+            
+            Utils.profile(config,{
+              metric_type: 'modal_ready',
+              metric_value: window.parent.performance.now() - config.profiling['modal_ready'].start
+            });
+
+            window.parent.addEventListener("message", function(e) {
+              if (!Utils.isEvent(e) || !isFirstVideoPlay || e.data.e !== "tvp:media:videoplaying")
+                return;
+
+              if (typeof config.profiling['modal_ready'] == null)
+                return;
+
+              Utils.profile(config, {
+                metric_type: 'video_playing',
+                metric_value: window.parent.performance.now() - config.profiling['modal_ready'].start
+              });
+
+              isFirstVideoPlay = false;
+            });
           });
 
           $modalEl.on('hidden.bs.modal', function(e) {

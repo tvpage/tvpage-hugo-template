@@ -57,10 +57,9 @@ function isEvent(e){
   return e && e.data && e.data.event;
 }
 
-function logSnapshot(msg) {
-  if(window.performance && 'undefined' !== typeof startTime){
-    console.log(msg, performance.now() - startTime);
-  }
+function logProfile(m){
+  if(window.performance)
+    config.profiling[m] = performance.now();
 }
 
 function tmpl(t,d){
@@ -232,6 +231,8 @@ function widgetRender(){
     }));
   
     iframeDocument.close();
+    
+    logProfile('widget_rendered');
   }
 
   //we will poll if the target element is not in the page immediately, this is required to cover
@@ -252,10 +253,6 @@ function widgetRender(){
     
         if(ready){
           render();
-          
-          if(debug){
-            logSnapshot('renders initial dom (iframe w/skeleton)');
-          }
         }else if(++targetElCheck < targetElCheckLimit){
           checkTargetEl()
         }else{
@@ -273,10 +270,8 @@ function onWidgetLoad(data){
     config.channel.videos = data;
     widgetRender();
   }
-
-  if(config.debug){
-    logSnapshot('videos api returned: ' + dataLength + ' item(s) in: ')
-  }
+  
+  logProfile('data_returned');
 };
 
 //api calls/loading, is here were we call the most important api(s) and it's the start 
@@ -352,7 +347,8 @@ function onWidgetResize(e) {
 }
 
 function onWidgetPlayerChange(e){
-  config.onPlayerChange(e.data.e, e.data.stateData);
+  if (typeof config.onPlayerChange == "function")
+    config.onPlayerChange(e.data.e, e.data.stateData);
 }
 
 //we use a destructive approach in the modal iframe, we always create one from scratch when

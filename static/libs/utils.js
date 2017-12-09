@@ -27,6 +27,20 @@
   function closest(el, cback) {
     return el && (cback(el) ? el : closest(el.parentNode, cback));
   }
+  
+  function extend(out){
+    out = out || {};
+    for (var i = 1; i < arguments.length; i++) {
+      if (!arguments[i])
+        continue;
+  
+      for (var key in arguments[i]) {
+        if (arguments[i].hasOwnProperty(key))
+          out[key] = arguments[i][key];
+      }
+    }
+    return out;
+  }
 
   function isEmptyObject(o){
     for(var k in o) {
@@ -46,6 +60,35 @@
       s = document.defaultView.getComputedStyle(el,null).getPropertyValue(styleProp);
     
     return s;
+  }
+  
+  function loadScript(o, cback){
+    var script = document.createElement('script');
+    var src = o.base || '';
+    var prms = o.params || {};
+    var counter = 0;
+  
+    for (var p in prms) {
+      if (prms.hasOwnProperty(p)) {
+        src += (counter > 0 ? '&' : '?') + p + '=' + prms[p];
+        ++counter;
+      }
+    }
+  
+    if( isFunction(cback) ) {
+      var cBackName = 'tvp_callback_' + Math.random().toString(36).substring(7);        
+      
+      window[cBackName] = function(data){
+        if(isFunction(cback))
+          cback(data);
+      };
+
+      src += '&callback=' + cBackName;
+    }
+
+    script.src = src;
+
+    body.appendChild(script);
   }
   
   //the utils module
@@ -118,31 +161,7 @@
 
   Utils.hasClass = hasClass;
   
-  Utils.loadScript = function(o, cback){
-    var script = document.createElement('script');
-    var src = o.base || '';
-    var prms = o.params || {};
-    var counter = 0;
-  
-    for (var p in prms) {
-      if (prms.hasOwnProperty(p)) {
-        src += (counter > 0 ? '&' : '?') + p + '=' + prms[p];
-        ++counter;
-      }
-    }
-  
-    var cBackName = 'tvp_callback_' + Math.random().toString(36).substring(7);
-
-    window[cBackName] = function(data){
-      if(isFunction(cback))
-        cback(data);
-    };
-
-    src += '&callback=' + cBackName;
-    script.src = src;
-
-    body.appendChild(script);
-  };
+  Utils.loadScript = loadScript;
   
   Utils.sendMessage = function(msg){
     if (window.parent)
@@ -205,19 +224,7 @@
     return 'undefined' !== typeof val;
   };
   
-  Utils.extend = function(out) {
-    out = out || {};
-    for (var i = 1; i < arguments.length; i++) {
-      if (!arguments[i])
-        continue;
-  
-      for (var key in arguments[i]) {
-        if (arguments[i].hasOwnProperty(key))
-          out[key] = arguments[i][key];
-      }
-    }
-    return out;
-  };
+  Utils.extend = extend;
   
   Utils.debounce = function(func, wait, immediate) {
     var timeout = null;
@@ -242,6 +249,25 @@
       t = t.substring(0, Number(l)) + '...';
     }
     return t;
+  };
+  
+  
+  Utils.profile = function(config, params){
+    if(!hasKey(config, 'profile') || !config.profile){
+      return;
+    }
+    
+    loadScript({
+      base: "//local.tvpage.com/api/__wa.gif",
+      params: extend({
+        loc_id: config.id,
+        loginId: config.loginId,
+        channelId: config.channelId,
+        type_id: config.type,
+        run_id: config.runId,
+        url: location.hostname
+      }, params)
+    });
   };
   
   Utils.trimPrice = function(p) {
