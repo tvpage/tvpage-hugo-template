@@ -13,6 +13,7 @@
     var productsCarousel;
     var skeletonEl = document.getElementById('skeleton');
     var isFirstVideoPlay = true;
+    var isFirstPlayButtonClick = true;
   
     //we check when critical css has loaded/parsed. At this step, we have data to
     //update the skeleton. We wait until css has really executed in order to send
@@ -84,8 +85,22 @@
   
         Utils.profile(config, {
           metric_type: 'video_playing',
-          metric_value: Utils.now('parent') - config.profiling['modal_ready'].start
+          metric_value: Utils.now('parent') - config.profiling['video_playing'].start
         });
+      }
+    }
+
+    function onPlayerClick(e){
+      if(e && e.target){
+        var target = Utils.getRealTargetByClass(e.target, 'tvplayer-playbutton');
+          
+        if(target && isFirstPlayButtonClick){
+          isFirstPlayButtonClick = false;
+          
+          config.profiling['video_playing'] = {
+            start: Utils.now('parent')
+          }
+        }
       }
     }
   
@@ -96,6 +111,7 @@
       playerConfig.onResize = onPlayerResize;
       playerConfig.onNext = onPlayerNext;
       playerConfig.onChange = onPlayerChange;
+      playerConfig.onClick = onPlayerClick;
   
       var player = new Player('player-el', playerConfig, config.clicked);
   

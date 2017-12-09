@@ -22,12 +22,15 @@
   var skeleton = true;
   var skeletonEl = document.getElementById('skeleton');
   var player;
+  var analytics;
   var productsCarousel;
-  var productsCarouselReady = false;
   var featuredProduct;
   var videosCarousel;
+  var productsCarouselReady = false;
   var videosCarouselReady = false;
-  var analytics;
+  var playerReadyCalled = false;
+  var isFirstVideoPlay = true;
+  var isFirstPlayButtonClick = true;
 
   function sendResizeMessage() {
     Utils.sendMessage({
@@ -104,9 +107,14 @@
       var profiling = config.profiling;
       
       for (var key in profiling) {
+        var profile = profiling[key];
+
+        if(Utils.isObject(profile))
+          continue;
+
         Utils.profile(config, {
           metric_type: key,
-          metric_value: profiling[key]
+          metric_value: profile
         });
       }
     }
@@ -146,12 +154,6 @@
         if(target){
           onWidgetVideoChange(target.getAttribute('data-id'));
         }
-      }
-
-      config.profiling = config.profiling || {};
-      
-      config.profiling['video_playing'] = {
-        start: Utils.now('parent')
       }
     }
 
@@ -376,15 +378,38 @@
       stateData : currentAsset
     });
 
-    //Better to track on autoplay on only, as a rule
-    // if("tvp:media:videoplaying" === e && isFirstVideoPlay){
-    //   isFirstVideoPlay = false;
+    if("tvp:media:videoplaying" === e && isFirstVideoPlay){
+      isFirstVideoPlay = false;
 
-    //   Utils.profile(config, {
-    //     metric_type: 'video_playing',
-    //     metric_value: Utils.now('parent') - config.profiling['modal_ready'].start
-    //   });
-    // }
+      Utils.profile(config, {
+        metric_type: 'video_playing',
+        metric_value: Utils.now('parent') - config.profiling['video_playing'].start
+      });
+    }
+  }
+
+  function onPlayerClick(e){
+    if(e && e.target){
+      var target = Utils.getRealTargetByClass(e.target, 'tvplayer-playbutton');
+        
+      if(target && isFirstPlayButtonClick){
+        isFirstPlayButtonClick = false;
+
+        config.profiling['video_playing'] = {
+          start: Utils.now('parent')
+        }
+      }
+    }
+  }
+
+  function onPlayerReady(){
+    if(!playerReadyCalled){
+      playerReadyCalled = true;
+
+      config.profiling['video_playing'] = {
+        start: Utils.now('parent')
+      }
+    }
   }
 
   function initPlayer(){
@@ -395,21 +420,11 @@
     playerConfig.data = config.channel.videos;
     playerConfig.onNext = onPlayerNext;
     playerConfig.onChange = onPlayerChange;
-
-    //watch out this function triggers twice, once per media provider
-    var readyCalled = false;
-
-    playerConfig.onPlayerReady = function(){
-      if(!readyCalled){
-        readyCalled = true;
-
-        if (config.debug) {
-          console.log("a player is ready");
-        }
-      }
-    };
+    playerConfig.onClick = onPlayerClick;
+    playerConfig.onPlayerReady = onPlayerReady;
     
     player = new Player('player-el', playerConfig);
+
     player.initialize();
   };
 

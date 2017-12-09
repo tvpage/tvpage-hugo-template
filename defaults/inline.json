@@ -8,6 +8,12 @@
                 "value": "//api.tvpage.com/v1"
             },
             {
+              "type": "text",
+              "label": "API Base Url",
+              "code": "profile_base_url",
+              "value": "//local.tvpage.com/api/__wa.gif"
+            },
+            {
                 "type": "boolean",
                 "label": "Analytics",
                 "code": "analytics",

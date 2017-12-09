@@ -11,6 +11,9 @@
     isUndefined: function(o) {
       return 'undefined' === typeof o;
     },
+    isFunction: function(o) {
+      return 'function' === typeof o;
+    },
     compact: function(o) {
       for (var k in o) {
         if (o.hasOwnProperty(k) && !o[k])
@@ -157,7 +160,7 @@
       this.onResize(this.initialResize,[width,height]);
   };
   
-  Player.prototype.handleResize = function() {
+  Player.prototype.handleWindowResize = function() {
     var that = this,
         onResize = function(){
           setTimeout(function(){
@@ -167,6 +170,19 @@
     
     window.removeEventListener('resize', onResize, false);
     window.addEventListener('resize', onResize, false);
+  };
+
+  Player.prototype.handleClick = function() {
+    var defaultStop = this.options.clickDefaultStop;
+    var optOnClick = this.options.onClick;
+    var onClick = Utils.isFunction(optOnClick) ? optOnClick : function(e){
+      if(defaultStop){
+        Utils.stopEvent(e);
+      }
+    };
+
+    this.el.removeEventListener('click', onClick, false);
+    this.el.addEventListener('click', onClick, false);
   };
 
   Player.prototype.analyticsConfig = function() {
@@ -220,7 +236,8 @@
       
       this.analyticsConfig();
       this.controlBarZindex();
-      this.handleResize();
+      this.handleWindowResize();
+      this.handleClick();
   
       if(this.onPlayerReady){
         this.onPlayerReady(this);
@@ -403,6 +420,7 @@
     this.onResize = this.getCallable('onResize');
     this.onNext = this.getCallable('onNext');
     this.onPlayerReady = this.getCallable('onPlayerReady');
+    this.onClick = this.getCallable('onClick');
   };
 
   Player.prototype.initialize = function() {

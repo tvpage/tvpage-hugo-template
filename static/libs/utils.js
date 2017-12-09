@@ -24,6 +24,10 @@
     return window.parent && hasKey(window.parent, '__TVPage__') ? window.parent.__TVPage__ : null;
   }
 
+  function isObject(o){
+    return "object" === typeof o;
+  }
+
   function isFunction(o){
     return 'function' === typeof o;
   }
@@ -119,6 +123,7 @@
   };
 
   Utils.isNull = isNull;
+  Utils.isObject = isObject;
 
   Utils.attr = function(el,a) {
     return el.getAttribute(a);
@@ -268,9 +273,9 @@
     if(!hasKey(config, 'profile') || !config.profile){
       return;
     }
-    
+
     loadScript({
-      base: "//local.tvpage.com/api/__wa.gif",
+      base: config.profile_base_url,
       params: extend({
         loc_id: config.id,
         loginId: config.loginId,

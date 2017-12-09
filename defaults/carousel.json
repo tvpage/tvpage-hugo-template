@@ -8,6 +8,12 @@
       },
       {
           "type": "text",
+          "label": "API Base Url",
+          "code": "profile_base_url",
+          "value": "//local.tvpage.com/api/__wa.gif"
+      },
+      {
+          "type": "text",
           "label": "Videos Order By",
           "code": "videos_order_by",
           "value": "sortOrder"
