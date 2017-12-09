@@ -108,6 +108,18 @@
     }
   };
 
+  Utils.now = function(from){
+    var glob = window;
+
+    if('parent' === from && glob.parent){
+      glob = glob.parent;
+    }
+
+    if(glob.performance){
+      return glob.performance.now();
+    }
+  };
+
   Utils.attr = function(el,a) {
     return el.getAttribute(a);
   };

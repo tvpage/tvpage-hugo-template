@@ -44,7 +44,9 @@
 
   (function cssPoll() {
     setTimeout(function() {
-      console.log('css loaded poll...');
+      if(config.debug){
+        console.log('css loaded poll...'); 
+      }
 
       var bsCheckEl = document.getElementById('bscheck');
       var bsCheckElVisibility = getComputedStyle(bsCheckEl, null).getPropertyValue('visibility');
@@ -58,6 +60,11 @@
         skeletonEl.style.opacity = '1';
 
         sendResizeMessage();
+
+        Utils.profile(config, {
+          metric_type: 'skeleton_shown',
+          metric_value: Utils.now('parent')
+        });
       } else if (++cssLoadedCheck < cssLoadedCheckLimit) {
         cssPoll()
       }
@@ -90,6 +97,16 @@
         event: eventPrefix + ':widget_ready',
         height: Utils.getWidgetHeight()
       });
+
+      //send the profile log of the collected metrics
+      var profiling = config.profiling;
+      
+      for (var key in profiling) {
+        Utils.profile(config, {
+          metric_type: key,
+          metric_value: profiling[key]
+        });
+      }
     }
   }
 
@@ -121,11 +138,18 @@
     function onVideosCarouselClick(e){
       Utils.stopEvent(e);
 
-      var target = Utils.getRealTargetByClass(e.target, 'carousel-item');
-      var clickedId = target.getAttribute('data-id');
+      if(e && e.target){
+        var target = Utils.getRealTargetByClass(e.target, 'carousel-item');
+        
+        if(target){
+          onWidgetVideoChange(target.getAttribute('data-id'));
+        }
+      }
 
-      if(clickedId){
-        onWidgetVideoChange(clickedId);
+      config.profiling = config.profiling || {};
+      
+      config.profiling['video_playing'] = {
+        start: Utils.now('parent')
       }
     }
 

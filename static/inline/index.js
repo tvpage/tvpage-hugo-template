@@ -57,10 +57,12 @@ function isEvent(e){
   return e && e.data && e.data.event;
 }
 
-function logSnapshot(msg) {
-  if(window.performance && 'undefined' !== typeof startTime){
-    console.log(msg, performance.now() - startTime);
-  }
+function saveProfileLog(conf, m){
+  if(!window.performance || !conf)
+    return;
+
+  conf.profiling = conf.profiling || {};
+  conf.profiling[m] = performance.now();
 }
 
 function tmpl(t,d){
@@ -238,6 +240,8 @@ function widgetRender(){
     }));
   
     iframeDocument.close();
+    
+    saveProfileLog(config, 'widget_rendered');
   }
 
   //we will poll if the target element is not in the page immediately, this is required to cover
@@ -258,10 +262,6 @@ function widgetRender(){
     
         if(ready){
           render();
-          
-          if(debug){
-            logSnapshot('renders initial dom (iframe w/skeleton)');
-          }
         }else if(++targetElCheck < targetElCheckLimit){
           checkTargetEl()
         }else{
@@ -277,12 +277,11 @@ function onWidgetLoad(data){
   
   if(dataLength){
     config.channel.videos = data;
+
     widgetRender();
   }
 
-  if(config.debug){
-    logSnapshot('videos api returned: ' + dataLength + ' item(s) in: ')
-  }
+  saveProfileLog(config, 'data_returned');
 };
 
 //api calls/loading, is here were we call the most important api(s) and it's the start 

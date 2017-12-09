@@ -57,9 +57,12 @@ function isEvent(e){
   return e && e.data && e.data.event;
 }
 
-function logProfile(m){
-  if(window.performance)
-    config.profiling[m] = performance.now();
+function saveProfileLog(conf, m){
+  if(!window.performance || !conf)
+    return;
+
+  conf.profiling = conf.profiling || {};
+  conf.profiling[m] = performance.now();
 }
 
 function tmpl(t,d){
@@ -232,7 +235,7 @@ function widgetRender(){
   
     iframeDocument.close();
     
-    logProfile('widget_rendered');
+    saveProfileLog(config, 'widget_rendered');
   }
 
   //we will poll if the target element is not in the page immediately, this is required to cover
@@ -268,10 +271,11 @@ function onWidgetLoad(data){
   
   if(dataLength){
     config.channel.videos = data;
+
     widgetRender();
   }
   
-  logProfile('data_returned');
+  saveProfileLog(config, 'data_returned');
 };
 
 //api calls/loading, is here were we call the most important api(s) and it's the start 

@@ -75,12 +75,30 @@
     productsRail.load('render');
   }
 
+  function onPlayerChange(e, currentAsset){
+    Utils.sendMessage({
+      event: eventPrefix + ':widget_player_change',
+      e: e,
+      stateData : currentAsset
+    });
+
+    if("tvp:media:videoplaying" === e && !Utils.isNull(config.profiling['video_playing']) && isFirstVideoPlay){
+      isFirstVideoPlay = false;
+
+      Utils.profile(config, {
+        metric_type: 'video_playing',
+        metric_value: Utils.now('parent') - config.profiling['video_playing'].start
+      });
+    }
+  }
+
   function initPlayer() {
     var playerConfig = Utils.copy(config);
 
     playerConfig.data = videos;
     playerConfig.onResize = onPlayerResize;
     playerConfig.onNext = onPlayerNext;
+    playerConfig.onChange = onPlayerChange;
 
     var player = new Player('player-el', playerConfig, clickedVideoId);
 
@@ -279,21 +297,6 @@
             Utils.profile(config,{
               metric_type: 'modal_ready',
               metric_value: window.parent.performance.now() - config.profiling['modal_ready'].start
-            });
-
-            window.parent.addEventListener("message", function(e) {
-              if (!Utils.isEvent(e) || !isFirstVideoPlay || e.data.e !== "tvp:media:videoplaying")
-                return;
-
-              if (typeof config.profiling['modal_ready'] == null)
-                return;
-
-              Utils.profile(config, {
-                metric_type: 'video_playing',
-                metric_value: window.parent.performance.now() - config.profiling['modal_ready'].start
-              });
-
-              isFirstVideoPlay = false;
             });
           });
 

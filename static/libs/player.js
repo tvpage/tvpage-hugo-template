@@ -228,23 +228,7 @@
       }
     }
   };
-  
-  Player.prototype.notifyState = function(e){
-    var currentAsset = this.getCurrentAsset() || {};
-    
-    currentAsset.currentTime = this.instance.getCurrentTime();
 
-    //better for libs to expose a onPlayerChange callback and then we can use more meaningful events like
-    //widget_videos_modal_player_change, etc
-    if ( window.parent) {
-      window.parent.postMessage({
-        event: this.eventPrefix + ':widget_player_change',
-        e: e,
-        stateData : currentAsset
-      }, '*');
-    }
-  };
-  
   Player.prototype.handleVideoEnded = function(){
     this.currentIndex++;
 
@@ -256,16 +240,22 @@
 
     this.play(next, true);
 
-    if (this.onNext) {
+    if(this.onNext){
       this.onNext(next);
     }
   };
   
   Player.prototype.onStateChange = function(e) {
-    this.notifyState(e);
-    
-    if ('tvp:media:videoended' === e)
+    if ('tvp:media:videoended' === e){
       this.handleVideoEnded();
+    }
+
+    if(this.onChange){
+      var currentAsset = this.getCurrentAsset() || {};
+      currentAsset.currentTime = this.instance.getCurrentTime();
+      
+      this.onChange(e);
+    }
   };
   
   Player.prototype.addExtraConfig = function(config){
@@ -410,7 +400,7 @@
     this.flashUrl = '//cdnjs.tvpage.com/tvplayer/tvp-' + this.version + '.swf';
     this.autoplay = this.getOption('autoplay');
     this.autonext = this.getOption('autonext');
-    this.onPlayerChange = this.getOption('onPlayerChange');
+    this.onChange = this.getCallable('onChange');
     this.onResize = this.getCallable('onResize');
     this.onNext = this.getCallable('onNext');
     this.onPlayerReady = this.getCallable('onPlayerReady');

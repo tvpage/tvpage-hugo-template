@@ -26,7 +26,9 @@
 
   (function cssPoll(){
     setTimeout(function(){
-      console.log('css loaded poll...');
+      if(config.debug){
+        console.log('css loaded poll...'); 
+      }
 
       var bsCheckEl = document.getElementById('bscheck');
       var bsCheckElVisibility = getComputedStyle(bsCheckEl, null).getPropertyValue('visibility');
@@ -54,7 +56,7 @@
   //a videos section will be initialized
   function initVideos() {
     function onClick(e) {
-      if (e && e.target) {
+      if(e && e.target){
         var realTarget = Utils.getRealTargetByClass(e.target, videosCarousel.itemClass.substr(1));
 
         Utils.sendMessage({
@@ -62,11 +64,10 @@
           clicked: Utils.attr(realTarget, 'data-id')
         });
 
-        if (window.parent.performance){
-          config.profiling = config.profiling || {};
-          config.profiling['modal_ready'] = {
-            start: window.parent.performance.now()
-          }
+        config.profiling = config.profiling || {};
+
+        config.profiling['modal_ready'] = {
+          start: Utils.now('parent')
         }
       }
     }
@@ -80,13 +81,7 @@
 
       Utils.removeClass(videosCarousel.el, 'hide-abs');
       
-      logPerformance();
-      
-      videosCarousel.loadNext('render');
-    }
-    
-    
-    function logPerformance(){
+      //send the profile log of the collected metrics
       var profiling = config.profiling;
       
       for (var key in profiling) {
@@ -95,6 +90,8 @@
           metric_value: profiling[key]
         });
       }
+      
+      videosCarousel.loadNext('render');
     }
     
     function onLoad(data) {
