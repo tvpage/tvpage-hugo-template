@@ -355,7 +355,8 @@ function widgetModalRender(){
     className: isMobile() ? "mobile" : "",
     html: templates.modal.base,
     js: [
-      "//a.tvpage.com/tvpa.min.js",
+      '//www.youtube.com/iframe_api',
+      '//a.tvpage.com/tvpa.min.js',
       '//imasdk.googleapis.com/js/sdkloader/ima3.js',
       getPlayerUrl(),
       debug ? libsPath + "/utils.js" : "",
