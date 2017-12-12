@@ -1,5 +1,5 @@
 {
-  iframe: '<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe>',
+  iframe: '<iframe id="tvp-{{ ($.Scratch.Get "settings").name }}-iframe" src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe>',
   base: {{- (partial (printf "%s/templates/base.html" .Type) .) -}},
   videos: {
     list: {{- (partial (printf "%s/templates/videos/list.html" .Type) .) -}},
@@ -15,13 +15,11 @@
     }
   },
   mobile: {
-    iframe: '<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe>',
+    iframe: '<iframe id="tvp-{{ ($.Scratch.Get "settings").name }}-iframe" src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe>',
     base: {{- (partial (printf "%s/mobile/templates/base.html" .Type) .) -}},
     modal: {
       iframe: '<iframe id="tvp-{{ ($.Scratch.Get "settings").name }}-modal-iframe" src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media" class="tvp-modal-iframe"></iframe>',
       base: {{- (partial (printf "%s/mobile/templates/modal/base.html" .Type) .) -}},
-      content: {{- (partial (printf "%s/mobile/templates/modal/content.html" .Type) .) -}},
-      body: {{- (partial (printf "%s/mobile/templates/modal/body.html" .Type) .) -}},
       products: {
         list: {{- (partial (printf "%s/mobile/templates/modal/products/list.html" .Type) .) -}},
         item: {{- (partial (printf "%s/mobile/templates/modal/products/item.html" .Type) .) -}}

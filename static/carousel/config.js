@@ -44,7 +44,11 @@
   config.events = {
     prefix: prefix
   };
-
+  
+  if('localhost' === location.hostname){
+    config.baseUrl = config.baseUrl.substring(0, config.baseUrl.length - 1);
+  }
+  
   var static = config.baseUrl + '/' + config.type;
   var dist = config.debug ? '/' : '/dist/';
 
@@ -58,7 +62,7 @@
   var mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
   config.mobile = {
-    path: mobile ? 'mobile' : '',
+    path: mobile ? '/mobile' : '',
     prefix: mobile ? '-mobile' : '',
     templates: config.templates.mobile
   };

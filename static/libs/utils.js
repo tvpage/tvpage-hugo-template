@@ -151,15 +151,21 @@
   };
 
   Utils.remove = function(el) {
-    el.parentNode.removeChild(el);
+    if(el){
+      el.parentNode.removeChild(el);
+    }
   };
 
-  Utils.addClass = function(el,c) {
-    el.classList.add(c);
+  Utils.addClass = function(el,c){
+    if(el){
+      el.classList.add(c);
+    }
   };
 
-  Utils.removeClass = function(el,c) {
-    el.classList.remove(c);
+  Utils.removeClass = function(el,c){
+    if(el){
+      el.classList.remove(c);
+    }
   };
 
   Utils.removeObjNulls = function(obj) {

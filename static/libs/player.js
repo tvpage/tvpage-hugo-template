@@ -49,7 +49,7 @@
     this.currentIndex = null;
     this.onReadyCalled = false;
   };
-  
+
   Player.prototype.getPlayButtonOptions = function() {
     return Utils.compact({
       height: this.getOption('play_button_height'),
@@ -98,7 +98,7 @@
   Player.prototype.shallCue = function(auto){
     return Utils.isMobile || (auto && !this.autonext) || !this.autoplay;
   };
-  
+
   Player.prototype.play = function(asset, ongoing) {
     if(this.options.debug){
       console.log('will play: ', asset);
@@ -310,18 +310,18 @@
     var that = this;
     var depsCheck = 0;
     var deps = ['TVPage'];
+    var depsLength = deps.length;
 
     (function start() {
       setTimeout(function() {
         console.log('deps poll...');
         
         var ready = true;
-        for (var i = 0; i < deps.length; i++)
+        for (var i = 0; i < depsLength; i++)
           if ('undefined' === typeof window[deps[i]])
             ready = false;
   
         if(ready){
-
           config.onReady = function(e, pl){
             that.onReady(e, pl);
             that.onReadyCalled = true;

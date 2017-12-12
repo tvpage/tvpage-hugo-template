@@ -28,4 +28,13 @@
     "width: 100%;" +
     "background: transparent !important;" +
     "height: 100%;" +
+    "visibility: hidden;" +
+    "opacity: 0;" +
+    "pointer-events: none;" +
+"}"+
+
+".tvp-modal-iframe.show {" +
+    "visibility: visible;" +
+    "opacity: 1;" +
+    "pointer-events: auto;" +
 "}"

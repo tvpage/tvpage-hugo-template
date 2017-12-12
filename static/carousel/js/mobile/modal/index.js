@@ -2,15 +2,13 @@
     var body = document.body;
     var id = body.getAttribute('data-id');
     var config = window.parent.__TVPage__.config[id];
-    var videos = config.channel.videos;
-    var clickedVideoId = config.clicked;
+    var clickedVideo;
     var eventPrefix = config.events.prefix;
-    var mainEl;
+    var player;
+    var productsCarousel;
     var analytics;
     var apiBaseUrl = config.api_base_url;
-    var productsEndpoint = apiBaseUrl + '/videos/' + config.clicked + '/products';
     var baseUrl = config.baseUrl;
-    var productsCarousel;
     var skeletonEl = document.getElementById('skeleton');
     var isFirstVideoPlay = true;
     var isFirstPlayButtonClick = true;
@@ -29,12 +27,6 @@
         var bsCheckerElVisibility = getComputedStyle(bsCheckerEl, null).getPropertyValue('visibility');
   
         if ('hidden' === bsCheckerElVisibility) {
-          var clickedVideo = videos.filter(function(video) {
-            return clickedVideoId == video.id;
-          }).pop();
-  
-          updateModalTitle(clickedVideo.title);
-  
           skeletonEl.style.visibility = 'visible';
           skeletonEl.style.opacity = '1';
         } else if (++cssLoadedCheck < cssLoadedCheckLimit) {
@@ -113,13 +105,13 @@
       playerConfig.onChange = onPlayerChange;
       playerConfig.onClick = onPlayerClick;
   
-      var player = new Player('player-el', playerConfig, config.clicked);
-  
+      player = new Player('player-el', playerConfig, clickedVideo.id);
       player.initialize();
     };
   
     function initAnalytics() {
       analytics = new Analytics();
+
       analytics.initConfig({
         domain: location.hostname || '',
         logUrl: apiBaseUrl + '/__tvpa.gif',
@@ -127,6 +119,7 @@
         firstPartyCookies: config.firstpartycookies,
         cookieDomain: config.cookiedomain
       });
+
       analytics.track('ci', {
         li: config.loginId
       });
@@ -138,11 +131,7 @@
       }
 
       function removeProductsSkelEl() {
-        var productsSkelEl = skeletonEl.querySelector('.products-skel-delete');
-  
-        if (productsSkelEl) {
-          Utils.remove(productsSkelEl);
-        }
+        Utils.remove(skeletonEl.querySelector('.products-skel-delete'));
       }
   
       // We set the height of the player to the products element, we also do this on player resize, we
@@ -155,7 +144,7 @@
         productsCarousel = new Carousel('products',{
           clean: true,
           loadMore: false,
-          endpoint: productsEndpoint,
+          endpoint: apiBaseUrl + '/videos/' + clickedVideo.id + '/products',
           params: {
             o: config.products_order_by,
             od: config.products_order_direction
@@ -215,12 +204,13 @@
   
     (function initModal() {
       setTimeout(function() {
-        if (config.debug) {
+        if(config.debug){
           console.log('deps poll...');
         }
   
         var ready = true;
         var missing;
+        
         for (var i = 0; i < deps.length; i++) {
           var dep = deps[i];
   
@@ -231,18 +221,35 @@
           }
         }
   
-        if (ready) {
-          function onBSUtilLoad() {
-            loadLib(baseUrl + '/bootstrap/js/modal.js', onBSModalLoad);
-          }
+        if(ready){
+          function onBootstrapModalLoad(){
+            var $modalEl = $('#modal');
   
-          function onBSModalLoad() {
-            var $modalEl = $('#modalElement');
+            //we need to start the video playback as soon as the modal starts launching to clear the image
+            //from the previous video.
+            $modalEl.on('show.bs.modal', function(e){
+              if(player){
+                player.play(clickedVideo.id);
+              }
+            });
   
-            $modalEl.on('shown.bs.modal', function(e) {
-              initPlayer();
-              initProducts();
-              initAnalytics();
+            $modalEl.on('shown.bs.modal', function(e){
+              if(player){
+                player.resize();
+              }else{
+                initPlayer();
+              }
+  
+              if(productsCarousel){
+                productsCarousel.endpoint = apiBaseUrl + '/videos/' + clickedVideo.id + '/products';
+                productsCarousel.load('render');
+              }else{
+                initProducts();
+              }
+              
+              if(!analytics){
+                initAnalytics();
+              }
 
               Utils.profile(config, {
                 metric_type: 'modal_ready',
@@ -250,20 +257,61 @@
               });
             });
   
-            $modalEl.on('hidden.bs.modal', function(e) {
+            $modalEl.on('hidden.bs.modal', function(e){
+              $(this).modal('dispose');
+              $(this).removeData('bs.modal');
+  
+              if(player){
+                player.instance.stop();
+              }
+  
               Utils.sendMessage({
                 event: eventPrefix + ':widget_modal_close'
               });
             });
   
-            $modalEl.modal('show');
+            $modalEl.modal('hide');
+  
+            window.parent.addEventListener('message', function(e){
+              if(!Utils.isEvent(e)){
+                return;
+              }
+              
+              var eventData = e.data;
+  
+              if((eventData.event === eventPrefix + ':widget_modal_open')){
+                clickedVideo = config.channel.videos.filter(function(video){
+                  return e.data.clicked == video.id;
+                }).pop();
+  
+                if(clickedVideo){
+                  Utils.getById('modalTitle').innerHTML = clickedVideo.title;
+                  
+                  $modalEl.modal('show');
+                }else{
+                  throw new Error("video not found in data");
+                }
+              }
+            });
   
             Utils.sendMessage({
               event: eventPrefix + ':widget_modal_initialized'
             });
           }
   
-          loadLib(baseUrl + '/bootstrap/js/util.js', onBSUtilLoad);
+          function onBootstrapUtilLoad(){
+            $.ajax({
+              dataType: 'script',
+              cache: true,
+              url: baseUrl + '/bootstrap/js/modal.js'
+            }).done(onBootstrapModalLoad);  
+          }
+  
+          $.ajax({
+            dataType: 'script',
+            cache: true,
+            url: baseUrl + '/bootstrap/js/util.js'
+          }).done(onBootstrapUtilLoad);
         } else if (++depsCheck < 200) {
           initModal()
         } else if(config.debug){

@@ -117,10 +117,19 @@ function loadScript(options, cback){
 
 //builds the document html for an iframe.
 function getIframeHtml(o){
-  var html = tmpl('<head><base target="_blank"/></head><body class="{className}"' +
-  'data-domain="{domain}" data-id="{id}" onload="' +
-  'var d=document,h=d.head,' +
-  'loadJavaScript = function(u){var s=d.createElement(\'script\');s.src=u;h.appendChild(s);},' +
+  var html = tmpl('<head>' +
+  '  <base target="_blank"/>'+
+  '  <link rel=\'dns-prefetch\' href=\'//youtube.com\' />' +
+  '  <link rel=\'dns-prefetch\' href=\'//googlevideo.com\' />' +
+  '  <link rel=\'dns-prefetch\' href=\'//fonts.gstatic.com\' />' +
+  '</head><body class="{className}" data-domain="{domain}" data-id="{id}" onload="'+
+  'var d=document,' +
+  'h=d.head,' +
+  'loadJavaScript = function(u){'+
+  '  var s=d.createElement(\'script\');' +
+  '  s.src=u;'+
+  '  h.appendChild(s);' +
+  '},' +
   'loadCSS = function(u,c){'+
   '  var l=d.createElement(\'link\');'+
   '  l.rel=\'stylesheet\';'+
@@ -270,6 +279,7 @@ function onWidgetLoad(data){
     config.channel.videos = data;
 
     widgetRender();
+    widgetModalRender();
   }
   
   saveProfileLog(config, 'data_returned');
@@ -297,6 +307,79 @@ function widgetLoad(){
     base: config.api_base_url + '/channels/' + config.channelId + '/videos',
     params: videosLoadParams
   }, onWidgetLoad);
+}
+
+//we use a destructive approach in the modal iframe, we always create one from scratch when
+//the user clicks an item
+var iframeModal;
+
+function onWidgetModalClose(e){
+  iframeModal.classList.remove('show');
+}
+
+function widgetModalRender(){
+  if(!document.body){
+    throw new Error("body is null?, place code after openning body tag");
+  }
+  
+  if(iframeModal){
+   return;
+  }
+
+  var templates = isMobile() ? config.mobile.templates : config.templates;
+  var modalTargetEl = createEl('div');
+  
+  modalTargetEl.id = config.id + '-modal-target';
+  
+  document.body.appendChild(modalTargetEl);
+  
+  modalTargetEl.insertAdjacentHTML('beforebegin', templates.modal.iframe);
+  
+  remove(modalTargetEl);
+  
+  iframeModal = getById('tvp-' + config.id + '-modal-iframe');
+
+  var iframeModalDocument = iframeModal.contentWindow.document;
+  var debug = config.debug;
+  var baseUrl = config.baseUrl;
+  var jsPath = config.paths.javascript;
+  var cssPath = config.paths.css
+  var mobilePath = config.mobile.path;
+  var libsPath = baseUrl + '/libs';
+  
+  iframeModalDocument.open().write(getIframeHtml({
+    id: config.id,
+    domain: baseUrl,
+    context: config,
+    style: 'body{background:none transparent}',
+    className: isMobile() ? "mobile" : "",
+    html: templates.modal.base,
+    js: [
+      "//a.tvpage.com/tvpa.min.js",
+      '//imasdk.googleapis.com/js/sdkloader/ima3.js',
+      getPlayerUrl(),
+      debug ? libsPath + "/utils.js" : "",
+      debug ? libsPath + "/analytics.js" : "",
+      debug ? libsPath + "/player.js" : "",
+      debug ? libsPath + "/carousel.js" : "",
+      debug ? baseUrl + "/libs/rail.js" : "",
+      debug ? jsPath + "/vendor/jquery.js" : "",
+      debug && !isMobile() ? jsPath + "/vendor/perfect-scrollbar.min.js" : "",
+      debug ? jsPath + mobilePath + "/modal/index.js" : "",
+      debug ? "" : jsPath + mobilePath + "/modal/scripts.min.js"
+    ],
+    css: [
+      debug ? baseUrl + '/bootstrap/dist/css/bootstrap.css' : '',
+      debug && isMobile() ? baseUrl + "/slick/slick.css" : '',
+      isMobile() ? baseUrl + '/slick/mobile/custom.css' : '',
+      !isMobile() ? baseUrl + '/slick/custom.css' : '',
+      debug && !isMobile() ? cssPath + "/vendor/perfect-scrollbar.min.css" : "",
+      debug ? cssPath + mobilePath + "/modal/styles.css" : '',
+      debug ? "" : cssPath + mobilePath + "/modal/styles.min.css"
+    ]
+  }));
+
+  iframeModalDocument.close();
 }
 
 widgetLoad();
@@ -352,108 +435,6 @@ function onWidgetPlayerChange(e){
     config.onPlayerChange(e.data.e, e.data.stateData);
 }
 
-//we use a destructive approach in the modal iframe, we always create one from scratch when
-//the user clicks an item
-var iframeModal;
-
-function onWidgetModalClose(e){
-  remove(iframeModal);
-
-  iframeModal = null;
-}
-
-function widgetModalRender(){
-  if(!document.body){
-    throw new Error("document body doesn't exists, try placing embed code after <body>");
-  }
-  
-  if(iframeModal){
-   return;
-  }
-
-  var templates = isMobile() ? config.mobile.templates : config.templates;
-  var modalTargetEl = createEl('div');
-  modalTargetEl.id = config.id + '-modal-target';
-  
-  document.body.appendChild(modalTargetEl);
-  
-  modalTargetEl.insertAdjacentHTML('beforebegin', templates.modal.iframe);
-  
-  remove(modalTargetEl);
-
-  iframeModal = getById('tvp-' + config.id + '-modal-iframe');
-  
-  var debug = config.debug;
-  var baseUrl = config.baseUrl;
-  var jsPath = config.paths.javascript;
-  var cssPath = config.paths.css
-  var mobilePath = config.mobile.path;
-  var libsPath = baseUrl + '/libs';
-  var iframeModalDocument = iframeModal.contentWindow.document;
-  
-  iframeModalDocument.open().write(getIframeHtml({
-    id: config.id,
-    domain: baseUrl,
-    context: config,
-    style: 'body{background:none transparent}',
-    className: isMobile() ? "mobile" : "",
-    html: templates.modal.base,
-    js: [
-      "//a.tvpage.com/tvpa.min.js",
-      '//imasdk.googleapis.com/js/sdkloader/ima3.js',
-      getPlayerUrl(),
-      debug ? libsPath + "/utils.js" : "",
-      debug ? libsPath + "/analytics.js" : "",
-      debug ? libsPath + "/player.js" : "",
-      debug ? libsPath + "/carousel.js" : "",
-
-      //this has to be an option
-      debug ? baseUrl + "/libs/rail.js" : "",
-
-      debug ? jsPath + "/vendor/jquery.js" : "",
-      debug && !isMobile() ? jsPath + "/vendor/perfect-scrollbar.min.js" : "",
-      debug ? jsPath + "/" + mobilePath + "/modal/index.js" : "",
-      debug ? "" : jsPath + "/" + mobilePath + "/modal/scripts.min.js"
-    ],
-    css: [
-      debug ? baseUrl + '/bootstrap/dist/css/bootstrap.css' : '',
-      debug && isMobile() ? baseUrl + "/slick/slick.css" : '',
-      isMobile() ? baseUrl + '/slick/mobile/custom.css' : '',
-      !isMobile() ? baseUrl + '/slick/custom.css' : '',
-      debug && !isMobile() ? cssPath + "/vendor/perfect-scrollbar.min.css" : "",
-      debug ? cssPath + "/" + mobilePath + "/modal/styles.css" : '',
-      debug ? "" : cssPath + "/" + mobilePath + "/modal/styles.min.css"
-    ]
-  }));
-
-  iframeModalDocument.close();
-}
-
-function onWidgetModalLoad(data){
-  var dataLength = !!data.length ? data.length : 0;
-  
-  if(dataLength){
-    widgetModalRender();
-  }
-}
-
-function widgetModalLoad(data){
-  onWidgetModalLoad(data);
-}
-
 function onWidgetModalOpen(e){
-  var videos = config.channel.videos;
-  var selected = null;
-  var clicked = e.data.clicked;
-
-  for (var i = 0; i < videos.length; i++)
-    if (videos[i].id === clicked)
-      selected = videos[i];
-
-  if(!selected)
-    return;
-
-  config.clicked = clicked;
-
-  widgetModalLoad(videos);
+  iframeModal.classList.add('show');
 }
