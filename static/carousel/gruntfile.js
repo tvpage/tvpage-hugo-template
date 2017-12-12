@@ -46,9 +46,8 @@ module.exports = function(grunt) {
       },
       uglify: {
         options: {
-          //beautify:true,
           compress: {
-            //drop_console: false
+            drop_console: false
           }
         },
         scripts: {

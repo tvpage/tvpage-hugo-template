@@ -265,10 +265,6 @@
             if(player){
               player.play(clickedVideo.id);
             }
-
-            if(productsRail){
-              productsRail.clean();
-            }
           });
 
           $modalEl.on('shown.bs.modal', function(e){
@@ -318,7 +314,13 @@
             var eventData = e.data;
 
             if((eventData.event === eventPrefix + ':widget_modal_open')){
-              clickedVideo = config.channel.videos.filter(function(video){
+              var videos = config.channel.videos;
+
+              if(player){
+                player.addAssets(videos);
+              }
+
+              clickedVideo = videos.filter(function(video){
                 return e.data.clicked == video.id;
               }).pop();
 

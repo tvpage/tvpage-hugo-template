@@ -52,13 +52,11 @@
 
   //a videos section will be initialized
   function initVideos() {
-    function onClick(e) {
+    function onVideosCarouselClick(e) {
       if(e && e.target){
-        var realTarget = Utils.getRealTargetByClass(e.target, videosCarousel.itemClass.substr(1));
-
         Utils.sendMessage({
           event: eventPrefix + ':widget_modal_open',
-          clicked: Utils.attr(realTarget, 'data-id')
+          clicked: Utils.attr(Utils.getRealTargetByClass(e.target, 'carousel-item'), 'data-id')
         });
 
         config.profiling['modal_ready'] = {
@@ -67,7 +65,7 @@
       }
     }
 
-    function onReady(){
+    function onVideosCarouselReady(){
       var videosSkelEl = skeletonEl.querySelector('.videos-skel-delete');
 
       if (videosSkelEl) {
@@ -91,7 +89,7 @@
       videosCarousel.loadNext('render');
     }
     
-    function onLoad(data) {
+    function onVideosCarouselLoad(data){
       config.channel.videos = config.channel.videos.concat(data);
     }
 
@@ -122,9 +120,9 @@
           slidesToScroll: 2
         }
       }],
-      onClick: onClick,
-      onReady: onReady,
-      onLoad: onLoad,
+      onClick: onVideosCarouselClick,
+      onReady: onVideosCarouselReady,
+      onLoad: onVideosCarouselLoad,
       onResize: sendResizeMessage
     }, config);
 
