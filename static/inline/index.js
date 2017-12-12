@@ -61,7 +61,6 @@ function saveProfileLog(conf, m){
   if(!window.performance || !conf)
     return;
 
-  conf.profiling = conf.profiling || {};
   conf.profiling[m] = performance.now();
 }
 
@@ -118,10 +117,19 @@ function loadScript(options, cback){
 
 //builds the document html for an iframe.
 function getIframeHtml(o){
-  var html = tmpl('<head><base target="_blank"/></head><body class="{className}"' +
-  'data-domain="{domain}" data-id="{id}" onload="' +
-  'var d=document,h=d.head,' +
-  'loadJavaScript = function(u){var s=d.createElement(\'script\');s.src=u;h.appendChild(s);},' +
+  var html = tmpl('<head>' +
+  '  <base target="_blank"/>'+
+  '  <link rel=\'dns-prefetch\' href=\'//youtube.com\' />' +
+  '  <link rel=\'dns-prefetch\' href=\'//googlevideo.com\' />' +
+  '  <link rel=\'dns-prefetch\' href=\'//fonts.gstatic.com\' />' +
+  '</head><body class="{className}" data-domain="{domain}" data-id="{id}" onload="'+
+  'var d=document,' +
+  'h=d.head,' +
+  'loadJavaScript = function(u){'+
+  '  var s=d.createElement(\'script\');' +
+  '  s.src=u;'+
+  '  h.appendChild(s);' +
+  '},' +
   'loadCSS = function(u,c){'+
   '  var l=d.createElement(\'link\');'+
   '  l.rel=\'stylesheet\';'+
