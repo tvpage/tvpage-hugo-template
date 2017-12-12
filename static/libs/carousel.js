@@ -20,7 +20,7 @@
     this.dotsPosition = this.getOption(this.options.dotsPosition, 'bottom');
     this.slidesToShow = this.getOption(this.options.slidesToShow, 1);
     this.slidesToScroll = this.getOption(this.options.slidesToScroll, 1);
-    this.slickArrowStyleEl;
+    this.customStyleEl;
     this.slideCompare;
     this.onReadyCalled = false;
 
@@ -172,19 +172,22 @@
           //so the top value remains and the user won't experience the top update (flickering)
           top += referenceEl.offsetTop + Math.floor(referenceEl.getBoundingClientRect().height / 2);
 
-          var arrowTopStyleSheet = Utils.createEl('style');
-          var arrowTopStyleSheetId = 'slick-arrow';
+          var carouselId = that.el.id;
+          var customStyleSheet = Utils.createEl('style');
+          var customStyleSheetId = carouselId + '-slick';
+          var customStyle = '#' + carouselId + ' .slick-arrow{top:' + top + 'px;}';
 
-          if(this.slickArrowStyleEl){
-            this.slickArrowStyleEl.innerHTML = '.slick-arrow{top:' + top + 'px;}';
+          if(that.customStyleEl){
+            that.customStyleEl.innerHTML = customStyle;
           }else{
-            var arrowTopStyleSheet = Utils.createEl('style');
-            arrowTopStyleSheet.id = arrowTopStyleSheetId;
-            arrowTopStyleSheet.innerHTML = '.slick-arrow{top:' + top + 'px;}';
+            var customStyleSheet = Utils.createEl('style');
             
-            document.head.appendChild(arrowTopStyleSheet);
+            customStyleSheet.id = customStyleSheetId;
+            customStyleSheet.innerHTML = customStyle;
 
-            this.slickArrowStyleEl = arrowTopStyleSheet;
+            that.customStyleEl = customStyleSheet;
+            
+            document.head.appendChild(customStyleSheet);
           }
 
           Utils.addClass(that.el, 'arrows-ready');

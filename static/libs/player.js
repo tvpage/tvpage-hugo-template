@@ -213,19 +213,20 @@
   Player.prototype.getAssetById = function(id){
     var assets = this.assets;
     var assetsLength = assets.length;
-    var resp = {
-      i:null,
-      asset: null
-    };
+    var res;
 
-    for (var i = 0; i < assetsLength; i++) {
-      if (assets[i].assetId === id){
-        resp.index = i;
-        resp.asset = assets[i];
+    for(var i = 0; i < assetsLength; i++){
+      var asset = assets[i];
+
+      if (asset.assetId == id){
+        res = {
+          index: i,
+          asset: asset
+        };
       }
     }
 
-    return resp;
+    return res;
   };
 
   Player.prototype.onReady = function(e, pl) {
@@ -396,9 +397,15 @@
   };
   
   Player.prototype.addAssets = function(objs){
-    if (objs && objs.length) {
-      for (var i = 0; i < objs.length; i++) {
-        this.assets.push(this.buildAsset(objs[i]));
+    objs = objs || [];
+    
+    var objsLength = objs.length;
+
+    for(var i = 0; i < objsLength; i++){
+      var obj = objs[i];
+
+      if(!this.getAssetById(obj.id)){
+        this.assets.push(this.buildAsset(obj));
       }
     }
   };
