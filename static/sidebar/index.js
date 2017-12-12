@@ -1,16 +1,19 @@
 //we add the preconnect hints as soon as we can
 (function addHTMLHints(){
-  [
+  var domains = [
     config.api_base_url,
-    config.baseUrl,
-  ].forEach(function(href){
+    config.baseUrl
+  ];
+  var domainsLength = domains.length;
+
+  for (var i = 0; i < domainsLength; i++) {
     var link = document.createElement('link');
 
     link.rel = 'preconnect';
-    link.href = href;
+    link.href = domains[i];
 
     document.head.appendChild(link);
-  });
+  }
 })();
 
 //helpers
@@ -50,10 +53,15 @@ function cleanArray(a){
   return a.filter(Boolean);
 }
 
-function logSnapshot(msg) {
-  if(window.performance && 'undefined' !== typeof startTime){
-    console.log(msg, performance.now() - startTime);
-  }
+function isEvent(e){
+  return e && e.data && e.data.event;
+}
+
+function saveProfileLog(conf, m){
+  if(!window.performance || !conf)
+    return;
+
+  conf.profiling[m] = performance.now();
 }
 
 function tmpl(t,d){
@@ -107,62 +115,21 @@ function loadScript(options, cback){
   document.body.appendChild(script);
 }
 
-function isEvent(e){
-  return e && e.data && e.data.event;
-}
-
-function getEventName(e){
-  var eArr = e.data.event.split(':');
-  return eArr[0] === eventPrefix ? eArr[1] : '';
-}
-
-//here we start with the actual logic that will prepare the iframe(s) content and inject it
-//to the page.
-var debug = config.debug;
-var type = config.type;
-var css = config.css;
-var baseUrl = config.baseUrl;
-var libsPath = baseUrl + '/libs';
-var static = baseUrl + '/' + type;
-var dist = debug ? '/' : '/dist/';
-var eventPrefix = ('tvp_' + id).replace(/-/g, '_');
-var templates;
-var javascriptPath;
-var cssPath;
-var holder;
-var mobilePath;
-
-config.id = id;
-config.loginId = config.loginId || config.loginid;
-config.channelId = (config.channelId || config.channelid) || config.channel.id;
-config.events = {};
-config.events.prefix = eventPrefix;
-config.paths = {};
-config.paths.baseUrl = baseUrl;
-config.paths.static = static;
-config.paths.dist = dist;
-config.paths.javascript = static + dist + 'js';
-config.paths.css = static + dist + 'css';
-config.mobile = {};
-config.mobile.path = isMobile() ? 'mobile' : '';
-config.mobile.prefix = isMobile() ? '-mobile' : '';
-config.mobile.templates = config.templates.mobile;
-
-mobilePath = config.mobile.path;
-templates = isMobile() ? config.mobile.templates : config.templates;
-javascriptPath = config.paths.javascript;
-cssPath = config.paths.css;
-
-window.__TVPage__.config[id] = config;
-
 //builds the document html for an iframe.
 function getIframeHtml(o){
-  o.startTime = startTime;
-
-  var html = tmpl('<head><base target="_blank"/></head><body class="{className}"' +
-  'data-domain="{domain}" data-id="{id}" onload="startTime={startTime};' +
-  'var d=document,h=d.head,' +
-  'loadJavaScript = function(u){var s=d.createElement(\'script\');s.src=u;h.appendChild(s);},' +
+  var html = tmpl('<head>' +
+  '  <base target="_blank"/>'+
+  '  <link rel=\'dns-prefetch\' href=\'//youtube.com\' />' +
+  '  <link rel=\'dns-prefetch\' href=\'//googlevideo.com\' />' +
+  '  <link rel=\'dns-prefetch\' href=\'//fonts.gstatic.com\' />' +
+  '</head><body class="{className}" data-domain="{domain}" data-id="{id}" onload="'+
+  'var d=document,' +
+  'h=d.head,' +
+  'loadJavaScript = function(u){'+
+  '  var s=d.createElement(\'script\');' +
+  '  s.src=u;'+
+  '  h.appendChild(s);' +
+  '},' +
   'loadCSS = function(u,c){'+
   '  var l=d.createElement(\'link\');'+
   '  l.rel=\'stylesheet\';'+
@@ -185,8 +152,11 @@ function getIframeHtml(o){
   };
 
   html += load(o.js, 'JavaScript') + load(o.css, 'CSS');
-  html += '">';//closing the body tag
-  html += '<div id="bs-checker" class="invisible"></div>';//helper to check bs is loaded
+  
+  //closing the body tag
+  html += '">';
+
+  html += '<div id="bscheck" class="invisible"></div>';//helper to check bs is loaded
   
   if(o.style){
     html += '<style>' + o.style + '</style>';
@@ -200,9 +170,10 @@ function getIframeHtml(o){
 //we have a generic host css per widget type that we only include once.
 function getInitialHtml(){
   var html = "";
-  var styleId = 'tvp-' + type + '-host';
-  
+  var styleId = 'tvp-' + config.type + '-host';
+  var css = config.css;
   var hostStyles = isMobile() ? css.mobile.host : css.host;
+  var templates = isMobile() ? config.mobile.templates : config.templates;
 
   if(!getById(styleId)){
     html += '<style id="' + styleId + '">' + hostStyles + '</style>';
@@ -228,38 +199,45 @@ function getPlayerUrl(){
 //refer to https://jsperf.com/insertadjacenthtml-perf/3
 function widgetRender(){
   function render(){
-    var targetElement = getById(config.targetEl);
-    targetElement.insertAdjacentHTML('beforebegin',getInitialHtml());
-    remove(targetElement);
+    var targetEl = getById(config.targetEl);
+    targetEl.insertAdjacentHTML('beforebegin',getInitialHtml());
+    
+    remove(targetEl);
   
-    holder = getById(id + "-holder");
+    config.holder = getById(config.id + "-holder");
   
-    var iframe = holder.querySelector("iframe");
+    var debug = config.debug;
+    var baseUrl = config.baseUrl;
+    var jsPath = config.paths.javascript;
+    var templates = isMobile() ? config.mobile.templates : config.templates;
+    var libsPath = baseUrl + '/libs';
+    var iframe = config.holder.querySelector("iframe");
     var iframeDocument = iframe.contentWindow.document;
   
     iframeDocument.open().write(getIframeHtml({
-      id: id,
+      id: config.id,
       domain: baseUrl,
       context: config,
       html: templates.base,
       className: isMobile() ? "mobile" : "",
-      eventPrefix: eventPrefix,
       js: [
         '//a.tvpage.com/tvpa.min.js',
         debug ? libsPath + '/utils.js' : '',
         debug ? libsPath + '/analytics.js' : '',
         debug ? libsPath + '/grid.js' : '',
-        debug ? javascriptPath + '/index.js' : '',
-        debug ? "" : javascriptPath + '/scripts.min.js'
+        debug ? jsPath + '/index.js' : '',
+        debug ? "" : jsPath + '/scripts.min.js'
       ],
       css: [
         debug ? baseUrl + '/bootstrap/dist/css/bootstrap.css' : '',
-        debug ? cssPath + '/styles.css' : '',
-        debug ? '' : cssPath + '/styles.min.css'
+        debug ? config.paths.css + '/styles.css' : '',
+        debug ? '' : config.paths.css + '/styles.min.css'
       ]
     }));
   
     iframeDocument.close();
+    
+    saveProfileLog(config, 'widget_rendered');
   }
 
   //we will poll if the target element is not in the page immediately, this is required to cover
@@ -280,10 +258,6 @@ function widgetRender(){
     
         if(ready){
           render();
-          
-          if(debug){
-            logSnapshot('renders initial dom (iframe w/skeleton)');
-          }
         }else if(++targetElCheck < targetElCheckLimit){
           checkTargetEl()
         }else{
@@ -299,12 +273,12 @@ function onWidgetLoad(data){
   
   if(dataLength){
     config.channel.videos = data;
-    widgetRender();
-  }
 
-  if(debug){
-    logSnapshot('videos api returned: ' + dataLength + ' item(s) in: ')
+    widgetRender();
+    widgetModalRender();
   }
+  
+  saveProfileLog(config, 'data_returned');
 };
 
 //api calls/loading, is here were we call the most important api(s) and it's the start 
@@ -331,6 +305,80 @@ function widgetLoad(){
   }, onWidgetLoad);
 }
 
+//we use a destructive approach in the modal iframe, we always create one from scratch when
+//the user clicks an item
+var iframeModal;
+
+function onWidgetModalClose(e){
+  iframeModal.classList.remove('show');
+}
+
+function widgetModalRender(){
+  if(!document.body){
+    throw new Error("body is null?, place code after openning body tag");
+  }
+  
+  if(iframeModal){
+   return;
+  }
+
+  var templates = isMobile() ? config.mobile.templates : config.templates;
+  var modalTargetEl = createEl('div');
+  
+  modalTargetEl.id = config.id + '-modal-target';
+  
+  document.body.appendChild(modalTargetEl);
+  
+  modalTargetEl.insertAdjacentHTML('beforebegin', templates.modal.iframe);
+  
+  remove(modalTargetEl);
+  
+  iframeModal = getById('tvp-' + config.id + '-modal-iframe');
+
+  var iframeModalDocument = iframeModal.contentWindow.document;
+  var debug = config.debug;
+  var baseUrl = config.baseUrl;
+  var jsPath = config.paths.javascript;
+  var cssPath = config.paths.css
+  var mobilePath = config.mobile.path;
+  var libsPath = baseUrl + '/libs';
+  
+  iframeModalDocument.open().write(getIframeHtml({
+    id: config.id,
+    domain: baseUrl,
+    context: config,
+    style: 'body{background:none transparent}',
+    className: isMobile() ? "mobile" : "",
+    html: templates.modal.base,
+    js: [
+      '//www.youtube.com/iframe_api',
+    '//a.tvpage.com/tvpa.min.js',
+      '//imasdk.googleapis.com/js/sdkloader/ima3.js',
+      getPlayerUrl(),
+      debug ? libsPath + "/utils.js" : "",
+      debug ? libsPath + "/analytics.js" : "",
+      debug ? libsPath + "/player.js" : "",
+      debug ? libsPath + "/carousel.js" : "",
+      debug ? baseUrl + "/libs/rail.js" : "",
+      debug ? jsPath + "/vendor/jquery.js" : "",
+      debug && !isMobile() ? jsPath + "/vendor/perfect-scrollbar.min.js" : "",
+      debug ? jsPath + mobilePath + "/modal/index.js" : "",
+      debug ? "" : jsPath + mobilePath + "/modal/scripts.min.js"
+    ],
+    css: [
+      debug ? baseUrl + '/bootstrap/dist/css/bootstrap.css' : '',
+      debug && isMobile() ? baseUrl + "/slick/slick.css" : '',
+      isMobile() ? baseUrl + '/slick/mobile/custom.css' : '',
+      !isMobile() ? baseUrl + '/slick/custom.css' : '',
+      debug && !isMobile() ? cssPath + "/vendor/perfect-scrollbar.min.css" : "",
+      debug ? cssPath + mobilePath + "/modal/styles.css" : '',
+      debug ? "" : cssPath + mobilePath + "/modal/styles.min.css"
+    ]
+  }));
+
+  iframeModalDocument.close();
+}
+
 widgetLoad();
 
 //handle the widget events
@@ -339,7 +387,12 @@ window.addEventListener("message", function(e){
     return;
   }
 
-  var eventName = getEventName(e);
+  var eventName = '';
+  var eventArr = e.data.event.split(':');
+
+  if(eventArr && eventArr.length && eventArr[0] === config.events.prefix){
+    eventName = eventArr[1];
+  }
   
   if('widget_ready' === eventName){
     onWidgetReady(e);
@@ -361,119 +414,24 @@ window.addEventListener("message", function(e){
     onWidgetPlayerChange(e);
   }
 
-  if (__windowCallbackFunc__)
-    __windowCallbackFunc__(e);
+  if (config.__windowCallbackFunc__)
+    config.__windowCallbackFunc__(e);
 });
 
 //event handlers
 function onWidgetReady(e) {
-  holder.style.height = e.data.height + 'px';
+  config.holder.style.height = e.data.height + 'px';
 }
 
 function onWidgetResize(e) {
-  holder.style.height = e.data.height + 'px';
+  config.holder.style.height = e.data.height + 'px';
 }
 
 function onWidgetPlayerChange(e){
-  config.onPlayerChange(e.data.e, e.data.stateData);
-}
-
-//we use a destructive approach in the modal iframe, we always create one from scratch when
-//the user clicks an item
-var iframeModal;
-
-function onWidgetModalClose(e){
-  remove(iframeModal);
-
-  iframeModal = null;
-}
-
-function widgetModalRender(){
-  if(!document.body){
-    throw new Error("document body doesn't exists, try placing embed code after <body>");
-  }
-  
-  if(iframeModal){
-   return;
-  }
-
-  var modalTargetEl = createEl('div');
-  modalTargetEl.id = config.id + '-modal-target';
-  
-  document.body.appendChild(modalTargetEl);
-  
-  modalTargetEl.insertAdjacentHTML('beforebegin', templates.modal.iframe);
-  
-  remove(modalTargetEl);
-
-  iframeModal = getById('tvp-' + config.id + '-modal-iframe');
-  
-  var iframeModalDocument = iframeModal.contentWindow.document;
-  
-  iframeModalDocument.open().write(getIframeHtml({
-    id: id,
-    domain: baseUrl,
-    context: config,
-    eventPrefix: eventPrefix,
-    style: 'body{background:none transparent}',
-    className: isMobile() ? "mobile" : "",
-    html: templates.modal.base,
-    js: [
-      "//a.tvpage.com/tvpa.min.js",
-      '//imasdk.googleapis.com/js/sdkloader/ima3.js',
-      getPlayerUrl(),
-      debug ? libsPath + "/utils.js" : "",
-      debug ? libsPath + "/analytics.js" : "",
-      debug ? libsPath + "/player.js" : "",
-      debug ? libsPath + "/carousel.js" : "",
-
-      //this has to be an option
-      debug ? baseUrl + "/libs/rail.js" : "",
-
-      debug ? javascriptPath + "/vendor/jquery.js" : "",
-      debug && !isMobile() ? javascriptPath + "/vendor/perfect-scrollbar.min.js" : "",
-      debug ? javascriptPath + "/" + mobilePath + "/modal/index.js" : "",
-      debug ? "" : javascriptPath + "/" + mobilePath + "/modal/scripts.min.js"
-    ],
-    css: [
-      debug ? baseUrl + '/bootstrap/dist/css/bootstrap.css' : '',
-      debug && isMobile() ? baseUrl + "/slick/slick.css" : '',
-      isMobile() ? baseUrl + '/slick/mobile/custom.css' : '',
-      !isMobile() ? baseUrl + '/slick/custom.css' : '',
-      debug && !isMobile() ? cssPath + "/vendor/perfect-scrollbar.min.css" : "",
-      debug ? cssPath + "/" + mobilePath + "/modal/styles.css" : '',
-      debug ? "" : cssPath + "/" + mobilePath + "/modal/styles.min.css"
-    ]
-  }));
-
-  iframeModalDocument.close();
-}
-
-function onWidgetModalLoad(data){
-  var dataLength = !!data.length ? data.length : 0;
-  
-  if(dataLength){
-    widgetModalRender();
-  }
-}
-
-function widgetModalLoad(data){
-  onWidgetModalLoad(data);
+  if (typeof config.onPlayerChange == "function")
+    config.onPlayerChange(e.data.e, e.data.stateData);
 }
 
 function onWidgetModalOpen(e){
-  var videos = config.channel.videos;
-  var selected = null;
-  var clicked = e.data.clicked;
-
-  for (var i = 0; i < videos.length; i++)
-    if (videos[i].id === clicked)
-      selected = videos[i];
-
-  if(!selected)
-    return;
-
-  config.clicked = clicked;
-
-  widgetModalLoad(videos);
+  iframeModal.classList.add('show');
 }

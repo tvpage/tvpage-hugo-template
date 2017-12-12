@@ -10,8 +10,46 @@
   var templates = config.templates;
   var skeletonEl = document.getElementById('skeleton');
 
-  function initVideos(){
+  function sendResizeMessage() {
+    Utils.sendMessage({
+      event: eventPrefix + ':widget_resize',
+      height: Utils.getWidgetHeight()
+    });
+  }
 
+  //we check when critical css has loaded/parsed. At this step, we have data to
+  //update the skeleton. We wait until css has really executed in order to send
+  //the right measurements.
+  var cssLoadedCheck = 0;
+  var cssLoadedCheckLimit = 1000;
+
+  (function cssPoll(){
+    setTimeout(function(){
+      if(config.debug){
+        console.log('css loaded poll...'); 
+      }
+
+      var bsCheckEl = document.getElementById('bscheck');
+      var bsCheckElVisibility = getComputedStyle(bsCheckEl, null).getPropertyValue('visibility');
+
+      if('hidden' === bsCheckElVisibility){
+        var widgetTitleEl = document.getElementById('widget-title');
+        widgetTitleEl.innerHTML = config.title_text;
+        widgetTitleEl.classList.add('ready');
+
+        skeletonEl.style.visibility = 'visible';
+        skeletonEl.style.opacity = '1';
+
+        sendResizeMessage();
+        
+        config.profiling['skeleton_shown'] = Utils.now('parent')
+      }else if (++cssLoadedCheck < cssLoadedCheckLimit){
+        cssPoll()
+      }
+    }, 5);
+  })();
+
+  function initVideos(){
     function parseVideos(item){
       item.title = Utils.trimText(item.title, 25);
   
@@ -23,18 +61,18 @@
     }
 
     function onVideosGridLoad(data){
-      config.channel.videos = channelVideos.concat(data);
+      config.channel.videos = config.channel.videos.concat(data);
     }
 
     function onVideosGridClick(e){
       if(e && e.target){
-        var realTarget = Utils.getRealTargetByClass(e.target, 'video');
-
-        if(realTarget){
-          Utils.sendMessage({
-            event: eventPrefix + ':widget_modal_open',
-            clicked: Utils.attr(realTarget, 'data-id')
-          });
+        Utils.sendMessage({
+          event: eventPrefix + ':widget_modal_open',
+          clicked: Utils.attr(Utils.getRealTargetByClass(e.target, 'video'), 'data-id')
+        });
+        
+        config.profiling['modal_ready'] = {
+          start: Utils.now('parent')
         }
       }
     }
@@ -57,6 +95,7 @@
 
   function initAnalytics(){
     var analytics = new Analytics();
+    
     var analyticsConfig = {
       domain: location.hostname || '',
       logUrl: apiBaseUrl + '/__tvpa.gif',
@@ -88,62 +127,26 @@
           ready = false;
 
       if(ready){
-        if(Utils.isMobile){
-          Utils.addClass(body,'mobile');
-        }
-
         initAnalytics();
         initVideos();
 
-        //window will fire a resize event almost immediately, we don't want to handle it as the CSS is yet
-        //not ready
+        //since sidebar has no resizing scenarios (is all handled w/css), we still need to send the new size. We also
+        //ignore the 1st resize that is fired, as it has no relation with the initialization.
         var firstResize = true;
-
-        //since sidebar has no resizing scenarios (is all handled w/css), we still
-        //need to send the new size.
         window.addEventListener('resize',function(){
           if(firstResize){
             firstResize = false;
+            
             return;
           }
 
-          Utils.sendMessage({
-            event: eventPrefix + ':widget_resize',
-            height: Utils.getWidgetHeight() + 10
-          });
+          sendResizeMessage();
         });
 
       }else if(++depsCheck < depsCheckLimit){
         initSidebar()
       }
     },5);
-  })();
-
-  //we check when critical css has loaded/parsed. At this step, we have data to
-  //update the skeleton. We wait until css has really executed in order to send
-  //the right measurements.
-  var cssLoadedCheck = 0;
-  var cssLoadedCheckLimit = 1000;
-
-  (function sendFirstSize(){
-    setTimeout(function() {
-      console.log('css loaded poll...');
-
-      if('hidden' === Utils.getStyle(Utils.getById('bs-checker'), 'visibility')){
-        //add widget title
-        var widgetTitleEl = Utils.getById('widget-title');
-        widgetTitleEl.innerHTML = config.title_text;
-        Utils.addClass(widgetTitleEl, 'ready');
-
-        Utils.sendMessage({
-          event: eventPrefix + ':widget_resize',
-          height: Utils.getWidgetHeight() + 10
-        });
-
-      }else if(++cssLoadedCheck < cssLoadedCheckLimit){
-        sendFirstSize()
-      }
-    },10);
   })();
 
 }());

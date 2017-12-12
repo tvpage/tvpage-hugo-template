@@ -68,6 +68,7 @@ module.exports = function(grunt) {
               '../libs/analytics.js',
               '../libs/player.js',
               '../libs/carousel.js',
+              '../libs/rail.js',
               'js/vendor/perfect-scrollbar.min.js',
               'js/modal/index.js'
             ],
