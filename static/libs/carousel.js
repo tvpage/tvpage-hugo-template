@@ -1,6 +1,6 @@
 (function(){
   function Carousel(sel, options, globalConfig){
-    this.options = options || {};    
+    this.options = options || {};
     this.data = this.options.data || [];
     this.page = this.options.page || 0;
     this.endpoint = this.options.endpoint;
@@ -623,5 +623,4 @@
   };
 
   window.Carousel = Carousel;
-
 }())

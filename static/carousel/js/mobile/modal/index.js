@@ -4,6 +4,11 @@
     var config = window.parent.__TVPage__.config[id];
     var clickedVideo;
     var eventPrefix = config.events.prefix;
+    var modalResizeEvent = eventPrefix + ':widget_modal_resize';
+    var playerChangeEvent = eventPrefix + ':widget_player_change';
+    var modalCloseEvent = eventPrefix + ':widget_modal_close';
+    var modalOpenEvent = eventPrefix + ':widget_modal_open';
+    var modalInitializedEvent = eventPrefix + ':widget_modal_initialized';
     var player;
     var productsCarousel;
     var analytics;
@@ -20,13 +25,10 @@
     var cssLoadedCheckLimit = 1000;
   
     (function cssPoll() {
-      setTimeout(function() {
-        console.log('css loaded poll...');
+      setTimeout(function(){
+        var bsCheckEl = document.getElementById('bscheck');
   
-        var bsCheckerEl = document.getElementById('bscheck');
-        var bsCheckerElVisibility = getComputedStyle(bsCheckerEl, null).getPropertyValue('visibility');
-  
-        if ('hidden' === bsCheckerElVisibility) {
+        if ('hidden' === getComputedStyle(bsCheckEl, null).getPropertyValue('visibility')){
           skeletonEl.style.visibility = 'visible';
           skeletonEl.style.opacity = '1';
         } else if (++cssLoadedCheck < cssLoadedCheckLimit) {
@@ -35,38 +37,36 @@
       }, 50);
     })();
   
-    function pkTrack() {
-    analytics.track('pk', {
+    function pkTrack(){
+      analytics.track('pk', {
         vd: Utils.attr(this, 'data-vd'),
         ct: this.id.split('-').pop(),
         pg: config.channelId
       });
     }
   
-    function onPlayerResize(initial, size) {
+    function onPlayerResize() {
       Utils.sendMessage({
-        event: eventPrefix + ':widget_modal_resize'
+        event: modalResizeEvent
       });
     }
   
     function updateModalTitle(title) {
-      document.getElementById('modalElementTitle').innerHTML = title || '';
+      Utils.getById('modalTitle').innerHTML = title || '';
     }
   
     function onPlayerNext(nextVideo) {
-      if (!config.merchandise) {
-        return;
-      }
-  
       updateModalTitle(nextVideo.assetTitle);
-  
-      productsCarousel.endpoint = apiBaseUrl + '/videos/' + nextVideo.assetId + '/products';
-      productsCarousel.load('render');
+      
+      if(config.merchandise){
+        productsCarousel.endpoint = apiBaseUrl + '/videos/' + nextVideo.assetId + '/products';
+        productsCarousel.load('render');
+      }
     }
 
     function onPlayerChange(e, currentAsset){
       Utils.sendMessage({
-        event: eventPrefix + ':widget_player_change',
+        event: playerChangeEvent,
         e: e,
         stateData : currentAsset
       });
@@ -190,138 +190,116 @@
         productsCarousel.load('render');
       }
     }
+
+    function initModal(){
+      function onModalShow(){
+        if(player)
+          player.play(clickedVideo.id);
+      }
   
-    function loadLib(url, callback) {
-      $.ajax({
-        dataType: 'script',
-        cache: true,
-        url: url
-      }).done(callback);
+      function onModalShown(){
+        if(player){
+          player.resize();
+        }else{
+          initPlayer();
+        }
+  
+        if(productsCarousel){
+          productsCarousel.endpoint = apiBaseUrl + '/videos/' + clickedVideo.id + '/products';
+          productsCarousel.load('render');
+        }else{
+          initProducts();
+        }
+  
+        if(!analytics){
+          initAnalytics();
+        }
+  
+        Utils.profile(config, {
+          metric_type: 'modal_ready',
+          metric_value: Utils.now('parent') - config.profiling['modal_ready'].start
+        });
+      }
+  
+      function onModalHidden(){
+        if(player){
+          player.instance.stop();
+        }
+  
+        Utils.sendMessage({
+          event: modalCloseEvent
+        });
+      }
+  
+      modal = new Modal('modal', {
+        onShow: onModalShow,
+        onShown: onModalShown,
+        onHidden: onModalHidden
+      }, config);
+  
+      modal.initialize();
     }
   
-    var depsCheck = 0;
-    var deps = ['jQuery', 'Utils', 'Analytics', 'Carousel', 'Player'];
+    function onWidgetModalOpen(e){
+      var videos = config.channel.videos;
   
-    (function initModal() {
+      if(player){
+        player.addAssets(videos);
+      }
+  
+      clickedVideo = videos.filter(function(video){
+        return e.data.clicked == video.id;
+      }).pop();
+  
+      if(clickedVideo){
+        updateModalTitle(clickedVideo.title);
+        
+        modal.show();
+      }else{
+        throw new Error("video not found in data");
+      }
+    }
+  
+    var deps = ['jQuery', 'Utils', 'Analytics', 'Carousel', 'Modal', 'Player'];
+    var depsCheck = 0;
+    var depsCheckLimit = 1000;
+    var depsLength = deps.length;
+  
+    (function initialize() {
       setTimeout(function() {
         if(config.debug){
           console.log('deps poll...');
         }
   
-        var ready = true;
-        var missing;
-        
-        for (var i = 0; i < deps.length; i++) {
+        var ready = true,
+            missing;
+
+        for (var i = 0; i < depsLength; i++){
           var dep = deps[i];
-  
-          if ('undefined' === typeof window[dep]) {
+
+          if (undefined === window[dep]){
             ready = false;
-  
+
             missing = dep;
           }
         }
   
         if(ready){
-          function onBootstrapModalLoad(){
-            var $modalEl = $('#modal');
+          initModal();
+          
+          window.parent.addEventListener('message', function(e){
+            if(Utils.isEvent(e) && e.data.event === modalOpenEvent){
+              onWidgetModalOpen(e);
+            }
+          });
   
-            //we need to start the video playback as soon as the modal starts launching to clear the image
-            //from the previous video.
-            $modalEl.on('show.bs.modal', function(e){
-              if(player){
-                player.play(clickedVideo.id);
-              }
-            });
-  
-            $modalEl.on('shown.bs.modal', function(e){
-              if(player){
-                player.resize();
-              }else{
-                initPlayer();
-              }
-  
-              if(productsCarousel){
-                productsCarousel.endpoint = apiBaseUrl + '/videos/' + clickedVideo.id + '/products';
-                productsCarousel.load('render');
-              }else{
-                initProducts();
-              }
-              
-              if(!analytics){
-                initAnalytics();
-              }
-
-              Utils.profile(config, {
-                metric_type: 'modal_ready',
-                metric_value: Utils.now('parent') - config.profiling['modal_ready'].start
-              });
-            });
-  
-            $modalEl.on('hidden.bs.modal', function(e){
-              $(this).modal('dispose');
-              $(this).removeData('bs.modal');
-  
-              if(player){
-                player.instance.stop();
-              }
-  
-              Utils.sendMessage({
-                event: eventPrefix + ':widget_modal_close'
-              });
-            });
-  
-            $modalEl.modal('hide');
-  
-            window.parent.addEventListener('message', function(e){
-              if(!Utils.isEvent(e)){
-                return;
-              }
-              
-              var eventData = e.data;
-  
-              if((eventData.event === eventPrefix + ':widget_modal_open')){
-                var videos = config.channel.videos;
-
-                if(player){
-                  player.addAssets(videos);
-                }
-
-                clickedVideo = videos.filter(function(video){
-                  return e.data.clicked == video.id;
-                }).pop();
-  
-                if(clickedVideo){
-                  Utils.getById('modalTitle').innerHTML = clickedVideo.title;
-                  
-                  $modalEl.modal('show');
-                }else{
-                  throw new Error("video not found in data");
-                }
-              }
-            });
-  
-            Utils.sendMessage({
-              event: eventPrefix + ':widget_modal_initialized'
-            });
-          }
-  
-          function onBootstrapUtilLoad(){
-            $.ajax({
-              dataType: 'script',
-              cache: true,
-              url: baseUrl + '/bootstrap/js/modal.js'
-            }).done(onBootstrapModalLoad);  
-          }
-  
-          $.ajax({
-            dataType: 'script',
-            cache: true,
-            url: baseUrl + '/bootstrap/js/util.js'
-          }).done(onBootstrapUtilLoad);
-        } else if (++depsCheck < 200) {
-          initModal()
-        } else if(config.debug){
-          console.log("missing: ", missing);
+          Utils.sendMessage({
+            event: modalInitializedEvent
+          });
+        }else if (++depsCheck < depsCheckLimit){
+          initialize()
+        }else{
+          throw new Error("missing: " + missing);
         }
       }, 10);
     })();

@@ -17,21 +17,7 @@
 })();
 
 //helpers
-function isMobile() {
-  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-}
-
-function isObject(o) {
-  return "object" === typeof o;
-}
-
-function isFunction(o) {
-  return "function" === typeof o;
-}
-
-function hasKey(o, key) {
-  return o.hasOwnProperty(key);
-}
+var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
 function getById(id){
   return document.getElementById(id);
@@ -41,27 +27,19 @@ function createEl(t){
   return document.createElement(t);
 }
 
-function isUndefined(o){
-  return 'undefined' === typeof o;
-}
-
 function remove(el){
   el.parentNode.removeChild(el);
-}
-
-function cleanArray(a){
-  return a.filter(Boolean);
 }
 
 function isEvent(e){
   return e && e.data && e.data.event;
 }
 
-function saveProfileLog(conf, m){
-  if(!window.performance || !conf)
+function saveProfileLog(c, m){
+  if(!window.performance || !c)
     return;
 
-  conf.profiling[m] = performance.now();
+  c.profiling[m] = performance.now();
 }
 
 function tmpl(t,d){
@@ -71,24 +49,6 @@ function tmpl(t,d){
     for (var i = 0, l = keys.length; i < l; i++) v = v[keys[i]];
     return (typeof v !== "undefined" && v !== null) ? v : "";
   });
-}
-
-function addClass(obj, c) {
-  if (!obj || !c) return;
-  if ('string' === typeof obj) {
-    document.getElementById(obj).classList.add(c);
-  } else {
-    obj.classList.add(c);
-  }
-}
-
-function removeClass(obj, c) {
-  if (!obj || !c) return;
-  if ('string' === typeof obj) {
-    document.getElementById(obj).classList.remove(c);
-  } else {
-    obj.classList.remove(c);
-  }
 }
 
 function loadScript(options, cback){
@@ -106,7 +66,7 @@ function loadScript(options, cback){
   var cName = 'tvp_callback_' + Math.random().toString(36).substring(7);
 
   window[cName] = function(data){
-    if(isFunction(cback))
+    if('function' === typeof cback)
       cback(data);
   };
 
@@ -137,7 +97,7 @@ function getIframeHtml(o){
   '  h.appendChild(l);' +
   '};', o);
   var load = function(arr, type, cback){
-    arr = cleanArray(arr);
+    arr = arr.filter(Boolean);
     
     var ret = '';
     var arrLength = arr.length;
@@ -172,8 +132,8 @@ function getInitialHtml(){
   var html = "";
   var styleId = 'tvp-' + config.type + '-host';
   var css = config.css;
-  var hostStyles = isMobile() ? css.mobile.host : css.host;
-  var templates = isMobile() ? config.mobile.templates : config.templates;
+  var hostStyles = isMobile ? css.mobile.host : css.host;
+  var templates = isMobile ? config.mobile.templates : config.templates;
 
   if(!getById(styleId)){
     html += '<style id="' + styleId + '">' + hostStyles + '</style>';
@@ -209,7 +169,7 @@ function widgetRender(){
     var debug = config.debug;
     var baseUrl = config.baseUrl;
     var jsPath = config.paths.javascript;
-    var templates = isMobile() ? config.mobile.templates : config.templates;
+    var templates = isMobile ? config.mobile.templates : config.templates;
     var libsPath = baseUrl + '/libs';
     var cssPath = config.paths.css
     var iframe = config.holder.querySelector("iframe");
@@ -220,23 +180,23 @@ function widgetRender(){
       domain: baseUrl,
       context: config,
       html: templates.base,
-      className: isMobile() ? "mobile" : "",
+      className: isMobile ? 'mobile' : '',
       js: [
+        '//www.youtube.com/iframe_api',
         '//a.tvpage.com/tvpa.min.js',
         '//imasdk.googleapis.com/js/sdkloader/ima3.js',
-        getPlayerUrl(),
+        baseUrl + '/playerlib-debug.min.js',
+        //getPlayerUrl(),
         debug ? jsPath + '/vendor/jquery.js' : '',
         debug ? libsPath + '/utils.js' : '',
         debug ? libsPath + '/analytics.js' : '',
         debug ? libsPath + '/carousel.js' : '',
         debug ? libsPath + '/player.js' : '',
         debug ? jsPath + '/index.js' : '',
-  
-        debug ? "" : jsPath + "/scripts.min.js"
+        debug ? '' : jsPath + "/scripts.min.js"
       ],
       css: [
         debug ? baseUrl + '/bootstrap/dist/css/bootstrap.css' : '',
-        debug ? cssPath + '/base.css' : '',
         debug ? baseUrl + '/slick/slick.css' : '',
         isMobile ? baseUrl + '/slick/mobile/custom.css' : '',
         !isMobile ? baseUrl + '/slick/custom.css' : '',
@@ -260,9 +220,8 @@ function widgetRender(){
     
     (function checkTargetEl(){
       setTimeout(function() {
-        console.log('targetEl poll...');
-        
         var ready = true;
+
         if(!getById(config.targetEl))
           ready = false;
     
@@ -279,9 +238,7 @@ function widgetRender(){
 }
 
 function onWidgetLoad(data){
-  var dataLength = !!data.length ? data.length : 0;
-  
-  if(dataLength){
+  if(data && data.length){
     config.channel.videos = data;
 
     widgetRender();

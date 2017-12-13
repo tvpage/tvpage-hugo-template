@@ -26,14 +26,9 @@
 
   (function cssPoll(){
     setTimeout(function(){
-      if(config.debug){
-        console.log('css loaded poll...'); 
-      }
-
       var bsCheckEl = document.getElementById('bscheck');
-      var bsCheckElVisibility = getComputedStyle(bsCheckEl, null).getPropertyValue('visibility');
-
-      if('hidden' === bsCheckElVisibility){
+      
+      if ('hidden' === getComputedStyle(bsCheckEl, null).getPropertyValue('visibility')){
         var widgetTitleEl = document.getElementById('widget-title');
         widgetTitleEl.innerHTML = config.title_text;
         widgetTitleEl.classList.add('ready');
@@ -132,8 +127,9 @@
 
   function initAnalytics() {
     var analytics = new Analytics();
+    
     var analyticsConfig = {
-      domain: location.hostname || '',
+      domain: location.hostname,
       logUrl: apiBaseUrl + '/__tvpa.gif',
       li: config.loginId
     };

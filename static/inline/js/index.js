@@ -19,7 +19,6 @@
   var channelVideos = config.channel.videos;
   var templates = config.templates;
   var templatesMobile = templates.mobile;
-  var skeleton = true;
   var skeletonEl = document.getElementById('skeleton');
   var player;
   var analytics;
@@ -32,7 +31,7 @@
   var isFirstVideoPlay = true;
   var isFirstPlayButtonClick = true;
 
-  function sendResizeMessage() {
+  function sendResizeMessage(){
     Utils.sendMessage({
       event: eventPrefix + ':widget_resize',
       height: Utils.getWidgetHeight()

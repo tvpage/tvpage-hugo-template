@@ -302,7 +302,8 @@
       advertising: this.advertising,
       preload: this.getOption('preload'),
       poster: this.getOption('poster'),
-      overlay: this.getOption('overlay')
+      overlay: this.getOption('overlay'),
+      ytOverlayColor: '#efefef'
     });
   }
   

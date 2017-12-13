@@ -1,36 +1,23 @@
-var body = document.body;
-var userAgent = navigator.userAgent;
-var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
-var iOS = /iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(userAgent) && !window.MSStream;
-var initialHtml = '<div id="{id}-holder" class="tvp-{type}-holder">' +
-'<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe>' +
-'</div>';
-var iframeHtmlStart = '<head><base target="_blank"/></head><body class="{className}"' +
-'data-domain="{domain}" data-id="{id}" onload="startTime={startTime};' +
-'var d=document,h=d.head,' +
-'loadJavaScript = function(u){var s=d.createElement(\'script\');s.src=u;h.appendChild(s);},' +
-'loadCSS = function(u,c){'+
-'  var l=d.createElement(\'link\');'+
-'  l.rel=\'stylesheet\';'+
-'  l.href=u;'+
-'  if(c && \'function\' === typeof c){'+
-'   l.onload=c;'+
-'  }'+
-'  h.appendChild(l);' +
-'};';
+//we add the preconnect hints as soon as we can
+(function addHTMLHints(){
+  var domains = [
+    config.api_base_url,
+    config.baseUrl
+  ];
+  var domainsLength = domains.length;
+
+  for (var i = 0; i < domainsLength; i++) {
+    var link = document.createElement('link');
+
+    link.rel = 'preconnect';
+    link.href = domains[i];
+
+    document.head.appendChild(link);
+  }
+})();
 
 //helpers
-function isObject(o) {
-  return "object" === typeof o;
-}
-
-function isFunction(o) {
-  return "function" === typeof o;
-}
-
-function hasKey(o, key) {
-  return o.hasOwnProperty(key);
-}
+var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
 function getById(id){
   return document.getElementById(id);
@@ -40,6 +27,21 @@ function createEl(t){
   return document.createElement(t);
 }
 
+function remove(el){
+  el.parentNode.removeChild(el);
+}
+
+function isEvent(e){
+  return e && e.data && e.data.event;
+}
+
+function saveProfileLog(c, m){
+  if(!window.performance || !c)
+    return;
+
+  c.profiling[m] = performance.now();
+}
+
 function tmpl(t,d){
   return t.replace(/\{([\w\.]*)\}/g, function(str, key) {
     var keys = key.split("."),
@@ -47,36 +49,6 @@ function tmpl(t,d){
     for (var i = 0, l = keys.length; i < l; i++) v = v[keys[i]];
     return (typeof v !== "undefined" && v !== null) ? v : "";
   });
-}
-
-function isUndefined(o){
-  return 'undefined' === typeof o;
-}
-
-function addClass(obj, c) {
-  if (!obj || !c) return;
-  if ('string' === typeof obj) {
-    document.getElementById(obj).classList.add(c);
-  } else {
-    obj.classList.add(c);
-  }
-}
-
-function removeClass(obj, c) {
-  if (!obj || !c) return;
-  if ('string' === typeof obj) {
-    document.getElementById(obj).classList.remove(c);
-  } else {
-    obj.classList.remove(c);
-  }
-}
-
-function remove(el){
-  el.parentNode.removeChild(el);
-}
-
-function cleanArray(a){
-  return a.filter(Boolean);
 }
 
 function loadScript(options, cback){
@@ -94,126 +66,85 @@ function loadScript(options, cback){
   var cName = 'tvp_callback_' + Math.random().toString(36).substring(7);
 
   window[cName] = function(data){
-    if(isFunction(cback))
+    if('function' === typeof cback)
       cback(data);
   };
 
   script.src = src + '&callback=' + cName;
 
-  body.appendChild(script);
+  document.body.appendChild(script);
 }
 
-function isEvent(e){
-  return e && e.data && e.data.event;
-}
-
-function getEventType(e){
-  var eArr = e.data.event.split(':');
-  return eArr[0] === eventPrefix ? eArr[1] : '';
-}
-
-var __windowCallbackFunc__ = null,
-    onChange = config.onChange;
-
-if(isFunction(onChange)){
-  __windowCallbackFunc__ = onChange;
-  delete config.onChange;
-}
-
-//add preconnect hint
-var preConnectLink = createEl('link');
-preConnectLink.rel = 'preconnect';
-preConnectLink.href = config.api_base_url;
-document.head.appendChild(preConnectLink);
-
-//here we start with the actual logic that will prepare the iframe(s) content and inject it
-//to the page.
-var debug = config.debug;
-var type = config.type;
-var css = config.css;
-var baseUrl = config.baseUrl;
-var static = baseUrl + '/' + type;
-var dist = debug ? '/' : '/dist/';
-var eventPrefix = ('tvp_' + id).replace(/-/g, '_');
-var templates;
-var javascriptPath;
-var cssPath;
-var holder;
-var mobilePath;
-
-config.id = id;
-config.loginId = config.loginId || config.loginid;
-config.channel = config.channel || {};
-config.channelId = (config.channelId || config.channelid) || config.channel.id;
-config.events = {};
-config.events.prefix = eventPrefix;
-config.paths = {};
-config.paths.baseUrl = baseUrl;
-config.paths.static = static;
-config.paths.dist = dist;
-config.paths.javascript = static + dist + 'js';
-config.paths.css = static + dist + 'css';
-config.mobile = {};
-config.mobile.path = isMobile ? 'mobile' : '';
-config.mobile.prefix = isMobile ? '-mobile' : '';
-config.mobile.templates = config.templates.mobile;
-
-mobilePath = config.mobile.path;
-templates = isMobile ? config.mobile.templates : config.templates;
-javascriptPath = config.paths.javascript;
-cssPath = config.paths.css;
-
-window.__TVPage__.config[id] = config;
-
-//builds the document html for an iframe
+//builds the document html for an iframe.
 function getIframeHtml(o){
-  o.startTime = startTime;
+  var html = tmpl('<head>' +
+  '  <base target="_blank"/>'+
+  '  <link rel=\'dns-prefetch\' href=\'//youtube.com\' />' +
+  '  <link rel=\'dns-prefetch\' href=\'//googlevideo.com\' />' +
+  '  <link rel=\'dns-prefetch\' href=\'//fonts.gstatic.com\' />' +
+  '</head><body class="{className}" data-domain="{domain}" data-id="{id}" onload="'+
+  'var d=document,' +
+  'h=d.head,' +
+  'loadJavaScript = function(u){'+
+  '  var s=d.createElement(\'script\');' +
+  '  s.src=u;'+
+  '  h.appendChild(s);' +
+  '},' +
+  'loadCSS = function(u,c){'+
+  '  var l=d.createElement(\'link\');'+
+  '  l.rel=\'stylesheet\';'+
+  '  l.href=u;'+
+  '  h.appendChild(l);' +
+  '};', o);
+  var load = function(arr, type, cback){
+    arr = arr.filter(Boolean);
+    
+    var ret = '';
+    var arrLength = arr.length;
 
-  var html = tmpl(iframeHtmlStart, o),
-      load = function(arr, type, cback){
-        arr = cleanArray(arr);
-        
-        var arrLength = arr.length,
-            l = '';
+    for (var i = 0; i < arrLength; i++){
+      var last = arrLength == i + 1;
 
-        for (var i = 0; i < arrLength; i++){
-          var last = arrLength == i + 1;
-          l += 'load' + type + '(\'' + arr[i] + '\'' + (last && cback ? (',' + cback) : '') + ');';
-        }
+      ret += 'load' + type + '(\'' + arr[i] + '\'' + (last && cback ? (',' + cback) : '') + ');';
+    }
 
-        return l;
-      };
+    return ret;
+  };
 
   html += load(o.js, 'JavaScript') + load(o.css, 'CSS');
+  
+  //closing the body tag
+  html += '">';
 
-  html += '">';//closing the body tag
-  html += '<style>' + (o.style || '') + '</style>';
+  html += '<div id="bscheck" class="invisible"></div>';//helper to check bs is loaded
+  
+  if(o.style){
+    html += '<style>' + o.style + '</style>';
+  }
+  
   html += tmpl((o.html || '').trim(), o.context);
 
   return html;
 };
 
 //we have a generic host css per widget type that we only include once.
-function getInitialHTML(){
+function getInitialHtml(){
   var html = "";
-  var styleId = 'tvp-' + type + '-host';
-  
+  var styleId = 'tvp-' + config.type + '-host';
+  var css = config.css;
   var hostStyles = isMobile ? css.mobile.host : css.host;
+  var templates = isMobile ? config.mobile.templates : config.templates;
 
-  if (!getById(styleId))
+  if(!getById(styleId)){
     html += '<style id="' + styleId + '">' + hostStyles + '</style>';
-  
-  var hostCustomStyles = isMobile ? css.mobile['host-custom'] : css['host-custom'];
-  
-  if(!isUndefined(hostCustomStyles))
-    html += '<style>' + hostCustomStyles + '</style>';
+  }
 
-  html += tmpl(initialHtml, config);
+  html += tmpl('<div id="{id}-holder" class="tvp-{type}-holder">' + templates.iframe + '</div>', config);
 
   return html;
 }
 
-//gets the player url
+//build the player url
 function getPlayerUrl(){
   var url = "https://cdnjs.tvpage.com/tvplayer/tvp-" + config.player_version + ".min.js";
   
@@ -224,68 +155,95 @@ function getPlayerUrl(){
   return url;
 }
 
-//Here's the first HTML write we do to the host page, this is the fastest way to do it
+//here's the first HTML write we do to the host page, this is the fastest way to do it
 //refer to https://jsperf.com/insertadjacenthtml-perf/3
 function widgetRender(){
-  var targetElement = getById(config.targetEl);
-  targetElement.insertAdjacentHTML('beforebegin', getInitialHTML());
-
-  remove(targetElement);
-
-  holder = getById(id + "-holder");
-
-  var iframe = holder.querySelector("iframe");
-  var iframeDocument = iframe.contentWindow.document;
-  var libsPath = baseUrl + '/libs';
-
-  iframeDocument.open().write(getIframeHtml({
-    id: id,
-    domain: baseUrl,
-    context: config,
-    html: templates.base,
-    style: isMobile ? css.mobile['host-custom'] : css['host-custom'],
-    className: "tvp-solo-cta-iframe-body",
-    eventPrefix: eventPrefix,
-    js: [
-      '//a.tvpage.com/tvpa.min.js',
-      debug ? libsPath + '/analytics.js' : '',
-      debug ? libsPath + '/utils.js' : '',
-      debug ? javascriptPath + '/index.js' : '',
-      debug ? "" : javascriptPath + '/scripts.min.js'
-    ],
-    css: [
-      debug ? cssPath + '/styles.css' : '',
-      debug ? '' : cssPath + '/styles.min.css'
-    ]
-  }));
-
-  iframeDocument.close();
+  function render(){
+    var targetEl = getById(config.targetEl);
+    targetEl.insertAdjacentHTML('beforebegin',getInitialHtml());
+    
+    remove(targetEl);
   
-  if(debug){
-    console.log('renders initial dom (iframe w/skeleton)', performance.now() - startTime);
+    config.holder = getById(config.id + "-holder");
+  
+    var debug = config.debug;
+    var baseUrl = config.baseUrl;
+    var jsPath = config.paths.javascript;
+    var cssPath = config.paths.css
+    var templates = isMobile ? config.mobile.templates : config.templates;
+    var libsPath = baseUrl + '/libs';
+    var iframe = config.holder.querySelector("iframe");
+    var iframeDocument = iframe.contentWindow.document;
+  
+    iframeDocument.open().write(getIframeHtml({
+      id: config.id,
+      domain: baseUrl,
+      context: config,
+      html: templates.base,
+      className: isMobile ? "mobile" : "",
+      js: [
+        '//a.tvpage.com/tvpa.min.js',
+        debug ? libsPath + '/analytics.js' : '',
+        debug ? libsPath + '/utils.js' : '',
+        debug ? jsPath + '/index.js' : '',
+        debug ? '' : jsPath + '/scripts.min.js'
+      ],
+      css: [
+        debug ? baseUrl + '/bootstrap/dist/css/bootstrap.css' : '',
+        debug ? cssPath + '/styles.css' : '',
+        debug ? '' : cssPath + '/styles.min.css'
+      ]
+    }));
+  
+    iframeDocument.close();
+    
+    saveProfileLog(config, 'widget_rendered');
+  }
+
+  //we will poll if the target element is not in the page immediately, this is required to cover
+  //scenarios where customer add this element lazily.
+  if(getById(config.targetEl)){
+    render();
+  }else{
+    var targetElCheck = 0;
+    var targetElCheckLimit = 1000;
+    
+    (function checkTargetEl(){
+      setTimeout(function() {
+        console.log('targetEl poll...');
+        
+        var ready = true;
+        if(!getById(config.targetEl))
+          ready = false;
+    
+        if(ready){
+          render();
+        }else if(++targetElCheck < targetElCheckLimit){
+          checkTargetEl()
+        }else{
+          throw new Error("targetEl doesn't exist on page");
+        }
+      },5);
+    })();
   }
 }
 
 function onWidgetLoad(data){
-  if(debug){
-    console.log('videos api call completed', performance.now() - startTime);
-  }
-
-  //We then add the data to the tvp global and then we fire the event that will start
-  //things in the widget side.
-  if(data && data.length){
+  var dataLength = !!data.length ? data.length : 0;
+  
+  if(dataLength){
     config.channel.videos = data;
+
     widgetRender();
-  }else if(debug){
-    console.log('videos api call returned 0 videos', performance.now() - startTime);   
+    widgetModalRender();
   }
+  
+  saveProfileLog(config, 'data_returned');
 };
 
 //api calls/loading, is here were we call the most important api(s) and it's the start 
 //of everything.
 function widgetLoad(){
-
-  //API calls/loading, is here were we call the most important api(s)
   var videosLoadParams = {
     p: 0,
     n: config.items_per_page,
@@ -301,11 +259,85 @@ function widgetLoad(){
       videosLoadParams[channelParam] = channelParams[channelParam];
   }
 
-  //the videos call
   loadScript({
     base: config.api_base_url + '/channels/' + config.channelId + '/videos',
     params: videosLoadParams
-  },onWidgetLoad);
+  }, onWidgetLoad);
+}
+
+//we use a destructive approach in the modal iframe, we always create one from scratch when
+//the user clicks an item
+var iframeModal;
+
+function onWidgetModalClose(e){
+  iframeModal.classList.remove('show');
+}
+
+function widgetModalRender(){
+  if(!document.body){
+    throw new Error("body is null?, place code after openning body tag");
+  }
+  
+  if(iframeModal){
+   return;
+  }
+
+  var templates = isMobile ? config.mobile.templates : config.templates;
+  var modalTargetEl = createEl('div');
+  
+  modalTargetEl.id = config.id + '-modal-target';
+  
+  document.body.appendChild(modalTargetEl);
+  
+  modalTargetEl.insertAdjacentHTML('beforebegin', templates.modal.iframe);
+  
+  remove(modalTargetEl);
+  
+  iframeModal = getById('tvp-' + config.id + '-modal-iframe');
+
+  var iframeModalDocument = iframeModal.contentWindow.document;
+  var debug = config.debug;
+  var baseUrl = config.baseUrl;
+  var jsPath = config.paths.javascript;
+  var cssPath = config.paths.css
+  var mobilePath = config.mobile.path;
+  var libsPath = baseUrl + '/libs';
+  
+  iframeModalDocument.open().write(getIframeHtml({
+    id: config.id,
+    domain: baseUrl,
+    context: config,
+    style: 'body{background:none transparent}',
+    className: isMobile ? "mobile" : "",
+    html: templates.modal.base,
+    js: [
+      '//www.youtube.com/iframe_api',
+      '//a.tvpage.com/tvpa.min.js',
+      '//imasdk.googleapis.com/js/sdkloader/ima3.js',
+      getPlayerUrl(),
+      debug ? libsPath + "/utils.js" : "",
+      debug ? libsPath + "/analytics.js" : "",
+      debug ? libsPath + "/player.js" : "",
+      debug ? libsPath + "/carousel.js" : "",
+      debug ? baseUrl + "/libs/rail.js" : "",
+      debug ? baseUrl + "/libs/modal.js" : "",
+      debug ? jsPath + "/vendor/jquery.js" : "",
+      debug && !isMobile ? jsPath + "/vendor/perfect-scrollbar.min.js" : "",
+      debug ? jsPath + mobilePath + "/modal/index.js" : "",
+      debug ? "" : jsPath + mobilePath + "/modal/scripts.min.js"
+    ],
+    css: [
+      debug ? baseUrl + '/bootstrap/dist/css/bootstrap.css' : '',
+      debug && isMobile ? baseUrl + "/slick/slick.css" : '',
+      isMobile ? baseUrl + '/slick/mobile/custom.css' : '',
+      !isMobile ? baseUrl + '/slick/custom.css' : '',
+      debug && !isMobile ? cssPath + "/vendor/perfect-scrollbar.min.css" : "",
+      debug ? cssPath + mobilePath + "/modal/styles.css" : '',
+      debug ? "" : cssPath + mobilePath + "/modal/styles.min.css"
+    ]
+  }));
+
+  iframeModalDocument.close();
 }
 
 widgetLoad();
@@ -316,260 +348,51 @@ window.addEventListener("message", function(e){
     return;
   }
 
-  var eventType = getEventType(e);
+  var eventName = '';
+  var eventArr = e.data.event.split(':');
 
-  if('widget_ready' || 'widget_resize' === eventType){
-    widgetResize(e);
+  if(eventArr && eventArr.length && eventArr[0] === config.events.prefix){
+    eventName = eventArr[1];
+  }
+  
+  if('widget_ready' === eventName){
+    onWidgetReady(e);
   }
 
-  if('widget_click' === eventType){
-    onWidgetClick(e);
+  if('widget_resize' === eventName){
+    onWidgetResize(e);
   }
 
-  if('widget_modal_no_products' === eventType){
-    onWidgetModalNoProducts(e);
+  if('widget_modal_open' === eventName){
+    onWidgetModalOpen(e);
   }
 
-  if('widget_modal_products' === eventType){
-    onWidgetModalProducts(e); 
+  if('widget_modal_close' === eventName){
+    onWidgetModalClose(e);
   }
 
-  //normalize this to form part of the std
-  if('widget_modal_initialized' === eventType){
-    onWidgetModalInitialized(e);
-  }
-
-  if('widget_modal_resize' === eventType){
-    onWidgetModalResize(e);
-  }
-
-  //? how to order this?
-  if('widget_player_change' === eventType){
+  if('widget_player_change' === eventName){
     onWidgetPlayerChange(e);
   }
 
-  //listen to the onstatechange instead and check for video ended (this shall pass the video)
-  if('player_next' === eventType){
-    handlePlayerNext(e);
-  }
-
-  if (__windowCallbackFunc__)
-    __windowCallbackFunc__(e);
+  if (config.__windowCallbackFunc__)
+    config.__windowCallbackFunc__(e);
 });
 
 //event handlers
+function onWidgetReady(e) {
+  config.holder.style.height = e.data.height + 'px';
+}
 
-function widgetResize(e) {
-  holder.style.height = e.data.height + 'px';
+function onWidgetResize(e) {
+  config.holder.style.height = e.data.height + 'px';
 }
 
 function onWidgetPlayerChange(e){
-  config.onPlayerChange(e.data.e, e.data.stateData);
+  if (typeof config.onPlayerChange == "function")
+    config.onPlayerChange(e.data.e, e.data.stateData);
 }
 
-var modalInitialized = false;
-var iframeModalHolder;
-var iframeModal;
-var iframeModalDocument;
-var modal;
-
-function removeBanner() {
-  var banner = modal.querySelector('.tvp-no-products-banner');
-  if (banner){
-    banner.parentNode.removeChild(banner);
-  }
-}
-
-function closeModal() {
-  addClass(modal, 'tvp-hidden');
-  addClass('tvp-modal-overlay-' + id, 'tvp-hidden');
-
-  removeBanner();
-  removeClass(iframeModalHolder, 'products');
-  removeClass(iframeModalHolder, 'no-products');
-  removeClass(modal.querySelector('.tvp-products-headline'), 'active');
-
-  iframeModal.parentNode.removeChild(iframeModal);
-
-  if (config.fix_page_scroll)
-    removeClass(body, 'tvp-modal-open');
-
-  window.postMessage({
-    event: eventPrefix + ':modal_close'
-  }, '*');
-}
-
-function closeModalFromOverlay(e){
-  if (e.target === modal || !modal.contains(e.target)) {
-    closeModal();
-  }
-}
-
-function onWidgetModalResize(e){
-  iframeModal.style.height = e.data.height;
-}
-
-function onWidgetClick(e) {
-  if(!modalInitialized){
-    modalInitialized = true;
-
-    //external render
-    var modalContainer = createEl('div');
-    modalContainer.innerHTML = templates.modal.base;
-    body.appendChild(modalContainer);
-
-    iframeModalHolder = getById('tvp-modal-iframe-holder-' + id);
-    iframeModal = null;
-    iframeModalDocument = null;
-    modal = getById("tvp-modal-" + id);
-
-    addClass(modal, isMobile ? "mobile" : "desktop");
-
-    if (config.modal_title_position.trim().length && "bottom" === config.modal_title_position) {
-      var modalTitleEl = modal.querySelector("#tvp-modal-title-" + id);
-      addClass(modalTitleEl,"bottom")
-      modal.querySelector(".tvp-modal-body").appendChild(modalTitleEl);
-    }
-
-    function closeModal() {
-      addClass(modal, 'tvp-hidden');
-      addClass('tvp-modal-overlay-' + id, 'tvp-hidden');
-
-      removeClass(iframeModalHolder, 'products');
-      removeClass(iframeModalHolder, 'no-products');
-      removeClass(modal.querySelector('.tvp-products-headline'), 'active');
-
-      remove(iframeModal);
-
-      if (config.fix_page_scroll)
-        removeClass(body, 'tvp-modal-open');
-
-      window.postMessage({
-        event: eventPrefix + ':modal_close'
-      }, '*');
-    };
-
-    getById("tvp-modal-close-" + id).addEventListener('click', closeModal, false);
-
-    modal.addEventListener('click', function(e) {
-      if (e.target === modal || !modal.contains(e.target)) {
-        closeModal();
-      }
-    }, false);
-  }
-
-  //modal initialization
-  var videos = config.channel.videos;
-  var selected = null;
-  var clicked = e.data.clicked;
-
-  for (var i = 0; i < videos.length; i++)
-    if (videos[i].id === clicked)
-      selected = videos[i];
-
-  if(!selected)
-    return;
-
-  config.clicked = clicked;
-
-  modal.querySelector('.tvp-modal-title').innerHTML = selected.title || "";
-
-  removeClass(modal, 'tvp-hidden');
-  removeClass('tvp-modal-overlay-' + id, 'tvp-hidden');
-  
-  //render the iframe contents
-  iframeModalHolder.innerHTML = templates.modal.iframe;
-  iframeModal = iframeModalHolder.querySelector('.tvp-iframe-modal');
-  iframeModalDocument = iframeModal.contentWindow.document;
-  iframeModalDocument.open().write(getIframeHtml({
-    id: id,
-    domain: baseUrl,
-    context: config,
-    eventPrefix: eventPrefix,
-    style: isMobile ? css.mobile.modal.content : css.modal.content,
-    className: isMobile ? "mobile" : "",
-    html: (isMobile ? templates.modal.body : templates.modal.body),
-    js: [
-      "//a.tvpage.com/tvpa.min.js",
-      '//imasdk.googleapis.com/js/sdkloader/ima3.js',
-      getPlayerUrl(),
-      debug ? baseUrl + "/libs/utils.js" : "",
-      debug ? baseUrl + "/libs/analytics.js" : "",
-      debug ? baseUrl + "/libs/player.js" : "",
-      debug && isMobile ? "/libs/carousel.js" : "",
-      debug && isMobile ? javascriptPath + "/vendor/jquery.js" : "",
-      debug ? javascriptPath + "/" + mobilePath + "/modal/index.js" : "",
-      debug && !isMobile ? javascriptPath + "/vendor/perfect-scrollbar.min.js" : "",
-      debug ? "" : javascriptPath  + "/" +  mobilePath + "/modal/scripts.min.js"
-    ],
-    css: [
-      debug ? cssPath + "/" + mobilePath + "/modal/styles.css" : "",
-      debug && !isMobile ? cssPath + "/vendor/perfect-scrollbar.min.css" : "",
-      debug ? baseUrl + '/bootstrap/dist/css/bootstrap.css' : '',
-      debug ? "" : cssPath + "/" + mobilePath + "/modal/styles.min.css",
-      debug ? baseUrl + '/slick/slick.css' : '',
-      isMobile ? baseUrl + '/slick/mobile/custom.css' : '',
-      !isMobile ? baseUrl + '/slick/custom.css' : ''
-    ]
-  }));
-  iframeModalDocument.close();
-  
-  if (config.fix_page_scroll)
-    addClass(body, 'tvp-modal-open');
-}
-
-function onWidgetModalInitialized(e) {
-  iframeModal.style.height = e.data.height;
-  var onOrientationChange = function() {
-    if (iOS && iframeModal && iframeModal.contentWindow) {
-      var width = iframeModal.parentNode.offsetWidth;
-      iframeModal.contentWindow.window.postMessage({
-        event: eventPrefix + ':external_resize',
-        size: [width, Math.floor(width * (9 / 16))]
-      }, '*');
-    }
-  };
-  
-  var orientationChangeEvent = 'onorientationchange' in window ? 'orientationchange' : 'resize';
-  
-  window.removeEventListener(orientationChangeEvent, onOrientationChange, false);
-  window.addEventListener(orientationChangeEvent, onOrientationChange, false);
-}
-
-function handlePlayerNext(e) {
-  getById('tvp-modal-title-' + id).innerHTML = e.data.next.assetTitle || "";
-}
-
-function onWidgetModalNoProducts(e) {
-  removeClass(iframeModalHolder, 'products');
-  addClass(iframeModalHolder, 'no-products');
-
-  if(isMobile || !config.products_headline_display)
-    return;
-  
-  var headlineEl = modal.querySelector('.tvp-products-headline');
-  if (headlineEl) {
-    remove(headlineEl);
-  }
-}
-
-function onWidgetModalProducts(e){
-  removeClass(iframeModalHolder, 'no-products');
-  addClass(iframeModalHolder, 'products');
-
-  if (isMobile || modal.querySelector('.tvp-products-headline') || !config.products_headline_display)
-    return;
-
-  var headlineEl = createEl('div');
-  headlineEl.className = 'tvp-products-headline';
-  headlineEl.innerHTML = config.products_headline_text;
-  headlineEl.addEventListener('click',function(){
-    if (this.classList.contains('active')) {
-      removeClass(this,'active')
-    } else {
-      addClass(this,'active')
-    }
-  });
-
-  modal.querySelector('.tvp-modal-header').appendChild(headlineEl);
+function onWidgetModalOpen(e){
+  iframeModal.classList.add('show');
 }
