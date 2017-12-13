@@ -70,6 +70,7 @@ module.exports = function(grunt) {
               '../libs/analytics.js',
               '../libs/player.js',
               '../libs/carousel.js',
+              '../libs/modal.js',
               '../libs/rail.js',
               'js/vendor/perfect-scrollbar.min.js',
               'js/modal/index.js'
@@ -80,6 +81,7 @@ module.exports = function(grunt) {
               '../libs/analytics.js',
               '../libs/player.js',
               '../libs/carousel.js',
+              '../libs/modal.js',
               'js/mobile/modal/index.js'
             ]
           }
