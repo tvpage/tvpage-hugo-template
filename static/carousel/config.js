@@ -41,6 +41,9 @@
   config.channelId = config.channelId || config.channelid || config.channel.id;
   config.profiling = config.profiling || {};
 
+  if(window.performance)
+    config.profiling['script_loaded'] = performance.now();
+
   config.events = {
     prefix: prefix
   };
