@@ -5,6 +5,17 @@
     '<link rel="dns-prefetch" href="//youtube.com" />' +
     '<link rel="dns-prefetch" href="//googlevideo.com" />' +
     '<link rel="dns-prefetch" href="//fonts.gstatic.com" />' +
+    '<script src="{{ "/libs/utils.js" | relURL }}"></script>' +
+    '<style>' +
+      '.skeleton{' +
+        'visibility: hidden;' +
+        'opacity: 0;' +
+      '}' +
+      '.skeleton.ready{' +
+        'visibility: visible;' +
+        'opacity: 1;' +
+      '}' +
+    '</style>' +
   '</head>' +
   '<body class="{className}" data-domain="{domain}" data-id="{id}" onload="{onload}">',
   base: {{- (partial (printf "%s/templates/base.html" .Type) .) -}},

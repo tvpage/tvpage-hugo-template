@@ -84,19 +84,7 @@
       config.profiling['widget_ready'] = Utils.now('parent');
 
       //send the profile log of the collected metrics
-      var profiling = config.profiling;
-      
-      for (var key in profiling) {
-        var profile = profiling[key];
-
-        if(Utils.isObject(profile))
-          continue;
-
-        Utils.profile(config, {
-          metric_type: key,
-          metric_value: profile
-        });
-      }
+      Utils.sendProfileData(config);
     }
   }
 
@@ -178,7 +166,7 @@
     videosCarousel.render();
   };
 
-  function initAnalytics() {
+  function initAnalytics(){
     analytics = new Analytics({
       domain: location.hostname
     }, config);

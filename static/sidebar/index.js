@@ -177,7 +177,6 @@ function widgetRender(){
       className: isMobile ? "mobile" : "",
       js: [
         '//a.tvpage.com/tvpa.min.js',
-        debug ? libsPath + '/utils.js' : '',
         debug ? libsPath + '/analytics.js' : '',
         debug ? libsPath + '/grid.js' : '',
         debug ? jsPath + '/index.js' : '',
@@ -309,7 +308,6 @@ function widgetModalRender(){
       '//imasdk.googleapis.com/js/sdkloader/ima3.js',
       //getPlayerUrl(),
       baseUrl + '/playerlib-debug.min.js',
-      debug ? libsPath + "/utils.js" : "",
       debug ? libsPath + "/analytics.js" : "",
       debug ? libsPath + "/player.js" : "",
       debug ? libsPath + "/carousel.js" : "",

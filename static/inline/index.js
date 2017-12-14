@@ -182,6 +182,7 @@ function widgetRender(){
         '//imasdk.googleapis.com/js/sdkloader/ima3.js',
         //getPlayerUrl(),
         baseUrl + '/playerlib-debug.min.js',
+
         debug ? jsPath + '/vendor/jquery.js' : '',
         debug ? libsPath + '/analytics.js' : '',
         debug ? libsPath + '/carousel.js' : '',

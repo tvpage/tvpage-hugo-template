@@ -1,7 +1,5 @@
-(function() {
-  var body = document.body;
-  var id = body.getAttribute('data-id');
-  var config = window.parent.__TVPage__.config[id];
+(function () {
+  var config = window.parent.__TVPage__.config[Utils.attr(document.body, 'data-id')];
   var clickedVideo;
   var eventPrefix = config.events.prefix;
   var modalResizeEvent = eventPrefix + ':widget_modal_resize';
@@ -14,8 +12,9 @@
   var productsRail;
   var analytics;
   var apiBaseUrl = config.api_base_url;
-  var baseUrl = config.baseUrl;
-  var skeletonEl = document.getElementById('skeleton');
+  var loginId = config.loginId;
+  var productsEnabled = config.merchandise;
+  var skeletonEl = Utils.getById('skeleton');
   var isFirstVideoPlay = true;
   var productRatingAttrName = config.product_rating_attribute;
   var productReviewAttrName = config.product_review_attribute;
@@ -23,100 +22,85 @@
   //we check when critical css has loaded/parsed. At this step, we have data to
   //update the skeleton. We wait until css has really executed in order to send
   //the right measurements.
-  var cssLoadedCheck = 0;
-  var cssLoadedCheckLimit = 1000;
+  Utils.poll(function () {
+      return 'hidden' === Utils.getStyle(Utils.getById('bscheck'), 'visibility');
+    },
+    function () {
+      Utils.addClass(skeletonEl, 'ready');
+    });
 
-  (function cssPoll(){
-    setTimeout(function(){
-      var bsCheckEl = document.getElementById('bscheck');
-      
-      if ('hidden' === getComputedStyle(bsCheckEl, null).getPropertyValue('visibility')){
-        skeletonEl.style.visibility = 'visible';
-        skeletonEl.style.opacity = '1';
-      } else if (++cssLoadedCheck < cssLoadedCheckLimit) {
-        cssPoll()
+  //TODO
+  // function pkTrack(){
+  //   analytics.track('pk', {
+  //     vd: Utils.attr(this, 'data-vd'),
+  //     ct: this.id.split('-').pop(),
+  //     pg: config.channelId
+  //   });
+  // }
+
+  function buildProductsEndpoint(videoId) {
+    return apiBaseUrl + '/videos/' + videoId + '/products'
+  }
+
+  function initPlayer() {
+    function onPlayerResize(initial, size) {
+      if (size && size.length > 1 && productsRail && productsRail.railEl) {
+        productsRail.railEl.style.height = size[1];
       }
-    }, 50);
-  })();
 
-  function pkTrack() {
-    analytics.track('pk', {
-      vd: Utils.attr(this, 'data-vd'),
-      ct: this.id.split('-').pop(),
-      pg: config.channelId
-    });
-  }
-
-  function onPlayerResize(initial, size) {
-    if (size && size.length > 1 && productsRail && productsRail.railEl) {
-      productsRail.railEl.style.height = size[1];
-    }
-
-    Utils.sendMessage({ 
-      event: modalResizeEvent 
-    });
-  }
-
-  function updateModalTitle(title) {
-    Utils.getById('modalTitle').innerHTML = title || '';
-  }
-
-  function onPlayerNext(nextVideo) {
-    updateModalTitle(nextVideo.assetTitle);
-
-    if(config.merchandise){
-      productsRail.endpoint = apiBaseUrl + '/videos/' + nextVideo.assetId + '/products';
-      productsRail.load('render');
-    }
-  }
-
-  function onPlayerChange(e, currentAsset){
-    Utils.sendMessage({
-      event: playerChangeEvent,
-      e: e,
-      stateData : currentAsset
-    });
-
-    if("tvp:media:videoplaying" === e && isFirstVideoPlay){
-      isFirstVideoPlay = false;
-
-      Utils.profile(config, {
-        metric_type: 'video_playing',
-        metric_value: Utils.now('parent') - config.profiling['modal_ready'].start
+      Utils.sendMessage({
+        event: modalResizeEvent
       });
     }
-  }
 
-  function initPlayer(){
-    var playerConfig = Utils.copy(config);
+    function onPlayerNext(nextVideo) {
+      modal.updateTitle(nextVideo.assetTitle);
 
-    playerConfig.data = config.channel.videos;
-    playerConfig.onResize = onPlayerResize;
-    playerConfig.onNext = onPlayerNext;
-    playerConfig.onChange = onPlayerChange;
+      if (productsEnabled) {
+        productsRail.endpoint = buildProductsEndpoint(nextVideo.assetId);
+        productsRail.load('render');
+      }
+    }
 
-    player = new Player('player-el', playerConfig, clickedVideo.id);
+    function onPlayerChange(e, currentAsset) {
+      Utils.sendMessage({
+        event: playerChangeEvent,
+        e: e,
+        stateData: currentAsset
+      });
+
+      if ("tvp:media:videoplaying" === e && isFirstVideoPlay) {
+        isFirstVideoPlay = false;
+
+        Utils.profile(config, {
+          metric_type: 'video_playing',
+          metric_value: Utils.now('parent') - config.profiling['modal_ready'].start
+        });
+      }
+    }
+
+    player = new Player('player-el', {
+      startWith: clickedVideo.id,
+      data: config.channel.videos,
+      onResize: onPlayerResize,
+      onNext: onPlayerNext,
+      onChange: onPlayerChange
+    }, config);
+
     player.initialize();
   };
 
-  function initAnalytics(){
-    analytics = new Analytics();
+  function initAnalytics() {
+    analytics = new Analytics({
+      domain: location.hostname
+    }, config);
 
-    analytics.initConfig({
-      domain: location.hostname || '',
-      logUrl: apiBaseUrl + '/__tvpa.gif',
-      loginId: config.loginId,
-      firstPartyCookies: config.firstpartycookies,
-      cookieDomain: config.cookiedomain
-    });
-
-    analytics.track('ci', {
-      li: config.loginId
-    });
+    analytics.initialize();
+    analytics.track('ci');
   };
 
-  function initProducts(style){
-    if(!config.merchandise){
+  function initProducts(style) {
+    if (!productsEnabled) {
       return;
     }
 
@@ -149,14 +133,14 @@
     }
 
     function hideAllPopOvers() {
-      productsRail.el.querySelectorAll('.pop-over.active').forEach(function(item) {
+      productsRail.el.querySelectorAll('.pop-over.active').forEach(function (item) {
         Utils.removeClass(item, 'active');
       });
 
       Utils.removeClass(productsRail.el.querySelector('.pop-over-pointer'), 'active');
     }
 
-    function renderPopOver(railEl, product){
+    function renderPopOver(railEl, product) {
       var productPopOverEl = Utils.createEl('div');
 
       productPopOverEl.id = 'pop-over-' + product.id;
@@ -168,7 +152,7 @@
       Utils.addClass(productPopOverEl, 'active');
     }
 
-    function renderPopOverPointer(railEl, product){
+    function renderPopOverPointer(railEl, product) {
       var popOverPointerEl = Utils.createEl('div');
       popOverPointerEl.className = 'pop-over-pointer';
 
@@ -177,7 +161,7 @@
       Utils.addClass(popOverPointerEl, 'active');
     }
 
-    function onProductsItemOver(e){
+    function onProductsItemOver(e) {
       hideAllPopOvers();
 
       var target = Utils.getRealTargetByClass(e.target, 'rail-item');
@@ -220,12 +204,12 @@
       productsRail = new Rail('products', {
         clean: true,
         snapReference: '[rail-ref]',
-        endpoint: apiBaseUrl + '/videos/' + clickedVideo.id + '/products',
+        endpoint: buildProductsEndpoint(clickedVideo.id),
         templates: {
           list: templates.products.list,
           item: templates.products.item
         },
-        parse: function(item) {
+        parse: function (item) {
           item.title = Utils.trimText(item.title, 50);
           item.price = Utils.trimPrice(item.price);
           item.actionText = item.actionText || 'View Details'
@@ -243,27 +227,27 @@
     }
   }
 
-  function initModal(){
-    function onModalShow(){
-      if(player)
+  function initModal() {
+    function onModalShow() {
+      if (player)
         player.play(clickedVideo.id);
     }
 
-    function onModalShown(){
-      if(player){
+    function onModalShown() {
+      if (player) {
         player.resize();
-      }else{
+      } else {
         initPlayer();
       }
 
-      if(productsRail){
+      if (productsRail) {
         productsRail.endpoint = apiBaseUrl + '/videos/' + clickedVideo.id + '/products';
         productsRail.load('render');
-      }else{
+      } else {
         initProducts();
       }
 
-      if(!analytics){
+      if (!analytics) {
         initAnalytics();
       }
 
@@ -273,10 +257,8 @@
       });
     }
 
-    function onModalHidden(){
-      if(player){
-        player.instance.stop();
-      }
+    function onModalHidden() {
+      player.instance.stop();
 
       Utils.sendMessage({
         event: modalCloseEvent
@@ -292,64 +274,35 @@
     modal.initialize();
   }
 
-  function onWidgetModalOpen(e){
-    var videos = config.channel.videos;
+  //global deps check before execute
+  Utils.globalPoll(
+    ['Utils', 'Analytics', 'Player', 'Modal', 'Ps', 'jQuery'],
+    function () {
+      initModal();
 
-    if(player){
-      player.addAssets(videos);
-    }
+      window.parent.addEventListener('message', function (e) {
+        if (Utils.isEvent(e) && e.data.event === modalOpenEvent) {
+          var videos = config.channel.videos;
 
-    clickedVideo = videos.filter(function(video){
-      return e.data.clicked == video.id;
-    }).pop();
-
-    if(clickedVideo){
-      updateModalTitle(clickedVideo.title);
-      
-      modal.show();
-    }else{
-      throw new Error("video not found in data");
-    }
-  }
-  
-  var deps = ['Utils', 'Analytics', 'Player', 'Modal', 'Ps', 'jQuery'];
-  var depsCheck = 0;
-  var depsCheckLimit = 1000;
-  var depsLength = deps.length;
-
-  (function initialize(){
-    setTimeout(function(){
-      var ready = true,
-          missing;
-
-      for (var i = 0; i < depsLength; i++){
-        var dep = deps[i];
-
-        if (undefined === window[dep]){
-          ready = false;
-
-          missing = dep;
-        }
-      }
-
-      if(ready){
-        initModal();
-
-        window.parent.addEventListener('message', function(e){
-          if(Utils.isEvent(e) && e.data.event === modalOpenEvent){
-            onWidgetModalOpen(e);
+          if (player) {
+            player.addAssets(videos);
           }
-        });
 
-        Utils.sendMessage({
-          event: modalInitializedEvent
-        });
-      }else if (++depsCheck < depsCheckLimit){
-        initialize()
-      }else if(config.debug){
-        console.log("missing: ", missing);
-      }
-    }, 10);
-  })();
+          clickedVideo = videos.filter(function (video) {
+            return e.data.clicked == video.id;
+          }).pop();
 
+          if (clickedVideo) {
+            modal.updateTitle(clickedVideo.title);
+            modal.show();
+          } else {
+            throw new Error("video not found in data");
+          }
+        }
+      });
+
+      Utils.sendMessage({
+        event: modalInitializedEvent
+      });
+    });
 }());

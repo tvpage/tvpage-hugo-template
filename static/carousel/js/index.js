@@ -34,7 +34,7 @@
 
     sendResizeMessage();
     
-    config.profiling['skeleton_shown'] = Utils.now('parent')
+    config.profiling['skeleton_shown'] = Utils.now('parent');
   });
 
   function initVideos() {
@@ -61,16 +61,9 @@
       Utils.removeClass(videosCarousel.el, 'hide-abs');
 
       config.profiling['widget_ready'] = Utils.now('parent');
-      
+
       //send the profile log of the collected metrics
-      var profiling = config.profiling;
-      
-      for (var key in profiling) {
-        Utils.profile(config, {
-          metric_type: key,
-          metric_value: profiling[key]
-        });
-      }
+      Utils.sendProfileData(config);
       
       videosCarousel.loadNext('render');
     }
@@ -116,23 +109,13 @@
     videosCarousel.render();
   };
 
-  function initAnalytics() {
-    var analytics = new Analytics();
-    
-    var analyticsConfig = {
-      domain: location.hostname,
-      logUrl: apiBaseUrl + '/__tvpa.gif',
-      li: config.loginId
-    };
+  function initAnalytics(){
+    analytics = new Analytics({
+      domain: location.hostname
+    }, config);
 
-    if (config.firstPartyCookies && config.cookieDomain)
-      analyticsConfig.firstPartyCookieDomain = config.cookieDomain;
-
-    analytics.initConfig(analyticsConfig);
-
-    analytics.track('ci', {
-      li: config.loginId
-    });
+    analytics.initialize();
+    analytics.track('ci');
   }
 
   //global deps check before execute

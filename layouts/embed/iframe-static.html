@@ -20,92 +20,45 @@
   {{- end -}}
 
   <script async src="//a.tvpage.com/tvpa.min.js"></script>
-  <script async src='//cdnjs.tvpage.com/tvplayer/tvp-{{ ($.Scratch.Get "settings").player_version }}.min.js'></script>
+  <script async src='{{ "/playerlib-debug.min.js" | relURL }}'></script>
+  <!-- <script async src='//cdnjs.tvpage.com/tvplayer/tvp-{{ ($.Scratch.Get "settings").player_version }}.min.js'></script> -->
 
   {{- if (getenv "HUGO_DEBUG") -}}
-    <script src='{{ "libs/analytics.js" | absURL }}'></script>
-    <script src='{{ "libs/player.js" | absURL }}'></script>
+    <script src='{{ "libs/utils.js" | relURL }}'></script>
+    <script src='{{ "libs/analytics.js" | relURL }}'></script>
+    <script src='{{ "libs/player.js" | relURL }}'></script>
   {{- else -}}
-    <script src='{{ "embed/dist/js/scripts.min.js" | absURL }}'></script>
+    <script src='{{ "embed/dist/js/scripts.min.js" | relURL }}'></script>
   {{- end -}}
 
   <script>
-  var playerConfig;
+  (function(config, videoId, channelId){
+    config = Utils.extend(config, Utils.getUrlParams());
+  
+    var channelVideos = [];
 
-  (function(doc,config,videoId,channelId){
-
-    function getUrlParams(){
-      if (!window.location) return;
-      var o = {},kv = location.search.substr(1).split('&'), params = [];
-      for (var i = 0; i < kv.length; i++) { params.push(kv[i]); }
-      for (var i = 0; i < params.length; i++) {
-          var param = params[i].split('=');
-          if(param[1]) o[param[0]] = param[1];
-      }
-      return o;
-    };
-
-    function extend(out) {
-      out = out || {};
-      for (var i = 1; i < arguments.length; i++) {
-        if (!arguments[i])
-          continue;
-
-        for (var key in arguments[i]) {
-          if (arguments[i].hasOwnProperty(key))
-            out[key] = arguments[i][key];
-        }
-      }
-      return out;
-    };
-
-    function isUndefined(obj){
-      return 'undefined' !== typeof obj;
-    }
-
-    var video;
-    {{ if (isset .Params "videoid") }}
-      video = {{ index $.Site.Data.videos (printf "x%s" .Params.videoid) }};
-    {{ end }}
-
-    var channelVideos;
-    {{ if (isset .Params "channelid") }}
+    if(videoId){
+      channelVideos.push({{ index $.Site.Data.videos (printf "x%s" .Params.videoid) }});
+    }else if(channelId){
       channelVideos = {{ index $.Site.Data.channelVideos (printf "x%s_page_0" .Params.channelid) }};
-    {{ end }}
-
-    var videos = [];
-
-    if (videoId) {
-      videos.push(video);
-    } else if (channelId && !isUndefined(channelVideos.data)) {
-      videos = channelVideos.data;
+      channelVideos = channelVideos.data;
     }
 
-    if (!videos.length)
-      return console.log("no data");
+    if(!channelVideos.length){
+      throw new Error("no data");
+    }
 
-    playerConfig = config || {};
-    playerConfig.ciTrack = true;
-    playerConfig.data = videos;
-    playerConfig.templates = {
-      "player-overlay": '<div class="tvp-overlay-cover"></div>' +
-        '<svg class="tvp-play" viewBox="0 0 200 200">' +
-          '<polygon points="70, 55 70, 145 145, 100"></polygon>' +
-        '</svg>'
-    };
-    playerConfig.widgetId = playerConfig.name;
-    playerConfig = extend(playerConfig, getUrlParams());
+    var player = new Player('player-el', {
+      ciTrack: true,
+      data: channelVideos
+    }, config);
 
+    player.initialize();
   }(
-    document,
     {{ $.Scratch.Get "settings" }},
     {{ with .Params.videoid }}{{ . }}{{ else }}''{{ end }},
     {{ with .Params.channelid }}{{ . }}{{ else }}''{{ end }}
-  ));
-
-  var player = new Player('player-el', playerConfig);
-
-  player.initialize();
+  ))
   </script>
 </body>
 </html>

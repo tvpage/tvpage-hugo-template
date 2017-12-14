@@ -23,6 +23,10 @@
   "margin: {{ ($.Scratch.Get "settings").iframe_body_padding }};" +
 "}" +
 
+".skeleton-bg {" +
+  "background-color: black;" +
+"}"+
+
 '.player-holder {' +
   'height: 0;' +
   'width: 100%;' +

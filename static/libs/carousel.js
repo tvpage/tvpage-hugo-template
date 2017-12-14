@@ -324,13 +324,7 @@
       that.onSlickSetPosition.call(that);
     });
 
-    var slickConfig = this.getSlickConfig();
-
-    if(this.config.debug){
-      console.log('creating slick with: ', slickConfig)
-    }
-
-    this.$slickEl.slick(slickConfig);
+    this.$slickEl.slick(this.getSlickConfig());
   };
 
   Carousel.prototype.startSlick = function(slickEl){
@@ -419,9 +413,7 @@
       try{
         $(itemsTargetEl).slick('unslick');
       }catch(e){
-        if(this.config.debug){
-          console.log('unslick error', e);
-        }
+        console.log('unslick error', e);
       }
       
       wipe.call(this);

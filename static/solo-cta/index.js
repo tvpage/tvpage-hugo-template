@@ -179,7 +179,6 @@ function widgetRender(){
       js: [
         '//a.tvpage.com/tvpa.min.js',
         debug ? libsPath + '/analytics.js' : '',
-        debug ? libsPath + '/utils.js' : '',
         debug ? jsPath + '/index.js' : '',
         debug ? '' : jsPath + '/scripts.min.js'
       ],
@@ -311,7 +310,6 @@ function widgetModalRender(){
       '//imasdk.googleapis.com/js/sdkloader/ima3.js',
       //getPlayerUrl(),
       baseUrl + '/playerlib-debug.min.js',
-      debug ? libsPath + "/utils.js" : "",
       debug ? libsPath + "/analytics.js" : "",
       debug ? libsPath + "/player.js" : "",
       debug ? libsPath + "/carousel.js" : "",

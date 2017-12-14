@@ -127,7 +127,7 @@ function getInitialHtml(){
   var html = "";
   var styleId = 'tvp-' + config.type + '-host';
   var css = config.css;
-  var hostStyles = isMobile ? css.mobile.host : css.host;
+  var hostStyles = isMobile && css.mobile ? css.mobile.host : css.host;
   var templates = isMobile ? config.mobile.templates : config.templates;
 
   if(!getById(styleId)){

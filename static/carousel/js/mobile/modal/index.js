@@ -88,32 +88,25 @@
         }
       }
 
-      var playerConfig = Utils.copy(config);
-  
-      playerConfig.data = config.channel.videos;
-      playerConfig.onResize = onPlayerResize;
-      playerConfig.onNext = onPlayerNext;
-      playerConfig.onChange = onPlayerChange;
-      playerConfig.onClick = onPlayerClick;
-  
-      player = new Player('player-el', playerConfig, clickedVideo.id);
+      player = new Player('player-el', {
+        startWith: clickedVideo.id,
+        data: config.channel.videos,
+        onResize: onPlayerResize,
+        onNext: onPlayerNext,
+        onChange: onPlayerChange,
+        onClick: onPlayerClick
+      }, config);
+      
       player.initialize();
     };
   
     function initAnalytics() {
-      analytics = new Analytics();
-
-      analytics.initConfig({
-        domain: location.hostname || '',
-        logUrl: apiBaseUrl + '/__tvpa.gif',
-        loginId: loginId,
-        firstPartyCookies: config.firstpartycookies,
-        cookieDomain: config.cookiedomain
-      });
-
-      analytics.track('ci', {
-        li: loginId
-      });
+      analytics = new Analytics({
+        domain: location.hostname
+      }, config);
+  
+      analytics.initialize();
+      analytics.track('ci');
     };
   
     function initProducts(style) {

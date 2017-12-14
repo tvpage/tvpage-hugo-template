@@ -1,83 +1,106 @@
-(function() {
-  var body = document.body;
-  var id = body.getAttribute('data-id');
-  var config = window.parent.__TVPage__.config[id];
+(function () {
+  var config = window.parent.__TVPage__.config[Utils.attr(document.body, 'data-id')];
+  var eventPrefix = config.events.prefix;
+  var playerChangeEvent = eventPrefix + ':widget_player_change';
+  var menu;
+  var player;
+  var playlistEnabled = config.playlist;
+  var isFirstVideoPlay = true;
+  var isFirstPlayButtonClick = true;
 
-  function initPlayer(){
-    var playerConfig = Utils.copy(config);
-    var menu;
-    var player;
-    
-    playerConfig.ciTrack = true;
-    playerConfig.data = config.channel.videos;
-    playerConfig.onPlayerChange = !!playerConfig.onPlayerChange;
-
-    playerConfig.onPlayerReady = function(){
-      if (config.debug) {
-        console.log("a player is ready");
-      }
-      
-      if(config.playlist){
+  function initPlayer() {
+    function onPlayerReady(){
+      if (playlistEnabled) {
         menu = new Menu(player, config);
         menu.initialize();
       }
-    };
 
-    playerConfig.onNext = function(next){
-      if(next && config.playlist){
+      Utils.remove(Utils.getById('skeleton'));
+      
+      Utils.removeClass(player.el.parentNode, 'hide');
+
+      config.profiling['widget_ready'] = Utils.now('parent');
+    }
+
+    function onPlayerNext(next) {
+      if (next && playlistEnabled) {
         menu.setActiveItem(next.assetId);
         menu.hideMenu();
       }
-    };
+    }
 
-    playerConfig.onFullscreenChange = function(){
-      if(config.playlist){
+    function onPlayerFullscreenChange() {
+      if (playlistEnabled) {
         menu.hideMenu();
       }
-    };
-    
-    player = new Player('player', playerConfig);
+    }
+
+    function onPlayerChange(e, currentAsset){
+      Utils.sendMessage({
+        event: playerChangeEvent,
+        e: e,
+        stateData : currentAsset
+      });
+
+      if("tvp:media:videoplaying" === e && isFirstVideoPlay){
+        isFirstVideoPlay = false;
+
+        config.profiling['video_playing'] = Utils.now('parent') - config.profiling['video_playing'].start;
+
+        //send the profile log of the collected metrics
+        var profiling = config.profiling;
+
+        for (var key in profiling) {
+          var profile = profiling[key];
+
+          if(Utils.isObject(profile))
+            continue;
+
+          Utils.profile(config, {
+            metric_type: key,
+            metric_value: profile
+          });
+        }
+      }
+    }
+
+    function onPlayerClick(e){
+      if(e && e.target){
+        var target = Utils.getRealTargetByClass(e.target, 'tvplayer-playbutton');
+          
+        if(target && isFirstPlayButtonClick){
+          isFirstPlayButtonClick = false;
+
+          config.profiling['video_playing'] = {
+            start: Utils.now('parent')
+          }
+        }
+      }
+    }
+
+    player = new Player('player', {
+      ciTrack: true,
+      data: config.channel.videos,
+      onPlayerReady: onPlayerReady,
+      onChange: onPlayerChange,
+      onNext: onPlayerNext,
+      onFullscreenChange: onPlayerFullscreenChange,
+      onClick: onPlayerClick
+    }, config);
+
     player.initialize();
 
-    var skeleton = document.getElementById('skeleton');
-    if(skeleton)
-      skeleton.parentNode.removeChild(skeleton);
-
-    setTimeout(function(){
-      Utils.removeClass(player.el.parentNode,'hide');
-    },1);
-  }
- 
-  var depsCheck = 0;
-  var depsLimitCheck = 1000;
-  var deps = ['Utils','Player'];
-
-  if(config.playlist){
-    deps.push('Ps', 'Menu');
+    config.profiling['video_playing'] = {
+      start: Utils.now('parent')
+    };
   }
 
-  (function initSolo() {
-    setTimeout(function() {
-      console.log('deps poll...');
-      
-      var ready = true;
-      for (var i = 0; i < deps.length; i++)
-        
-        if ('undefined' === typeof window[deps[i]]){
-          var dep = deps[i];
-          if(config.debug){
-            console.log(dep + ' is undefined');
-          }
-          ready = false;
-        }
+  //global deps check before execute
+  var globalDeps = ['Utils', 'Player'];
 
-      if(ready){
+  if (playlistEnabled) {
+    globalDeps.push('Ps', 'Menu');
+  }
 
-        initPlayer();
-        
-      }else if(++depsCheck < depsLimitCheck){
-        initSolo()
-      }
-    },5);
-  })();
+  Utils.globalPoll(globalDeps, initPlayer);
 }());

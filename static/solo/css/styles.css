@@ -1,10 +1,4 @@
-.tvp-player {
-  height: 0;
-  width: 100%;
-  position: relative;
-  padding-bottom: 56.25%;
-}
-
+/* menu */
 #tvp-slide-menu {
   position: fixed;
   top: 0;

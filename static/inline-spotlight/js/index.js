@@ -137,14 +137,12 @@
   };
 
   function initAnalytics() {
-    analytics = new Analytics();
-    analytics.initConfig({
-      domain: location.hostname || '',
-      logUrl: apiBaseUrl + '/__tvpa.gif',
-      loginId: config.loginId,
-      firstPartyCookies: config.firstpartycookies,
-      cookieDomain: config.cookiedomain
-    });
+    analytics = new Analytics({
+      domain: location.hostname
+    }, config);
+
+    analytics.initialize();
+    analytics.track('ci');
   };
 
   function initProducts(){
