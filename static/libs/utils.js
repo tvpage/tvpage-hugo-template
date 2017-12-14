@@ -116,6 +116,14 @@
   Utils.isNull = isNull;
   Utils.isObject = isObject;
 
+  Utils.compact = function(o){
+    for(var k in o)
+      if(o.hasOwnProperty(k) && !o[k])
+        delete o[k];
+    
+    return o;
+  }
+
   Utils.attr = function(el,a) {
     return el.getAttribute(a);
   };
@@ -271,17 +279,26 @@
       return;
     }
 
-    loadScript({
-      base: config.profile_base_url,
-      params: extend({
-        loc_id: config.id,
-        loginId: config.loginId,
-        channelId: config.channelId,
-        type_id: config.type,
-        run_id: config.runId,
-        url: location.hostname
-      }, params)
-    });
+    var logStyle = '' +
+    'padding: 5px;' +
+    'color: 1a1a1a;' +
+    'font-size: 14px;' +
+    'font-weight: bold;' +
+    'display: block;';
+
+    console.log('%c ' + params.metric_type + ': ' + params.metric_value + 'ms', logStyle);
+
+    // loadScript({
+    //   base: config.profile_base_url,
+    //   params: extend({
+    //     loc_id: config.id,
+    //     loginId: config.loginId,
+    //     channelId: config.channelId,
+    //     type_id: config.type,
+    //     run_id: config.runId,
+    //     url: location.hostname
+    //   }, params)
+    // });
   };
   
   Utils.trimPrice = function(p) {

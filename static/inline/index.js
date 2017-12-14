@@ -183,7 +183,6 @@ function widgetRender(){
         //getPlayerUrl(),
         baseUrl + '/playerlib-debug.min.js',
         debug ? jsPath + '/vendor/jquery.js' : '',
-        debug ? libsPath + '/utils.js' : '',
         debug ? libsPath + '/analytics.js' : '',
         debug ? libsPath + '/carousel.js' : '',
         debug ? libsPath + '/player.js' : '',

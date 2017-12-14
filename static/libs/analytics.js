@@ -1,39 +1,54 @@
 (function(){
-  function isUndefined(o){
-    return 'undefined' === typeof o;
+  function Analytics(options, globalConfig){
+    this.options = options || {};
+    this.config = globalConfig || {};
+
+    if(Utils.isUndefined(this.options.domain))
+      throw new Error('need domain');
   }
-  
-  function Analytics(){
-    this.config = null;
-  }
 
-  Analytics.prototype.getGlobal = function(){
-    return window._tvpa || [];
+  Analytics.prototype.initialize = function(){
+    var that = this;
+
+    Utils.globalPoll(['_tvpa'], function(){
+      var opts = that.options;
+
+      if(opts.firstPartyCookies && opts.cookieDomain)
+       opts.firstPartyCookieDomain = opts.cookieDomain;
+
+      var logUrl = "";
+
+      if(opts.logUrl){
+        logUrl = opts.logUrl;
+      }else if(that.config.api_base_url){
+        logUrl = that.config.api_base_url + '/__tvpa.gif';
+      }
+
+      if(!logUrl)
+        throw new Error("can't build logUrl");
+
+      _tvpa.push(['config',{
+        li: opts.loginId,
+        domain: opts.domain,
+        logUrl: logUrl,
+        firstPartyCookies: that.config.firstpartycookies,
+        cookieDomain: that.config.cookiedomain
+      }]);
+    });
   };
-  
-  Analytics.prototype.getConfigBase = function(options){
-    var opts = options || {};
 
-    return {
-      logUrl: opts.logUrl || '',
-      li: opts.li || opts.loginId || opts.loginid,
-      gaDomain: opts.domain || ''
-    };
-  };
-  
-  Analytics.prototype.initConfig = function(options){
-    this.config = this.getConfigBase(options);
-
-    if(options && options.firstPartyCookies && options.cookieDomain)
-      this.config.firstPartyCookieDomain = options.cookieDomain;
-
-    this.getGlobal().push(['config', this.config]);
-  };
-  
   Analytics.prototype.track = function(e, data){
-    if('undefined' !== typeof e && 'undefined' !== typeof data){
-      this.getGlobal().push(['track', e, data]);
+    var loginId = this.config.loginId;
+
+    if(Utils.isUndefined(e) || Utils.isUndefined(loginId)){
+      throw new Error("bad event or loginId", e);
     }
+
+    Utils.globalPoll(['_tvpa'], function(){
+      _tvpa.push(e, data || {
+        li: loginId
+      })
+    });
   };
   
   window.Analytics = Analytics;

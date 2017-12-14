@@ -1,13 +1,12 @@
 (function() {  
-  var body = document.body;
-  var id = body.getAttribute('data-id');
-  var config = window.parent.__TVPage__.config[id];
+  var config = window.parent.__TVPage__.config[Utils.attr(document.body, 'data-id')];
   var firstVideo = config.channel.videos[0];
   var channelParams = config.channel.parameters;
   var eventPrefix = config.events.prefix;
   var resizeEvent = eventPrefix + ':widget_resize';
+  var playerChangeEvent = eventPrefix + ':widget_player_change';
   var apiBaseUrl = config.api_base_url;
-  var videosEndpoint = apiBaseUrl + '/channels/' + config.channelId + '/videos';
+  var channelVideosEndpoint = apiBaseUrl + '/channels/' + config.channelId + '/videos';
   var videosOrderParams = {
     o: config.videos_order_by,
     od: config.videos_order_direction
@@ -42,29 +41,21 @@
   //we check when critical css has loaded/parsed. At this step, we have data to
   //update the skeleton. We wait until css has really executed in order to send
   //the right measurements.
-  var cssLoadedCheck = 0;
-  var cssLoadedCheckLimit = 1000;
+  Utils.poll(function(){
+    return 'hidden' === Utils.getStyle(Utils.getById('bscheck'), 'visibility');
+  },
+  function(){
+    var widgetTitleEl = Utils.getById('widget-title');
+    
+    widgetTitleEl.innerHTML = firstVideo.title;
 
-  (function cssPoll() {
-    setTimeout(function() {
-      var bsCheckEl = document.getElementById('bscheck');
-      
-      if ('hidden' === getComputedStyle(bsCheckEl, null).getPropertyValue('visibility')){
-        var widgetTitleEl = document.getElementById('widget-title');
-        widgetTitleEl.innerHTML = firstVideo.title;
-        widgetTitleEl.classList.add('ready');
+    Utils.addClass(widgetTitleEl, 'ready');
+    Utils.addClass(skeletonEl, 'ready');
 
-        skeletonEl.style.visibility = 'visible';
-        skeletonEl.style.opacity = '1';
-
-        sendResizeMessage();
-
-        config.profiling['skeleton_shown'] = Utils.now('parent')
-      } else if (++cssLoadedCheck < cssLoadedCheckLimit) {
-        cssPoll()
-      }
-    }, 5);
-  })();
+    sendResizeMessage();
+    
+    config.profiling['skeleton_shown'] = Utils.now('parent')
+  });
 
   function analyticsPKTrack(product){
     analytics.track('pk',{
@@ -107,13 +98,6 @@
         });
       }
     }
-  }
-
-  function onWidgetResize(){
-    Utils.sendMessage({
-      event: eventPrefix + ':widget_resize',
-      height: Utils.getWidgetHeight()
-    });
   }
 
   //if the video  change comes auto from the player we don't need to tell the player to play
@@ -164,7 +148,7 @@
     videosCarousel = new Carousel('videos',{
       alignArrowsY: ['center', '.video-image-icon'],
       page: 0,
-      endpoint: videosEndpoint,
+      endpoint: channelVideosEndpoint,
       params: Utils.addProps(videosOrderParams, channelParams),
       data: channelVideos,
       slidesToShow: 4,
@@ -187,7 +171,7 @@
       ],
       onReady: onVideosCarouselReady,
       onLoad: onVideosCarouselLoad,
-      onResize:onWidgetResize
+      onResize:sendResizeMessage
     }, config);
 
     videosCarousel.initialize();
@@ -195,14 +179,12 @@
   };
 
   function initAnalytics() {
-    analytics = new Analytics();
-    analytics.initConfig({
-      domain: location.hostname || '',
-      logUrl: apiBaseUrl + '/__tvpa.gif',
-      loginId: config.loginId,
-      firstPartyCookies: config.firstpartycookies,
-      cookieDomain: config.cookiedomain
-    });
+    analytics = new Analytics({
+      domain: location.hostname
+    }, config);
+
+    analytics.initialize();
+    analytics.track('ci');
   };
 
   function initProducts(){
@@ -317,7 +299,7 @@
         params: productsOrderParams,
         parse: parseProducts,
         onReady: onProductsCarouselReady,
-        onResize:onWidgetResize
+        onResize:sendResizeMessage
       }, config);
       
       productsCarousel.initialize();
@@ -342,7 +324,7 @@
         params: productsOrderParams,
         parse: parseProducts,
         onReady: onProductsCarouselReady,
-        onResize: onWidgetResize,
+        onResize: sendResizeMessage,
         onClick: onClick
       }, config);
 
@@ -351,68 +333,64 @@
     }
   };
 
-
-  function onPlayerNext(next) {
-    var nextVideoId = next.assetId;
-    
-    if (nextVideoId) {
-      onWidgetVideoChange(nextVideoId);
+  function initPlayer(){
+    function onPlayerNext(next) {
+      var nextVideoId = next.assetId;
+      
+      if (nextVideoId) {
+        onWidgetVideoChange(nextVideoId);
+      }
     }
-  }
 
-  function onPlayerChange(e, currentAsset){
-    Utils.sendMessage({
-      event: eventPrefix + ':widget_player_change',
-      e: e,
-      stateData : currentAsset
-    });
-
-    if("tvp:media:videoplaying" === e && isFirstVideoPlay){
-      isFirstVideoPlay = false;
-
-      Utils.profile(config, {
-        metric_type: 'video_playing',
-        metric_value: Utils.now('parent') - config.profiling['video_playing'].start
+    function onPlayerChange(e, currentAsset){
+      Utils.sendMessage({
+        event: playerChangeEvent,
+        e: e,
+        stateData : currentAsset
       });
-    }
-  }
 
-  function onPlayerClick(e){
-    if(e && e.target){
-      var target = Utils.getRealTargetByClass(e.target, 'tvplayer-playbutton');
-        
-      if(target && isFirstPlayButtonClick){
-        isFirstPlayButtonClick = false;
+      if("tvp:media:videoplaying" === e && isFirstVideoPlay){
+        isFirstVideoPlay = false;
+
+        Utils.profile(config, {
+          metric_type: 'video_playing',
+          metric_value: Utils.now('parent') - config.profiling['video_playing'].start
+        });
+      }
+    }
+
+    function onPlayerClick(e){
+      if(e && e.target){
+        var target = Utils.getRealTargetByClass(e.target, 'tvplayer-playbutton');
+          
+        if(target && isFirstPlayButtonClick){
+          isFirstPlayButtonClick = false;
+
+          config.profiling['video_playing'] = {
+            start: Utils.now('parent')
+          }
+        }
+      }
+    }
+
+    function onPlayerReady(){
+      if(!playerReadyCalled){
+        playerReadyCalled = true;
 
         config.profiling['video_playing'] = {
           start: Utils.now('parent')
         }
       }
     }
-  }
-
-  function onPlayerReady(){
-    if(!playerReadyCalled){
-      playerReadyCalled = true;
-
-      config.profiling['video_playing'] = {
-        start: Utils.now('parent')
-      }
-    }
-  }
-
-  function initPlayer(){
-    var playerConfig = Utils.copy(config);
     
-    //the player can take care of the ci
-    playerConfig.ciTrack = true;
-    playerConfig.data = config.channel.videos;
-    playerConfig.onNext = onPlayerNext;
-    playerConfig.onChange = onPlayerChange;
-    playerConfig.onClick = onPlayerClick;
-    playerConfig.onPlayerReady = onPlayerReady;
-    
-    player = new Player('player-el', playerConfig);
+    player = new Player('player-el', {
+      data: config.channel.videos,
+      ciTrack: true,
+      onNext: onPlayerNext,
+      onChange: onPlayerChange,
+      onClick: onPlayerClick,
+      onPlayerReady: onPlayerReady,
+    }, config);
 
     player.initialize();
   };
