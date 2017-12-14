@@ -1,9 +1,4 @@
 (function(){
-
-  var userAgent = navigator.userAgent;
-  var body = document.body;
-
-  //helpers
   function getById(id){
     return document.getElementById(id);
   }
@@ -18,10 +13,6 @@
 
   function hasClass(o,c) {
     return o.classList && o.classList.contains(c);
-  }
-
-  function getGlobalFromParent(){
-    return window.parent && hasKey(window.parent, '__TVPage__') ? window.parent.__TVPage__ : null;
   }
 
   function isObject(o){
@@ -96,15 +87,15 @@
 
     script.src = src;
 
-    body.appendChild(script);
+    document.body.appendChild(script);
   }
   
   //the utils module
   var Utils = {};
   
-  Utils.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+  Utils.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   
-  Utils.isIOS = (/iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(userAgent) && !window.MSStream);
+  Utils.isIOS = (/iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream);
   
   Utils.getWidgetHeight = function() {
     return Math.floor(getById('skeleton').getBoundingClientRect().height);
@@ -333,15 +324,6 @@
     
     return a;
   };
-
-  Utils.getParentConfig = function(id) {
-    var parentGlobal = getGlobalFromParent();
-
-    if (!parentGlobal || !parentGlobal.config || !hasKey(parentGlobal.config, id))
-      throw new Error("no config");
-  
-    return parentGlobal.config[id];
-  };
   
   Utils.tmpl = function(template, data) {
     if (template && 'object' == typeof data) {
@@ -356,8 +338,61 @@
     }
   };
 
+  Utils.poll = function(check, callback){
+    if(!isFunction(check)){
+      throw new Error("first argument shall be a function");
+    }
+
+    var checkCount = 0;
+
+    (function poller(){
+      setTimeout(function(){
+        if(check()){
+          if(isFunction(callback))
+            callback();
+        }else if (++checkCount < 1000){
+          poller();
+        }else{
+          throw new Error("poll condition not met after checking 1000 times");
+        }
+      },10);
+    }())
+  };
+
+  Utils.globalPoll = function(globs, callback){
+    globs = (globs || []).filter(Boolean);
+
+    var globsLength = globs.length;
+    var globsCheck = 0;
+
+    (function poll(){
+      setTimeout(function(){
+        var ready = true;
+        var missing;
+
+        for (var i = 0; i < globsLength; i++){
+          var glob = globs[i];
+  
+          if (undefined === window[glob]){
+            ready = false;
+  
+            missing = glob;
+          }
+        }
+
+        if(ready){
+          if(isFunction(callback))
+            callback();
+        }else if (++globsCheck < 1000){
+          poll();
+        }else{
+          throw new Error("missing global: " + missing);
+        }
+      },10);
+    }())
+  };
+
   Utils.getStyle = getStyle;
     
   window.Utils = Utils;
-
 }())

@@ -1,7 +1,5 @@
 (function() {
-    var body = document.body;
-    var id = body.getAttribute('data-id');
-    var config = window.parent.__TVPage__.config[id];
+    var config = window.parent.__TVPage__.config[Utils.attr(document.body, 'data-id')];
     var clickedVideo;
     var eventPrefix = config.events.prefix;
     var modalResizeEvent = eventPrefix + ':widget_modal_resize';
@@ -13,90 +11,83 @@
     var productsCarousel;
     var analytics;
     var apiBaseUrl = config.api_base_url;
-    var baseUrl = config.baseUrl;
-    var skeletonEl = document.getElementById('skeleton');
+    var loginId = config.loginId;
+    var productsEnabled = config.merchandise;
+    var skeletonEl = Utils.getById('skeleton');
     var isFirstVideoPlay = true;
     var isFirstPlayButtonClick = true;
   
     //we check when critical css has loaded/parsed. At this step, we have data to
     //update the skeleton. We wait until css has really executed in order to send
     //the right measurements.
-    var cssLoadedCheck = 0;
-    var cssLoadedCheckLimit = 1000;
+    Utils.poll(function(){
+      return 'hidden' === Utils.getStyle(Utils.getById('bscheck'), 'visibility');
+    },
+    function(){
+      Utils.addClass(skeletonEl, 'ready');
+    });
   
-    (function cssPoll() {
-      setTimeout(function(){
-        var bsCheckEl = document.getElementById('bscheck');
+    //TODO
+    // function pkTrack(){
+    //   analytics.track('pk', {
+    //     vd: Utils.attr(this, 'data-vd'),
+    //     ct: this.id.split('-').pop(),
+    //     pg: config.channelId
+    //   });
+    // }
   
-        if ('hidden' === getComputedStyle(bsCheckEl, null).getPropertyValue('visibility')){
-          skeletonEl.style.visibility = 'visible';
-          skeletonEl.style.opacity = '1';
-        } else if (++cssLoadedCheck < cssLoadedCheckLimit) {
-          cssPoll()
-        }
-      }, 50);
-    })();
-  
-    function pkTrack(){
-      analytics.track('pk', {
-        vd: Utils.attr(this, 'data-vd'),
-        ct: this.id.split('-').pop(),
-        pg: config.channelId
-      });
-    }
-  
-    function onPlayerResize() {
-      Utils.sendMessage({
-        event: modalResizeEvent
-      });
-    }
-  
-    function updateModalTitle(title) {
-      Utils.getById('modalTitle').innerHTML = title || '';
-    }
-  
-    function onPlayerNext(nextVideo) {
-      updateModalTitle(nextVideo.assetTitle);
-      
-      if(config.merchandise){
-        productsCarousel.endpoint = apiBaseUrl + '/videos/' + nextVideo.assetId + '/products';
-        productsCarousel.load('render');
-      }
+    function buildProductsEndpoint(videoId) {
+      return apiBaseUrl + '/videos/' + videoId + '/products'
     }
 
-    function onPlayerChange(e, currentAsset){
-      Utils.sendMessage({
-        event: playerChangeEvent,
-        e: e,
-        stateData : currentAsset
-      });
-
-      //need to change this approach as on mobile we do not have autoplay
-      if("tvp:media:videoplaying" === e && isFirstVideoPlay){
-        isFirstVideoPlay = false;
-  
-        Utils.profile(config, {
-          metric_type: 'video_playing',
-          metric_value: Utils.now('parent') - config.profiling['video_playing'].start
+    function initPlayer() {
+      function onPlayerResize(){
+        Utils.sendMessage({
+          event: modalResizeEvent
         });
       }
-    }
-
-    function onPlayerClick(e){
-      if(e && e.target){
-        var target = Utils.getRealTargetByClass(e.target, 'tvplayer-playbutton');
-          
-        if(target && isFirstPlayButtonClick){
-          isFirstPlayButtonClick = false;
-          
-          config.profiling['video_playing'] = {
-            start: Utils.now('parent')
+  
+      function onPlayerNext(nextVideo){
+        modal.updateTitle(nextVideo.assetTitle);
+        
+        if(productsEnabled){
+          productsCarousel.endpoint = buildProductsEndpoint(nextVideo.assetId);
+          productsCarousel.load('render');
+        }
+      }
+  
+      function onPlayerChange(e, asset){
+        Utils.sendMessage({
+          event: playerChangeEvent,
+          e: e,
+          stateData : asset
+        });
+  
+        //need to change this approach as on mobile we do not have autoplay
+        if("tvp:media:videoplaying" === e && isFirstVideoPlay){
+          isFirstVideoPlay = false;
+    
+          Utils.profile(config, {
+            metric_type: 'video_playing',
+            metric_value: Utils.now('parent') - config.profiling['video_playing'].start
+          });
+        }
+      }
+  
+      function onPlayerClick(e){
+        if(e && e.target){
+          var target = Utils.getRealTargetByClass(e.target, 'tvplayer-playbutton');
+            
+          if(target && isFirstPlayButtonClick){
+            isFirstPlayButtonClick = false;
+            
+            config.profiling['video_playing'] = {
+              start: Utils.now('parent')
+            }
           }
         }
       }
-    }
-  
-    function initPlayer() {
+
       var playerConfig = Utils.copy(config);
   
       playerConfig.data = config.channel.videos;
@@ -115,18 +106,18 @@
       analytics.initConfig({
         domain: location.hostname || '',
         logUrl: apiBaseUrl + '/__tvpa.gif',
-        loginId: config.loginId,
+        loginId: loginId,
         firstPartyCookies: config.firstpartycookies,
         cookieDomain: config.cookiedomain
       });
 
       analytics.track('ci', {
-        li: config.loginId
+        li: loginId
       });
     };
   
     function initProducts(style) {
-      if (!config.merchandise) {
+      if (!productsEnabled) {
         return;
       }
 
@@ -144,7 +135,7 @@
         productsCarousel = new Carousel('products',{
           clean: true,
           loadMore: false,
-          endpoint: apiBaseUrl + '/videos/' + clickedVideo.id + '/products',
+          endpoint: buildProductsEndpoint(clickedVideo.id),
           params: {
             o: config.products_order_by,
             od: config.products_order_direction
@@ -222,9 +213,7 @@
       }
   
       function onModalHidden(){
-        if(player){
-          player.instance.stop();
-        }
+        player.instance.stop();
   
         Utils.sendMessage({
           event: modalCloseEvent
@@ -239,70 +228,35 @@
   
       modal.initialize();
     }
-  
-    function onWidgetModalOpen(e){
-      var videos = config.channel.videos;
-  
-      if(player){
-        player.addAssets(videos);
-      }
-  
-      clickedVideo = videos.filter(function(video){
-        return e.data.clicked == video.id;
-      }).pop();
-  
-      if(clickedVideo){
-        updateModalTitle(clickedVideo.title);
+
+    Utils.globalPoll(
+      ['jQuery', 'Utils', 'Analytics', 'Carousel', 'Modal', 'Player'],
+      function(){
+        initModal();
         
-        modal.show();
-      }else{
-        throw new Error("video not found in data");
-      }
-    }
-  
-    var deps = ['jQuery', 'Utils', 'Analytics', 'Carousel', 'Modal', 'Player'];
-    var depsCheck = 0;
-    var depsCheckLimit = 1000;
-    var depsLength = deps.length;
-  
-    (function initialize() {
-      setTimeout(function() {
-        if(config.debug){
-          console.log('deps poll...');
-        }
-  
-        var ready = true,
-            missing;
-
-        for (var i = 0; i < depsLength; i++){
-          var dep = deps[i];
-
-          if (undefined === window[dep]){
-            ready = false;
-
-            missing = dep;
-          }
-        }
-  
-        if(ready){
-          initModal();
-          
-          window.parent.addEventListener('message', function(e){
-            if(Utils.isEvent(e) && e.data.event === modalOpenEvent){
-              onWidgetModalOpen(e);
+        window.parent.addEventListener('message', function(e){
+          if(Utils.isEvent(e) && e.data.event === modalOpenEvent){
+            var videos = config.channel.videos;
+            
+            if(player){
+              player.addAssets(videos);
             }
-          });
-  
-          Utils.sendMessage({
-            event: modalInitializedEvent
-          });
-        }else if (++depsCheck < depsCheckLimit){
-          initialize()
-        }else{
-          throw new Error("missing: " + missing);
-        }
-      }, 10);
-    })();
-  
+        
+            clickedVideo = videos.filter(function(video){
+              return e.data.clicked == video.id;
+            }).pop();
+        
+            if(clickedVideo){
+              modal.updateTitle(clickedVideo.title);
+              modal.show();
+            }else{
+              throw new Error("video not found in data");
+            }
+          }
+        });
+
+        Utils.sendMessage({
+          event: modalInitializedEvent
+        });
+    });
   }());
-  

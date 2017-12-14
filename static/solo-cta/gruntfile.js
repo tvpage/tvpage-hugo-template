@@ -11,7 +11,8 @@ module.exports = function(grunt) {
         css: {
           files: {
             'css/modal/styles.css': 'css/modal/styles.css',
-            'css/mobile/modal/styles.css': 'css/mobile/modal/styles.css'
+            'css/mobile/modal/styles.css': 'css/mobile/modal/styles.css',
+            'css/styles.css': 'css/styles.css'
           }
         }
       },
@@ -23,11 +24,11 @@ module.exports = function(grunt) {
         desktop: {
           files: {
             'dist/css/styles.min.css': [
-              'css/styles.css',
               '../bootstrap/dist/css/bootstrap.css',
-              '../slick/slick.css'
+              'css/styles.css'
             ],
             'dist/css/modal/styles.min.css': [
+              '../bootstrap/dist/css/bootstrap.css',
               'css/vendor/perfect-scrollbar.min.css',
               'css/modal/styles.css'
             ]
@@ -39,7 +40,6 @@ module.exports = function(grunt) {
               '../bootstrap/dist/css/bootstrap.css',
               '../slick/slick.css',
               '../slick/mobile/custom.css',
-              '../slick/custom.css',
               'css/mobile/modal/styles.css'
             ]
           }
@@ -70,6 +70,9 @@ module.exports = function(grunt) {
               '../libs/utils.js',
               '../libs/analytics.js',
               '../libs/player.js',
+              '../libs/carousel.js',
+              '../libs/modal.js',
+              '../libs/rail.js',
               'js/vendor/perfect-scrollbar.min.js',
               'js/modal/index.js'
             ],
@@ -77,8 +80,9 @@ module.exports = function(grunt) {
               'js/vendor/jquery.js',
               '../libs/utils.js',
               '../libs/analytics.js',
-              '../libs/carousel.js',
               '../libs/player.js',
+              '../libs/carousel.js',
+              '../libs/modal.js',
               'js/mobile/modal/index.js'
             ]
           }

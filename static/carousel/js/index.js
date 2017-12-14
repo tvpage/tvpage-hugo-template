@@ -1,19 +1,19 @@
 (function() {
-  var body = document.body;
-  var id = body.getAttribute('data-id');
-  var config = window.parent.__TVPage__.config[id];
+  var config = window.parent.__TVPage__.config[Utils.attr(document.body, 'data-id')];
   var channelParams = config.channel.parameters;
   var eventPrefix = config.events.prefix;
+  var modalOpenEvent = eventPrefix + ':widget_modal_open';
+  var resizeEvent = eventPrefix + ':widget_resize';
   var apiBaseUrl = config.api_base_url;
   var videosEndpoint = apiBaseUrl + '/channels/' + config.channelId + '/videos';
   var templates = config.templates;
   var channelVideos = config.channel.videos;
-  var skeletonEl = document.getElementById('skeleton');
+  var skeletonEl = Utils.getById('skeleton');
   var videosCarousel;
 
   function sendResizeMessage() {
     Utils.sendMessage({
-      event: eventPrefix + ':widget_resize',
+      event: resizeEvent,
       height: Utils.getWidgetHeight()
     });
   }
@@ -21,36 +21,27 @@
   //we check when critical css has loaded/parsed. At this step, we have data to
   //update the skeleton. We wait until css has really executed in order to send
   //the right measurements.
-  var cssLoadedCheck = 0;
-  var cssLoadedCheckLimit = 1000;
+  Utils.poll(function(){
+    return 'hidden' === Utils.getStyle(Utils.getById('bscheck'), 'visibility');
+  },
+  function(){
+    var widgetTitleEl = Utils.getById('widget-title');
+    
+    widgetTitleEl.innerHTML = config.title_text;
 
-  (function cssPoll(){
-    setTimeout(function(){
-      var bsCheckEl = document.getElementById('bscheck');
-      
-      if ('hidden' === getComputedStyle(bsCheckEl, null).getPropertyValue('visibility')){
-        var widgetTitleEl = document.getElementById('widget-title');
-        widgetTitleEl.innerHTML = config.title_text;
-        widgetTitleEl.classList.add('ready');
+    Utils.addClass(widgetTitleEl, 'ready');
+    Utils.addClass(skeletonEl, 'ready');
 
-        skeletonEl.style.visibility = 'visible';
-        skeletonEl.style.opacity = '1';
+    sendResizeMessage();
+    
+    config.profiling['skeleton_shown'] = Utils.now('parent')
+  });
 
-        sendResizeMessage();
-        
-        config.profiling['skeleton_shown'] = Utils.now('parent')
-      }else if (++cssLoadedCheck < cssLoadedCheckLimit){
-        cssPoll()
-      }
-    }, 5);
-  })();
-
-  //a videos section will be initialized
   function initVideos() {
     function onVideosCarouselClick(e) {
       if(e && e.target){
         Utils.sendMessage({
-          event: eventPrefix + ':widget_modal_open',
+          event: modalOpenEvent,
           clicked: Utils.attr(Utils.getRealTargetByClass(e.target, 'carousel-item'), 'data-id')
         });
 
@@ -144,27 +135,11 @@
     });
   }
 
-  //The global deps of the carousel have to be present before executing its logic.
-  var depsCheck = 0;
-  var depsCheckLimit = 1000;
-  var deps = ['jQuery', 'Carousel', 'Utils', 'Analytics'];
-
-  (function initCarousel() {
-    setTimeout(function() {
-      console.log('deps poll...');
-
-      var ready = true;
-      for (var i = 0; i < deps.length; i++)
-        if ('undefined' === typeof window[deps[i]])
-          ready = false;
-
-      if (ready) {
-        initAnalytics();
-        initVideos();
-      } else if (++depsCheck < depsCheckLimit) {
-        initCarousel()
-      }
-    }, 5);
-  })();
-
+  //global deps check before execute
+  Utils.globalPoll(
+    ['jQuery', 'Carousel', 'Analytics'],
+    function(){
+      initAnalytics();
+      initVideos();
+  });
 }());

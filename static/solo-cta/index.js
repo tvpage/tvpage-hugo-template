@@ -77,54 +77,49 @@ function loadScript(options, cback){
 
 //builds the document html for an iframe.
 function getIframeHtml(o){
-  var html = tmpl('<head>' +
-  '  <base target="_blank"/>'+
-  '  <link rel=\'dns-prefetch\' href=\'//youtube.com\' />' +
-  '  <link rel=\'dns-prefetch\' href=\'//googlevideo.com\' />' +
-  '  <link rel=\'dns-prefetch\' href=\'//fonts.gstatic.com\' />' +
-  '</head><body class="{className}" data-domain="{domain}" data-id="{id}" onload="'+
-  'var d=document,' +
-  'h=d.head,' +
-  'loadJavaScript = function(u){'+
-  '  var s=d.createElement(\'script\');' +
-  '  s.src=u;'+
-  '  h.appendChild(s);' +
-  '},' +
-  'loadCSS = function(u,c){'+
-  '  var l=d.createElement(\'link\');'+
-  '  l.rel=\'stylesheet\';'+
-  '  l.href=u;'+
-  '  h.appendChild(l);' +
-  '};', o);
-  var load = function(arr, type, cback){
+  function load(arr, type){
     arr = arr.filter(Boolean);
     
     var ret = '';
     var arrLength = arr.length;
 
     for (var i = 0; i < arrLength; i++){
-      var last = arrLength == i + 1;
-
-      ret += 'load' + type + '(\'' + arr[i] + '\'' + (last && cback ? (',' + cback) : '') + ');';
+      ret += 'append' + type + '(\'' + arr[i] + '\');';
     }
 
     return ret;
   };
 
-  html += load(o.js, 'JavaScript') + load(o.css, 'CSS');
-  
-  //closing the body tag
-  html += '">';
+  var html = config.templates.iframeContent.trim();
 
-  html += '<div id="bscheck" class="invisible"></div>';//helper to check bs is loaded
+  html += '<div id="bscheck" class="invisible"></div>';
   
   if(o.style){
     html += '<style>' + o.style + '</style>';
   }
-  
-  html += tmpl((o.html || '').trim(), o.context);
 
-  return html;
+  html += o.html || '';
+
+  o.context.onload = '' +
+  'var d=document,' +
+  '    h=d.head;' +
+
+  'function appendScript(u){'+
+  '  var s=d.createElement(\'script\');' +
+  '  s.src=u;'+
+  '  h.appendChild(s);' +
+  '}' +
+
+  'function appendLink(u){'+
+  '  var l=d.createElement(\'link\');'+
+  '  l.rel=\'stylesheet\';'+
+  '  l.href=u;'+
+  '  h.appendChild(l);' +
+  '};' +
+  load(o.js, 'Script') +
+  load(o.css, 'Link');
+
+  return tmpl(html, o.context);
 };
 
 //we have a generic host css per widget type that we only include once.
@@ -314,13 +309,14 @@ function widgetModalRender(){
       '//www.youtube.com/iframe_api',
       '//a.tvpage.com/tvpa.min.js',
       '//imasdk.googleapis.com/js/sdkloader/ima3.js',
-      getPlayerUrl(),
+      //getPlayerUrl(),
+      baseUrl + '/playerlib-debug.min.js',
       debug ? libsPath + "/utils.js" : "",
       debug ? libsPath + "/analytics.js" : "",
       debug ? libsPath + "/player.js" : "",
       debug ? libsPath + "/carousel.js" : "",
-      debug ? baseUrl + "/libs/rail.js" : "",
-      debug ? baseUrl + "/libs/modal.js" : "",
+      debug ? libsPath + "/rail.js" : "",
+      debug ? libsPath + "/modal.js" : "",
       debug ? jsPath + "/vendor/jquery.js" : "",
       debug && !isMobile ? jsPath + "/vendor/perfect-scrollbar.min.js" : "",
       debug ? jsPath + mobilePath + "/modal/index.js" : "",
@@ -328,12 +324,12 @@ function widgetModalRender(){
     ],
     css: [
       debug ? baseUrl + '/bootstrap/dist/css/bootstrap.css' : '',
-      debug && isMobile ? baseUrl + "/slick/slick.css" : '',
-      isMobile ? baseUrl + '/slick/mobile/custom.css' : '',
-      !isMobile ? baseUrl + '/slick/custom.css' : '',
+      debug ? baseUrl + "/slick/slick.css" : '',
+      debug && isMobile ? baseUrl + '/slick/mobile/custom.css' : '',
+      debug && !isMobile ? baseUrl + '/slick/custom.css' : '',
       debug && !isMobile ? cssPath + "/vendor/perfect-scrollbar.min.css" : "",
       debug ? cssPath + mobilePath + "/modal/styles.css" : '',
-      debug ? "" : cssPath + mobilePath + "/modal/styles.min.css"
+      debug ? '' : cssPath + mobilePath + "/modal/styles.min.css"
     ]
   }));
 

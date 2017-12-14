@@ -11,7 +11,8 @@ module.exports = function(grunt) {
         css: {
           files: {
             'css/modal/styles.css': 'css/modal/styles.css',
-            'css/mobile/modal/styles.css': 'css/mobile/modal/styles.css'
+            'css/mobile/modal/styles.css': 'css/mobile/modal/styles.css',
+            'css/styles.css': 'css/styles.css'
           }
         }
       },
@@ -25,6 +26,7 @@ module.exports = function(grunt) {
             'dist/css/styles.min.css': [
               '../bootstrap/dist/css/bootstrap.css',
               '../slick/slick.css',
+              '../slick/custom.css',
               'css/styles.css'
             ],
             'dist/css/modal/styles.min.css': [
@@ -39,6 +41,7 @@ module.exports = function(grunt) {
             'dist/css/mobile/modal/styles.min.css': [
               '../bootstrap/dist/css/bootstrap.css',
               '../slick/slick.css',
+              '../slick/mobile/custom.css',
               'css/mobile/modal/styles.css'
             ]
           }

@@ -1,5 +1,12 @@
 {
   iframe: '<iframe id="tvp-{{ ($.Scratch.Get "settings").name }}-iframe" src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe>',
+  iframeContent: '<head>' +
+    '<base target="_blank"/>' +
+    '<link rel="dns-prefetch" href="//youtube.com" />' +
+    '<link rel="dns-prefetch" href="//googlevideo.com" />' +
+    '<link rel="dns-prefetch" href="//fonts.gstatic.com" />' +
+  '</head>' +
+  '<body class="{className}" data-domain="{domain}" data-id="{id}" onload="{onload}">',
   base: {{- (partial (printf "%s/templates/base.html" .Type) .) -}},
   videos: {
     list: {{- (partial (printf "%s/templates/videos/list.html" .Type) .) -}},

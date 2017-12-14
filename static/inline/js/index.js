@@ -5,6 +5,7 @@
   var firstVideo = config.channel.videos[0];
   var channelParams = config.channel.parameters;
   var eventPrefix = config.events.prefix;
+  var resizeEvent = eventPrefix + ':widget_resize';
   var apiBaseUrl = config.api_base_url;
   var videosEndpoint = apiBaseUrl + '/channels/' + config.channelId + '/videos';
   var videosOrderParams = {
@@ -33,7 +34,7 @@
 
   function sendResizeMessage(){
     Utils.sendMessage({
-      event: eventPrefix + ':widget_resize',
+      event: resizeEvent,
       height: Utils.getWidgetHeight()
     });
   }
@@ -46,14 +47,9 @@
 
   (function cssPoll() {
     setTimeout(function() {
-      if(config.debug){
-        console.log('css loaded poll...'); 
-      }
-
       var bsCheckEl = document.getElementById('bscheck');
-      var bsCheckElVisibility = getComputedStyle(bsCheckEl, null).getPropertyValue('visibility');
-
-      if ('hidden' === bsCheckElVisibility) {
+      
+      if ('hidden' === getComputedStyle(bsCheckEl, null).getPropertyValue('visibility')){
         var widgetTitleEl = document.getElementById('widget-title');
         widgetTitleEl.innerHTML = firstVideo.title;
         widgetTitleEl.classList.add('ready');
@@ -63,10 +59,7 @@
 
         sendResizeMessage();
 
-        Utils.profile(config, {
-          metric_type: 'skeleton_shown',
-          metric_value: Utils.now('parent')
-        });
+        config.profiling['skeleton_shown'] = Utils.now('parent')
       } else if (++cssLoadedCheck < cssLoadedCheckLimit) {
         cssPoll()
       }
@@ -95,10 +88,7 @@
   
   function onWidgetReady(){
     if(productsCarouselReady && videosCarouselReady){
-      Utils.sendMessage({
-        event: eventPrefix + ':widget_ready',
-        height: Utils.getWidgetHeight()
-      });
+      sendResizeMessage();
 
       config.profiling['widget_ready'] = Utils.now('parent');
 
@@ -427,29 +417,13 @@
     player.initialize();
   };
 
-  //The global deps of the carousel have to be present before executing its logic.
-  var depsCheck = 0;
-  var depsCheckLimit = 1000;
-  var deps = ['jQuery','Utils','Player', 'Carousel', 'Analytics','_tvpa'];
-
-  (function initInline(){
-    setTimeout(function(){
-      console.log('deps poll...');
-      
-      var ready = true;
-      for (var i = 0; i < deps.length; i++)
-        if ('undefined' === typeof window[deps[i]])
-          ready = false;
-
-      if(ready){
-        initPlayer();
-        initVideos();
-        initAnalytics();
-        initProducts();
-      }else if(++depsCheck < depsCheckLimit){
-        initInline()
-      }
-    },10);
-  })();
-
+  //global deps check before execute
+  Utils.globalPoll(
+    ['jQuery','Utils','Player', 'Carousel', 'Analytics','_tvpa'],
+    function(){
+      initPlayer();
+      initVideos();
+      initAnalytics();
+      initProducts();
+  });
 }());

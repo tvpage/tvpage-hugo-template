@@ -45,6 +45,10 @@
     }
   }
   
+  Modal.prototype.updateTitle = function(title){
+    this.el.querySelector('#modalTitle').innerHTML = title || '';
+  }
+
   Modal.prototype.onShownBSModal = function(e){
     var onShown = this.options.onShown;
   
