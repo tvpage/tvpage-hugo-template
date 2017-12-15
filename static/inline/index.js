@@ -150,6 +150,10 @@ function getPlayerUrl(){
   return url;
 }
 
+function widgetHolderResize(height){
+  config.holder.style.height = height + 'px';
+}
+
 //here's the first HTML write we do to the host page, this is the fastest way to do it
 //refer to https://jsperf.com/insertadjacenthtml-perf/3
 function widgetRender(){
@@ -233,13 +237,22 @@ function widgetRender(){
 }
 
 function onWidgetLoad(data){
+  saveProfileLog(config, 'data_returned');
+
   if(data && data.length){
+    //udenfined :(
+    console.log(config.holderFirstSize)
+
+    widgetHolderResize(config.holderFirstSize);
+
+    config.holder.classList.add('show');
+    
     config.channel.videos = data;
 
-    widgetRender();
+    window.postMessage({
+      event: config.events.prefix + ':widget_data_returned'
+    }, '*');
   }
-
-  saveProfileLog(config, 'data_returned');
 };
 
 //api calls/loading, is here were we call the most important api(s) and it's the start 
@@ -266,6 +279,7 @@ function widgetLoad(){
   }, onWidgetLoad);
 }
 
+widgetRender();
 widgetLoad();
 
 //handle the widget events
@@ -285,11 +299,15 @@ window.addEventListener("message", function(e){
     onWidgetResize(e);
   }
 
+  if('widget_initialized' === eventName){
+    onWidgetInitialized(e);
+  }
+
   if (config.__windowCallbackFunc__)
     config.__windowCallbackFunc__(e);
 });
 
 //event handlers
 function onWidgetResize(e) {
-  config.holder.style.height = e.data.height + 'px';
+  widgetHolderResize(e.data.height);
 }

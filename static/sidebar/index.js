@@ -223,14 +223,14 @@ function widgetRender(){
 }
 
 function onWidgetLoad(data){
+  saveProfileLog(config, 'data_returned');
+  
   if(data && data.length){
     config.channel.videos = data;
 
     widgetRender();
     widgetModalRender();
   }
-  
-  saveProfileLog(config, 'data_returned');
 };
 
 //api calls/loading, is here were we call the most important api(s) and it's the start 

@@ -1,12 +1,19 @@
-"*[class^=tvp-] {" +
-  "box-sizing: border-box;" +
-"}" +
-
 ".tvp-inline-holder {" +
   "position: relative;" +
+  "box-sizing: border-box;" +
+  "visibility: hidden;" +
+  "opacity: 0;" +
+  "pointer-events: none;" +
+"}" +
+
+".tvp-inline-holder.show {" +
+  "visibility: visible;" +
+  "opacity: 1;" +
+  "pointer-events: auto;" +
 "}" +
 
 ".tvp-inline-holder > iframe {" +
+  "box-sizing: border-box;" +
   "top: 0;" +
   "left: 0;" +
   "width: 1px;" +

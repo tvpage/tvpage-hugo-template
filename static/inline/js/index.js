@@ -1,22 +1,22 @@
-(function() {  
+(function () {
   var config = window.parent.__TVPage__.config[Utils.attr(document.body, 'data-id')];
-  var firstVideo = config.channel.videos[0];
+  var firstVideo;
   var channelParams = config.channel.parameters;
   var eventPrefix = config.events.prefix;
   var resizeEvent = eventPrefix + ':widget_resize';
   var playerChangeEvent = eventPrefix + ':widget_player_change';
+  var dataReturnedEvent = eventPrefix + ':widget_data_returned';
   var apiBaseUrl = config.api_base_url;
   var channelVideosEndpoint = apiBaseUrl + '/channels/' + config.channelId + '/videos';
   var videosOrderParams = {
     o: config.videos_order_by,
     od: config.videos_order_direction
   };
-  var productsEndpoint = apiBaseUrl + '/videos/' + firstVideo.id + '/products';
   var productsOrderParams = {
     o: config.products_order_by,
     od: config.products_order_direction
   };
-  var channelVideos = config.channel.videos;
+  var channelVideos;
   var templates = config.templates;
   var templatesMobile = templates.mobile;
   var skeletonEl = document.getElementById('skeleton');
@@ -31,7 +31,7 @@
   var isFirstVideoPlay = true;
   var isFirstPlayButtonClick = true;
 
-  function sendResizeMessage(){
+  function sendResizeMessage() {
     Utils.sendMessage({
       event: resizeEvent,
       height: Utils.getWidgetHeight()
@@ -41,44 +41,45 @@
   //we check when critical css has loaded/parsed. At this step, we have data to
   //update the skeleton. We wait until css has really executed in order to send
   //the right measurements.
-  Utils.poll(function(){
-    return 'hidden' === Utils.getStyle(Utils.getById('bscheck'), 'visibility');
-  },
-  function(){
-    var widgetTitleEl = Utils.getById('widget-title');
-    
-    widgetTitleEl.innerHTML = firstVideo.title;
+  Utils.addClass(skeletonEl, 'ready');
+  
+  config.holderFirstSize = Utils.getWidgetHeight();
 
-    Utils.addClass(widgetTitleEl, 'ready');
-    Utils.addClass(skeletonEl, 'ready');
+  config.profiling['skeleton_shown'] = Utils.now('parent')
+  
+  // Utils.poll(function () {
+  //     return 'hidden' === Utils.getStyle(Utils.getById('bscheck'), 'visibility');
+  //   },
+  //   function () {
+  //     Utils.addClass(skeletonEl, 'ready');
 
-    sendResizeMessage();
-    
-    config.profiling['skeleton_shown'] = Utils.now('parent')
-  });
+  //     config.holderFirstSize = Utils.getWidgetHeight();
 
-  function analyticsPKTrack(product){
-    analytics.track('pk',{
+  //     config.profiling['skeleton_shown'] = Utils.now('parent')
+  //   });
+
+  function analyticsPKTrack(product) {
+    analytics.track('pk', {
       vd: product.entityIdParent,
       ct: product.id,
       pg: config.channelId
     });
   }
 
-  function analyticsPITrack(data){
+  function analyticsPITrack(data) {
     for (var i = 0; i < data.length; i++) {
       var product = data[i];
-      
-      analytics.track('pi',{
+
+      analytics.track('pi', {
         vd: product.entityIdParent,
         ct: product.id,
         pg: config.channelId
       });
     }
   }
-  
-  function onWidgetReady(){
-    if(productsCarouselReady && videosCarouselReady){
+
+  function onWidgetReady() {
+    if (productsCarouselReady && videosCarouselReady) {
       sendResizeMessage();
 
       config.profiling['widget_ready'] = Utils.now('parent');
@@ -89,51 +90,51 @@
   }
 
   //if the video  change comes auto from the player we don't need to tell the player to play
-  function onWidgetVideoChange(videoId, fromPlayer){
-    if(!fromPlayer)
+  function onWidgetVideoChange(videoId, fromPlayer) {
+    if (!fromPlayer)
       player.play(videoId);
 
     productsCarousel.endpoint = apiBaseUrl + '/videos/' + videoId + '/products';
-    productsCarousel.load('render', function(data){
+    productsCarousel.load('render', function (data) {
       analyticsPITrack(data);
-      
-      if(featuredProduct){
+
+      if (featuredProduct) {
         featuredProduct.data = data[0];
         featuredProduct.render();
       }
     });
   }
-  
+
   //when a videos carousel element is clicked
-  function initVideos(){
-    function onVideosCarouselClick(e){
+  function initVideos() {
+    function onVideosCarouselClick(e) {
       Utils.stopEvent(e);
 
-      if(e && e.target){
+      if (e && e.target) {
         var target = Utils.getRealTargetByClass(e.target, 'carousel-item');
-        
-        if(target){
+
+        if (target) {
           onWidgetVideoChange(target.getAttribute('data-id'));
         }
       }
     }
 
-    function onVideosCarouselReady(){
+    function onVideosCarouselReady() {
       videosCarouselReady = true;
-      
+
       Utils.remove(skeletonEl.querySelector('.videos-skel-delete'));
-      
+
       videosCarousel.loadNext('render');
 
       onWidgetReady();
     }
 
-    function onVideosCarouselLoad(data){
+    function onVideosCarouselLoad(data) {
       player.addAssets(data);
       config.channel.videos = channelVideos.concat(data);
     }
 
-    videosCarousel = new Carousel('videos',{
+    videosCarousel = new Carousel('videos', {
       alignArrowsY: ['center', '.video-image-icon'],
       page: 0,
       endpoint: channelVideosEndpoint,
@@ -148,25 +149,23 @@
         list: templates.videos.list,
         item: templates.videos.item
       },
-      responsive: [
-        {
-          breakpoint: 600,
-          settings: {
-            slidesToShow: 2,
-            slidesToScroll: 2
-          }
+      responsive: [{
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2
         }
-      ],
+      }],
       onReady: onVideosCarouselReady,
       onLoad: onVideosCarouselLoad,
-      onResize:sendResizeMessage
+      onResize: sendResizeMessage
     }, config);
 
     videosCarousel.initialize();
     videosCarousel.render();
   };
 
-  function initAnalytics(){
+  function initAnalytics() {
     analytics = new Analytics({
       domain: location.hostname
     }, config);
@@ -175,99 +174,99 @@
     analytics.track('ci');
   };
 
-  function initProducts(){
+  function initProducts() {
     var prodTemplates = templates.products;
 
-    function FeaturedProduct(selector){
+    function FeaturedProduct(selector) {
       this.el = Utils.getById(selector);
       this.data = {};
-      
+
       this.handleClick();
     }
 
-    FeaturedProduct.prototype.handleClick = function(){
+    FeaturedProduct.prototype.handleClick = function () {
       var that = this;
 
-      this.el.addEventListener('click', function(e){
+      this.el.addEventListener('click', function (e) {
         analyticsPKTrack(that.data);
       });
     }
 
-    FeaturedProduct.prototype.render = function(){
+    FeaturedProduct.prototype.render = function () {
       var html = '';
       var data = this.data;
-      
-      if(data && prodTemplates && prodTemplates.featured){
+
+      if (data && prodTemplates && prodTemplates.featured) {
         html = Utils.tmpl(prodTemplates.featured, data);
       }
-      
+
       this.el.innerHTML = html;
     }
 
-    function parseProducts(item){
-      item.title = Utils.trimText(item.title, 25);//this has to be an option
+    function parseProducts(item) {
+      item.title = Utils.trimText(item.title, 25); //this has to be an option
       item.price = Utils.trimPrice(item.price);
       item.actionText = item.actionText || 'View Details';
       return item;
     }
 
-    function onProductsCarouselReady(){
+    function onProductsCarouselReady() {
       productsCarouselReady = true;
 
       onWidgetReady();
     }
 
-    function onClick(e){
+    function onClick(e) {
       Utils.stopEvent(e);
 
       var target = Utils.getRealTargetByClass(e.target, 'product');
 
-      if(target){
+      if (target) {
         var targetId = target.getAttribute('data-id');
 
-        if(targetId){
+        if (targetId) {
           featuredProduct.data = productsCarousel.getDataItemById(targetId);
           featuredProduct.render();
         }
-      }else{
-        if(config.debug){
+      } else {
+        if (config.debug) {
           console.log('click target is bad:', e.target);
         }
       }
     }
 
     //this is just the first load
-    function onProductsLoad(data){
-      if(data){
+    function onProductsLoad(data) {
+      if (data) {
         featuredProduct = new FeaturedProduct('featured-product');
         featuredProduct.data = data[0];
         featuredProduct.render();
 
         //delayed 1st pi track
-        setTimeout(function(){
+        setTimeout(function () {
           analyticsPITrack(data);
         }, 3000);
       }
     }
 
-    if(Utils.isMobile){
+    if (Utils.isMobile) {
       //track the pi here with event delegation
-      document.addEventListener('click', function(e){
+      document.addEventListener('click', function (e) {
         var target = Utils.getRealTargetByClass(e.target, 'product');
 
-        if(target){
+        if (target) {
           var targetId = Utils.attr(target, 'data-id') || null;
 
-          if(targetId){
+          if (targetId) {
             analyticsPKTrack(productsCarousel.getDataItemById(targetId));
           }
         }
       }, false);
 
-      productsCarousel = new Carousel('products',{
+      productsCarousel = new Carousel('products', {
         dotsCenter: true,
         dotsMax: 10,
-        endpoint: productsEndpoint,
+        endpoint: apiBaseUrl + '/videos/' + firstVideo.id + '/products',
         clean: true,
         loadMore: false,
         itemsTarget: '.slick-carousel',
@@ -275,32 +274,30 @@
           list: templatesMobile.products.list,
           item: templatesMobile.products.item
         },
-        responsive: [
-          {
-            breakpoint: 600,
-            settings: {
-              dots: true,
-              arrows: false
-            }
+        responsive: [{
+          breakpoint: 600,
+          settings: {
+            dots: true,
+            arrows: false
           }
-        ],
+        }],
         params: productsOrderParams,
         parse: parseProducts,
         onReady: onProductsCarouselReady,
-        onResize:sendResizeMessage
+        onResize: sendResizeMessage
       }, config);
-      
+
       productsCarousel.initialize();
       productsCarousel.load('render', analyticsPITrack);
-    }else{
-      productsCarousel = new Carousel('products',{
+    } else {
+      productsCarousel = new Carousel('products', {
         alignArrowsY: ['center', '.carousel-dot-0'],
         dotsCenter: true,
         dots: true,
         dotsClass: 'products-carousel-dots',
         clean: true,
         loadMore: false,
-        endpoint: productsEndpoint,
+        endpoint: apiBaseUrl + '/videos/' + firstVideo.id + '/products',
         itemsTarget: '.slick-carousel',
         itemsPerPage: 4,
         pageWrapStart: '<div class="carousel-item" >',
@@ -321,23 +318,23 @@
     }
   };
 
-  function initPlayer(){
+  function initPlayer() {
     function onPlayerNext(next) {
       var nextVideoId = next.assetId;
-      
+
       if (nextVideoId) {
         onWidgetVideoChange(nextVideoId);
       }
     }
 
-    function onPlayerChange(e, currentAsset){
+    function onPlayerChange(e, currentAsset) {
       Utils.sendMessage({
         event: playerChangeEvent,
         e: e,
-        stateData : currentAsset
+        stateData: currentAsset
       });
 
-      if("tvp:media:videoplaying" === e && isFirstVideoPlay){
+      if ("tvp:media:videoplaying" === e && isFirstVideoPlay) {
         isFirstVideoPlay = false;
 
         Utils.profile(config, {
@@ -347,11 +344,11 @@
       }
     }
 
-    function onPlayerClick(e){
-      if(e && e.target){
+    function onPlayerClick(e) {
+      if (e && e.target) {
         var target = Utils.getRealTargetByClass(e.target, 'tvplayer-playbutton');
-          
-        if(target && isFirstPlayButtonClick){
+
+        if (target && isFirstPlayButtonClick) {
           isFirstPlayButtonClick = false;
 
           config.profiling['video_playing'] = {
@@ -361,8 +358,8 @@
       }
     }
 
-    function onPlayerReady(){
-      if(!playerReadyCalled){
+    function onPlayerReady() {
+      if (!playerReadyCalled) {
         playerReadyCalled = true;
 
         config.profiling['video_playing'] = {
@@ -370,7 +367,7 @@
         }
       }
     }
-    
+
     player = new Player('player-el', {
       data: config.channel.videos,
       ciTrack: true,
@@ -383,13 +380,28 @@
     player.initialize();
   };
 
-  //global deps check before execute
-  Utils.globalPoll(
-    ['jQuery','Utils','Player', 'Carousel', 'Analytics','_tvpa'],
-    function(){
-      initPlayer();
-      initVideos();
-      initAnalytics();
-      initProducts();
+  window.parent.addEventListener('message', function (e) {
+    if (!Utils.isEvent(e) || e.data.event !== dataReturnedEvent) {
+      return;
+    }
+
+    channelVideos = config.channel.videos;
+    
+    firstVideo = channelVideos[0];
+
+    var widgetTitleEl = Utils.getById('widget-title');
+    widgetTitleEl.innerHTML = firstVideo.title;
+
+    Utils.addClass(widgetTitleEl, 'ready');
+
+    //global deps check before execute
+    Utils.globalPoll(
+      ['jQuery', 'Utils', 'Player', 'Carousel', 'Analytics'],
+      function () {
+        initPlayer();
+        initVideos();
+        initAnalytics();
+        initProducts();
+      });
   });
 }());

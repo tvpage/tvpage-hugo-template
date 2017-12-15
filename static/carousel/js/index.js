@@ -25,12 +25,13 @@
     return 'hidden' === Utils.getStyle(Utils.getById('bscheck'), 'visibility');
   },
   function(){
+    Utils.addClass(skeletonEl, 'ready');
+
     var widgetTitleEl = Utils.getById('widget-title');
     
     widgetTitleEl.innerHTML = config.title_text;
 
     Utils.addClass(widgetTitleEl, 'ready');
-    Utils.addClass(skeletonEl, 'ready');
 
     sendResizeMessage();
     
