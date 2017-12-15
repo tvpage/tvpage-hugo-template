@@ -19,7 +19,7 @@
   var channelVideos;
   var templates = config.templates;
   var templatesMobile = templates.mobile;
-  var skeletonEl = document.getElementById('skeleton');
+  var skeletonEl = Utils.getById('skeleton');
   var player;
   var analytics;
   var productsCarousel;

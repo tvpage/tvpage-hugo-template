@@ -379,19 +379,18 @@
       throw new Error("first argument shall be a function");
     }
 
-    var checkCount = 0;
+    var count = 0;
 
     (function poller() {
       setTimeout(function () {
-        if (check()) {
-          if (isFunction(callback))
-            callback();
-        } else if (++checkCount < 1000) {
+        if (check() && isFunction(callback)) {
+          callback();
+        } else if (++count < 1000) {
           poller();
         } else {
           throw new Error("poll condition not met after checking 1000 times");
         }
-      }, 10);
+      }, 30);
     }())
   };
 

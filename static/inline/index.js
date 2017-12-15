@@ -31,8 +31,6 @@ function remove(el){
   el.parentNode.removeChild(el);
 }
 
-function isEvent(e){
-  return e && e.data && e.data.event;
 }
 
 function saveProfileLog(c, m){
@@ -284,14 +282,17 @@ widgetLoad();
 
 //handle the widget events
 window.addEventListener("message", function(e){
-  if(!isEvent(e)){
+  e = e || {};
+
+  var event = (e.data || {}).event;
+
+  if(!event)
     return;
-  }
 
+  var eventArr = event.split(':');
   var eventName = '';
-  var eventArr = e.data.event.split(':');
 
-  if(eventArr && eventArr.length && eventArr[0] === config.events.prefix){
+  if(eventArr[0] === config.events.prefix){
     eventName = eventArr[1];
   }
 
