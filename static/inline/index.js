@@ -101,7 +101,9 @@ function getIframeHtml(o){
   '(function(d){' +
     'var h = d.head;' +
   
-    (createEl + "") +
+    'function createEl(t){' +
+      'return d.createElement(t)'+
+    '}'+
 
     'function appendScript(u){'+
     '  var s = createEl(\'script\');' +
