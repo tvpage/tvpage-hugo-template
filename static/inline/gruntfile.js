@@ -1,4 +1,4 @@
-module.exports = function(grunt) {
+module.exports = function (grunt) {
   grunt.initConfig({
     watch: {
       css: {
@@ -9,7 +9,9 @@ module.exports = function(grunt) {
     autoprefixer: {
       css: {
         files: {
-          'css/styles.css': 'css/styles.css'
+          '../slick/slick.css': '../slick/slick.css',
+          '../slick/mobile/custom.css': '../slick/mobile/custom.css',
+          '..//slick/custom.css': '..//slick/custom.css'
         }
       }
     },
@@ -19,16 +21,20 @@ module.exports = function(grunt) {
         roundingPrecision: -1
       },
       desktop: {
-          files: {
-            'dist/css/styles.min.css': [
-              '../bootstrap/dist/css/bootstrap.css',
-              '../slick/slick.css',
-              'css/styles.css'
-            ],
-            'dist/css/host.min.css': [
-              'css/host.css'
-            ]
-          }
+        files: {
+          'dist/css/styles.min.css': [
+            '../slick/slick.css',
+            '../slick/custom.css'
+          ]
+        }
+      },
+      mobile: {
+        files: {
+          'dist/css/styles.min.css': [
+            '../slick/slick.css',
+            '../slick/mobile/custom.css'
+          ]
+        }
       }
     },
     uglify: {
@@ -42,12 +48,12 @@ module.exports = function(grunt) {
         files: {
           'dist/js/scripts.min.js': [
             'js/vendor/jquery.js',
-            'js/vendor/slick-min.js',
-            '../libs/utils.js',
             '../libs/analytics.js',
             '../libs/player.js',
-            '../libs/carousel.js',
-            'js/index.js'
+            '../libs/carousel.js'
+          ],
+          'dist/js/index.min.js': [
+            'js/index.js',
           ]
         }
       }

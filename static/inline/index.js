@@ -31,8 +31,6 @@ function remove(el){
   el.parentNode.removeChild(el);
 }
 
-}
-
 function saveProfileLog(c, m){
   if(!window.performance || !c)
     return;
@@ -89,8 +87,6 @@ function getIframeHtml(o){
   };
 
   var html = config.templates.iframeContent.trim();
-
-  html += '<div id="bscheck" class="invisible"></div>';
   
   if(o.style){
     html += '<style>' + o.style + '</style>';
@@ -114,6 +110,7 @@ function getIframeHtml(o){
   '  l.href=u;'+
   '  h.appendChild(l);' +
   '};' +
+  
   load(o.js, 'Script') +
   load(o.css, 'Link');
 
@@ -132,7 +129,7 @@ function getInitialHtml(){
     html += '<style id="' + styleId + '">' + hostStyles + '</style>';
   }
 
-  html += tmpl('<div id="{id}-holder" class="tvp-{type}-holder">' + templates.iframe + '</div>', config);
+  html += tmpl('<div id="{id}-holder" class="tvp-{type}-holder tvp-hide">' + templates.iframe + '</div>', config);
 
   return html;
 }
@@ -178,26 +175,25 @@ function widgetRender(){
       context: config,
       html: templates.base,
       className: isMobile ? 'mobile' : '',
+      style: config.css.base,
       js: [
         '//www.youtube.com/iframe_api',
         '//a.tvpage.com/tvpa.min.js',
-        '//imasdk.googleapis.com/js/sdkloader/ima3.js',
+        //'//imasdk.googleapis.com/js/sdkloader/ima3.js',
         //getPlayerUrl(),
         baseUrl + '/playerlib-debug.min.js',
-
+        
         debug ? jsPath + '/vendor/jquery.js' : '',
         debug ? libsPath + '/analytics.js' : '',
         debug ? libsPath + '/carousel.js' : '',
         debug ? libsPath + '/player.js' : '',
-        debug ? jsPath + '/index.js' : '',
+        
         debug ? '' : jsPath + "/scripts.min.js"
       ],
       css: [
-        debug ? baseUrl + '/bootstrap/dist/css/bootstrap.css' : '',
         debug ? baseUrl + '/slick/slick.css' : '',
-        isMobile ? baseUrl + '/slick/mobile/custom.css' : '',
-        !isMobile ? baseUrl + '/slick/custom.css' : '',
-        debug ? cssPath + '/styles.css' : '',
+        debug && isMobile ? baseUrl + '/slick/mobile/custom.css' : '',
+        debug && !isMobile ? baseUrl + '/slick/custom.css' : '',
         debug ? '' : cssPath + '/styles.min.css'
       ]
     }));
@@ -238,18 +234,16 @@ function onWidgetLoad(data){
   saveProfileLog(config, 'data_returned');
 
   if(data && data.length){
-    //udenfined :(
-    console.log(config.holderFirstSize)
-
-    widgetHolderResize(config.holderFirstSize);
-
-    config.holder.classList.add('show');
-    
     config.channel.videos = data;
 
-    window.postMessage({
-      event: config.events.prefix + ':widget_data_returned'
-    }, '*');
+    if(window.postMessage){
+      window.parent.postMessage({
+        event: config.events.prefix + ':widget_data_returned'
+      }, '*');
+    }
+    
+    config.holder.classList.remove('tvp-hide');
+    config.holder.classList.add('tvp-show');
   }
 };
 
@@ -277,6 +271,7 @@ function widgetLoad(){
   }, onWidgetLoad);
 }
 
+//first thing that is called
 widgetRender();
 widgetLoad();
 

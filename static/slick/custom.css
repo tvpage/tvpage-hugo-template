@@ -1,7 +1,8 @@
 /* arrows */
 .slick-arrow {
   top: 50%;
-  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
   position: absolute;
   color: transparent;
   width: 30px;

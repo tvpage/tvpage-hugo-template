@@ -1,4 +1,10 @@
 (function () {
+  var logStyle = '' +
+  'color: blue;' +
+  'font-size: 14px;' +
+  'font-weight: bold;' +
+  'display: block;';
+
   function getById(id) {
     return document.getElementById(id);
   }
@@ -273,18 +279,16 @@
     return t;
   };
 
+  function log(msg) {
+    console.log('%c ' + (msg || ''), logStyle);
+  }
+
   function profile(config, params) {
     if (!hasKey(config, 'profile') || !config.profile) {
       return;
     }
 
-    var logStyle = '' +
-      'color: blue;' +
-      'font-size: 14px;' +
-      'font-weight: bold;' +
-      'display: block;';
-
-    console.log('%c ' + params.metric_type + ': ' + params.metric_value + 'ms', logStyle);
+    log(params.metric_type + ': ' + params.metric_value + 'ms');
 
     // loadScript({
     //   base: config.profile_base_url,
@@ -299,6 +303,8 @@
     // });
   }
 
+  Utils.log = log;
+  
   Utils.profile = profile;
 
   Utils.sendProfileData = function (config) {
@@ -390,7 +396,7 @@
         } else {
           throw new Error("poll condition not met after checking 1000 times");
         }
-      }, 30);
+      }, 10);
     }())
   };
 
@@ -442,7 +448,7 @@
         if (ready) {
           if (isFunction(callback))
             callback();
-        } else if (++globsCheck < 1000) {
+        } else if (++globsCheck < 10000) {
           poll();
         } else {
           throw new Error("missing global: " + missing);

@@ -17,7 +17,9 @@
     "exit": "^0.1.2",
     "github": "^11.0.0",
     "grunt": "^1.0.1",
+    "grunt-contrib-uglify": "^3.2.1",
     "grunt-sass": "*",
+    "js-string-escape": "^1.0.1",
     "karma": "^0.13.0",
     "karma-coverage": "^1.1.1",
     "karma-fixture": "^0.2.6",
@@ -26,5 +28,6 @@
     "karma-json-fixtures-preprocessor": "0.0.6",
     "karma-phantomjs-launcher": "^0.1.4",
     "xml2js": "^0.4.19"
-  }
+  },
+  "dependencies": {}
 }

@@ -5,19 +5,13 @@
     '<link rel="dns-prefetch" href="//youtube.com" />' +
     '<link rel="dns-prefetch" href="//googlevideo.com" />' +
     '<link rel="dns-prefetch" href="//fonts.gstatic.com" />' +
-    '<script src="{{ "/libs/utils.js" | relURL }}"></script>' +
-    '<style>' +
-      '.skeleton{' +
-        'visibility: hidden;' +
-        'opacity: 0;' +
-      '}' +
-      '.skeleton.ready{' +
-        'visibility: visible;' +
-        'opacity: 1;' +
-      '}' +
-    '</style>' +
+    {{- if (getenv "HUGO_DEBUG") -}}
+    '<script src="{{- "/libs/utils.js" | relURL -}}"></script>' +
+    {{- else -}}
+    '<script src="{{- "/libs/utils.min.js" | relURL -}}"></script>' +
+    {{- end -}}
   '</head>' +
-  '<body class="{className}" data-domain="{domain}" data-id="{id}" onload="{onload}">',
+  '<body class="{className}" data-id="{id}" onload="{onload}">',
   base: {{- (partial (printf "%s/templates/base.html" .Type) .) -}},
   products: {
     featured: {{- (partial (printf "%s/templates/products/featured.html" .Type) .) -}},

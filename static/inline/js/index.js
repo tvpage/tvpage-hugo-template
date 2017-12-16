@@ -19,7 +19,6 @@
   var channelVideos;
   var templates = config.templates;
   var templatesMobile = templates.mobile;
-  var skeletonEl = Utils.getById('skeleton');
   var player;
   var analytics;
   var productsCarousel;
@@ -37,26 +36,6 @@
       height: Utils.getWidgetHeight()
     });
   }
-
-  //we check when critical css has loaded/parsed. At this step, we have data to
-  //update the skeleton. We wait until css has really executed in order to send
-  //the right measurements.
-  Utils.addClass(skeletonEl, 'ready');
-  
-  config.holderFirstSize = Utils.getWidgetHeight();
-
-  config.profiling['skeleton_shown'] = Utils.now('parent')
-  
-  // Utils.poll(function () {
-  //     return 'hidden' === Utils.getStyle(Utils.getById('bscheck'), 'visibility');
-  //   },
-  //   function () {
-  //     Utils.addClass(skeletonEl, 'ready');
-
-  //     config.holderFirstSize = Utils.getWidgetHeight();
-
-  //     config.profiling['skeleton_shown'] = Utils.now('parent')
-  //   });
 
   function analyticsPKTrack(product) {
     analytics.track('pk', {
@@ -122,7 +101,7 @@
     function onVideosCarouselReady() {
       videosCarouselReady = true;
 
-      Utils.remove(skeletonEl.querySelector('.videos-skel-delete'));
+      Utils.remove(Utils.getById('skeleton').querySelector('.videos-skel-delete'));
 
       videosCarousel.loadNext('render');
 
@@ -227,10 +206,6 @@
         if (targetId) {
           featuredProduct.data = productsCarousel.getDataItemById(targetId);
           featuredProduct.render();
-        }
-      } else {
-        if (config.debug) {
-          console.log('click target is bad:', e.target);
         }
       }
     }
@@ -380,19 +355,14 @@
     player.initialize();
   };
 
-  window.parent.addEventListener('message', function (e) {
-    if (!Utils.isEvent(e) || e.data.event !== dataReturnedEvent) {
-      return;
-    }
+  Utils.poll(function () {
+    var videos = config.channel.videos;
 
+    return videos && videos.length;
+  }, function () {
     channelVideos = config.channel.videos;
-    
+
     firstVideo = channelVideos[0];
-
-    var widgetTitleEl = Utils.getById('widget-title');
-    widgetTitleEl.innerHTML = firstVideo.title;
-
-    Utils.addClass(widgetTitleEl, 'ready');
 
     //global deps check before execute
     Utils.globalPoll(
@@ -403,5 +373,11 @@
         initAnalytics();
         initProducts();
       });
+
+    var widgetTitleEl = Utils.getById('widget-title');
+    widgetTitleEl.innerHTML = firstVideo.title;
+
+    Utils.addClass(widgetTitleEl, 'ready');
   });
+
 }());

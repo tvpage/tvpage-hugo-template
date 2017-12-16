@@ -6,7 +6,11 @@
   "pointer-events: none;" +
 "}" +
 
-".tvp-inline-holder.show {" +
+".tvp-inline-holder.tvp-hide {" +
+  "height: 0 !important;" +
+"}" +
+
+".tvp-inline-holder.tvp-show {" +
   "visibility: visible;" +
   "opacity: 1;" +
   "pointer-events: auto;" +
