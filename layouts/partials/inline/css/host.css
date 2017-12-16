@@ -16,7 +16,7 @@
   "pointer-events: auto;" +
 "}" +
 
-".tvp-inline-holder > iframe {" +
+".tvp-inline-iframe {" +
   "box-sizing: border-box;" +
   "top: 0;" +
   "left: 0;" +

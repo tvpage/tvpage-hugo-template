@@ -47,6 +47,7 @@ function tmpl(t,d){
   });
 }
 
+//profile get the fastest ay to jsonp
 function loadScript(options, cback){
   var opts = options || {};
   var script = createEl('script');
@@ -95,24 +96,30 @@ function getIframeHtml(o){
   html += o.html || '';
 
   o.context.onload = '' +
-  'var d=document,' +
-  '    h=d.head;' +
 
-  'function appendScript(u){'+
-  '  var s=d.createElement(\'script\');' +
-  '  s.src=u;'+
-  '  h.appendChild(s);' +
-  '}' +
-
-  'function appendLink(u){'+
-  '  var l=d.createElement(\'link\');'+
-  '  l.rel=\'stylesheet\';'+
-  '  l.href=u;'+
-  '  h.appendChild(l);' +
-  '};' +
+  //take measurements,decide the best
+  '(function(d){' +
+    'var h = d.head;' +
   
-  load(o.js, 'Script') +
-  load(o.css, 'Link');
+    (createEl + "") +
+
+    'function appendScript(u){'+
+    '  var s = createEl(\'script\');' +
+    '  s.src = u;'+
+    '  h.appendChild(s);' +
+    '}' +
+
+    'function appendLink(u){'+
+    '  var l = createEl(\'link\');'+
+    '  l.rel = \'stylesheet\';'+
+    '  l.href = u;'+
+    '  h.appendChild(l);' +
+    '}' +
+  
+    load(o.js, 'Script') +
+    load(o.css, 'Link') +
+
+  '}(document))';
 
   return tmpl(html, o.context);
 };

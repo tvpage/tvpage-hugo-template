@@ -1,12 +1,20 @@
-"*[class^=tvp-] {" +
-  "box-sizing: border-box;" +
-"}" +
-
 ".tvp-inline-holder {" +
+	"box-sizing: border-box;" +
   "position: relative;" +
 "}" +
 
-".tvp-inline-holder > iframe {" +
+".tvp-inline-holder.tvp-hide {" +
+  "height: 0 !important;" +
+"}" +
+
+".tvp-inline-holder.tvp-show {" +
+  "visibility: visible;" +
+  "opacity: 1;" +
+  "pointer-events: auto;" +
+"}" +
+
+".tvp-inline-iframe {" +
+  "box-sizing: border-box;" +
   "top: 0;" +
   "left: 0;" +
   "width: 1px;" +
