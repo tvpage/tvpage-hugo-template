@@ -192,6 +192,8 @@
     function onProductsCarouselReady() {
       productsCarouselReady = true;
 
+      Utils.remove(Utils.getById('skeleton').querySelector('.dots-skel-delete'));
+
       onWidgetReady();
     }
 
