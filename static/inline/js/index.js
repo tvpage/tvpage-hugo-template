@@ -192,8 +192,6 @@
     function onProductsCarouselReady() {
       productsCarouselReady = true;
 
-      Utils.remove(Utils.getById('skeleton').querySelector('.dots-skel-delete'));
-
       onWidgetReady();
     }
 
@@ -245,6 +243,7 @@
         dotsMax: 10,
         endpoint: apiBaseUrl + '/videos/' + firstVideo.id + '/products',
         clean: true,
+        itemsPerPage: 1,
         loadMore: false,
         itemsTarget: '.slick-carousel',
         templates: {

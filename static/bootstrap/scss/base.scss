@@ -43,11 +43,8 @@ $slider_pull_x:   1rem !default;
 
 .hide-abs {
   position: absolute !important;
-  bottom: -5000px;
-  width: 100%;
-  left: 0;
-  right: 0;
-  margin: 0 auto !important;
+  bottom: -5000px !important;
+  left: -5000px !important;
 }
 
 .o-hidden {

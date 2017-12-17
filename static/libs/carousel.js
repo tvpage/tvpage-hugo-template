@@ -262,6 +262,8 @@
     if(this.slideCompare != slickArgs[2] && this.loadMore && !this.full){
       this.loadNext('render');
     }
+
+    this.handleLazy();
   };
 
   Carousel.prototype.addArrowIcons = function(){
@@ -303,13 +305,19 @@
     }, 10, this.options);
   };
 
-  Carousel.prototype.initSlick = function(slickEl){
+  Carousel.prototype.initSlick = function(slickEl, callback){
     var that = this;
 
     this.$slickEl = $(slickEl);
       
     this.$slickEl.on('init', function(){
-      that.onSlickInit.call(that);
+      setTimeout(function(){
+        that.onSlickInit.call(that);
+
+        if(Utils.isFunction(callback)){
+          callback();
+        }
+      },0);
     });
     
     this.$slickEl.on('beforeChange', function(){
@@ -327,7 +335,7 @@
     this.$slickEl.slick(this.getSlickConfig());
   };
 
-  Carousel.prototype.startSlick = function(slickEl){
+  Carousel.prototype.startSlick = function(slickEl, callback){
     //prep before slick init goes here
     this.handleDots();
 
@@ -340,12 +348,12 @@
         url: this.config.baseUrl + '/slick/slick-min.js'//need to move this to a global vendors?
       }).done(function(){
         setTimeout(function(){
-          that.initSlick(slickEl);
+          that.initSlick(slickEl, callback);
         },0);
       });
     } else {
       setTimeout(function(){
-        that.initSlick(slickEl);
+        that.initSlick(slickEl, callback);
       },0);
     }
   };
@@ -430,9 +438,9 @@
 
     var dotsId = 'dots-target-' + this.el.id;
 
-    this.appendDotsEl = document.createElement('div');
+    this.appendDotsEl = Utils.createEl('div');
     this.appendDotsEl.id = dotsId;
-    this.appendDotsEl.className = 'col py-3';
+    this.appendDotsEl.className = 'col py-3 hide-abs';
 
     var dotsClass = this.options.dotsClass;
     
@@ -502,11 +510,20 @@
       return html;
     }
 
+    
+    var itemsTargetEl;
+    var pagesHTML = renderPages.call(this, this.page, true);
+    var pagesHTMLLength = pagesHTML.length;
+
+    function renderBase(){
+      var holderEl = Utils.createEl('div');
+      holderEl.innerHTML = Utils.tmpl(this.templates.list, this.config);
+
+      itemsTargetEl = holderEl.querySelector(this.options.itemsTarget);
+    }
+
     //if it's a subsequent page we need to consider offset
     if(willUpdate){
-      var pagesHTML = renderPages.call(this, this.page, true);
-      var pagesHTMLLength = pagesHTML.length;
-
       for (var i = 0; i < pagesHTMLLength; i++) {
         this.$slickEl.slick('slickAdd', pagesHTML[i]);
       }
@@ -515,21 +532,48 @@
     }else{
       this.clean();
 
-      var holderEl = Utils.createEl('div');
+      renderBase.call(this);
 
-      holderEl.innerHTML = Utils.tmpl(this.templates.list, this.config);
+      itemsTargetEl.innerHTML = pagesHTML[0];
       
-      var itemsTargetEl = holderEl.querySelector(this.options.itemsTarget);
-
-      itemsTargetEl.innerHTML = renderPages.call(this);
+      pagesHTML.shift();
 
       this.el.appendChild(itemsTargetEl);
 
       if(moreThan1Page){
-        this.startSlick(itemsTargetEl);
+        var that = this;
+
+        this.startSlick(itemsTargetEl, function(){
+            var i;
+            var pagesHTMLLength = pagesHTML.length;
+
+          setTimeout(function(){
+            for (i = 0; i < pagesHTMLLength; i++) {
+              that.$slickEl.slick('slickAdd', pagesHTML[i]);
+            }
+
+            Utils.removeClass(that.el.querySelector('#dots-target-products'), 'hide-abs');
+            Utils.remove(Utils.getById('skeleton').querySelector('.dots-skel-delete'));
+          },500);
+        });
       }else{
+        this.handleLazy();
         this.onReady();
       }
+
+      this.handleLazy();
+    }
+  };
+
+  Carousel.prototype.handleLazy = function(){
+    var lazyEls = this.el.querySelectorAll('.lazy-img');
+    var lazyElsLength = lazyEls.length;
+    var i;
+
+    for (i = 0; i < lazyElsLength; i++) {
+      var lazyEl = lazyEls[i];
+
+      lazyEl.style.backgroundImage = 'url(' + Utils.attr(lazyEl, 'data-img') + ')';
     }
   };
 
