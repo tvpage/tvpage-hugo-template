@@ -431,6 +431,7 @@
   };
 
   Carousel.prototype.handleDots = function(){
+    Utils.getById('products-carousel-nav')
     //we always render a dots holder as long as the user is passing one implicitily
     if(this.appendDots){
       return;
@@ -544,17 +545,14 @@
         var that = this;
 
         this.startSlick(itemsTargetEl, function(){
-            var i;
-            var pagesHTMLLength = pagesHTML.length;
+          var pagesHTMLLength = pagesHTML.length;
+          var i;
 
-          setTimeout(function(){
-            for (i = 0; i < pagesHTMLLength; i++) {
-              that.$slickEl.slick('slickAdd', pagesHTML[i]);
-            }
+          for (i = 0; i < pagesHTMLLength; i++) {
+            that.$slickEl.slick('slickAdd', pagesHTML[i]);
+          }
 
-            Utils.removeClass(that.el.querySelector('#dots-target-products'), 'hide-abs');
-            Utils.remove(Utils.getById('skeleton').querySelector('.dots-skel-delete'));
-          },500);
+          Utils.removeClass(that.el.querySelector('#dots-target-products'), 'hide-abs');
         });
       }else{
         this.handleLazy();

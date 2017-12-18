@@ -1,74 +1,72 @@
-(function(){
-  if(data){
-    for(var key in data)
-      config[key] = data[key];
-  }
+if(data){
+  for(var key in data)
+    config[key] = data[key];
+}
 
-  if('object' !== typeof config || !config.name || config.name.length <= 0)
-    throw new Error("widget must have config and name/id");
+if('object' !== typeof config || !config.name || config.name.length <= 0)
+  throw new Error("widget must have config and name/id");
 
-  var tvpage = window.__TVPage__ = window.__TVPage__ || {};
-  var id = config.name;
+var tvpage = window.__TVPage__ = window.__TVPage__ || {};
+var id = config.name;
 
-  if(tvpage.config[id] && 'object' === typeof tvpage.config[id]){
-    var runTime = tvpage.config[id];
+if(tvpage.config[id] && 'object' === typeof tvpage.config[id]){
+  var runTime = tvpage.config[id];
 
-    for (var key in runTime)
-      config[key] = runTime[key];
-  }
+  for (var key in runTime)
+    config[key] = runTime[key];
+}
 
-  if(!config.targetEl)
-    throw new Error("targetEl not present in config");
+if(!config.targetEl)
+  throw new Error("targetEl not present in config");
 
-  if(!config.channel && !config.channelId && !config.channelid)
-    throw new Error('Widget config missing channel obj');
+if(!config.channel && !config.channelId && !config.channelid)
+  throw new Error('Widget config missing channel obj');
 
-  config.__windowCallbackFunc__ = null;
+config.__windowCallbackFunc__ = null;
 
-  var onChange = config.onChange;
+var onChange = config.onChange;
 
-  if('function' === typeof onChange){
-    config.__windowCallbackFunc__ = onChange;
-    delete config.onChange;
-  }
+if('function' === typeof onChange){
+  config.__windowCallbackFunc__ = onChange;
+  delete config.onChange;
+}
 
-  var prefix = ('tvp_' + id).replace(/-/g, '_');
+var prefix = ('tvp_' + id).replace(/-/g, '_');
 
-  config.id = id;
-  config.runId = prefix + Math.floor(Math.random() * 1000000);
-  config.holder = null;
-  config.loginId = config.loginId || config.loginid;
-  config.channelId = config.channelId || config.channelid || config.channel.id;
-  config.profiling = config.profiling || {};
+config.id = id;
+config.runId = prefix + Math.floor(Math.random() * 1000000);
+config.holder = null;
+config.loginId = config.loginId || config.loginid;
+config.channelId = config.channelId || config.channelid || config.channel.id;
+config.profiling = config.profiling || {};
 
-  if(window.performance)
-    config.profiling['script_loaded'] = performance.now();
+if(window.performance)
+  config.profiling['script_loaded'] = performance.now();
 
-  config.events = {
-    prefix: prefix
-  };
-  
-  if('localhost' === location.hostname){
-    config.baseUrl = config.baseUrl.substring(0, config.baseUrl.length - 1);
-  }
-  
-  var static = config.baseUrl + '/' + config.type;
-  var dist = config.debug ? '/' : '/dist/';
+config.events = {
+  prefix: prefix
+};
 
-  config.paths = {
-    static: static,
-    dist: dist,
-    css: static + dist + 'css',
-    javascript: static + dist + 'js'
-  };
+if('localhost' === location.hostname){
+  config.baseUrl = config.baseUrl.substring(0, config.baseUrl.length - 1);
+}
 
-  var mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+var static = config.baseUrl + '/' + config.type;
+var dist = config.debug ? '/' : '/dist/';
 
-  config.mobile = {
-    path: mobile ? '/mobile' : '',
-    prefix: mobile ? '-mobile' : '',
-    templates: config.templates.mobile
-  };
+config.paths = {
+  static: static,
+  dist: dist,
+  css: static + dist + 'css',
+  javascript: static + dist + 'js'
+};
 
-  window.__TVPage__.config[id] = config;
-}());
+var mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+config.mobile = {
+  path: mobile ? '/mobile' : '',
+  prefix: mobile ? '-mobile' : '',
+  templates: config.templates.mobile
+};
+
+window.__TVPage__.config[id] = config;

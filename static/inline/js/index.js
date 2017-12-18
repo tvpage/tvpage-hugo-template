@@ -239,6 +239,7 @@
       }, false);
 
       productsCarousel = new Carousel('products', {
+        appendDots: '#products-carousel-nav',
         dotsCenter: true,
         dotsMax: 10,
         endpoint: apiBaseUrl + '/videos/' + firstVideo.id + '/products',

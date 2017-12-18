@@ -1,12 +1,18 @@
+var apiBaseUrl = config.api_base_url;
+var baseUrl = config.baseUrl;
+
+
 //we add the preconnect hints as soon as we can
 (function addHTMLHints(){
   var domains = [
-    config.api_base_url,
-    config.baseUrl
+    apiBaseUrl,
+    baseUrl
   ];
+  
   var domainsLength = domains.length;
+  var i;
 
-  for (var i = 0; i < domainsLength; i++) {
+  for (i = 0; i < domainsLength; i++) {
     var link = document.createElement('link');
 
     link.rel = 'preconnect';
@@ -47,27 +53,30 @@ function tmpl(t,d){
   });
 }
 
-//profile get the fastest ay to jsonp
-function loadScript(options, cback){
-  var opts = options || {};
-  var script = createEl('script');
-  var params = opts.params || {};
-  var c = 0;
-  var src = opts.base || '';
+function loadScript(url, params, callback){
+  if(!url)
+    throw new Error('need url');
 
-  for (var param in params) {
-    src += (c > 0 ? '&' : '?') + param + '=' + params[param];
-    ++c;
+  params = params || {};
+  
+  var script = createEl('script');
+  var param;
+  var counter = 0;
+
+  for (param in params) {
+    url += (counter > 0 ? '&' : '?') + param + '=' + params[param];
+
+    ++counter;
   }
 
-  var cName = 'tvp_callback_' + Math.random().toString(36).substring(7);
+  var callbackName = 'tvp_callback_' + Math.random().toString(36).substring(7);
 
-  window[cName] = function(data){
-    if('function' === typeof cback)
-      cback(data);
+  window[callbackName] = function(data){
+    if('function' === typeof callback)
+      callback(data);
   };
 
-  script.src = src + '&callback=' + cName;
+  script.src = url + '&callback=' + callbackName;
 
   document.body.appendChild(script);
 }
@@ -79,10 +88,10 @@ function getIframeHtml(o){
     
     var ret = '';
     var arrLength = arr.length;
+    var i;
 
-    for (var i = 0; i < arrLength; i++){
+    for (i = 0; i < arrLength; i++)
       ret += 'append' + type + '(\'' + arr[i] + '\');';
-    }
 
     return ret;
   };
@@ -100,10 +109,8 @@ function getIframeHtml(o){
   //take measurements,decide the best
   '(function(d){' +
     'var h = d.head;' +
-  
-    'function createEl(t){' +
-      'return d.createElement(t)'+
-    '}'+
+
+    createEl.toString() +
 
     'function appendScript(u){'+
     '  var s = createEl(\'script\');' +
@@ -162,12 +169,14 @@ function widgetHolderResize(height){
 //refer to https://jsperf.com/insertadjacenthtml-perf/3
 function widgetRender(){
   function render(){
-    var targetEl = getById(config.targetEl);
-    targetEl.insertAdjacentHTML('beforebegin',getInitialHtml());
-    
-    remove(targetEl);
-  
-    config.holder = getById(config.id + "-holder");
+
+    (function(targetEl){
+      targetEl.insertAdjacentHTML('beforebegin', getInitialHtml());  
+
+      remove(targetEl);
+
+      config.holder = getById(config.id + '-holder');
+    }(getById(config.targetEl)))
   
     var debug = config.debug;
     var baseUrl = config.baseUrl;
@@ -179,8 +188,6 @@ function widgetRender(){
     var iframeDocument = iframe.contentWindow.document;
   
     iframeDocument.open().write(getIframeHtml({
-      id: config.id,
-      domain: baseUrl,
       context: config,
       html: templates.base,
       className: isMobile ? 'mobile' : '',
@@ -188,7 +195,10 @@ function widgetRender(){
       js: [
         '//www.youtube.com/iframe_api',
         '//a.tvpage.com/tvpa.min.js',
+
+        //when or how do we need this?
         //'//imasdk.googleapis.com/js/sdkloader/ima3.js',
+
         //getPlayerUrl(),
         baseUrl + '/playerlib-debug.min.js',
         
@@ -274,10 +284,7 @@ function widgetLoad(){
       videosLoadParams[channelParam] = channelParams[channelParam];
   }
 
-  loadScript({
-    base: config.api_base_url + '/channels/' + config.channelId + '/videos',
-    params: videosLoadParams
-  }, onWidgetLoad);
+  loadScript(apiBaseUrl + '/channels/' + config.channelId + '/videos', videosLoadParams, onWidgetLoad);
 }
 
 //first thing that is called
