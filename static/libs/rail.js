@@ -109,8 +109,9 @@
     function renderPageRows(pageRows){
       var html = '<div class="row">';
       var pageRowsLength = pageRows.length;
+      var i;
 
-      for (var i = 0; i < pageRowsLength; i++) {
+      for (i = 0; i < pageRowsLength; i++) {
         html += Utils.tmpl(this.templates.item, pageRows[i]);
       }
 
@@ -121,15 +122,17 @@
 
     function renderPages(){
       var html = '';
+      var i;
+      var j;
 
-      for (var i = 0; i < pagesLength; i++) {
+      for (i = 0; i < pagesLength; i++) {
         var page = pages[i];
         var pageRows = Utils.rowerize(page, this.itemsPerRow);
         var pageRowsLength = pageRows.length;
 
-        for (var j = 0; j < pageRowsLength; j++) {
+        for (j = 0; j < pageRowsLength; j++) {
           html += renderPageRows.call(this, pageRows[j]);
-        }  
+        }
       }
 
       return html;
@@ -139,9 +142,15 @@
     function renderRailEl(height, html){
       var railEl = Utils.createEl('div');
 
-      railEl.style.height = height;
-      railEl.className = 'rail pr-3';
+      railEl.style.height = height + 'px';
+      railEl.className = 'rail pr-3 relative';
       railEl.innerHTML = html;
+
+      var allRailItems = railEl.querySelectorAll('.rail-item');
+      
+      if(allRailItems && allRailItems.length){
+        Utils.removeClass(allRailItems[allRailItems.length-1], 'mb-2');
+      }
 
       return railEl;
     }
@@ -150,8 +159,7 @@
     function renderRailElHolder(){
       var railElHolderEl = Utils.createEl('div');
 
-      railElHolderEl.style.position = 'relative';
-      railElHolderEl.className = 'o-hidden'; 
+      railElHolderEl.className = 'o-hidden relative'; 
 
       return railElHolderEl;
     }
@@ -177,7 +185,10 @@
             that.el.appendChild(railElHolderEl);
 
             that.ps = Ps.initialize(railEl, {
-              suppressScrollX: true
+              suppressScrollX: true,
+              wheelSpeed: 2,
+              wheelPropagation: true,
+              minScrollbarLength: 20              
             });
 
             that.onReady();
@@ -186,7 +197,7 @@
           }else if(++snapReferenceHeightCheck < snapReferenceHeightCheckLimit){
             getReferenceHeight();
           }
-        },50);
+        },10);
       })();
     }else{
       var railEl = renderRailEl('auto', renderPages.call(this));

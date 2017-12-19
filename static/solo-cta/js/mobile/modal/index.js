@@ -1,31 +1,14 @@
 (function() {
   var config = window.parent.__TVPage__.config[Utils.attr(document.body, 'data-id')];
   var clickedVideo;
-  var eventPrefix = config.events.prefix;
-  var modalResizeEvent = eventPrefix + ':widget_modal_resize';
-  var playerChangeEvent = eventPrefix + ':widget_player_change';
-  var modalCloseEvent = eventPrefix + ':widget_modal_close';
-  var modalOpenEvent = eventPrefix + ':widget_modal_open';
-  var modalInitializedEvent = eventPrefix + ':widget_modal_initialized';
   var player;
   var productsCarousel;
   var analytics;
   var apiBaseUrl = config.api_base_url;
   var loginId = config.loginId;
   var productsEnabled = config.merchandise;
-  var skeletonEl = Utils.getById('skeleton');
   var isFirstVideoPlay = true;
   var isFirstPlayButtonClick = true;
-
-  //we check when critical css has loaded/parsed. At this step, we have data to
-  //update the skeleton. We wait until css has really executed in order to send
-  //the right measurements.
-  Utils.poll(function(){
-    return 'hidden' === Utils.getStyle(Utils.getById('bscheck'), 'visibility');
-  },
-  function(){
-    Utils.addClass(skeletonEl, 'ready');
-  });
 
   //TODO
   // function pkTrack(){
@@ -36,14 +19,10 @@
   //   });
   // }
 
-  function buildProductsEndpoint(videoId) {
-    return apiBaseUrl + '/videos/' + videoId + '/products'
-  }
-
   function initPlayer() {
     function onPlayerResize(){
       Utils.sendMessage({
-        event: modalResizeEvent
+        event: config.events.modal.resize
       });
     }
 
@@ -51,14 +30,14 @@
       modal.updateTitle(nextVideo.assetTitle);
       
       if(productsEnabled){
-        productsCarousel.endpoint = buildProductsEndpoint(nextVideo.assetId);
+        productsCarousel.endpoint = apiBaseUrl + '/videos/' + nextVideo.assetId + '/products';
         productsCarousel.load('render');
       }
     }
 
     function onPlayerChange(e, asset){
       Utils.sendMessage({
-        event: playerChangeEvent,
+        event: config.events.player.change,
         e: e,
         stateData : asset
       });
@@ -66,11 +45,11 @@
       //need to change this approach as on mobile we do not have autoplay
       if("tvp:media:videoplaying" === e && isFirstVideoPlay){
         isFirstVideoPlay = false;
-  
-        Utils.profile(config, {
-          metric_type: 'video_playing',
-          metric_value: Utils.now('parent') - config.profiling['video_playing'].start
-        });
+        
+        config.profiling['video_playing'] = Utils.now('parent') - config.profiling['video_playing'].start;
+        
+        //send the profile log of the collected metrics
+        Utils.sendProfileData(config);
       }
     }
 
@@ -115,7 +94,7 @@
     }
 
     function removeProductsSkelEl() {
-      Utils.remove(skeletonEl.querySelector('.products-skel-delete'));
+      Utils.remove(Utils.getById('skeleton').querySelector('.products-skel-delete'));
     }
 
     // We set the height of the player to the products element, we also do this on player resize, we
@@ -128,7 +107,7 @@
       productsCarousel = new Carousel('products',{
         clean: true,
         loadMore: false,
-        endpoint: buildProductsEndpoint(clickedVideo.id),
+        endpoint: apiBaseUrl + '/videos/' + clickedVideo.id + '/products',
         params: {
           o: config.products_order_by,
           od: config.products_order_direction
@@ -139,6 +118,7 @@
         arrows: false,
         dots: true,
         dotsCenter: true,
+        dotsClass: 'col py-3',
         templates: {
           list: templates.products.list,
           item: templates.products.item
@@ -199,17 +179,14 @@
         initAnalytics();
       }
 
-      Utils.profile(config, {
-        metric_type: 'modal_ready',
-        metric_value: Utils.now('parent') - config.profiling['modal_ready'].start
-      });
+      config.profiling['modal_ready'] = Utils.now('parent') - config.profiling['modal_ready'].start;
     }
 
     function onModalHidden(){
       player.instance.stop();
 
       Utils.sendMessage({
-        event: modalCloseEvent
+        event: config.events.modal.close
       });
     }
 
@@ -228,7 +205,7 @@
       initModal();
       
       window.parent.addEventListener('message', function(e){
-        if(Utils.isEvent(e) && e.data.event === modalOpenEvent){
+        if(Utils.isEvent(e) && e.data.event === config.events.modal.open){
           var videos = config.channel.videos;
           
           if(player){
@@ -249,7 +226,7 @@
       });
 
       Utils.sendMessage({
-        event: modalInitializedEvent
+        event: config.events.modal.initialized
       });
   });
 }());

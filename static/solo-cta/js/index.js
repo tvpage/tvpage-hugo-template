@@ -1,33 +1,16 @@
 (function () {
   var config = window.parent.__TVPage__.config[Utils.attr(document.body, 'data-id')];
-  var firstVideo = config.channel.videos[0];
+  var firstVideo;
   var apiBaseUrl = config.api_base_url;
-  var eventPrefix = config.events.prefix;
-  var resizeEvent = eventPrefix + ':widget_resize';
-  var modalOpenEvent = eventPrefix + ':widget_modal_open';
   var loginId = config.loginId;
-  var skeletonEl = document.getElementById('skeleton');
+  var firstResize = true;
 
   function sendResizeMessage() {
     Utils.sendMessage({
-      event: resizeEvent,
+      event: config.events.resize,
       height: Utils.getWidgetHeight()
     });
   }
-
-  //we check when critical css has loaded/parsed. At this step, we have data to
-  //update the skeleton. We wait until css has really executed in order to send
-  //the right measurements.
-  Utils.poll(function () {
-      return 'hidden' === Utils.getStyle(Utils.getById('bscheck'), 'visibility');
-    },
-    function () {
-      Utils.addClass(skeletonEl, 'ready');
-
-      sendResizeMessage();
-
-      config.profiling['skeleton_shown'] = Utils.now('parent');
-    });
 
   function initClickToAction() {
     Utils.loadScript({
@@ -48,10 +31,10 @@
     var img = new Image();
 
     img.onload = function () {
-      Utils.remove(skeletonEl.querySelector('.cta-skel-delete'));
+      Utils.remove(Utils.getById('skeleton').querySelector('.cta-skel-delete'));
 
       Utils.removeClass(clickToActionEl, 'hide-abs');
-      
+
       config.profiling['widget_ready'] = Utils.now('parent');
 
       //send the profile log of the collected metrics
@@ -68,7 +51,7 @@
 
     function onClick() {
       Utils.sendMessage({
-        event: modalOpenEvent,
+        event: config.events.modal.open,
         clicked: firstVideo.id
       });
 
@@ -90,24 +73,33 @@
     analytics.track('ci');
   }
 
-  Utils.globalPoll(
-    ['Utils', 'Analytics'],
-    function () {
-      initClickToAction();
-      initAnalytics();
+  Utils.poll(function () {
+    var videos = config.channel.videos;
 
-      //since sidebar has no resizing scenarios (is all handled w/css), we still need to send the new size. We also
-      //ignore the 1st resize that is fired, as it has no relation with the initialization.
-      var firstResize = true;
-      window.addEventListener('resize', function () {
-        if (firstResize) {
-          firstResize = false;
+    return videos && videos.length;
+  }, function () {
+    channelVideos = config.channel.videos;
 
-          return;
-        }
+    firstVideo = channelVideos[0];
 
-        sendResizeMessage();
-      });
-    })
+    Utils.globalPoll(
+      ['Utils', 'Analytics'],
+      function () {
+        initClickToAction();
+        initAnalytics();
+
+        //since sidebar has no resizing scenarios (is all handled w/css), we still need to send the new size. We also
+        //ignore the 1st resize that is fired, as it has no relation with the initialization.
+        window.addEventListener('resize', function () {
+          if (firstResize) {
+            firstResize = false;
+
+            return;
+          }
+
+          sendResizeMessage();
+        });
+      })
+  })
 
 }());

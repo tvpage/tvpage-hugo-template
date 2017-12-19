@@ -1,12 +1,6 @@
 (function () {
   var config = window.parent.__TVPage__.config[Utils.attr(document.body, 'data-id')];
   var clickedVideo;
-  var eventPrefix = config.events.prefix;
-  var modalResizeEvent = eventPrefix + ':widget_modal_resize';
-  var playerChangeEvent = eventPrefix + ':widget_player_change';
-  var modalCloseEvent = eventPrefix + ':widget_modal_close';
-  var modalOpenEvent = eventPrefix + ':widget_modal_open';
-  var modalInitializedEvent = eventPrefix + ':widget_modal_initialized';
   var modal;
   var player;
   var productsRail;
@@ -14,20 +8,9 @@
   var apiBaseUrl = config.api_base_url;
   var loginId = config.loginId;
   var productsEnabled = config.merchandise;
-  var skeletonEl = Utils.getById('skeleton');
   var isFirstVideoPlay = true;
   var productRatingAttrName = config.product_rating_attribute;
   var productReviewAttrName = config.product_review_attribute;
-
-  //we check when critical css has loaded/parsed. At this step, we have data to
-  //update the skeleton. We wait until css has really executed in order to send
-  //the right measurements.
-  Utils.poll(function () {
-      return 'hidden' === Utils.getStyle(Utils.getById('bscheck'), 'visibility');
-    },
-    function () {
-      Utils.addClass(skeletonEl, 'ready');
-    });
 
   //TODO
   // function pkTrack(){
@@ -38,10 +21,6 @@
   //   });
   // }
 
-  function buildProductsEndpoint(videoId) {
-    return apiBaseUrl + '/videos/' + videoId + '/products'
-  }
-
   function initPlayer() {
     function onPlayerResize(initial, size) {
       if (size && size.length > 1 && productsRail && productsRail.railEl) {
@@ -49,7 +28,7 @@
       }
 
       Utils.sendMessage({
-        event: modalResizeEvent
+        event: config.events.modal.resize
       });
     }
 
@@ -57,14 +36,14 @@
       modal.updateTitle(nextVideo.assetTitle);
 
       if (productsEnabled) {
-        productsRail.endpoint = buildProductsEndpoint(nextVideo.assetId);
+        productsRail.endpoint = apiBaseUrl + '/videos/' + nextVideo.assetId + '/products';
         productsRail.load('render');
       }
     }
 
     function onPlayerChange(e, currentAsset) {
       Utils.sendMessage({
-        event: playerChangeEvent,
+        event: config.events.player.change,
         e: e,
         stateData: currentAsset
       });
@@ -148,7 +127,9 @@
       productPopOverEl.innerHTML = Utils.tmpl(templates.products.itemPopOver, product);
 
       productsRail.el.appendChild(productPopOverEl);
+      
       productPopOverEl.style.top = getPopOverTop(railEl, productPopOverEl);
+
       Utils.addClass(productPopOverEl, 'active');
     }
 
@@ -175,6 +156,7 @@
 
       if (productPopOverEl) {
         productPopOverEl.style.top = getPopOverTop(target, productPopOverEl);
+
         Utils.addClass(productPopOverEl, 'active');
       } else {
         renderPopOver(target, product);
@@ -184,6 +166,7 @@
 
       if (popOverPointerEl) {
         popOverPointerEl.style.top = getPopOverTop(target, popOverPointerEl);
+
         Utils.addClass(popOverPointerEl, 'active');
       } else {
         renderPopOverPointer(target, product);
@@ -191,7 +174,7 @@
     }
 
     function removeProductsSkelEl() {
-      Utils.remove(skeletonEl.querySelector('.products-skel-delete'));
+      Utils.remove(Utils.getById('skeleton').querySelector('.products-skel-delete'));
     }
 
     // We set the height of the player to the products element, we also do this on player resize, we
@@ -204,7 +187,7 @@
       productsRail = new Rail('products', {
         clean: true,
         snapReference: '[rail-ref]',
-        endpoint: buildProductsEndpoint(clickedVideo.id),
+        endpoint: apiBaseUrl + '/videos/' + clickedVideo.id + '/products',
         templates: {
           list: templates.products.list,
           item: templates.products.item
@@ -217,7 +200,11 @@
           item.reviews = !!productReviewAttrName ? item[productReviewAttrName] : null;
         },
         onNoData: removeProductsSkelEl,
-        onReady: removeProductsSkelEl,
+        onReady: function(){
+          removeProductsSkelEl();
+
+          Utils.removeClass(productsRail.el, 'hide-abs');
+        },
         onItemOver: onProductsItemOver,
         onLeave: hideAllPopOvers
       }, config);
@@ -261,7 +248,7 @@
       player.instance.stop();
 
       Utils.sendMessage({
-        event: modalCloseEvent
+        event: config.events.modal.close
       });
     }
 
@@ -281,7 +268,7 @@
       initModal();
 
       window.parent.addEventListener('message', function (e) {
-        if (Utils.isEvent(e) && e.data.event === modalOpenEvent) {
+        if (Utils.isEvent(e) && e.data.event === config.events.modal.open) {
           var videos = config.channel.videos;
 
           if (player) {
@@ -302,7 +289,7 @@
       });
 
       Utils.sendMessage({
-        event: modalInitializedEvent
+        event: config.events.modal.initialized
       });
     });
 }());

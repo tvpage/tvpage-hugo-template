@@ -1,24 +1,4 @@
 /* implementation specific */
-.video-image {
-  background-size: cover;
-  padding-bottom: 56.25%;
-}
-
-.video-image-icon {
-  cursor: pointer;
-  z-index: 1000;
-  background-color: #1a1a1a;
-  width: 25px;
-  height: 25px;
-  color:white;
-}
-
-.video-image-icon > i {
-  width: 18px;
-  height: 18px;
-  font-size: 18px;
-}
-
 .click-to-action-text {
   position: absolute;
   bottom: 0;
@@ -26,23 +6,4 @@
   max-width: 50%;
   color: white;
   font-weight: 600;
-}
-
-body:not(.mobile) .video:hover .video-image-icon {
-  background-color: #000000;
-}
-
-@media screen and (min-width: 570px) {
-
-  .video-image-icon {
-    width: 45px;
-    height: 45px;
-  }
-
-  .video-image-icon > i {
-    width: 34px;
-    height: 34px;
-    font-size: 34px;
-  }
-
 }

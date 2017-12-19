@@ -2,6 +2,8 @@ var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.
 var baseUrl = config.baseUrl;
 var static = config.baseUrl + '/' + config.type;
 var files = {
+  
+  //files for production
   javascript: [
     '//a.tvpage.com/tvpa.min.js',
     static + '/dist/js/scripts.min.js'
@@ -9,15 +11,15 @@ var files = {
   css: [
     static + '/dist/css/styles.min.css'
   ],
+
+  //files for development
   debug: {
     javascript: [
       '//a.tvpage.com/tvpa.min.js',
-      static + '/js/vendor/jquery.js',
-      baseUrl + '/libs/analytics.js',
-      baseUrl + '/libs/carousel.js'
+      baseUrl + '/libs/analytics.js'
     ],
     css: [
-      baseUrl + '/slick/slick.css'
+      static + '/css/styles.css'
     ]
   },
   modal:{
@@ -52,12 +54,8 @@ var files = {
   }
 };
 
-var customSlickCSS = baseUrl + '/slick/' + (isMobile ? 'mobile/' : '') + 'custom.css';
-
-files.debug.css.push(customSlickCSS);
-
 if(isMobile){
-  files.modal.debug.css.push(customSlickCSS);
+  files.modal.debug.css.push(baseUrl + '/slick/mobile/custom.css');
 }else{
   files.modal.debug.css.push(static + '/css/vendor/perfect-scrollbar.min.css');
   files.modal.debug.javascript.push(static + '/js/vendor/perfect-scrollbar.min.js');
