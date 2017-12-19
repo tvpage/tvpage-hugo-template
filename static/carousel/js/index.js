@@ -1,48 +1,23 @@
-(function() {
+(function () {
   var config = window.parent.__TVPage__.config[Utils.attr(document.body, 'data-id')];
   var channelParams = config.channel.parameters;
-  var eventPrefix = config.events.prefix;
-  var modalOpenEvent = eventPrefix + ':widget_modal_open';
-  var resizeEvent = eventPrefix + ':widget_resize';
-  var apiBaseUrl = config.api_base_url;
-  var videosEndpoint = apiBaseUrl + '/channels/' + config.channelId + '/videos';
+  var videosEndpoint = config.api_base_url + '/channels/' + config.channelId + '/videos';
   var templates = config.templates;
-  var channelVideos = config.channel.videos;
-  var skeletonEl = Utils.getById('skeleton');
+  var channelVideos;
   var videosCarousel;
 
   function sendResizeMessage() {
     Utils.sendMessage({
-      event: resizeEvent,
+      event: config.events.resize,
       height: Utils.getWidgetHeight()
     });
   }
 
-  //we check when critical css has loaded/parsed. At this step, we have data to
-  //update the skeleton. We wait until css has really executed in order to send
-  //the right measurements.
-  Utils.poll(function(){
-    return 'hidden' === Utils.getStyle(Utils.getById('bscheck'), 'visibility');
-  },
-  function(){
-    Utils.addClass(skeletonEl, 'ready');
-
-    var widgetTitleEl = Utils.getById('widget-title');
-    
-    widgetTitleEl.innerHTML = config.title_text;
-
-    Utils.addClass(widgetTitleEl, 'ready');
-
-    sendResizeMessage();
-    
-    config.profiling['skeleton_shown'] = Utils.now('parent');
-  });
-
   function initVideos() {
     function onVideosCarouselClick(e) {
-      if(e && e.target){
+      if (e && e.target) {
         Utils.sendMessage({
-          event: modalOpenEvent,
+          event: config.events.modal.open,
           clicked: Utils.attr(Utils.getRealTargetByClass(e.target, 'carousel-item'), 'data-id')
         });
 
@@ -52,12 +27,8 @@
       }
     }
 
-    function onVideosCarouselReady(){
-      var videosSkelEl = skeletonEl.querySelector('.videos-skel-delete');
-
-      if (videosSkelEl) {
-        Utils.remove(videosSkelEl);
-      }
+    function onVideosCarouselReady() {
+      Utils.remove(Utils.getById('skeleton').querySelector('.videos-skel-delete'));
 
       Utils.removeClass(videosCarousel.el, 'hide-abs');
 
@@ -65,11 +36,13 @@
 
       //send the profile log of the collected metrics
       Utils.sendProfileData(config);
-      
-      videosCarousel.loadNext('render');
+
+      setTimeout(function(){
+        videosCarousel.loadNext('render');
+      },0);
     }
-    
-    function onVideosCarouselLoad(data){
+
+    function onVideosCarouselLoad(data) {
       config.channel.videos = config.channel.videos.concat(data);
     }
 
@@ -83,6 +56,7 @@
       page: 0,
       data: channelVideos,
       dotsCenter: true,
+      dotsClass: 'col py-3',
       slidesToShow: 3,
       slidesToScroll: 3,
       itemsTarget: '.slick-carousel',
@@ -110,7 +84,7 @@
     videosCarousel.render();
   };
 
-  function initAnalytics(){
+  function initAnalytics() {
     analytics = new Analytics({
       domain: location.hostname
     }, config);
@@ -119,11 +93,24 @@
     analytics.track('ci');
   }
 
-  //global deps check before execute
-  Utils.globalPoll(
-    ['jQuery', 'Carousel', 'Analytics'],
-    function(){
-      initAnalytics();
-      initVideos();
+  Utils.poll(function () {
+    var videos = config.channel.videos;
+
+    return videos && videos.length;
+  }, function () {
+    channelVideos = config.channel.videos;
+
+    //global deps check before execute
+    Utils.globalPoll(
+      ['jQuery', 'Carousel', 'Analytics'],
+      function () {
+        initAnalytics();
+        initVideos();
+      });
+
+    var widgetTitleEl = Utils.getById('widget-title');
+    widgetTitleEl.innerHTML = config.title_text;
+
+    Utils.addClass(widgetTitleEl, 'ready');
   });
 }());

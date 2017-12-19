@@ -1,10 +1,15 @@
 {
-  iframe: '<iframe id="tvp-{{ ($.Scratch.Get "settings").name }}-iframe" src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media" class="tvp-inline-iframe"></iframe>',
+  holder: '<div id="{{- ($.Scratch.Get "settings").name -}}-holder" class="tvp-{{- .Type -}}-holder tvp-hide">{iframe}</div>',
+  iframe: '<iframe id="tvp-{{- ($.Scratch.Get "settings").name -}}-iframe" src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media" class="tvp-{{- .Type -}}-iframe"></iframe>',
   iframeContent: '<head>' +
     '<base target="_blank"/>' +
-    '<link rel="dns-prefetch" href="//youtube.com" />' +
-    '<link rel="dns-prefetch" href="//googlevideo.com" />' +
+    '<link rel="dns-prefetch" href="//www.youtube.com" />' +
+    '<link rel="dns-prefetch" href="//www.googlevideo.com" />' +
     '<link rel="dns-prefetch" href="//fonts.gstatic.com" />' +
+    '<link rel="dns-prefetch" href="//i.ytimg.com" />' +
+    '<link rel="dns-prefetch" href="//do630budpzeh.cloudfront.net" />' +
+    '<link rel="dns-prefetch" href="//cdnjs.tvpage.com" />' +
+    '<link rel="dns-prefetch" href="//s.ytimg.com" />' +
     {{- if (getenv "HUGO_DEBUG") -}}
     '<script src="{{- "/libs/utils.js" | relURL -}}"></script>' +
     {{- else -}}
@@ -23,7 +28,8 @@
     item: {{- (partial (printf "%s/templates/videos/item.html" .Type) .) -}}
   },
   mobile: {
-    iframe: '<iframe id="tvp-{{ ($.Scratch.Get "settings").name }}-iframe" src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media" class="tvp-inline-iframe"></iframe>',
+    holder: '<div id="{{- ($.Scratch.Get "settings").name -}}-holder" class="tvp-{{- .Type -}}-holder tvp-hide">{iframe}</div>',
+    iframe: '<iframe id="tvp-{{- ($.Scratch.Get "settings").name -}}-iframe" src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media" class="tvp-{{- .Type -}}-iframe"></iframe>',
     base: {{- (partial (printf "%s/mobile/templates/base.html" .Type) .) -}},
     products: {
       list: {{- (partial (printf "%s/mobile/templates/products/list.html" .Type) .) -}},

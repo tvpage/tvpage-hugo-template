@@ -58,11 +58,18 @@
     'event: "tvp_{{ replace ($.Scratch.Get "settings").name "-" "_" }}:widget_resize",'+
     'height: Utils.getWidgetHeight()'+
   '});'+
+
   'Utils.log("skeleton_shown: " + Utils.now("parent"));' +
+
+  'var script = Utils.createEl("script");' +
+  'script.async = true;' +
+  
+  {{- if (getenv "HUGO_DEBUG") -}}
+  'script.src = "{{- (printf "/%s/js/index.js" .Type) | relURL -}}";'+
+  {{- else -}}
+  'script.src = "{{- (printf "/%s/dist/js/index.min.js" .Type) | relURL -}}";'+
+  {{- end -}}
+
+  'document.body.appendChild(script);' +
 '}())' +
-'</script>' +
-{{- if (getenv "HUGO_DEBUG") -}}
-'<script src="{{- (printf "/%s/js/index.js" .Type) | relURL -}}"></script>'
-{{- else -}}
-'<script src="{{- (printf "/%s/dist/js/index.min.js" .Type) | relURL -}}"></script>'
-{{- end -}}
+'</script>'

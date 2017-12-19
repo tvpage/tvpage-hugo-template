@@ -1,18 +1,10 @@
 module.exports = function(grunt) {
-  
     grunt.initConfig({
-      watch: {
-        css: {
-          files: ['css/**/*.css'],
-          tasks: ['autoprefixer']
-        }
-      },
       autoprefixer: {
         css: {
           files: {
             'css/modal/styles.css': 'css/modal/styles.css',
-            'css/mobile/modal/styles.css': 'css/mobile/modal/styles.css',
-            'css/styles.css': 'css/styles.css'
+            'css/mobile/modal/styles.css': 'css/mobile/modal/styles.css'
           }
         }
       },
@@ -24,10 +16,8 @@ module.exports = function(grunt) {
         desktop: {
           files: {
             'dist/css/styles.min.css': [
-              '../bootstrap/dist/css/bootstrap.css',
               '../slick/slick.css',
-              '../slick/custom.css',
-              'css/styles.css'
+              '../slick/custom.css'
             ],
             'dist/css/modal/styles.min.css': [
               '../bootstrap/dist/css/bootstrap.css',
@@ -36,6 +26,8 @@ module.exports = function(grunt) {
             ]
           }
         },
+        
+        //the carousel piece works well with the desktop CSS
         mobile: {
           files: {
             'dist/css/mobile/modal/styles.min.css': [
@@ -58,9 +50,10 @@ module.exports = function(grunt) {
             'dist/js/scripts.min.js': [
               'js/vendor/jquery.js',
               'js/vendor/slick-min.js',
-              '../libs/utils.js',
               '../libs/analytics.js',
-              '../libs/carousel.js',
+              '../libs/carousel.js'
+            ],
+            'dist/js/index.min.js': [
               'js/index.js'
             ]
           }
@@ -69,7 +62,6 @@ module.exports = function(grunt) {
           files: {
             'dist/js/modal/scripts.min.js': [
               'js/vendor/jquery.js',
-              '../libs/utils.js',
               '../libs/analytics.js',
               '../libs/player.js',
               '../libs/carousel.js',
@@ -80,7 +72,6 @@ module.exports = function(grunt) {
             ],
             'dist/js/mobile/modal/scripts.min.js': [
               'js/vendor/jquery.js',
-              '../libs/utils.js',
               '../libs/analytics.js',
               '../libs/player.js',
               '../libs/carousel.js',
@@ -95,7 +86,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-autoprefixer');
-    grunt.loadNpmTasks('grunt-contrib-watch');
   
     grunt.registerTask('default', ['uglify', 'autoprefixer', 'cssmin']);
   

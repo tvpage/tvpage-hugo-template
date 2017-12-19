@@ -40,33 +40,22 @@ config.loginId = config.loginId || config.loginid;
 config.channelId = config.channelId || config.channelid || config.channel.id;
 config.profiling = config.profiling || {};
 
+var playerUrl = (config.player_url + '').trim();
+
+config.player_url = playerUrl.length ? playerUrl : 'https://cdnjs.tvpage.com/tvplayer/tvp-' + config.player_version + '.min.js';
+
 if(window.performance)
   config.profiling['script_loaded'] = performance.now();
 
 config.events = {
-  prefix: prefix
+  prefix: prefix,
+  initialized: prefix + ':widget_initialized',
+  resize: prefix + ':widget_resize',
+  playerChange: prefix + ':widget_player_change',
 };
 
 if('localhost' === location.hostname){
   config.baseUrl = config.baseUrl.substring(0, config.baseUrl.length - 1);
 }
-
-var static = config.baseUrl + '/' + config.type;
-var dist = config.debug ? '/' : '/dist/';
-
-config.paths = {
-  static: static,
-  dist: dist,
-  css: static + dist + 'css',
-  javascript: static + dist + 'js'
-};
-
-var mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
-config.mobile = {
-  path: mobile ? '/mobile' : '',
-  prefix: mobile ? '-mobile' : '',
-  templates: config.templates.mobile
-};
 
 window.__TVPage__.config[id] = config;

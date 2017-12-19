@@ -302,22 +302,20 @@
       
       if(Utils.isFunction(onResize))
         onResize();
-    }, 10, this.options);
+    }, 0, this.options);
   };
 
   Carousel.prototype.initSlick = function(slickEl, callback){
+    this.$slickEl = $(slickEl);
+    
     var that = this;
 
-    this.$slickEl = $(slickEl);
-      
     this.$slickEl.on('init', function(){
-      setTimeout(function(){
-        that.onSlickInit.call(that);
+      that.onSlickInit.call(that);
 
-        if(Utils.isFunction(callback)){
-          callback();
-        }
-      },0);
+      if(Utils.isFunction(callback)){
+        callback();
+      }
     });
     
     this.$slickEl.on('beforeChange', function(){
@@ -430,9 +428,8 @@
     }
   };
 
+  //we always render a dots holder as long as the user is passing one implicitily
   Carousel.prototype.handleDots = function(){
-    Utils.getById('products-carousel-nav')
-    //we always render a dots holder as long as the user is passing one implicitily
     if(this.appendDots){
       return;
     }
@@ -441,13 +438,11 @@
 
     this.appendDotsEl = Utils.createEl('div');
     this.appendDotsEl.id = dotsId;
-    this.appendDotsEl.className = 'col py-3 hide-abs';
-
+    
     var dotsClass = this.options.dotsClass;
     
-    if(!!dotsClass){
-      Utils.addClass(this.appendDotsEl, this.options.dotsClass);
-    }
+    if(!!dotsClass)
+      this.appendDotsEl.className = dotsClass;
 
     if('bottom' === this.dotsPosition){
       this.el.appendChild(this.appendDotsEl);
@@ -548,11 +543,11 @@
           var pagesHTMLLength = pagesHTML.length;
           var i;
 
-          for (i = 0; i < pagesHTMLLength; i++) {
-            that.$slickEl.slick('slickAdd', pagesHTML[i]);
-          }
-
-          Utils.removeClass(that.el.querySelector('#dots-target-products'), 'hide-abs');
+          setTimeout(function(){
+            for (i = 0; i < pagesHTMLLength; i++) {
+              that.$slickEl.slick('slickAdd', pagesHTML[i]);
+            }
+          },10);
         });
       }else{
         this.handleLazy();
@@ -572,6 +567,8 @@
       var lazyEl = lazyEls[i];
 
       lazyEl.style.backgroundImage = 'url(' + Utils.attr(lazyEl, 'data-img') + ')';
+      
+      Utils.removeClass(lazyEl, 'lazy-img');
     }
   };
 
@@ -627,17 +624,15 @@
       base: this.endpoint,
       params: Utils.extend(this.params || {}, loadParams)
     },function(data){
-      setTimeout(function(){
-        that.onLoad.call(that, data);
-        
-        if(Utils.isFunction(that[action])){
-          that[action]();
-        }
-  
-        if(Utils.isFunction(cback)){
-          cback(data);
-        }
-      },0);
+      that.onLoad.call(that, data);
+      
+      if(Utils.isFunction(that[action])){
+        that[action]();
+      }
+
+      if(Utils.isFunction(cback)){
+        cback(data);
+      }
     });
 
     return this;

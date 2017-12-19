@@ -1,16 +1,17 @@
 {{- (partial "config.html" .) -}}
 
 (function(data){
-	var config = {{ $.Scratch.Get "config" | jsonify }};
+	var config = {{- $.Scratch.Get "config" | jsonify -}};
 
 	{{- (readFile (printf "/themes/tvpage/static/%s/config.js" .Type) ) | htmlUnescape | safeHTML -}}
+	{{- (readFile (printf "/themes/tvpage/static/%s/files.js" .Type) ) | htmlUnescape | safeHTML -}}
 	{{- (readFile (printf "/themes/tvpage/static/%s/index.js" .Type) ) | htmlUnescape | safeHTML -}}
 }(
 	{
-		type: "{{ .Type }}",
+		type: "{{- .Type -}}",
 		templates: {{- (partial (printf "%s/templates/index.html" .Type) .) -}},
 		css: {{- (partial (printf "%s/css/index.html" .Type) .) -}},
 		debug: '{{- getenv "HUGO_DEBUG" -}}',
-		baseUrl: "{{ $.Site.BaseURL }}"
+		baseUrl: "{{- $.Site.BaseURL -}}"
 	}
 ));

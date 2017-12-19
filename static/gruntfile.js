@@ -15,6 +15,15 @@ module.exports = function (grunt) {
         }
       }
     },
+    autoprefixer: {
+      css: {
+        files: {
+          'slick/slick.css': 'slick/slick.css',
+          'slick/mobile/custom.css': 'slick/mobile/custom.css',
+          'slick/custom.css': 'slick/custom.css'
+        }
+      }
+    },
     uglify: {
       options: {
         compress: {
@@ -32,6 +41,7 @@ module.exports = function (grunt) {
   });
 
   grunt.loadNpmTasks('grunt-sass');
+  grunt.loadNpmTasks('grunt-autoprefixer');
   grunt.loadNpmTasks('grunt-contrib-uglify');
 
   grunt.registerTask('escape', 'escapes content.', function () {
@@ -51,6 +61,6 @@ module.exports = function (grunt) {
 
   });
 
-  grunt.registerTask('default', ['sass', 'escape', 'uglify']);
+  grunt.registerTask('default', ['sass', 'autoprefixer', 'escape', 'uglify']);
 
 };

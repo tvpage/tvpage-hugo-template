@@ -8,14 +8,38 @@
 
   '<div class="relative">' +
     '<div class="row mt-2 videos-skel-delete">' +
-      {{ range (seq ($.Scratch.Get "settings").items_per_page) }}
+      {{- range (seq ($.Scratch.Get "settings").items_per_page) -}}
         '<div class="video video-{{ . }} col px-2">' +
             '<div class="video-image fluid-y skeleton-bg mb-2 bg-default"></div>' +
             '<p class="video-title"></p>' +
         '</div>' +
-      {{ end }}
+      {{- end -}}
     '</div>' +
     '<div id="videos" class="slider-pull-x-2 hide-abs"></div>' +
   '</div>' +
   
-'</div>'
+'</div>'+
+
+'<script>'+
+'(function(){'+
+  'Utils.addClass(Utils.getById("skeleton"), "ready");' +
+
+  'Utils.sendMessage({'+
+    'event: "tvp_{{ replace ($.Scratch.Get "settings").name "-" "_" }}:widget_resize",'+
+    'height: Utils.getWidgetHeight()'+
+  '});'+
+
+  'Utils.log("skeleton_shown: " + Utils.now("parent"));' +
+
+  'var script = Utils.createEl("script");' +
+  'script.async = true;' +
+  
+  {{- if (getenv "HUGO_DEBUG") -}}
+  'script.src = "{{- (printf "/%s/js/index.js" .Type) | relURL -}}";'+
+  {{- else -}}
+  'script.src = "{{- (printf "/%s/dist/js/index.min.js" .Type) | relURL -}}";'+
+  {{- end -}}
+
+  'document.body.appendChild(script);' +
+'}())' +
+'</script>'

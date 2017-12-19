@@ -1,17 +1,8 @@
 module.exports = function (grunt) {
   grunt.initConfig({
-    watch: {
-      css: {
-        files: ['css/**/*.css'],
-        tasks: ['autoprefixer']
-      }
-    },
     autoprefixer: {
       css: {
         files: {
-          '../slick/slick.css': '../slick/slick.css',
-          '../slick/mobile/custom.css': '../slick/mobile/custom.css',
-          '..//slick/custom.css': '..//slick/custom.css'
         }
       }
     },
@@ -53,7 +44,7 @@ module.exports = function (grunt) {
             '../libs/carousel.js'
           ],
           'dist/js/index.min.js': [
-            'js/index.js',
+            'js/index.js'
           ]
         }
       }
@@ -63,7 +54,6 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-autoprefixer');
-  grunt.loadNpmTasks('grunt-contrib-watch');
 
   grunt.registerTask('default', ['uglify', 'autoprefixer', 'cssmin']);
 };

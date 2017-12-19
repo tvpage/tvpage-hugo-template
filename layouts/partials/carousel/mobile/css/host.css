@@ -1,12 +1,23 @@
-"*[class^=tvp-] {" +
-    "box-sizing: border-box;" +
-"}" +
-
 ".tvp-carousel-holder {" +
+    "box-sizing: border-box;" +
     "position: relative;" +
+    "visibility: hidden;" +
+    "opacity: 0;" +
+    "pointer-events: none;" +
 "}" +
 
-".tvp-carousel-holder > iframe {" +
+".tvp-carousel-holder.tvp-hide {" +
+    "height: 0 !important;" +
+"}" +
+
+".tvp-carousel-holder.tvp-show {" +
+    "visibility: visible;" +
+    "opacity: 1;" +
+    "pointer-events: auto;" +
+"}" +
+
+".tvp-carousel-iframe {" +
+    "box-sizing: border-box;" +
     "top: 0;" +
     "left: 0;" +
     "width: 1px;" +
@@ -16,6 +27,7 @@
 "}" +
 
 ".tvp-modal-iframe {" +
+    "box-sizing: border-box;" +
     "position: fixed;" +
     "top: 0;" +
     "right: 0;" +
@@ -33,7 +45,7 @@
     "pointer-events: none;" +
 "}"+
 
-".tvp-modal-iframe.show {" +
+".tvp-modal-iframe.tvp-show {" +
     "visibility: visible;" +
     "opacity: 1;" +
     "pointer-events: auto;" +

@@ -2,20 +2,8 @@
   var config = window.parent.__TVPage__.config[Utils.attr(document.body, 'data-id')];
   var firstVideo;
   var channelParams = config.channel.parameters;
-  var eventPrefix = config.events.prefix;
-  var resizeEvent = eventPrefix + ':widget_resize';
-  var playerChangeEvent = eventPrefix + ':widget_player_change';
-  var dataReturnedEvent = eventPrefix + ':widget_data_returned';
   var apiBaseUrl = config.api_base_url;
   var channelVideosEndpoint = apiBaseUrl + '/channels/' + config.channelId + '/videos';
-  var videosOrderParams = {
-    o: config.videos_order_by,
-    od: config.videos_order_direction
-  };
-  var productsOrderParams = {
-    o: config.products_order_by,
-    od: config.products_order_direction
-  };
   var channelVideos;
   var templates = config.templates;
   var templatesMobile = templates.mobile;
@@ -29,10 +17,18 @@
   var playerReadyCalled = false;
   var isFirstVideoPlay = true;
   var isFirstPlayButtonClick = true;
+  var videosOrderParams = {
+    o: config.videos_order_by,
+    od: config.videos_order_direction
+  };
+  var productsOrderParams = {
+    o: config.products_order_by,
+    od: config.products_order_direction
+  };
 
   function sendResizeMessage() {
     Utils.sendMessage({
-      event: resizeEvent,
+      event: config.events.resize,
       height: Utils.getWidgetHeight()
     });
   }
@@ -192,6 +188,8 @@
     function onProductsCarouselReady() {
       productsCarouselReady = true;
 
+      Utils.removeClass(Utils.getById('dots-target-products'), 'hide-abs');
+
       onWidgetReady();
     }
 
@@ -242,6 +240,7 @@
         appendDots: '#products-carousel-nav',
         dotsCenter: true,
         dotsMax: 10,
+        dotsClass: 'col py-3 hide-abs',
         endpoint: apiBaseUrl + '/videos/' + firstVideo.id + '/products',
         clean: true,
         itemsPerPage: 1,
@@ -271,7 +270,7 @@
         alignArrowsY: ['center', '.carousel-dot-0'],
         dotsCenter: true,
         dots: true,
-        dotsClass: 'products-carousel-dots',
+        dotsClass: 'products-carousel-dots col py-3 hide-abs',
         clean: true,
         loadMore: false,
         endpoint: apiBaseUrl + '/videos/' + firstVideo.id + '/products',
@@ -306,7 +305,7 @@
 
     function onPlayerChange(e, currentAsset) {
       Utils.sendMessage({
-        event: playerChangeEvent,
+        event: config.events.playerChange,
         e: e,
         stateData: currentAsset
       });
