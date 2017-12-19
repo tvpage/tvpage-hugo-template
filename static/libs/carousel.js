@@ -85,8 +85,6 @@
       onReady();
     }
 
-    this.handleClick();
-
     this.onReadyCalled = true;
   };
 
@@ -509,7 +507,7 @@
     
     var itemsTargetEl;
     var pagesHTML = renderPages.call(this, this.page, true);
-    var pagesHTMLLength = pagesHTML.length;
+    var that = this;
 
     function renderBase(){
       var holderEl = Utils.createEl('div');
@@ -518,13 +516,33 @@
       itemsTargetEl = holderEl.querySelector(this.options.itemsTarget);
     }
 
+    function afterRender(){
+      this.handleClick();
+      this.handleLazy();
+
+      var onRender = this.options.onRender;
+
+      if(Utils.isFunction(onRender)){
+        onRender();
+      }
+    }
+
+    function addPagesToSlick(){
+      var pagesHTMLLength = pagesHTML.length;
+      var i;
+
+      setTimeout(function(){
+        for (i = 0; i < pagesHTMLLength; i++) {
+          that.$slickEl.slick('slickAdd', pagesHTML[i]);
+        }
+
+        afterRender.call(that);
+      },10);
+    }
+
     //if it's a subsequent page we need to consider offset
     if(willUpdate){
-      for (var i = 0; i < pagesHTMLLength; i++) {
-        this.$slickEl.slick('slickAdd', pagesHTML[i]);
-      }
-
-      this.handleClick();
+      addPagesToSlick();
     }else{
       this.clean();
 
@@ -532,29 +550,17 @@
 
       itemsTargetEl.innerHTML = pagesHTML[0];
       
+      this.el.appendChild(itemsTargetEl);
+      
       pagesHTML.shift();
 
-      this.el.appendChild(itemsTargetEl);
-
       if(moreThan1Page){
-        var that = this;
-
-        this.startSlick(itemsTargetEl, function(){
-          var pagesHTMLLength = pagesHTML.length;
-          var i;
-
-          setTimeout(function(){
-            for (i = 0; i < pagesHTMLLength; i++) {
-              that.$slickEl.slick('slickAdd', pagesHTML[i]);
-            }
-          },10);
-        });
+        this.startSlick(itemsTargetEl, addPagesToSlick);
       }else{
-        this.handleLazy();
         this.onReady();
       }
 
-      this.handleLazy();
+      afterRender.call(this);
     }
   };
 
@@ -625,7 +631,7 @@
       params: Utils.extend(this.params || {}, loadParams)
     },function(data){
       that.onLoad.call(that, data);
-      
+
       if(Utils.isFunction(that[action])){
         that[action]();
       }

@@ -3,13 +3,15 @@
   iframe: '<iframe id="tvp-{{- ($.Scratch.Get "settings").name -}}-iframe" src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media" class="tvp-{{- .Type -}}-iframe"></iframe>',
   iframeContent: '<head>' +
     '<base target="_blank"/>' +
-    '<link rel="dns-prefetch" href="//www.youtube.com" />' +
-    '<link rel="dns-prefetch" href="//www.googlevideo.com" />' +
-    '<link rel="dns-prefetch" href="//fonts.gstatic.com" />' +
-    '<link rel="dns-prefetch" href="//i.ytimg.com" />' +
-    '<link rel="dns-prefetch" href="//do630budpzeh.cloudfront.net" />' +
-    '<link rel="dns-prefetch" href="//cdnjs.tvpage.com" />' +
-    '<link rel="dns-prefetch" href="//s.ytimg.com" />' +
+    '<link rel="preconnect" href="https://api.tvpage.com" />' +
+    '<link rel="preconnect" href="https://a.tvpage.com" />' +
+    '<link rel="preconnect" href="https://youtube.com" />' +
+    '<link rel="preconnect" href="https://googlevideo.com" />' +
+    '<link rel="preconnect" href="https://fonts.gstatic.com" />' +
+    '<link rel="preconnect" href="https://i.ytimg.com" />' +
+    '<link rel="preconnect" href="https://do630budpzeh.cloudfront.net" />' +
+    '<link rel="preconnect" href="https://cdnjs.tvpage.com" />' +
+    '<link rel="preconnect" href="https://s.ytimg.com" />' +
     {{- if (getenv "HUGO_DEBUG") -}}
     '<script src="{{- "/libs/utils.js" | relURL -}}"></script>' +
     {{- else -}}

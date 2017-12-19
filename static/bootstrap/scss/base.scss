@@ -166,10 +166,11 @@ body {
 /* skeleton */
 .skeleton .widget-title:not(.ready) {
   background-color: #efefef;
+  display: inline-block;
 }
 
 .skeleton .widget-title:not(.ready):before {
-  content: "...";
+  content: "................................................................";
   color: transparent;
 }
 

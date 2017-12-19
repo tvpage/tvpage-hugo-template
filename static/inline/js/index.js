@@ -6,7 +6,6 @@
   var channelVideosEndpoint = apiBaseUrl + '/channels/' + config.channelId + '/videos';
   var channelVideos;
   var templates = config.templates;
-  var templatesMobile = templates.mobile;
   var player;
   var analytics;
   var productsCarousel;
@@ -188,8 +187,6 @@
     function onProductsCarouselReady() {
       productsCarouselReady = true;
 
-      Utils.removeClass(Utils.getById('dots-target-products'), 'hide-abs');
-
       onWidgetReady();
     }
 
@@ -222,6 +219,10 @@
       }
     }
 
+    function showNavDots(){
+      Utils.removeClass(Utils.getById('dots-target-products'), 'hide-abs');
+    }
+
     if (Utils.isMobile) {
       //track the pi here with event delegation
       document.addEventListener('click', function (e) {
@@ -247,8 +248,8 @@
         loadMore: false,
         itemsTarget: '.slick-carousel',
         templates: {
-          list: templatesMobile.products.list,
-          item: templatesMobile.products.item
+          list: templates.mobile.products.list,
+          item: templates.mobile.products.item
         },
         responsive: [{
           breakpoint: 600,
@@ -259,6 +260,7 @@
         }],
         params: productsOrderParams,
         parse: parseProducts,
+        onRender: showNavDots,
         onReady: onProductsCarouselReady,
         onResize: sendResizeMessage
       }, config);
@@ -284,6 +286,7 @@
         },
         params: productsOrderParams,
         parse: parseProducts,
+        onRender: showNavDots,
         onReady: onProductsCarouselReady,
         onResize: sendResizeMessage,
         onClick: onClick
