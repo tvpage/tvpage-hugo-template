@@ -1,5 +1,10 @@
 {
-  "option": [
+    "display": 1,
+    "name" : "Carousel",
+    "groups": {
+      
+     },
+    "option": [
       {
           "type": "text",
           "label": "API Base Url",
@@ -86,14 +91,20 @@
           "type": "text",
           "label": "Title Text Font Family",
           "code": "title_text_font_family",
-          "value": "Helvetica"
+          "value": "Helvetica",
+          "selector": ".tvp-carousel-title",
+          "property": "font-family",
+          "display": 1
       },
       {
           "for": "carousel",
           "type": "text",
           "label": "Title Text Font Weight",
           "code": "title_text_font_weight",
-          "value": "initial"
+          "value": "initial",
+          "selector": ".tvp-carousel-title",
+          "property": "font-weight",
+          "display": 1
       },
       {
           "for": "carousel",
@@ -1003,7 +1014,10 @@
           "type": "text",
           "label": "Modal Border",
           "code": "modal_border",
-          "value": "none"
+          "value": "none",
+          "selector": ".tvp-modal-content",
+          "property": "border",
+          "display": "1"
       },
       {
           "for": "modal",
