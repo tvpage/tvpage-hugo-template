@@ -1,7 +1,7 @@
 {{- $type := .Type -}}
-{{- $defaults := getJSON (printf "themes/tvpage/defaults/%s.json" $type) -}}
+{{- $defaults := (getJSON (printf "themes/tvpage/defaults/%s.json" $type)).option -}}
 
-{{- range $defaults.option -}}
+{{- range $defaults -}}
 {{- $.Scratch.SetInMap "config" .code .value -}}
 {{- end -}}
 
@@ -24,3 +24,11 @@
 {{- end -}}
 
 {{- $.Scratch.Set "settings" ($.Scratch.Get "config") -}}
+
+{{- range $code, $value := ($.Scratch.Get "config") -}}
+{{- range where $defaults "code" $code -}}
+	{{- if .display -}}
+		{{- $.Scratch.Add "custom-css" (printf "%s{%s:%s;}" .selector .property .value) -}}
+	{{- end -}}
+{{- end -}}
+{{- end -}}

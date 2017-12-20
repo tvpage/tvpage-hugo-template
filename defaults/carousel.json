@@ -1,5 +1,5 @@
 {
-    "display": 1,
+    "display": true,
     "name" : "Carousel",
     "groups": {
       
@@ -94,7 +94,7 @@
           "value": "Helvetica",
           "selector": ".tvp-carousel-title",
           "property": "font-family",
-          "display": 1
+          "display": true
       },
       {
           "for": "carousel",
@@ -104,7 +104,7 @@
           "value": "initial",
           "selector": ".tvp-carousel-title",
           "property": "font-weight",
-          "display": 1
+          "display": true
       },
       {
           "for": "carousel",
@@ -1017,7 +1017,7 @@
           "value": "none",
           "selector": ".tvp-modal-content",
           "property": "border",
-          "display": "1"
+          "display": true
       },
       {
           "for": "modal",
