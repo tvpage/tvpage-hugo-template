@@ -366,6 +366,23 @@
         "code": "widget_modal_font_weight",
         "selector": ".widget-modal-title",
         "property": "font-weight"
+    },
+
+    {
+        "display": true,
+        "type": "text",
+        "label": "Carousel Arrow Background Color",
+        "code": "carousel_arrow_background_color",
+        "selector": ".carousel-arrow",
+        "property": "background-color"
+    },
+    {
+        "display": true,
+        "type": "text",
+        "label": "Carousel Arrow Color",
+        "code": "carousel_arrow_color",
+        "selector": ".carousel-arrow",
+        "property": "color"
     }
   ]
 }
