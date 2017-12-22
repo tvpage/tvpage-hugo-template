@@ -116,8 +116,7 @@
   z-index: 100;
   -webkit-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
-  -webkit-transition: background 0.3s, -webkit-transform 0.5s;
-          transition: background 0.3s, -webkit-transform 0.5s;
+  transition: background 0.3s, -webkit-transform 0.5s;
   transition: background 0.3s, transform 0.5s;
 }
 
@@ -182,33 +181,27 @@
 }
 
 .tvp-hamburger-x span {
-  -webkit-transition: background 0s 0.1s;
-          transition: background 0s 0.1s;
+  transition: background 0s 0.1s;
 }
 
 .tvp-hamburger-x span::before,
 .tvp-hamburger-x span::after {
-  -webkit-transition-duration: 0.3s, 0.3s;
-          transition-duration: 0.3s, 0.3s;
-  -webkit-transition-delay: 0.3s, 0s;
-          transition-delay: 0.3s, 0s;
+  transition-duration: 0.3s, 0.3s;
+  transition-delay: 0.3s, 0s;
 }
 
 .tvp-hamburger-x span::before {
-  -webkit-transition-property: top, -webkit-transform;
-          transition-property: top, -webkit-transform;
+  transition-property: top, -webkit-transform;
   transition-property: top, transform;
 }
 
 .tvp-hamburger-x span::after {
-  -webkit-transition-property: bottom, -webkit-transform;
-          transition-property: bottom, -webkit-transform;
+  transition-property: bottom, -webkit-transform;
   transition-property: bottom, transform;
 }
 
 #tvp-slide-menu.active #tvp-hamburger-container {
-  -webkit-transition: -webkit-transform 0.5s;
-          transition: -webkit-transform 0.5s;
+  transition: -webkit-transform 0.5s;
   transition: transform 0.5s;
   -webkit-transform: translate3d(50%, 0, 0);
   transform: translate3d(50%, 0, 0);
@@ -232,8 +225,7 @@
 
 #tvp-slide-menu.active .tvp-hamburger-x span::before,
 #tvp-slide-menu.active .tvp-hamburger-x span::after {
-  -webkit-transition-delay: 0s, 0.3s;
-          transition-delay: 0s, 0.3s;
+  transition-delay: 0s, 0.3s;
 }
 
 #tvp-hidden-menu {
@@ -246,8 +238,7 @@
   position: relative;
   text-align: center;
   overflow: auto;
-  -webkit-transition: -webkit-transform 0.5s, visibility 0s 0.5s;
-          transition: -webkit-transform 0.5s, visibility 0s 0.5s;
+  transition: -webkit-transform 0.5s, visibility 0s 0.5s;
   transition: transform 0.5s, visibility 0s 0.5s;
   -webkit-transform: translate3d(-100%, 0, 0);
   transform: translate3d(-100%, 0, 0);
@@ -258,8 +249,7 @@
 #tvp-slide-menu.active #tvp-hidden-menu {
   visibility: visible;
   /* this is for browsers that don't support CSS3 translate3d in showing the menu */
-  -webkit-transition-delay: 0s;
-          transition-delay: 0s;
+  transition-delay: 0s;
   -webkit-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
 }
@@ -274,14 +264,12 @@
   left: 45px;
   position: relative;
   margin: 0;
-  -webkit-transition-delay: 0.5s;
-          transition-delay: 0.5s;
+  transition-delay: 0.5s;
 }
 
 #tvp-slide-menu.active .tvp-video-count {
   visibility: hidden;
-  -webkit-transition: visibility 0.1s;
-          transition: visibility 0.1s;
+  transition: visibility 0.1s;
 }
 
 .tvp-video {
@@ -317,7 +305,6 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  background: -webkit-linear-gradient(270deg, rgba(0, 0, 0, 0.5) 0%, #000 100%);
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, #000 100%);
 }
 
@@ -417,8 +404,7 @@
   cursor: pointer;
   border: 0;
   z-index: 1000;
-  -webkit-transition: all .05s ease-in-out;
-          transition: all .05s ease-in-out;
+  transition: all .05s ease-in-out;
   width: 33%;
   height: 58%;
   background-color: #fff;
