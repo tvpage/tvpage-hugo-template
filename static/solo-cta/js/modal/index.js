@@ -115,7 +115,7 @@
 
   function initMenu(){
     var menuSettings = JSON.parse(JSON.stringify(config));
-        menuSettings.data = config.channel.videos || [],
+        menuSettings.data = config.channel.videos || [];
     menu = new Menu(player, modal, productsRail, menuSettings);
     menu.init();
   }

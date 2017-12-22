@@ -7,6 +7,7 @@
   var modalCloseEvent = eventPrefix + ':widget_modal_close';
   var modalOpenEvent = eventPrefix + ':widget_modal_open';
   var modalInitializedEvent = eventPrefix + ':widget_modal_initialized';
+  var playlistOpt = Utils.isset(config,'playlist') ? config.playlist : false;
   var player;
   var productsCarousel;
   var analytics;
@@ -75,7 +76,6 @@
     }
 
     function onPlayerReady(){
-     var playlistOpt = Utils.isset(config,'playlist') ? config.playlist : false;
       if(playlistOpt){
         initMenu();
       }
@@ -119,8 +119,9 @@
 
   function initMenu(){
     var menuSettings = JSON.parse(JSON.stringify(config));
-        menuSettings.data = config.channel.videos || [],
-    (new Menu(player,menuSettings).init());
+    menuSettings.data = config.channel.videos || [];
+    menu = new Menu(player, modal, productsCarousel, menuSettings);
+    menu.init();
   }
 
   function initProducts(style) {
@@ -237,7 +238,7 @@
   }
 
 
-  var deps = ['jQuery', 'Utils', 'Analytics', 'Carousel', 'Modal', 'Player'],
+  var deps = ['jQuery', 'Utils', 'Analytics', 'Carousel', 'Modal', 'Player'];
   if(playlistOpt) deps.push('Menu', 'Ps');
   Utils.globalPoll(deps,
     function(){
