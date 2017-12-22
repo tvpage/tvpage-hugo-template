@@ -13,9 +13,9 @@
     '<link rel="preconnect" href="https://cdnjs.tvpage.com" />' +
     '<link rel="preconnect" href="https://s.ytimg.com" />' +
     {{- if (getenv "HUGO_DEBUG") -}}
-    '<script src="{{- "/libs/utils.js" | relURL -}}"></script>' +
+    '<script src="{{- "/libs/utils.js" | absURL -}}"></script>' +
     {{- else -}}
-    '<script src="{{- "/libs/utils.min.js" | relURL -}}"></script>' +
+    '<script src="{{- "/libs/utils.min.js" | absURL -}}"></script>' +
     {{- end -}}
   '</head>' +
   '<body class="{className}" data-id="{id}" onload="{onload}">',

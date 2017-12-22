@@ -123,7 +123,7 @@
       var productPopOverEl = Utils.createEl('div');
 
       productPopOverEl.id = 'pop-over-' + product.id;
-      productPopOverEl.className = 'pop-over';
+      productPopOverEl.className = 'pop-over product-pop-over';
       productPopOverEl.innerHTML = Utils.tmpl(templates.products.itemPopOver, product);
 
       productsRail.el.appendChild(productPopOverEl);
@@ -135,7 +135,7 @@
 
     function renderPopOverPointer(railEl, product) {
       var popOverPointerEl = Utils.createEl('div');
-      popOverPointerEl.className = 'pop-over-pointer';
+      popOverPointerEl.className = 'pop-over-pointer product-pop-over-pointer';
 
       productsRail.el.appendChild(popOverPointerEl);
       popOverPointerEl.style.top = getPopOverTop(railEl, popOverPointerEl);

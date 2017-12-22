@@ -181,6 +181,25 @@
     {
       "display": true,
       "type": "text",
+      "label": "Carousel Arrow Background Color",
+      "code": "carousel_arrow_background_color",
+      "selector": ".carousel-arrow",
+      "property": "background-color"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Carousel Arrow Color",
+      "code": "carousel_arrow_color",
+      "selector": ".carousel-arrow",
+      "property": "color"
+    },
+
+
+
+    {
+      "display": true,
+      "type": "text",
       "label": "Video Item Margin",
       "code": "video_item_margin",
       "selector": ".video-item",
@@ -300,89 +319,256 @@
 
 
     {
+      "display": true,
+      "type": "text",
+      "label": "Widget Modal Body Background Color",
+      "code": "widget_modal_body_background_color",
+      "selector": ".widget-modal-body",
+      "property": "background-color"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Widget Modal Body Border",
+      "code": "widget_modal_body_border",
+      "selector": ".widget-modal-body",
+      "property": "border"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Widget Modal Body Padding",
+      "code": "widget_modal_body_padding",
+      "selector": ".widget-modal-body",
+      "property": "padding"
+    },
+
+
+
+    {
+      "display": true,
+      "type": "text",
+      "label": "Widget Modal Header Background Color",
+      "code": "widget_modal_header_background_color",
+      "selector": ".widget-modal-header",
+      "property": "background-color"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Widget Modal Header Border",
+      "code": "widget_modal_header_border",
+      "selector": ".widget-modal-header",
+      "property": "border"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Widget Modal Header Padding",
+      "code": "widget_modal_header_padding",
+      "selector": ".widget-modal-header",
+      "property": "padding"
+    },
+
+
+
+    {
+      "display": true,
+      "type": "text",
+      "label": "Widget Modal Title Color",
+      "code": "widget_modal_title_color",
+      "selector": ".widget-modal-title",
+      "property": "color"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Widget Modal Title Font Weight",
+      "code": "widget_modal_font_weight",
+      "selector": ".widget-modal-title",
+      "property": "font-weight"
+    },
+
+
+
+    {
+      "display": true,
+      "type": "text",
+      "label": "Product Item Padding",
+      "code": "product_item_padding",
+      "selector": ".product-item",
+      "property": "padding"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Product Item Margin",
+      "code": "product_item_margin",
+      "selector": ".product-item",
+      "property": "margin"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Product Item Border",
+      "code": "product_item_border",
+      "selector": ".product-item",
+      "property": "border"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Product Item Image Overlay Background Color",
+      "code": "product_item_image_overlay_background_color",
+      "selector": ".product-item-image-overlay",
+      "property": "background-color"
+    },
+
+
+
+    {
         "display": true,
         "type": "text",
-        "label": "Widget Modal Body Background Color",
-        "code": "widget_modal_body_background_color",
-        "selector": ".widget-modal-body",
+        "label": "Product Pop Over Background Color",
+        "code": "product_pop_over_background_color",
+        "selector": ".product-pop-over",
         "property": "background-color"
     },
     {
         "display": true,
         "type": "text",
-        "label": "Widget Modal Body Border",
-        "code": "widget_modal_body_border",
-        "selector": ".widget-modal-body",
-        "property": "border"
+        "label": "Product Pop Over Pointer Background Color",
+        "code": "product_pop_over_pointer_background_color",
+        "selector": ".pop-over-pointer:after",
+        "property": "border-left-color"
     },
     {
         "display": true,
         "type": "text",
-        "label": "Widget Modal Body Padding",
-        "code": "widget_modal_body_padding",
-        "selector": ".widget-modal-body",
+        "label": "Product Pop Over Title Padding",
+        "code": "product_pop_over_title_padding",
+        "selector": ".product-pop-over-title",
         "property": "padding"
     },
-
-
-
     {
         "display": true,
         "type": "text",
-        "label": "Widget Modal Header Background Color",
-        "code": "widget_modal_header_background_color",
-        "selector": ".widget-modal-header",
-        "property": "background-color"
+        "label": "Product Pop Over Title Margin",
+        "code": "product_pop_over_title_margin",
+        "selector": ".product-pop-over-title",
+        "property": "margin"
     },
     {
         "display": true,
         "type": "text",
-        "label": "Widget Modal Header Border",
-        "code": "widget_modal_header_border",
-        "selector": ".widget-modal-header",
-        "property": "border"
+        "label": "Product Pop Over Title Font Size",
+        "code": "product_pop_over_title_font_size",
+        "selector": ".product-pop-over-title",
+        "property": "font-size"
     },
     {
         "display": true,
         "type": "text",
-        "label": "Widget Modal Header Padding",
-        "code": "widget_modal_header_padding",
-        "selector": ".widget-modal-header",
-        "property": "padding"
-    },
-
-    {
-        "display": true,
-        "type": "text",
-        "label": "Widget Modal Title Color",
-        "code": "widget_modal_title_color",
-        "selector": ".widget-modal-title",
-        "property": "color"
-    },
-    {
-        "display": true,
-        "type": "text",
-        "label": "Widget Modal Title Font Weight",
-        "code": "widget_modal_font_weight",
-        "selector": ".widget-modal-title",
+        "label": "Product Pop Over Title Font Weight",
+        "code": "product_pop_over_title_font_weight",
+        "selector": ".product-pop-over-title",
         "property": "font-weight"
     },
-
     {
         "display": true,
         "type": "text",
-        "label": "Carousel Arrow Background Color",
-        "code": "carousel_arrow_background_color",
-        "selector": ".carousel-arrow",
+        "label": "Product Pop Over Title Text Align",
+        "code": "product_pop_over_title_text_align",
+        "selector": ".product-pop-over-title",
+        "property": "text-align"
+    },
+    {
+        "display": true,
+        "type": "text",
+        "label": "Product Pop Over Title Color",
+        "code": "product_pop_over_title_color",
+        "selector": ".product-pop-over-title",
+        "property": "color"
+    },
+    {
+        "display": true,
+        "type": "text",
+        "label": "Product Pop Over Title Background Color",
+        "code": "product_pop_over_title_background_color",
+        "selector": ".product-pop-over-title",
         "property": "background-color"
     },
     {
         "display": true,
         "type": "text",
-        "label": "Carousel Arrow Color",
-        "code": "carousel_arrow_color",
-        "selector": ".carousel-arrow",
+        "label": "Product Pop Over Title Border",
+        "code": "product_pop_over_title_border",
+        "selector": ".product-pop-over-title",
+        "property": "border"
+    },
+    {
+        "display": true,
+        "type": "text",
+        "label": "Product Pop Over Price Padding",
+        "code": "product_pop_over_price_padding",
+        "selector": ".product-pop-over-price",
+        "property": "padding"
+    },
+    {
+        "display": true,
+        "type": "text",
+        "label": "Product Pop Over Price Margin",
+        "code": "product_pop_over_price_margin",
+        "selector": ".product-pop-over-price",
+        "property": "margin"
+    },
+    {
+        "display": true,
+        "type": "text",
+        "label": "Product Pop Over Price Font Size",
+        "code": "product_pop_over_price_font_size",
+        "selector": ".product-pop-over-price",
+        "property": "font-size"
+    },
+    {
+        "display": true,
+        "type": "text",
+        "label": "Product Pop Over Price Font Weight",
+        "code": "product_pop_over_price_font_weight",
+        "selector": ".product-pop-over-price",
+        "property": "font-weight"
+    },
+    {
+        "display": true,
+        "type": "text",
+        "label": "Product Pop Over Price Text Align",
+        "code": "product_pop_over_price_text_align",
+        "selector": ".product-pop-over-price",
+        "property": "text-align"
+    },
+    {
+        "display": true,
+        "type": "text",
+        "label": "Product Pop Over Price Color",
+        "code": "product_pop_over_price_color",
+        "selector": ".product-pop-over-price",
         "property": "color"
+    },
+    {
+        "display": true,
+        "type": "text",
+        "label": "Product Pop Over Price Background Color",
+        "code": "product_pop_over_price_background_color",
+        "selector": ".product-pop-over-price",
+        "property": "background-color"
+    },
+    {
+        "display": true,
+        "type": "text",
+        "label": "Product Pop Over Price Border",
+        "code": "product_pop_over_price_border",
+        "selector": ".product-pop-over-price",
+        "property": "border"
     }
   ]
 }
