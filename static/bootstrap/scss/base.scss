@@ -94,7 +94,7 @@ $slider_pull_x:   1rem !default;
 
 .image-overlay {
   pointer-events: none;
-  background: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 /* thumbnail sizes */
@@ -231,14 +231,6 @@ body {
 }
 
 /* implementation specific */
-.video-image-overlay {
-  transition: all .2s ease;
-  pointer-events: none;
-  opacity: 0;
-  visibility: hidden;
-  background: rgba(0, 0, 0, 0.2);
-}
-
 .video-image-icon {
   cursor: pointer;
   z-index: 1000;
@@ -248,7 +240,7 @@ body {
   color:white
 }
 
-body:not(.mobile) .video:hover .video-image-overlay {
+body:not(.mobile) .video:hover .image-overlay {
   opacity: 1;
   visibility: visible;
 }

@@ -23,7 +23,7 @@
 .pop-over {
   position: absolute;
   top: 0;
-  left: -205px;
+  left: -220px;
   z-index: 10000;
   background: white;
   visibility: hidden;
@@ -59,7 +59,7 @@
   border-bottom: 13px solid transparent;
   border-left: 13px solid #000;
   position: absolute;
-  top: 0;
+  top: 1px;
   margin-left: auto;
   margin-right: auto;
   left: 0;
@@ -71,9 +71,10 @@
   height: 0;
   border-top: 13px solid transparent;
   border-bottom: 13px solid transparent;
-  border-left: 13px solid white;
+  border-left: 13px solid;
+  border-left-color: white;
   position: absolute;
-  top: 0;
+  top: 1px;
   margin-left: auto;
   margin-right: auto;
   left: -1px;

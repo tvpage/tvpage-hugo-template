@@ -18,6 +18,8 @@
       if (e && e.target) {
         Utils.sendMessage({
           event: config.events.modal.open,
+          
+          //I think is best to use the video-item the the carousel holds... more semantic
           clicked: Utils.attr(Utils.getRealTargetByClass(e.target, 'carousel-item'), 'data-id')
         });
 
@@ -109,7 +111,7 @@
       });
 
     var widgetTitleEl = Utils.getById('widget-title');
-    widgetTitleEl.innerHTML = config.title_text;
+    widgetTitleEl.innerHTML = config.widget_title_html;
 
     Utils.addClass(widgetTitleEl, 'ready');
   });

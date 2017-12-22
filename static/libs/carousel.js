@@ -278,12 +278,16 @@
     
     var prevArrow = arrowEls[0];
     if(prevArrow){
+      Utils.addClass(prevArrow, 'carousel-arrow');
+
       prevArrow.innerHTML = '';
       prevArrow.appendChild(getIcon('left'));
     }
 
     var nextArrow = arrowEls[1];
     if(nextArrow){
+      Utils.addClass(nextArrow, 'carousel-arrow');
+
       nextArrow.innerHTML = '';
       nextArrow.appendChild(getIcon('right'));
     }

@@ -170,7 +170,7 @@ function widgetModalRender(){
   iframeModalDocument.open().write(getIframeHtml({
     context: config,
     html: templates.modal.base,
-    style: 'body{background:none transparent}',
+    style: 'body{background:none transparent}' + config.css.custom,
     js: iframeModalFiles.javascript,
     css: iframeModalFiles.css
   }));
@@ -196,11 +196,13 @@ function widgetRender(){
 
     var iframeDocument = holderEl.querySelector('iframe').contentWindow.document;
     var iframeFiles = debug ? config.files.debug : config.files;
-  
+
+    console.log(config.css.custom)
+
     iframeDocument.open().write(getIframeHtml({
       context: config,
       html: templates.base,
-      style: config.css.base,
+      style: config.css.base + config.css.custom,
       js: iframeFiles.javascript,
       css: iframeFiles.css
     }));
