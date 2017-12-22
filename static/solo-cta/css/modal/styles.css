@@ -95,3 +95,365 @@
 .product:hover .image-overlay{
   opacity: 1;
 }
+
+/*   MENU STYLES   */
+
+#tvp-slide-menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  z-index: 9999999999;
+}
+
+#tvp-hamburger-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  z-index: 100;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  -webkit-transition: background 0.3s, -webkit-transform 0.5s;
+          transition: background 0.3s, -webkit-transform 0.5s;
+  transition: background 0.3s, transform 0.5s;
+}
+
+.tvp-hamburger {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  width: 45px;
+  height: 35px;
+  font-size: 0;
+  text-indent: -9999px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  box-shadow: none;
+  border-radius: none;
+  border: none;
+  cursor: pointer;
+}
+
+.tvp-hamburger:focus,
+.tvp-hamburger-x:focus {
+  outline: none;
+}
+
+.tvp-hamburger span {
+  display: block;
+  position: absolute;
+  top: 15px;
+  left: 10px;
+  right: 0;
+  height: 3px;
+  width: 24px;
+  background-color: #fff;
+}
+
+.tvp-hamburger span::before,
+.tvp-hamburger span::after {
+  position: absolute;
+  display: block;
+  left: 0;
+  width: 24px;
+  height: 3px;
+  background-color: #fff;
+  content: "";
+}
+
+.tvp-hamburger span::before {
+  top: -7px;
+}
+
+.tvp-hamburger span::after {
+  bottom: -7px;
+}
+
+.tvp-hamburger-x {
+  background-color: transparent;
+}
+
+.tvp-hamburger-x span {
+  -webkit-transition: background 0s 0.1s;
+          transition: background 0s 0.1s;
+}
+
+.tvp-hamburger-x span::before,
+.tvp-hamburger-x span::after {
+  -webkit-transition-duration: 0.3s, 0.3s;
+          transition-duration: 0.3s, 0.3s;
+  -webkit-transition-delay: 0.3s, 0s;
+          transition-delay: 0.3s, 0s;
+}
+
+.tvp-hamburger-x span::before {
+  -webkit-transition-property: top, -webkit-transform;
+          transition-property: top, -webkit-transform;
+  transition-property: top, transform;
+}
+
+.tvp-hamburger-x span::after {
+  -webkit-transition-property: bottom, -webkit-transform;
+          transition-property: bottom, -webkit-transform;
+  transition-property: bottom, transform;
+}
+
+#tvp-slide-menu.active #tvp-hamburger-container {
+  -webkit-transition: -webkit-transform 0.5s;
+          transition: -webkit-transform 0.5s;
+  transition: transform 0.5s;
+  -webkit-transform: translate3d(50%, 0, 0);
+  transform: translate3d(50%, 0, 0);
+}
+
+#tvp-slide-menu.active .tvp-hamburger-x span {
+  background: none;
+}
+
+#tvp-slide-menu.active .tvp-hamburger-x span::before {
+  top: 0;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+#tvp-slide-menu.active .tvp-hamburger-x span::after {
+  bottom: 0;
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+
+#tvp-slide-menu.active .tvp-hamburger-x span::before,
+#tvp-slide-menu.active .tvp-hamburger-x span::after {
+  -webkit-transition-delay: 0s, 0.3s;
+          transition-delay: 0s, 0.3s;
+}
+
+#tvp-hidden-menu {
+  width: 50%;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: block;
+  position: relative;
+  text-align: center;
+  overflow: auto;
+  -webkit-transition: -webkit-transform 0.5s, visibility 0s 0.5s;
+          transition: -webkit-transform 0.5s, visibility 0s 0.5s;
+  transition: transform 0.5s, visibility 0s 0.5s;
+  -webkit-transform: translate3d(-100%, 0, 0);
+  transform: translate3d(-100%, 0, 0);
+  visibility: hidden;
+  /* this is for browsers that don't support CSS3 translate3d in showing the menu */
+}
+
+#tvp-slide-menu.active #tvp-hidden-menu {
+  visibility: visible;
+  /* this is for browsers that don't support CSS3 translate3d in showing the menu */
+  -webkit-transition-delay: 0s;
+          transition-delay: 0s;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+
+.tvp-video-count {
+  width: 65px;
+  max-width: 70px;
+  color: #fff;
+  font-family: Arial;
+  font-size: 14px;
+  top: 8px;
+  left: 45px;
+  position: relative;
+  margin: 0;
+  -webkit-transition-delay: 0.5s;
+          transition-delay: 0.5s;
+}
+
+#tvp-slide-menu.active .tvp-video-count {
+  visibility: hidden;
+  -webkit-transition: visibility 0.1s;
+          transition: visibility 0.1s;
+}
+
+.tvp-video {
+  cursor: pointer;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+  -webkit-box-pack: center;
+  justify-content: center;
+  height: 30%;
+  position: relative;
+  overflow: hidden;
+}
+
+.tvp-active-overlay {
+  display: none;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.tvp-video.active .tvp-active-overlay {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  background: -webkit-linear-gradient(270deg, rgba(0, 0, 0, 0.5) 0%, #000 100%);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, #000 100%);
+}
+
+.tvp-video .tvp-active-overlay > p {
+  display: none;
+  font-family: Arial;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 15px;
+  color: #fff;
+  z-index: 1000;
+  margin: 0;
+}
+
+.tvp-video.active .tvp-active-overlay > p {
+  display: block;
+}
+
+.tvp-video:hover {
+  background-color: rgba(135, 135, 135, 0.5);
+}
+
+.tvp-video-title,
+.tvp-video-duration {
+  color: #FFF;
+  text-align: left;
+  font-family: Arial;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  margin: 0;
+}
+
+.tvp-video-title {
+  font-size: calc(10px + (24 - 10) * ((100vw - 300px) / (1600 - 300)));
+}
+
+.tvp-video-duration {
+  font-size: calc(8px + (22 - 8) * ((100vw - 300px) / (1600 - 300)));
+}
+
+.tvp-video-details {
+  width: 55%;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  position: absolute;
+  right: 5%;
+}
+
+.tvp-category-tag{
+  display: inline-block;
+  float: left;
+  text-align: left;
+  padding: 5px;
+  margin-top: 5px;
+  font-size: calc(8px + (22 - 8) * ((100vw - 300px) / (1600 - 300)));
+}
+
+.tvp-video-image {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  position: absolute;
+  pointer-events: none;
+  width: 30%;
+  margin-left:10px;
+  left: 0;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+}
+
+.tvp-video-image:focus {
+  outline: 0;
+}
+
+.tvp-video-image:before {
+  display: block;
+  content: "";
+  width: 100%;
+  padding-top: 56.25%;
+}
+
+.tvp-video.active .tvp-video-play {
+  display: none;
+}
+
+.tvp-video-play {
+  padding: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+  cursor: pointer;
+  border: 0;
+  z-index: 1000;
+  -webkit-transition: all .05s ease-in-out;
+          transition: all .05s ease-in-out;
+  width: 33%;
+  height: 58%;
+  background-color: #fff;
+  border-radius: 50%;
+}
+
+.tvp-video-play > polygon {
+  pointer-events: none;
+}
+
+.tvp-no-videos {
+  height: 30%;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWMAAABQAgMAAACxNfzFAAAACVBMVEUAAADs7Ozu7u63WwrQAAAAA3RSTlMAs7Nn9tuTAAAAT0lEQVRYw+3WoQ3AIABE0TMdgc3ojoQpkShC09Ck4n135ulL39eScj8oueaoIZPJZPL38pvIZDKZTCaTyWTyaXn1+SuZTCaTyWQymfw/eQBpdm0cseOcAgAAAABJRU5ErkJggg==);
+  background-repeat: no-repeat;
+  background-size: 90%;
+  margin: 15px;
+}
+
+.tvp-video:hover .tvp-video-play {
+  background-color:#333;
+}
+
+.tvp-video-play > polygon {
+ fill: #333;
+}
+
+.tvp-video:hover .tvp-video-play > polygon {
+  fill: #fff;
+}
+
+.tvp-category-tag {
+  background-color: #333;
+  font-family: "Arial";
+  font-size: 10px;
+  font-weight: bold;
+  color: #fff;
+  border-radius:0;
+}

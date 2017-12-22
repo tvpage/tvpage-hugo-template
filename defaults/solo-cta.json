@@ -59,6 +59,13 @@
       "code": "items_per_page",
       "value": "1"
     },
+    {
+      "for": "modal",
+      "type": "boolean",
+      "label": "Playlist",
+      "code": "playlist",
+      "value": false
+    },
    {
         "for": "mobile",
         "type": "text",

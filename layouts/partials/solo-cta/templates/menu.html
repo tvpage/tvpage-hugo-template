@@ -1,0 +1,22 @@
+{
+  base: '<nav id="tvp-hidden-menu"></nav>' +
+        '<div id="tvp-hamburger-container">' +
+          '<div class="tvp-hamburger tvp-hamburger-x"><span class="tvp-hamburger-span"></span></div>' +
+          '<p class="tvp-video-count"></p>' +
+        '</div>',
+  item: '<div id="tvp-video-{id}" class="tvp-video{className}">' +
+          '<div class="tvp-video-image" style="background-image:url({asset.thumbnailUrl})">' +
+            '<div class="tvp-active-overlay">' +
+              '<p>Now Playing</p>' +
+            '</div>' +
+            '<svg class="tvp-video-play" viewBox="0 0 200 200" alt="Play video">' +
+              '<polygon points="70, 55 70, 145 145, 100"></polygon>' +
+            '</svg>' +
+          '</div>' +
+          '<div class="tvp-video-details">' +
+            '<p class="tvp-video-title">{title}</p>' +
+            '<p class="tvp-video-duration">- {duration}</p>' +
+            '<span class="tvp-category-tag">{menuTagAttr}</span>'+
+          '</div>' +
+        '</div>'
+}

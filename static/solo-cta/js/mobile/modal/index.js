@@ -74,6 +74,13 @@
       }
     }
 
+    function onPlayerReady(){
+     var playlistOpt = Utils.isset(config,'playlist') ? config.playlist : false;
+      if(playlistOpt){
+        initMenu();
+      }
+    }
+
     function onPlayerClick(e){
       if(e && e.target){
         var target = Utils.getRealTargetByClass(e.target, 'tvplayer-playbutton');
@@ -91,6 +98,7 @@
     player = new Player('player-el', {
       startWith: clickedVideo.id,
       data: config.channel.videos,
+      onPlayerReady:onPlayerReady,
       onResize: onPlayerResize,
       onNext: onPlayerNext,
       onChange: onPlayerChange,
@@ -108,6 +116,12 @@
     analytics.initialize();
     analytics.track('ci');
   };
+
+  function initMenu(){
+    var menuSettings = JSON.parse(JSON.stringify(config));
+        menuSettings.data = config.channel.videos || [],
+    (new Menu(player,menuSettings).init());
+  }
 
   function initProducts(style) {
     if (!productsEnabled) {
@@ -222,8 +236,10 @@
     modal.initialize();
   }
 
-  Utils.globalPoll(
-    ['jQuery', 'Utils', 'Analytics', 'Carousel', 'Modal', 'Player'],
+
+  var deps = ['jQuery', 'Utils', 'Analytics', 'Carousel', 'Modal', 'Player'],
+  if(playlistOpt) deps.push('Menu', 'Ps');
+  Utils.globalPoll(deps,
     function(){
       initModal();
       

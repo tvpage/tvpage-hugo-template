@@ -8,6 +8,7 @@
   var modalOpenEvent = eventPrefix + ':widget_modal_open';
   var modalInitializedEvent = eventPrefix + ':widget_modal_initialized';
   var modal;
+  var menu;
   var player;
   var productsRail;
   var analytics;
@@ -16,6 +17,7 @@
   var productsEnabled = config.merchandise;
   var skeletonEl = Utils.getById('skeleton');
   var isFirstVideoPlay = true;
+  var playlistOpt = Utils.isset(config,'playlist') ? config.playlist : false;
   var productRatingAttrName = config.product_rating_attribute;
   var productReviewAttrName = config.product_review_attribute;
 
@@ -60,6 +62,17 @@
         productsRail.endpoint = buildProductsEndpoint(nextVideo.assetId);
         productsRail.load('render');
       }
+
+      if(nextVideo && playlistOpt){
+        menu.setActiveItem(nextVideo.assetId);
+        menu.hideMenu();
+      }
+    }
+
+    function onPlayerReady(){
+      if(playlistOpt){
+        initMenu();
+      }
     }
 
     function onPlayerChange(e, currentAsset) {
@@ -82,6 +95,7 @@
     player = new Player('player-el', {
       startWith: clickedVideo.id,
       data: config.channel.videos,
+      onPlayerReady: onPlayerReady,
       onResize: onPlayerResize,
       onNext: onPlayerNext,
       onChange: onPlayerChange
@@ -98,6 +112,13 @@
     analytics.initialize();
     analytics.track('ci');
   };
+
+  function initMenu(){
+    var menuSettings = JSON.parse(JSON.stringify(config));
+        menuSettings.data = config.channel.videos || [],
+    menu = new Menu(player,menuSettings);
+    menu.init();
+  }
 
   function initProducts(style) {
     if (!productsEnabled) {
@@ -275,8 +296,9 @@
   }
 
   //global deps check before execute
-  Utils.globalPoll(
-    ['Utils', 'Analytics', 'Player', 'Modal', 'Ps', 'jQuery'],
+  var deps = ['Utils', 'Analytics', 'Player', 'Modal', 'Ps', 'jQuery'];
+  if(playlistOpt) deps.push('Menu');
+  Utils.globalPoll(deps,
     function () {
       initModal();
 

@@ -19,6 +19,7 @@
   '</head>' +
   '<body class="{className}" data-domain="{domain}" data-id="{id}" onload="{onload}">',
   base: {{- (partial (printf "%s/templates/base.html" .Type) .) -}},
+  menu: {{- (partial (printf "%s/templates/menu.html" .Type) .) -}},
   modal: {
     iframe: '<iframe id="tvp-{{ ($.Scratch.Get "settings").name }}-modal-iframe" src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media" class="tvp-modal-iframe"></iframe>',
     base: {{- (partial (printf "%s/templates/modal/base.html" .Type) .) -}},

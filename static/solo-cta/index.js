@@ -313,8 +313,9 @@ function widgetModalRender(){
       debug ? libsPath + "/carousel.js" : "",
       debug ? libsPath + "/rail.js" : "",
       debug ? libsPath + "/modal.js" : "",
+      debug ? libsPath + "/menu.js" : "",
       debug ? jsPath + "/vendor/jquery.js" : "",
-      debug && !isMobile ? jsPath + "/vendor/perfect-scrollbar.min.js" : "",
+      debug ? jsPath + "/vendor/perfect-scrollbar.min.js" : "",
       debug ? jsPath + mobilePath + "/modal/index.js" : "",
       debug ? "" : jsPath + mobilePath + "/modal/scripts.min.js"
     ],
@@ -323,7 +324,7 @@ function widgetModalRender(){
       debug ? baseUrl + "/slick/slick.css" : '',
       debug && isMobile ? baseUrl + '/slick/mobile/custom.css' : '',
       debug && !isMobile ? baseUrl + '/slick/custom.css' : '',
-      debug && !isMobile ? cssPath + "/vendor/perfect-scrollbar.min.css" : "",
+      debug ? cssPath + "/vendor/perfect-scrollbar.min.css" : "",
       debug ? cssPath + mobilePath + "/modal/styles.css" : '',
       debug ? '' : cssPath + mobilePath + "/modal/styles.min.css"
     ]
