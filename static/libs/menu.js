@@ -2,26 +2,30 @@
 
   var that,firstRender;
 
-  function Menu(player, settings) {
+  function Menu(player, modal, productsRail, settings) {
     that = this;
     firstRender = true;
 
     this.settings = settings || {};
     this.player = player;
+    this.productsRail = productsRail;
     this.playerEl = player.el;
     this.allVideos = [];
-    this.page = 0;
+    this.modal = modal;
+    this.page = 1;
     this.lastPage = false;
     this.isFetching = false;
-    this.itemsPerPage = settings.items_per_page || 6;
+    this.itemsPerPage = settings.menu_items_per_page || 6;
+    this.settings.channel.videos.forEach(function(video){that.allVideos.push(video)});
   }
 
   Menu.prototype.init = function(){
-      that.appendMenu();
-      that.render(that.settings.channel.videos);
-      that.bindClickEvents();
-      that.bindLoadMoreEvent();
-      that.listenToResize();
+    var firstBatch = JSON.parse(JSON.stringify(that.allVideos));
+    that.appendMenu();
+    that.render(firstBatch.slice(0, that.itemsPerPage));
+    that.bindClickEvents();
+    that.bindLoadMoreEvent();
+    that.listenToResize();
   };
 
   Menu.prototype.appendMenu = function(){
@@ -39,10 +43,7 @@
   Menu.prototype.render = function(data) {
       if (!data || !data.length) return;
 
-      that.lastPage = (!data.length || data.length < that.settings.items_per_page) ? true : false;
-      var playlist = data || [],
-          menuItemEl = '',
-          noVideosEl = '';
+      var playlist = data || [], menuItemEl = noVideosEl = '';
 
       for(var i = 0; i < playlist.length; i++){
           var menuItem = playlist[i];
@@ -53,7 +54,6 @@
               noVideosEl += '<div class="tvp-no-videos"></div>' 
           }
           menuItemEl += Utils.tmpl(that.settings.templates.menu['item'], menuItem);
-          that.allVideos.push(menuItem);
       }
       that.hiddenMenu = that.slideMenu.querySelector('#tvp-hidden-menu');
       that.deleteDivs();
@@ -64,6 +64,7 @@
           that.setActiveItem(that.allVideos[0].id)
           Ps.initialize(that.hiddenMenu);
       }
+    that.page++;
   };
 
   Menu.prototype.setTagAttribute = function(settings,menuItem){
@@ -99,6 +100,11 @@
           var id = tvpVideo.id.split('-').pop(),
               selected = that.allVideos.filter(function(v){return v.id === id});
           that.setActiveItem(id);
+          that.modal.updateTitle(selected[0].title);
+          if(that.settings.merchandise){
+            that.productsRail.endpoint = that.settings.api_base_url + '/videos/' + id + '/products';
+            that.productsRail.load('render');
+          }
           that.player.play(that.player.buildAsset(selected[0]));
           that.toggleMenu();
          }
@@ -106,25 +112,16 @@
   };
 
   Menu.prototype.loadMore = function() {
-    if (this.lastPage || this.isFetching) return;
-
-    this.page++;
-    this.isFetching = true;
-    var channel = this.settings.channel || {};
-
-    Utils.loadScript({
-      base: this.settings.api_base_url + '/channels/' + this.settings.channelId + '/videos',
-      params: Utils.extend(channel.parameters || {}, {
-        'X-login-id': this.settings.loginId,
-        p: this.page,
-        n: this.itemsPerPage
-      })
-    },function(data) {
-      that.isFetching = false;
-      that.lastPage = (!data.length || data.length < that.itemsPerPage) ? true : false;
-      that.player.addAssets(data);
-      that.render(data);
-    });
+    if (that.lastPage || that.isFetching) return;
+    that.isFetching = true;
+    var channel = that.settings.channel || {}, paginatedData = [];
+    for (var i = (that.page-1) * that.itemsPerPage; i < (that.page * that.itemsPerPage); i++) {
+        if (typeof that.allVideos[i] === 'undefined') break;
+        paginatedData.push(that.allVideos[i]);
+    }
+    that.lastPage = (!paginatedData.length || paginatedData.length < that.itemsPerPage) ? true : false;
+    that.isFetching = false;
+    that.render(paginatedData);
   };
 
   Menu.prototype.toggleMenu = function() {
@@ -159,9 +156,7 @@
 
   Menu.prototype.clearActiveItems = function (video) {
       for (var i = video.length - 1; i >= 0; i--) {
-          if(video[i].classList.contains('active')){
-              video[i].classList.remove('active');
-          }
+          if(video[i].classList.contains('active')) video[i].classList.remove('active');
       }
   };
 

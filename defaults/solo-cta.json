@@ -60,11 +60,18 @@
       "value": "1"
     },
     {
+      "for": "menu",
+      "type": "text",
+      "label": "Menu Items Per Page",
+      "code": "menu_items_per_page",
+      "value": "6"
+    },
+    {
       "for": "modal",
       "type": "boolean",
       "label": "Playlist",
       "code": "playlist",
-      "value": false
+      "value": true
     },
    {
         "for": "mobile",
