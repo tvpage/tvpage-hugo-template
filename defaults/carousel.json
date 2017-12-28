@@ -320,6 +320,7 @@
 
     {
       "display": true,
+      "modal": true,
       "type": "text",
       "label": "Widget Modal Body Background Color",
       "code": "widget_modal_body_background_color",
@@ -328,6 +329,7 @@
     },
     {
       "display": true,
+      "modal": true,
       "type": "text",
       "label": "Widget Modal Body Border",
       "code": "widget_modal_body_border",
@@ -336,6 +338,7 @@
     },
     {
       "display": true,
+      "modal": true,
       "type": "text",
       "label": "Widget Modal Body Padding",
       "code": "widget_modal_body_padding",
@@ -347,6 +350,7 @@
 
     {
       "display": true,
+      "modal": true,
       "type": "text",
       "label": "Widget Modal Header Background Color",
       "code": "widget_modal_header_background_color",
@@ -355,6 +359,7 @@
     },
     {
       "display": true,
+      "modal": true,
       "type": "text",
       "label": "Widget Modal Header Border",
       "code": "widget_modal_header_border",
@@ -363,6 +368,7 @@
     },
     {
       "display": true,
+      "modal": true,
       "type": "text",
       "label": "Widget Modal Header Padding",
       "code": "widget_modal_header_padding",
@@ -374,6 +380,7 @@
 
     {
       "display": true,
+      "modal": true,
       "type": "text",
       "label": "Widget Modal Title Color",
       "code": "widget_modal_title_color",
@@ -382,6 +389,7 @@
     },
     {
       "display": true,
+      "modal": true,
       "type": "text",
       "label": "Widget Modal Title Font Weight",
       "code": "widget_modal_font_weight",
@@ -393,6 +401,7 @@
 
     {
       "display": true,
+      "modal": true,
       "type": "text",
       "label": "Product Item Padding",
       "code": "product_item_padding",
@@ -401,6 +410,7 @@
     },
     {
       "display": true,
+      "modal": true,
       "type": "text",
       "label": "Product Item Margin",
       "code": "product_item_margin",
@@ -409,6 +419,7 @@
     },
     {
       "display": true,
+      "modal": true,
       "type": "text",
       "label": "Product Item Border",
       "code": "product_item_border",
@@ -417,6 +428,7 @@
     },
     {
       "display": true,
+      "modal": true,
       "type": "text",
       "label": "Product Item Image Overlay Background Color",
       "code": "product_item_image_overlay_background_color",
@@ -428,6 +440,7 @@
 
     {
         "display": true,
+        "modal": true,
         "type": "text",
         "label": "Product Pop Over Background Color",
         "code": "product_pop_over_background_color",
@@ -436,6 +449,7 @@
     },
     {
         "display": true,
+        "modal": true,
         "type": "text",
         "label": "Product Pop Over Pointer Background Color",
         "code": "product_pop_over_pointer_background_color",
@@ -444,6 +458,7 @@
     },
     {
         "display": true,
+        "modal": true,
         "type": "text",
         "label": "Product Pop Over Title Padding",
         "code": "product_pop_over_title_padding",
@@ -452,6 +467,7 @@
     },
     {
         "display": true,
+        "modal": true,
         "type": "text",
         "label": "Product Pop Over Title Margin",
         "code": "product_pop_over_title_margin",
@@ -460,6 +476,7 @@
     },
     {
         "display": true,
+        "modal": true,
         "type": "text",
         "label": "Product Pop Over Title Font Size",
         "code": "product_pop_over_title_font_size",
@@ -468,6 +485,7 @@
     },
     {
         "display": true,
+        "modal": true,
         "type": "text",
         "label": "Product Pop Over Title Font Weight",
         "code": "product_pop_over_title_font_weight",
@@ -476,6 +494,7 @@
     },
     {
         "display": true,
+        "modal": true,
         "type": "text",
         "label": "Product Pop Over Title Text Align",
         "code": "product_pop_over_title_text_align",
@@ -484,6 +503,7 @@
     },
     {
         "display": true,
+        "modal": true,
         "type": "text",
         "label": "Product Pop Over Title Color",
         "code": "product_pop_over_title_color",
@@ -492,6 +512,7 @@
     },
     {
         "display": true,
+        "modal": true,
         "type": "text",
         "label": "Product Pop Over Title Background Color",
         "code": "product_pop_over_title_background_color",
@@ -500,6 +521,7 @@
     },
     {
         "display": true,
+        "modal": true,
         "type": "text",
         "label": "Product Pop Over Title Border",
         "code": "product_pop_over_title_border",
@@ -508,6 +530,7 @@
     },
     {
         "display": true,
+        "modal": true,
         "type": "text",
         "label": "Product Pop Over Price Padding",
         "code": "product_pop_over_price_padding",
@@ -516,6 +539,7 @@
     },
     {
         "display": true,
+        "modal": true,
         "type": "text",
         "label": "Product Pop Over Price Margin",
         "code": "product_pop_over_price_margin",
@@ -524,6 +548,7 @@
     },
     {
         "display": true,
+        "modal": true,
         "type": "text",
         "label": "Product Pop Over Price Font Size",
         "code": "product_pop_over_price_font_size",
@@ -532,6 +557,7 @@
     },
     {
         "display": true,
+        "modal": true,
         "type": "text",
         "label": "Product Pop Over Price Font Weight",
         "code": "product_pop_over_price_font_weight",
@@ -540,6 +566,7 @@
     },
     {
         "display": true,
+        "modal": true,
         "type": "text",
         "label": "Product Pop Over Price Text Align",
         "code": "product_pop_over_price_text_align",
@@ -548,6 +575,7 @@
     },
     {
         "display": true,
+        "modal": true,
         "type": "text",
         "label": "Product Pop Over Price Color",
         "code": "product_pop_over_price_color",
@@ -556,6 +584,7 @@
     },
     {
         "display": true,
+        "modal": true,
         "type": "text",
         "label": "Product Pop Over Price Background Color",
         "code": "product_pop_over_price_background_color",
@@ -564,6 +593,7 @@
     },
     {
         "display": true,
+        "modal": true,
         "type": "text",
         "label": "Product Pop Over Price Border",
         "code": "product_pop_over_price_border",
