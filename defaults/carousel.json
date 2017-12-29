@@ -534,10 +534,37 @@
       "display": true,
       "modal": true,
       "type": "text",
-      "label": "Padding",
-      "code": "widget_modal_body_padding",
+      "label": "Padding Top",
+      "code": "widget_modal_body_padding_top",
       "selector": ".widget-modal-body",
-      "property": "padding"
+      "property": "padding-top"
+    },
+    {
+      "display": true,
+      "modal": true,
+      "type": "text",
+      "label": "Padding Right",
+      "code": "widget_modal_body_padding_right",
+      "selector": ".widget-modal-body",
+      "property": "padding-right"
+    },
+    {
+      "display": true,
+      "modal": true,
+      "type": "text",
+      "label": "Padding Bottom",
+      "code": "widget_modal_body_padding_bottom",
+      "selector": ".widget-modal-body",
+      "property": "padding-bottom"
+    },
+    {
+      "display": true,
+      "modal": true,
+      "type": "text",
+      "label": "Padding Left",
+      "code": "widget_modal_body_padding_left",
+      "selector": ".widget-modal-body",
+      "property": "padding-left"
     },
 
 
@@ -582,10 +609,37 @@
       "display": true,
       "modal": true,
       "type": "text",
-      "label": "Padding",
-      "code": "widget_modal_header_padding",
+      "label": "Padding Top",
+      "code": "widget_modal_header_padding_top",
       "selector": ".widget-modal-header",
-      "property": "padding"
+      "property": "padding-top"
+    },
+    {
+      "display": true,
+      "modal": true,
+      "type": "text",
+      "label": "Padding Right",
+      "code": "widget_modal_header_padding_right",
+      "selector": ".widget-modal-header",
+      "property": "padding-right"
+    },
+    {
+      "display": true,
+      "modal": true,
+      "type": "text",
+      "label": "Padding Bottom",
+      "code": "widget_modal_header_padding_bottom",
+      "selector": ".widget-modal-header",
+      "property": "padding-bottom"
+    },
+    {
+      "display": true,
+      "modal": true,
+      "type": "text",
+      "label": "Padding Left",
+      "code": "widget_modal_header_padding_left",
+      "selector": ".widget-modal-header",
+      "property": "padding-left"
     },
 
 
@@ -897,19 +951,73 @@
         "display": true,
         "modal": true,
         "type": "text",
-        "label": "Padding",
-        "code": "product_pop_over_price_padding",
+        "label": "Padding Top",
+        "code": "product_pop_over_price_padding_top",
         "selector": ".product-pop-over-price",
-        "property": "padding"
+        "property": "padding-top"
     },
     {
         "display": true,
         "modal": true,
         "type": "text",
-        "label": "Margin",
-        "code": "product_pop_over_price_margin",
+        "label": "Padding Right",
+        "code": "product_pop_over_price_padding_right",
         "selector": ".product-pop-over-price",
-        "property": "margin"
+        "property": "padding-right"
+    },
+    {
+        "display": true,
+        "modal": true,
+        "type": "text",
+        "label": "Padding Bottom",
+        "code": "product_pop_over_price_padding_bottom",
+        "selector": ".product-pop-over-price",
+        "property": "padding-bottom"
+    },
+    {
+        "display": true,
+        "modal": true,
+        "type": "text",
+        "label": "Padding Left",
+        "code": "product_pop_over_price_padding_left",
+        "selector": ".product-pop-over-price",
+        "property": "padding-left"
+    },
+    {
+        "display": true,
+        "modal": true,
+        "type": "text",
+        "label": "Margin Top",
+        "code": "product_pop_over_price_margin_top",
+        "selector": ".product-pop-over-price",
+        "property": "margin-top"
+    },
+    {
+        "display": true,
+        "modal": true,
+        "type": "text",
+        "label": "Margin Right",
+        "code": "product_pop_over_price_margin_right",
+        "selector": ".product-pop-over-price",
+        "property": "margin-right"
+    },
+    {
+        "display": true,
+        "modal": true,
+        "type": "text",
+        "label": "Margin Bottom",
+        "code": "product_pop_over_price_margin_bottom",
+        "selector": ".product-pop-over-price",
+        "property": "margin-bottom"
+    },
+    {
+        "display": true,
+        "modal": true,
+        "type": "text",
+        "label": "Margin Left",
+        "code": "product_pop_over_price_margin_left",
+        "selector": ".product-pop-over-price",
+        "property": "margin-left"
     },
     {
         "display": true,
