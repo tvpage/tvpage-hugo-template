@@ -34,6 +34,8 @@
 
       Utils.removeClass(videosCarousel.el, 'hide-abs');
 
+      Utils.addClass(document.body, 'widget-ready');
+
       config.profiling['widget_ready'] = Utils.now('parent');
 
       //send the profile log of the collected metrics

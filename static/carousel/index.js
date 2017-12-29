@@ -156,13 +156,23 @@ function widgetModalRender(){
   var modalTargetEl = createEl('div');
   modalTargetEl.id = widgetId + '-modal-target';
   
-  document.body.appendChild(modalTargetEl);
+  var modalAppendToEl = document.body;
+
+  if(config.modalAppendTo){
+    modalAppendToEl = document.querySelector(config.modalAppendTo);
+  }
+  
+  modalAppendToEl.appendChild(modalTargetEl);
   
   modalTargetEl.insertAdjacentHTML('beforebegin', templates.modal.iframe);
   
   remove(modalTargetEl);
   
   iframeModal = getById('tvp-' + widgetId + '-modal-iframe');
+
+  if(config.modalPosition){
+    iframeModal.style.position = config.modalPosition;
+  }
   
   var iframeModalDocument = iframeModal.contentWindow.document;
   var iframeModalFiles = debug ? config.files.modal.debug : config.files.modal;
@@ -196,8 +206,6 @@ function widgetRender(){
 
     var iframeDocument = holderEl.querySelector('iframe').contentWindow.document;
     var iframeFiles = debug ? config.files.debug : config.files;
-
-    console.log(config.css.custom)
 
     iframeDocument.open().write(getIframeHtml({
       context: config,

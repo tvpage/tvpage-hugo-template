@@ -94,7 +94,10 @@ $slider_pull_x:   1rem !default;
 
 .image-overlay {
   pointer-events: none;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: black;
+  visibility: hidden;
+  transition: opacity 0.15s linear;
+  opacity: 0.2;
 }
 
 /* thumbnail sizes */
@@ -241,7 +244,6 @@ body {
 }
 
 body:not(.mobile) .video:hover .image-overlay {
-  opacity: 1;
   visibility: visible;
 }
 

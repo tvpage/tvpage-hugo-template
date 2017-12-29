@@ -982,6 +982,33 @@
         "code": "product_pop_over_price_border_color",
         "selector": ".product-pop-over-price",
         "property": "border-color"
+    },
+    {
+        "display": true,
+        "modal": true,
+        "type": "text",
+        "label": "Color",
+        "code": "product_pop_over_cta_color",
+        "selector": ".product-pop-over-cta",
+        "property": "color"
+    },
+    {
+      "display": true,
+      "modal": true,
+      "type": "text",
+      "label": "Background Color",
+      "code": "product_pop_over_cta_background_color",
+      "selector": ".product-pop-over-cta",
+      "property": "background-color"
+    },
+    {
+      "display": true,
+      "modal": true,
+      "type": "text",
+      "label": "Font Size",
+      "code": "product_pop_over_cta_font_size",
+      "selector": ".product-pop-over-cta",
+      "property": "font-size"
     }
   ]
 }
