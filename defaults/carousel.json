@@ -89,7 +89,7 @@
     {
       "display": true,
       "type": "text",
-      "label": "Widget Background Color",
+      "label": "Background Color",
       "code": "widget_background_color",
       "selector": ".widget",
       "property": "background-color"
@@ -97,7 +97,7 @@
     {
       "display": true,
       "type": "text",
-      "label": "Widget Padding",
+      "label": "Padding",
       "code": "widget_padding",
       "selector": ".widget",
       "property": "padding"
@@ -105,7 +105,7 @@
     {
       "display": true,
       "type": "text",
-      "label": "Widget Border",
+      "label": "Border",
       "code": "widget_border",
       "selector": ".widget",
       "property": "border"
@@ -122,7 +122,7 @@
     {
       "display": true,
       "type": "text",
-      "label": "Widget Title Font Size",
+      "label": "Font Size",
       "code": "widget_title_font_size",
       "selector": ".widget-title",
       "property": "font-size"
@@ -130,7 +130,7 @@
     {
       "display": true,
       "type": "text",
-      "label": "Widget Title Font Weight",
+      "label": "Font Weight",
       "code": "widget_title_font_weight",
       "selector": ".widget-title",
       "property": "font-weight"
@@ -138,7 +138,7 @@
     {
       "display": true,
       "type": "text",
-      "label": "Widget Title Color",
+      "label": "Color",
       "code": "widget_title_color",
       "selector": ".widget-title",
       "property": "color"
@@ -146,7 +146,7 @@
     {
       "display": true,
       "type": "text",
-      "label": "Widget Title Text Align",
+      "label": "Text Align",
       "code": "widget_title_text_align",
       "selector": ".widget-title",
       "property": "text-align"
@@ -154,7 +154,7 @@
     {
       "display": true,
       "type": "text",
-      "label": "Widget Title Padding",
+      "label": "Padding",
       "code": "widget_title_padding",
       "selector": ".widget-title",
       "property": "padding"
@@ -162,7 +162,7 @@
     {
       "display": true,
       "type": "text",
-      "label": "Widget Title Margin",
+      "label": "Margin",
       "code": "widget_title_margin",
       "selector": ".widget-title",
       "property": "margin"
@@ -170,7 +170,7 @@
     {
       "display": true,
       "type": "text",
-      "label": "Widget Title Background Color",
+      "label": "Background Color",
       "code": "widget_title_background_color",
       "selector": ".widget-title",
       "property": "background-color"
@@ -181,7 +181,7 @@
     {
       "display": true,
       "type": "text",
-      "label": "Carousel Arrow Background Color",
+      "label": "Background Color",
       "code": "carousel_arrow_background_color",
       "selector": ".carousel-arrow",
       "property": "background-color"
@@ -189,7 +189,7 @@
     {
       "display": true,
       "type": "text",
-      "label": "Carousel Arrow Color",
+      "label": "Color",
       "code": "carousel_arrow_color",
       "selector": ".carousel-arrow",
       "property": "color"
@@ -200,7 +200,7 @@
     {
       "display": true,
       "type": "text",
-      "label": "Video Item Margin",
+      "label": "Margin",
       "code": "video_item_margin",
       "selector": ".video-item",
       "property": "margin"
@@ -208,7 +208,7 @@
     {
       "display": true,
       "type": "text",
-      "label": "Video Item Padding",
+      "label": "Padding",
       "code": "video_item_padding",
       "selector": ".video-item",
       "property": "padding"
@@ -216,7 +216,7 @@
     {
       "display": true,
       "type": "text",
-      "label": "Video Item Border",
+      "label": "Border",
       "code": "video_item_border",
       "selector": ".video-item",
       "property": "border"
@@ -224,7 +224,7 @@
     {
       "display": true,
       "type": "text",
-      "label": "Video Item Border Radius",
+      "label": "Border Radius",
       "code": "video_item_border_radius",
       "selector": ".video-item",
       "property": "border-radius"
@@ -232,7 +232,7 @@
     {
       "display": true,
       "type": "text",
-      "label": "Video Item Background Color",
+      "label": "Background Color",
       "code": "video_item_background_color",
       "selector": ".video-item",
       "property": "background-color"
@@ -240,7 +240,7 @@
     {
       "display": true,
       "type": "text",
-      "label": "Video Item Color",
+      "label": "Color",
       "code": "video_item_color",
       "selector": ".video-item",
       "property": "color"
@@ -248,7 +248,7 @@
     {
       "display": true,
       "type": "text",
-      "label": "Video Item Font Size",
+      "label": "Font Size",
       "code": "video_item_font_size",
       "selector": ".video-item",
       "property": "font-size"
@@ -256,7 +256,7 @@
     {
       "display": true,
       "type": "text",
-      "label": "Video Item Font Weight",
+      "label": "Font Weight",
       "code": "video_item_font_weight",
       "selector": ".video-item",
       "property": "font-weight"
@@ -264,7 +264,7 @@
     {
       "display": true,
       "type": "text",
-      "label": "Video Item Text Align",
+      "label": "Text Align",
       "code": "video_item_text_align",
       "selector": ".video-item",
       "property": "text-align"
@@ -275,7 +275,7 @@
     {
       "display": true,
       "type": "text",
-      "label": "Video Item Image Overlay Background Color",
+      "label": "Background Color",
       "code": "video_item_image_overlay_background_color",
       "selector": ".video-item-image-overlay",
       "property": "background-color"
@@ -286,7 +286,7 @@
     {
       "display": true,
       "type": "text",
-      "label": "Video Item Image Icon Border",
+      "label": "Border",
       "code": "video_item_image_icon_border",
       "selector": ".video-item-image-icon",
       "property": "border"
@@ -294,7 +294,7 @@
     {
       "display": true,
       "type": "text",
-      "label": "Video Item Image Icon Border Radius",
+      "label": "Border Radius",
       "code": "video_item_image_icon_border_radius",
       "selector": ".video-item-image-icon",
       "property": "border-radius"
@@ -302,7 +302,7 @@
     {
       "display": true,
       "type": "text",
-      "label": "Video Item Image Icon Background Color",
+      "label": "Background Color",
       "code": "video_item_image_icon_background_color",
       "selector": ".video-item-image-icon",
       "property": "background-color"
@@ -310,7 +310,7 @@
     {
       "display": true,
       "type": "text",
-      "label": "Video Item Image Icon Color",
+      "label": "Color",
       "code": "video_item_image_icon_color",
       "selector": ".video-item-image-icon",
       "property": "color"
@@ -322,7 +322,7 @@
       "display": true,
       "modal": true,
       "type": "text",
-      "label": "Widget Modal Body Background Color",
+      "label": "Background Color",
       "code": "widget_modal_body_background_color",
       "selector": ".widget-modal-body",
       "property": "background-color"
@@ -331,7 +331,7 @@
       "display": true,
       "modal": true,
       "type": "text",
-      "label": "Widget Modal Body Border",
+      "label": "Border",
       "code": "widget_modal_body_border",
       "selector": ".widget-modal-body",
       "property": "border"
@@ -340,7 +340,7 @@
       "display": true,
       "modal": true,
       "type": "text",
-      "label": "Widget Modal Body Padding",
+      "label": "Padding",
       "code": "widget_modal_body_padding",
       "selector": ".widget-modal-body",
       "property": "padding"
@@ -352,7 +352,7 @@
       "display": true,
       "modal": true,
       "type": "text",
-      "label": "Widget Modal Header Background Color",
+      "label": "Background Color",
       "code": "widget_modal_header_background_color",
       "selector": ".widget-modal-header",
       "property": "background-color"
@@ -361,7 +361,7 @@
       "display": true,
       "modal": true,
       "type": "text",
-      "label": "Widget Modal Header Border",
+      "label": "Border",
       "code": "widget_modal_header_border",
       "selector": ".widget-modal-header",
       "property": "border"
@@ -370,7 +370,7 @@
       "display": true,
       "modal": true,
       "type": "text",
-      "label": "Widget Modal Header Padding",
+      "label": "Padding",
       "code": "widget_modal_header_padding",
       "selector": ".widget-modal-header",
       "property": "padding"
@@ -382,7 +382,7 @@
       "display": true,
       "modal": true,
       "type": "text",
-      "label": "Widget Modal Title Color",
+      "label": "Color",
       "code": "widget_modal_title_color",
       "selector": ".widget-modal-title",
       "property": "color"
@@ -391,7 +391,7 @@
       "display": true,
       "modal": true,
       "type": "text",
-      "label": "Widget Modal Title Font Weight",
+      "label": "Font Weight",
       "code": "widget_modal_font_weight",
       "selector": ".widget-modal-title",
       "property": "font-weight"
@@ -403,7 +403,7 @@
       "display": true,
       "modal": true,
       "type": "text",
-      "label": "Product Item Padding",
+      "label": "Padding",
       "code": "product_item_padding",
       "selector": ".product-item",
       "property": "padding"
@@ -412,7 +412,7 @@
       "display": true,
       "modal": true,
       "type": "text",
-      "label": "Product Item Margin",
+      "label": "Margin",
       "code": "product_item_margin",
       "selector": ".product-item",
       "property": "margin"
@@ -421,7 +421,7 @@
       "display": true,
       "modal": true,
       "type": "text",
-      "label": "Product Item Border",
+      "label": "Border",
       "code": "product_item_border",
       "selector": ".product-item",
       "property": "border"
@@ -430,7 +430,7 @@
       "display": true,
       "modal": true,
       "type": "text",
-      "label": "Product Item Image Overlay Background Color",
+      "label": "Background Color",
       "code": "product_item_image_overlay_background_color",
       "selector": ".product-item-image-overlay",
       "property": "background-color"
@@ -442,7 +442,7 @@
         "display": true,
         "modal": true,
         "type": "text",
-        "label": "Product Pop Over Background Color",
+        "label": "Background Color",
         "code": "product_pop_over_background_color",
         "selector": ".product-pop-over",
         "property": "background-color"
@@ -451,7 +451,7 @@
         "display": true,
         "modal": true,
         "type": "text",
-        "label": "Product Pop Over Pointer Background Color",
+        "label": "Border Left Color",
         "code": "product_pop_over_pointer_background_color",
         "selector": ".pop-over-pointer:after",
         "property": "border-left-color"
@@ -460,7 +460,7 @@
         "display": true,
         "modal": true,
         "type": "text",
-        "label": "Product Pop Over Title Padding",
+        "label": "Padding",
         "code": "product_pop_over_title_padding",
         "selector": ".product-pop-over-title",
         "property": "padding"
@@ -469,7 +469,7 @@
         "display": true,
         "modal": true,
         "type": "text",
-        "label": "Product Pop Over Title Margin",
+        "label": "Margin",
         "code": "product_pop_over_title_margin",
         "selector": ".product-pop-over-title",
         "property": "margin"
@@ -478,7 +478,7 @@
         "display": true,
         "modal": true,
         "type": "text",
-        "label": "Product Pop Over Title Font Size",
+        "label": "Font Size",
         "code": "product_pop_over_title_font_size",
         "selector": ".product-pop-over-title",
         "property": "font-size"
@@ -487,7 +487,7 @@
         "display": true,
         "modal": true,
         "type": "text",
-        "label": "Product Pop Over Title Font Weight",
+        "label": "Font Weight",
         "code": "product_pop_over_title_font_weight",
         "selector": ".product-pop-over-title",
         "property": "font-weight"
@@ -496,7 +496,7 @@
         "display": true,
         "modal": true,
         "type": "text",
-        "label": "Product Pop Over Title Text Align",
+        "label": "Text Align",
         "code": "product_pop_over_title_text_align",
         "selector": ".product-pop-over-title",
         "property": "text-align"
@@ -505,7 +505,7 @@
         "display": true,
         "modal": true,
         "type": "text",
-        "label": "Product Pop Over Title Color",
+        "label": "Color",
         "code": "product_pop_over_title_color",
         "selector": ".product-pop-over-title",
         "property": "color"
@@ -514,7 +514,7 @@
         "display": true,
         "modal": true,
         "type": "text",
-        "label": "Product Pop Over Title Background Color",
+        "label": "Background Color",
         "code": "product_pop_over_title_background_color",
         "selector": ".product-pop-over-title",
         "property": "background-color"
@@ -523,7 +523,7 @@
         "display": true,
         "modal": true,
         "type": "text",
-        "label": "Product Pop Over Title Border",
+        "label": "Border",
         "code": "product_pop_over_title_border",
         "selector": ".product-pop-over-title",
         "property": "border"
@@ -532,7 +532,7 @@
         "display": true,
         "modal": true,
         "type": "text",
-        "label": "Product Pop Over Price Padding",
+        "label": "Padding",
         "code": "product_pop_over_price_padding",
         "selector": ".product-pop-over-price",
         "property": "padding"
@@ -541,7 +541,7 @@
         "display": true,
         "modal": true,
         "type": "text",
-        "label": "Product Pop Over Price Margin",
+        "label": "Margin",
         "code": "product_pop_over_price_margin",
         "selector": ".product-pop-over-price",
         "property": "margin"
@@ -550,7 +550,7 @@
         "display": true,
         "modal": true,
         "type": "text",
-        "label": "Product Pop Over Price Font Size",
+        "label": "Font Size",
         "code": "product_pop_over_price_font_size",
         "selector": ".product-pop-over-price",
         "property": "font-size"
@@ -559,7 +559,7 @@
         "display": true,
         "modal": true,
         "type": "text",
-        "label": "Product Pop Over Price Font Weight",
+        "label": "Font Weight",
         "code": "product_pop_over_price_font_weight",
         "selector": ".product-pop-over-price",
         "property": "font-weight"
@@ -568,7 +568,7 @@
         "display": true,
         "modal": true,
         "type": "text",
-        "label": "Product Pop Over Price Text Align",
+        "label": "Text Align",
         "code": "product_pop_over_price_text_align",
         "selector": ".product-pop-over-price",
         "property": "text-align"
@@ -577,7 +577,7 @@
         "display": true,
         "modal": true,
         "type": "text",
-        "label": "Product Pop Over Price Color",
+        "label": "Color",
         "code": "product_pop_over_price_color",
         "selector": ".product-pop-over-price",
         "property": "color"
@@ -586,7 +586,7 @@
         "display": true,
         "modal": true,
         "type": "text",
-        "label": "Product Pop Over Price Background Color",
+        "label": "Background Color",
         "code": "product_pop_over_price_background_color",
         "selector": ".product-pop-over-price",
         "property": "background-color"
@@ -595,7 +595,7 @@
         "display": true,
         "modal": true,
         "type": "text",
-        "label": "Product Pop Over Price Border",
+        "label": "Border",
         "code": "product_pop_over_price_border",
         "selector": ".product-pop-over-price",
         "property": "border"
