@@ -97,18 +97,58 @@
     {
       "display": true,
       "type": "text",
-      "label": "Padding",
-      "code": "widget_padding",
+      "label": "Padding Top",
+      "code": "widget_padding_top",
       "selector": ".widget",
-      "property": "padding"
+      "property": "padding-top"
     },
     {
       "display": true,
       "type": "text",
-      "label": "Border",
-      "code": "widget_border",
+      "label": "Padding Right",
+      "code": "widget_padding_right",
       "selector": ".widget",
-      "property": "border"
+      "property": "padding-right"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Padding Bottom",
+      "code": "widget_padding_bottom",
+      "selector": ".widget",
+      "property": "padding-bottom"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Padding Left",
+      "code": "widget_padding_left",
+      "selector": ".widget",
+      "property": "padding-left"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Border Width",
+      "code": "widget_border_width",
+      "selector": ".widget",
+      "property": "border-width"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Border Style",
+      "code": "widget_border_style",
+      "selector": ".widget",
+      "property": "border-style"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Border Color",
+      "code": "widget_border_color",
+      "selector": ".widget",
+      "property": "border-color"
     },
 
 
@@ -154,18 +194,66 @@
     {
       "display": true,
       "type": "text",
-      "label": "Padding",
-      "code": "widget_title_padding",
+      "label": "Padding Top",
+      "code": "widget_title_padding_top",
       "selector": ".widget-title",
-      "property": "padding"
+      "property": "padding-top"
     },
     {
       "display": true,
       "type": "text",
-      "label": "Margin",
-      "code": "widget_title_margin",
+      "label": "Padding Right",
+      "code": "widget_title_padding_right",
       "selector": ".widget-title",
-      "property": "margin"
+      "property": "padding-right"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Padding Bottom",
+      "code": "widget_title_padding_bottom",
+      "selector": ".widget-title",
+      "property": "padding-bottom"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Padding Left",
+      "code": "widget_title_padding_left",
+      "selector": ".widget-title",
+      "property": "padding-left"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Margin Top",
+      "code": "widget_title_margin_top",
+      "selector": ".widget-title",
+      "property": "margin-top"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Margin Right",
+      "code": "widget_title_margin_right",
+      "selector": ".widget-title",
+      "property": "margin-right"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Margin Bottom",
+      "code": "widget_title_margin_bottom",
+      "selector": ".widget-title",
+      "property": "margin-bottom"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Margin Left",
+      "code": "widget_title_margin_left",
+      "selector": ".widget-title",
+      "property": "margin-left"
     },
     {
       "display": true,
@@ -200,26 +288,90 @@
     {
       "display": true,
       "type": "text",
-      "label": "Margin",
-      "code": "video_item_margin",
+      "label": "Margin Top",
+      "code": "video_item_margin_top",
       "selector": ".video-item",
-      "property": "margin"
+      "property": "margin-top"
     },
     {
       "display": true,
       "type": "text",
-      "label": "Padding",
-      "code": "video_item_padding",
+      "label": "Margin Right",
+      "code": "video_item_margin_right",
       "selector": ".video-item",
-      "property": "padding"
+      "property": "margin-right"
     },
     {
       "display": true,
       "type": "text",
-      "label": "Border",
-      "code": "video_item_border",
+      "label": "Margin Bottom",
+      "code": "video_item_margin_bottom",
       "selector": ".video-item",
-      "property": "border"
+      "property": "margin-bottom"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Margin Left",
+      "code": "video_item_margin_left",
+      "selector": ".video-item",
+      "property": "margin-left"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Padding Top",
+      "code": "video_item_padding_top",
+      "selector": ".video-item",
+      "property": "padding-top"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Padding Right",
+      "code": "video_item_padding_right",
+      "selector": ".video-item",
+      "property": "padding-right"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Padding Bottom",
+      "code": "video_item_padding_bottom",
+      "selector": ".video-item",
+      "property": "padding-bottom"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Padding Left",
+      "code": "video_item_padding_left",
+      "selector": ".video-item",
+      "property": "padding-left"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Border Width",
+      "code": "video_item_border_width",
+      "selector": ".video-item",
+      "property": "border-width"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Border Style",
+      "code": "video_item_border_style",
+      "selector": ".video-item",
+      "property": "border-style"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Border Color",
+      "code": "video_item_border_color",
+      "selector": ".video-item",
+      "property": "border-color"
     },
     {
       "display": true,
@@ -280,16 +432,40 @@
       "selector": ".video-item-image-overlay",
       "property": "background-color"
     },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Opacity",
+      "code": "video_item_image_overlay_opacity",
+      "selector": ".video-item-image-overlay",
+      "property": "opacity"
+    },
 
 
 
     {
       "display": true,
       "type": "text",
-      "label": "Border",
-      "code": "video_item_image_icon_border",
+      "label": "Border Width",
+      "code": "video_item_image_icon_border_width",
       "selector": ".video-item-image-icon",
-      "property": "border"
+      "property": "border-width"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Border Style",
+      "code": "video_item_image_icon_border_style",
+      "selector": ".video-item-image-icon",
+      "property": "border-style"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Border Color",
+      "code": "video_item_image_icon_border_color",
+      "selector": ".video-item-image-icon",
+      "property": "border-color"
     },
     {
       "display": true,
@@ -331,10 +507,28 @@
       "display": true,
       "modal": true,
       "type": "text",
-      "label": "Border",
-      "code": "widget_modal_body_border",
+      "label": "Border Width",
+      "code": "widget_modal_body_border_width",
       "selector": ".widget-modal-body",
-      "property": "border"
+      "property": "border-width"
+    },
+    {
+      "display": true,
+      "modal": true,
+      "type": "text",
+      "label": "Border Style",
+      "code": "widget_modal_body_border_style",
+      "selector": ".widget-modal-body",
+      "property": "border-style"
+    },
+    {
+      "display": true,
+      "modal": true,
+      "type": "text",
+      "label": "Border Color",
+      "code": "widget_modal_body_border_color",
+      "selector": ".widget-modal-body",
+      "property": "border-color"
     },
     {
       "display": true,
@@ -361,10 +555,28 @@
       "display": true,
       "modal": true,
       "type": "text",
-      "label": "Border",
-      "code": "widget_modal_header_border",
+      "label": "Border Width",
+      "code": "widget_modal_header_border_width",
       "selector": ".widget-modal-header",
-      "property": "border"
+      "property": "border-width"
+    },
+    {
+      "display": true,
+      "modal": true,
+      "type": "text",
+      "label": "Border",
+      "code": "widget_modal_header_border_style",
+      "selector": ".widget-modal-header",
+      "property": "border-style"
+    },
+    {
+      "display": true,
+      "modal": true,
+      "type": "text",
+      "label": "Border Color",
+      "code": "widget_modal_header_border_color",
+      "selector": ".widget-modal-header",
+      "property": "border-color"
     },
     {
       "display": true,
@@ -403,28 +615,100 @@
       "display": true,
       "modal": true,
       "type": "text",
-      "label": "Padding",
-      "code": "product_item_padding",
+      "label": "Padding Top",
+      "code": "product_item_padding_top",
       "selector": ".product-item",
-      "property": "padding"
+      "property": "padding-top"
     },
     {
       "display": true,
       "modal": true,
       "type": "text",
-      "label": "Margin",
-      "code": "product_item_margin",
+      "label": "Padding Right",
+      "code": "product_item_padding_right",
       "selector": ".product-item",
-      "property": "margin"
+      "property": "padding-right"
     },
     {
       "display": true,
       "modal": true,
       "type": "text",
-      "label": "Border",
-      "code": "product_item_border",
+      "label": "Padding Bottom",
+      "code": "product_item_padding_bottom",
       "selector": ".product-item",
-      "property": "border"
+      "property": "padding-bottom"
+    },
+    {
+      "display": true,
+      "modal": true,
+      "type": "text",
+      "label": "Padding Left",
+      "code": "product_item_padding_left",
+      "selector": ".product-item",
+      "property": "padding-left"
+    },
+    {
+      "display": true,
+      "modal": true,
+      "type": "text",
+      "label": "Margin Top",
+      "code": "product_item_margin_top",
+      "selector": ".product-item",
+      "property": "margin-top"
+    },
+    {
+      "display": true,
+      "modal": true,
+      "type": "text",
+      "label": "Margin Right",
+      "code": "product_item_margin_right",
+      "selector": ".product-item",
+      "property": "margin-right"
+    },
+    {
+      "display": true,
+      "modal": true,
+      "type": "text",
+      "label": "Margin Bottom",
+      "code": "product_item_margin_bottom",
+      "selector": ".product-item",
+      "property": "margin-bottom"
+    },
+    {
+      "display": true,
+      "modal": true,
+      "type": "text",
+      "label": "Margin Left",
+      "code": "product_item_margin_left",
+      "selector": ".product-item",
+      "property": "margin-left"
+    },
+    {
+      "display": true,
+      "modal": true,
+      "type": "text",
+      "label": "Border Width",
+      "code": "product_item_border_width",
+      "selector": ".product-item",
+      "property": "border-width"
+    },
+    {
+      "display": true,
+      "modal": true,
+      "type": "text",
+      "label": "Border Style",
+      "code": "product_item_border_style",
+      "selector": ".product-item",
+      "property": "border-style"
+    },
+    {
+      "display": true,
+      "modal": true,
+      "type": "text",
+      "label": "Border Color",
+      "code": "product_item_border_color",
+      "selector": ".product-item",
+      "property": "border-color"
     },
     {
       "display": true,
@@ -434,6 +718,15 @@
       "code": "product_item_image_overlay_background_color",
       "selector": ".product-item-image-overlay",
       "property": "background-color"
+    },
+    {
+      "display": true,
+      "modal": true,
+      "type": "text",
+      "label": "Opacity",
+      "code": "product_item_image_overlay_opacity",
+      "selector": ".product-item-image-overlay",
+      "property": "opacity"
     },
 
 
@@ -460,19 +753,73 @@
         "display": true,
         "modal": true,
         "type": "text",
-        "label": "Padding",
-        "code": "product_pop_over_title_padding",
+        "label": "Padding Top",
+        "code": "product_pop_over_title_padding_top",
         "selector": ".product-pop-over-title",
-        "property": "padding"
+        "property": "padding-top"
     },
     {
         "display": true,
         "modal": true,
         "type": "text",
-        "label": "Margin",
+        "label": "Padding Right",
+        "code": "product_pop_over_title_padding_right",
+        "selector": ".product-pop-over-title",
+        "property": "padding-right"
+    },
+    {
+        "display": true,
+        "modal": true,
+        "type": "text",
+        "label": "Padding Bottom",
+        "code": "product_pop_over_title_padding_bottom",
+        "selector": ".product-pop-over-title",
+        "property": "padding-bottom"
+    },
+    {
+        "display": true,
+        "modal": true,
+        "type": "text",
+        "label": "Padding Left",
+        "code": "product_pop_over_title_padding_left",
+        "selector": ".product-pop-over-title",
+        "property": "padding-left"
+    },
+    {
+        "display": true,
+        "modal": true,
+        "type": "text",
+        "label": "Margin Top",
+        "code": "product_pop_over_title_margin_top",
+        "selector": ".product-pop-over-title",
+        "property": "margin-top"
+    },
+    {
+        "display": true,
+        "modal": true,
+        "type": "text",
+        "label": "Margin Right",
         "code": "product_pop_over_title_margin",
         "selector": ".product-pop-over-title",
-        "property": "margin"
+        "property": "margin-right"
+    },
+    {
+        "display": true,
+        "modal": true,
+        "type": "text",
+        "label": "Margin Bottom",
+        "code": "product_pop_over_title_margin_bottom",
+        "selector": ".product-pop-over-title",
+        "property": "margin-bottom"
+    },
+    {
+        "display": true,
+        "modal": true,
+        "type": "text",
+        "label": "Margin Left",
+        "code": "product_pop_over_title_margin_left",
+        "selector": ".product-pop-over-title",
+        "property": "margin-left"
     },
     {
         "display": true,
@@ -523,10 +870,28 @@
         "display": true,
         "modal": true,
         "type": "text",
-        "label": "Border",
-        "code": "product_pop_over_title_border",
+        "label": "Border Width",
+        "code": "product_pop_over_title_border_width",
         "selector": ".product-pop-over-title",
-        "property": "border"
+        "property": "border-width"
+    },
+    {
+        "display": true,
+        "modal": true,
+        "type": "text",
+        "label": "Border Style",
+        "code": "product_pop_over_title_border_style",
+        "selector": ".product-pop-over-title",
+        "property": "border-style"
+    },
+    {
+        "display": true,
+        "modal": true,
+        "type": "text",
+        "label": "Border Color",
+        "code": "product_pop_over_title_border_color",
+        "selector": ".product-pop-over-title",
+        "property": "border-color"
     },
     {
         "display": true,
@@ -595,10 +960,28 @@
         "display": true,
         "modal": true,
         "type": "text",
-        "label": "Border",
-        "code": "product_pop_over_price_border",
+        "label": "Border Width",
+        "code": "product_pop_over_price_border_width",
         "selector": ".product-pop-over-price",
-        "property": "border"
+        "property": "border-width"
+    },
+    {
+        "display": true,
+        "modal": true,
+        "type": "text",
+        "label": "Border Style",
+        "code": "product_pop_over_price_border_style",
+        "selector": ".product-pop-over-price",
+        "property": "border-style"
+    },
+    {
+        "display": true,
+        "modal": true,
+        "type": "text",
+        "label": "Border Color",
+        "code": "product_pop_over_price_border_color",
+        "selector": ".product-pop-over-price",
+        "property": "border-color"
     }
   ]
 }
