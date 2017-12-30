@@ -178,7 +178,7 @@
     {
       "display": true,
       "type": "text",
-      "label": "Color",
+      "label": "Font Color",
       "code": "widget_title_color",
       "selector": ".widget-title",
       "property": "color"
@@ -277,7 +277,7 @@
     {
       "display": true,
       "type": "text",
-      "label": "Color",
+      "label": "Font Color",
       "code": "carousel_arrow_color",
       "selector": ".carousel-arrow",
       "property": "color"
@@ -392,7 +392,7 @@
     {
       "display": true,
       "type": "text",
-      "label": "Color",
+      "label": "Font Color",
       "code": "video_item_color",
       "selector": ".video-item",
       "property": "color"
@@ -486,7 +486,7 @@
     {
       "display": true,
       "type": "text",
-      "label": "Color",
+      "label": "Font Color",
       "code": "video_item_image_icon_color",
       "selector": ".video-item-image-icon",
       "property": "color"
@@ -648,7 +648,7 @@
       "display": true,
       "modal": true,
       "type": "text",
-      "label": "Color",
+      "label": "Font Color",
       "code": "widget_modal_title_color",
       "selector": ".widget-modal-title",
       "property": "color"
@@ -906,7 +906,7 @@
         "display": true,
         "modal": true,
         "type": "text",
-        "label": "Color",
+        "label": "Font Color",
         "code": "product_pop_over_title_color",
         "selector": ".product-pop-over-title",
         "property": "color"
@@ -1050,7 +1050,7 @@
         "display": true,
         "modal": true,
         "type": "text",
-        "label": "Color",
+        "label": "Font Color",
         "code": "product_pop_over_price_color",
         "selector": ".product-pop-over-price",
         "property": "color"
@@ -1095,7 +1095,7 @@
         "display": true,
         "modal": true,
         "type": "text",
-        "label": "Color",
+        "label": "Font Color",
         "code": "product_pop_over_cta_color",
         "selector": ".product-pop-over-cta",
         "property": "color"
@@ -1117,6 +1117,30 @@
       "code": "product_pop_over_cta_font_size",
       "selector": ".product-pop-over-cta",
       "property": "font-size"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Border Width",
+      "code": "product_pop_over_cta_width",
+      "selector": ".product-pop-over-cta",
+      "property": "border-width"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Border Style",
+      "code": "product_pop_over_cta_style",
+      "selector": ".product-pop-over-cta",
+      "property": "border-style"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Border Color",
+      "code": "product_pop_over_cta_color",
+      "selector": ".product-pop-over-cta",
+      "property": "border-color"
     }
   ]
 }
