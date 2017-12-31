@@ -84,8 +84,14 @@
       "value": []
     },
 
-
-
+    {
+      "display": true,
+      "type": "text",
+      "label": "Font Family",
+      "code": "body_font_family",
+      "selector": "body",
+      "property": "font-family"
+    },
     {
       "display": true,
       "type": "text",
