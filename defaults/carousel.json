@@ -98,7 +98,7 @@
       "type": "text",
       "label": "Background Color",
       "code": "widget_background_color",
-      "selector": ".widget",
+      "selector": "body",
       "property": "background-color"
     },
     {
@@ -106,7 +106,7 @@
       "type": "text",
       "label": "Padding Top",
       "code": "widget_padding_top",
-      "selector": ".widget",
+      "selector": "body",
       "property": "padding-top"
     },
     {
@@ -114,7 +114,7 @@
       "type": "text",
       "label": "Padding Right",
       "code": "widget_padding_right",
-      "selector": ".widget",
+      "selector": "body",
       "property": "padding-right"
     },
     {
@@ -122,7 +122,7 @@
       "type": "text",
       "label": "Padding Bottom",
       "code": "widget_padding_bottom",
-      "selector": ".widget",
+      "selector": "body",
       "property": "padding-bottom"
     },
     {
@@ -130,7 +130,7 @@
       "type": "text",
       "label": "Padding Left",
       "code": "widget_padding_left",
-      "selector": ".widget",
+      "selector": "body",
       "property": "padding-left"
     },
     {
@@ -138,7 +138,7 @@
       "type": "text",
       "label": "Border Width",
       "code": "widget_border_width",
-      "selector": ".widget",
+      "selector": "body",
       "property": "border-width"
     },
     {
@@ -146,7 +146,7 @@
       "type": "text",
       "label": "Border Style",
       "code": "widget_border_style",
-      "selector": ".widget",
+      "selector": "body",
       "property": "border-style"
     },
     {
@@ -154,7 +154,7 @@
       "type": "text",
       "label": "Border Color",
       "code": "widget_border_color",
-      "selector": ".widget",
+      "selector": "body",
       "property": "border-color"
     },
 
