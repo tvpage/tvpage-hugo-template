@@ -92,6 +92,7 @@
       "selector": "body",
       "property": "font-family"
     },
+
     {
       "display": true,
       "type": "text",
