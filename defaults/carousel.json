@@ -447,6 +447,23 @@
       "selector": ".video-item-image-overlay",
       "property": "opacity"
     },
+    {
+      "display": true,
+      "hover": true,
+      "type": "text",
+      "label": "Hover State",
+      "code": "video_item_image_overlay_hover",
+      "selector": ".video-item-image-overlay:hover",
+      "options": [
+        {
+          "display": true,
+          "type": "text",
+          "label": "Visibility",
+          "code": "video_item_image_overlay_visibility",
+          "property": "visibility"
+        }
+      ]
+    },
 
 
 
