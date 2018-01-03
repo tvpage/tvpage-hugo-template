@@ -443,8 +443,7 @@
       "label": "Font Color",
       "code": "video_item_hover_color",
       "selector": ".video-item",
-      "property": "color", 
-      "parentSelector": "body:not(.mobile) .video:hover"
+      "property": "color"
     },
 
 
