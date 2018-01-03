@@ -459,10 +459,10 @@
       "display": true,
       "hover": true,
       "type": "text",
-      "label": "Opacity",
+      "label": "Background Color",
       "code": "video_item_image_overlay_hover_background_color",
       "selector": ".video-item-image-overlay",
-      "property": "opacity"
+      "property": "background-color"
     },
 
 
