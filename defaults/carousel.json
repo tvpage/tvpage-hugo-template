@@ -807,7 +807,7 @@
         "type": "text",
         "label": "Border Left Color",
         "code": "product_pop_over_pointer_background_color",
-        "selector": ".pop-over-pointer:after",
+        "selector": ".pop-over-pointer::after",
         "property": "border-left-color"
     },
     {
