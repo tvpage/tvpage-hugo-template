@@ -502,7 +502,16 @@
       "display": true,
       "hover": true,
       "type": "text",
-      "label": "",
+      "label": "Background Color",
+      "code": "video_item_image_icon_hover_background_color",
+      "selector": ".video-item-image-icon",
+      "property": "background_color"
+    },
+    {
+      "display": true,
+      "hover": true,
+      "type": "text",
+      "label": "Color",
       "code": "video_item_image_icon_hover_color",
       "selector": ".video-item-image-icon",
       "property": "color"
@@ -816,7 +825,7 @@
         "type": "text",
         "label": "Border Left Color",
         "code": "product_pop_over_pointer_background_color",
-        "selector": ".pop-over-pointer:after",
+        "selector": ".pop-over-pointer::after",
         "property": "border-left-color"
     },
     {
