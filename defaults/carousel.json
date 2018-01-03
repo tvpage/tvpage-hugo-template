@@ -462,7 +462,8 @@
       "label": "Background Color",
       "code": "video_item_image_overlay_hover_background_color",
       "selector": ".video-item-image-overlay",
-      "property": "background-color"
+      "property": "background-color",
+      "parentSelector": "body:not(.mobile) .video:hover"
     },
 
 
