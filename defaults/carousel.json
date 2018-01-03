@@ -455,6 +455,15 @@
       "selector": ".video-item-image-overlay",
       "property": "opacity"
     },
+    {
+      "display": true,
+      "hover": true,
+      "type": "text",
+      "label": "Opacity",
+      "code": "video_item_image_overlay_hover_background_color",
+      "selector": ".video-item-image-overlay",
+      "property": "opacity"
+    },
 
 
 
