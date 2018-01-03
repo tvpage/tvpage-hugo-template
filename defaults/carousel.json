@@ -284,6 +284,15 @@
     {
       "display": true,
       "type": "text",
+      "label": "Background Color",
+      "code": "carousel_arrow_hover_background_color",
+      "selector": ".carousel-arrow",
+      "property": "background-color",
+      "hover": true
+    },
+    {
+      "display": true,
+      "type": "text",
       "label": "Font Color",
       "code": "carousel_arrow_color",
       "selector": ".carousel-arrow",
