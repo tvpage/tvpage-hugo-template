@@ -505,7 +505,7 @@
       "label": "Background Color",
       "code": "video_item_image_icon_hover_background_color",
       "selector": ".video-item-image-icon",
-      "property": "background_color"
+      "property": "background-color"
     },
     {
       "display": true,
