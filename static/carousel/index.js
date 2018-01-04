@@ -105,7 +105,7 @@ function getIframeHtml(o){
 
   html += o.html || '';
 
-  o.context.className = isMobile ? 'mobile' : '';
+  o.context.className = isMobile ? 'mobile widget-body' : 'widget-body';
 
   o.context.onload = '' +
   '(function(d){' +
