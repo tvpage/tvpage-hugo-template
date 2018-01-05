@@ -17,6 +17,8 @@
     api_base_url: "{{ env.apiBaseUrl }}"
   });
   
+  console.log(__TVPage__.config["test"]);
+  
   var js = d.createElement(s),
   fjs = d.getElementsByTagName(s)[0];
   js.src = '{{ baseUrl }}/tvpwidget/{{ name }}/index.js';
