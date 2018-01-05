@@ -1,14 +1,21 @@
 <div id="{{ name }}"></div>
 <script>
 (function(d, s) {
+  function extend(a, b){
+      for(var key in b)
+          if(b.hasOwnProperty(key))
+              a[key] = b[key];
+      return a;
+  }
+
   __TVPage__ = window.__TVPage__ || {};
   __TVPage__.config = __TVPage__.config || {};
-  __TVPage__.config["{{ name }}"] = {
+  __TVPage__.config["test"] = extend(_TVPage__.config["test"] || {}, {
     targetEl : "{{ name }}",
     loginid: "{{ channel.loginId }}",
     channel: {{ channel.config }},
     api_base_url: "{{ env.apiBaseUrl }}"
-  };
+  });
   
   var js = d.createElement(s),
   fjs = d.getElementsByTagName(s)[0];
