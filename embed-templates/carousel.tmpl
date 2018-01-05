@@ -10,14 +10,14 @@
 
   __TVPage__ = window.__TVPage__ || {};
   __TVPage__.config = __TVPage__.config || {};
-  __TVPage__.config["test"] = extend(__TVPage__.config["test"] || {}, {
+  __TVPage__.config["{{ name }}"] = extend(__TVPage__.config["{{ name }}"] || {}, {
     targetEl : "{{ name }}",
     loginid: "{{ channel.loginId }}",
     channel: {{ channel.config }},
     api_base_url: "{{ env.apiBaseUrl }}"
   });
   
-  console.log(__TVPage__.config["test"]);
+  console.log(__TVPage__.config["{{ name }}"]);
   
   var js = d.createElement(s),
   fjs = d.getElementsByTagName(s)[0];
