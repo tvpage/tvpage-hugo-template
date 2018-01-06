@@ -169,18 +169,18 @@
     {
       "display": true,
       "type": "text",
-      "label": "Font Size",
-      "code": "widget_title_font_size",
-      "selector": ".widget-title",
-      "property": "font-size"
-    },
-    {
-      "display": true,
-      "type": "text",
       "label": "Display",
       "code": "widget_title_display",
       "selector": ".widget-title",
       "property": "display"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Font Size",
+      "code": "widget_title_font_size",
+      "selector": ".widget-title",
+      "property": "font-size"
     },
     {
       "display": true,
