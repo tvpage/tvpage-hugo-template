@@ -177,6 +177,14 @@
     {
       "display": true,
       "type": "text",
+      "label": "Display",
+      "code": "widget_title_display",
+      "selector": ".widget-title",
+      "property": "display"
+    },
+    {
+      "display": true,
+      "type": "text",
       "label": "Font Weight",
       "code": "widget_title_font_weight",
       "selector": ".widget-title",
