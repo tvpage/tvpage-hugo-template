@@ -175,6 +175,7 @@
       "label": "Widget Title",
       "code": "widget_title_html",
       "selector": ".widget-title",
+      "value": "Recommended Videos",
       "property": "html"
     },
     {
