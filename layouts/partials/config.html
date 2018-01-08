@@ -29,6 +29,7 @@
 	{{- range $code, $value := $css -}}
 		{{- range (where (where $defaults "code" $code) "display" true) -}}
 			{{- $.Scratch.Add "custom-css" (printf "%s:%s;" .property $value) -}}
+			{{- $.Scratch.SetInMap "config" .code $value -}}
 		{{- end -}}		
 	{{- end -}}
 
