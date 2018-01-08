@@ -167,7 +167,8 @@
       "label": "Widget Title HTML",
       "code": "widget_title_html",
       "selector": ".widget-title",
-      "value": "Recommended Videos"
+      "value": "Recommended Videos",
+      "property": "html"
     },
     {
       "display": true,
