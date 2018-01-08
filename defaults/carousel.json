@@ -161,9 +161,12 @@
 
 
     {
+      "display": true,
+      "textContent": true,
       "type": "text",
       "label": "Widget Title HTML",
       "code": "widget_title_html",
+      "selector": ".widget-title",
       "value": "Recommended Videos"
     },
     {
