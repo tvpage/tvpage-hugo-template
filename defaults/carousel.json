@@ -330,12 +330,27 @@
     {
       "display": true,
       "type": "text",
+      "label": "Height",
+      "code": "carousel_dot_height",
+      "selector": ".carousel-dot",
+      "property": "height"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Width",
+      "code": "carousel_dot_width",
+      "selector": ".carousel-dot",
+      "property": "width"
+    },
+    {
+      "display": true,
+      "type": "text",
       "label": "Background Color",
       "code": "carousel_dot_background_color",
       "selector": ".carousel-dot",
       "property": "background-color"
     },
-
     {
       "display": true,
       "type": "text",
@@ -365,7 +380,7 @@
       "type": "text",
       "label": "Border Radius",
       "code": "carousel_dot_border_radius",
-      "selector": ".video-item",
+      "selector": ".carousel-dot",
       "property": "border-radius"
     },
 
