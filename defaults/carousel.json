@@ -285,13 +285,13 @@
 
 
 
-{
+    {
       "display": true,
       "type": "text",
       "label": "Display",
       "code": "carousel_arrow_display",
       "selector": ".carousel-arrow",
-      "property": "display"
+      "property": "boolean"
     },
     {
       "display": true,
