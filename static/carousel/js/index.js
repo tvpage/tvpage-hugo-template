@@ -62,10 +62,10 @@
       dots: true,
       dotsCenter: true,
       dotsClass: 'col py-3',
-      slidesToShow: 3,
-      slidesToScroll: 3,
+      slidesToShow: !Utils.isUndefined(config.video_item_display_amount)? config.video_item_display_amount : 3,
+      slidesToScroll: !Utils.isUndefined(config.video_item_display_amount)? config.video_item_display_amount : 3,
       itemsTarget: '.slick-carousel',
-      itemsPerPage: 3,
+      itemsPerPage: !Utils.isUndefined(config.video_item_display_amount)? config.video_item_display_amount : 3,
       templates: {
         list: templates.videos.list,
         item: templates.videos.item
