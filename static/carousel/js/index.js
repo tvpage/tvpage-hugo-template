@@ -50,6 +50,8 @@
       config.channel.videos = config.channel.videos.concat(data);
     }
 
+    var itemsPerPage = !Utils.isUndefined(config.video_item_display_amount) && !Utils.isNull(config.video_item_display_amount) ? config.video_item_display_amount : 3;
+
     videosCarousel = new Carousel('videos', {
       alignArrowsY: ['center', '.video-image-icon'],
       endpoint: videosEndpoint,
@@ -62,10 +64,10 @@
       dots: true,
       dotsCenter: true,
       dotsClass: 'col py-3',
-      slidesToShow: !Utils.isUndefined(config.video_item_display_amount)? config.video_item_display_amount : 3,
-      slidesToScroll: !Utils.isUndefined(config.video_item_display_amount)? config.video_item_display_amount : 3,
+      slidesToShow: itemsPerPage,
+      slidesToScroll: itemsPerPage,
       itemsTarget: '.slick-carousel',
-      itemsPerPage: !Utils.isUndefined(config.video_item_display_amount)? config.video_item_display_amount : 3,
+      itemsPerPage: itemsPerPage,
       templates: {
         list: templates.videos.list,
         item: templates.videos.item
