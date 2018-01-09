@@ -1,6 +1,6 @@
 (function () {
   var config = window.parent.__TVPage__.config[Utils.attr(document.body, 'data-id')];
-  console.log(config)
+  console.log(config);
   var channelParams = config.channel.parameters;
   var videosEndpoint = config.api_base_url + '/channels/' + config.channelId + '/videos';
   var templates = config.templates;
