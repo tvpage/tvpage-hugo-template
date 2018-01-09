@@ -58,6 +58,7 @@
         od: config.videos_order_direction
       }, channelParams),
       page: 0,
+      arrows: config.carousel_arrow_display || false,
       data: channelVideos,
       dotsCenter: true,
       dotsClass: 'col py-3',
