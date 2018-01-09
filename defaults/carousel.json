@@ -321,15 +321,15 @@
 
     {
       "display": true,
-      "type": "boolean",
+      "type": "text",
       "label": "Display",
       "code": "carousel_dot_display",
       "selector": ".carousel-dot",
-      "property": "boolean"
+      "property": "display"
     },
     {
       "display": true,
-      "type": "boolean",
+      "type": "text",
       "label": "Background Color",
       "code": "carousel_dot_background_color",
       "selector": ".carousel-dot",
