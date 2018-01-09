@@ -319,6 +319,80 @@
       "property": "background-color"
     },
 
+    {
+      "display": true,
+      "type": "text",
+      "label": "Display",
+      "code": "carousel_dot_display",
+      "selector": ".slick-dots li button",
+      "property": "display"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Height",
+      "code": "carousel_dot_height",
+      "selector": ".slick-dots li button",
+      "property": "height"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Width",
+      "code": "carousel_dot_width",
+      "selector": ".slick-dots li button",
+      "property": "width"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Background Color",
+      "code": "carousel_dot_background_color",
+      "selector": ".slick-dots li button",
+      "property": "background-color"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Border Style",
+      "code": "carousel_dot_border_style",
+      "selector": ".slick-dots li button",
+      "property": "border-style"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Border Width",
+      "code": "carousel_dot_border_width",
+      "selector": ".slick-dots li button",
+      "property": "border-width"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Border Color",
+      "code": "carousel_dot_border_color",
+      "selector": ".slick-dots li button",
+      "property": "border-color"
+    },
+    {
+      "display": true,
+      "type": "text",
+      "label": "Border Radius",
+      "code": "carousel_dot_border_radius",
+      "selector": ".slick-dots li button",
+      "property": "border-radius"
+    },
+    {
+      "display": true,
+      "hover": true,
+      "type": "text",
+      "label": "Background Color",
+      "code": "carousel_dot_hover_background_color",
+      "selector": ".slick-dots li button",
+      "property": "background-color"
+    },
+
 
     {
       "display": true,
