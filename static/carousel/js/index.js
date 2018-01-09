@@ -59,7 +59,7 @@
         od: config.videos_order_direction
       }, channelParams),
       page: 0,
-      arrows: !Utils.isUndefined(config.carousel_arrow_display)? config.carousel_arrow_display || true,
+      arrows: !Utils.isUndefined(config.carousel_arrow_display)? config.carousel_arrow_display : true,
       data: channelVideos,
       dotsCenter: true,
       dotsClass: 'col py-3',
