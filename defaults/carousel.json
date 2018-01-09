@@ -297,15 +297,6 @@
       "display": true,
       "type": "text",
       "label": "Background Color",
-      "code": "carousel_arrow_color",
-      "selector": ".carousel-arrow",
-      "property": "background-color"
-    },
-
-    {
-      "display": true,
-      "type": "text",
-      "label": "Background Color",
       "code": "carousel_arrow_background_color",
       "selector": ".carousel-arrow",
       "property": "background-color"
@@ -339,10 +330,10 @@
     {
       "display": true,
       "type": "boolean",
-      "label": "Display",
-      "code": "carousel_dot_display",
+      "label": "Background Color",
+      "code": "carousel_dot_background_color",
       "selector": ".carousel-dot",
-      "property": "boolean"
+      "property": "background-color"
     },
 
     {
