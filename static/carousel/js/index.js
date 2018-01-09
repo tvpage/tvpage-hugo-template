@@ -1,5 +1,6 @@
 (function () {
   var config = window.parent.__TVPage__.config[Utils.attr(document.body, 'data-id')];
+  console.log(config)
   var channelParams = config.channel.parameters;
   var videosEndpoint = config.api_base_url + '/channels/' + config.channelId + '/videos';
   var templates = config.templates;
@@ -58,7 +59,7 @@
         od: config.videos_order_direction
       }, channelParams),
       page: 0,
-      arrows: config.carousel_arrow_display || false,
+      arrows: !Utils.isUndefined(config.carousel_arrow_display)? config.carousel_arrow_display || true,
       data: channelVideos,
       dotsCenter: true,
       dotsClass: 'col py-3',
