@@ -6,9 +6,6 @@
   var channelVideos;
   var videosCarousel;
 
-  console.log("----------------");
-  console.log(config);
-
   function sendResizeMessage() {
     Utils.sendMessage({
       event: config.events.resize,
