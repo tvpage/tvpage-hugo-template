@@ -390,7 +390,7 @@
       "label": "Background Color",
       "code": "carousel_dot_hover_background_color",
       "selector": ".slick-dots li button",
-      "property": "border-radius"
+      "property": "background-color"
     },
 
 
