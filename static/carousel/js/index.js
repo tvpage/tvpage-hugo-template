@@ -59,6 +59,7 @@
       }, channelParams),
       page: 0,
       data: channelVideos,
+      dots: true,
       dotsCenter: true,
       dotsClass: 'col py-3',
       slidesToShow: 3,
