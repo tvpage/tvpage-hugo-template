@@ -291,7 +291,7 @@
       "label": "Display",
       "code": "carousel_arrow_display",
       "selector": ".carousel-arrow",
-      "property": "boolean"
+      "property": "display"
     },
     {
       "display": true,
