@@ -383,6 +383,15 @@
       "selector": ".slick-dots li button",
       "property": "border-radius"
     },
+    {
+      "display": true,
+      "hover": true,
+      "type": "text",
+      "label": "Background Color",
+      "code": "carousel_dot_hover_background_color",
+      "selector": ".slick-dots li button",
+      "property": "border-radius"
+    },
 
 
     {
