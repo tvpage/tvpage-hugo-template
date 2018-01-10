@@ -342,7 +342,6 @@
     var that = this;
 
     if (Utils.isUndefined($.fn.slick)) {
-      console.log("here 1");
       $.ajax({
         dataType: 'script',
         cache: true,          
@@ -353,7 +352,6 @@
         },0);
       });
     } else {
-      console.log("here 2");
       setTimeout(function(){
         that.initSlick(slickEl, callback);
       },0);
