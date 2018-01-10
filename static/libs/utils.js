@@ -14,7 +14,7 @@
   }
 
   function isNull(o) {
-    return 'null' === o;
+    return null === o;
   }
 
   function hasClass(o, c) {

@@ -51,7 +51,7 @@
     }
 
     console.log(config.video_item_display_amount);
-    var itemsPerPage = !Utils.isUndefined(config.video_item_display_amount) && !Utils.isNull(config.video_item_display_amount) ? config.video_item_display_amount : 3;
+    var itemsPerPage = config.video_item_display_amount !== null ? config.video_item_display_amount : 3;
     console.log(itemsPerPage);
 
     videosCarousel = new Carousel('videos', {
