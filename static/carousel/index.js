@@ -262,7 +262,7 @@ function onWidgetLoad(data){
 function widgetLoad(){
   var videosLoadParams = {
     p: 0,
-    n: config.items_per_page,
+    n: (typeof config.video_item_display_amount !== "undefined" && config.video_item_display_amount !== null)? config.video_item_display_amount : config.items_per_page,
     o: config.videos_order_by,
     od: config.videos_order_direction,
     'X-login-id': config.loginId

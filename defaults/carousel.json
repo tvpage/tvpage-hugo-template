@@ -398,7 +398,7 @@
       "display": true,
       "type": "text",
       "label": "Display Amount",
-      "code": "items_per_page",
+      "code": "video_item_display_amount",
       "selector": ".video-item",
       "property": "amount"
     },
