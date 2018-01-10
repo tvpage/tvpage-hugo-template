@@ -50,7 +50,7 @@
       config.channel.videos = config.channel.videos.concat(data);
     }
 
-    var itemsPerPage = config.video_item_display_amount !== null ? config.video_item_display_amount : 3;
+    var itemsPerPage = config.items_per_page !== null ? config.items_per_page : 3;
 
     videosCarousel = new Carousel('videos', {
       alignArrowsY: ['center', '.video-image-icon'],
