@@ -105,28 +105,41 @@
       return;
     }
 
+    firstItem = firstItem.firstChild;
+
+    var isREM;
     var xOffset;
-    var firstItemChild = firstItem.firstChild;
-    
-    if(firstItemChild){
-      xOffset = parseInt(Utils.getStyle(firstItemChild,'padding-left'), 10);
-      xOffset += parseInt(Utils.getStyle(firstItemChild,'margin-left'), 10);
+
+    function getOffset(prop, altProp){
+      offset = Utils.getStyle(firstItem, prop, altProp);
+      
+      if(-1 !== offset.indexOf('rem')){
+        isREM = true;
+      }else{
+        offset = parseInt(offset, 10);
+      }
+
+      return offset;
     }
 
-    if(Utils.isUndefined(xOffset))
-      return;
+    xOffset = getOffset('margin-left', 'marginLeft');
+
+    if(!xOffset){
+      xOffset = getOffset('padding-left', 'paddingLeft');
+    }
+
+    xOffset = xOffset + (isREM ? '' : 'px');
     
     var arrowEls = this.getArrowEls();
-
-    //implement on arrows
     var arrowPrev = arrowEls[0];
+    var arrowNext = arrowEls[1];
+
     if(arrowPrev){
-      arrowPrev.style.left = parseInt(xOffset) + 'px';
+      arrowPrev.style.left = xOffset;
     }
 
-    var arrowNext = arrowEls[1];
     if(arrowNext){
-      arrowNext.style.right = parseInt(xOffset) + 'px';
+      arrowNext.style.right = xOffset;
     }
   };
 
@@ -593,11 +606,6 @@
 
   Carousel.prototype.onLoad = function(data){
     this.loading = false;
-
-    //for testing
-    if(this.page >0){
-      data.pop();
-    }
 
     var dataLength = data.length || 0;
 

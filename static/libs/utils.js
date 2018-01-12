@@ -56,13 +56,14 @@
     return true;
   }
 
-  function getStyle(el, styleProp) {
+  function getStyle(el, prop, altProp) {
     var s;
 
-    if (el.currentStyle)
-      s = el.currentStyle[styleProp];
-    else if (window.getComputedStyle)
-      s = document.defaultView.getComputedStyle(el, null).getPropertyValue(styleProp);
+    if (el.currentStyle){
+      s = el.currentStyle[altProp];
+    } else if (window.getComputedStyle) {
+      s = document.defaultView.getComputedStyle(el, null).getPropertyValue(prop);
+    }
 
     return s;
   }
