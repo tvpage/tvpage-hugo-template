@@ -56,7 +56,7 @@
     return slickConfig;
   };
 
-  Carousel.prototype.handleClick = function() {
+  Carousel.prototype.handleDesktopClick = function() {
     var defaultStop = this.options.clickDefaultStop;
     var optOnClick = this.options.onClick;
     var onClick = Utils.isFunction(optOnClick) ? optOnClick : function(e){
@@ -65,12 +65,49 @@
       }
     };
 
-    var items = this.el.querySelectorAll(this.itemClass);
+    var items = this.el.querySelectorAll(this.itemClass + ':not(.live)');
     var itemsLength = items.length;
+    var i;
+    var itemEl;
 
-    for (var i = 0; i < itemsLength; i++) {
-      items[i].removeEventListener('click', onClick, false);
+    for (i = 0; i < itemsLength; i++) {
+      itemEl = items[i];
+
       items[i].addEventListener('click', onClick, false);
+
+      Utils.addClass(itemEl, 'live');
+    }
+  }
+
+  Carousel.prototype.handleMobileClick = function() {
+    var moved = false;
+    var optOnTap = this.options.onClick;
+    var onTap = Utils.isFunction(optOnTap) ? optOnTap : null;
+
+    function onTouchmove(e){
+      moved = true;
+    }
+
+    function onTouchend(e){
+      if(!moved && onTap){
+        onTap(e);
+      }
+
+      moved = false;
+    }
+
+    var items = this.el.querySelectorAll(this.itemClass + ':not(.live)');
+    var itemsLength = items.length;
+    var i;
+    var itemEl;
+
+    for (i = 0; i < itemsLength; i++) {
+      itemEl = items[i];
+
+      itemEl.addEventListener('touchend', onTouchend, false);
+      itemEl.addEventListener('touchmove', onTouchmove, false);
+
+      Utils.addClass(itemEl, 'live');
     }
   };
 
@@ -534,7 +571,12 @@
     }
 
     function afterRender(){
-      this.handleClick();
+      if(Utils.isMobile){
+        this.handleMobileClick();
+      }else{
+        this.handleDesktopClick();
+      }
+      
       this.handleLazy();
 
       var onRender = this.options.onRender;
@@ -572,7 +614,7 @@
       pagesHTML.shift();
 
       if(moreThan1Page){
-        this.startSlick(itemsTargetEl, addPagesToSlick);
+        this.startSlick(itemsTargetEl);
       }else{
         this.onReady();
       }

@@ -75,7 +75,7 @@
         item: templates.videos.item
       },
       responsive: [{
-        breakpoint: 400,
+        breakpoint: 768,
         settings: {
           arrows: false,
           dots: true,
