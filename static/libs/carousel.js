@@ -594,22 +594,33 @@
   Carousel.prototype.onLoad = function(data){
     this.loading = false;
 
+    //for testing
+    if(this.page >0){
+      data.pop();
+    }
+
     var dataLength = data.length || 0;
 
     if(!this.loadMore){
       this.data = data;
-    }else if(!dataLength || dataLength < this.itemsPerPage){
+    }else if(!dataLength){
       this.full = true;
       
       if(this.options.clean)
         this.data = [];
 
+      //if no more data we don't want to move further
       return;
+    }else if(dataLength < this.itemsPerPage){
+      this.full = true;
+
+      this.data = this.data.concat(data);
     }else{
       this.data = this.data.concat(data);
     }
 
     var onLoad = this.options.onLoad;
+
     if(Utils.isFunction(onLoad))
       onLoad(data);
   };
