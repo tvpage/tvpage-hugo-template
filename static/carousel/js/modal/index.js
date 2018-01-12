@@ -112,9 +112,12 @@
     }
 
     function hideAllPopOvers() {
-      productsRail.el.querySelectorAll('.pop-over.active').forEach(function (item) {
-        Utils.removeClass(item, 'active');
-      });
+      var activeEls = productsRail.el.querySelectorAll('.pop-over.active');
+      var activeElsLength = activeEls.length;
+      var i;
+
+      for (i = 0; i < activeElsLength; i++)
+        Utils.removeClass(activeEls[i], 'active');
 
       Utils.removeClass(productsRail.el.querySelector('.pop-over-pointer'), 'active');
     }

@@ -15,17 +15,19 @@
 
   function initVideos() {
     function onVideosCarouselClick(e) {
-      if (e && e.target) {
-        Utils.sendMessage({
-          event: config.events.modal.open,
-          
-          //I think is best to use the video-item the the carousel holds... more semantic
-          clicked: Utils.attr(Utils.getRealTargetByClass(e.target, 'carousel-item'), 'data-id')
-        });
+      if (!e || !e.target) {
+        return;
+      }
 
-        config.profiling['modal_ready'] = {
-          start: Utils.now('parent')
-        }
+      Utils.sendMessage({
+        event: config.events.modal.open,
+        
+        //I think is best to use the video-item the the carousel holds... more semantic
+        clicked: Utils.attr(Utils.getRealTargetByClass(e.target, 'carousel-item'), 'data-id')
+      });
+
+      config.profiling['modal_ready'] = {
+        start: Utils.now('parent')
       }
     }
 

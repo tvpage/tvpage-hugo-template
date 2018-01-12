@@ -180,7 +180,7 @@ function widgetModalRender(){
   iframeModalDocument.open().write(getIframeHtml({
     context: config,
     html: templates.modal.base,
-    style: 'body{background:none transparent}' + config.css.custom,
+    style: 'body{background:none transparent;}' + config.css.custom,
     js: iframeModalFiles.javascript,
     css: iframeModalFiles.css
   }));
