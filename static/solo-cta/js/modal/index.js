@@ -17,6 +17,7 @@
   var productsEnabled = config.merchandise;
   var skeletonEl = Utils.getById('skeleton');
   var isFirstVideoPlay = true;
+  var prodVideosOpt = Utils.isset(config,'product_videos') ? config.product_videos : false;
   var playlistOpt = Utils.isset(config,'playlist') ? config.playlist : false;
   var productRatingAttrName = config.product_rating_attribute;
   var productReviewAttrName = config.product_review_attribute;
@@ -70,9 +71,7 @@
     }
 
     function onPlayerReady(){
-      if(playlistOpt){
-        initMenu();
-      }
+      if(playlistOpt) initMenu();
     }
 
     function onPlayerChange(e, currentAsset) {
@@ -120,10 +119,15 @@
     menu.init();
   }
 
+  function initProdVideos(){
+    var prodVideosSettings = JSON.parse(JSON.stringify(config));
+        prodVideosSettings.data = config.channel.videos || [];
+    playlist = new Playlist(player, modal, productsRail, prodVideosSettings);
+    playlist.init();
+  }
+
   function initProducts(style) {
-    if (!productsEnabled) {
-      return;
-    }
+    if (!productsEnabled) return;
 
     //both rail elements and pop overs have to be relative to this.el
     function getPopOverTop(railItemEl, popOverEl, rectify) {
@@ -245,6 +249,7 @@
 
       productsRail.init();
       productsRail.load('render');
+      if(prodVideosOpt) initProdVideos();
     }
   }
 
@@ -297,6 +302,8 @@
 
   //global deps check before execute
   var deps = ['Utils', 'Analytics', 'Player', 'Modal', 'Ps', 'jQuery'];
+
+  if(prodVideosOpt) deps.push('Playlist');
   if(playlistOpt) deps.push('Menu');
   Utils.globalPoll(deps,
     function () {

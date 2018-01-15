@@ -65,10 +65,7 @@
 
   Rail.prototype.onReady = function(){
     var onReady = this.options.onReady;
-    
-    if(Utils.isFunction(onReady)){
-      onReady();
-    }
+    if(Utils.isFunction(onReady)) onReady();
 
     this.handleItemOver();
     this.handleLeave();
@@ -211,6 +208,10 @@
     this.loading = false;
 
     this.data = data;
+
+
+    var onRailReady = this.options.onRailReady;
+    if(Utils.isFunction(onRailReady)) onRailReady(data);
 
     var onLoad = this.options.onLoad;
     if(Utils.isFunction(onLoad))

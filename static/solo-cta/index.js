@@ -313,6 +313,7 @@ function widgetModalRender(){
       debug ? libsPath + "/carousel.js" : "",
       debug ? libsPath + "/rail.js" : "",
       debug ? libsPath + "/modal.js" : "",
+      debug ? libsPath + "/playlist.js" : "",
       debug ? libsPath + "/menu.js" : "",
       debug ? jsPath + "/vendor/jquery.js" : "",
       debug ? jsPath + "/vendor/perfect-scrollbar.min.js" : "",
