@@ -102,7 +102,7 @@
     firstVideo = channelVideos[0];
 
     Utils.globalPoll(
-      ['Utils', 'Analytics'],
+      ['Analytics'],
       function () {
         initClickToAction();
         initAnalytics();

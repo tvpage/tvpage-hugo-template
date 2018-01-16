@@ -1,12 +1,6 @@
 module.exports = function(grunt) {
   
     grunt.initConfig({
-      watch: {
-        css: {
-          files: ['css/**/*.css'],
-          tasks: ['autoprefixer']
-        }
-      },
       autoprefixer: {
         css: {
           files: {
@@ -24,7 +18,6 @@ module.exports = function(grunt) {
         desktop: {
           files: {
             'dist/css/styles.min.css': [
-              '../bootstrap/dist/css/bootstrap.css',
               'css/styles.css'
             ],
             'dist/css/modal/styles.min.css': [
@@ -34,6 +27,8 @@ module.exports = function(grunt) {
             ]
           }
         },
+        
+        //the solo-cta piece works well with the desktop CSS
         mobile: {
           files: {
             'dist/css/mobile/modal/styles.min.css': [
@@ -54,11 +49,9 @@ module.exports = function(grunt) {
         scripts: {
           files: {
             'dist/js/scripts.min.js': [
-              'js/vendor/jquery.js',
-              'js/vendor/slick-min.js',
-              '../libs/utils.js',
-              '../libs/analytics.js',
-              '../libs/carousel.js',
+              '../libs/analytics.js'
+            ],
+            'dist/js/index.min.js': [
               'js/index.js'
             ]
           }
@@ -93,7 +86,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-autoprefixer');
-    grunt.loadNpmTasks('grunt-contrib-watch');
   
     grunt.registerTask('default', ['uglify', 'autoprefixer', 'cssmin']);
   
