@@ -31,9 +31,9 @@
     'script.async = true;' +
     
     {{- if (getenv "HUGO_DEBUG") -}}
-    'script.src = "{{- (printf "/%s/js/index.js" .Type) | relURL -}}";'+
+    'script.src = "{{- (printf "/%s/js/index.js" .Type) | absURL -}}";'+
     {{- else -}}
-    'script.src = "{{- (printf "/%s/dist/js/index.min.js" .Type) | relURL -}}";'+
+    'script.src = "{{- (printf "/%s/dist/js/index.min.js" .Type) | absURL -}}";'+
     {{- end -}}
   
     'document.body.appendChild(script);' +
