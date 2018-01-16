@@ -170,7 +170,7 @@ function widgetModalRender(){
   iframeModalDocument.open().write(getIframeHtml({
     context: config,
     html: templates.modal.base,
-    style: 'body{background:none transparent}',
+    style: 'body{background:none transparent}' + config.css.fonts,
     js: iframeModalFiles.javascript,
     css: iframeModalFiles.css
   }));
@@ -200,7 +200,7 @@ function widgetRender(){
     iframeDocument.open().write(getIframeHtml({
       context: config,
       html: templates.base,
-      style: config.css.base,
+      style: config.css.base + config.css.fonts,
       js: iframeFiles.javascript,
       css: iframeFiles.css
     }));

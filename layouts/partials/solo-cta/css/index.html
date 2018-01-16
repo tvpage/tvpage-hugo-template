@@ -1,6 +1,7 @@
 {
   host: {{- (partial (printf "%s/css/host.css" .Type) .) | htmlUnescape | safeHTML -}},
   base: {{- (readFile "/themes/tvpage/static/bootstrap/dist/css/bootstrap-escaped.txt") | htmlUnescape | safeHTML -}},
+  fonts: {{- (partial (printf "%s/css/font.css" .Type) .) | htmlUnescape | safeHTML -}},
   mobile: {
     host: {{- (partial (printf "%s/mobile/css/host.css" .Type) .) | htmlUnescape | safeHTML -}}
   }

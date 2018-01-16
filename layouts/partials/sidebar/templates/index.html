@@ -1,23 +1,24 @@
 {
-  iframe: '<iframe id="tvp-{{ ($.Scratch.Get "settings").name }}-iframe" src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe>',
+  holder: '<div id="{{- ($.Scratch.Get "settings").name -}}-holder" class="tvp-{{- .Type -}}-holder tvp-hide">{iframe}</div>',
+  iframe: '<iframe id="tvp-{{- ($.Scratch.Get "settings").name -}}-iframe" src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media" class="tvp-{{- .Type -}}-iframe"></iframe>',
   iframeContent: '<head>' +
     '<base target="_blank"/>' +
-    '<link rel="dns-prefetch" href="//youtube.com" />' +
-    '<link rel="dns-prefetch" href="//googlevideo.com" />' +
-    '<link rel="dns-prefetch" href="//fonts.gstatic.com" />' +
-    '<script src="{{ "/libs/utils.js" | relURL }}"></script>' +
-    '<style>' +
-      '.skeleton{' +
-        'visibility: hidden;' +
-        'opacity: 0;' +
-      '}' +
-      '.skeleton.ready{' +
-        'visibility: visible;' +
-        'opacity: 1;' +
-      '}' +
-    '</style>' +
+    '<link rel="preconnect" href="https://api.tvpage.com" />' +
+    '<link rel="preconnect" href="https://a.tvpage.com" />' +
+    '<link rel="preconnect" href="https://youtube.com" />' +
+    '<link rel="preconnect" href="https://googlevideo.com" />' +
+    '<link rel="preconnect" href="https://fonts.gstatic.com" />' +
+    '<link rel="preconnect" href="https://i.ytimg.com" />' +
+    '<link rel="preconnect" href="https://do630budpzeh.cloudfront.net" />' +
+    '<link rel="preconnect" href="https://cdnjs.tvpage.com" />' +
+    '<link rel="preconnect" href="https://s.ytimg.com" />' +
+    {{- if (getenv "HUGO_DEBUG") -}}
+    '<script src="{{- "/libs/utils.js" | absURL -}}"></script>' +
+    {{- else -}}
+    '<script src="{{- "/libs/utils.min.js" | absURL -}}"></script>' +
+    {{- end -}}
   '</head>' +
-  '<body class="{className}" data-domain="{domain}" data-id="{id}" onload="{onload}">',
+  '<body class="{className}" data-id="{id}" onload="{onload}">',
   base: {{- (partial (printf "%s/templates/base.html" .Type) .) -}},
   videos: {
     list: {{- (partial (printf "%s/templates/videos/list.html" .Type) .) -}},
@@ -33,8 +34,8 @@
     }
   },
   mobile: {
-    iframe: '<iframe id="tvp-{{ ($.Scratch.Get "settings").name }}-iframe" src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media"></iframe>',
-    base: {{- (partial (printf "%s/mobile/templates/base.html" .Type) .) -}},
+    holder: '<div id="{{- ($.Scratch.Get "settings").name -}}-holder" class="tvp-{{- .Type -}}-holder tvp-hide">{iframe}</div>',
+    iframe: '<iframe id="tvp-{{- ($.Scratch.Get "settings").name -}}-iframe" src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media" class="tvp-{{- .Type -}}-iframe"></iframe>',
     modal: {
       iframe: '<iframe id="tvp-{{ ($.Scratch.Get "settings").name }}-modal-iframe" src="about:blank" allowfullscreen frameborder="0" scrolling="no" gesture="media" class="tvp-modal-iframe"></iframe>',
       base: {{- (partial (printf "%s/mobile/templates/modal/base.html" .Type) .) -}},

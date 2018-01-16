@@ -4,7 +4,6 @@ var apiBaseUrl = config.api_base_url;
 var baseUrl = config.baseUrl;
 var debug = config.debug;
 var widgetId = config.id;
-var eventsPrefix = config.events.prefix;
 var holderEl;
 
 //we add the preconnect hints as soon as we can
@@ -210,7 +209,7 @@ function widgetRender(){
     iframeDocument.open().write(getIframeHtml({
       context: config,
       html: templates.base,
-      style: config.css.base + config.css.custom,
+      style: config.css.base + config.css.custom + config.css.fonts,
       js: iframeFiles.javascript,
       css: iframeFiles.css
     }));

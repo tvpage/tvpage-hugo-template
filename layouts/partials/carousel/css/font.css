@@ -1,0 +1,42 @@
+"@font-face {"+
+  "font-family: 'Open Sans';"+
+  "font-style: normal;"+
+  "font-weight: 400;"+
+  "src: url('open-sans-v15-latin-regular.eot');"+
+  "src: local('Open Sans Regular'), local('OpenSans-Regular'),"+
+       "url('{{ "fonts/open-sans/open-sans-v15-latin-regular.eot?#iefix" | absURL }}') format('embedded-opentype'),"+
+       "url('{{ "fonts/open-sans/open-sans-v15-latin-regular.woff2" | absURL }}') format('woff2'),"+
+       "url('{{ "fonts/open-sans/open-sans-v15-latin-regular.woff" | absURL }}') format('woff'),"+
+       "url('{{ "fonts/open-sans/open-sans-v15-latin-regular.ttf" | absURL }}') format('truetype'),"+
+       "url('{{ "fonts/open-sans/open-sans-v15-latin-regular.svg#OpenSans" | absURL }}') format('svg');"+
+"}"+
+  
+"@font-face {"+
+  "font-family: 'Material Icons';"+
+  "font-style: normal;"+
+  "font-weight: 400;"+
+  "src: url({{ "fonts/material-icons/MaterialIcons-Regular.eot" | absURL }});"+
+  "src: local('Material Icons'),"+
+  "local('MaterialIcons-Regular'),"+
+  "url({{ "fonts/material-icons/MaterialIcons-Regular.woff2" | absURL }}) format('woff2'),"+
+  "url({{ "fonts/material-icons/MaterialIcons-Regular.woff" | absURL }}) format('woff'),"+
+  "url({{ "fonts/material-icons/MaterialIcons-Regular.ttf" | absURL }}) format('truetype');"+
+"}"+
+
+".material-icons {"+
+  "font-family: 'Material Icons';"+
+  "font-weight: normal;"+
+  "font-style: normal;"+
+  "font-size: 24px;"+
+  "display: inline-block;"+
+  "line-height: 1;"+
+  "text-transform: none;"+
+  "letter-spacing: normal;"+
+  "word-wrap: normal;"+
+  "white-space: nowrap;"+
+  "direction: ltr;"+
+  "-webkit-font-smoothing: antialiased;"+
+  "text-rendering: optimizeLegibility;"+
+  "-moz-osx-font-smoothing: grayscale;"+
+  "font-feature-settings: 'liga';"+
+"}"

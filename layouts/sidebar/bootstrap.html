@@ -4,6 +4,7 @@
 	var config = {{ $.Scratch.Get "config" | jsonify }};
 
 	{{- (readFile (printf "/themes/tvpage/static/%s/config.js" .Type) ) | htmlUnescape | safeHTML -}}
+	{{- (readFile (printf "/themes/tvpage/static/%s/files.js" .Type) ) | htmlUnescape | safeHTML -}}
 	{{- (readFile (printf "/themes/tvpage/static/%s/index.js" .Type) ) | htmlUnescape | safeHTML -}}
 }(
 	{
