@@ -434,8 +434,9 @@
   Carousel.prototype.renderBatch = function(batch){
     var html = '';
     var batchLength = batch.length;
+    var i;
 
-    for (var i = 0; i < batchLength; i++){
+    for (i = 0; i < batchLength; i++){
       html += this.renderItem(batch[i]);
     }
 
@@ -480,7 +481,7 @@
     }
   };
 
-  //we always render a dots holder as long as the user is passing one implicitily
+  //we always render a dots holder as long as the user isn't passing one explicitely
   Carousel.prototype.handleDots = function(){
     if(this.appendDots){
       return;
@@ -534,7 +535,15 @@
     var pageWrapStart = this.options.pageWrapStart;
     var pageWrapEnd = this.options.pageWrapEnd;
     var hasPageWrap = pageWrapStart && pageWrapEnd;
-    var moreThan1Page = this.loadMore ? allLength >= this.slidesToShow : allLength > this.slidesToShow;
+    
+    var moreThan1Page;
+
+    //if the carousel is configured to load more items...
+    if(this.loadMore){
+      moreThan1Page = allLength >= this.slidesToShow;
+    }else{
+      moreThan1Page = allLength > this.slidesToShow;
+    }
 
     function renderPages(offset, onArray){
       var html = onArray ? [] : '';
@@ -614,7 +623,7 @@
       pagesHTML.shift();
 
       if(moreThan1Page){
-        this.startSlick(itemsTargetEl);
+        this.startSlick(itemsTargetEl, addPagesToSlick);
       }else{
         this.onReady();
       }

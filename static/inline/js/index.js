@@ -16,6 +16,7 @@
   var playerReadyCalled = false;
   var isFirstVideoPlay = true;
   var isFirstPlayButtonClick = true;
+  var widgetTitleEl;
   var videosOrderParams = {
     o: config.videos_order_by,
     od: config.videos_order_direction
@@ -77,6 +78,21 @@
         featuredProduct.render();
       }
     });
+
+    var videosLength = channelVideos.length;
+    var video;
+    var i;
+    var newVideo;
+
+    for (i = 0; i < videosLength; i++) {
+      video = channelVideos[i];
+
+      if(videoId == video.id)
+        newVideo = video;
+    }
+
+    if(newVideo)
+      widgetTitleEl.innerHTML = newVideo.title;
   }
 
   //when a videos carousel element is clicked
@@ -378,7 +394,7 @@
         initProducts();
       });
 
-    var widgetTitleEl = Utils.getById('widget-title');
+    widgetTitleEl = Utils.getById('widget-title');
     widgetTitleEl.innerHTML = firstVideo.title;
 
     Utils.addClass(widgetTitleEl, 'ready');

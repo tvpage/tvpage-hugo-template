@@ -60,8 +60,27 @@
       }
     }
 
-    clickToActionEl.removeEventListener('click', onClick, false);
-    clickToActionEl.addEventListener('click', onClick, false);
+    if(Utils.isMobile){
+      var moved = false;
+
+      function onTouchmove(e){
+        moved = true;
+      }
+  
+      function onTouchend(){
+        if(!moved){
+          onClick();
+        }
+  
+        moved = false;
+      }
+
+      clickToActionEl.addEventListener('touchend', onTouchend, false);
+      clickToActionEl.addEventListener('touchmove', onTouchmove, false);
+    }else{
+      clickToActionEl.removeEventListener('click', onClick, false);
+      clickToActionEl.addEventListener('click', onClick, false);
+    }
   }
 
   function initAnalytics() {
@@ -88,7 +107,7 @@
         initClickToAction();
         initAnalytics();
 
-        //since sidebar has no resizing scenarios (is all handled w/css), we still need to send the new size. We also
+        //since solo-cta has no resizing scenarios (is all handled w/css), we still need to send the new size. We also
         //ignore the 1st resize that is fired, as it has no relation with the initialization.
         window.addEventListener('resize', function () {
           if (firstResize) {
