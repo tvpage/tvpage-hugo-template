@@ -1,12 +1,23 @@
-"*[class^=tvp-] {" +
-    "box-sizing: border-box;" +
-"}" +
-
 ".tvp-sidebar-holder {" +
+    "box-sizing: border-box;" +
     "position: relative;" +
+    "visibility: hidden;" +
+    "opacity: 0;" +
+    "pointer-events: none;" +
 "}" +
 
-".tvp-sidebar-holder > iframe {" +
+".tvp-sidebar-holder.tvp-hide {" +
+    "height: 0 !important;" +
+"}" +
+
+".tvp-sidebar-holder.tvp-show {" +
+    "visibility: visible;" +
+    "opacity: 1;" +
+    "pointer-events: auto;" +
+"}" +
+
+".tvp-sidebar-iframe {" +
+    "box-sizing: border-box;" +
     "top: 0;" +
     "left: 0;" +
     "width: 1px;" +
@@ -16,6 +27,7 @@
 "}" +
 
 ".tvp-modal-iframe {" +
+    "box-sizing: border-box;" +
     "position: fixed;" +
     "top: 0;" +
     "right: 0;" +
@@ -28,13 +40,13 @@
     "width: 100%;" +
     "background: transparent !important;" +
     "height: 100%;" +
-    "visibility: hidden;" +
-    "opacity: 0;" +
     "pointer-events: none;" +
+    "backface-visibility: hidden;" +
+    "-webkit-backface-visibility: hidden;" +
+    "display: none;" +
 "}"+
 
-".tvp-modal-iframe.show {" +
-    "visibility: visible;" +
-    "opacity: 1;" +
+".tvp-modal-iframe.tvp-show {" +
+    "display: block;" +
     "pointer-events: auto;" +
 "}"

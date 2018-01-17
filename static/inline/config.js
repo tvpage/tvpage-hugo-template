@@ -40,12 +40,12 @@ config.loginId = config.loginId || config.loginid;
 config.channelId = config.channelId || config.channelid || config.channel.id;
 config.profiling = config.profiling || {};
 
+if(window.performance)
+  config.profiling['script_loaded'] = performance.now();
+
 var playerUrl = (config.player_url + '').trim();
 
 config.player_url = playerUrl.length ? playerUrl : 'https://cdnjs.tvpage.com/tvplayer/tvp-' + config.player_version + '.min.js';
-
-if(window.performance)
-  config.profiling['script_loaded'] = performance.now();
 
 config.events = {
   prefix: prefix,

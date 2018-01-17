@@ -23,4 +23,28 @@
     '</div>' +
   '</div>' +
   
-'</div>'
+'</div>' +
+
+'<script>'+
+  '(function(){'+
+    'Utils.addClass(Utils.getById("skeleton"), "ready");' +
+  
+    'Utils.sendMessage({'+
+      'event: "tvp_{{ replace ($.Scratch.Get "settings").name "-" "_" }}:widget_resize",'+
+      'height: Utils.getWidgetHeight()'+
+    '});'+
+  
+    'Utils.log("skeleton_shown: " + Utils.now("parent"));' +
+
+    'var script = Utils.createEl("script");' +
+    'script.async = true;' +
+    
+    {{- if (getenv "HUGO_DEBUG") -}}
+    'script.src = "{{- (printf "/%s/js/index.js" .Type) | absURL -}}";'+
+    {{- else -}}
+    'script.src = "{{- (printf "/%s/dist/js/index.min.js" .Type) | absURL -}}";'+
+    {{- end -}}
+  
+    'document.body.appendChild(script);' +
+  '}())' +
+  '</script>'

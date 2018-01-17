@@ -262,7 +262,7 @@
 
   //global deps check before execute
   Utils.globalPoll(
-    ['Utils', 'Analytics', 'Player', 'Modal', 'Ps', 'jQuery'],
+    ['Analytics', 'Player', 'Modal', 'Ps', 'jQuery'],
     function () {
       initModal();
 

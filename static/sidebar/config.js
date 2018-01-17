@@ -31,10 +31,10 @@ if('function' === typeof onChange){
   delete config.onChange;
 }
 
-var prefix = ('tvp_' + id).replace(/-/g, '_') + '_' + Math.floor(Math.random() * 1000000);
+var prefix = ('tvp_' + id).replace(/-/g, '_');
 
 config.id = id;
-config.runId = prefix;
+config.runId = prefix + Math.floor(Math.random() * 1000000);
 config.holder = null;
 config.loginId = config.loginId || config.loginid;
 config.channelId = config.channelId || config.channelid || config.channel.id;

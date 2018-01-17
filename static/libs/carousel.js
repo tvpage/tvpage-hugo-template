@@ -35,6 +35,7 @@
   Carousel.prototype.getSlickConfig = function(){
     var options = this.options,
     slickConfig = {
+      draggable: false,
       slidesToShow: this.slidesToShow,
       slidesToScroll: this.slidesToScroll,
       infinite: options.infinite || false,
@@ -391,20 +392,20 @@
 
     var that = this;
 
+    function start(){
+      setTimeout(function(){
+        that.initSlick(slickEl, callback);
+      },0);
+    }
+
     if (Utils.isUndefined($.fn.slick)) {
       $.ajax({
         dataType: 'script',
         cache: true,          
-        url: this.config.baseUrl + '/slick/slick-min.js'//need to move this to a global vendors?
-      }).done(function(){
-        setTimeout(function(){
-          that.initSlick(slickEl, callback);
-        },0);
-      });
+        url: this.config.baseUrl + '/slick/slick-min.js'
+      }).done(start);
     } else {
-      setTimeout(function(){
-        that.initSlick(slickEl, callback);
-      },0);
+      start();
     }
   };
 
@@ -454,8 +455,9 @@
       ].filter(Boolean);
 
       var childElsLength = childEls.length;
+      var i;
 
-      for (var i = 0; i < childElsLength; i++) {
+      for (i = 0; i < childElsLength; i++) {
         var childEl = childEls[i];
 
         if(document.body.contains(childEl)){
@@ -506,71 +508,65 @@
     this.appendDots = '#' + dotsId;
   };
 
+  Carousel.prototype.handleNoData = function(){
+    this.clean();
+    
+    var onNoData = this.options.onNoData;
+
+    if(Utils.isFunction(onNoData))
+      onNoData();
+
+    Utils.addClass(this.el, 'm-0');
+  };
+
+  Carousel.prototype.renderPages = function(offset, onArray){
+    var html = onArray ? [] : '';
+    var pages = this.itemsPerPage > 0 ? Utils.rowerize(this.data, this.itemsPerPage) : [this.data];
+    var pageWrapStart = this.options.pageWrapStart;
+    var pageWrapEnd = this.options.pageWrapEnd;
+    var hasPageWrap = pageWrapStart && pageWrapEnd;
+    var pagesLength = pages.length;
+    var page;
+    var pageHTML;
+    var i;
+    
+    off = offset || 0;
+
+    for (i = 0; i < pagesLength; i++) {
+      page = pages[i + off];
+
+      if(page){
+        pageHTML = (hasPageWrap ? pageWrapStart : '') + this.renderBatch(page) + (hasPageWrap ? pageWrapEnd : '');
+        
+        if(onArray){
+          html.push(pageHTML);
+        }else{
+          html += pageHTML;
+        }
+      }
+    }
+
+    return html;
+  };
+
   Carousel.prototype.render = function(){
     var all = this.data;
     var allLength = all.length;
 
-    //if no data to render
     if(!allLength && this.options.clean){
-      this.clean();
-      
-      var onNoData = this.options.onNoData;
-
-      if(Utils.isFunction(onNoData)){
-        onNoData();
-      }
-
-      Utils.addClass(this.el, 'm-0');
+      this.handleNoData();
 
       return;
-    }else{
-      Utils.removeClass(this.el, 'm-0');
     }
+
+    Utils.removeClass(this.el, 'm-0');
 
     this.parse();
 
-    var willUpdate = this.page > 0 ? true : false;
-    var pages = this.itemsPerPage > 0 ? Utils.rowerize(all, this.itemsPerPage) : [all];
-    var pagesLength = pages.length;
-    var pageWrapStart = this.options.pageWrapStart;
-    var pageWrapEnd = this.options.pageWrapEnd;
-    var hasPageWrap = pageWrapStart && pageWrapEnd;
-    
-    var moreThan1Page;
-
     //if the carousel is configured to load more items...
-    if(this.loadMore){
-      moreThan1Page = allLength >= this.slidesToShow;
-    }else{
-      moreThan1Page = allLength > this.slidesToShow;
-    }
-
-    function renderPages(offset, onArray){
-      var html = onArray ? [] : '';
-      
-      off = offset || 0;
-
-      for (var i = 0; i < pagesLength; i++) {
-        var page = pages[i + off];
-
-        if(page){
-          var pageHTML = (hasPageWrap ? pageWrapStart : '') + this.renderBatch(page) + (hasPageWrap ? pageWrapEnd : '');
-          
-          if(onArray){
-            html.push(pageHTML);
-          }else{
-            html += pageHTML;
-          }
-        }
-      }
-
-      return html;
-    }
-
-    
+    var moreThan1Page = this.loadMore ? allLength >= this.slidesToShow : allLength > this.slidesToShow;
     var itemsTargetEl;
-    var pagesHTML = renderPages.call(this, this.page, true);
-    var that = this;
+    var pagesHTML = this.renderPages(this.page, true);
 
     function renderBase(){
       var holderEl = Utils.createEl('div');
@@ -580,46 +576,52 @@
     }
 
     function afterRender(){
-      if(Utils.isMobile){
-        this.handleMobileClick();
-      }else{
-        this.handleDesktopClick();
-      }
+      Utils.isMobile ? this.handleMobileClick() : this.handleDesktopClick();
       
       this.handleLazy();
 
       var onRender = this.options.onRender;
-
-      if(Utils.isFunction(onRender)){
+      
+      if(Utils.isFunction(onRender))
         onRender();
-      }
     }
+
+    var that = this;
 
     function addPagesToSlick(){
       var pagesHTMLLength = pagesHTML.length;
       var i;
 
       setTimeout(function(){
-        for (i = 0; i < pagesHTMLLength; i++) {
+        for (i = 0; i < pagesHTMLLength; i++)
           that.$slickEl.slick('slickAdd', pagesHTML[i]);
-        }
 
         afterRender.call(that);
       },10);
     }
 
     //if it's a subsequent page we need to consider offset
-    if(willUpdate){
+    if(this.page > 0){
       addPagesToSlick();
+    }else if(this.$slickEl){
+
+      //move this to the external piece
+      // this.el.style.height = this.el.offsetHeight + 'px';
+      // this.el.style.visibility = 'hidden';
+      // this.el.style.opacity = '0';
+
+      //this.$slickEl.slick('removeSlide', null, null, true);
+
+      //addPagesToSlick();
     }else{
       this.clean();
 
       renderBase.call(this);
 
       itemsTargetEl.innerHTML = pagesHTML[0];
-      
+
       this.el.appendChild(itemsTargetEl);
-      
+
       pagesHTML.shift();
 
       if(moreThan1Page){
@@ -684,7 +686,7 @@
       onLoad(data);
   };
 
-  Carousel.prototype.load = function(action,cback){
+  Carousel.prototype.load = function(action, callback){
     if(this.loading)
       return;
 
@@ -710,8 +712,8 @@
         that[action]();
       }
 
-      if(Utils.isFunction(cback)){
-        cback(data);
+      if(Utils.isFunction(callback)){
+        callback(data);
       }
     });
 
@@ -727,7 +729,7 @@
 
     this.load(action);
   };
-
+  
   Carousel.prototype.initialize = function(){
   };
 

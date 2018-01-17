@@ -91,6 +91,7 @@
 
     videosCarousel.initialize();
     videosCarousel.render();
+    
     config.videosCarousel = videosCarousel;
   };
 
