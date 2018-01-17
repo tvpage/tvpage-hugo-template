@@ -121,7 +121,10 @@
 
     function onVideosCarouselLoad(data) {
       player.addAssets(data);
+      
       config.channel.videos = channelVideos.concat(data);
+
+      channelVideos = config.channel.videos;
     }
 
     videosCarousel = new Carousel('videos', {

@@ -1,12 +1,5 @@
-module.exports = function(grunt) {
-  
+module.exports = function(grunt) {  
     grunt.initConfig({
-      watch: {
-        css: {
-          files: ['css/**/*.css'],
-          tasks: ['autoprefixer']
-        }
-      },
       autoprefixer: {
         css: {
           files: {
@@ -23,8 +16,6 @@ module.exports = function(grunt) {
         desktop: {
           files: {
             'dist/css/styles.min.css': [
-              '../bootstrap/dist/css/bootstrap.css',
-              '../slick/slick.css',
               'css/styles.css'
             ],
             'dist/css/modal/styles.min.css': [
@@ -39,6 +30,7 @@ module.exports = function(grunt) {
             'dist/css/mobile/modal/styles.min.css': [
               '../bootstrap/dist/css/bootstrap.css',
               '../slick/slick.css',
+              '../slick/mobile/custom.css',
               'css/mobile/modal/styles.css'
             ]
           }
@@ -53,9 +45,10 @@ module.exports = function(grunt) {
         scripts: {
           files: {
             'dist/js/scripts.min.js': [
-              '../libs/utils.js',
               '../libs/analytics.js',
-              '../libs/grid.js',
+              '../libs/grid.js'
+            ],
+            'dist/js/index.min.js': [
               'js/index.js'
             ]
           }
@@ -90,8 +83,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-autoprefixer');
-    grunt.loadNpmTasks('grunt-contrib-watch');
   
     grunt.registerTask('default', ['uglify', 'autoprefixer', 'cssmin']);
-  
   };
