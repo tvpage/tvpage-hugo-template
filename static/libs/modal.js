@@ -52,11 +52,17 @@
   Modal.prototype.onShownBSModal = function(e){
     var onShown = this.options.onShown;
   
-    if(Utils.isFunction(onShown)){
+    if(Utils.isFunction(onShown))
       onShown(e);
-    }
   }
   
+  Modal.prototype.onHideBSModal = function(e){
+    var onHide = this.options.onHide;
+
+    if(Utils.isFunction(onHide))
+      onHide(e);
+  };
+
   Modal.prototype.onHiddenBSModal = function(e){
     this.$modalEl.modal('dispose');
     this.$modalEl.removeData('bs.modal');
@@ -81,6 +87,10 @@
       that.onShownBSModal.call(that, e);
     });
   
+    this.$modalEl.on('hide.bs.modal', function(e){
+      that.onHideBSModal.call(that, e);
+    });
+
     this.$modalEl.on('hidden.bs.modal', function(e){
       that.onHiddenBSModal.call(that, e);
     });

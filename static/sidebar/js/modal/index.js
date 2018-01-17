@@ -11,6 +11,7 @@
   var isFirstVideoPlay = true;
   var productRatingAttrName = config.product_rating_attribute;
   var productReviewAttrName = config.product_review_attribute;
+  var productsSkelEl;
 
   //TODO
   // function pkTrack(){
@@ -176,8 +177,8 @@
       }
     }
 
-    function removeProductsSkelEl() {
-      Utils.remove(Utils.getById('skeleton').querySelector('.products-skel-delete'));
+    function hideProductsSkelEl() {
+      productsSkelEl.style.display = 'none';
     }
 
     // We set the height of the player to the products element, we also do this on player resize, we
@@ -202,8 +203,8 @@
           item.rating = !!productRatingAttrName ? item[productRatingAttrName] : null;
           item.reviews = !!productReviewAttrName ? item[productReviewAttrName] : null;
         },
-        onNoData: removeProductsSkelEl,
-        onReady: removeProductsSkelEl,
+        onNoData: hideProductsSkelEl,
+        onReady: hideProductsSkelEl,
         onItemOver: onProductsItemOver,
         onLeave: hideAllPopOvers
       }, config);
@@ -246,6 +247,10 @@
     function onModalHidden() {
       player.instance.stop();
 
+      productsRail.clean();
+
+      Utils.getById('skeleton').querySelector('.products-skel-delete').style.display = 'block';
+
       Utils.sendMessage({
         event: config.events.modal.close
       });
@@ -262,9 +267,11 @@
 
   //global deps check before execute
   Utils.globalPoll(
-    ['Utils', 'Analytics', 'Player', 'Modal', 'Ps', 'jQuery'],
+    ['Analytics', 'Player', 'Modal', 'Ps', 'jQuery'],
     function () {
       initModal();
+
+      productsSkelEl = Utils.getById('skeleton').querySelector('.products-skel-delete');
 
       window.parent.addEventListener('message', function (e) {
         if (Utils.isEvent(e) && e.data.event === config.events.modal.open) {

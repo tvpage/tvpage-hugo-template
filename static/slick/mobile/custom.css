@@ -96,6 +96,11 @@
   text-align: center;
 }
 
+.no-dots .dots-target,
+.no-dots .slick-dots {
+  display: none;
+}
+
 .slick-dots li button {
   opacity: 0.5;
   width: 8px;

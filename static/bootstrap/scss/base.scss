@@ -257,14 +257,6 @@ body:not(.mobile) .video:hover .video-image-icon {
   font-size: 18px;
 }
 
-.products-carousel-dots{
-  position: absolute;
-  width: 100%;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
 @media screen and (min-width: 570px) {
   .video-image-icon {
     width: 45px;

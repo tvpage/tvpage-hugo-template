@@ -133,6 +133,13 @@
           return item;
         },
         onNoData: removeProductsSkelEl,
+        onRender: function(){
+          setTimeout(function(){
+            productsCarousel.el.style.height = 'auto';
+
+            Utils.removeClass(productsCarousel.el, 'hide');
+          },0);
+        },
         onReady: function () {
           removeProductsSkelEl();
 
@@ -181,6 +188,12 @@
       config.profiling['modal_ready'] = Utils.now('parent') - config.profiling['modal_ready'].start;
     }
 
+    function onModalHide() {
+      productsCarousel.el.style.height = productsCarousel.el.offsetHeight + 'px';
+
+      Utils.addClass(productsCarousel.el, 'hide');
+    }
+
     function onModalHidden() {
       player.instance.stop();
 
@@ -192,6 +205,7 @@
     modal = new Modal('modal', {
       onShow: onModalShow,
       onShown: onModalShown,
+      onHide: onModalHide,
       onHidden: onModalHidden
     }, config);
 

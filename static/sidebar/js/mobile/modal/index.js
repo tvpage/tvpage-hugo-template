@@ -1,4 +1,4 @@
-(function() {
+(function () {
   var config = window.parent.__TVPage__.config[Utils.attr(document.body, 'data-id')];
   var clickedVideo;
   var player;
@@ -9,6 +9,7 @@
   var productsEnabled = config.merchandise;
   var isFirstVideoPlay = true;
   var isFirstPlayButtonClick = true;
+  var productsSkeletonEl;
 
   //TODO
   // function pkTrack(){
@@ -20,46 +21,46 @@
   // }
 
   function initPlayer() {
-    function onPlayerResize(){
+    function onPlayerResize() {
       Utils.sendMessage({
         event: config.events.modal.resize
       });
     }
 
-    function onPlayerNext(nextVideo){
+    function onPlayerNext(nextVideo) {
       modal.updateTitle(nextVideo.assetTitle);
-      
-      if(productsEnabled){
+
+      if (productsEnabled) {
         productsCarousel.endpoint = apiBaseUrl + '/videos/' + nextVideo.assetId + '/products';
         productsCarousel.load('render');
       }
     }
 
-    function onPlayerChange(e, asset){
+    function onPlayerChange(e, asset) {
       Utils.sendMessage({
         event: config.events.player.change,
         e: e,
-        stateData : asset
+        stateData: asset
       });
 
       //need to change this approach as on mobile we do not have autoplay
-      if("tvp:media:videoplaying" === e && isFirstVideoPlay){
+      if ("tvp:media:videoplaying" === e && isFirstVideoPlay) {
         isFirstVideoPlay = false;
-        
+
         config.profiling['video_playing'] = Utils.now('parent') - config.profiling['video_playing'].start;
-        
+
         //send the profile log of the collected metrics
         Utils.sendProfileData(config);
       }
     }
 
-    function onPlayerClick(e){
-      if(e && e.target){
+    function onPlayerClick(e) {
+      if (e && e.target) {
         var target = Utils.getRealTargetByClass(e.target, 'tvplayer-playbutton');
-          
-        if(target && isFirstPlayButtonClick){
+
+        if (target && isFirstPlayButtonClick) {
           isFirstPlayButtonClick = false;
-          
+
           config.profiling['video_playing'] = {
             start: Utils.now('parent')
           }
@@ -75,7 +76,7 @@
       onChange: onPlayerChange,
       onClick: onPlayerClick
     }, config);
-    
+
     player.initialize();
   };
 
@@ -94,7 +95,7 @@
     }
 
     function removeProductsSkelEl() {
-      Utils.remove(Utils.getById('skeleton').querySelector('.products-skel-delete'));
+      Utils.remove(productsSkeletonEl);
     }
 
     // We set the height of the player to the products element, we also do this on player resize, we
@@ -104,7 +105,7 @@
     var templates = config.templates.mobile.modal;
 
     if ('default' === style) {
-      productsCarousel = new Carousel('products',{
+      productsCarousel = new Carousel('products', {
         clean: true,
         loadMore: false,
         endpoint: apiBaseUrl + '/videos/' + clickedVideo.id + '/products',
@@ -123,7 +124,7 @@
           list: templates.products.list,
           item: templates.products.item
         },
-        parse: function(item) {
+        parse: function (item) {
           item.title = Utils.trimText(item.title || '', 35);
           item.price = Utils.trimPrice(item.price || '');
           item.actionText = item.actionText || 'View Details';
@@ -132,13 +133,19 @@
           return item;
         },
         onNoData: removeProductsSkelEl,
-        onReady: function(){
+        onRender: function(){
+          setTimeout(function(){
+            productsCarousel.el.style.height = 'auto';
+
+            Utils.removeClass(productsCarousel.el, 'hide');
+          },0);
+        },
+        onReady: function () {
           removeProductsSkelEl();
 
           Utils.removeClass(productsCarousel.el, 'hide-abs');
         },
-        responsive: [
-          {
+        responsive: [{
           breakpoint: 1024,
           settings: {
             arrows: false,
@@ -146,8 +153,7 @@
             slidesToShow: 1,
             slidesToScroll: 1
           }
-        }
-        ]
+        }]
       }, config);
 
       productsCarousel.initialize();
@@ -155,34 +161,40 @@
     }
   }
 
-  function initModal(){
-    function onModalShow(){
-      if(player)
+  function initModal() {
+    function onModalShow() {
+      if (player)
         player.play(clickedVideo.id);
     }
 
-    function onModalShown(){
-      if(player){
+    function onModalShown() {
+      if (player) {
         player.resize();
-      }else{
+      } else {
         initPlayer();
       }
 
-      if(productsCarousel){
+      if (productsCarousel) {
         productsCarousel.endpoint = apiBaseUrl + '/videos/' + clickedVideo.id + '/products';
         productsCarousel.load('render');
-      }else{
+      } else {
         initProducts();
       }
 
-      if(!analytics){
+      if (!analytics) {
         initAnalytics();
       }
 
       config.profiling['modal_ready'] = Utils.now('parent') - config.profiling['modal_ready'].start;
     }
 
-    function onModalHidden(){
+    function onModalHide() {
+      productsCarousel.el.style.height = productsCarousel.el.offsetHeight + 'px';
+
+      Utils.addClass(productsCarousel.el, 'hide');
+    }
+
+    function onModalHidden() {
       player.instance.stop();
 
       Utils.sendMessage({
@@ -193,6 +205,7 @@
     modal = new Modal('modal', {
       onShow: onModalShow,
       onShown: onModalShown,
+      onHide: onModalHide,
       onHidden: onModalHidden
     }, config);
 
@@ -200,26 +213,28 @@
   }
 
   Utils.globalPoll(
-    ['jQuery', 'Utils', 'Analytics', 'Carousel', 'Modal', 'Player'],
-    function(){
+    ['jQuery', 'Analytics', 'Carousel', 'Modal', 'Player'],
+    function () {
       initModal();
-      
-      window.parent.addEventListener('message', function(e){
-        if(Utils.isEvent(e) && e.data.event === config.events.modal.open){
+
+      productsSkeletonEl = Utils.getById('skeleton').querySelector('.products-skel-delete');
+
+      window.parent.addEventListener('message', function (e) {
+        if (Utils.isEvent(e) && e.data.event === config.events.modal.open) {
           var videos = config.channel.videos;
-          
-          if(player){
+
+          if (player) {
             player.addAssets(videos);
           }
-      
-          clickedVideo = videos.filter(function(video){
+
+          clickedVideo = videos.filter(function (video) {
             return e.data.clicked == video.id;
           }).pop();
-      
-          if(clickedVideo){
+
+          if (clickedVideo) {
             modal.updateTitle(clickedVideo.title);
             modal.show();
-          }else{
+          } else {
             throw new Error("video not found in data");
           }
         }
@@ -228,5 +243,5 @@
       Utils.sendMessage({
         event: config.events.modal.initialized
       });
-  });
+    });
 }());

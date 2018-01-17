@@ -1,46 +1,46 @@
 '<div id="skeleton" class="skeleton ready">' +
   
-    '<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">' +
-        '<div class="modal-dialog modal-lg" role="document">' +
-            '<div class="modal-content">' +
-              '<div class="modal-header">' +
-                '<h5 class="modal-title" id="modalTitle">{title}</h5>' +
-                '<button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
-                  '<span aria-hidden="true"><i class="material-icons">close</i></span>' +
-                '</button>' +
-              '</div>' +
-              '<div class="modal-body">' +
+  '<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">' +
+      '<div class="modal-dialog modal-lg" role="document">' +
+          '<div class="modal-content">' +
+            '<div class="modal-header">' +
+              '<h5 class="modal-title" id="modalTitle">{title}</h5>' +
+              '<button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
+                '<span aria-hidden="true"><i class="material-icons">close</i></span>' +
+              '</button>' +
+            '</div>' +
+            '<div class="modal-body">' +
 
-                '<div class="row">' +
+              '<div class="row">' +
+                '<div class="col">'+
+                  '<div class="player-holder fluid-y">'+
+                    '<div id="player-el"></div>' +
+                  '</div>' +
+                '</div>' +
+              '</div>'+
+
+              '<div class="row">' +
                   '<div class="col">'+
-                    '<div class="player-holder fluid-y">'+
-                      '<div id="player-el"></div>' +
+                    '<div id="products-holder" class="relative">'+
+                      
+                      '<div class="row mt-3 products-skel-delete">' +
+                        '<div class="col-3 pr-0">' +
+                          '<div class="product-image fluid-y skeleton-bg"></div>' +
+                        '</div>' +
+                        '<div class="col-9">' +
+                          '<p class="product-title mb-1"></p>' +
+                          '<span class="product-price"></span>' +
+                        '</div>' +
+                      '</div>' +
+
+                      '<div id="products" class="mt-3 hide-abs slider-pull-x-2"></div>' +
                     '</div>' +
                   '</div>' +
-                '</div>'+
+              '</div>'+
 
-                '<div class="row">' +
-                    '<div class="col">'+
-                      '<div class="relative">'+
-                        
-                        '<div class="row mt-3 products-skel-delete">' +
-                          '<div class="col-3 pr-0">' +
-                            '<div class="product-image fluid-y skeleton-bg"></div>' +
-                          '</div>' +
-                          '<div class="col-9">' +
-                            '<p class="product-title mb-1"></p>' +
-                            '<span class="product-price"></span>' +
-                          '</div>' +
-                        '</div>' +
-
-                        '<div id="products" class="mt-3 hide-abs slider-pull-x-2"></div>' +
-                      '</div>' +
-                    '</div>' +
-                '</div>'+
-
-              '</div>' +
             '</div>' +
-        '</div>' +
-    '</div>' +
+          '</div>' +
+      '</div>' +
+  '</div>' +
   
 '</div>'

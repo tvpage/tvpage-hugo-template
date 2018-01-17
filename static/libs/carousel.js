@@ -401,7 +401,7 @@
     if (Utils.isUndefined($.fn.slick)) {
       $.ajax({
         dataType: 'script',
-        cache: true,          
+        cache: true,
         url: this.config.baseUrl + '/slick/slick-min.js'
       }).done(start);
     } else {
@@ -497,7 +497,7 @@
     var dotsClass = this.options.dotsClass;
     
     if(!!dotsClass)
-      this.appendDotsEl.className = dotsClass;
+      this.appendDotsEl.className = dotsClass + ' dots-target';
 
     if('bottom' === this.dotsPosition){
       this.el.appendChild(this.appendDotsEl);
@@ -522,9 +522,8 @@
   Carousel.prototype.renderPages = function(offset, onArray){
     var html = onArray ? [] : '';
     var pages = this.itemsPerPage > 0 ? Utils.rowerize(this.data, this.itemsPerPage) : [this.data];
-    var pageWrapStart = this.options.pageWrapStart;
-    var pageWrapEnd = this.options.pageWrapEnd;
-    var hasPageWrap = pageWrapStart && pageWrapEnd;
+    var pageWrapStart = this.options.pageWrapStart || '';
+    var pageWrapEnd = this.options.pageWrapEnd || '';
     var pagesLength = pages.length;
     var page;
     var pageHTML;
@@ -536,7 +535,7 @@
       page = pages[i + off];
 
       if(page){
-        pageHTML = (hasPageWrap ? pageWrapStart : '') + this.renderBatch(page) + (hasPageWrap ? pageWrapEnd : '');
+        pageHTML = pageWrapStart + this.renderBatch(page) + pageWrapEnd;
         
         if(onArray){
           html.push(pageHTML);
@@ -563,30 +562,36 @@
 
     this.parse();
 
-    //if the carousel is configured to load more items...
-    var moreThan1Page = this.loadMore ? allLength >= this.slidesToShow : allLength > this.slidesToShow;
+    //currently, is not straight forward to determine if we have more than one page, this is because the carousel
+    //may wrap "n" items with pageWrapStart & pageWrapEnd.
+    var moreThan1Page;
+    if(!!this.options.pageWrapStart){
+      moreThan1Page = this.loadMore ? allLength >= this.itemsPerPage : allLength > this.itemsPerPage;
+    }else{
+      moreThan1Page = this.loadMore ? allLength >= this.slidesToShow : allLength > this.slidesToShow;
+    }
+
     var itemsTargetEl;
     var pagesHTML = this.renderPages(this.page, true);
+    var that = this;
 
     function renderBase(){
       var holderEl = Utils.createEl('div');
-      holderEl.innerHTML = Utils.tmpl(this.templates.list, this.config);
+      holderEl.innerHTML = Utils.tmpl(that.templates.list, that.config);
 
-      itemsTargetEl = holderEl.querySelector(this.options.itemsTarget);
+      itemsTargetEl = holderEl.querySelector(that.options.itemsTarget);
     }
 
     function afterRender(){
-      Utils.isMobile ? this.handleMobileClick() : this.handleDesktopClick();
+      Utils.isMobile ? that.handleMobileClick() : that.handleDesktopClick();
       
-      this.handleLazy();
+      that.handleLazy();
 
-      var onRender = this.options.onRender;
+      var onRender = that.options.onRender;
       
       if(Utils.isFunction(onRender))
         onRender();
     }
-
-    var that = this;
 
     function addPagesToSlick(){
       var pagesHTMLLength = pagesHTML.length;
@@ -596,27 +601,30 @@
         for (i = 0; i < pagesHTMLLength; i++)
           that.$slickEl.slick('slickAdd', pagesHTML[i]);
 
-        afterRender.call(that);
+        afterRender();
       },10);
+    }
+
+    if(moreThan1Page){
+      Utils.removeClass(this.el, 'no-dots');
+    }else{
+      Utils.addClass(this.el, 'no-dots');
     }
 
     //if it's a subsequent page we need to consider offset
     if(this.page > 0){
       addPagesToSlick();
+    
+    //if this is a first render but slick was already created
     }else if(this.$slickEl){
-
-      //move this to the external piece
-      // this.el.style.height = this.el.offsetHeight + 'px';
-      // this.el.style.visibility = 'hidden';
-      // this.el.style.opacity = '0';
-
-      //this.$slickEl.slick('removeSlide', null, null, true);
-
-      //addPagesToSlick();
+      //empty all slides
+      this.$slickEl.slick('removeSlide', null, null, true);
+      
+      addPagesToSlick();
     }else{
       this.clean();
 
-      renderBase.call(this);
+      renderBase();
 
       itemsTargetEl.innerHTML = pagesHTML[0];
 
@@ -630,7 +638,7 @@
         this.onReady();
       }
 
-      afterRender.call(this);
+      afterRender();
     }
   };
 
