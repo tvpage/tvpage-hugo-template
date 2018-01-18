@@ -1,5 +1,6 @@
 (function () {
   var config = window.parent.__TVPage__.config[Utils.attr(document.body, 'data-id')];
+  var videoOnly = config.videoOnly;
   var firstVideo;
   var apiBaseUrl = config.api_base_url;
   var loginId = config.loginId;
@@ -13,19 +14,23 @@
   }
 
   function initClickToAction() {
-    Utils.loadScript({
-      base: apiBaseUrl + '/channels/' + config.channelId + '/videos',
-      params: Utils.extend({
-        p: 0,
-        o: config.videos_order_by,
-        od: config.videos_order_direction,
-        'X-login-id': loginId
-      }, config.channel.parameters || {})
-    }, function (data) {
-      data.shift(); //nuke first video, we already have it
 
-      config.channel.videos = config.channel.videos.concat(data);
-    });
+    //load the rest of the videos except the first one we loaded in the external piece
+    if(!videoOnly){
+      Utils.loadScript({
+        base: apiBaseUrl + '/channels/' + config.channelId + '/videos',
+        params: Utils.extend({
+          p: 0,
+          o: config.videos_order_by,
+          od: config.videos_order_direction,
+          'X-login-id': loginId
+        }, config.channel.parameters || {})
+      }, function (data) {
+        data.shift(); //nuke first video
+  
+        config.channel.videos = config.channel.videos.concat(data);
+      });
+    }
 
     var clickToActionEl = Utils.getById('click-to-action');
     var img = new Image();
@@ -93,13 +98,19 @@
   }
 
   Utils.poll(function () {
-    var videos = config.channel.videos;
+    if(videoOnly){
+      return config.video;
+    }else{
+      var channelVideos = config.channel.videos;
 
-    return videos && videos.length;
+      return channelVideos && channelVideos.length;
+    }
   }, function () {
-    channelVideos = config.channel.videos;
-
-    firstVideo = channelVideos[0];
+    if(videoOnly){
+      firstVideo = config.video;   
+    }else{
+      firstVideo = config.channel.videos[0];  
+    }
 
     Utils.globalPoll(
       ['Analytics'],

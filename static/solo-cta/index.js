@@ -239,38 +239,49 @@ function widgetRender(){
 function onWidgetLoad(data){
   saveProfileLog(config, 'data_returned');
 
-  if(data && data.length){
-    config.channel.videos = data;
-    
+  function showHolder(){
     holderEl.classList.remove('tvp-hide');
     holderEl.classList.add('tvp-show');
+  }
+
+  if(config.videoOnly && data){
+    config.video = data;
+
+    showHolder();
+  }else if(data && data.length){
+    config.channel.videos = data;
+
+    showHolder();
   }
 };
 
 //api calls/loading, is here were we call the most important api(s) and it's the start 
-//of everything.
+//of everything. a widget should either load a channel or just one video depending on 
+//the available config.
 function widgetLoad(){
-  var videosLoadParams = {
+  var videoOnly = config.videoOnly;
+  var endpoint = apiBaseUrl +
+  (videoOnly ? '/videos/' + config.videoId : '/channels/' + config.channelId + '/videos');
+
+  var loadParams = videoOnly ? {} : {
     p: 0,
     n: config.items_per_page,
     o: config.videos_order_by,
-    od: config.videos_order_direction,
-    'X-login-id': config.loginId
+    od: config.videos_order_direction
   };
 
-  var channelParams = config.channel.parameters;
-  var channelParam;
+  if(!videoOnly){
+    var channelParams = config.channel.parameters || {};
+    var channelParam;
 
-  if(channelParams){
     for (channelParam in channelParams)
-      videosLoadParams[channelParam] = channelParams[channelParam];
+      loadParams[channelParam] = channelParams[channelParam];
   }
 
-  loadScript(
-    apiBaseUrl + '/channels/' + config.channelId + '/videos', 
-    videosLoadParams, 
-    onWidgetLoad
-  );
+  loadParams['X-login-id'] = config.loginId;
+  loadParams.status = 'approved';
+
+  loadScript(endpoint, loadParams, onWidgetLoad);
 }
 
 //handle the widget events

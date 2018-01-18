@@ -360,9 +360,11 @@
     objs = objs || [];
 
     var objsLength = objs.length;
+    var i;
+    var obj;
 
-    for (var i = 0; i < objsLength; i++) {
-      var obj = objs[i];
+    for (i = 0; i < objsLength; i++) {
+      obj = objs[i];
 
       if (!this.getAssetById(obj.id)) {
         this.assets.push(this.buildAsset(obj));

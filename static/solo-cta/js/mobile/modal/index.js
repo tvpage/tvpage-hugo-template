@@ -1,5 +1,6 @@
 (function () {
   var config = window.parent.__TVPage__.config[Utils.attr(document.body, 'data-id')];
+  var videoOnly = config.videoOnly;
   var clickedVideo;
   var player;
   var productsCarousel;
@@ -70,7 +71,7 @@
 
     player = new Player('player-el', {
       startWith: clickedVideo.id,
-      data: config.channel.videos,
+      data: videoOnly ? [config.video] : config.channel.videos,
       onResize: onPlayerResize,
       onNext: onPlayerNext,
       onChange: onPlayerChange,
@@ -221,15 +222,23 @@
 
       window.parent.addEventListener('message', function (e) {
         if (Utils.isEvent(e) && e.data.event === config.events.modal.open) {
-          var videos = config.channel.videos;
+          if(videoOnly){
+            clickedVideo = config.video;
 
-          if (player) {
-            player.addAssets(videos);
+            if (player) {
+              player.addAssets([clickedVideo]);
+            }
+          }else{
+            var videos = config.channel.videos;
+
+            if (player) {
+              player.addAssets(videos);
+            }
+
+            clickedVideo = videos.filter(function (video) {
+              return e.data.clicked == video.id;
+            }).pop();
           }
-
-          clickedVideo = videos.filter(function (video) {
-            return e.data.clicked == video.id;
-          }).pop();
 
           if (clickedVideo) {
             modal.updateTitle(clickedVideo.title);

@@ -19,8 +19,10 @@ if(tvpage.config[id] && 'object' === typeof tvpage.config[id]){
 if(!config.targetEl)
   throw new Error("targetEl not present in config");
 
-if(!config.channel && !config.channelId && !config.channelid)
-  throw new Error('Widget config missing channel obj');
+config.videoOnly = !!config.videoId || !!config.videoid;
+
+if(!config.channel && !config.channelId && !config.channelid && !config.videoOnly)
+  throw new Error('Widget missing channel or data config');
 
 config.__windowCallbackFunc__ = null;
 
@@ -37,7 +39,9 @@ config.id = id;
 config.runId = prefix + Math.floor(Math.random() * 1000000);
 config.holder = null;
 config.loginId = config.loginId || config.loginid;
-config.channelId = config.channelId || config.channelid || config.channel.id;
+config.channelId = config.channelId || config.channelid || (config.channel && config.channel.id);
+config.videoId = config.videoId || config.videoid;
+
 config.profiling = config.profiling || {};
 
 if(window.performance)
