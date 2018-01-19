@@ -8,31 +8,31 @@
   }
 
   Analytics.prototype.initialize = function(){
-    var that = this;
+    var config = this.config;
+    var options = this.options;
 
     Utils.globalPoll(['_tvpa'], function(){
-      var opts = that.options;
 
-      if(opts.firstPartyCookies && opts.cookieDomain)
-       opts.firstPartyCookieDomain = opts.cookieDomain;
+      if(options.firstPartyCookies && options.cookieDomain)
+       options.firstPartyCookieDomain = options.cookieDomain;
 
       var logUrl = "";
 
-      if(opts.logUrl){
-        logUrl = opts.logUrl;
-      }else if(that.config.api_base_url){
-        logUrl = that.config.api_base_url + '/__tvpa.gif';
+      if(options.logUrl){
+        logUrl = options.logUrl;
+      }else if(config.api_base_url){
+        logUrl = config.api_base_url + '/__tvpa.gif';
       }
 
       if(!logUrl)
         throw new Error("can't build logUrl");
 
       _tvpa.push(['config',{
-        li: opts.loginId,
-        domain: opts.domain,
+        li: config.loginId,
+        domain: options.domain,
         logUrl: logUrl,
-        firstPartyCookies: that.config.firstpartycookies,
-        cookieDomain: that.config.cookiedomain
+        firstPartyCookies: config.firstpartycookies,
+        cookieDomain: config.cookiedomain
       }]);
     });
   };
@@ -45,9 +45,9 @@
     }
 
     Utils.globalPoll(['_tvpa'], function(){
-      _tvpa.push(e, data || {
+      _tvpa.push(['track', e, data || {
         li: loginId
-      })
+      }]);
     });
   };
   

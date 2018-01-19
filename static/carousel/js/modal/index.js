@@ -13,14 +13,31 @@
   var productReviewAttrName = config.product_review_attribute;
   var productsSkelEl;
 
-  //TODO
-  // function pkTrack(){
-  //   analytics.track('pk', {
-  //     vd: Utils.attr(this, 'data-vd'),
-  //     ct: this.id.split('-').pop(),
-  //     pg: config.channelId
-  //   });
-  // }
+  function productClickTrack(product) {
+    if(product){
+      analytics.track('pk', {
+        vd: product.entityIdParent,
+        ct: product.id,
+        pg: config.channelId
+      }); 
+    }
+  }
+
+  function productImpressionsTracking(data) {
+    var dataLength = data.length;
+    var product;
+    var i;
+
+    for (i = 0; i < dataLength; i++) {
+      product = data[i];
+
+      analytics.track('pi', {
+        vd: product.entityIdParent,
+        ct: product.id,
+        pg: config.channelId
+      });
+    }
+  }
 
   function initPlayer() {
     function onPlayerResize(initial, size) {
@@ -38,7 +55,7 @@
 
       if (productsEnabled) {
         productsRail.endpoint = apiBaseUrl + '/videos/' + nextVideo.assetId + '/products';
-        productsRail.load('render');
+        productsRail.load('render', productImpressionsTracking);
       }
     }
 
@@ -76,13 +93,31 @@
     }, config);
 
     analytics.initialize();
-    analytics.track('ci');
   };
 
   function initProducts(style) {
     if (!productsEnabled) {
       return;
     }
+
+    function getProductId(el){
+      return el ? (Utils.attr(el, 'data-id') || null) : null
+    }
+
+    //track product click with delegation
+    document.addEventListener('click', function (e) {
+      var targetId = getProductId(Utils.getRealTargetByClass(e.target, 'product'));
+
+      if (targetId) {
+        productClickTrack(productsRail.getDataItemById(targetId));
+      }else{
+        targetId = getProductId(Utils.getRealTargetByClass(e.target, 'product-pop-over'));
+
+        if(targetId){
+          productClickTrack(productsRail.getDataItemById(targetId));
+        }
+      }
+    }, false);
 
     //both rail elements and pop overs have to be relative to this.el
     function getPopOverTop(railItemEl, popOverEl, rectify) {
@@ -128,6 +163,7 @@
 
       productPopOverEl.id = 'pop-over-' + product.id;
       productPopOverEl.className = 'pop-over product-pop-over';
+      productPopOverEl.setAttribute('data-id', product.id);
       productPopOverEl.innerHTML = Utils.tmpl(templates.products.itemPopOver, product);
 
       productsRail.el.appendChild(productPopOverEl);
@@ -210,7 +246,12 @@
       }, config);
 
       productsRail.init();
-      productsRail.load('render');
+      productsRail.load('render', function(data){
+        //delayed track for perf
+        setTimeout(function () {
+          productImpressionsTracking(data);
+        }, 3000);
+      });
     }
   }
 
@@ -229,7 +270,12 @@
 
       if (productsRail) {
         productsRail.endpoint = apiBaseUrl + '/videos/' + clickedVideo.id + '/products';
-        productsRail.load('render');
+        productsRail.load('render', function(data){
+          //delayed track for perf
+          setTimeout(function () {
+            productImpressionsTracking(data);
+          }, 3000);
+        });
       } else {
         initProducts();
       }
@@ -245,7 +291,8 @@
     }
 
     function onModalHidden() {
-      player.instance.stop();
+      if(player && player.instance)
+        player.instance.stop();
 
       productsRail.clean();
 

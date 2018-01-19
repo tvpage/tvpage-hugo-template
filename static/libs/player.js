@@ -85,6 +85,9 @@
       this.currentIndex = this.assets.indexOf(asset);
     }
 
+    if(!this.instance)
+      return;
+
     if (this.shallCue(ongoing)) {
       this.instance.cueVideo(asset);
     } else {
@@ -160,6 +163,7 @@
 
   Player.prototype.analyticsConfig = function () {
     var config = this.config;
+    var options = this.options;
     var loginId = config.loginId;
 
     var analyticsConfig = {
@@ -174,7 +178,7 @@
     Utils.globalPoll(['_tvpa'], function () {
       _tvpa.push(['config', analyticsConfig]);
 
-      if (config.ciTrack) {
+      if (options.ciTrack) {
         _tvpa.push(['track', 'ci', {
           li: loginId
         }]);

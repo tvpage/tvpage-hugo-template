@@ -1,9 +1,7 @@
 (function () {
   var config = window.parent.__TVPage__.config[Utils.attr(document.body, 'data-id')];
-  var videoOnly = config.videoOnly;
   var clickedVideo;
   var player;
-  var productsCarousel;
   var analytics;
   var apiBaseUrl = config.api_base_url;
   var loginId = config.loginId;
@@ -11,15 +9,34 @@
   var isFirstVideoPlay = true;
   var isFirstPlayButtonClick = true;
   var productsSkeletonEl;
+  var productsCarousel;
+  var productsCarouselEl;
 
-  //TODO
-  // function pkTrack(){
-  //   analytics.track('pk', {
-  //     vd: Utils.attr(this, 'data-vd'),
-  //     ct: this.id.split('-').pop(),
-  //     pg: config.channelId
-  //   });
-  // }
+  function productClickTrack(product) {
+    if(product){
+      analytics.track('pk', {
+        vd: product.entityIdParent,
+        ct: product.id,
+        pg: config.channelId
+      }); 
+    }
+  }
+
+  function productImpressionsTracking(data) {
+    var dataLength = data.length;
+    var product;
+    var i;
+
+    for (i = 0; i < dataLength; i++) {
+      product = data[i];
+
+      analytics.track('pi', {
+        vd: product.entityIdParent,
+        ct: product.id,
+        pg: config.channelId
+      });
+    }
+  }
 
   function initPlayer() {
     function onPlayerResize() {
@@ -33,7 +50,7 @@
 
       if (productsEnabled) {
         productsCarousel.endpoint = apiBaseUrl + '/videos/' + nextVideo.assetId + '/products';
-        productsCarousel.load('render');
+        productsCarousel.load('render', productImpressionsTracking);
       }
     }
 
@@ -71,7 +88,7 @@
 
     player = new Player('player-el', {
       startWith: clickedVideo.id,
-      data: videoOnly ? [config.video] : config.channel.videos,
+      data: config.channel.videos,
       onResize: onPlayerResize,
       onNext: onPlayerNext,
       onChange: onPlayerChange,
@@ -87,13 +104,22 @@
     }, config);
 
     analytics.initialize();
-    analytics.track('ci');
   };
 
   function initProducts(style) {
     if (!productsEnabled) {
       return;
     }
+
+    //track product click with delegation
+    document.addEventListener('click', function (e) {
+      var target = Utils.getRealTargetByClass(e.target, 'product');
+      var targetId = target ? (Utils.attr(target, 'data-id') || null) : null;
+
+      if (targetId) {
+        productClickTrack(productsCarousel.getDataItemById(targetId));
+      }
+    }, false);
 
     function removeProductsSkelEl() {
       Utils.remove(productsSkeletonEl);
@@ -134,17 +160,17 @@
           return item;
         },
         onNoData: removeProductsSkelEl,
-        onRender: function(){
-          setTimeout(function(){
-            productsCarousel.el.style.height = 'auto';
+        onRender: function () {
+          setTimeout(function () {
+            productsCarouselEl.style.height = 'auto';
 
-            Utils.removeClass(productsCarousel.el, 'hide');
-          },0);
+            Utils.removeClass(productsCarouselEl, 'hide');
+          }, 0);
         },
         onReady: function () {
           removeProductsSkelEl();
 
-          Utils.removeClass(productsCarousel.el, 'hide-abs');
+          Utils.removeClass(productsCarouselEl, 'hide-abs');
         },
         responsive: [{
           breakpoint: 1024,
@@ -158,7 +184,15 @@
       }, config);
 
       productsCarousel.initialize();
-      productsCarousel.load('render');
+
+      productsCarouselEl = productsCarousel.el;
+
+      productsCarousel.load('render', function (data) {
+        //delayed 1st pi track
+        setTimeout(function () {
+          productImpressionsTracking(data);
+        }, 3000);
+      });
     }
   }
 
@@ -177,7 +211,12 @@
 
       if (productsCarousel) {
         productsCarousel.endpoint = apiBaseUrl + '/videos/' + clickedVideo.id + '/products';
-        productsCarousel.load('render');
+        productsCarousel.load('render', function(data){
+          //delayed track for perf
+          setTimeout(function () {
+            productImpressionsTracking(data);
+          }, 3000);
+        });
       } else {
         initProducts();
       }
@@ -190,13 +229,14 @@
     }
 
     function onModalHide() {
-      productsCarousel.el.style.height = productsCarousel.el.offsetHeight + 'px';
+      productsCarouselEl.style.height = productsCarouselEl.offsetHeight + 'px';
 
-      Utils.addClass(productsCarousel.el, 'hide');
+      Utils.addClass(productsCarouselEl, 'hide');
     }
 
     function onModalHidden() {
-      player.instance.stop();
+      if (player && player.instance)
+        player.instance.stop();
 
       Utils.sendMessage({
         event: config.events.modal.close
@@ -222,23 +262,15 @@
 
       window.parent.addEventListener('message', function (e) {
         if (Utils.isEvent(e) && e.data.event === config.events.modal.open) {
-          if(videoOnly){
-            clickedVideo = config.video;
+          var videos = config.channel.videos;
 
-            if (player) {
-              player.addAssets([clickedVideo]);
-            }
-          }else{
-            var videos = config.channel.videos;
-
-            if (player) {
-              player.addAssets(videos);
-            }
-
-            clickedVideo = videos.filter(function (video) {
-              return e.data.clicked == video.id;
-            }).pop();
+          if (player) {
+            player.addAssets(videos);
           }
+
+          clickedVideo = videos.filter(function (video) {
+            return e.data.clicked == video.id;
+          }).pop();
 
           if (clickedVideo) {
             modal.updateTitle(clickedVideo.title);

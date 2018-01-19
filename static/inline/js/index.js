@@ -33,17 +33,23 @@
     });
   }
 
-  function analyticsPKTrack(product) {
-    analytics.track('pk', {
-      vd: product.entityIdParent,
-      ct: product.id,
-      pg: config.channelId
-    });
+  function productClickTrack(product) {
+    if(product){
+      analytics.track('pk', {
+        vd: product.entityIdParent,
+        ct: product.id,
+        pg: config.channelId
+      }); 
+    }
   }
 
-  function analyticsPITrack(data) {
-    for (var i = 0; i < data.length; i++) {
-      var product = data[i];
+  function productImpressionsTracking(data) {
+    var dataLength = data.length;
+    var product;
+    var i;
+
+    for (i = 0; i < dataLength; i++) {
+      product = data[i];
 
       analytics.track('pi', {
         vd: product.entityIdParent,
@@ -71,7 +77,7 @@
 
     productsCarousel.endpoint = apiBaseUrl + '/videos/' + videoId + '/products';
     productsCarousel.load('render', function (data) {
-      analyticsPITrack(data);
+      productImpressionsTracking(data);
 
       if (featuredProduct) {
         featuredProduct.data = data[0];
@@ -164,7 +170,6 @@
     }, config);
 
     analytics.initialize();
-    analytics.track('ci');
   };
 
   function initProducts() {
@@ -181,7 +186,7 @@
       var that = this;
 
       this.el.addEventListener('click', function (e) {
-        analyticsPKTrack(that.data);
+        productClickTrack(that.data);
       });
     }
 
@@ -233,7 +238,7 @@
 
         //delayed 1st pi track
         setTimeout(function () {
-          analyticsPITrack(data);
+          productImpressionsTracking(data);
         }, 3000);
       }
     }
@@ -242,20 +247,17 @@
       Utils.removeClass(Utils.getById('dots-target-products'), 'hide-abs');
     }
 
+    //track product click with delegation
+    document.addEventListener('click', function (e) {
+      var target = Utils.getRealTargetByClass(e.target, 'product');
+      var targetId = target ? (Utils.attr(target, 'data-id') || null) : null;
+
+      if (targetId) {
+        productClickTrack(productsCarousel.getDataItemById(targetId));
+      }
+    }, false);
+
     if (Utils.isMobile) {
-      //track the pi here with event delegation
-      document.addEventListener('click', function (e) {
-        var target = Utils.getRealTargetByClass(e.target, 'product');
-
-        if (target) {
-          var targetId = Utils.attr(target, 'data-id') || null;
-
-          if (targetId) {
-            analyticsPKTrack(productsCarousel.getDataItemById(targetId));
-          }
-        }
-      }, false);
-
       productsCarousel = new Carousel('products', {
         appendDots: '#products-carousel-nav',
         dotsCenter: true,
@@ -285,7 +287,11 @@
       }, config);
 
       productsCarousel.initialize();
-      productsCarousel.load('render', analyticsPITrack);
+      productsCarousel.load('render', function(data){
+        setTimeout(function () {
+          productImpressionsTracking(data);
+        }, 3000);
+      });
     } else {
       productsCarousel = new Carousel('products', {
         alignArrowsY: ['center', '.carousel-dot-0'],

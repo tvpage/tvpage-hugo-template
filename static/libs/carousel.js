@@ -212,8 +212,9 @@
           top = 0;
 
           var parentsLength = parents.length;
+          var i;
 
-          for (var i = 0; i < parentsLength; i++) {
+          for (i = 0; i < parentsLength; i++) {
             top += parents[i].offsetTop;
           }
 
@@ -291,8 +292,9 @@
     var arrowEls = this.el.querySelectorAll('.slick-arrow');
     var arrowElsLength = arrowEls.length;
     var slickEl = this.el.querySelector('.slick-carousel');
+    var i;
 
-    for (var i = 0; i < arrowElsLength; i++) {
+    for (i = 0; i < arrowElsLength; i++) {
       slickEl.appendChild(arrowEls[i]);
     }
 
@@ -411,9 +413,11 @@
 
   Carousel.prototype.getDataItemById = function(id){
     var itemsLength = this.data.length;
+    var item;
+    var i;
 
-    for (var i = 0; i < itemsLength; i++) {
-      var item = this.data[i];
+    for (i = 0; i < itemsLength; i++) {
+      item = this.data[i];
       
       if (item.id === id)
         return item;
@@ -455,10 +459,11 @@
       ].filter(Boolean);
 
       var childElsLength = childEls.length;
+      var childEl;
       var i;
 
       for (i = 0; i < childElsLength; i++) {
-        var childEl = childEls[i];
+        childEl = childEls[i];
 
         if(document.body.contains(childEl)){
           Utils.remove(childEl);
@@ -621,6 +626,8 @@
       this.$slickEl.slick('removeSlide', null, null, true);
       
       addPagesToSlick();
+    
+    //very first start
     }else{
       this.clean();
 
@@ -632,11 +639,7 @@
 
       pagesHTML.shift();
 
-      if(moreThan1Page){
-        this.startSlick(itemsTargetEl, addPagesToSlick);
-      }else{
-        this.onReady();
-      }
+      this.startSlick(itemsTargetEl, moreThan1Page ? addPagesToSlick : null);
 
       afterRender();
     }
@@ -658,8 +661,9 @@
 
   Carousel.prototype.parse = function(){
     var dataLength = this.data.length;
+    var i;
 
-    for (var i = 0; i < dataLength; i++){
+    for (i = 0; i < dataLength; i++){
       if(Utils.isFunction(this.options.parse))
         this.options.parse(this.data[i]);
     }
