@@ -55,6 +55,7 @@
     var itemsPerPage = config.video_item_display_amount !== null ? config.video_item_display_amount : 3;
 
     videosCarousel = new Carousel('videos', {
+      arrows: Utils.isMobile ? false : true,
       alignArrowsY: ['center', '.video-image-icon'],
       endpoint: videosEndpoint,
       params: Utils.addProps({
@@ -77,7 +78,6 @@
       responsive: [{
         breakpoint: 768,
         settings: {
-          arrows: false,
           dots: true,
           slidesToShow: 2,
           slidesToScroll: 2
