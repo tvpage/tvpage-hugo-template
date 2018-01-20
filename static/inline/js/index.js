@@ -144,6 +144,11 @@
       onClick: onVideosCarouselClick,
       itemsTarget: '.slick-carousel',
       itemsPerPage: 4,
+      parse: function(item){
+        item.title = Utils.trimText(item.title, 50);
+
+        return item;
+      },
       templates: {
         list: templates.videos.list,
         item: templates.videos.item

@@ -23,6 +23,7 @@ var files = {
     javascript: [
       '//www.youtube.com/iframe_api',
       '//a.tvpage.com/tvpa.min.js',
+      '//imasdk.googleapis.com/js/sdkloader/ima3.js',
       baseUrl + '/playerlib-debug.min.js',
       static + '/dist/js' + (isMobile ? '/mobile' : '') + '/modal/scripts.min.js'
     ],
@@ -33,6 +34,7 @@ var files = {
       javascript:[
         '//www.youtube.com/iframe_api',
         '//a.tvpage.com/tvpa.min.js',
+        '//imasdk.googleapis.com/js/sdkloader/ima3.js',
         baseUrl + '/playerlib-debug.min.js',
         static + '/js/vendor/jquery.js',
         baseUrl + '/libs/analytics.js',

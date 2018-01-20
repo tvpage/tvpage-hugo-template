@@ -71,6 +71,11 @@
       slidesToScroll: itemsPerPage,
       itemsTarget: '.slick-carousel',
       itemsPerPage: itemsPerPage,
+      parse: function(item){
+        item.title = Utils.trimText(item.title, 50);
+
+        return item;
+      },
       templates: {
         list: templates.videos.list,
         item: templates.videos.item

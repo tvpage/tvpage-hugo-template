@@ -98,19 +98,9 @@
   }
 
   Utils.poll(function () {
-    if(videoOnly){
-      return config.video;
-    }else{
-      var channelVideos = config.channel.videos;
-
-      return channelVideos && channelVideos.length;
-    }
+    return videoOnly ? config.video : config.channel.videos && config.channel.videos.length;
   }, function () {
-    if(videoOnly){
-      firstVideo = config.video;   
-    }else{
-      firstVideo = config.channel.videos[0];  
-    }
+    firstVideo = videoOnly ? config.video : config.channel.videos[0];
 
     Utils.globalPoll(
       ['Analytics'],
@@ -120,15 +110,7 @@
 
         //since solo-cta has no resizing scenarios (is all handled w/css), we still need to send the new size. We also
         //ignore the 1st resize that is fired, as it has no relation with the initialization.
-        window.addEventListener('resize', function () {
-          if (firstResize) {
-            firstResize = false;
-
-            return;
-          }
-
-          sendResizeMessage();
-        });
+        window.addEventListener('resize', sendResizeMessage);
       })
   })
 

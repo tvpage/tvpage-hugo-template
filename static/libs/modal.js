@@ -30,11 +30,17 @@
   };
   
   Modal.prototype.hide = function(){
-    this.$modalEl.modal('hide');
+    var modalEl = this.$modalEl;
+
+    if(modalEl && modalEl.modal)
+      modalEl.modal('hide');
   };
   
   Modal.prototype.show = function(){
-    this.$modalEl.modal('show');
+    var modalEl = this.$modalEl;
+
+    if(modalEl && modalEl.modal)
+      modalEl.modal('show');
   };
   
   Modal.prototype.onShowBSModal = function(e){
