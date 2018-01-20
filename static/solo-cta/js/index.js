@@ -55,6 +55,10 @@
     clickToActionEl.querySelector('.click-to-action-text').innerHTML = firstVideo.title;
 
     function onClick() {
+      if(!config.modalReady){
+        return;
+      }
+
       Utils.sendMessage({
         event: config.events.modal.open,
         clicked: firstVideo.id

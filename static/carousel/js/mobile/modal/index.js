@@ -247,7 +247,10 @@
       onShow: onModalShow,
       onShown: onModalShown,
       onHide: onModalHide,
-      onHidden: onModalHidden
+      onHidden: onModalHidden,
+      onReady: function(){
+        config.modalReady = true;
+      }
     }, config);
 
     modal.initialize();

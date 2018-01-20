@@ -102,6 +102,12 @@
     });
   
     this.$modalEl.modal(this.startState);
+
+    var onReady = this.options.onReady;
+
+    if(Utils.isFunction(onReady)){
+      onReady();
+    }
   };
 
   window.Modal = Modal;

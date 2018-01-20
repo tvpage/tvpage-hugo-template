@@ -36,7 +36,7 @@
     }
 
     function onVideosGridClick(e) {
-      if (!e || !e.target) {
+      if (!e || !e.target || !config.modalReady) {
         return; 
       }
 

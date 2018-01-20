@@ -306,7 +306,10 @@
     modal = new Modal('modal', {
       onShow: onModalShow,
       onShown: onModalShown,
-      onHidden: onModalHidden
+      onHidden: onModalHidden,
+      onReady: function(){
+        config.modalReady = true;
+      }
     }, config);
 
     modal.initialize();
