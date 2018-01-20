@@ -1,5 +1,6 @@
 (function () {
   var config = window.parent.__TVPage__.config[Utils.attr(document.body, 'data-id')];
+  var videoOnly = config.videoOnly;
   var clickedVideo;
   var player;
   var analytics;
