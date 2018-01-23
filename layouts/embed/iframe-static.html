@@ -1,4 +1,4 @@
-{{- partial "settings.html" . -}}
+{{- partial "config.html" . -}}
 <!doctype html>
 <html class='no-js' lang=''>
 <head>
@@ -20,8 +20,7 @@
   {{- end -}}
 
   <script async src="//a.tvpage.com/tvpa.min.js"></script>
-  <script async src='{{ "player-sound-patch.js" | relURL }}'></script>
-  <!-- <script async src='//cdnjs.tvpage.com/tvplayer/tvp-{{ ($.Scratch.Get "settings").player_version }}.min.js'></script> -->
+  <script async src='//cdnjs.tvpage.com/tvplayer/tvp-{{ ($.Scratch.Get "settings").player_version }}.min.js'></script>
 
   {{- if (getenv "HUGO_DEBUG") -}}
     <script src='{{ "libs/utils.js" | relURL }}'></script>
@@ -34,6 +33,7 @@
   <script>
     (function(config, videoId, channelId){
       config = Utils.extend(config, Utils.getUrlParams());
+      config.loginId = config.loginId || config.loginid;
 
       var channelVideos = [];
 
