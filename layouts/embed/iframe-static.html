@@ -20,7 +20,7 @@
   {{- end -}}
 
   <script async src="//a.tvpage.com/tvpa.min.js"></script>
-  <script async src='{{ "/playerlib-debug.min.js" | relURL }}'></script>
+  <script async src='{{ "player-sound-patch.js" | relURL }}'></script>
   <!-- <script async src='//cdnjs.tvpage.com/tvplayer/tvp-{{ ($.Scratch.Get "settings").player_version }}.min.js'></script> -->
 
   {{- if (getenv "HUGO_DEBUG") -}}
