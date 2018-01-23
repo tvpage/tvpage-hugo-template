@@ -189,8 +189,36 @@
                         analytics: { tvpa: that.analytics },
                         apiBaseUrl: that.apiBaseUrl,
                         swf: '//cdnjs.tvpage.com/tvplayer/tvp-'+that.version+'.swf',
-                        onReady: function(e, pl){
-                            that.instance = pl;
+                        onStateChange: function(e){
+                            if ('tvp:media:videoended' !== e) return;
+
+                            that.current++;
+                            if (!that.assets[that.current]) {
+                                that.current = 0;
+                            }
+
+                            var next = that.assets[that.current];
+                            that.play(next, true);
+                            if(that.onNext) {
+                                that.onNext(next);
+                            }
+                        },
+                        divId: that.el.id,
+                        controls: that.controls,
+                        version: that.version,
+                        advertising:that.advertising,
+                        preload: that.preload
+                    };
+
+                    var extras = ["preload","poster","overlay"];
+                    for (var i = 0; i < extras.length; i++) {
+                      var option = extras[i];
+                      if (that[option] !== null) {
+                        playerOptions[option] = that[option];
+                      }
+                    }
+                    var playVideo = function(playerInstance){
+                        that.instance = playerInstance;
                             that.resize();
 
                             //Fix required to let popups be displayed on top of plauer overlay.
@@ -231,36 +259,7 @@
 
                             that.current = current;
                             that.play(that.assets[that.current]);
-                        },
-                        onStateChange: function(e){
-                            if ('tvp:media:videoended' !== e) return;
-
-                            that.current++;
-                            if (!that.assets[that.current]) {
-                                that.current = 0;
-                            }
-
-                            var next = that.assets[that.current];
-                            that.play(next, true);
-                            if(that.onNext) {
-                                that.onNext(next);
-                            }
-                        },
-                        divId: that.el.id,
-                        controls: that.controls,
-                        version: that.version,
-                        advertising:that.advertising,
-                        preload: that.preload
-                    };
-
-                    var extras = ["preload","poster","overlay"];
-                    for (var i = 0; i < extras.length; i++) {
-                      var option = extras[i];
-                      if (that[option] !== null) {
-                        playerOptions[option] = that[option];
-                      }
                     }
-
                     // merge with options passed
                     var allowOverride = {
                       techOrder: 1,
@@ -282,6 +281,7 @@
                     }
                     
                     that.player = new TVPage.player(playerOptions);
+                    playVideo(that.player);
                 }
             },150);
         })();

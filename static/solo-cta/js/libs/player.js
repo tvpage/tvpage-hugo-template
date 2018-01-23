@@ -184,6 +184,58 @@
                         libsReady();
                     }
                 } else {
+                
+                var playVideo = function(playerInstance){
+                    that.analytics = new Analytics();
+                    
+                    var loginId = options.loginId || options.loginid;
+
+                    that.analytics.initConfig({
+                      domain: hostName,
+                      logUrl: that.apiBaseUrl + '/__tvpa.gif',
+                      loginId: loginId,
+                      firstPartyCookies: options.firstpartycookies,
+                      cookieDomain: options.cookiedomain
+                    });
+                    that.analytics.track('ci', {li: loginId});
+
+                    that.instance = playerInstance;
+                    that.resize();
+
+                    //We don't want to resize the player here on fullscreen... we need the player be.
+                    if (isset(window,'BigScreen')) {
+                        BigScreen.onchange = function(){
+                            that.isFullScreen = !that.isFullScreen;
+                        };
+                    }
+
+                    //We can't resize using local references when we are inside an iframe. Alternative is to receive external
+                    //size from host.
+                    if (window.location !== window.parent.location && (/iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream)){
+                        var onHolderResize = function (e) {
+                            if (!e || !isset(e, 'data') || !isset(e.data, 'event') || 'tvp_' + options.id.replace(/-/g,'_') + ':modal_holder_resize' !== e.data.event) return;
+                            var size = e.data.size || [];
+                            that.resize(size[0], size[1]);
+                        };
+                        window.removeEventListener('message', onHolderResize, false);
+                        window.addEventListener('message', onHolderResize, false);
+                    } else {
+                        var onWindowResize = that.resize;
+                        window.removeEventListener('message', onWindowResize, false);
+                        window.addEventListener('resize', onWindowResize);
+                    }
+
+                    that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progressColor;
+                    var current = 0;
+                    if (startWith && startWith.length) {
+                        for (var i = 0; i < that.assets.length; i++) {
+                            if (that.assets[i].assetId === startWith) current = i;
+                        }
+                    }
+
+                    that.current = current;
+                    that.play(that.assets[that.current]);
+                };
 
                 var playerOptions = {
                         techOrder: that.techOrder,
@@ -193,57 +245,6 @@
                         },
                         apiBaseUrl: that.apiBaseUrl,
                         swf: '//cdnjs.tvpage.com/tvplayer/tvp-'+that.version+'.swf',
-                        onReady: function(e, pl){
-                            that.analytics = new Analytics();
-                            
-                            var loginId = options.loginId || options.loginid;
-
-                            that.analytics.initConfig({
-                              domain: hostName,
-                              logUrl: that.apiBaseUrl + '/__tvpa.gif',
-                              loginId: loginId,
-                              firstPartyCookies: options.firstpartycookies,
-                              cookieDomain: options.cookiedomain
-                            });
-                            that.analytics.track('ci', {li: loginId});
-
-                            that.instance = pl;
-                            that.resize();
-
-                            //We don't want to resize the player here on fullscreen... we need the player be.
-                            if (isset(window,'BigScreen')) {
-                                BigScreen.onchange = function(){
-                                    that.isFullScreen = !that.isFullScreen;
-                                };
-                            }
-
-                            //We can't resize using local references when we are inside an iframe. Alternative is to receive external
-                            //size from host.
-                            if (window.location !== window.parent.location && (/iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream)){
-                                var onHolderResize = function (e) {
-                                    if (!e || !isset(e, 'data') || !isset(e.data, 'event') || 'tvp_' + options.id.replace(/-/g,'_') + ':modal_holder_resize' !== e.data.event) return;
-                                    var size = e.data.size || [];
-                                    that.resize(size[0], size[1]);
-                                };
-                                window.removeEventListener('message', onHolderResize, false);
-                                window.addEventListener('message', onHolderResize, false);
-                            } else {
-                                var onWindowResize = that.resize;
-                                window.removeEventListener('message', onWindowResize, false);
-                                window.addEventListener('resize', onWindowResize);
-                            }
-
-                            that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progressColor;
-                            var current = 0;
-                            if (startWith && startWith.length) {
-                                for (var i = 0; i < that.assets.length; i++) {
-                                    if (that.assets[i].assetId === startWith) current = i;
-                                }
-                            }
-
-                            that.current = current;
-                            that.play(that.assets[that.current]);
-                        },
                         onStateChange: function(e){
                             if ('tvp:media:videoended' !== e) return;
 
@@ -294,6 +295,7 @@
                     }
                     
                     that.player = new TVPage.player(playerOptions);
+                    playVideo(that.player);
                 }
             },150);
         })();
