@@ -32,33 +32,37 @@
   {{- end -}}
 
   <script>
-  (function(config, videoId, channelId){
-    config = Utils.extend(config, Utils.getUrlParams());
-  
-    var channelVideos = [];
+    (function(config, videoId, channelId){
+      config = Utils.extend(config, Utils.getUrlParams());
 
-    if(videoId){
-      channelVideos.push({{ index $.Site.Data.videos (printf "x%s" .Params.videoid) }});
-    }else if(channelId){
-      channelVideos = {{ index $.Site.Data.channelVideos (printf "x%s_page_0" .Params.channelid) }};
-      channelVideos = channelVideos.data;
-    }
+      var channelVideos = [];
 
-    if(!channelVideos.length){
-      throw new Error("no data");
-    }
+      if(videoId){
+        {{ if $.Site.Data.videos }}
+          channelVideos.push({{ index $.Site.Data.videos (printf "x%s" .Params.videoid) }});
+        {{ end }}
+      }else if(channelId){
+        {{ if $.Site.Data.channelVideos }}
+          channelVideos = {{ index $.Site.Data.channelVideos (printf "x%s_page_0" .Params.channelid) }};
+          channelVideos = channelVideos.data;
+        {{ end }}
+      }
 
-    var player = new Player('player-el', {
-      ciTrack: true,
-      data: channelVideos
-    }, config);
+      if(!channelVideos.length){
+        throw new Error("no data");
+      }
 
-    player.initialize();
-  }(
-    {{ $.Scratch.Get "settings" }},
-    {{ with .Params.videoid }}{{ . }}{{ else }}''{{ end }},
-    {{ with .Params.channelid }}{{ . }}{{ else }}''{{ end }}
-  ))
+      var player = new Player('player-el', {
+        ciTrack: true,
+        data: channelVideos
+      }, config);
+
+      player.initialize();
+    }(
+      {{ $.Scratch.Get "settings" }},
+      {{ with .Params.videoid }}{{ . }}{{ else }}''{{ end }},
+      {{ with .Params.channelid }}{{ . }}{{ else }}''{{ end }}
+    ))
   </script>
 </body>
 </html>
