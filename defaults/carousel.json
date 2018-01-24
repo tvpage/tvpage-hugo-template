@@ -299,7 +299,8 @@
       "label": "Background Color",
       "code": "carousel_arrow_background_color",
       "selector": ".carousel-arrow",
-      "property": "background-color"
+      "property": "background-color",
+      "value": "#1a1a1a"
     },
     {
       "display": true,
@@ -316,7 +317,8 @@
       "label": "Background Color",
       "code": "carousel_arrow_hover_background_color",
       "selector": ".carousel-arrow",
-      "property": "background-color"
+      "property": "background-color",
+      "parentSelector": ".carousel-arrow:not(.slick-disabled):hover"
     },
 
     {
