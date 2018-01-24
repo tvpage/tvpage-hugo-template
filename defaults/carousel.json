@@ -99,7 +99,8 @@
       "label": "Background Color",
       "code": "widget_background_color",
       "selector": ".widget-body",
-      "property": "background-color"
+      "property": "background-color",
+      "value": "#fff"
     },
     {
       "display": true,
@@ -200,7 +201,8 @@
       "label": "Font Color",
       "code": "widget_title_color",
       "selector": ".widget-title",
-      "property": "color"
+      "property": "color",
+      "value": "#212529"
     },
     {
       "display": true,
@@ -280,7 +282,8 @@
       "label": "Background Color",
       "code": "widget_title_background_color",
       "selector": ".widget-title",
-      "property": "background-color"
+      "property": "background-color",
+      "value": "white"
     },
 
 
@@ -308,7 +311,8 @@
       "label": "Font Color",
       "code": "carousel_arrow_color",
       "selector": ".carousel-arrow",
-      "property": "color"
+      "property": "color",
+      "value": "#fff"
     },
     {
       "display": true,
@@ -318,7 +322,8 @@
       "code": "carousel_arrow_hover_background_color",
       "selector": ".carousel-arrow",
       "property": "background-color",
-      "postSelector": ":not(.slick-disabled):hover"
+      "postSelector": ":not(.slick-disabled):hover",
+      "value": "#000"
     },
 
     {
@@ -335,7 +340,8 @@
       "label": "Height",
       "code": "carousel_dot_height",
       "selector": ".slick-dots li button",
-      "property": "height"
+      "property": "height",
+      "value": "10px"
     },
     {
       "display": true,
@@ -343,7 +349,8 @@
       "label": "Width",
       "code": "carousel_dot_width",
       "selector": ".slick-dots li button",
-      "property": "width"
+      "property": "width",
+      "value": "10px"
     },
     {
       "display": true,
@@ -351,7 +358,8 @@
       "label": "Background Color",
       "code": "carousel_dot_background_color",
       "selector": ".slick-dots li button",
-      "property": "background-color"
+      "property": "background-color",
+      "value": "#1a1a1a"
     },
     {
       "display": true,
@@ -359,7 +367,8 @@
       "label": "Border Style",
       "code": "carousel_dot_border_style",
       "selector": ".slick-dots li button",
-      "property": "border-style"
+      "property": "border-style",
+      "value": "solid"
     },
     {
       "display": true,
@@ -375,7 +384,8 @@
       "label": "Border Color",
       "code": "carousel_dot_border_color",
       "selector": ".slick-dots li button",
-      "property": "border-color"
+      "property": "border-color",
+      "value": "#1a1a1a"
     },
     {
       "display": true,
@@ -392,7 +402,18 @@
       "label": "Background Color",
       "code": "carousel_dot_hover_background_color",
       "selector": ".slick-dots li button",
-      "property": "background-color"
+      "property": "background-color",
+      "value": "#070707"
+    },
+    {
+      "display": true,
+      "hover": true,
+      "type": "text",
+      "label": "Border Color",
+      "code": "carousel_dot_hover_border_color",
+      "selector": ".slick-dots li button",
+      "property": "border-color",
+      "value": "#010000"
     },
 
 
@@ -490,7 +511,8 @@
       "label": "Border Color",
       "code": "video_item_border_color",
       "selector": ".video-item",
-      "property": "border-color"
+      "property": "border-color",
+      "value": "none"
     },
     {
       "display": true,
@@ -506,7 +528,8 @@
       "label": "Background Color",
       "code": "video_item_background_color",
       "selector": ".video-item",
-      "property": "background-color"
+      "property": "background-color",
+      "value": "none"
     },
     {
       "display": true,
@@ -514,7 +537,8 @@
       "label": "Font Color",
       "code": "video_item_color",
       "selector": ".video-item",
-      "property": "color"
+      "property": "color",
+      "valule": "#212529"
     },
     {
       "display": true,
@@ -547,7 +571,8 @@
       "label": "Font Color",
       "code": "video_item_hover_color",
       "selector": ".video-item",
-      "property": "color"
+      "property": "color",
+      "valule": "#212529"
     },
 
 
@@ -557,7 +582,8 @@
       "label": "Background Color",
       "code": "video_item_image_overlay_background_color",
       "selector": ".video-item-image-overlay",
-      "property": "background-color"
+      "property": "background-color",
+      "value": "black"
     },
     {
       "display": true,
@@ -565,7 +591,8 @@
       "label": "Opacity",
       "code": "video_item_image_overlay_opacity",
       "selector": ".video-item-image-overlay",
-      "property": "opacity"
+      "property": "opacity",
+      "value": "0.2"
     },
     {
       "display": true,
@@ -575,7 +602,8 @@
       "code": "video_item_image_overlay_hover_background_color",
       "selector": ".video-item-image-overlay",
       "property": "background-color",
-      "parentSelector": "body:not(.mobile) .video:hover"
+      "parentSelector": "body:not(.mobile) .video:hover",
+      "value": "black"
     },
 
 
@@ -602,7 +630,8 @@
       "label": "Border Color",
       "code": "video_item_image_icon_border_color",
       "selector": ".video-item-image-icon",
-      "property": "border-color"
+      "property": "border-color",
+      "value": "none"
     },
     {
       "display": true,
@@ -618,15 +647,17 @@
       "label": "Background Color",
       "code": "video_item_image_icon_background_color",
       "selector": ".video-item-image-icon",
-      "property": "background-color"
+      "property": "background-color",
+      "value": "#1a1a1a"
     },
     {
       "display": true,
       "type": "text",
-      "label": "Font Color",
+      "label": "Icon Color",
       "code": "video_item_image_icon_color",
       "selector": ".video-item-image-icon",
-      "property": "color"
+      "property": "color",
+      "value": "white"
     },
     {
       "display": true,
@@ -636,17 +667,19 @@
       "code": "video_item_image_icon_hover_background_color",
       "selector": ".video-item-image-icon",
       "property": "background-color",
-      "parentSelector": "body:not(.mobile) .video:hover"
+      "parentSelector": "body:not(.mobile) .video:hover",
+      "value": "#1a1a1a"
     },
     {
       "display": true,
       "hover": true,
       "type": "text",
-      "label": "Color",
+      "label": "Icon Color",
       "code": "video_item_image_icon_hover_color",
       "selector": ".video-item-image-icon",
       "property": "color",
-      "parentSelector": "body:not(.mobile) .video:hover"
+      "parentSelector": "body:not(.mobile) .video:hover",
+      "value": "white"
     },
 
 
@@ -658,7 +691,8 @@
       "label": "Background Color",
       "code": "widget_modal_body_background_color",
       "selector": ".widget-modal-body",
-      "property": "background-color"
+      "property": "background-color",
+      "value": "white"
     },
     {
       "display": true,
@@ -685,7 +719,8 @@
       "label": "Border Color",
       "code": "widget_modal_body_border_color",
       "selector": ".widget-modal-body",
-      "property": "border-color"
+      "property": "border-color",
+      "value": "none"
     },
     {
       "display": true,
@@ -733,7 +768,8 @@
       "label": "Background Color",
       "code": "widget_modal_header_background_color",
       "selector": ".widget-modal-header",
-      "property": "background-color"
+      "property": "background-color",
+      "value": "white"
     },
     {
       "display": true,
@@ -760,7 +796,8 @@
       "label": "Border Color",
       "code": "widget_modal_header_border_color",
       "selector": ".widget-modal-header",
-      "property": "border-color"
+      "property": "border-color",
+      "value": "white"
     },
     {
       "display": true,
@@ -808,7 +845,8 @@
       "label": "Font Color",
       "code": "widget_modal_title_color",
       "selector": ".widget-modal-title",
-      "property": "color"
+      "property": "color",
+      "value": "#212529"
     },
     {
       "display": true,
@@ -919,7 +957,8 @@
       "label": "Border Color",
       "code": "product_item_border_color",
       "selector": ".product-item",
-      "property": "border-color"
+      "property": "border-color",
+      "value": "none"
     },
     {
       "display": true,
@@ -928,7 +967,8 @@
       "label": "Background Color",
       "code": "product_item_image_overlay_background_color",
       "selector": ".product-item-image-overlay",
-      "property": "background-color"
+      "property": "background-color",
+      "value": "#000"
     },
     {
       "display": true,
@@ -937,7 +977,8 @@
       "label": "Opacity",
       "code": "product_item_image_overlay_opacity",
       "selector": ".product-item-image-overlay",
-      "property": "opacity"
+      "property": "opacity",
+      "value": "0.2"
     },
 
 
@@ -949,7 +990,8 @@
         "label": "Background Color",
         "code": "product_pop_over_background_color",
         "selector": ".product-pop-over",
-        "property": "background-color"
+        "property": "background-color",
+        "value": "white"
     },
     {
         "display": true,
@@ -958,7 +1000,8 @@
         "label": "Border Left Color",
         "code": "product_pop_over_pointer_background_color",
         "selector": ".pop-over-pointer::after",
-        "property": "border-left-color"
+        "property": "border-left-color",
+        "value": "white"
     },
     {
         "display": true,
@@ -1066,7 +1109,8 @@
         "label": "Font Color",
         "code": "product_pop_over_title_color",
         "selector": ".product-pop-over-title",
-        "property": "color"
+        "property": "color",
+        "value": "#212529"
     },
     {
         "display": true,
@@ -1075,7 +1119,8 @@
         "label": "Background Color",
         "code": "product_pop_over_title_background_color",
         "selector": ".product-pop-over-title",
-        "property": "background-color"
+        "property": "background-color",
+        "value": "white"
     },
     {
         "display": true,
@@ -1102,7 +1147,8 @@
         "label": "Border Color",
         "code": "product_pop_over_title_border_color",
         "selector": ".product-pop-over-title",
-        "property": "border-color"
+        "property": "border-color",
+        "value": "none"
     },
     {
         "display": true,
@@ -1210,7 +1256,8 @@
         "label": "Font Color",
         "code": "product_pop_over_price_color",
         "selector": ".product-pop-over-price",
-        "property": "color"
+        "property": "color",
+        "value": "#212529"
     },
     {
         "display": true,
@@ -1219,7 +1266,8 @@
         "label": "Background Color",
         "code": "product_pop_over_price_background_color",
         "selector": ".product-pop-over-price",
-        "property": "background-color"
+        "property": "background-color",
+        "value": "white"
     },
     {
         "display": true,
@@ -1246,7 +1294,8 @@
         "label": "Border Color",
         "code": "product_pop_over_price_border_color",
         "selector": ".product-pop-over-price",
-        "property": "border-color"
+        "property": "border-color",
+        "value": "none"
     },
     {
         "display": true,
@@ -1255,7 +1304,8 @@
         "label": "Font Color",
         "code": "product_pop_over_cta_color",
         "selector": ".product-pop-over-cta",
-        "property": "color"
+        "property": "color",
+        "value": "#fff"
     },
     {
       "display": true,
@@ -1264,7 +1314,8 @@
       "label": "Background Color",
       "code": "product_pop_over_cta_background_color",
       "selector": ".product-pop-over-cta",
-      "property": "background-color"
+      "property": "background-color",
+      "value": "#1a1a1a"
     },
     {
       "display": true,
