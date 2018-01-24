@@ -13,6 +13,10 @@ body {
   position: relative;
   padding-bottom: 56.25%;
 }
+.tvp-player #tvp-player-el iframe {
+  width : 100% !important;
+  height: 100% !important;
+}
 
 #tvp-slide-menu {
   position: fixed;

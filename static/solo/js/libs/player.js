@@ -206,7 +206,7 @@
       return current;
     };
 
-    this.onReady = function(e, pl){
+    this.onReady = function(pl){
         that.analytics = new Analytics();
         
         var loginId = options.loginId || options.loginid;
@@ -297,7 +297,6 @@
             },
             apiBaseUrl: that.apiBaseUrl,
             swf: '//cdnjs.tvpage.com/tvplayer/tvp-'+that.version+'.swf',
-            onReady: that.onReady,
             onStateChange: that.onStateChange,
             divId: that.el.id,
             controls: that.controls,
@@ -335,6 +334,8 @@
           }
 
           that.player = new TVPage.player(playerOptions);
+          that.onReady(that.player);
+            
         }
       },150);
     })();
