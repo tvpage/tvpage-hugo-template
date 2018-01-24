@@ -285,7 +285,7 @@
       "code": "widget_title_background_color",
       "selector": ".widget-title",
       "property": "background-color",
-      "value": "white"
+      "value": "transparent"
     },
 
 
