@@ -784,7 +784,7 @@
       "display": true,
       "modal": true,
       "type": "text",
-      "label": "Border",
+      "label": "Border Style",
       "code": "widget_modal_header_border_style",
       "selector": ".widget-modal-header",
       "property": "border-style"
