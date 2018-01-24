@@ -871,7 +871,26 @@
       "property": "font-weight"
     },
 
-
+    {
+      "display": true,
+      "modal": true,
+      "type": "text",
+      "label": "Color",
+      "code": "widget_modal_close_color",
+      "selector": ".widget-modal-close",
+      "property": "color",
+      "value": "#000"
+    },
+    {
+      "display": true,
+      "modal": true,
+      "type": "text",
+      "label": "Opacity",
+      "code": "widget_modal_close_opacity",
+      "selector": ".widget-modal-close",
+      "property": "opacity",
+      "value": "0.5"
+    },
 
     {
       "display": true,
