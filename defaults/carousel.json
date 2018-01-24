@@ -875,6 +875,17 @@
       "display": true,
       "modal": true,
       "type": "text",
+      "label": "Size",
+      "code": "widget_modal_close_size",
+      "selector": ".widget-modal-close",
+      "property": "font-size",
+      "postSelector": " > i",
+      "value": "24px"
+    },
+    {
+      "display": true,
+      "modal": true,
+      "type": "text",
       "label": "Color",
       "code": "widget_modal_close_color",
       "selector": ".widget-modal-close",
@@ -889,6 +900,7 @@
       "code": "widget_modal_close_opacity",
       "selector": ".widget-modal-close",
       "property": "opacity",
+      "postSelector": " > i",
       "value": "0.5"
     },
 
