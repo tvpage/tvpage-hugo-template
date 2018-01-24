@@ -538,7 +538,7 @@
       "code": "video_item_color",
       "selector": ".video-item",
       "property": "color",
-      "valule": "#212529"
+      "value": "#212529"
     },
     {
       "display": true,
@@ -572,7 +572,7 @@
       "code": "video_item_hover_color",
       "selector": ".video-item",
       "property": "color",
-      "valule": "#212529"
+      "value": "#212529"
     },
 
 
@@ -1328,6 +1328,7 @@
     },
     {
       "display": true,
+      "modal": true,
       "type": "text",
       "label": "Border Width",
       "code": "product_pop_over_cta_width",
@@ -1336,6 +1337,7 @@
     },
     {
       "display": true,
+      "modal": true,
       "type": "text",
       "label": "Border Style",
       "code": "product_pop_over_cta_style",
@@ -1344,11 +1346,13 @@
     },
     {
       "display": true,
+      "modal": true,
       "type": "text",
       "label": "Border Color",
       "code": "product_pop_over_cta_color",
       "selector": ".product-pop-over-cta",
-      "property": "border-color"
+      "property": "border-color",
+      "value": "none"
     }
   ]
 }
