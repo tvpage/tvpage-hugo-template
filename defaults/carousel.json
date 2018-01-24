@@ -223,6 +223,7 @@
     },
     {
       "display": true,
+      "resize": true,
       "type": "text",
       "label": "Padding Right",
       "code": "widget_title_padding_right",
@@ -420,6 +421,7 @@
 
     {
       "display": true,
+      "resize": true,
       "type": "text",
       "label": "Display Amount",
       "code": "video_item_display_amount",
