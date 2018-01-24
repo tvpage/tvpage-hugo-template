@@ -156,7 +156,8 @@
       "label": "Border Color",
       "code": "widget_border_color",
       "selector": ".widget-body",
-      "property": "border-color"
+      "property": "border-color",
+      "value": "none"
     },
 
 
