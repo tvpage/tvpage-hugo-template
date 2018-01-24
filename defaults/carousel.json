@@ -606,7 +606,17 @@
       "parentSelector": "body:not(.mobile) .video:hover",
       "value": "black"
     },
-
+    {
+      "display": true,
+      "hover": true,
+      "type": "text",
+      "label": "Opacity",
+      "code": "video_item_image_hover_overlay_opacity",
+      "selector": ".video-item-image-overlay",
+      "property": "opacity",
+      "parentSelector": "body:not(.mobile) .video:hover",
+      "value": "0.2"
+    },
 
 
     {
