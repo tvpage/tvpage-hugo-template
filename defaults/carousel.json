@@ -1058,7 +1058,7 @@
       "code": "play_button_hover_icon_color",
       "selector": ".tvplayer-playbutton",
       "property": "border-left-color",
-      "postSelector": " .tvplayer-playbutton-icon:hover",
+      "postSelector": ":hover .tvplayer-playbutton-icon",
       "value": "white"
     },
 
