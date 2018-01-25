@@ -1065,8 +1065,9 @@
         "type": "text",
         "label": "Pointer Color",
         "code": "product_pop_over_pointer_background_color",
-        "selector": ".pop-over-pointer::after",
+        "selector": ".pop-over-pointer",
         "property": "border-left-color",
+        "postSelector": "::after",
         "value": "white"
     },
     {
