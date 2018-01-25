@@ -952,6 +952,17 @@
       "modal": true,
       "important": true,
       "type": "text",
+      "label": "Opacity",
+      "code": "play_button_opacity",
+      "selector": ".tvplayer-playbutton",
+      "property": "opacity",
+      "value": "0.9"
+    },
+    {
+      "display": true,
+      "modal": true,
+      "important": true,
+      "type": "text",
       "label": "Border Style",
       "code": "play_button_border_style",
       "selector": ".tvplayer-playbutton",
@@ -988,18 +999,6 @@
       "code": "play_button_border_radius",
       "selector": ".tvplayer-playbutton",
       "property": "border-radius",
-      "value": "#1A1A1A"
-    },
-    {
-      "display": true,
-      "modal": true,
-      "important": true,
-      "type": "text",
-      "label": "Opacity",
-      "code": "play_button_opacity",
-      "selector": ".tvplayer-playbutton",
-      "property": "opacity",
-      "value": "0.9"
     },
     {
       "display": true,
@@ -1010,7 +1009,7 @@
       "code": "play_button_icon_color",
       "selector": ".tvplayer-playbutton",
       "property": "border-left-color",
-      "postSelector": " tvplayer-playbutton-icon",
+      "postSelector": " .tvplayer-playbutton-icon",
       "value": "white"
     },
     {
@@ -1036,6 +1035,31 @@
       "selector": ".tvplayer-playbutton",
       "property": "opacity",
       "value": "1"
+    },
+    {
+      "display": true,
+      "modal": true,
+      "hover": true,
+      "important": true,
+      "type": "text",
+      "label": "Border Color",
+      "code": "play_button_hover_border_color",
+      "selector": ".tvplayer-playbutton",
+      "property": "border-color",
+      "value": "#1A1A1A"
+    },
+    {
+      "display": true,
+      "modal": true,
+      "hover": true,
+      "important": true,
+      "type": "text",
+      "label": "Icon Color",
+      "code": "play_button_hover_icon_color",
+      "selector": ".tvplayer-playbutton",
+      "property": "border-left-color",
+      "postSelector": " .tvplayer-playbutton-icon",
+      "value": "white"
     },
 
     {
