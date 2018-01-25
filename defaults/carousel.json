@@ -764,7 +764,8 @@
       "label": "Padding Top",
       "code": "widget_modal_body_padding_top",
       "selector": ".widget-modal-body",
-      "property": "padding-top"
+      "property": "padding-top",
+      "value": "15"
     },
     {
       "display": true,
@@ -773,7 +774,8 @@
       "label": "Padding Right",
       "code": "widget_modal_body_padding_right",
       "selector": ".widget-modal-body",
-      "property": "padding-right"
+      "property": "padding-right",
+      "value": "15"
     },
     {
       "display": true,
@@ -782,7 +784,8 @@
       "label": "Padding Bottom",
       "code": "widget_modal_body_padding_bottom",
       "selector": ".widget-modal-body",
-      "property": "padding-bottom"
+      "property": "padding-bottom",
+      "value": "15"
     },
     {
       "display": true,
@@ -791,7 +794,8 @@
       "label": "Padding Left",
       "code": "widget_modal_body_padding_left",
       "selector": ".widget-modal-body",
-      "property": "padding-left"
+      "property": "padding-left",
+      "value": "15"
     },
 
 
