@@ -900,7 +900,6 @@
       "code": "widget_modal_close_opacity",
       "selector": ".widget-modal-close",
       "property": "opacity",
-      "postSelector": " i",
       "value": "0.5"
     },
     {
@@ -909,7 +908,7 @@
       "hover": true,
       "type": "text",
       "label": "Color",
-      "code": "widget_modal_close_color",
+      "code": "widget_modal_hover_close_color",
       "selector": ".widget-modal-close",
       "property": "color",
       "value": "#000"
@@ -920,10 +919,9 @@
       "hover": true,
       "type": "text",
       "label": "Opacity",
-      "code": "widget_modal_close_opacity",
+      "code": "widget_modal_hover_close_opacity",
       "selector": ".widget-modal-close",
       "property": "opacity",
-      "postSelector": " i:hover",
       "value": "0.5"
     },
 
