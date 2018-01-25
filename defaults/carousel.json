@@ -966,7 +966,7 @@
       "label": "Border Width",
       "code": "play_button_border_width",
       "selector": ".tvplayer-playbutton",
-      "property": "border-width",
+      "property": "border-width"
     },
     {
       "display": true,
