@@ -879,7 +879,7 @@
       "code": "widget_modal_close_size",
       "selector": ".widget-modal-close",
       "property": "font-size",
-      "postSelector": " > i",
+      "postSelector": " i",
       "value": "24px"
     },
     {
@@ -900,7 +900,7 @@
       "code": "widget_modal_close_opacity",
       "selector": ".widget-modal-close",
       "property": "opacity",
-      "postSelector": " > i",
+      "postSelector": " i",
       "value": "0.5"
     },
 
