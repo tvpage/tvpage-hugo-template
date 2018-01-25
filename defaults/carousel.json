@@ -903,6 +903,30 @@
       "postSelector": " i",
       "value": "0.5"
     },
+    {
+      "display": true,
+      "modal": true,
+      "hover": true,
+      "type": "text",
+      "label": "Color",
+      "code": "widget_modal_close_color",
+      "selector": ".widget-modal-close",
+      "property": "color",
+      "value": "#000"
+    },
+    {
+      "display": true,
+      "modal": true,
+      "hover": true,
+      "type": "text",
+      "label": "Opacity",
+      "code": "widget_modal_close_opacity",
+      "selector": ".widget-modal-close",
+      "property": "opacity",
+      "postSelector": " i:hover",
+      "value": "0.5"
+    },
+
 
     {
       "display": true,
