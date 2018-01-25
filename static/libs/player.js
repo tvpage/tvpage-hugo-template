@@ -294,6 +294,7 @@
       config.onReady = function (e, pl) {
         that.onReady(e, pl);
         that.onReadyCalled = true;
+        that.config.player = that.player;
       };
 
       config.onStateChange = function (e) {
