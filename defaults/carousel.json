@@ -936,6 +936,68 @@
       "value": "0.5"
     },
 
+    {
+      "display": true,
+      "modal": true,
+      "type": "text",
+      "label": "Background Color",
+      "code": "play_button_background_color",
+      "selector": ".tvplayer-playbutton",
+      "property": "background-color",
+      "value": "#1A1A1A"
+    },
+    {
+      "display": true,
+      "modal": true,
+      "type": "text",
+      "label": "Border Style",
+      "code": "play_button_border_style",
+      "selector": ".tvplayer-playbutton",
+      "property": "border-style",
+      "value": "none"
+    },
+    {
+      "display": true,
+      "modal": true,
+      "type": "text",
+      "label": "Border Width",
+      "code": "play_button_border_width",
+      "selector": ".tvplayer-playbutton",
+      "property": "border-width",
+      "value": "0px"
+    },
+    {
+      "display": true,
+      "modal": true,
+      "type": "text",
+      "label": "Border Color",
+      "code": "play_button_border_color",
+      "selector": ".tvplayer-playbutton",
+      "property": "border-color",
+      "value": "#1A1A1A"
+    },
+    {
+      "display": true,
+      "modal": true,
+      "type": "text",
+      "label": "Border Radius",
+      "code": "play_button_border_radius",
+      "selector": ".tvplayer-playbutton",
+      "property": "border-radius",
+      "value": "#1A1A1A"
+    },
+    {
+      "display": true,
+      "modal": true,
+      "type": "text",
+      "label": "Icon Color",
+      "code": "play_button_icon_color",
+      "selector": ".tvplayer-playbutton",
+      "property": "border-left-color",
+      "postSelector": " > tvplayer-playbutton-icon",
+      "value": "white"
+    },
+
 
     {
       "display": true,
