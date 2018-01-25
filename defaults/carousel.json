@@ -964,7 +964,7 @@
       "code": "play_button_border_width",
       "selector": ".tvplayer-playbutton",
       "property": "border-width",
-      "value": "0px"
+      "value": "0"
     },
     {
       "display": true,
@@ -990,12 +990,44 @@
       "display": true,
       "modal": true,
       "type": "text",
+      "label": "Opacity",
+      "code": "play_button_opacity",
+      "selector": ".tvplayer-playbutton",
+      "property": "opacity",
+      "value": "0.9"
+    },
+    {
+      "display": true,
+      "modal": true,
+      "type": "text",
       "label": "Icon Color",
       "code": "play_button_icon_color",
       "selector": ".tvplayer-playbutton",
       "property": "border-left-color",
-      "postSelector": " > tvplayer-playbutton-icon",
+      "postSelector": " tvplayer-playbutton-icon",
       "value": "white"
+    },
+    {
+      "display": true,
+      "modal": true,
+      "hover": true,
+      "type": "text",
+      "label": "Background Color",
+      "code": "play_button_hover_background_color",
+      "selector": ".tvplayer-playbutton",
+      "property": "background-color",
+      "value": "#1A1A1A"
+    },
+    {
+      "display": true,
+      "modal": true,
+      "hover": true,
+      "type": "text",
+      "label": "Opacity",
+      "code": "play_button_hover_opacity",
+      "selector": ".tvplayer-playbutton",
+      "property": "opacity",
+      "value": "1"
     },
 
 
