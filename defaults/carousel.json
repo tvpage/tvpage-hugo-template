@@ -335,6 +335,7 @@
       "code": "carousel_arrow_hover_color",
       "selector": ".carousel-arrow",
       "property": "color",
+      "postSelector": ":not(.slick-disabled):hover",
       "value": "#fff"
     },
 
