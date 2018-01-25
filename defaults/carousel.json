@@ -157,7 +157,7 @@
       "code": "widget_border_color",
       "selector": ".widget-body",
       "property": "border-color",
-      "value": "none"
+      "value": "transparent"
     },
 
 
@@ -705,6 +705,17 @@
       "parentSelector": "body:not(.mobile) .video:hover",
       "value": "white"
     },
+    {
+      "display": true,
+      "hover": true,
+      "type": "text",
+      "label": "Border Color",
+      "code": "video_item_image_icon_hover_border_color",
+      "selector": ".video-item-image-icon",
+      "property": "border-color",
+      "parentSelector": "body:not(.mobile) .video:hover",
+      "value": "none"
+    },
 
 
 
@@ -744,7 +755,7 @@
       "code": "widget_modal_body_border_color",
       "selector": ".widget-modal-body",
       "property": "border-color",
-      "value": "none"
+      "value": "transparent"
     },
     {
       "display": true,
