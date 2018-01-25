@@ -998,7 +998,7 @@
       "label": "Border Radius",
       "code": "play_button_border_radius",
       "selector": ".tvplayer-playbutton",
-      "property": "border-radius",
+      "property": "border-radius"
     },
     {
       "display": true,
