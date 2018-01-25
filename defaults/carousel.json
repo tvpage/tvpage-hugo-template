@@ -939,6 +939,7 @@
     {
       "display": true,
       "modal": true,
+      "important": true,
       "type": "text",
       "label": "Background Color",
       "code": "play_button_background_color",
@@ -949,6 +950,7 @@
     {
       "display": true,
       "modal": true,
+      "important": true,
       "type": "text",
       "label": "Border Style",
       "code": "play_button_border_style",
@@ -959,16 +961,17 @@
     {
       "display": true,
       "modal": true,
+      "important": true,
       "type": "text",
       "label": "Border Width",
       "code": "play_button_border_width",
       "selector": ".tvplayer-playbutton",
       "property": "border-width",
-      "value": "0"
     },
     {
       "display": true,
       "modal": true,
+      "important": true,
       "type": "text",
       "label": "Border Color",
       "code": "play_button_border_color",
@@ -979,6 +982,7 @@
     {
       "display": true,
       "modal": true,
+      "important": true,
       "type": "text",
       "label": "Border Radius",
       "code": "play_button_border_radius",
@@ -989,6 +993,7 @@
     {
       "display": true,
       "modal": true,
+      "important": true,
       "type": "text",
       "label": "Opacity",
       "code": "play_button_opacity",
@@ -999,6 +1004,7 @@
     {
       "display": true,
       "modal": true,
+      "important": true,
       "type": "text",
       "label": "Icon Color",
       "code": "play_button_icon_color",
@@ -1011,6 +1017,7 @@
       "display": true,
       "modal": true,
       "hover": true,
+      "important": true,
       "type": "text",
       "label": "Background Color",
       "code": "play_button_hover_background_color",
@@ -1022,6 +1029,7 @@
       "display": true,
       "modal": true,
       "hover": true,
+      "important": true,
       "type": "text",
       "label": "Opacity",
       "code": "play_button_hover_opacity",
@@ -1029,7 +1037,6 @@
       "property": "opacity",
       "value": "1"
     },
-
 
     {
       "display": true,
