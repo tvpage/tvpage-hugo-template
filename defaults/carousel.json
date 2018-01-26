@@ -1612,7 +1612,8 @@
       "label": "Font Size",
       "code": "product_pop_over_cta_font_size",
       "selector": ".product-pop-over-cta",
-      "property": "font-size"
+      "property": "font-size",
+      "value": "20"
     },
     {
       "display": true,
@@ -1640,7 +1641,8 @@
       "code": "product_pop_over_border_color",
       "selector": ".product-pop-over-cta",
       "property": "border-color",
-      "value": "none"
+      "value": "none",
+      "value": "#1a1a1a"
     }
   ]
 }
