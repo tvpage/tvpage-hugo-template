@@ -243,7 +243,6 @@
     {
       "display": true,
       "type": "text",
-      "resize": true,
       "label": "Padding Bottom",
       "code": "widget_title_padding_bottom",
       "selector": ".widget-title",
@@ -279,6 +278,7 @@
     },
     {
       "display": true,
+      "resize": true,
       "type": "text",
       "label": "Margin Bottom",
       "code": "widget_title_margin_bottom",
@@ -476,6 +476,7 @@
     },
     {
       "display": true,
+      "resize": true,
       "type": "text",
       "label": "Margin Bottom",
       "code": "video_item_margin_bottom",
@@ -512,6 +513,7 @@
     },
     {
       "display": true,
+      "resize": true,
       "type": "text",
       "label": "Padding Bottom",
       "code": "video_item_padding_bottom",
