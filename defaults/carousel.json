@@ -243,6 +243,7 @@
     {
       "display": true,
       "type": "text",
+      "resize": true,
       "label": "Padding Bottom",
       "code": "widget_title_padding_bottom",
       "selector": ".widget-title",
