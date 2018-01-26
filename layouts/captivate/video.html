@@ -1,0 +1,19 @@
+{{ partial (printf "%s/dochead.html" .Type) . }}
+{{ partial (printf "%s/header.html" .Type) . }}
+{{ partial (printf "%s/main_video.html" .Type) . }}
+{{ $channel := slice }}
+{{ $.Scratch.Add "channelVideos" slice }}
+{{ $video := index $.Site.Data.videos (printf "x%s" .Params.videoid ) }}
+{{ $channelVideosQty := len ($.Scratch.Get "channelVideos") }}
+<script type='text/javascript'>
+  TVSite = window.TVSite || {};
+  TVSite.activeChannelVideosTotal = {{ $channelVideosQty }};
+  TVSite.channelVideosData = {{ $channel | jsonify | safeJS }};
+  TVSite.channelVideosData.videos = "undefined" !== typeof TVSite.channelVideosData.videos || [];
+  TVSite.channelVideosData.videos = {{ $.Scratch.Get "channelVideos" }};
+  TVSite.channelVideosData.video = "undefined" !== typeof TVSite.channelVideosData.video || {};
+  TVSite.channelVideosData.video = {{ $video | jsonify | safeJS }};
+</script>
+<script type="text/javascript" src='//cdnjs.tvpage.com/tvplayer/tvp-{{ ($.Scratch.Get "settings").player_version }}.min.js'></script>
+{{ partial (printf "%s/scripts.html" .Type) . }}
+{{ partial (printf "%s/footer.html" .Type) . }}
