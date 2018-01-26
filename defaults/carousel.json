@@ -467,6 +467,7 @@
     },
     {
       "display": true,
+      "important": true,
       "type": "text",
       "label": "Margin Right",
       "code": "video_item_margin_right",
@@ -486,6 +487,7 @@
     },
     {
       "display": true,
+      "important": true,
       "type": "text",
       "label": "Margin Left",
       "code": "video_item_margin_left",
