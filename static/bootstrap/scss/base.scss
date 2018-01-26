@@ -95,9 +95,8 @@ $slider_pull_x:   1rem !default;
 .image-overlay {
   pointer-events: none;
   background-color: black;
-  visibility: hidden;
   transition: opacity 0.15s linear;
-  opacity: 0.2;
+  opacity: 0;
 }
 
 /* thumbnail sizes */
