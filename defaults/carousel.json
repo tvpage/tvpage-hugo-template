@@ -112,7 +112,7 @@
       "value": "0"
     },
     {
-      "display": true,
+      "display": false,
       "resize": true,
       "type": "text",
       "label": "Padding Right",
@@ -131,7 +131,7 @@
       "value": "0"
     },
     {
-      "display": true,
+      "display": false,
       "resize": true,
       "type": "text",
       "label": "Padding Left",
@@ -222,7 +222,7 @@
       "property": "text-align"
     },
     {
-      "display": true,
+      "display": false,
       "type": "text",
       "label": "Padding Top",
       "code": "widget_title_padding_top",
@@ -231,7 +231,7 @@
       "value": "0"
     },
     {
-      "display": true,
+      "display": false,
       "resize": true,
       "type": "text",
       "label": "Padding Right",
@@ -241,7 +241,7 @@
       "value": "0"
     },
     {
-      "display": true,
+      "display": false,
       "type": "text",
       "label": "Padding Bottom",
       "code": "widget_title_padding_bottom",
@@ -250,7 +250,7 @@
       "value": "0"
     },
     {
-      "display": true,
+      "display": false,
       "type": "text",
       "label": "Padding Left",
       "code": "widget_title_padding_left",
@@ -259,7 +259,7 @@
       "value": "0"
     },
     {
-      "display": true,
+      "display": false,
       "type": "text",
       "label": "Margin Top",
       "code": "widget_title_margin_top",
@@ -268,7 +268,7 @@
       "value": "0"
     },
     {
-      "display": true,
+      "display": false,
       "type": "text",
       "label": "Margin Right",
       "code": "widget_title_margin_right",
@@ -277,7 +277,7 @@
       "value": "0"
     },
     {
-      "display": true,
+      "display": false,
       "resize": true,
       "type": "text",
       "label": "Margin Bottom",
@@ -287,7 +287,7 @@
       "value": "8"
     },
     {
-      "display": true,
+      "display": false,
       "type": "text",
       "label": "Margin Left",
       "code": "widget_title_margin_left",
@@ -457,7 +457,7 @@
       "property": "amount"
     },
     {
-      "display": true,
+      "display": false,
       "type": "text",
       "label": "Margin Top",
       "code": "video_item_margin_top",
@@ -466,7 +466,7 @@
       "value": "0"
     },
     {
-      "display": true,
+      "display": false,
       "important": true,
       "type": "text",
       "label": "Margin Right",
@@ -476,7 +476,7 @@
       "value": "8"
     },
     {
-      "display": true,
+      "display": false,
       "resize": true,
       "type": "text",
       "label": "Margin Bottom",
@@ -486,7 +486,7 @@
       "value": "0"
     },
     {
-      "display": true,
+      "display": false,
       "important": true,
       "type": "text",
       "label": "Margin Left",
@@ -496,7 +496,7 @@
       "value": "8"
     },
     {
-      "display": true,
+      "display": false,
       "type": "text",
       "label": "Padding Top",
       "code": "video_item_padding_top",
@@ -505,7 +505,7 @@
       "value": "0"
     },
     {
-      "display": true,
+      "display": false,
       "type": "text",
       "label": "Padding Right",
       "code": "video_item_padding_right",
@@ -514,7 +514,7 @@
       "value": "0"
     },
     {
-      "display": true,
+      "display": false,
       "resize": true,
       "type": "text",
       "label": "Padding Bottom",
@@ -524,7 +524,7 @@
       "value": "0"
     },
     {
-      "display": true,
+      "display": false,
       "type": "text",
       "label": "Padding Left",
       "code": "video_item_padding_left",
@@ -787,7 +787,7 @@
       "value": "transparent"
     },
     {
-      "display": true,
+      "display": false,
       "modal": true,
       "type": "text",
       "label": "Padding Top",
@@ -797,7 +797,7 @@
       "value": "15"
     },
     {
-      "display": true,
+      "display": false,
       "modal": true,
       "type": "text",
       "label": "Padding Right",
@@ -807,7 +807,7 @@
       "value": "15"
     },
     {
-      "display": true,
+      "display": false,
       "modal": true,
       "type": "text",
       "label": "Padding Bottom",
@@ -817,7 +817,7 @@
       "value": "15"
     },
     {
-      "display": true,
+      "display": false,
       "modal": true,
       "type": "text",
       "label": "Padding Left",
@@ -868,7 +868,7 @@
       "value": "white"
     },
     {
-      "display": true,
+      "display": false,
       "modal": true,
       "type": "text",
       "label": "Padding Top",
@@ -878,7 +878,7 @@
       "value": "15"
     },
     {
-      "display": true,
+      "display": false,
       "modal": true,
       "type": "text",
       "label": "Padding Right",
@@ -888,7 +888,7 @@
       "value": "15"
     },
     {
-      "display": true,
+      "display": false,
       "modal": true,
       "type": "text",
       "label": "Padding Bottom",
@@ -898,7 +898,7 @@
       "value": "15"
     },
     {
-      "display": true,
+      "display": false,
       "modal": true,
       "type": "text",
       "label": "Padding Left",
@@ -1161,7 +1161,7 @@
       "value": "0"
     },
     {
-      "display": true,
+      "display": false,
       "modal": true,
       "type": "text",
       "label": "Margin Top",
@@ -1171,7 +1171,7 @@
       "value": "0"
     },
     {
-      "display": true,
+      "display": false,
       "modal": true,
       "type": "text",
       "label": "Margin Right",
@@ -1181,7 +1181,7 @@
       "value": "0"
     },
     {
-      "display": true,
+      "display": false,
       "modal": true,
       "type": "text",
       "label": "Margin Bottom",
@@ -1191,7 +1191,7 @@
       "value": "0"
     },
     {
-      "display": true,
+      "display": false,
       "modal": true,
       "type": "text",
       "label": "Margin Left",
@@ -1315,7 +1315,7 @@
         "value": "0"
     },
     {
-        "display": true,
+        "display": false,
         "modal": true,
         "type": "text",
         "label": "Margin Top",
@@ -1325,7 +1325,7 @@
         "value": "0"
     },
     {
-        "display": true,
+        "display": false,
         "modal": true,
         "type": "text",
         "label": "Margin Right",
@@ -1335,7 +1335,7 @@
         "value": "0"
     },
     {
-        "display": true,
+        "display": false,
         "modal": true,
         "type": "text",
         "label": "Margin Bottom",
@@ -1345,7 +1345,7 @@
         "value": "4"
     },
     {
-        "display": true,
+        "display": false,
         "modal": true,
         "type": "text",
         "label": "Margin Left",
@@ -1431,7 +1431,7 @@
         "value": "transparent"
     },
     {
-        "display": true,
+        "display": false,
         "modal": true,
         "type": "text",
         "label": "Padding Top",
@@ -1441,7 +1441,7 @@
         "value": "0"
     },
     {
-        "display": true,
+        "display": false,
         "modal": true,
         "type": "text",
         "label": "Padding Right",
@@ -1451,7 +1451,7 @@
         "value": "0"
     },
     {
-        "display": true,
+        "display": false,
         "modal": true,
         "type": "text",
         "label": "Padding Bottom",
@@ -1461,7 +1461,7 @@
         "value": "0"
     },
     {
-        "display": true,
+        "display": false,
         "modal": true,
         "type": "text",
         "label": "Padding Left",
@@ -1471,7 +1471,7 @@
         "value": "0"
     },
     {
-        "display": true,
+        "display": false,
         "modal": true,
         "type": "text",
         "label": "Margin Top",
@@ -1481,7 +1481,7 @@
         "value": "0"
     },
     {
-        "display": true,
+        "display": false,
         "modal": true,
         "type": "text",
         "label": "Margin Right",
@@ -1491,7 +1491,7 @@
         "value": "0"
     },
     {
-        "display": true,
+        "display": false,
         "modal": true,
         "type": "text",
         "label": "Margin Bottom",
@@ -1501,7 +1501,7 @@
         "value": "4"
     },
     {
-        "display": true,
+        "display": false,
         "modal": true,
         "type": "text",
         "label": "Margin Left",
