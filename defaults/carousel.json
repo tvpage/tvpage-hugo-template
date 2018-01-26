@@ -113,6 +113,7 @@
     },
     {
       "display": true,
+      "resize": true,
       "type": "text",
       "label": "Padding Right",
       "code": "widget_padding_right",
@@ -131,6 +132,7 @@
     },
     {
       "display": true,
+      "resize": true,
       "type": "text",
       "label": "Padding Left",
       "code": "widget_padding_left",
