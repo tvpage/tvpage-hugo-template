@@ -172,7 +172,8 @@
       "label": "Display",
       "code": "widget_title_display",
       "selector": ".widget-title",
-      "property": "display"
+      "property": "display",
+      "value": "24"
     },
     {
       "display": true,
@@ -580,7 +581,8 @@
       "label": "Font Size",
       "code": "video_item_font_size",
       "selector": ".video-item",
-      "property": "font-size"
+      "property": "font-size",
+      "value": "16"
     },
     {
       "display": true,
@@ -901,6 +903,16 @@
 
 
 
+{
+      "display": true,
+      "modal": true,
+      "type": "text",
+      "label": "Font Size",
+      "code": "widget_modal_title_font_size",
+      "selector": ".widget-modal-title",
+      "property": "font-size",
+      "value": "20"
+    },
     {
       "display": true,
       "modal": true,
@@ -930,7 +942,7 @@
       "selector": ".widget-modal-close",
       "property": "font-size",
       "postSelector": " i",
-      "value": "24px"
+      "value": "24"
     },
     {
       "display": true,
@@ -1342,7 +1354,8 @@
         "label": "Font Size",
         "code": "product_pop_over_title_font_size",
         "selector": ".product-pop-over-title",
-        "property": "font-size"
+        "property": "font-size",
+        "value": "16"
     },
     {
         "display": true,
@@ -1497,7 +1510,8 @@
         "label": "Font Size",
         "code": "product_pop_over_price_font_size",
         "selector": ".product-pop-over-price",
-        "property": "font-size"
+        "property": "font-size",
+        "value": "16"
     },
     {
         "display": true,
