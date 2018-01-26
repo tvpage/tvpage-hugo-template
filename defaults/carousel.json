@@ -663,10 +663,11 @@
     {
       "display": true,
       "type": "text",
-      "label": "Border Width",
-      "code": "video_item_image_icon_border_width",
+      "label": "Background Color",
+      "code": "video_item_image_icon_background_color",
       "selector": ".video-item-image-icon",
-      "property": "border-width"
+      "property": "background-color",
+      "value": "#1a1a1a"
     },
     {
       "display": true,
@@ -679,11 +680,19 @@
     {
       "display": true,
       "type": "text",
+      "label": "Border Width",
+      "code": "video_item_image_icon_border_width",
+      "selector": ".video-item-image-icon",
+      "property": "border-width"
+    },
+    {
+      "display": true,
+      "type": "text",
       "label": "Border Color",
       "code": "video_item_image_icon_border_color",
       "selector": ".video-item-image-icon",
       "property": "border-color",
-      "value": "none"
+      "value": "#1a1a1a"
     },
     {
       "display": true,
@@ -692,15 +701,6 @@
       "code": "video_item_image_icon_border_radius",
       "selector": ".video-item-image-icon",
       "property": "border-radius"
-    },
-    {
-      "display": true,
-      "type": "text",
-      "label": "Background Color",
-      "code": "video_item_image_icon_background_color",
-      "selector": ".video-item-image-icon",
-      "property": "background-color",
-      "value": "#1a1a1a"
     },
     {
       "display": true,
@@ -726,17 +726,6 @@
       "display": true,
       "hover": true,
       "type": "text",
-      "label": "Icon Color",
-      "code": "video_item_image_icon_hover_color",
-      "selector": ".video-item-image-icon",
-      "property": "color",
-      "parentSelector": "body:not(.mobile) .video:hover",
-      "value": "white"
-    },
-    {
-      "display": true,
-      "hover": true,
-      "type": "text",
       "label": "Border Color",
       "code": "video_item_image_icon_hover_border_color",
       "selector": ".video-item-image-icon",
@@ -744,8 +733,18 @@
       "parentSelector": "body:not(.mobile) .video:hover",
       "value": "none"
     },
-
-
+    {
+      "display": true,
+      "hover": true,
+      "type": "text",
+      "label": "Icon Color",
+      "code": "video_item_image_icon_hover_color",
+      "selector": ".video-item-image-icon",
+      "property": "color",
+      "parentSelector": "body:not(.mobile) .video:hover",
+      "value": "white"
+    },
+    
 
     {
       "display": true,
