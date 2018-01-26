@@ -1121,7 +1121,7 @@
     },
 
     {
-      "display": true,
+      "display": false,
       "modal": true,
       "type": "text",
       "label": "Padding Top",
@@ -1131,7 +1131,7 @@
       "value": "0"
     },
     {
-      "display": true,
+      "display": false,
       "modal": true,
       "type": "text",
       "label": "Padding Right",
@@ -1141,7 +1141,7 @@
       "value": "0"
     },
     {
-      "display": true,
+      "display": false,
       "modal": true,
       "type": "text",
       "label": "Padding Bottom",
@@ -1151,7 +1151,7 @@
       "value": "0"
     },
     {
-      "display": true,
+      "display": false,
       "modal": true,
       "type": "text",
       "label": "Padding Left",
@@ -1275,7 +1275,7 @@
         "value": "white"
     },
     {
-        "display": true,
+        "display": false,
         "modal": true,
         "type": "text",
         "label": "Padding Top",
@@ -1285,7 +1285,7 @@
         "value": "0"
     },
     {
-        "display": true,
+        "display": false,
         "modal": true,
         "type": "text",
         "label": "Padding Right",
@@ -1295,7 +1295,7 @@
         "value": "0"
     },
     {
-        "display": true,
+        "display": false,
         "modal": true,
         "type": "text",
         "label": "Padding Bottom",
@@ -1305,7 +1305,7 @@
         "value": "0"
     },
     {
-        "display": true,
+        "display": false,
         "modal": true,
         "type": "text",
         "label": "Padding Left",
