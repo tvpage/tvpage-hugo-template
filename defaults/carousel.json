@@ -172,7 +172,7 @@
       "label": "Display",
       "code": "widget_title_display",
       "selector": ".widget-title",
-      "property": "display",
+      "property": "display"
     },
     {
       "display": true,
