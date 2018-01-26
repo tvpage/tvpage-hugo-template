@@ -140,6 +140,7 @@
     },
     {
       "display": true,
+      "resize": true,
       "type": "text",
       "label": "Border Width",
       "code": "widget_border_width",
