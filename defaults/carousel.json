@@ -1641,7 +1641,6 @@
       "code": "product_pop_over_border_color",
       "selector": ".product-pop-over-cta",
       "property": "border-color",
-      "value": "none",
       "value": "#1a1a1a"
     }
   ]
