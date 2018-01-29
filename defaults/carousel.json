@@ -164,7 +164,7 @@
       "code": "widget_border_color",
       "selector": ".widget-body",
       "property": "border-color",
-      "value": "transparent"
+      "value": "white"
     },
 
 
