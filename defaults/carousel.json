@@ -1632,7 +1632,8 @@
       "label": "Border Style",
       "code": "product_pop_over_cta_style",
       "selector": ".product-pop-over-cta",
-      "property": "border-style"
+      "property": "border-style",
+      "value": "none"
     },
     {
       "display": true,
