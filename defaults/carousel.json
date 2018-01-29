@@ -302,7 +302,7 @@
       "code": "widget_title_background_color",
       "selector": ".widget-title",
       "property": "background-color",
-      "value": "transparent"
+      "value": "white"
     },
 
 
@@ -784,7 +784,7 @@
       "code": "widget_modal_body_border_color",
       "selector": ".widget-modal-body",
       "property": "border-color",
-      "value": "transparent"
+      "value": "white"
     },
     {
       "display": false,
@@ -1428,7 +1428,7 @@
         "code": "product_pop_over_title_border_color",
         "selector": ".product-pop-over-title",
         "property": "border-color",
-        "value": "transparent"
+        "value": "white"
     },
     {
         "display": false,
@@ -1584,7 +1584,7 @@
         "code": "product_pop_over_price_border_color",
         "selector": ".product-pop-over-price",
         "property": "border-color",
-        "value": "transparent"
+        "value": "white"
     },
     {
         "display": true,
