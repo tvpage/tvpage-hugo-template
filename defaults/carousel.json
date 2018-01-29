@@ -309,6 +309,7 @@
 
     {
       "display": true,
+      "important": true,
       "type": "text",
       "label": "Display",
       "code": "carousel_arrow_display",
