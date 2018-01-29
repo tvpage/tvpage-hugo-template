@@ -366,6 +366,7 @@
     },
     {
       "display": true,
+      "resize": true,
       "type": "text",
       "label": "Height",
       "code": "carousel_dot_height",
@@ -402,6 +403,7 @@
     },
     {
       "display": true,
+      "resize": true,
       "type": "text",
       "label": "Border Width",
       "code": "carousel_dot_border_width",
