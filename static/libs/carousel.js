@@ -318,13 +318,23 @@
   };
 
   Carousel.prototype.addArrowIcons = function(){
-    function getIcon(d){
-      var i = Utils.createEl('i');
-      
-      i.className = 'material-icons abs-center';
-      i.innerHTML = 'keyboard_arrow_' + d;
+    var parser = new DOMParser();
 
-      return i;
+    function getIcon(direction){
+      var icons = {
+        previous: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">' +
+            '<path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>'+
+            '<path d="M0 0h24v24H0z" fill="none"/>'+
+        '</svg>',
+        next: '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">'+
+          '<path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>'+
+          '<path d="M0 0h24v24H0z" fill="none"/>'+
+        '</svg>'
+      };
+      
+      var parsed = parser.parseFromString(icons[direction], "image/svg+xml").childNodes;
+
+      return parsed.length ? parsed[0] : null;
     }
 
     var arrowEls = this.getArrowEls();
@@ -334,7 +344,7 @@
       Utils.addClass(prevArrow, 'carousel-arrow');
 
       prevArrow.innerHTML = '';
-      prevArrow.appendChild(getIcon('left'));
+      prevArrow.appendChild(getIcon('previous'));
     }
 
     var nextArrow = arrowEls[1];
@@ -342,7 +352,7 @@
       Utils.addClass(nextArrow, 'carousel-arrow');
 
       nextArrow.innerHTML = '';
-      nextArrow.appendChild(getIcon('right'));
+      nextArrow.appendChild(getIcon('next'));
     }
   };
 

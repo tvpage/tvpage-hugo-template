@@ -32,6 +32,11 @@
     }
 
     function onVideosCarouselReady() {
+      var widgetTitleEl = Utils.getById('widget-title');
+      widgetTitleEl.innerHTML = config.widget_title_html;
+
+      Utils.addClass(widgetTitleEl, 'ready');
+
       Utils.remove(Utils.getById('skeleton').querySelector('.videos-skel-delete'));
 
       Utils.removeClass(videosCarousel.el, 'hide-abs');
@@ -123,10 +128,5 @@
         initAnalytics();
         initVideos();
       });
-
-    var widgetTitleEl = Utils.getById('widget-title');
-    widgetTitleEl.innerHTML = config.widget_title_html;
-
-    Utils.addClass(widgetTitleEl, 'ready');
   });
 }());

@@ -7,6 +7,15 @@
   z-index: 1000 !important;
 }
 
+.modal-close {
+  position: relative;
+}
+
+.modal-close > svg {
+  width: 26px;
+  fill: #000000;
+}
+
 .player-holder {
   padding-bottom: 56.25%;
 }
