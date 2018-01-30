@@ -182,7 +182,7 @@ function widgetRender(){
         '//a.tvpage.com/tvpa.min.js',
         '//imasdk.googleapis.com/js/sdkloader/ima3.js',
         //getPlayerUrl(),
-        baseUrl + '/playerlib-debug.min.js',
+        'http://cdnjs.tvpage.com/tvplayer/staging/tvp-master.min.js',
         debug ? jsPath + "/vendor/perfect-scrollbar.min.js" : "",
         debug ? libsPath + "/analytics.js" : "",
         debug ? libsPath + "/player.js" : "",
