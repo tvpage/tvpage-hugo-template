@@ -22,10 +22,13 @@
 {{- .Hugo.Generator -}}
 <link rel="canonical" href="{{ .Permalink }}">
 <meta name="description" content="{{ replaceRE "\n" "" ( $.Scratch.Get "siteDescription" | default .Summary) }}">
-<meta property="og:url"                content="{{ .Permalink }}" />
-<meta property="og:type"               content="website" />
-<meta property="og:title"              content='{{- $.Scratch.Get "siteTitle" -}}' />
-<meta property="og:image"              content="{{ $.Scratch.Get "metaImg" }}" />
+<meta property="og:url" content="{{ .Permalink }}" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content='{{- $.Scratch.Get "siteTitle" -}}' />
+<meta property="og:description" content="{{ replaceRE "\n" "" ( $.Scratch.Get "siteDescription" | default .Summary) }}">
+<meta property="og:image" content="{{ $.Scratch.Get "metaImg" }}" />
+<meta property="og:image:width" content="480"/>
+<meta property="og:image:height" content="270"/>
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:url" content="{{ .Permalink }}">
 <meta name="twitter:title" content="{{- $.Scratch.Get "siteTitle" -}}">
