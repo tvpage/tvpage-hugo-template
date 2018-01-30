@@ -11,9 +11,13 @@
 	{{- if and (isset $video "asset") (isset $video.asset "thumbnailUrl") -}}
 	{{- $.Scratch.Add "metaImg" $video.asset.thumbnailUrl -}}
 	{{- end -}}
+{{ else if eq .Layout "video" }}
+	{{- $video := index $.Site.Data.videos (printf "x%s" .Params.videoid ) -}}
+	{{- if and (isset $video "asset") (isset $video.asset "thumbnailUrl") -}}
+	{{- $.Scratch.Add "metaImg" $video.asset.thumbnailUrl -}}
+	{{- end -}}
 {{ end}}
 <meta charset="utf-8">
-<meta name="pinterest" content="nopin">
 <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
 {{- .Hugo.Generator -}}
 <link rel="canonical" href="{{ .Permalink }}">
