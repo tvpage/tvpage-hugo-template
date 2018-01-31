@@ -40,6 +40,10 @@ config.loginId = config.loginId || config.loginid;
 config.channelId = config.channelId || config.channelid || config.channel.id;
 config.profiling = config.profiling || {};
 
+var displayAmount = config.video_item_display_amount;
+
+config.items_per_page = Number(!!displayAmount ? displayAmount : config.items_per_page);
+
 if(window.performance)
   config.profiling['script_loaded'] = performance.now();
 

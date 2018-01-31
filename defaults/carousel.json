@@ -453,7 +453,7 @@
     {
       "display": true,
       "resize": true,
-      "type": "text",
+      "type": "number",
       "label": "Display Amount",
       "code": "video_item_display_amount",
       "selector": ".video-item",
