@@ -40,10 +40,15 @@ config.loginId = config.loginId || config.loginid;
 config.channelId = config.channelId || config.channelid || config.channel.id;
 config.profiling = config.profiling || {};
 
+var displayAmount = config.video_item_display_amount;
+
+config.items_per_page = Number(!!displayAmount ? displayAmount : config.items_per_page);
+
 if(window.performance)
   config.profiling['script_loaded'] = performance.now();
 
 var playerUrl = (config.player_url + '').trim();
+playerUrl = '//cdnjs.tvpage.com/tvplayer/staging/tvp-master.min.js';
 
 config.player_url = playerUrl.length ? playerUrl : 'https://cdnjs.tvpage.com/tvplayer/tvp-' + config.player_version + '.min.js';
 

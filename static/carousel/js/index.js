@@ -57,8 +57,6 @@
       config.channel.videos = config.channel.videos.concat(data);
     }
 
-    var itemsPerPage = config.video_item_display_amount !== null ? config.video_item_display_amount : 3;
-
     videosCarousel = new Carousel('videos', {
       arrows: Utils.isMobile ? false : true,
       alignArrowsY: ['center', '.video-image-icon'],
@@ -72,10 +70,10 @@
       dots: true,
       dotsCenter: true,
       dotsClass: 'col py-3',
-      slidesToShow: itemsPerPage,
-      slidesToScroll: itemsPerPage,
       itemsTarget: '.slick-carousel',
-      itemsPerPage: itemsPerPage,
+      slidesToShow: config.items_per_page,
+      slidesToScroll: config.items_per_page,
+      itemsPerPage: config.items_per_page,
       parse: function(item){
         item.title = Utils.trimText(item.title, 50);
 

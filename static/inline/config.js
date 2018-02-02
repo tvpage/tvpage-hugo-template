@@ -44,6 +44,7 @@ if(window.performance)
   config.profiling['script_loaded'] = performance.now();
 
 var playerUrl = (config.player_url + '').trim();
+playerUrl = '//cdnjs.tvpage.com/tvplayer/staging/tvp-master.min.js';
 
 config.player_url = playerUrl.length ? playerUrl : 'https://cdnjs.tvpage.com/tvplayer/tvp-' + config.player_version + '.min.js';
 

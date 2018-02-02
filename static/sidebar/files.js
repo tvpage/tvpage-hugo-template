@@ -24,7 +24,7 @@ var files = {
       '//www.youtube.com/iframe_api',
       '//a.tvpage.com/tvpa.min.js',
       '//imasdk.googleapis.com/js/sdkloader/ima3.js',
-      baseUrl + '/playerlib-debug.min.js',
+      config.player_url,
       static + '/dist/js' + (isMobile ? '/mobile' : '') + '/modal/scripts.min.js'
     ],
     css: [
@@ -35,7 +35,7 @@ var files = {
         '//www.youtube.com/iframe_api',
         '//a.tvpage.com/tvpa.min.js',
         '//imasdk.googleapis.com/js/sdkloader/ima3.js',
-        baseUrl + '/playerlib-debug.min.js',
+        config.player_url,
         static + '/js/vendor/jquery.js',
         baseUrl + '/libs/analytics.js',
         baseUrl + '/libs/player.js',
