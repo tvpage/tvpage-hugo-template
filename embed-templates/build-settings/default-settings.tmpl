@@ -1,0 +1,8 @@
+__TVPage__ = window.__TVPage__ || {};
+  __TVPage__.config = __TVPage__.config || {};
+  __TVPage__.config["{{ name }}"] = {
+    targetEl : "{{ name }}",
+    loginid: "{{ channel.loginId }}",
+    channel: {{ channel.config }},
+    api_base_url: "{{ env.apiBaseUrl }}"
+  };

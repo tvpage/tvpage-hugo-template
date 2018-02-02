@@ -1,0 +1,11 @@
+<div id="{{ name }}"></div>
+<script>
+(function(d, s) {
+  {{config}}
+
+  var js = d.createElement(s),
+  fjs = d.getElementsByTagName(s)[0];
+  js.src = '{{ baseUrl }}/tvpwidget/{{ name }}/index.js';
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script'));
+</script>

@@ -1,0 +1,16 @@
+var onChange = _.bind(function(){
+    this.$el.height(this.$iframeDocument.height() + 100);
+	this.$el.find('#' + this.name + '-holder').height(this.$iframeDocument.height());
+}, that);
+
+__TVPage__ = window.__TVPage__ || {};
+  __TVPage__.config = __TVPage__.config || {};
+  __TVPage__.config["{{ name }}"] = {
+    targetEl : "{{ name }}",
+    loginid: "{{ channel.loginId }}",
+    channel: {{ channel.config }},
+    api_base_url: "{{ env.apiBaseUrl }}",
+    modalAppendTo: "#WidgetHolder",
+    modalPosition: "absolute",
+    onChange: onChange
+  };
