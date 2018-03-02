@@ -17,6 +17,10 @@
     return null === o;
   }
 
+  function isNaN(o) {
+    return NaN === o;
+  }
+
   function hasClass(o, c) {
     return o.classList && o.classList.contains(c);
   }
@@ -121,6 +125,7 @@
   };
 
   Utils.isNull = isNull;
+  Utils.isNaN = isNaN;
   Utils.isObject = isObject;
 
   Utils.compact = function (o) {

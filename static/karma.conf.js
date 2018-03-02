@@ -9,7 +9,7 @@ module.exports = function(karma) {
       'test/vendor/tvp-3.1.2.min.js',
       'test/vendor/tvpa.min.js',
 
-      'libs/**/*.js',
+      'libs/**/!(utils.min).js',
 
       'test/**/*Spec.js',
       'test/**/*.html',
