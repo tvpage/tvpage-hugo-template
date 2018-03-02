@@ -4,12 +4,11 @@
   function Player(options, globalConfig) {
     if(!globalConfig || !Utils.isObject(globalConfig))
       throw new Error('bad global config');
-    
-    var selector = options && !!options.selector ? options.selector : null;
 
-    if(!options || !Utils.hasKey(options, 'selector') || !options.selector)
+    if(!options || !Utils.isObject(globalConfig) || !Utils.hasKey(options, 'selector') || !options.selector)
       throw 'need selector';
     
+    var selector = options.selector;
     var el;
 
     if(Utils.isString(selector)){
@@ -25,7 +24,7 @@
     }
 
     this.config = globalConfig;
-    this.options = options || {};
+    this.options = options;
     this.el = el;
     this.assets = [];
     this.initialResize = true;
@@ -207,20 +206,16 @@
   Player.prototype.getAssetById = function (id) {
     var assets = this.assets;
     var assetsLength = assets.length;
-    var res;
+    var i;
 
-    for (var i = 0; i < assetsLength; i++) {
-      var asset = assets[i];
-
-      if (asset.assetId == id) {
-        res = {
+    for (i = 0; i < assetsLength; i++) {
+      if (assets[i].assetId == id) {
+        return {
           index: i,
-          asset: asset
+          asset: assets[i]
         };
       }
     }
-
-    return res;
   };
 
   Player.prototype.onReady = function (e, pl) {
@@ -269,18 +264,6 @@
     }
   };
 
-  Player.prototype.addExtraConfig = function (config) {
-    config = config || {};
-    var extras = ["preload", "poster", "overlay"];
-    for (var i = 0; i < extras.length; i++) {
-      var option = extras[i];
-      if (!Utils.isUndefined(this[option]) && this[option] !== null) {
-        config[option] = this[option];
-      }
-    }
-    return config;
-  };
-
   Player.prototype.getConfig = function () {
     return Utils.compact({
       techOrder: this.getOption('tech_order'),
@@ -309,7 +292,7 @@
         that.onReady(e, pl);
         that.onReadyCalled = true;
 
-        //nope, we should convey in something here
+        //this is not right, if we need to expose a player then we us ethe instance
         that.config.player = that.player;
       };
 
@@ -393,7 +376,7 @@
     }
   };
 
-  Player.prototype.setConfig = function (s) {
+  Player.prototype.setConfig = function () {
     this.version = this.getOption('player_version');
     this.flashUrl = '//cdnjs.tvpage.com/tvplayer/tvp-' + this.version + '.swf';
     this.autoplay = this.getOption('autoplay');
@@ -409,8 +392,13 @@
     this.setControlsOptions();
     this.setAdvertisingOptions();
     this.setConfig();
-    this.addAssets(this.options.data);
-    this.startPlayer();
+    
+    var data = this.options.data;
+
+    if(Array.isArray(data) && data.length){
+      this.addAssets(data);
+      this.startPlayer();
+    }
   };
 
   window.Player = Player;

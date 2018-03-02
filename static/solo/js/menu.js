@@ -67,7 +67,7 @@
   };
 
   Menu.prototype.setTagAttribute = function(settings,menuItem){
-      if (Utils.isset(settings, 'menu_item_play_category_tag_attribute')) {
+    if (!Utils.isUndefined(settings.menu_item_play_category_tag_attribute)){
           var tagAttributeValue = menuItem[settings.menu_item_play_category_tag_attribute];
           if (tagAttributeValue) {
               tagAttributeValue = tagAttributeValue.replace(/_/g,' ');

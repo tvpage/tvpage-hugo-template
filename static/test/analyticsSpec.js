@@ -12,7 +12,7 @@ describe('Analytics', function() {
     analytics = null;
   });
 
-  it("should construct an instance", function(){
+  it("should create an instance", function(){
     expect(function(){
       analytics = new Analytics();
     }).toThrow("bad global config");
@@ -40,7 +40,7 @@ describe('Analytics', function() {
     }).toThrow("bad loginId");
   });
 
-  it("should should initialize", function(){
+  it("should initialize", function(){
     var globalConfig = this.globalConfig;
 
     expect(function(){

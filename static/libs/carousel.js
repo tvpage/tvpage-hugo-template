@@ -52,7 +52,7 @@
       slickConfig.responsive = options.responsive;
     }
 
-    slickConfig = Utils.removeObjNulls(slickConfig);
+    slickConfig = Utils.removeNulls(slickConfig);
 
     return slickConfig;
   };

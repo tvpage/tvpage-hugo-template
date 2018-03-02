@@ -6,7 +6,7 @@ module.exports = function(karma) {
     frameworks: [ 'jasmine', 'fixture' ],
 
     files: [
-      'test/vendor/tvp-3.1.2.min.js',
+      'test/vendor/tvp-3.1.4.min.js',
       'test/vendor/tvpa.min.js',
 
       'libs/**/!(utils.min).js',
@@ -25,8 +25,8 @@ module.exports = function(karma) {
     },
 
     browsers: [ 
-      //'PhantomJS',
-      'Chrome'
+      'PhantomJS',
+      //'Chrome'
     ],
 
     logLevel: 'LOG_DEBUG',

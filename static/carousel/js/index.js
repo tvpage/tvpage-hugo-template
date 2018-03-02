@@ -61,7 +61,7 @@
       arrows: Utils.isMobile ? false : true,
       alignArrowsY: ['center', '.video-image-icon'],
       endpoint: videosEndpoint,
-      params: Utils.addProps({
+      params: Utils.extend({
         o: config.videos_order_by,
         od: config.videos_order_direction
       }, channelParams),

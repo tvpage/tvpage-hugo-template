@@ -48,7 +48,7 @@
       logUrl: this.logUrl
     };
 
-    configObj = Utils.addProps(configObj, this.getCookiesConfig());
+    configObj = Utils.extend(configObj, this.getCookiesConfig());
 
     Utils.globalPoll(['_tvpa'], function(){
       _tvpa.push(['config', configObj]);

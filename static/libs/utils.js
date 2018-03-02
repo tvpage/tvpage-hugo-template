@@ -1,49 +1,49 @@
 (function () {
+  //the utils module
+  var Utils = {
+    isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
+    isIOS: (/iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream)
+  };
   var logStyle = '' +
   'color: blue;' +
   'font-size: 14px;' +
   'font-weight: bold;' +
   'display: block;';
 
+  //consider renaming this function to something with more meaning
   function getById(id) {
     return document.getElementById(id);
   }
+
+  Utils.getById = getById;
 
   function hasKey(o, k) {
     return o.hasOwnProperty(k);
   }
 
-  function hasDot(s) {
-    return s.search(/\./);
-  }
+  function isUndefined(o) {
+    return 'undefined' === typeof o;
+  };
 
-  function isNull(o) {
-    return null === o;
-  }
-
-  function isNumber(o) {
-    return 'number' === typeof o;
-  }
-
-  function isString(o) {
-    return 'string' === typeof o;
-  }
+  Utils.hasKey = hasKey;
 
   function hasClass(o, c) {
     return o.classList && o.classList.contains(c);
   }
 
+  Utils.hasClass = hasClass;
+
   function isObject(o) {
     return "object" === typeof o;
   }
+
+  Utils.isObject = isObject;
 
   function isFunction(o) {
     return 'function' === typeof o;
   }
 
-  function closest(el, cback) {
-    return el && (cback(el) ? el : closest(el.parentNode, cback));
-  }
+  Utils.isFunction = isFunction;
 
   function extend(out) {
     out = out || {};
@@ -59,14 +59,7 @@
     return out;
   }
 
-  function isEmptyObject(o) {
-    for (var k in o) {
-      if (o.hasOwnProperty(k))
-        return false;
-    }
-
-    return true;
-  }
+  Utils.extend = extend;
 
   function getStyle(el, prop, altProp) {
     var s;
@@ -80,7 +73,9 @@
     return s;
   }
 
-  function loadScript(o, cback) {
+  Utils.getStyle = getStyle;
+
+  function loadScript(o, callback) {
     var script = document.createElement('script');
     var src = o.base || '';
     var prms = o.params || {};
@@ -93,15 +88,15 @@
       }
     }
 
-    if (isFunction(cback)) {
-      var cBackName = 'tvp_callback_' + Math.random().toString(36).substring(7);
+    if (isFunction(callback)) {
+      var callBackName = 'tvp_callback_' + Math.random().toString(36).substring(7);
 
-      window[cBackName] = function (data) {
-        if (isFunction(cback))
-          cback(data);
+      window[callBackName] = function (data) {
+        if (isFunction(callback))
+          callback(data);
       };
 
-      src += '&callback=' + cBackName;
+      src += '&callback=' + callBackName;
     }
 
     script.src = src;
@@ -109,13 +104,9 @@
     document.body.appendChild(script);
   }
 
-  //the utils module
-  var Utils = {};
+  Utils.loadScript = loadScript;
 
-  Utils.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
-  Utils.isIOS = (/iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream);
-
+  //lets remove this from here, this is not a utils function, is more specialized
   Utils.getWidgetHeight = function () {
     return Math.floor(getById('skeleton').getBoundingClientRect().height);
   };
@@ -132,11 +123,23 @@
     }
   };
 
-  Utils.isNull = isNull;
-  Utils.isString = isString;
-  Utils.isNumber = isNumber;
-  Utils.isObject = isObject;
-  Utils.hasDot = hasDot;
+  Utils.isString = function isString(o) {
+    return 'string' === typeof o;
+  };
+
+  Utils.isNumber = function isNumber(o) {
+    return 'number' === typeof o;
+  };
+
+  Utils.isNull = function isNull(o) {
+    return null === o;
+  };
+
+  Utils.isUndefined = isUndefined;
+  
+  Utils.hasDot = function hasDot(s) {
+    return s.search(/\./);
+  };
 
   Utils.compact = function (o) {
     for (var k in o)
@@ -147,7 +150,7 @@
   }
 
   Utils.inDom = function (el) {
-    document.body.contains(el);
+    return document.body.contains(el);
   }
 
   Utils.attr = function (el, a) {
@@ -158,8 +161,6 @@
     return document.createElement(tag);
   };
 
-  Utils.isEmptyObject = isEmptyObject;
-
   Utils.stopEvent = function (e) {
     if (e) {
       e.preventDefault();
@@ -167,8 +168,13 @@
     }
   };
 
-  Utils.closest = closest;
+  function closest(el, cback) {
+    return el && (cback(el) ? el : closest(el.parentNode, cback));
+  }
 
+  Utils.closest = closest;
+  
+  //consider renaming this function
   Utils.getRealTargetByClass = function (targetEl, targetClass) {
     return hasClass(targetEl, targetClass) ? targetEl : closest(targetEl, function (el) {
       return hasClass(el, targetClass)
@@ -193,7 +199,7 @@
     }
   };
 
-  Utils.removeObjNulls = function (obj) {
+  Utils.removeNulls = function (obj) {
     for (var k in obj) {
       if (obj.hasOwnProperty(k)) {
         if (obj[k] === null) {
@@ -205,12 +211,8 @@
     return obj;
   };
 
-  Utils.getById = getById;
-
-  Utils.hasClass = hasClass;
-
-  Utils.loadScript = loadScript;
-
+  //this specifically post a message to the parent window, i think we need
+  //to do this more generic or pass an argument to do that.
   Utils.sendMessage = function (msg) {
     if (window.parent)
       window.parent.postMessage(msg, '*');
@@ -218,30 +220,24 @@
 
   Utils.getByClass = function (c) {
     return document.getElementsByClassName(c || '')[0];
-  };
-
-  Utils.isUndefined = function (o) {
-    return 'undefined' === typeof o;
-  };
-
-  Utils.isFunction = isFunction;
+  };  
 
   Utils.copy = function (o) {
     return JSON.parse(JSON.stringify(o));
   };
 
-  Utils.hasKey = hasKey;
-
-  Utils.isEmpty = function (o) {
+  function isEmpty(o) {
     for (var key in o) {
       if (o.hasOwnProperty(key))
         return false;
     }
     return true;
-  };
+  }
+
+  Utils.isEmpty = isEmpty;
 
   Utils.formatDuration = function (secs) {
-    if ("undefined" === typeof secs)
+    if (isUndefined(secs))
       return;
 
     var date = new Date(0, 0, 0);
@@ -254,25 +250,6 @@
 
     return ((date.getHours() || '') + format(date.getMinutes()) + ':' + format(date.getSeconds()));
   };
-
-  Utils.formatDate = function (unixTimestamp) {
-    var d = (new Date(Number(unixTimestamp) * 1000)),
-      month = '' + (d.getMonth() + 1),
-      day = '' + d.getDate(),
-      year = d.getFullYear();
-    if (month.length < 2) month = '0' + month;
-    if (day.length < 2) day = '0' + day;
-    return [month, day, year].join('/');
-  };
-
-  Utils.isset = function (o, p) {
-    if (!arguments.length) return;
-    var val = o;
-    if (p) val = o[p];
-    return 'undefined' !== typeof val;
-  };
-
-  Utils.extend = extend;
 
   Utils.debounce = function (func, wait, immediate) {
     var timeout = null;
@@ -300,9 +277,12 @@
   };
 
   function log(msg) {
-    console.log('%c ' + (msg || ''), logStyle);
+    if(console && console.log){
+      console.log('%c ' + (msg || ''), logStyle);
+    }
   }
-
+  
+  /* istanbul ignore next */
   function profile(config, params) {
     if (!hasKey(config, 'profile') || !config.profile) {
       return;
@@ -327,6 +307,7 @@
   
   Utils.profile = profile;
 
+  /* istanbul ignore next */
   Utils.sendProfileData = function (config) {
     setTimeout(function(){
       if(!config || !isObject(config))
@@ -346,6 +327,7 @@
     },1000);
   }
 
+  //not a good name, probably better format price?
   Utils.trimPrice = function (p) {
     var price = p || '';
     price = price.toString().replace(/[^0-9.]+/g, '');
@@ -354,6 +336,8 @@
     return price;
   };
 
+  //need to rename to something less specific to rows, something like
+  //chop, break, not sure, neet to check how _ names this
   Utils.rowerize = function (a, size) {
     var rows = [];
     var aLength = a.length;
@@ -365,6 +349,7 @@
     return rows;
   };
 
+  //to especial, need to pull it out from utils
   Utils.isEvent = function (e) {
     return e && e.data && e.data.event;
   };
@@ -375,16 +360,6 @@
 
   Utils.getWindowHeight = function (e) {
     return Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-  };
-
-  Utils.addProps = function (a, b) {
-    if (isEmptyObject(b) || isEmptyObject(b))
-      return a;
-
-    for (var p in b)
-      a[p] = b[p];
-
-    return a;
   };
 
   Utils.tmpl = function (template, data) {
@@ -401,9 +376,8 @@
   };
 
   Utils.poll = function (check, callback) {
-    if (!isFunction(check)) {
-      throw new Error("first argument shall be a function");
-    }
+    if (!isFunction(check))
+      throw "need function for check argument";
 
     var count = 0;
 
@@ -414,12 +388,15 @@
         } else if (++count < 1000) {
           poller();
         } else {
+          /* istanbul ignore next */
           throw new Error("poll condition not met after checking 1000 times");
         }
       }, 10);
     }())
   };
 
+  //you should change this to be more testable, for example, the 
+  //function shall recevie a full url and it shoul return the params
   Utils.getUrlParams = function () {
     if (!window.location)
       return;
@@ -471,13 +448,12 @@
         } else if (++globsCheck < 10000) {
           poll();
         } else {
+          /* istanbul ignore next */
           throw new Error("missing global: " + missing);
         }
       }, 10);
     }())
   };
-
-  Utils.getStyle = getStyle;
 
   window.Utils = Utils;
 }())

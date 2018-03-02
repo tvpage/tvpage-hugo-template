@@ -107,7 +107,7 @@
       alignArrowsY: ['center', '.video-image-icon'],
       page: 0,
       endpoint: videosEndpoint,
-      params: Utils.addProps(videosOrderParams, channelParams),
+      params: Utils.extend(videosOrderParams, channelParams),
       data: channelVideos,
       slidesToShow: 4,
       slidesToScroll: 1,
