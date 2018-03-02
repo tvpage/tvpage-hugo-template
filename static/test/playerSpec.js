@@ -1,4 +1,62 @@
 describe('Player', function() {
+  var analytics;
+
+  beforeEach(function(){
+    fixture.setBase('test/fixtures');
+    fixture.load('json/globalConfig.json', 'html/player.html');
+
+  //   fixture.load('html/player.html', 'json/playerConfig.json', 'json/videos.json');
+
+    this.globalConfig = fixture.json[0];
+  });
+
+  afterEach(function(){
+    player = null;
+  });
+
+  it("should construct an instance", function(){
+    expect(function(){
+      player = new Player();
+    }).toThrow("bad global config");
+
+    expect(function(){
+      player = new Player(null, {});
+    }).toThrow("need selector");
+
+    expect(function(){
+      player = new Player({
+        selector: null
+      }, {});
+    }).toThrow("need selector");
+
+    //passing just an element that doesn't exist in the page shall throw
+    expect(function(){
+      player = new Player({
+        selector: document.createElement('div')
+      }, {});
+    }).toThrow('element not in dom');
+  });
+
+  // it("should should initialize", function(){
+  //   var globalConfig = this.globalConfig;
+
+  //   expect(function(){
+  //     analytics = new Player(null, globalConfig);
+  //     analytics.initialize();
+  //   }).not.toThrow();
+  // });
+
+  // it("should track ci", function(){
+  //   var globalConfig = this.globalConfig;
+
+  //   expect(function(){
+  //     analytics = new Analytics(null, globalConfig);
+  //     analytics.track('ci');
+  //   }).not.toThrow();
+  // });
+});
+
+// describe('Player', function() {
   // var player;
 
   // beforeEach(function(){
@@ -50,4 +108,4 @@ describe('Player', function() {
   //   player = new Player('player',config);
   //   player.initialize();
   // });
-});
+// });

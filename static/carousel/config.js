@@ -37,6 +37,8 @@ config.id = id;
 config.runId = prefix + Math.floor(Math.random() * 1000000);
 config.holder = null;
 config.loginId = config.loginId || config.loginid;
+config.firstPartyCookies = config.firstPartyCookies || config.firstpartycookies;
+config.cookieDomain = config.cookieDomain || config.cookiedomain;
 config.channelId = config.channelId || config.channelid || config.channel.id;
 config.profiling = config.profiling || {};
 

@@ -1,22 +1,36 @@
 (function () {
-  function getElement(sel) {
-    if (sel)
-      return 'string' === typeof sel ? Utils.getById(sel) : sel;
-    else
-      throw new Error('need a selector or element');
-  }
 
   //The player singleton. A small layer on top of tvpage library
-  function Player(sel, options, globalConfig) {
+  function Player(options, globalConfig) {
+    if(!globalConfig || !Utils.isObject(globalConfig))
+      throw new Error('bad global config');
+    
+    var selector = options && !!options.selector ? options.selector : null;
+
+    if(!options || !Utils.hasKey(options, 'selector') || !options.selector)
+      throw 'need selector';
+    
+    var el;
+
+    if(Utils.isString(selector)){
+      el = Utils.getById(selector);
+
+      if(!el)
+        throw 'element not in dom';
+    }
+    else if(!selector || !Utils.inDom(selector)){
+      throw 'element not in dom';
+    }else{
+      el = selector;
+    }
+
+    this.config = globalConfig;
     this.options = options || {};
-    this.config = globalConfig || {};
-    this.el = getElement(sel);
+    this.el = el;
     this.assets = [];
-    this.instance = null;
     this.initialResize = true;
     this.startWith = this.options.startWith || null;
     this.currentIndex = null;
-    this.onReadyCalled = false;
   };
 
   Player.prototype.getOption = function (s) {
@@ -294,6 +308,8 @@
       config.onReady = function (e, pl) {
         that.onReady(e, pl);
         that.onReadyCalled = true;
+
+        //nope, we should convey in something here
         that.config.player = that.player;
       };
 

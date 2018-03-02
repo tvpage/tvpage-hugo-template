@@ -1,64 +1,71 @@
 (function(){
+
   function Analytics(options, globalConfig){
     if(!globalConfig || !Utils.isObject(globalConfig))
       throw new Error('bad global config');
 
-      
-
     var loginId = globalConfig.loginId;
-
-    console.log(globalConfig, loginId)
-
-    if(Utils.isUndefined(loginId) || Utils.isNaN(loginId))
+    
+    if(!loginId || isNaN(Number(loginId)))
       throw new Error('bad loginId');
 
-    if(!options || Utils.isUndefined(options.domain))
-      throw new Error('need domain');
+    var apiBaseUrl = globalConfig.api_base_url;
+    var logUrl = options && options.logUrl ? options.logUrl : 
+    apiBaseUrl ? apiBaseUrl + '/__tvpa.gif' : null;
 
-    this.options = options;
-    this.config = globalConfig;
-  }
-
-  Analytics.prototype.initialize = function(){
-    var config = this.config;
-    var options = this.options;
-
-    // if(options.firstPartyCookies && options.cookieDomain)
-    //   options.firstPartyCookieDomain = options.cookieDomain;
-
-    var logUrl = "";
-
-    if(options.logUrl){
-      logUrl = options.logUrl;
-    }else if(config.api_base_url){
-      logUrl = config.api_base_url + '/__tvpa.gif';
+    if(!logUrl){
+     throw "can't build url"; 
     }
 
-    if(!logUrl)
-      throw "can't build logUrl";
+    this.options = options || {};
+    this.config = globalConfig;
+    this.logUrl = logUrl;
+  }
+
+  Analytics.prototype.getCookiesConfig = function(){
+    var firstPartyCookies = !!this.config.firstPartyCookies;
+
+    if(firstPartyCookies){
+      var cookieDomain = this.config.cookieDomain;
+
+      if(Utils.hasDot(cookieDomain)){
+        return {
+          firstPartyCookies: firstPartyCookies,
+          cookieDomain: cookieDomain
+        };
+      }else{
+        throw 'bad cookie domain';
+      }
+    }else{
+      return {};
+    }
+  };
+
+  Analytics.prototype.initialize = function(){
+    var configObj = {
+      domain: this.options.domain,
+      li: this.config.loginId,
+      logUrl: this.logUrl
+    };
+
+    configObj = Utils.addProps(configObj, this.getCookiesConfig());
 
     Utils.globalPoll(['_tvpa'], function(){
-      _tvpa.push(['config',{
-        li: config.loginId,
-        domain: options.domain,
-        logUrl: logUrl,
-        firstPartyCookies: config.firstpartycookies,
-        cookieDomain: config.cookiedomain
-      }]);
+      _tvpa.push(['config', configObj]);
     });
   };
 
   Analytics.prototype.track = function(e, data){
-    var loginId = this.config.loginId;
+    var obj = data || {
+      li: this.config.loginId
+    };
 
-    if(Utils.isUndefined(e) || Utils.isUndefined(loginId)){
-      throw new Error("bad event or loginId", e);
+    if(Utils.isUndefined(e) || !Utils.isObject(obj)){
+      throw "bad args";
     }
 
     Utils.globalPoll(['_tvpa'], function(){
-      _tvpa.push(['track', e, data || {
-        li: loginId
-      }]);
+      _tvpa.push(['track', e, data]);
     });
   };
   

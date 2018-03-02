@@ -13,12 +13,20 @@
     return o.hasOwnProperty(k);
   }
 
+  function hasDot(s) {
+    return s.search(/\./);
+  }
+
   function isNull(o) {
     return null === o;
   }
 
-  function isNaN(o) {
-    return NaN === o;
+  function isNumber(o) {
+    return 'number' === typeof o;
+  }
+
+  function isString(o) {
+    return 'string' === typeof o;
   }
 
   function hasClass(o, c) {
@@ -125,8 +133,10 @@
   };
 
   Utils.isNull = isNull;
-  Utils.isNaN = isNaN;
+  Utils.isString = isString;
+  Utils.isNumber = isNumber;
   Utils.isObject = isObject;
+  Utils.hasDot = hasDot;
 
   Utils.compact = function (o) {
     for (var k in o)
@@ -134,6 +144,10 @@
         delete o[k];
 
     return o;
+  }
+
+  Utils.inDom = function (el) {
+    document.body.contains(el);
   }
 
   Utils.attr = function (el, a) {

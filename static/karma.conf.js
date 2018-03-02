@@ -24,7 +24,10 @@ module.exports = function(karma) {
       'test/**/*.json' : 'json_fixtures'
     },
 
-    browsers: [ 'PhantomJS' ],
+    browsers: [ 
+      //'PhantomJS',
+      'Chrome'
+    ],
 
     logLevel: 'LOG_DEBUG',
 

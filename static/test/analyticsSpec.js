@@ -1,20 +1,18 @@
 describe('Analytics', function() {
   var analytics;
 
-    // analytics.initialize();
-    // analytics.track('ci');
+  beforeEach(function(){
+    fixture.setBase('test/fixtures');
+    fixture.load('json/globalConfig.json');
 
-  // beforeEach(function(){
-  //   analytics = new Analytics({
-  //     domain: location.hostname
-  //   });
-  // });
+    this.globalConfig = fixture.json[0];
+  });
 
   afterEach(function(){
     analytics = null;
   });
 
-  it("should break if options are not met", function(){
+  it("should construct an instance", function(){
     expect(function(){
       analytics = new Analytics();
     }).toThrow("bad global config");
@@ -28,28 +26,35 @@ describe('Analytics', function() {
         loginId: NaN
       });
     }).toThrow("bad loginId");
+
+    expect(function(){
+      analytics = new Analytics(null, {
+        loginId: null
+      });
+    }).toThrow("bad loginId");
+
+    expect(function(){
+      analytics = new Analytics(null, {
+        loginId: 'null'
+      });
+    }).toThrow("bad loginId");
   });
 
-  // it("should break if initialized without a global config", function(){
-  //   analytics = new Analytics({
-  //     domain: location.hostname
-  //   });
+  it("should should initialize", function(){
+    var globalConfig = this.globalConfig;
 
-  //   expect(function(){
-  //     analytics.initialize();
-  //   }).toThrow("can't build logUrl");
-  // });
+    expect(function(){
+      analytics = new Analytics(null, globalConfig);
+      analytics.initialize();
+    }).not.toThrow();
+  });
 
-  // it('should add special config options', function(){
-  //   analytics.initConfig({
-  //     logUrl:"//test.tvpage.com/api/__tvpa.gif",
-  //     domain:"localhost",
-  //     firstPartyCookies:true,
-  //     cookieDomain:"goodlookingbean.com",
-  //     loginId:"1758799"
-  //   });
+  it("should track ci", function(){
+    var globalConfig = this.globalConfig;
 
-  //   expect(analytics.config.logUrl).toBe("//test.tvpage.com/api/__tvpa.gif");
-  //   expect(analytics.config.firstPartyCookieDomain).toBe("goodlookingbean.com");
-  // });
+    expect(function(){
+      analytics = new Analytics(null, globalConfig);
+      analytics.track('ci');
+    }).not.toThrow();
+  });
 });
