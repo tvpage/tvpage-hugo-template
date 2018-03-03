@@ -133,7 +133,8 @@
       channelVideos = config.channel.videos;
     }
 
-    videosCarousel = new Carousel('videos', {
+    videosCarousel = new Carousel({
+      selector: 'videos',
       alignArrowsY: ['center', '.video-image-icon'],
       page: 0,
       endpoint: channelVideosEndpoint,
@@ -142,7 +143,6 @@
       slidesToShow: 4,
       slidesToScroll: 1,
       onClick: onVideosCarouselClick,
-      itemsTarget: '.slick-carousel',
       itemsPerPage: 4,
       parse: function(item){
         item.title = Utils.trimText(item.title, 50);
@@ -166,7 +166,6 @@
     }, config);
 
     videosCarousel.initialize();
-    videosCarousel.render();
   };
 
   function initAnalytics() {
@@ -263,7 +262,8 @@
     }, false);
 
     if (Utils.isMobile) {
-      productsCarousel = new Carousel('products', {
+      productsCarousel = new Carousel({
+        selector: 'products',
         appendDots: '#products-carousel-nav',
         dotsCenter: true,
         dotsMax: 10,
@@ -272,7 +272,6 @@
         clean: true,
         itemsPerPage: 1,
         loadMore: false,
-        itemsTarget: '.slick-carousel',
         templates: {
           list: templates.mobile.products.list,
           item: templates.mobile.products.item
@@ -298,7 +297,8 @@
         }, 3000);
       });
     } else {
-      productsCarousel = new Carousel('products', {
+      productsCarousel = new Carousel({
+        selector: 'products',
         alignArrowsY: ['center', '.carousel-dot-0'],
         dotsCenter: true,
         dots: true,
@@ -306,7 +306,6 @@
         clean: true,
         loadMore: false,
         endpoint: apiBaseUrl + '/videos/' + firstVideo.id + '/products',
-        itemsTarget: '.slick-carousel',
         itemsPerPage: 4,
         pageWrapStart: '<div class="carousel-item" >',
         pageWrapEnd: '</div>',
@@ -319,11 +318,13 @@
         onRender: showNavDots,
         onReady: onProductsCarouselReady,
         onResize: sendResizeMessage,
-        onClick: onClick
+        onClick: onClick,
+        onFirstLoad: function(){
+          console.log("here")
+        }
       }, config);
 
       productsCarousel.initialize();
-      productsCarousel.load('render', onProductsLoad);
     }
   };
 
@@ -377,7 +378,8 @@
       }
     }
 
-    player = new Player('player-el', {
+    player = new Player({
+      selector: 'player-el',
       data: config.channel.videos,
       ciTrack: true,
       onNext: onPlayerNext,
@@ -402,8 +404,8 @@
     Utils.globalPoll(
       ['jQuery', 'Utils', 'Player', 'Carousel', 'Analytics'],
       function () {
-        initPlayer();
-        initVideos();
+        //initPlayer();
+        //initVideos();
         initAnalytics();
         initProducts();
       });

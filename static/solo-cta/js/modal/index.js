@@ -14,32 +14,6 @@
   var productReviewAttrName = config.product_review_attribute;
   var productsSkelEl;
 
-  function productClickTrack(product) {
-    if(product){
-      analytics.track('pk', {
-        vd: product.entityIdParent,
-        ct: product.id,
-        pg: config.channelId
-      }); 
-    }
-  }
-
-  function productImpressionsTracking(data) {
-    var dataLength = data.length;
-    var product;
-    var i;
-
-    for (i = 0; i < dataLength; i++) {
-      product = data[i];
-
-      analytics.track('pi', {
-        vd: product.entityIdParent,
-        ct: product.id,
-        pg: config.channelId
-      });
-    }
-  }
-
   function initPlayer() {
     function onPlayerResize(initial, size) {
       if (size && size.length > 1 && productsRail && productsRail.railEl) {
@@ -56,7 +30,9 @@
 
       if (productsEnabled) {
         productsRail.endpoint = apiBaseUrl + '/videos/' + nextVideo.assetId + '/products';
-        productsRail.load('render', productImpressionsTracking);
+        productsRail.load('render', function(data){
+          analytics.track('pi', data);
+        });
       }
     }
 
@@ -77,7 +53,8 @@
       }
     }
 
-    player = new Player('player-el', {
+    player = new Player({
+      selector: 'player-el',
       startWith: clickedVideo.id,
       data: videoOnly ? [config.video] : config.channel.videos,
       onResize: onPlayerResize,
@@ -110,12 +87,12 @@
       var targetId = getProductId(Utils.getRealTargetByClass(e.target, 'product'));
 
       if (targetId) {
-        productClickTrack(productsRail.getDataItemById(targetId));
+        analytics.track('pk', productsRail.getDataItemById(targetId));
       }else{
         targetId = getProductId(Utils.getRealTargetByClass(e.target, 'product-pop-over'));
 
         if(targetId){
-          productClickTrack(productsRail.getDataItemById(targetId));
+          analytics.track('pk', productsRail.getDataItemById(targetId));
         }
       }
     }, false);
@@ -250,7 +227,7 @@
       productsRail.load('render', function(data){
         //delayed track for perf
         setTimeout(function () {
-          productImpressionsTracking(data);
+          analytics.track('pi', data);
         }, 3000);
       });
     }
@@ -274,7 +251,7 @@
         productsRail.load('render', function(data){
           //delayed track for perf
           setTimeout(function () {
-            productImpressionsTracking(data);
+            analytics.track('pi', data);
           }, 3000);
         });
       } else {

@@ -13,32 +13,6 @@
   var productsCarousel;
   var productsCarouselEl;
 
-  function productClickTrack(product) {
-    if(product){
-      analytics.track('pk', {
-        vd: product.entityIdParent,
-        ct: product.id,
-        pg: config.channelId
-      }); 
-    }
-  }
-
-  function productImpressionsTracking(data) {
-    var dataLength = data.length;
-    var product;
-    var i;
-
-    for (i = 0; i < dataLength; i++) {
-      product = data[i];
-
-      analytics.track('pi', {
-        vd: product.entityIdParent,
-        ct: product.id,
-        pg: config.channelId
-      });
-    }
-  }
-
   function initPlayer() {
     function onPlayerResize() {
       Utils.sendMessage({
@@ -51,7 +25,9 @@
 
       if (productsEnabled) {
         productsCarousel.endpoint = apiBaseUrl + '/videos/' + nextVideo.assetId + '/products';
-        productsCarousel.load('render', productImpressionsTracking);
+        productsCarousel.load('render', function(data){
+          analytics.track('pi', data);
+        });
       }
     }
 
@@ -87,7 +63,8 @@
       }
     }
 
-    player = new Player('player-el', {
+    player = new Player({
+      selector: 'player-el',
       startWith: clickedVideo.id,
       data: config.channel.videos,
       onResize: onPlayerResize,
@@ -118,7 +95,7 @@
       var targetId = target ? (Utils.attr(target, 'data-id') || null) : null;
 
       if (targetId) {
-        productClickTrack(productsCarousel.getDataItemById(targetId));
+        analytics.track('pk', productsCarousel.getDataItemById(targetId));
       }
     }, false);
 
@@ -133,7 +110,8 @@
     var templates = config.templates.mobile.modal;
 
     if ('default' === style) {
-      productsCarousel = new Carousel('products', {
+      productsCarousel = new Carousel({
+        selector: 'products',
         clean: true,
         loadMore: false,
         endpoint: apiBaseUrl + '/videos/' + clickedVideo.id + '/products',
@@ -143,7 +121,6 @@
         },
         slidesToShow: 2,
         slidesToScroll: 2,
-        itemsTarget: '.slick-carousel',
         arrows: false,
         dots: true,
         dotsCenter: true,
@@ -191,7 +168,7 @@
       productsCarousel.load('render', function (data) {
         //delayed 1st pi track
         setTimeout(function () {
-          productImpressionsTracking(data);
+          analytics.track('pi', data);
         }, 3000);
       });
     }
@@ -215,7 +192,7 @@
         productsCarousel.load('render', function(data){
           //delayed track for perf
           setTimeout(function () {
-            productImpressionsTracking(data);
+            analytics.track('pi', data);
           }, 3000);
         });
       } else {

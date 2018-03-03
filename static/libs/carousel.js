@@ -1,46 +1,61 @@
 (function(){
-  function Carousel(sel, options, globalConfig){
-    this.options = options || {};
-    this.data = this.options.data || [];
-    this.page = this.options.page || 0;
-    this.endpoint = this.options.endpoint;
-    this.itemsPerPage = this.options.itemsPerPage;
-    this.params = this.options.params;
+
+  function getOption(o, defaultValue){
+    return Utils.isUndefined(o) ? defaultValue : o;
+  }
+
+  function Carousel(options, globalConfig){
+    if(!globalConfig || !Utils.isObject(globalConfig))
+      throw 'bad global config';
+    
+    if(!options || !Utils.isObject(globalConfig) || !Utils.hasKey(options, 'selector') || !options.selector)
+      throw 'need selector';
+
     this.config = globalConfig || {};
-    this.eventPrefix = globalConfig.events.prefix;
-    this.templates = this.options.templates;
-    this.loading = false;
-    this.itemClass = '.carousel-item';
+    this.options = options || {};
+
+    //can this go somewhere else?
+    this.page = this.options.page || 0;
+    
+    //looks like required info here
+    //this means that it loaded & rendered all, we can merge?
     this.full = this.options.full || false;
-    this.dots = this.getOption(this.options.dots, false);
-    this.appendArrows = this.getOption(this.options.appendArrows, null);
-    this.appendDots = this.getOption(this.options.appendDots, false);
-    this.arrows = this.getOption(this.options.arrows, true);
-    this.loadMore = this.getOption(this.options.loadMore, true);
-    this.dotsPosition = this.getOption(this.options.dotsPosition, 'bottom');
-    this.slidesToShow = this.getOption(this.options.slidesToShow, 1);
-    this.slidesToScroll = this.getOption(this.options.slidesToScroll, 1);
-    this.customStyleEl;
-    this.slideCompare;
-    this.onReadyCalled = false;
+    this.loadMore = getOption(this.options.loadMore, true);
+    this.itemsPerPage = this.options.itemsPerPage;
 
-    this.el = document.getElementById(sel);
-    this.el.style.position = 'relative';
-  };
+    var selector = options.selector;
+    var el;
 
-  Carousel.prototype.getOption = function(option, defaultValue){
-    return Utils.isUndefined(option) ? defaultValue : option;
+    if(Utils.isString(selector)){
+      el = Utils.getById(selector);
+
+      if(!el)
+        throw 'element not in dom';
+    }
+    else if(!selector || !Utils.inDom(selector)){
+      throw 'element not in dom';
+    }else{
+      el = selector;
+    }
+    
+    el.style.position = 'relative';
+
+    this.el = el;
   };
 
   Carousel.prototype.getSlickConfig = function(){
-    var options = this.options,
-    slickConfig = {
+    var options = this.options;
+
+    this.appendArrows = getOption(options.appendArrows, null);
+    this.appendDots = getOption(this.options.appendDots, false);
+
+    var slickConfig = {
       draggable: false,
-      slidesToShow: this.slidesToShow,
-      slidesToScroll: this.slidesToScroll,
+      slidesToShow: getOption(this.options.slidesToShow, 1),
+      slidesToScroll: getOption(this.options.slidesToScroll, 1),
       infinite: options.infinite || false,
-      arrows: this.arrows,
-      dots: this.dots,
+      arrows: getOption(this.options.arrows, true),
+      dots: getOption(this.options.dots, false),
       appendArrows: this.appendArrows,
       appendDots: this.appendDots,
       customPaging: function(s, k){
@@ -65,8 +80,8 @@
         Utils.stopEvent(e);
       }
     };
-
-    var items = this.el.querySelectorAll(this.itemClass + ':not(.live)');
+    
+    var items = this.el.querySelectorAll('.carousel-item' + ':not(.live)');
     var itemsLength = items.length;
     var i;
     var itemEl;
@@ -97,7 +112,7 @@
       moved = false;
     }
 
-    var items = this.el.querySelectorAll(this.itemClass + ':not(.live)');
+    var items = this.el.querySelectorAll('.carousel-item' + ':not(.live)');
     var itemsLength = items.length;
     var i;
     var itemEl;
@@ -137,7 +152,7 @@
   //to align the arrows again, only if the new position is diff than the existing one?
   Carousel.prototype.alignArrowsX = function(){
     var alignArrowsX = this.options.alignArrowsX;
-    var firstItem = this.el.querySelector(this.itemClass);
+    var firstItem = this.el.querySelector('.carousel-item');
 
     if((!Utils.isUndefined(alignArrowsX) && !alignArrowsX) || !firstItem){
       return;
@@ -438,7 +453,7 @@
     var html = "";
 
     try{
-      html = Utils.tmpl(this.templates.item, item);
+      html = Utils.tmpl(this.options.templates.item, item);
     }catch(e){
       console.log('render error ', e)
     }
@@ -514,7 +529,7 @@
     if(!!dotsClass)
       this.appendDotsEl.className = dotsClass + ' dots-target';
 
-    if('bottom' === this.dotsPosition){
+    if('bottom' === getOption(this.options.dotsPosition, 'bottom')){
       this.el.appendChild(this.appendDotsEl);
     }else{
       this.el.insertBefore(this.appendDotsEl, this.el.firstChild);
@@ -564,6 +579,7 @@
   };
 
   Carousel.prototype.render = function(){
+    //data check
     var all = this.data;
     var allLength = all.length;
 
@@ -573,36 +589,29 @@
       return;
     }
 
+    //huh?
     Utils.removeClass(this.el, 'm-0');
 
-    this.parse();
-
-    //currently, is not straight forward to determine if we have more than one page, this is because the carousel
-    //may wrap "n" items with pageWrapStart & pageWrapEnd.
-    var moreThan1Page;
-    if(!!this.options.pageWrapStart){
-      moreThan1Page = this.loadMore ? allLength >= this.itemsPerPage : allLength > this.itemsPerPage;
-    }else{
-      moreThan1Page = this.loadMore ? allLength >= this.slidesToShow : allLength > this.slidesToShow;
-    }
-
+    //render logic starts here
     var itemsTargetEl;
     var pagesHTML = this.renderPages(this.page, true);
-    var that = this;
+    var templates = this.options.templates;
+    var baseContext = this.config;
 
     function renderBase(){
       var holderEl = Utils.createEl('div');
-      holderEl.innerHTML = Utils.tmpl(that.templates.list, that.config);
+      
+      holderEl.innerHTML = Utils.tmpl(templates.list, baseContext);
 
-      itemsTargetEl = holderEl.querySelector(that.options.itemsTarget);
+      itemsTargetEl = holderEl.querySelector('.slick-carousel');
     }
 
     function afterRender(){
-      Utils.isMobile ? that.handleMobileClick() : that.handleDesktopClick();
+      Utils.isMobile ? this.handleMobileClick() : this.handleDesktopClick();
       
-      that.handleLazy();
+      this.handleLazy();
 
-      var onRender = that.options.onRender;
+      var onRender = this.options.onRender;
       
       if(Utils.isFunction(onRender))
         onRender();
@@ -612,15 +621,17 @@
       var pagesHTMLLength = pagesHTML.length;
       var i;
 
-      setTimeout(function(){
+      setTimeout(function(c){
         for (i = 0; i < pagesHTMLLength; i++)
-          that.$slickEl.slick('slickAdd', pagesHTML[i]);
+          c.$slickEl.slick('slickAdd', pagesHTML[i]);
 
-        afterRender();
-      },10);
+        afterRender.call(c);
+      },10, this);
     }
 
-    if(moreThan1Page){
+    var moreThanOnePage = this.moreThanOnePage;
+
+    if(moreThanOnePage){
       Utils.removeClass(this.el, 'no-dots');
     }else{
       Utils.addClass(this.el, 'no-dots');
@@ -628,14 +639,15 @@
 
     //if it's a subsequent page we need to consider offset
     if(this.page > 0){
-      addPagesToSlick();
+      addPagesToSlick.call(this);
     
     //if this is a first render but slick was already created
-    }else if(this.$slickEl){
+    }
+    else if(this.$slickEl){
       //empty all slides
       this.$slickEl.slick('removeSlide', null, null, true);
       
-      addPagesToSlick();
+      addPagesToSlick.call(this);
     
     //very first start
     }else{
@@ -649,9 +661,9 @@
 
       pagesHTML.shift();
 
-      this.startSlick(itemsTargetEl, moreThan1Page ? addPagesToSlick : null);
+      this.startSlick(itemsTargetEl, moreThanOnePage ? addPagesToSlick : null);
 
-      afterRender();
+      afterRender.call(this);
     }
   };
 
@@ -725,8 +737,8 @@
     }
 
     Utils.loadScript({
-      base: this.endpoint,
-      params: Utils.extend(this.params || {}, loadParams)
+      base: this.options.endpoint,
+      params: Utils.extend(this.options.params || {}, loadParams)
     },function(data){
       that.onLoad.call(that, data);
 
@@ -752,7 +764,32 @@
     this.load(action);
   };
   
+  //currently, is not straight forward to determine if we have more than one page, this is because the carousel
+  //may wrap "n" items with pageWrapStart & pageWrapEnd.
   Carousel.prototype.initialize = function(){
+    var options = this.options;
+    var moreThanOnePage;
+    var slidesToShow = getOption(options.slidesToShow, 1);
+
+    //should this be fundamental? lets make it same a sthe player, 
+    var data = options.data;
+
+    if(data){
+      var dataLength = data.length;
+
+      if(!!this.options.pageWrapStart){
+        moreThanOnePage = this.loadMore ? dataLength >= this.itemsPerPage : dataLength > this.itemsPerPage;
+      }else{
+        moreThanOnePage = this.loadMore ? dataLength >= this.slidesToShow : dataLength > this.slidesToShow;
+      }
+
+      this.moreThanOnePage;
+
+      this.parse();
+      this.render();
+    }else{
+      //this.load('render', onProductsLoad);
+    }
   };
 
   window.Carousel = Carousel;

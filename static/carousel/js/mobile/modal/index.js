@@ -132,7 +132,8 @@
     var templates = config.templates.mobile.modal;
 
     if ('default' === style) {
-      productsCarousel = new Carousel('products', {
+      productsCarousel = new Carousel({
+        selector: 'products',
         clean: true,
         loadMore: false,
         endpoint: apiBaseUrl + '/videos/' + clickedVideo.id + '/products',
@@ -142,7 +143,6 @@
         },
         slidesToShow: 2,
         slidesToScroll: 2,
-        itemsTarget: '.slick-carousel',
         arrows: false,
         dots: true,
         dotsCenter: true,

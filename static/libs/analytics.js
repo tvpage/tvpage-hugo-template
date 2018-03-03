@@ -53,20 +53,55 @@
     Utils.globalPoll(['_tvpa'], function(){
       _tvpa.push(['config', configObj]);
     });
+
+    if(!!this.options.ciTrack)
+    
+    this.track('ci');
   };
 
   Analytics.prototype.track = function(e, data){
-    var obj = data || {
+    if(!e){
+      throw 'need event';
+    }
+
+    data = data || {
       li: this.config.loginId
     };
 
-    if(Utils.isUndefined(e) || !Utils.isObject(obj)){
-      throw "bad args";
+    var that = this;
+
+    function format(type, obj){
+      if('pi' === type || 'pk' === type){
+        return {
+          vd: obj.entityIdParent,
+          ct: obj.id,
+          pg: that.config.channelId
+        } 
+      }
     }
 
-    Utils.globalPoll(['_tvpa'], function(){
-      _tvpa.push(['track', e, data]);
-    });
+    var trackFn;
+
+    if(Array.isArray(data)){
+      trackFn = function(){
+        var length = data.length;
+        var item;
+        var i;
+
+        for (i = 0; i < length; i++) {
+          that.track('pi', format('pi', data[i]));
+        }
+      };
+    }
+    else if(Utils.isObject(data)){
+      trackFn = function(){
+        _tvpa.push(['track', e, format(data)]);
+      }
+    }else{
+      throw "bad track data";
+    }
+
+    Utils.globalPoll(['_tvpa'], trackFn);
   };
   
   window.Analytics = Analytics;

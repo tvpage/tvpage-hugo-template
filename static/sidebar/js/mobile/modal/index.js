@@ -11,37 +11,12 @@
   var productsSkeletonEl;
   var productsCarousel;
   var productsCarouselEl;
-
-  function productClickTrack(product) {
-    if(product){
-      analytics.track('pk', {
-        vd: product.entityIdParent,
-        ct: product.id,
-        pg: config.channelId
-      }); 
-    }
-  }
-
-  function productImpressionsTracking(data) {
-    var dataLength = data.length;
-    var product;
-    var i;
-
-    for (i = 0; i < dataLength; i++) {
-      product = data[i];
-
-      analytics.track('pi', {
-        vd: product.entityIdParent,
-        ct: product.id,
-        pg: config.channelId
-      });
-    }
-  }
+  var events = config.events;
 
   function initPlayer() {
     function onPlayerResize() {
       Utils.sendMessage({
-        event: config.events.modal.resize
+        event: events.modal.resize
       });
     }
 
@@ -50,13 +25,15 @@
 
       if (productsEnabled) {
         productsCarousel.endpoint = apiBaseUrl + '/videos/' + nextVideo.assetId + '/products';
-        productsCarousel.load('render', productImpressionsTracking);
+        productsCarousel.load('render', function(data){
+          analytics.track('pi', data);
+        });
       }
     }
 
     function onPlayerChange(e, asset) {
       Utils.sendMessage({
-        event: config.events.player.change,
+        event: events.player.change,
         e: e,
         stateData: asset
       });
@@ -86,7 +63,8 @@
       }
     }
 
-    player = new Player('player-el', {
+    player = new Player({
+      selector: 'player-el',
       startWith: clickedVideo.id,
       data: config.channel.videos,
       onResize: onPlayerResize,
@@ -117,7 +95,7 @@
       var targetId = target ? (Utils.attr(target, 'data-id') || null) : null;
 
       if (targetId) {
-        productClickTrack(productsCarousel.getDataItemById(targetId));
+        analytics.track('pk', productsCarousel.getDataItemById(targetId));
       }
     }, false);
 
@@ -132,7 +110,8 @@
     var templates = config.templates.mobile.modal;
 
     if ('default' === style) {
-      productsCarousel = new Carousel('products', {
+      productsCarousel = new Carousel({
+        selector: 'products',
         clean: true,
         loadMore: false,
         endpoint: apiBaseUrl + '/videos/' + clickedVideo.id + '/products',
@@ -142,7 +121,6 @@
         },
         slidesToShow: 2,
         slidesToScroll: 2,
-        itemsTarget: '.slick-carousel',
         arrows: false,
         dots: true,
         dotsCenter: true,
@@ -190,7 +168,7 @@
       productsCarousel.load('render', function (data) {
         //delayed 1st pi track
         setTimeout(function () {
-          productImpressionsTracking(data);
+          analytics.track('pi', data);
         }, 3000);
       });
     }
@@ -214,7 +192,7 @@
         productsCarousel.load('render', function(data){
           //delayed track for perf
           setTimeout(function () {
-            productImpressionsTracking(data);
+            analytics.track('pi', data);
           }, 3000);
         });
       } else {
@@ -239,7 +217,7 @@
         player.instance.stop();
 
       Utils.sendMessage({
-        event: config.events.modal.close
+        event: events.modal.close
       });
     }
 
@@ -264,7 +242,7 @@
       productsSkeletonEl = Utils.getById('skeleton').querySelector('.products-skel-delete');
 
       window.parent.addEventListener('message', function (e) {
-        if (Utils.isEvent(e) && e.data.event === config.events.modal.open) {
+        if (Utils.isEvent(e) && e.data.event === events.modal.open) {
           var videos = config.channel.videos;
 
           if (player) {
@@ -285,7 +263,7 @@
       });
 
       Utils.sendMessage({
-        event: config.events.modal.initialized
+        event: events.modal.initialized
       });
     });
 }());

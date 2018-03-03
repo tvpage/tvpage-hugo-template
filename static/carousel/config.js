@@ -33,7 +33,7 @@ if('function' === typeof onChange){
 
 var prefix = ('tvp_' + id).replace(/-/g, '_');
 
-config.id = id;
+config.id = id; 
 config.runId = prefix + Math.floor(Math.random() * 1000000);
 config.holder = null;
 config.loginId = config.loginId || config.loginid;
@@ -50,7 +50,6 @@ if(window.performance)
   config.profiling['script_loaded'] = performance.now();
 
 var playerUrl = (config.player_url + '').trim();
-playerUrl = '//cdnjs.tvpage.com/tvplayer/staging/tvp-master.min.js';
 
 config.player_url = playerUrl.length ? playerUrl : 'https://cdnjs.tvpage.com/tvplayer/tvp-' + config.player_version + '.min.js';
 

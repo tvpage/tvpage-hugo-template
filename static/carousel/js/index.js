@@ -57,7 +57,8 @@
       config.channel.videos = config.channel.videos.concat(data);
     }
 
-    videosCarousel = new Carousel('videos', {
+    videosCarousel = new Carousel({
+      selector: 'videos',
       arrows: Utils.isMobile ? false : true,
       alignArrowsY: ['center', '.video-image-icon'],
       endpoint: videosEndpoint,
@@ -70,7 +71,6 @@
       dots: true,
       dotsCenter: true,
       dotsClass: 'col py-3',
-      itemsTarget: '.slick-carousel',
       slidesToShow: config.items_per_page,
       slidesToScroll: config.items_per_page,
       itemsPerPage: config.items_per_page,
@@ -98,18 +98,17 @@
     }, config);
 
     videosCarousel.initialize();
-    videosCarousel.render();
     
     config.videosCarousel = videosCarousel;
   };
 
   function initAnalytics() {
     analytics = new Analytics({
+      ciTrack: true,
       domain: location.hostname
     }, config);
 
     analytics.initialize();
-    analytics.track('ci');
   }
 
   Utils.poll(function () {

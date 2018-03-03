@@ -78,7 +78,8 @@
       }
     }
 
-    player = new Player('player', {
+    player = new Player({
+      selector: 'player',
       ciTrack: true,
       data: config.channel.videos,
       onPlayerReady: onPlayerReady,
