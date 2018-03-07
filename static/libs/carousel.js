@@ -1,5 +1,9 @@
 (function(){
 
+  function validateTmpl(tmpl){
+    return tmpl && Utils.isString(tmpl) && tmpl.length && 'undefined' !== tmpl;
+  }
+
   function getOption(o, defaultValue){
     return Utils.isUndefined(o) ? defaultValue : o;
   }
@@ -13,15 +17,12 @@
 
     this.config = globalConfig || {};
     this.options = options || {};
-
-    //can this go somewhere else?
-    this.page = this.options.page || 0;
     
     //looks like required info here
     //this means that it loaded & rendered all, we can merge?
     this.full = this.options.full || false;
     this.loadMore = getOption(this.options.loadMore, true);
-    this.itemsPerPage = this.options.itemsPerPage;
+    this.firstLoad = true;
 
     var selector = options.selector;
     var el;
@@ -45,17 +46,13 @@
 
   Carousel.prototype.getSlickConfig = function(){
     var options = this.options;
-
-    this.appendArrows = getOption(options.appendArrows, null);
-    this.appendDots = getOption(this.options.appendDots, false);
-
     var slickConfig = {
       draggable: false,
-      slidesToShow: getOption(this.options.slidesToShow, 1),
-      slidesToScroll: getOption(this.options.slidesToScroll, 1),
+      slidesToShow: this.slidesToShow,
+      slidesToScroll: getOption(options.slidesToScroll, 1),
       infinite: options.infinite || false,
-      arrows: getOption(this.options.arrows, true),
-      dots: getOption(this.options.dots, false),
+      arrows: getOption(options.arrows, true),
+      dots: getOption(options.dots, false),
       appendArrows: this.appendArrows,
       appendDots: this.appendDots,
       customPaging: function(s, k){
@@ -68,6 +65,8 @@
     }
 
     slickConfig = Utils.removeNulls(slickConfig);
+
+    //console.log(slickConfig);
 
     return slickConfig;
   };
@@ -409,6 +408,8 @@
     this.$slickEl.on('setPosition', function(){
       that.onSlickSetPosition.call(that);
     });
+    
+    console.log(this.$slickEl)
 
     this.$slickEl.slick(this.getSlickConfig());
   };
@@ -425,13 +426,17 @@
       },0);
     }
 
-    if (Utils.isUndefined($.fn.slick)) {
+    //need to improve this
+    if(Utils.isUndefined(window.$)){
+      throw "need jQuery";
+    }
+    else if(Utils.isUndefined($.fn.slick)){
       $.ajax({
         dataType: 'script',
         cache: true,
         url: this.config.baseUrl + '/slick/slick-min.js'
       }).done(start);
-    } else {
+    }else{
       start();
     }
   };
@@ -449,16 +454,21 @@
     }
   };
 
-  Carousel.prototype.renderItem = function(item){
-    var html = "";
-
-    try{
-      html = Utils.tmpl(this.options.templates.item, item);
-    }catch(e){
-      console.log('render error ', e)
+  Carousel.prototype.renderSlide = function(slide){
+    var slideHTML = "";
+    var slideTmpl = this.options.templates.slide;
+    
+    if(validateTmpl(slideTmpl)){
+      try{
+        slideHTML = Utils.tmpl(slideTmpl, slide);
+      }catch(e){
+        throw 'render error';
+      }
+    }else{
+      throw 'unvalid template';
     }
 
-    return html;
+    return slideHTML;
   };
 
   Carousel.prototype.renderBatch = function(batch){
@@ -467,7 +477,7 @@
     var i;
 
     for (i = 0; i < batchLength; i++){
-      html += this.renderItem(batch[i]);
+      html += this.renderSlide(batch[i]);
     }
 
     return html;
@@ -539,7 +549,8 @@
   };
 
   Carousel.prototype.handleNoData = function(){
-    this.clean();
+    if(this.options.clean)
+      this.clean();
     
     var onNoData = this.options.onNoData;
 
@@ -549,60 +560,59 @@
     Utils.addClass(this.el, 'm-0');
   };
 
-  Carousel.prototype.renderPages = function(offset, onArray){
-    var html = onArray ? [] : '';
-    var pages = this.itemsPerPage > 0 ? Utils.rowerize(this.data, this.itemsPerPage) : [this.data];
+  Carousel.prototype.renderSlides = function(offset, outputAsArray){
+    var slidesHTML = outputAsArray ? [] : '';
+    
+    //console.log(slidesHTML, this.slidesToShow)
+    
+    var slides = Utils.rowerize(this.slidesData, this.slidesToShow);
+    
+    //console.log(slides)
+    
     var pageWrapStart = this.options.pageWrapStart || '';
     var pageWrapEnd = this.options.pageWrapEnd || '';
-    var pagesLength = pages.length;
-    var page;
-    var pageHTML;
+
+    var slide;
+    var slideHTML;
     var i;
     
     off = offset || 0;
 
-    for (i = 0; i < pagesLength; i++) {
-      page = pages[i + off];
+    for (i = 0; i < slides.length; i++) {
+      slide = slides[i + off];
 
-      if(page){
-        pageHTML = pageWrapStart + this.renderBatch(page) + pageWrapEnd;
+      if(slide && Array.isArray(slide)){
+        slideHTML = pageWrapStart + this.renderBatch(slide) + pageWrapEnd;
         
-        if(onArray){
-          html.push(pageHTML);
+        if(outputAsArray){
+          slidesHTML.push(slideHTML);
         }else{
-          html += pageHTML;
+          slidesHTML += slideHTML;
         }
       }
     }
 
-    return html;
+    return slidesHTML;
   };
-
+  
   Carousel.prototype.render = function(){
-    //data check
-    var all = this.data;
-    var allLength = all.length;
+    var templates = this.options.templates;
 
-    if(!allLength && this.options.clean){
-      this.handleNoData();
-
-      return;
-    }
-
-    //huh?
+    if(!templates || !Utils.isObject(templates) || Utils.isEmpty(templates) || !validateTmpl(templates.slide))
+      throw "need templates";
+    
     Utils.removeClass(this.el, 'm-0');
 
-    //render logic starts here
+    //the element that we append rendered data
     var itemsTargetEl;
-    var pagesHTML = this.renderPages(this.page, true);
-    var templates = this.options.templates;
-    var baseContext = this.config;
+    var pagesHTML = this.renderSlides(this.currentSlide, true);
 
     function renderBase(){
+      var holderTmpl = templates.holder || '<div class="slick-carousel"></div>';
       var holderEl = Utils.createEl('div');
       
-      holderEl.innerHTML = Utils.tmpl(templates.list, baseContext);
-
+      holderEl.innerHTML = Utils.tmpl(holderTmpl, this.config);
+      
       itemsTargetEl = holderEl.querySelector('.slick-carousel');
     }
 
@@ -629,17 +639,18 @@
       },10, this);
     }
 
-    var moreThanOnePage = this.moreThanOnePage;
+    var moreThanOneSlide = this.moreThanOneSlide;
 
-    if(moreThanOnePage){
+    if(moreThanOneSlide){
       Utils.removeClass(this.el, 'no-dots');
     }else{
       Utils.addClass(this.el, 'no-dots');
     }
 
     //if it's a subsequent page we need to consider offset
-    if(this.page > 0){
+    if(this.currentSlide > 0){
       addPagesToSlick.call(this);
+      console.log("1", this);
     
     //if this is a first render but slick was already created
     }
@@ -647,21 +658,22 @@
       //empty all slides
       this.$slickEl.slick('removeSlide', null, null, true);
       
+      console.log("2", this);
       addPagesToSlick.call(this);
-    
+    }
     //very first start
-    }else{
+    else{
       this.clean();
 
-      renderBase();
-
+      renderBase.call(this);
+      
       itemsTargetEl.innerHTML = pagesHTML[0];
 
       this.el.appendChild(itemsTargetEl);
 
       pagesHTML.shift();
 
-      this.startSlick(itemsTargetEl, moreThanOnePage ? addPagesToSlick : null);
+      this.startSlick(itemsTargetEl, moreThanOneSlide ? addPagesToSlick : null);
 
       afterRender.call(this);
     }
@@ -681,24 +693,27 @@
     }
   };
 
-  Carousel.prototype.parse = function(){
-    var dataLength = this.data.length;
+  Carousel.prototype.serialize = function(){
     var i;
-
-    for (i = 0; i < dataLength; i++){
-      if(Utils.isFunction(this.options.parse))
-        this.options.parse(this.data[i]);
+    var l = this.slidesDataQty;
+    var serialize = this.options.serialize;
+    
+    if(Utils.isFunction(serialize)){
+      for (i = 0; i < l; i++){
+        serialize(this.slidesData[i]);
+      }
     }
   };
 
   Carousel.prototype.onLoad = function(data){
     this.loading = false;
 
-    var dataLength = data.length || 0;
+    var length = data.length || 0;
 
     if(!this.loadMore){
-      this.data = data;
-    }else if(!dataLength){
+      this.slidesData = data;
+    }
+    else if(!length){
       this.full = true;
       
       if(this.options.clean)
@@ -706,18 +721,22 @@
 
       //if no more data we don't want to move further
       return;
-    }else if(dataLength < this.itemsPerPage){
+    }
+    else if(length < this.slidesToShow){
       this.full = true;
 
-      this.data = this.data.concat(data);
-    }else{
-      this.data = this.data.concat(data);
+      this.slidesData = this.slidesData.concat(data);
+    }
+    else{
+      this.slidesData = this.slidesData.concat(data);
     }
 
     var onLoad = this.options.onLoad;
 
     if(Utils.isFunction(onLoad))
-      onLoad(data);
+      onLoad(data, this.firstLoad);
+
+    this.firstLoad = false;
   };
 
   Carousel.prototype.load = function(action, callback){
@@ -725,20 +744,21 @@
       return;
 
     this.loading = true;
-
-    var that = this;
+    
     var loadParams = {
       'X-login-id': this.config.loginId,
       p: this.page
     };
 
     if(!this.full){
-      loadParams.n = this.itemsPerPage;
+      loadParams.n = this.slidesToShow;
     }
 
+    var that = this;
+
     Utils.loadScript({
-      base: this.options.endpoint,
-      params: Utils.extend(this.options.params || {}, loadParams)
+      base: this.loadUrl,
+      params: Utils.compact(Utils.extend(this.options.params || {}, loadParams))
     },function(data){
       that.onLoad.call(that, data);
 
@@ -768,28 +788,51 @@
   //may wrap "n" items with pageWrapStart & pageWrapEnd.
   Carousel.prototype.initialize = function(){
     var options = this.options;
-    var moreThanOnePage;
-    var slidesToShow = getOption(options.slidesToShow, 1);
+    
+    this.slidesData = options.data && Array.isArray(options.data) ? options.data : [];
+    this.slidesDataQty = this.slidesData.length;
+    this.currentSlide = this.options.page || 0;
+    
+    //this.slidesToShow = getOption(options.slidesToShow, 1);
 
-    //should this be fundamental? lets make it same a sthe player, 
-    var data = options.data;
+    //are we currently supporting having different values for slidestoshow and items per page?
+    //can we simplify this?
+    var qty = this.slidesDataQty;
 
-    if(data){
-      var dataLength = data.length;
+    if(qty){
+      var slidesToShow = this.options.slidesToShow || 3;
 
-      if(!!this.options.pageWrapStart){
-        moreThanOnePage = this.loadMore ? dataLength >= this.itemsPerPage : dataLength > this.itemsPerPage;
-      }else{
-        moreThanOnePage = this.loadMore ? dataLength >= this.slidesToShow : dataLength > this.slidesToShow;
-      }
+      this.moreThanOneSlide = qty > slidesToShow;
+      this.slidesToShow = slidesToShow;
+      this.appendArrows = getOption(options.appendArrows, null);
+      this.appendDots = getOption(options.appendDots, false);
 
-      this.moreThanOnePage;
-
-      this.parse();
+      this.serialize();
       this.render();
-    }else{
-      //this.load('render', onProductsLoad);
+
+      //if its grouped...
+      // if(!!this.options.pageWrapStart){
+      //   moreThanOne = this.loadMore ? slidesDataQty == this.itemsPerPage : 
+      //   slidesDataQty > this.itemsPerPage;
+      // }
     }
+    else{
+      var loadUrl = this.options.loadUrl;
+
+      if(loadUrl && Utils.isString(loadUrl) && loadUrl.length && 'undefined' != loadUrl){
+        this.loadUrl = loadUrl;
+        
+        this.load('render');
+      }
+      else{
+        throw "need url to load data";
+      }
+      
+      //don't forget this
+      //this.handleNoData();
+    }
+
+    return;
   };
 
   window.Carousel = Carousel;

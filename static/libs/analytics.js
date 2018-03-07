@@ -41,7 +41,21 @@
     }
   };
 
+  Analytics.prototype.onReady = function(){
+    if(this.isReady)
+      return;
+
+    var onReady = this.options.onReady;
+
+    if(Utils.isFunction(onReady)){
+      onReady();
+    }
+
+    this.isReady = true;
+  };
+
   Analytics.prototype.initialize = function(){
+    var that = this;
     var configObj = {
       domain: this.options.domain,
       li: this.config.loginId,
@@ -52,11 +66,12 @@
 
     Utils.globalPoll(['_tvpa'], function(){
       _tvpa.push(['config', configObj]);
-    });
 
-    if(!!this.options.ciTrack)
-    
-    this.track('ci');
+      if(!!that.options.ciTrack)
+        that.track('ci');
+
+      that.onReady();
+    });
   };
 
   Analytics.prototype.track = function(e, data){
@@ -68,19 +83,16 @@
       li: this.config.loginId
     };
 
-    var that = this;
-
-    function format(type, obj){
+    var trackFn;
+    var format = function(type, obj){
       if('pi' === type || 'pk' === type){
         return {
+          pg: this.config.channelId,
           vd: obj.entityIdParent,
-          ct: obj.id,
-          pg: that.config.channelId
+          ct: obj.id
         } 
       }
     }
-
-    var trackFn;
 
     if(Array.isArray(data)){
       trackFn = function(){
@@ -89,19 +101,20 @@
         var i;
 
         for (i = 0; i < length; i++) {
-          that.track('pi', format('pi', data[i]));
+          _tvpa.push(['track', e, format.call(this, data[i])]);
         }
       };
     }
     else if(Utils.isObject(data)){
       trackFn = function(){
-        _tvpa.push(['track', e, format(data)]);
+        _tvpa.push(['track', e, format.call(this, data)]);
       }
-    }else{
+    }
+    else{
       throw "bad track data";
     }
 
-    Utils.globalPoll(['_tvpa'], trackFn);
+    trackFn();
   };
   
   window.Analytics = Analytics;

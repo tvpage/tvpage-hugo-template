@@ -68,11 +68,11 @@
 
   function initAnalytics() {
     analytics = new Analytics({
+      ciTrack: true,
       domain: location.hostname
     }, config);
 
     analytics.initialize();
-    analytics.track('ci');
   }
 
   Utils.poll(function () {

@@ -17,10 +17,6 @@
   var isFirstVideoPlay = true;
   var isFirstPlayButtonClick = true;
   var widgetTitleEl;
-  var videosOrderParams = {
-    o: config.videos_order_by,
-    od: config.videos_order_direction
-  };
   var productsOrderParams = {
     o: config.products_order_by,
     od: config.products_order_direction
@@ -31,32 +27,6 @@
       event: config.events.resize,
       height: Utils.getWidgetHeight()
     });
-  }
-
-  function productClickTrack(product) {
-    if(product){
-      analytics.track('pk', {
-        vd: product.entityIdParent,
-        ct: product.id,
-        pg: config.channelId
-      }); 
-    }
-  }
-
-  function productImpressionsTracking(data) {
-    var dataLength = data.length;
-    var product;
-    var i;
-
-    for (i = 0; i < dataLength; i++) {
-      product = data[i];
-
-      analytics.track('pi', {
-        vd: product.entityIdParent,
-        ct: product.id,
-        pg: config.channelId
-      });
-    }
   }
 
   function onWidgetReady() {
@@ -77,7 +47,7 @@
 
     productsCarousel.endpoint = apiBaseUrl + '/videos/' + videoId + '/products';
     productsCarousel.load('render', function (data) {
-      productImpressionsTracking(data);
+      analytics.track('pi', data);
 
       if (featuredProduct) {
         featuredProduct.data = data[0];
@@ -138,7 +108,10 @@
       alignArrowsY: ['center', '.video-image-icon'],
       page: 0,
       endpoint: channelVideosEndpoint,
-      params: Utils.extend(videosOrderParams, channelParams),
+      params: Utils.extend({
+        o: config.videos_order_by,
+        od: config.videos_order_direction
+      }, channelParams),
       data: channelVideos,
       slidesToShow: 4,
       slidesToScroll: 1,
@@ -190,7 +163,7 @@
       var that = this;
 
       this.el.addEventListener('click', function (e) {
-        productClickTrack(that.data);
+        analytics.track('pk', that.data);
       });
     }
 
@@ -234,15 +207,15 @@
     }
 
     //this is just the first load
-    function onProductsLoad(data) {
-      if (data) {
+    function onProductsLoad(data, first) {
+      if (data && first) {
         featuredProduct = new FeaturedProduct('featured-product');
         featuredProduct.data = data[0];
         featuredProduct.render();
 
         //delayed 1st pi track
         setTimeout(function () {
-          productImpressionsTracking(data);
+          analytics.track('pi', data);
         }, 3000);
       }
     }
@@ -257,7 +230,7 @@
       var targetId = target ? (Utils.attr(target, 'data-id') || null) : null;
 
       if (targetId) {
-        productClickTrack(productsCarousel.getDataItemById(targetId));
+        analytics.track('pk', productsCarousel.getDataItemById(targetId));
       }
     }, false);
 
@@ -293,7 +266,7 @@
       productsCarousel.initialize();
       productsCarousel.load('render', function(data){
         setTimeout(function () {
-          productImpressionsTracking(data);
+          analytics.track('pi', data);
         }, 3000);
       });
     } else {
@@ -319,9 +292,7 @@
         onReady: onProductsCarouselReady,
         onResize: sendResizeMessage,
         onClick: onClick,
-        onFirstLoad: function(){
-          console.log("here")
-        }
+        onLoad: onProductsLoad
       }, config);
 
       productsCarousel.initialize();
@@ -404,8 +375,8 @@
     Utils.globalPoll(
       ['jQuery', 'Utils', 'Player', 'Carousel', 'Analytics'],
       function () {
-        //initPlayer();
-        //initVideos();
+        initPlayer();
+        initVideos();
         initAnalytics();
         initProducts();
       });

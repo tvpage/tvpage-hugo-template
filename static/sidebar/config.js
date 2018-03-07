@@ -43,10 +43,15 @@ config.profiling = config.profiling || {};
 if(window.performance)
   config.profiling['script_loaded'] = performance.now();
 
-var playerUrl = (config.player_url + '').trim();
-playerUrl = '//cdnjs.tvpage.com/tvplayer/staging/tvp-master.min.js';
+var playerUrl = config.player_url;
 
-config.player_url = playerUrl.length ? playerUrl : 'https://cdnjs.tvpage.com/tvplayer/tvp-' + config.player_version + '.min.js';
+if(playerUrl && 'string' === typeof playerUrl){
+  playerUrl = playerUrl.trim();
+}else{
+  playerUrl = 'https://cdnjs.tvpage.com/tvplayer/tvp-' + config.player_version + '.min.js';
+}
+
+config.player_url = playerUrl;
 
 config.events = {
   prefix: prefix,

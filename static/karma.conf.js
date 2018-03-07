@@ -3,11 +3,15 @@
 module.exports = function(karma) {
   karma.set({
 
-    frameworks: [ 'jasmine', 'fixture' ],
+    frameworks: [
+      'jasmine',
+      'fixture'
+    ],
 
     files: [
       'test/vendor/tvp-3.1.4.min.js',
       'test/vendor/tvpa.min.js',
+      'test/vendor/jquery.js',
 
       'libs/**/!(utils.min).js',
 
@@ -25,8 +29,8 @@ module.exports = function(karma) {
     },
 
     browsers: [ 
-      'PhantomJS',
-      //'Chrome'
+      //'PhantomJS',
+      'Chrome'
     ],
 
     logLevel: 'LOG_DEBUG',
