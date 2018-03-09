@@ -266,6 +266,7 @@
 
   Player.prototype.getConfig = function () {
     return Utils.compact({
+      sharing: this.sharing,
       techOrder: this.getOption('tech_order'),
       mediaProviders: this.getOption('media_providers'),
       analytics: {
@@ -345,6 +346,7 @@
 
     asset.assetId = obj.id;
     asset.assetTitle = obj.title;
+    asset.assetTitleTextEncoded = obj.titleTextEncoded;
     asset.loginId = obj.loginId;
     asset.type = asset.type || 'youtube';
     asset.analyticsObj = {
@@ -381,6 +383,7 @@
     this.flashUrl = '//cdnjs.tvpage.com/tvplayer/tvp-' + this.version + '.swf';
     this.autoplay = this.getOption('autoplay');
     this.autonext = this.getOption('autonext');
+    this.sharing = this.getOption('sharing');
     this.onChange = this.getCallableOption('onChange');
     this.onResize = this.getCallableOption('onResize');
     this.onNext = this.getCallableOption('onNext');

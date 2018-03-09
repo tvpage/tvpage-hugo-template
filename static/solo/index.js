@@ -141,13 +141,12 @@ function getInitialHtml(){
 
 //build the player url
 function getPlayerUrl(){
-  var url = "https://cdnjs.tvpage.com/tvplayer/tvp-" + config.player_version + ".min.js";
   
   if (config.player_url && (config.player_url + "").trim().length) {
-      url = config.player_url;
+    url = config.player_url;
   }
 
-  return url;
+  return config.baseUrl + "/player-sharing.js";
 }
 
 //here's the first HTML write we do to the host page, this is the fastest way to do it
@@ -181,8 +180,7 @@ function widgetRender(){
         '//www.youtube.com/iframe_api',
         '//a.tvpage.com/tvpa.min.js',
         '//imasdk.googleapis.com/js/sdkloader/ima3.js',
-        //getPlayerUrl(),
-        '//cdnjs.tvpage.com/tvplayer/staging/tvp-master.min.js',
+        getPlayerUrl(),
         debug ? jsPath + "/vendor/perfect-scrollbar.min.js" : "",
         debug ? libsPath + "/analytics.js" : "",
         debug ? libsPath + "/player.js" : "",
