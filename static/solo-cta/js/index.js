@@ -33,24 +33,28 @@
     }
 
     var clickToActionEl = Utils.getById('click-to-action');
-    var img = new Image();
-
-    img.onload = function () {
+    
+    function done(){
       Utils.remove(Utils.getById('skeleton').querySelector('.cta-skel-delete'));
-
       Utils.removeClass(clickToActionEl, 'hide-abs');
 
       config.profiling['widget_ready'] = Utils.now('parent');
 
       //send the profile log of the collected metrics
       Utils.sendProfileData(config);
-    };
+    }
 
-    var firstVideoImage = firstVideo.asset.thumbnailUrl;
+    var thumbnailUrl = firstVideo.asset.thumbnailUrl;
+    
+    if(thumbnailUrl){
+      var img = new Image();
+      img.onload = done();
+      img.src = thumbnailUrl;  
 
-    img.src = firstVideoImage;
-
-    clickToActionEl.querySelector('.video-image').style.backgroundImage = 'url(' + firstVideoImage + ')';
+      clickToActionEl.querySelector('.video-image').style.backgroundImage = 'url(' + thumbnailUrl + ')';
+    }else{
+      done();
+    }
 
     clickToActionEl.querySelector('.click-to-action-text').innerHTML = firstVideo.title;
 
