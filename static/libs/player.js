@@ -301,7 +301,7 @@
   }
 
   Player.prototype.startPlayer = function () {
-    var config = this.getConfig();
+    var config = this.getConfig.call(this);
     var that = this;
 
     Utils.globalPoll(['TVPage'], function () {
