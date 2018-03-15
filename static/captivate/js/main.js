@@ -670,11 +670,11 @@
         },
         playVideo : function(video){
           if (video) {
-            inTimeProducts.destroy();
-            inTimeProducts.initialize({
-                videoId: video.id,
-                channelId: TVSite.channelId
-            });
+            // inTimeProducts.destroy();
+            // inTimeProducts.initialize({
+            //     videoId: video.id,
+            //     channelId: TVSite.channelId
+            // });
             var data = tvp_Player.buildVideoData(video);
             
             if (isMobile) {
