@@ -796,11 +796,6 @@
         handlePlayerReady : function(){
           videoList = TVSite.channelVideosData.videos;
           tvp_Player.resizePlayer();
-          if ( initialPlay && 'channelVideosData' in TVSite ) {
-            var video = TVSite.channelVideosData.video;
-            tvp_Player.startPlayback(video);
-            initialPlay = false;
-          }
         },
         handlePlayerStateChange : function(e){
           if ('tvp:media:videoended' == e) {
@@ -1483,6 +1478,13 @@
                 floater: { removeControls:['tvplogo'] }
             }
         });
+
+        if ( initialPlay && 'channelVideosData' in TVSite ) {
+            var video = TVSite.channelVideosData.video;
+            tvp_Player.startPlayback(video);
+            initialPlay = false;
+        }
+
         /**
         * Fullscreen poll/check
         */
