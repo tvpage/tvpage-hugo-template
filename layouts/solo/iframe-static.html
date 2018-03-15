@@ -1,0 +1,69 @@
+{{- partial "config.html" . -}}
+<!doctype html>
+<html class='no-js' lang=''>
+<head>
+  <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width,minimum-scale=1,initial-scale=1'>
+  <link href='https://www.youtube.com' rel='preconnect' crossorigin>
+  <link href='https://cdnjs.tvpage.com' rel='preconnect' crossorigin>
+  <link href='https://a.tvpage.com/tvpa.min.js' rel='preconnect' crossorigin>
+  <link href='https://s.ytimg.com' rel='preconnect' crossorigin>
+  <title>{{ .Title }}</title>
+</head>
+<body>
+  <style>
+    body{margin:0;padding:0}.player{height:0;width:100%;position:relative;padding-bottom:56.25%}#player-el{background-repeat:no-repeat;background-position:center;background-size:cover;background-color:#000;position:absolute;top:0;bottom:0;left:0;right:0;width:100%;height:100%}
+  </style>
+  <div class="player"><div id="player-el"></div></div>
+  {{- if(.Params.advertising.enabled) -}}
+    <script async type="text/javascript" src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
+  {{- end -}}
+
+  <script async src="//a.tvpage.com/tvpa.min.js"></script>
+  <script async src='//cdnjs.tvpage.com/tvplayer/tvp-{{ ($.Scratch.Get "settings").player_version }}.min.js'></script>
+
+  {{- if (getenv "HUGO_DEBUG") -}}
+    <script src='{{ "libs/utils.js" | relURL }}'></script>
+    <script src='{{ "libs/analytics.js" | relURL }}'></script>
+    <script src='{{ "libs/player.js" | relURL }}'></script>
+  {{- else -}}
+    <script src='{{ "embed/dist/js/scripts.min.js" | relURL }}'></script>
+  {{- end -}}
+
+  <script>
+    (function(config, videoId, channelId){
+      config = Utils.extend(config, Utils.getUrlParams());
+      config.loginId = config.loginId || config.loginid;
+
+      var channelVideos = [];
+
+      if(videoId){
+        {{ if $.Site.Data.videos }}
+          channelVideos.push({{ index $.Site.Data.videos (printf "x%s" .Params.videoid) }});
+        {{ end }}
+      }else if(channelId){
+        {{ if $.Site.Data.channelVideos }}
+          channelVideos = {{ index $.Site.Data.channelVideos (printf "x%s_page_0" .Params.channelid) }};
+          channelVideos = channelVideos.data;
+        {{ end }}
+      }
+
+      if(!channelVideos.length){
+        throw new Error("no data");
+      }
+
+      var player = new Player({
+        selector: 'player-el',
+        ciTrack: true,
+        data: channelVideos
+      }, config);
+
+      player.initialize();
+    }(
+      {{ $.Scratch.Get "settings" }},
+      {{ with .Params.videoid }}{{ . }}{{ else }}''{{ end }},
+      {{ with .Params.channelid }}{{ . }}{{ else }}''{{ end }}
+    ))
+  </script>
+</body>
+</html>
