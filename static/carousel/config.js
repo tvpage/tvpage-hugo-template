@@ -49,10 +49,6 @@ config.items_per_page = Number(!!displayAmount ? displayAmount : config.items_pe
 if(window.performance)
   config.profiling['script_loaded'] = performance.now();
 
-var playerUrl = (config.player_url + '').trim();
-
-config.player_url = playerUrl.length ? playerUrl : 'https://cdnjs.tvpage.com/tvplayer/tvp-' + config.player_version + '.min.js';
-
 config.events = {
   prefix: prefix,
   initialized: prefix + ':widget_initialized',
@@ -71,5 +67,9 @@ config.events = {
 if('localhost' === location.hostname){
   config.baseUrl = config.baseUrl.substring(0, config.baseUrl.length - 1);
 }
+
+var playerUrl = config.player_url || '';
+
+config.player_url = "undefined" !== typeof playerUrl && playerUrl.length ? playerUrl : 'https://cdnjs.tvpage.com/tvplayer/tvp-' + config.player_version + '.min.js';
 
 window.__TVPage__.config[id] = config;
