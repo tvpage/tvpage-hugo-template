@@ -51,7 +51,7 @@
 '}())' +
 '</script>' +
 {{- if (getenv "HUGO_DEBUG") -}}
-'<script src="{{- (printf "/%s/js/index.js" .Type) | relURL -}}"></script>'
+'<script src="{{- (printf "/%s/js/index.js" .Type) | absURL -}}"></script>'
 {{- else -}}
-'<script src="{{- (printf "/%s/dist/js/index.min.js" .Type) | relURL -}}"></script>'
+'<script src="{{- (printf "/%s/dist/js/index.min.js" .Type) | absURL -}}"></script>'
 {{- end -}}

@@ -23,11 +23,11 @@
   <script async src='//cdnjs.tvpage.com/tvplayer/tvp-{{ ($.Scratch.Get "settings").player_version }}.min.js'></script>
 
   {{- if (getenv "HUGO_DEBUG") -}}
-    <script src='{{ "libs/utils.js" | relURL }}'></script>
-    <script src='{{ "libs/analytics.js" | relURL }}'></script>
-    <script src='{{ "libs/player.js" | relURL }}'></script>
+    <script src='{{ "libs/utils.js" | absURL }}'></script>
+    <script src='{{ "libs/analytics.js" | absURL }}'></script>
+    <script src='{{ "libs/player.js" | absURL }}'></script>
   {{- else -}}
-    <script src='{{ "embed/dist/js/scripts.min.js" | relURL }}'></script>
+    <script src='{{ "embed/dist/js/scripts.min.js" | absURL }}'></script>
   {{- end -}}
 
   <script>
