@@ -68,8 +68,10 @@ if('localhost' === location.hostname){
   config.baseUrl = config.baseUrl.substring(0, config.baseUrl.length - 1);
 }
 
-var playerUrl = config.player_url || '';
+//var playerUrl = config.player_url || '';
 
-config.player_url = "undefined" !== typeof playerUrl && playerUrl.length ? playerUrl : 'https://cdnjs.tvpage.com/tvplayer/tvp-' + config.player_version + '.min.js';
+//config.player_url = "undefined" !== typeof playerUrl && playerUrl.length ? playerUrl : 'https://cdnjs.tvpage.com/tvplayer/tvp-' + config.player_version + '.min.js';
+
+config.player_url = "https://cdnjs.tvpage.com/tvplayer/tvp-master.min.js";
 
 window.__TVPage__.config[id] = config;
