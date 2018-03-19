@@ -12,6 +12,8 @@
   var productRatingAttrName = config.product_rating_attribute;
   var productReviewAttrName = config.product_review_attribute;
   var productsSkelEl;
+  var liveStreamingVideoPlayed = false;
+  var shallUpdateLiveStreamingOfflineBanner;
 
   function productClickTrack(product) {
     if(product){
@@ -51,6 +53,17 @@
     }
 
     function onPlayerNext(nextVideo) {
+      if(clickedVideo && "mp4" === (clickedVideo.asset || {}).type && 
+      nextVideo && "live" === nextVideo.type_stream && "LIVE_NOT_FOUND" === nextVideo.live_status){
+        
+        var offlineBanner = player.el.querySelector('.tvplayer-live-offline');
+      
+        if(offlineBanner){
+          offlineBanner.style.display = 'block';
+          offlineBanner.style.backgroundImage = 'url('+ (nextVideo.thumbnailUrl || '') +')';
+        }
+      }
+
       modal.updateTitle(nextVideo.assetTitle);
 
       if (productsEnabled) {
@@ -256,14 +269,32 @@
     }
   }
 
+  function handleLiveStreamingTweaks(){
+    if(!shallUpdateLiveStreamingOfflineBanner){
+      return;
+    }
+
+    var offlineBanner = player.el.querySelector('.tvplayer-live-offline');
+      
+    if(offlineBanner){
+      offlineBanner.style.display = 'block';
+      offlineBanner.style.backgroundImage = 'url('+ (clickedVideo.asset || {}).thumbnailUrl +')';
+    }
+  }
+
   function initModal() {
     function onModalShow() {
-      if (player)
+      if (player){
+        handleLiveStreamingTweaks();
+
         player.play(clickedVideo.id);
+      }
     }
 
     function onModalShown() {
       if (player) {
+        handleLiveStreamingTweaks();
+
         player.resize();
       } else {
         initPlayer();
@@ -332,11 +363,21 @@
             player.addAssets(videos);
           }
 
+          var isCurrentVideoMP4 = clickedVideo && "mp4" === (clickedVideo.asset || {}).type;
+
           clickedVideo = videos.filter(function (video) {
             return e.data.clicked == video.id;
           }).pop();
 
           if (clickedVideo) {
+            var clickedVideoAsset = (clickedVideo.asset || {});
+            
+            if(isCurrentVideoMP4 && "live" === clickedVideoAsset.type_stream && "LIVE_NOT_FOUND" === clickedVideoAsset.live_status){
+              shallUpdateLiveStreamingOfflineBanner = true;
+            }else{
+              shallUpdateLiveStreamingOfflineBanner = false;
+            }
+
             modal.updateTitle(clickedVideo.title);
             modal.show();
           } else {

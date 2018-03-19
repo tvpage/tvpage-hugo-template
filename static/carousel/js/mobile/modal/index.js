@@ -86,7 +86,8 @@
       }
     }
 
-    player = new Player('player-el', {
+    player = new Player({
+      selector:'player-el',
       startWith: clickedVideo.id,
       data: config.channel.videos,
       onResize: onPlayerResize,
