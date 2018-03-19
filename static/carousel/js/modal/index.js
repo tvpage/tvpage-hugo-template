@@ -54,7 +54,7 @@
 
     function onPlayerNext(nextVideo) {
       if(clickedVideo && "mp4" === (clickedVideo.asset || {}).type && 
-      nextVideo && "live" === nextVideo.type_stream && "LIVE_NOT_FOUND" === nextVideo.live_status){
+      nextVideo && "live" === nextVideo.type_stream && ("LIVE_STOPPED" === nextVideo.live_status || "LIVE_NOT_FOUND" === nextVideo.live_status)){
         
         var offlineBanner = player.el.querySelector('.tvplayer-live-offline');
       
@@ -372,7 +372,7 @@
           if (clickedVideo) {
             var clickedVideoAsset = (clickedVideo.asset || {});
             
-            if(isCurrentVideoMP4 && "live" === clickedVideoAsset.type_stream && "LIVE_NOT_FOUND" === clickedVideoAsset.live_status){
+            if(isCurrentVideoMP4 && "live" === clickedVideoAsset.type_stream && ("LIVE_NOT_FOUND" === clickedVideoAsset.live_status || "LIVE_STOPPED" === clickedVideoAsset.live_status) ){
               shallUpdateLiveStreamingOfflineBanner = true;
             }else{
               shallUpdateLiveStreamingOfflineBanner = false;
