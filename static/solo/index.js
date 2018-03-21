@@ -79,7 +79,7 @@ function loadScript(options, cback){
 function getIframeHtml(o){
   function load(arr, type){
     arr = arr.filter(Boolean);
-    
+
     var ret = '';
     var arrLength = arr.length;
 
@@ -93,7 +93,7 @@ function getIframeHtml(o){
   var html = config.templates.iframeContent.trim();
 
   html += '<div id="bscheck" class="invisible"></div>';
-  
+
   if(o.style){
     html += '<style>' + o.style + '</style>';
   }
@@ -141,7 +141,6 @@ function getInitialHtml(){
 
 //build the player url
 function getPlayerUrl(){
-  
   if (config.player_url && (config.player_url + "").trim().length) {
     url = config.player_url;
   }
@@ -155,11 +154,11 @@ function widgetRender(){
   function render(){
     var targetEl = getById(config.targetEl);
     targetEl.insertAdjacentHTML('beforebegin',getInitialHtml());
-    
+
     remove(targetEl);
-  
+
     config.holder = getById(config.id + "-holder");
-  
+
     var debug = config.debug;
     var baseUrl = config.baseUrl;
     var jsPath = config.paths.javascript;
@@ -168,7 +167,7 @@ function widgetRender(){
     var cssPath = config.paths.css
     var iframe = config.holder.querySelector("iframe");
     var iframeDocument = iframe.contentWindow.document;
-  
+
     iframeDocument.open().write(getIframeHtml({
       id: config.id,
       domain: baseUrl,
@@ -194,9 +193,9 @@ function widgetRender(){
         debug ? "" : cssPath + "/styles.min.css"
       ]
     }));
-  
+
     iframeDocument.close();
-    
+
     saveProfileLog(config, 'widget_rendered');
   }
 
@@ -207,14 +206,14 @@ function widgetRender(){
   }else{
     var targetElCheck = 0;
     var targetElCheckLimit = 1000;
-    
+
     (function checkTargetEl(){
       setTimeout(function() {
         var ready = true;
 
         if(!getById(config.targetEl))
           ready = false;
-    
+
         if(ready){
           render();
         }else if(++targetElCheck < targetElCheckLimit){
@@ -229,7 +228,7 @@ function widgetRender(){
 
 function onWidgetLoad(data){
   saveProfileLog(config, 'data_returned');
-  
+
   if(data && data.length){
     config.channel.videos = data;
 
@@ -237,7 +236,7 @@ function onWidgetLoad(data){
   }
 };
 
-//api calls/loading, is here were we call the most important api(s) and it's the start 
+//api calls/loading, is here were we call the most important api(s) and it's the start
 //of everything.
 function widgetLoad(){
   var videosLoadParams = {

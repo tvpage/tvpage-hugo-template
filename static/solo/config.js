@@ -47,11 +47,11 @@
   config.events = {
     prefix: prefix
   };
-  
+
   if('localhost' === location.hostname){
     config.baseUrl = config.baseUrl.substring(0, config.baseUrl.length - 1);
   }
-  
+
   var static = config.baseUrl + '/' + config.type;
   var dist = config.debug ? '/' : '/dist/';
 
