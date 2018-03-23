@@ -20,7 +20,8 @@
   {{- end -}}
 
   <script async src="//a.tvpage.com/tvpa.min.js"></script>
-  <script async src='//cdnjs.tvpage.com/tvplayer/tvp-{{ ($.Scratch.Get "settings").player_version }}.min.js'></script>
+  <!-- <script async src='//cdnjs.tvpage.com/tvplayer/tvp-{{ ($.Scratch.Get "settings").player_version }}.min.js'></script> -->
+  <script async src='{{ "player-sharing.js" | absURL }}'></script>
 
   {{- if (getenv "HUGO_DEBUG") -}}
     <script src='{{ "libs/utils.js" | relURL }}'></script>
