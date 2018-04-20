@@ -139,13 +139,14 @@ function getInitialHtml(){
   return html;
 }
 
-//build the player url
+//build the `player` url
 function getPlayerUrl(){
   if (config.player_url && (config.player_url + "").trim().length) {
     url = config.player_url;
   }
 
-  return config.baseUrl + "/player-sharing.js";
+  //return "http://local.tvpage.com/tvplayer/dist/debug/lib.js";
+  return config.baseUrl + "/player-autoplay.js";
 }
 
 //here's the first HTML write we do to the host page, this is the fastest way to do it
