@@ -101,11 +101,11 @@
     if(!this.instance)
       return;
 
-    if (this.shallCue(ongoing)) {
-      this.instance.cueVideo(asset);
-    } else {
-      this.instance.loadVideo(asset);
-    }
+    // if (this.shallCue(ongoing)) {
+    //   this.instance.cueVideo(asset);
+    // } else {
+    this.instance.loadVideo(asset);
+    // }
   };
 
   Player.prototype.controlBarZindex = function () {
