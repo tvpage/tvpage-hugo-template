@@ -67,7 +67,7 @@ if('localhost' === location.hostname){
 }
 
 var playerUrl = (config.player_url + '').trim();
-playerUrl = config.baseUrl + '/player-sharing.js';
+playerUrl = config.baseUrl + '/player-autoplay.js';
 
 config.player_url = playerUrl.length ? playerUrl : 'https://cdnjs.tvpage.com/tvplayer/tvp-' + config.player_version + '.min.js';
 
