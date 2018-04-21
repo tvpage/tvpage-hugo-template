@@ -142,10 +142,10 @@ function getInitialHtml(){
 //build the `player` url
 function getPlayerUrl(){
 
-  return 'https://cdnjs.tvpage.com/tvplayer/tvp-3.1.5.min.js';
-
+  //return 'https://cdnjs.tvpage.com/tvplayer/tvp-3.1.5.min.js';
+  //return 'http://local.tvpage.com/tvplayer/dist/debug/lib.js';
   //return "http://local.tvpage.com/tvplayer/dist/debug/lib.js";
-  //return config.baseUrl + "/player-autoplay.js";
+  return config.baseUrl + "/player-autoplay.js";
 }
 
 //here's the first HTML write we do to the host page, this is the fastest way to do it
