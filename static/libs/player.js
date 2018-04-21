@@ -101,6 +101,9 @@
     if(!this.instance)
       return;
 
+    //if the browsers is not capable of video autoplay
+    //turn on the policy change chrome://flags/#autoplay-policy
+
     // if (this.shallCue(ongoing)) {
     //   this.instance.cueVideo(asset);
     // } else {
