@@ -142,9 +142,7 @@ function getInitialHtml(){
 //build the `player` url
 function getPlayerUrl(){
 
-  //return 'https://cdnjs.tvpage.com/tvplayer/tvp-3.1.5.min.js';
-  //return 'http://local.tvpage.com/tvplayer/dist/debug/lib.js';  
-  //return config.baseUrl + "/player-autoplay.js";
+  //return 'http://local.tvpage.com/tvplayer/dist/debug/lib.js';
   return "//cdnjs.tvpage.com/tvplayer/tvp-3.1.6.min.js";
 }
 

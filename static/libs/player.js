@@ -103,12 +103,11 @@
 
     //if the browsers is not capable of video autoplay
     //turn on the policy change chrome://flags/#autoplay-policy
-
-    // if (this.shallCue(ongoing)) {
-    //   this.instance.cueVideo(asset);
-    // } else {
-    this.instance.loadVideo(asset);
-    // }
+    if (this.shallCue(ongoing)) {
+      this.instance.cueVideo(asset);
+    } else {
+      this.instance.loadVideo(asset);
+    }
   };
 
   Player.prototype.controlBarZindex = function () {
