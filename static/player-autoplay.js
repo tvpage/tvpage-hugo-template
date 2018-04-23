@@ -1,4 +1,4 @@
-/*! TVPlayer - v3.1.5 - 37f8bb543e45c8acc3570f01b3d1f67607e13f04 
+/*! TVPlayer - v3.1.6 - 4f10258674b2816091b7278d253ccc375ec8f6f9 
 * https://www.tvpage.com
 * Copyright (c) 2018 Lior Kuyer, TVPage, Inc.; Licensed GPL */
 (function(global, define) {
@@ -1136,7 +1136,8 @@ define('html5/media/YouTubeIframeAPI',[
         type:"text/html" ,
         wmode:"transparent",
         frameborder:"0",
-        modestbranding:"1"
+        modestbranding:"1",
+        allow:"autoplay"
       };
       
       for (var i in attributes) {
@@ -1224,12 +1225,40 @@ define('html5/media/YouTubeIframeAPI',[
     };
 
     YouTubeIframeAPI.prototype.loadVideo = function(video, playbackOptions){
-      if(this.isPlayerLoaded()){
+      var videoEl = document.createElement('video');
+      videoEl.style.display = "none"
+
+      this.wrapperElement.appendChild(videoEl);
+
+      function clearVideoEl(){
+        videoEl.parentNode.removeChild(videoEl);
+      }
+
+      function load(){
+        if(!this.isPlayerLoaded())
+          return;
+
         this.setVolume(playbackOptions.get('volume'));
 
         playbackOptions.get('isMute') ? this.player.mute() : this.player.unMute();
 
         this.player.loadVideoById(this.getVideoId(video));
+      };
+
+      var autoPlayCall = videoEl.play();
+      var THAT = this;
+
+      if (autoPlayCall !== undefined) {
+        autoPlayCall.then(function(){
+          load.call(THAT);
+
+          clearVideoEl();
+        }).catch(function(){
+          //show the autoplay:off overlay
+          load.call(THAT);
+
+          clearVideoEl();
+        });
       }
     };
 
@@ -55536,6 +55565,7 @@ define('html5/media/HTML5VideoAPI',[
       this.hasPlayed = false;
       this.videoObj = video;
       this.isLive = (video.type_stream && video.type_stream === 'live' ? true : false);
+
       if (this.isLive === true && video.live_status !== 'LIVE_STARTED') {
         this.trigger(EventMap.TVP_VIDEO_LIVE_OFFLINE, video);
         return false;
@@ -55546,7 +55576,9 @@ define('html5/media/HTML5VideoAPI',[
       }
 
       this.preload('auto');
+
       this.errorMessage.style.display = 'none';
+
       if (this.isPlayerLoaded()) {
         this.setVideoSource(video, true);
         this.setVolume(playbackOptions.get('volume'));
@@ -55554,12 +55586,13 @@ define('html5/media/HTML5VideoAPI',[
         //handle the autoplay
         var THAT = this;
         var autoPlayCall = this.player.play();
+
         if (autoPlayCall !== undefined) {
           autoPlayCall.then(function(){
             this.player.muted = playbackOptions.get('isMute') ? true : false;
           }).catch(function(){
-            THAT.player.muted = true;
             THAT.player.autoplay = true;
+            THAT.mute();
             THAT._renderUnmuteButton();
           });
         }
@@ -55569,21 +55602,40 @@ define('html5/media/HTML5VideoAPI',[
     };
 
     HTML5VideoAPI.prototype._renderUnmuteButton = function () {
-      this.unmuteButtonEl = DOMUtils.createElement("button");
-      this.unmuteButtonEl.className = "tvp-unmute-button";
-      this.unmuteButtonEl.id = "tvp-unmute";
-      this.unmuteButtonEl.innerHTML = unmuteHTML;
-
       var THAT = this;
 
-      this.unmuteButtonEl.addEventListener('click', function (){
-        THAT.player.muted = false;
-
+      function onClick(){
         if (this.parentNode)
           this.parentNode.removeChild(this);
-      }, false);
 
-      this.wrapperElement.appendChild(this.unmuteButtonEl);
+        THAT.unmute();
+      }
+
+      function render(){
+        var buttonEl = DOMUtils.createElement("button");
+
+        buttonEl.className = "tvp-unmute-button";
+        buttonEl.id = "tvp-unmute";
+        buttonEl.innerHTML = unmuteHTML; 
+        buttonEl.addEventListener('click', onClick, false);
+
+        this.unmuteButtonEl = buttonEl;
+
+        return buttonEl;
+      }
+
+      if(this.unmuteButtonEl){
+        this.unmuteButtonEl.removeEventListener('click', onClick, false);
+
+        if(this.unmuteButtonEl.parentNode)
+          this.unmuteButtonEl.parentNode.removeChild(this.unmuteButtonEl);
+
+        this.unmuteButtonEl = null;
+
+        this.wrapperElement.appendChild( render.call(this) );
+      }else{
+        this.wrapperElement.appendChild( render.call(this) );
+      }
     };
 
     /*
@@ -61285,7 +61337,7 @@ define('controlbar/Controlbar',[
     return Controlbar;
   });
 
-define('Version',[], function () {  return {version:"3.1.5"};});
+define('Version',[], function () {  return {version:"3.1.6"};});
 define('analytics/Analytics',[
   "event/EventDispatcher",
   "event/EventMap",
@@ -62437,6 +62489,9 @@ define('ad/AdLoader',[
     return AdLoader;
   }
 );
+
+define('text!assets/html/spinner.html',[],function () { return '<svg version="1.1" class="svg-loader" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 80 80" xml:space="preserve"><path id="tvp-spinner-path" d="M10,40c0,0,0-0.4,0-1.1c0-0.3,0-0.8,0-1.3c0-0.3,0-0.5,0-0.8c0-0.3,0.1-0.6,0.1-0.9c0.1-0.6,0.1-1.4,0.2-2.1 c0.2-0.8,0.3-1.6,0.5-2.5c0.2-0.9,0.6-1.8,0.8-2.8c0.3-1,0.8-1.9,1.2-3c0.5-1,1.1-2,1.7-3.1c0.7-1,1.4-2.1,2.2-3.1 c1.6-2.1,3.7-3.9,6-5.6c2.3-1.7,5-3,7.9-4.1c0.7-0.2,1.5-0.4,2.2-0.7c0.7-0.3,1.5-0.3,2.3-0.5c0.8-0.2,1.5-0.3,2.3-0.4l1.2-0.1 l0.6-0.1l0.3,0l0.1,0l0.1,0l0,0c0.1,0-0.1,0,0.1,0c1.5,0,2.9-0.1,4.5,0.2c0.8,0.1,1.6,0.1,2.4,0.3c0.8,0.2,1.5,0.3,2.3,0.5 c3,0.8,5.9,2,8.5,3.6c2.6,1.6,4.9,3.4,6.8,5.4c1,1,1.8,2.1,2.7,3.1c0.8,1.1,1.5,2.1,2.1,3.2c0.6,1.1,1.2,2.1,1.6,3.1 c0.4,1,0.9,2,1.2,3c0.3,1,0.6,1.9,0.8,2.7c0.2,0.9,0.3,1.6,0.5,2.4c0.1,0.4,0.1,0.7,0.2,1c0,0.3,0.1,0.6,0.1,0.9 c0.1,0.6,0.1,1,0.1,1.4C74,39.6,74,40,74,40c0.2,2.2-1.5,4.1-3.7,4.3s-4.1-1.5-4.3-3.7c0-0.1,0-0.2,0-0.3l0-0.4c0,0,0-0.3,0-0.9 c0-0.3,0-0.7,0-1.1c0-0.2,0-0.5,0-0.7c0-0.2-0.1-0.5-0.1-0.8c-0.1-0.6-0.1-1.2-0.2-1.9c-0.1-0.7-0.3-1.4-0.4-2.2 c-0.2-0.8-0.5-1.6-0.7-2.4c-0.3-0.8-0.7-1.7-1.1-2.6c-0.5-0.9-0.9-1.8-1.5-2.7c-0.6-0.9-1.2-1.8-1.9-2.7c-1.4-1.8-3.2-3.4-5.2-4.9 c-2-1.5-4.4-2.7-6.9-3.6c-0.6-0.2-1.3-0.4-1.9-0.6c-0.7-0.2-1.3-0.3-1.9-0.4c-1.2-0.3-2.8-0.4-4.2-0.5l-2,0c-0.7,0-1.4,0.1-2.1,0.1 c-0.7,0.1-1.4,0.1-2,0.3c-0.7,0.1-1.3,0.3-2,0.4c-2.6,0.7-5.2,1.7-7.5,3.1c-2.2,1.4-4.3,2.9-6,4.7c-0.9,0.8-1.6,1.8-2.4,2.7 c-0.7,0.9-1.3,1.9-1.9,2.8c-0.5,1-1,1.9-1.4,2.8c-0.4,0.9-0.8,1.8-1,2.6c-0.3,0.9-0.5,1.6-0.7,2.4c-0.2,0.7-0.3,1.4-0.4,2.1 c-0.1,0.3-0.1,0.6-0.2,0.9c0,0.3-0.1,0.6-0.1,0.8c0,0.5-0.1,0.9-0.1,1.3C10,39.6,10,40,10,40z"></path></svg>';});
+
 define('css',{
   load: function (name, require, load, config) {
     function inject(filename)
@@ -62495,10 +62550,11 @@ define(
     "utils/Utils",
     "utils/DOMUtils",
     "ad/AdLoader",
+    "text!assets/html/spinner.html",
 
     "css!assets/css/main.min.css"
   ],
-  function(Config, EventDispatcher, EventMap, Interface, Controlbar, Utils, ControlbarUtils, Debug, Analytics,Spinner,Utils,DOMUtils, AdLoader) {
+  function(Config, EventDispatcher, EventMap, Interface, Controlbar, Utils, ControlbarUtils, Debug, Analytics,Spinner,Utils,DOMUtils, AdLoader, spinnerHTML) {
 
     function TVPlayer(){
       EventDispatcher.apply(this, arguments);
@@ -62562,7 +62618,7 @@ define(
 
       this.initializeAdLoader();
 
-      if( Utils.hasKey(options, 'spinner') && options.spinner!==false ){
+      if(Utils.hasKey(options, 'spinner') ? options.spinner : true){
         this.spinner = new Spinner(iPlayer);
       }
 
@@ -62796,7 +62852,7 @@ define(
         classProperty: 'tvplayer-overlay-spinner'
       });
       this.tvpOverlaySpinner.style.display = "block";
-      this.tvpOverlaySpinner.innerHTML = '<svg version="1.1" class="svg-loader" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 80 80" xml:space="preserve"><path id="tvp-spinner-path" d="M10,40c0,0,0-0.4,0-1.1c0-0.3,0-0.8,0-1.3c0-0.3,0-0.5,0-0.8c0-0.3,0.1-0.6,0.1-0.9c0.1-0.6,0.1-1.4,0.2-2.1 c0.2-0.8,0.3-1.6,0.5-2.5c0.2-0.9,0.6-1.8,0.8-2.8c0.3-1,0.8-1.9,1.2-3c0.5-1,1.1-2,1.7-3.1c0.7-1,1.4-2.1,2.2-3.1 c1.6-2.1,3.7-3.9,6-5.6c2.3-1.7,5-3,7.9-4.1c0.7-0.2,1.5-0.4,2.2-0.7c0.7-0.3,1.5-0.3,2.3-0.5c0.8-0.2,1.5-0.3,2.3-0.4l1.2-0.1 l0.6-0.1l0.3,0l0.1,0l0.1,0l0,0c0.1,0-0.1,0,0.1,0c1.5,0,2.9-0.1,4.5,0.2c0.8,0.1,1.6,0.1,2.4,0.3c0.8,0.2,1.5,0.3,2.3,0.5 c3,0.8,5.9,2,8.5,3.6c2.6,1.6,4.9,3.4,6.8,5.4c1,1,1.8,2.1,2.7,3.1c0.8,1.1,1.5,2.1,2.1,3.2c0.6,1.1,1.2,2.1,1.6,3.1 c0.4,1,0.9,2,1.2,3c0.3,1,0.6,1.9,0.8,2.7c0.2,0.9,0.3,1.6,0.5,2.4c0.1,0.4,0.1,0.7,0.2,1c0,0.3,0.1,0.6,0.1,0.9 c0.1,0.6,0.1,1,0.1,1.4C74,39.6,74,40,74,40c0.2,2.2-1.5,4.1-3.7,4.3s-4.1-1.5-4.3-3.7c0-0.1,0-0.2,0-0.3l0-0.4c0,0,0-0.3,0-0.9 c0-0.3,0-0.7,0-1.1c0-0.2,0-0.5,0-0.7c0-0.2-0.1-0.5-0.1-0.8c-0.1-0.6-0.1-1.2-0.2-1.9c-0.1-0.7-0.3-1.4-0.4-2.2 c-0.2-0.8-0.5-1.6-0.7-2.4c-0.3-0.8-0.7-1.7-1.1-2.6c-0.5-0.9-0.9-1.8-1.5-2.7c-0.6-0.9-1.2-1.8-1.9-2.7c-1.4-1.8-3.2-3.4-5.2-4.9 c-2-1.5-4.4-2.7-6.9-3.6c-0.6-0.2-1.3-0.4-1.9-0.6c-0.7-0.2-1.3-0.3-1.9-0.4c-1.2-0.3-2.8-0.4-4.2-0.5l-2,0c-0.7,0-1.4,0.1-2.1,0.1 c-0.7,0.1-1.4,0.1-2,0.3c-0.7,0.1-1.3,0.3-2,0.4c-2.6,0.7-5.2,1.7-7.5,3.1c-2.2,1.4-4.3,2.9-6,4.7c-0.9,0.8-1.6,1.8-2.4,2.7 c-0.7,0.9-1.3,1.9-1.9,2.8c-0.5,1-1,1.9-1.4,2.8c-0.4,0.9-0.8,1.8-1,2.6c-0.3,0.9-0.5,1.6-0.7,2.4c-0.2,0.7-0.3,1.4-0.4,2.1 c-0.1,0.3-0.1,0.6-0.2,0.9c0,0.3-0.1,0.6-0.1,0.8c0,0.5-0.1,0.9-0.1,1.3C10,39.6,10,40,10,40z"></path></svg>';
+      this.tvpOverlaySpinner.innerHTML = spinnerHTML;
       this.tvpOverlayThumbnail.appendChild(this.tvpOverlaySpinner);
       parentElement.appendChild(this.tvpOverlayThumbnail);
       // tvplayer overlay
@@ -62864,18 +62920,19 @@ define(
     };
 
     TVPlayer.prototype.handleOverlay = function(jsonObject){
+      if(!this.options || "object" !== typeof jsonObject)
+        return;
+
       // Sets Overlay image, default is true
-      var tvpOverlay = true;
-      if (this.options && this.options.hasOwnProperty('overlay')){
-        tvpOverlay = this.options.overlay;
-      }
-      if(tvpOverlay && this.options && this.options.hasOwnProperty('DOMContainer')){
-        if(jsonObject && jsonObject.type && jsonObject.type === 'mp4' && this.options.DOMContainer.getElementsByClassName('tvp_video_wrapper_html5').length > 0){
-          this.parentElement =  this.options.DOMContainer.getElementsByClassName('tvp_video_wrapper_html5')[0];
-        }else{
-          this.parentElement =  this.options.DOMContainer;
-        }
-        this.setOverlay(jsonObject,this.parentElement);
+      var tvpOverlay = this.options.hasOwnProperty('overlay') ? this.options.overlay : true;
+      var domContainer = this.options.hasOwnProperty('DOMContainer') ? this.options.DOMContainer : null;
+      var videoWrapperEl = domContainer.getElementsByClassName('tvp_video_wrapper_html5');
+
+      if(tvpOverlay && domContainer){
+        this.parentElement = jsonObject.type && jsonObject.type === 'mp4' && videoWrapperEl.length > 0 ?
+        videoWrapperEl[0] : domContainer;
+
+        this.setOverlay(jsonObject, this.parentElement);
       }
     };
     
@@ -62918,8 +62975,9 @@ define(
       if(this.spinner)
         this.spinner.resetSpinnerStatus();
 
+      
       this.interface.loadVideo(jsonObject);
-
+      
       this.trigger(EventMap.TVPLAYER_VIDEO_LOAD, jsonObject);
 
       handleLiveStatus.call(this, jsonObject);
