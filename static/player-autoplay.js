@@ -1225,40 +1225,12 @@ define('html5/media/YouTubeIframeAPI',[
     };
 
     YouTubeIframeAPI.prototype.loadVideo = function(video, playbackOptions){
-      var videoEl = document.createElement('video');
-      videoEl.style.display = "none"
-
-      this.wrapperElement.appendChild(videoEl);
-
-      function clearVideoEl(){
-        videoEl.parentNode.removeChild(videoEl);
-      }
-
-      function load(){
-        if(!this.isPlayerLoaded())
-          return;
-
+      if(this.isPlayerLoaded()){
         this.setVolume(playbackOptions.get('volume'));
 
         playbackOptions.get('isMute') ? this.player.mute() : this.player.unMute();
 
         this.player.loadVideoById(this.getVideoId(video));
-      };
-
-      var autoPlayCall = videoEl.play();
-      var THAT = this;
-
-      if (autoPlayCall !== undefined) {
-        autoPlayCall.then(function(){
-          load.call(THAT);
-
-          clearVideoEl();
-        }).catch(function(){
-          //show the autoplay:off overlay
-          load.call(THAT);
-
-          clearVideoEl();
-        });
       }
     };
 
