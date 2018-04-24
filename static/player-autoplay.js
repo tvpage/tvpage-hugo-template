@@ -55591,15 +55591,21 @@ define('html5/media/HTML5VideoAPI',[
         var THAT = this;
         var autoPlayCall = this.player.play();
 
-        if (autoPlayCall !== undefined) {
-          autoPlayCall.then(function(){
-            this.player.muted = playbackOptions.get('isMute') ? true : false;
-          }).catch(function(){
-            THAT.player.autoplay = true;
-          });
+        function done(){
+          this.player.load();
         }
 
-        return this.player.load();
+        if (autoPlayCall !== undefined) {
+          autoPlayCall.then(function(){
+            THAT.player.muted = playbackOptions.get('isMute') ? true : false;
+
+            done.call(THAT);
+          }).catch(function(){
+            THAT.player.autoplay = true;
+
+            done.call(THAT);
+          });
+        }
       }
     };
 
@@ -55635,17 +55641,23 @@ define('html5/media/HTML5VideoAPI',[
         var THAT = this;
         var autoPlayCall = this.player.play();
 
+        function done(){
+          this.play(true);
+        }
+
         if (autoPlayCall !== undefined) {
           autoPlayCall.then(function(){
             this.player.muted = playbackOptions.get('isMute') ? true : false;
+
+            done.call(THAT);
           }).catch(function(){
             THAT.player.autoplay = true;
             THAT.mute();
             THAT._renderUnmuteButton();
+
+            done.call(THAT);
           });
         }
-
-        return this.play(true);
       }
     };
     
