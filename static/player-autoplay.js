@@ -1137,7 +1137,7 @@ define('html5/media/YouTubeIframeAPI',[
         wmode:"transparent",
         frameborder:"0",
         modestbranding:"1",
-        allow:"autoplay"
+        allow:"autoplay; fullscreen"
       };
       
       for (var i in attributes) {
@@ -55526,52 +55526,6 @@ define('html5/media/HTML5VideoAPI',[
         return BrowserUtils.isBrowser(['IE']);
       }
     };
-    
-    /* 
-     * Loading the video will autoplay on non-mobile devices
-     * 
-     * @param {type} video
-     * @returns {Boolean|undefined}
-     */
-    HTML5VideoAPI.prototype.loadVideo = function(video, playbackOptions){
-      this.hasPlayed = false;
-      this.videoObj = video;
-      this.isLive = (video.type_stream && video.type_stream === 'live' ? true : false);
-
-      if (this.isLive === true && video.live_status !== 'LIVE_STARTED') {
-        this.trigger(EventMap.TVP_VIDEO_LIVE_OFFLINE, video);
-        return false;
-      }
-
-      if ( this.dashPlayer ) {
-        this.dashPlayer.reset();
-      }
-
-      this.preload('auto');
-
-      this.errorMessage.style.display = 'none';
-
-      if (this.isPlayerLoaded()) {
-        this.setVideoSource(video, true);
-        this.setVolume(playbackOptions.get('volume'));
-
-        //handle the autoplay
-        var THAT = this;
-        var autoPlayCall = this.player.play();
-
-        if (autoPlayCall !== undefined) {
-          autoPlayCall.then(function(){
-            this.player.muted = playbackOptions.get('isMute') ? true : false;
-          }).catch(function(){
-            THAT.player.autoplay = true;
-            THAT.mute();
-            THAT._renderUnmuteButton();
-          });
-        }
-
-        return this.play(true);
-      }
-    };
 
     HTML5VideoAPI.prototype._renderUnmuteButton = function () {
       var THAT = this;
@@ -55621,17 +55575,79 @@ define('html5/media/HTML5VideoAPI',[
       if ( this.dashPlayer ) {
         this.dashPlayer.reset();
       }
-      this.dashPlayer = null;
+
       this.hasPlayed = false;
+      this.dashPlayer = null;
       this.errorMessage.style.display = 'none';
-      
       this.videoObj = video;
+
       this.preload(this.getPreloadValue());
+
       if (this.isPlayerLoaded()) {
         this.setVideoSource(video, false);
         this.setVolume(playbackOptions.get('volume'));
-        this.player.muted = playbackOptions.get('isMute') ? true : false;
+
+        //handle the autoplay
+        var THAT = this;
+        var autoPlayCall = this.player.play();
+
+        if (autoPlayCall !== undefined) {
+          autoPlayCall.then(function(){
+            this.player.muted = playbackOptions.get('isMute') ? true : false;
+          }).catch(function(){
+            THAT.player.autoplay = true;
+            
+            THAT.player.muted = playbackOptions.get('isMute') ? true : false;
+          });
+        }
+
         return this.player.load();
+      }
+    };
+
+    /* 
+     * Loading the video will autoplay on non-mobile devices
+     * 
+     * @param {type} video
+     * @returns {Boolean|undefined}
+     */
+    HTML5VideoAPI.prototype.loadVideo = function(video, playbackOptions){
+      this.hasPlayed = false;
+      this.videoObj = video;
+      this.isLive = (video.type_stream && video.type_stream === 'live' ? true : false);
+
+      if (this.isLive === true && video.live_status !== 'LIVE_STARTED') {
+        this.trigger(EventMap.TVP_VIDEO_LIVE_OFFLINE, video);
+        return false;
+      }
+
+      if ( this.dashPlayer ) {
+        this.dashPlayer.reset();
+      }
+
+      this.preload('auto');
+
+      this.errorMessage.style.display = 'none';
+
+      if (this.isPlayerLoaded()) {
+        this.setVideoSource(video, true);
+        this.setVolume(playbackOptions.get('volume'));
+
+        //handle the autoplay
+        var THAT = this;
+        var autoPlayCall = this.player.play();
+
+        if (autoPlayCall !== undefined) {
+          autoPlayCall.then(function(){
+            this.player.muted = playbackOptions.get('isMute') ? true : false;
+          }).catch(function(){
+            THAT.player.autoplay = true;
+            THAT.mute();
+            THAT._renderUnmuteButton();
+          });
+        }
+
+        return this.play(true);
       }
     };
     
