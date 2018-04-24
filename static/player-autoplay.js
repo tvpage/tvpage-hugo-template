@@ -55596,8 +55596,6 @@ define('html5/media/HTML5VideoAPI',[
             this.player.muted = playbackOptions.get('isMute') ? true : false;
           }).catch(function(){
             THAT.player.autoplay = true;
-            
-            THAT.player.muted = playbackOptions.get('isMute') ? true : false;
           });
         }
 
