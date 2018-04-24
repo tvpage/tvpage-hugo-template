@@ -1,4 +1,4 @@
-/*! TVPlayer - v3.1.6 - 4f10258674b2816091b7278d253ccc375ec8f6f9 
+/*! TVPlayer - v3.1.6 - c8a27132c0900d5cec93a16483d188a6961833ff 
 * https://www.tvpage.com
 * Copyright (c) 2018 Lior Kuyer, TVPage, Inc.; Licensed GPL */
 (function(global, define) {
@@ -55188,6 +55188,7 @@ define('html5/media/HTML5VideoAPI',[
       this.options = options;
       this.model = model;
       this.videoObj = null;
+      this.unmuteBtnClicked = false;
 
       this.isLive = false;
       this.stalled = 0;
@@ -55534,6 +55535,7 @@ define('html5/media/HTML5VideoAPI',[
         if (this.parentNode)
           this.parentNode.removeChild(this);
 
+        THAT.unmuteBtnClicked = true;
         THAT.unmute();
       }
 
@@ -55583,29 +55585,31 @@ define('html5/media/HTML5VideoAPI',[
 
       this.preload(this.getPreloadValue());
 
-      if (this.isPlayerLoaded()) {
-        this.setVideoSource(video, false);
-        this.setVolume(playbackOptions.get('volume'));
+      if (!this.isPlayerLoaded())
+        return;
 
-        //handle the autoplay
-        var THAT = this;
-        var autoPlayCall = this.player.play();
+      this.setVideoSource(video, false);
+      this.setVolume(playbackOptions.get('volume'));
 
-        function done(){
-          this.player.load();
-        }
+      //handle the autoplay
+      var THAT = this;
 
-        if (autoPlayCall !== undefined) {
-          autoPlayCall.then(function(){
-            THAT.player.muted = playbackOptions.get('isMute') ? true : false;
+      function done(){
+        this.player.load();
+      }
 
-            done.call(THAT);
-          }).catch(function(){
-            THAT.player.autoplay = true;
+      var autoPlayCall = this.player.play();
 
-            done.call(THAT);
-          });
-        }
+      if (autoPlayCall !== undefined) {
+        autoPlayCall.then(function(){
+          THAT.player.muted = playbackOptions.get('isMute') ? true : false;
+
+          done.call(THAT);
+        }).catch(function(){
+          THAT.player.autoplay = true;
+
+          done.call(THAT);
+        });
       }
     };
 
@@ -55633,21 +55637,30 @@ define('html5/media/HTML5VideoAPI',[
 
       this.errorMessage.style.display = 'none';
 
-      if (this.isPlayerLoaded()) {
-        this.setVideoSource(video, true);
-        this.setVolume(playbackOptions.get('volume'));
+      if (!this.isPlayerLoaded())
+        return;
 
-        //handle the autoplay
-        var THAT = this;
+      this.setVideoSource(video, true);
+      this.setVolume(playbackOptions.get('volume'));
+
+      var THAT = this;
+
+      function done(){
+        this.play(true);
+      }
+
+      if(this.unmuteBtnClicked){
+        this.player.muted = playbackOptions.get('isMute') ? true : false;
+
+        done.call(this);
+      }
+      //otherwise check if autoplay is allowed
+      else{
         var autoPlayCall = this.player.play();
-
-        function done(){
-          this.play(true);
-        }
 
         if (autoPlayCall !== undefined) {
           autoPlayCall.then(function(){
-            this.player.muted = playbackOptions.get('isMute') ? true : false;
+            THAT.player.muted = playbackOptions.get('isMute') ? true : false;
 
             done.call(THAT);
           }).catch(function(){
