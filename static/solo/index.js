@@ -141,11 +141,11 @@ function getInitialHtml(){
 
 //build the player url
 function getPlayerUrl(){
-  if (config.player_url && (config.player_url + "").trim().length) {
-    url = config.player_url;
-  }
+  var playerUrl = config.player_url;
 
-  return config.baseUrl + "/player-sharing.js";
+  playerUrl = playerUrl ? playerUrl.trim() : 'https://cdnjs.tvpage.com/tvplayer/tvp-' + config.player_version + '.min.js';
+
+  return playerUrl;
 }
 
 //here's the first HTML write we do to the host page, this is the fastest way to do it
@@ -179,7 +179,8 @@ function widgetRender(){
         '//www.youtube.com/iframe_api',
         '//a.tvpage.com/tvpa.min.js',
         '//imasdk.googleapis.com/js/sdkloader/ima3.js',
-        getPlayerUrl(),
+        //getPlayerUrl(),
+        baseUrl + "/player-seekbar.js",
         debug ? jsPath + "/vendor/perfect-scrollbar.min.js" : "",
         debug ? libsPath + "/analytics.js" : "",
         debug ? libsPath + "/player.js" : "",
@@ -244,7 +245,8 @@ function widgetLoad(){
     n: config.items_per_page,
     o: config.videos_order_by,
     od: config.videos_order_direction,
-    'X-login-id': config.loginId
+    'X-login-id': "1759121",
+    //'X-login-id': config.loginId
   };
 
   var channelParams = config.channel.parameters;
@@ -255,7 +257,8 @@ function widgetLoad(){
   }
 
   loadScript({
-    base: config.api_base_url + '/channels/' + config.channelId + '/videos',
+    //base: config.api_base_url + '/channels/' + config.channelId + '/videos',
+    base: config.api_base_url + '/channels/155524389/videos',
     params: videosLoadParams
   }, onWidgetLoad);
 }
