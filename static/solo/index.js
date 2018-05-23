@@ -179,7 +179,7 @@ function widgetRender(){
         '//www.youtube.com/iframe_api',
         '//a.tvpage.com/tvpa.min.js',
         '//imasdk.googleapis.com/js/sdkloader/ima3.js',
-        "//cdnjs.tvpage.com/tvplayer/local/tvp-3.1.6.1.min.js",
+        "//cdnjs.tvpage.com/tvplayer/tvp-3.1.6.min.js",
         //getPlayerUrl(),
         debug ? jsPath + "/vendor/perfect-scrollbar.min.js" : "",
         debug ? libsPath + "/analytics.js" : "",
