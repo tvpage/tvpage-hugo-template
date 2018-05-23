@@ -43,10 +43,12 @@
     "visibility: hidden;" +
     "opacity: 0;" +
     "pointer-events: none;" +
+    "display: none;" +
 "}"+
 
 ".tvp-modal-iframe.tvp-show {" +
     "visibility: visible;" +
     "opacity: 1;" +
     "pointer-events: auto;" +
+    "display: block;" +
 "}"
