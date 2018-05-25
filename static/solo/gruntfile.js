@@ -10,8 +10,7 @@ module.exports = function(grunt) {
       autoprefixer: {
         css: {
           files: {
-            'css/styles.css': 'css/styles.css',
-            'css/host.css': 'css/host.css'
+            'css/styles.css': 'css/styles.css'
           }
         }
       },
@@ -22,23 +21,26 @@ module.exports = function(grunt) {
         },
         desktop: {
           files: {
-            'dist/css/styles.min.css': ['css/styles.css'],
-            'dist/css/host.min.css': ['css/host.css']
-          }
-        },
-        mobile: {
-          files: {
-            'dist/css/mobile/host.min.css': ['css/mobile/host.css']
+            'dist/css/styles.min.css': [
+              'css/styles.css',
+              'css/vendor/perfect-scrollbar.min.css'
+            ]
           }
         }
       },
       uglify: {
         options: {
-          //beautify: true
         },
         scripts: {
           files: {
-            'dist/js/scripts.min.js': ['js/libs/utils.js', 'js/libs/analytics.js','js/libs/player.js','js/vendor/simple-scrollbar.min.js', 'js/menu.js', 'js/index.js']
+            'dist/js/scripts.min.js': [
+              '../libs/utils.js',
+              '../libs/analytics.js',
+              '../libs/player.js',
+              'js/vendor/perfect-scrollbar.min.js',
+              'js/menu.js',
+              'js/index.js'
+            ]
           }
         }
       }

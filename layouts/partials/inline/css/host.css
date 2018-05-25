@@ -1,0 +1,27 @@
+".tvp-inline-holder {" +
+  "position: relative;" +
+  "box-sizing: border-box;" +
+  "visibility: hidden;" +
+  "opacity: 0;" +
+  "pointer-events: none;" +
+"}" +
+
+".tvp-inline-holder.tvp-hide {" +
+  "height: 0 !important;" +
+"}" +
+
+".tvp-inline-holder.tvp-show {" +
+  "visibility: visible;" +
+  "opacity: 1;" +
+  "pointer-events: auto;" +
+"}" +
+
+".tvp-inline-iframe {" +
+  "box-sizing: border-box;" +
+  "top: 0;" +
+  "left: 0;" +
+  "width: 1px;" +
+  "min-width: 100%;" +
+  "height: 100%;" +
+  "position: absolute;" +
+"}"

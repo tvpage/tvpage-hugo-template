@@ -1,0 +1,287 @@
+/* turn focus state off */
+*:focus,
+*:active {
+  outline: none !important;
+}
+
+a:hover,
+a:active {
+  text-decoration: none;
+}
+
+/*player overrides*/
+.tvplayer-overlay-thumbnail{
+  z-index: 100 !important;
+}
+
+.tvplayer-overlay{
+  z-index: 1000 !important;
+}
+
+/*slider pulls*/
+$slider_pull_x:   1rem !default;
+
+.slider-pull-x-1 {
+  margin-left: -($slider_pull_x * .25) !important;
+  margin-right: -($slider_pull_x * .25) !important;
+}
+
+.slider-pull-x-2 {
+  margin-left: -($slider_pull_x * .5) !important;
+  margin-right: -($slider_pull_x * .5) !important;
+}
+
+/*helpers*/
+.hide {
+  opacity: 0; 
+  visibility: hidden;
+}
+
+.relative {
+  position: relative;
+}
+
+.hide-abs {
+  position: absolute !important;
+  left: 0;
+  right: 0;
+  bottom: -5000px !important;
+  width: 100%;
+  margin: 0 auto!important;
+}
+
+.o-hidden {
+  overflow: hidden;
+}
+
+.clickable {
+  cursor:pointer; 
+}
+
+.fluid-y {
+  height: 0;
+  width: 100%;
+  position: relative;
+}
+
+.abs-center {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.abs-bottom {
+  position: absolute;
+  bottom: 0;
+}
+
+.col-x-push {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+.col-x-pull {
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+.bordered {
+  border: 1px solid;
+}
+
+.image-overlay {
+  pointer-events: none;
+  background-color: black;
+  transition: opacity 0.15s linear;
+  opacity: 0;
+}
+
+/* thumbnail sizes */
+.thumb-sm {
+  max-width: 50px;
+}
+
+.thumb-md {
+  max-width: 100px;
+}
+
+/* backgrounds */
+.skeleton-bg {
+  background-color: #efefef;
+}
+
+.bg-default {
+  background-repeat: no-repeat;
+  background-position: center;
+  position: relative;
+}
+
+/*responsive font-size*/
+html,
+body {
+  font-size: 0.875rem;
+}
+
+@media screen and (min-width: 480px) {
+
+  html,
+  body {
+    font-size: 1rem;
+  }
+  
+}
+
+/*media queries*/
+@media screen and (min-width: 768px) {
+
+  .m0-md{
+    margin: 0 !important;
+  }
+  
+}
+
+
+//NEED RETHINKING
+.skeleton{
+  visibility: hidden;
+  opacity: 0;
+}
+.skeleton.ready{
+  visibility: visible;
+  opacity: 1;
+}
+
+/* image aspect ratios & shapes */
+.video-image {
+  background-size: cover;
+  padding-bottom: 56.25%;
+}
+
+.product-image {
+  padding-bottom: 100%;
+  background-size: cover;
+}
+
+/* skeleton */
+.skeleton .widget-title:not(.ready) {
+  background-color: #efefef;
+  display: inline-block;
+}
+
+.skeleton .widget-title:not(.ready):before {
+  content: "................................................................";
+  color: transparent;
+}
+
+/*player*/
+.player-holder {
+  padding-bottom: 56.25%;
+}
+
+.skeleton .player-holder {
+  background-color: #efefef;
+}
+
+.featured-product-holder {
+  padding-bottom: 112.25%;
+}
+
+.skeleton .featured-product-holder {
+  background-color: #efefef;
+}
+
+.products-holder {
+  padding-bottom: 112.25%;
+}
+
+.skeleton .products-holder {
+  background-color: #efefef;
+}
+
+.videos-holder {
+  padding-bottom: 19.25%;
+}
+
+.skeleton .video-title:not(.ready) {
+  background-color: #efefef;
+}
+
+.skeleton .video-title:not(.ready):before {
+  content: "...";
+  color: transparent;
+}
+
+.skeleton .product-title:not(.ready) {
+  background-color: #efefef;
+}
+
+.skeleton .product-title:not(.ready):before {
+  content: "...";
+  color: transparent;
+}
+
+.skeleton .product-price:not(.ready) {
+  background-color: #efefef;
+}
+
+.skeleton .product-price:not(.ready):before {
+  content: "...";
+  color: transparent;
+}
+
+/* implementation specific */
+.video-image-icon {
+  cursor: pointer;
+  z-index: 1000;
+  background-color: #1a1a1a;
+  width: 25px;
+  height: 25px;
+}
+
+.video-image-icon > svg {
+  fill: #ffffff;
+}
+
+body:not(.mobile) .video:hover .image-overlay {
+  visibility: visible;
+  opacity: 0.5;
+}
+
+body:not(.mobile) .video:hover .video-image-icon {
+  background-color: #000000;
+}
+
+.video-image-icon > i {
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+}
+
+@media screen and (min-width: 570px) {
+  .video-image-icon {
+    width: 45px;
+    height: 45px;
+  }
+
+  .video-image-icon > i {
+    width: 34px;
+    height: 34px;
+    font-size: 34px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+
+  .m0-md{
+    margin: 0 !important;
+  }
+  
+}
+
+// By design modal header shouldn't have any border by default
+.widget-modal-header {
+  border: none;
+}

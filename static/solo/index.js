@@ -1,186 +1,294 @@
-var utils = {
-    isFirefox: /Firefox/i.test(navigator.userAgent),
-    isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
-    isIOS: /iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream,
-    isset: function(o,p){
-        var val = o;
-        if (p) val = o[p];
-        return "undefined" !== typeof val;
-    },
-    getIframeHtml: function(options) {
-        var html = '<head><base target="_blank" /></head><body class="' + (options.className || '') + '" data-domain="' +
-            (options.domain || '') + '" data-id="' + (options.id || '') + '" onload="' +
-            'var d = document, head = d.getElementsByTagName(\'head\')[0],' +
-            'addJS = function(u){ var s = d.createElement(\'script\');s.src=u;d.body.appendChild(s);},' +
-            'addCSS = function(h){ var l = d.createElement(\'link\');l.rel=\'stylesheet\';l.href=h;head.appendChild(l);};';
+//we add the preconnect hints as soon as we can
+(function addHTMLHints(){
+  var domains = [
+    config.api_base_url,
+    config.baseUrl
+  ];
+  var domainsLength = domains.length;
 
-        var js = options.js || [];
-        if ('function' === typeof js) {
-            js = js();
-        }
+  for (var i = 0; i < domainsLength; i++) {
+    var link = document.createElement('link');
 
-        js = js.filter(Boolean);
-        for (var i = 0; i < js.length; i++) {
-            html += 'addJS(\'' + js[i] + '\');';
-        }
+    link.rel = 'preconnect';
+    link.href = domains[i];
 
-        var css = options.css || [];
-        if ('function' === typeof css) {
-            css = css();
-        }
+    document.head.appendChild(link);
+  }
+})();
 
-        css = css.filter(Boolean);
-        for (var i = 0; i < css.length; i++) {
-            html += 'addCSS(\'' + css[i] + '\');';
-        }
+//helpers
+var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-        html += '"><style>' + (options.style || '') + '</style>';
+function getById(id){
+  return document.getElementById(id);
+}
 
-        var content = options.html || '';
-        if ('function' === typeof content) {
-            html += content();
-        } else if (content.trim().length) {
-            html += content;
-        }
+function createEl(t){
+  return document.createElement(t);
+}
 
-        return html;
-    },
-    addClass: function(obj,c){
-        if (!obj || !c) return;
-        if ('string' === typeof obj) {
-            document.getElementById(obj).classList.add(c);
-        } else {
-            obj.classList.add(c);
-        }
-    },
-    removeClass: function(obj,c){
-        if (!obj || !c) return;
-        if ('string' === typeof obj) {
-            document.getElementById(obj).classList.remove(c);
-        } else {
-            obj.classList.remove(c);
-        }
-    },
-    extend: function(out) {
-        out = out || {};
-        for (var i = 1; i < arguments.length; i++) {
-            if (!arguments[i])
-                continue;
+function remove(el){
+  el.parentNode.removeChild(el);
+}
 
-            for (var key in arguments[i]) {
-                if (arguments[i].hasOwnProperty(key))
-                    out[key] = arguments[i][key];
-            }
-        }
-        return out;
+function isEvent(e){
+  return e && e.data && e.data.event;
+}
+
+function saveProfileLog(c, m){
+  if(!window.performance || !c)
+    return;
+
+  c.profiling[m] = performance.now();
+}
+
+function tmpl(t,d){
+  return t.replace(/\{([\w\.]*)\}/g, function(str, key) {
+    var keys = key.split("."),
+      v = d[keys.shift()];
+    for (var i = 0, l = keys.length; i < l; i++) v = v[keys[i]];
+    return (typeof v !== "undefined" && v !== null) ? v : "";
+  });
+}
+
+function loadScript(options, cback){
+  var opts = options || {};
+  var script = createEl('script');
+  var params = opts.params || {};
+  var c = 0;
+  var src = opts.base || '';
+
+  for (var param in params) {
+    src += (c > 0 ? '&' : '?') + param + '=' + params[param];
+    ++c;
+  }
+
+  var cName = 'tvp_callback_' + Math.random().toString(36).substring(7);
+
+  window[cName] = function(data){
+    if('function' === typeof cback)
+      cback(data);
+  };
+
+  script.src = src + '&callback=' + cName;
+
+  document.body.appendChild(script);
+}
+
+//builds the document html for an iframe.
+function getIframeHtml(o){
+  function load(arr, type){
+    arr = arr.filter(Boolean);
+
+    var ret = '';
+    var arrLength = arr.length;
+
+    for (var i = 0; i < arrLength; i++){
+      ret += 'append' + type + '(\'' + arr[i] + '\');';
     }
+
+    return ret;
+  };
+
+  var html = config.templates.iframeContent.trim();
+
+  html += '<div id="bscheck" class="invisible"></div>';
+
+  if(o.style){
+    html += '<style>' + o.style + '</style>';
+  }
+
+  html += o.html || '';
+
+  o.context.onload = '' +
+  'var d=document,' +
+  '    h=d.head;' +
+
+  'function appendScript(u){'+
+  '  var s=d.createElement(\'script\');' +
+  '  s.src=u;'+
+  '  h.appendChild(s);' +
+  '}' +
+
+  'function appendLink(u){'+
+  '  var l=d.createElement(\'link\');'+
+  '  l.rel=\'stylesheet\';'+
+  '  l.href=u;'+
+  '  h.appendChild(l);' +
+  '};' +
+  load(o.js, 'Script') +
+  load(o.css, 'Link');
+
+  return tmpl(html, o.context);
 };
 
-if (typeof bootstrap !== "object" || !bootstrap.hasOwnProperty('name') || bootstrap.name.length<=0 ) {
-  throw new Error('Must pass bootstrap and boostrap.name');
+//we have a generic host css per widget type that we only include once.
+function getInitialHtml(){
+  var html = "";
+  var styleId = 'tvp-' + config.type + '-host';
+  var css = config.css;
+  var hostStyles = isMobile && css.mobile ? css.mobile.host : css.host;
+  var templates = isMobile ? config.mobile.templates : config.templates;
+
+  if(!getById(styleId)){
+    html += '<style id="' + styleId + '">' + hostStyles + '</style>';
+  }
+
+  html += tmpl('<div id="{id}-holder" class="tvp-{type}-holder">' + templates.iframe + '</div>', config);
+
+  return html;
 }
 
-var id = bootstrap.name;
+//build the player url
+function getPlayerUrl(){
+  var playerUrl = config.player_url;
 
-//If there's config object for this specific widget, then we merged in... extend?
-window.__TVPage__ = window.__TVPage__ || {};
-__TVPage__.config = __TVPage__.config || {};
+  playerUrl = playerUrl ? playerUrl.trim() : 'https://cdnjs.tvpage.com/tvplayer/tvp-' + config.player_version + '.min.js';
 
-if ("object" === typeof __TVPage__.config[id]) {
-    __TVPage__.config[id] = utils.extend(bootstrap, __TVPage__.config[id]);
-} else {
-    __TVPage__.config[id] = bootstrap;
+  return playerUrl;
 }
 
-var __windowCallbackFunc__ = null;
-if (   __TVPage__.config[id].hasOwnProperty('onChange') && typeof   __TVPage__.config[id].onChange == "function" ) {
-  __windowCallbackFunc__ = __TVPage__.config[id].onChange;
-  delete __TVPage__.config[id].onChange;
-}
+//here's the first HTML write we do to the host page, this is the fastest way to do it
+//refer to https://jsperf.com/insertadjacenthtml-perf/3
+function widgetRender(){
+  function render(){
+    var targetEl = getById(config.targetEl);
+    targetEl.insertAdjacentHTML('beforebegin',getInitialHtml());
 
-var config = utils.isset(window.__TVPage__) && utils.isset(__TVPage__,"config") && utils.isset(__TVPage__.config,id) ? __TVPage__.config[id] : {};
+    remove(targetEl);
 
-var hostCssTagId = "tvp-solo-host-css";
-var hostCssTag = "";
-if (!document.getElementById(hostCssTagId)) {
-  hostCssTag = '<style id="' + hostCssTagId + '">' + config.css.host + '</style>';
-}
+    config.holder = getById(config.id + "-holder");
 
-var targetElement;
-if ( !config.hasOwnProperty('targetEl') ||  !document.getElementById(config.targetEl) ) {
-  throw new Error ( "Must provide a targetEl");
-} 
+    var debug = config.debug;
+    var baseUrl = config.baseUrl;
+    var jsPath = config.paths.javascript;
+    var templates = isMobile ? config.mobile.templates : config.templates;
+    var libsPath = baseUrl + '/libs';
+    var cssPath = config.paths.css
+    var iframe = config.holder.querySelector("iframe");
+    var iframeDocument = iframe.contentWindow.document;
 
-var targetElement = document.getElementById(config.targetEl);
-targetElement.insertAdjacentHTML('beforebegin', "<style>" + config.css["host-custom"] + "</style>" + hostCssTag + '<div id="' + id + '-holder" class="tvp-solo-holder">'+
-'<iframe src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe></div>');
-targetElement.parentNode.removeChild(targetElement);
-
-config.id = id;
-config.staticPath = config.baseUrl + "/solo";
-config.mobilePath = utils.isMobile ? 'mobile/' : '';
-config.distPath = config.debug ? '/' : '/dist/';
-config.cssPath = config.staticPath + config.distPath + 'css/';
-config.jsPath = config.staticPath + config.distPath + 'js/';
-config.eventPrefix = ("tvp_" + config.id).replace(/-/g,'_');
-
-var holder = document.getElementById(config.id + "-holder");
-var iframe = holder.querySelector("iframe");
-var iframeDocument = iframe.contentWindow.document;
-
-//Some logic to include the player library.. we support diff things.
-var playerUrl = "https://cdnjs.tvpage.com/tvplayer/tvp-" + config.player_version + ".min.js";
-if (config.player_url && (config.player_url + "").trim().length) {
-    playerUrl = config.player_url;
-}
-
-var iframeContent = utils.getIframeHtml({
-    id: config.id,
-    className: "dynamic",
-    domain: config.baseUrl,
-    style: config.css["styles-custom"],
-    js: [
+    iframeDocument.open().write(getIframeHtml({
+      id: config.id,
+      domain: baseUrl,
+      context: config,
+      html: templates.base,
+      style: config.css.base,
+      className: isMobile ? 'mobile' : '',
+      js: [
+        '//www.youtube.com/iframe_api',
         '//a.tvpage.com/tvpa.min.js',
         '//imasdk.googleapis.com/js/sdkloader/ima3.js',
-        playerUrl,
-        config.debug ? config.jsPath + "vendor/simple-scrollbar.min.js" : "",
-        config.debug ? config.jsPath + "libs/utils.js" : "",
-        config.debug ? config.jsPath + "libs/analytics.js" : "",
-        config.debug ? config.jsPath + "libs/player.js" : "",
-        config.debug ? config.jsPath + "menu.js" : "",
-        config.debug ? config.jsPath + "index.js" : "",
-        config.debug ? "" : config.jsPath + "scripts.min.js"
-    ],
-    css: [
-        config.debug ? config.cssPath + "styles.css" : "",
-        config.debug ? "" : config.cssPath + "styles.min.css"
-    ]
-});
+        baseUrl + "/player-seekbar.js",
+        //'//local.tvpage.com/tvplayer/dist/debug/lib.js',
+        //"//cdnjs.tvpage.com/tvplayer/local/tvp-3.1.6.1.min.js",
+        //getPlayerUrl(),
+        debug ? jsPath + "/vendor/perfect-scrollbar.min.js" : "",
+        debug ? libsPath + "/analytics.js" : "",
+        debug ? libsPath + "/player.js" : "",
+        debug ? jsPath + "/menu.js" : "",
+        debug ? jsPath + "/index.js" : "",
+        debug ? "" : jsPath + "/scripts.min.js"
+      ],
+      css: [
+        debug ? cssPath + "/styles.css" : "",
+        debug ? cssPath + "/vendor/perfect-scrollbar.min.css" : "",
+        debug ? "" : cssPath + "/styles.min.css"
+      ]
+    }));
 
-var iframeDocument = iframe.contentWindow.document;
-iframeDocument.open().write(iframeContent);
-iframeDocument.close();
+    iframeDocument.close();
 
-window.addEventListener("message", function(e){
-    if (e && utils.isset(e.data) && utils.isset(e.data.event) && e.data.event === config.eventPrefix + ":render") {
-        holder.classList.add("initialized");
-    }
-});
+    saveProfileLog(config, 'widget_rendered');
+  }
 
-//Listen to orientation/resize changes in the external page whenever the widget
-//is being used in an iOS device so we can send the size information to the
-//player so it can resize itself.
-if (utils.isIOS) {
-  var onOrientationChange = function () {
-    if (iframe && iframe.contentWindow) {
-      var width = iframe.parentNode.offsetWidth;
-      iframe.contentWindow.window.postMessage({
-        event: config.eventPrefix + ':holder_resize',
-        size: [width, Math.floor(width * (9 / 16))]
-      },'*');
-    }
+  //we will poll if the target element is not in the page immediately, this is required to cover
+  //scenarios where customer add this element lazily.
+  if(getById(config.targetEl)){
+    render();
+  }else{
+    var targetElCheck = 0;
+    var targetElCheckLimit = 1000;
+
+    (function checkTargetEl(){
+      setTimeout(function() {
+        var ready = true;
+
+        if(!getById(config.targetEl))
+          ready = false;
+
+        if(ready){
+          render();
+        }else if(++targetElCheck < targetElCheckLimit){
+          checkTargetEl()
+        }else{
+          throw new Error("targetEl doesn't exist on page");
+        }
+      },5);
+    })();
+  }
+}
+
+function onWidgetLoad(data){
+  saveProfileLog(config, 'data_returned');
+
+  if(data && data.length){
+    config.channel.videos = data;
+
+    widgetRender();
+  }
+};
+
+//api calls/loading, is here were we call the most important api(s) and it's the start
+//of everything.
+function widgetLoad(){
+  var videosLoadParams = {
+    p: 0,
+    n: config.items_per_page,
+    o: config.videos_order_by,
+    od: config.videos_order_direction,
+    'X-login-id': "1759121",
+    //'X-login-id': config.loginId
   };
-  var orientationChangeEvent = 'onorientationchange' in window ? 'orientationchange' : 'resize';
-  window.removeEventListener(orientationChangeEvent,onOrientationChange, false);
-  window.addEventListener(orientationChangeEvent,onOrientationChange, false);
+
+  var channelParams = config.channel.parameters;
+
+  if(channelParams){
+    for (var channelParam in channelParams)
+      videosLoadParams[channelParam] = channelParams[channelParam];
+  }
+
+  loadScript({
+    //base: config.api_base_url + '/channels/' + config.channelId + '/videos',
+    base: config.api_base_url + '/channels/155524389/videos',
+    params: videosLoadParams
+  }, onWidgetLoad);
+}
+
+widgetLoad();
+
+//handle the widget events
+window.addEventListener("message", function(e){
+  if(!isEvent(e)){
+    return;
+  }
+
+  var eventName = '';
+  var eventArr = e.data.event.split(':');
+
+  if(eventArr && eventArr.length && eventArr[0] === config.events.prefix){
+    eventName = eventArr[1];
+  }
+
+  if('widget_resize' === eventName){
+    onWidgetResize(e);
+  }
+
+  if (config.__windowCallbackFunc__)
+    config.__windowCallbackFunc__(e);
+});
+
+//event handlers
+function onWidgetResize(e) {
+  config.holder.style.height = e.data.height + 'px';
 }

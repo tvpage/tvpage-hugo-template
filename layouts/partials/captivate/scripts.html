@@ -21,6 +21,11 @@
     }
     TVSite.channelInfo = {{ ($.Scratch.Get "settings").channelData }} || {};
     TVSite.channelIds = '{{ $.Scratch.Get "channelIds" }}';
+    
+    {{- if isset .Site.Params "hub" -}};
+    TVSite.hubData = {{.Site.Params.hub}} || {};
+    {{- end -}}
+
     (function() {
         var ga = document.createElement("script");
         ga.type = "text/javascript";
@@ -42,14 +47,17 @@
     
     _tvpa.push(["config", analyticsConfig]);
     _tvpa.push(["track", "ci", { li: TVSite.loginId }]);
-
 </script>
-<!-- <script src="{{$baseUrl}}{{ .Type }}/js/vendor/underscore-min.js" ></script>
+{{- if (getenv "HUGO_DEBUG") -}}
+<script src="{{$baseUrl}}{{ .Type }}/js/vendor/underscore-min.js" ></script>
 <script src="{{$baseUrl}}{{.Type}}/js/vendor/modernizr.js"></script>
 <script src="{{$baseUrl}}{{.Type}}/js/vendor/jquery-3.1.1.min.js"></script>
 <script src="{{$baseUrl}}{{.Type}}/js/vendor/bootstrap.min.js"></script>
 <script src="{{$baseUrl}}{{.Type}}/js/vendor/slick.min.js"></script>
 <script src="{{$baseUrl}}{{.Type}}/js/vendor/iscroll-5.2.0.min.js"></script>
 <script src="{{$baseUrl}}{{.Type}}/js/vendor/jquery.lazyload.js"></script>
-<script src="{{$baseUrl}}{{.Type}}/js/main.js" type="text/javascript"></script> -->
+<script src="{{$baseUrl}}{{.Type}}/js/vendor/jquery.tap.js"></script>
+<script src="{{$baseUrl}}{{.Type}}/js/main.js" type="text/javascript"></script>
+{{- else -}}
 <script src="{{$baseUrl}}/{{.Type}}/js/build.min.js" type="text/javascript"></script>
+{{- end -}}

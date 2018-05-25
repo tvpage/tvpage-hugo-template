@@ -1,0 +1,52 @@
+".tvp-carousel-holder {" +
+    "box-sizing: border-box;" +
+    "position: relative;" +
+    "visibility: hidden;" +
+    "opacity: 0;" +
+    "pointer-events: none;" +
+"}" +
+
+".tvp-carousel-holder.tvp-hide {" +
+    "height: 0 !important;" +
+"}" +
+
+".tvp-carousel-holder.tvp-show {" +
+    "visibility: visible;" +
+    "opacity: 1;" +
+    "pointer-events: auto;" +
+"}" +
+
+".tvp-carousel-iframe {" +
+    "box-sizing: border-box;" +
+    "top: 0;" +
+    "left: 0;" +
+    "width: 1px;" +
+    "min-width: 100%;" +
+    "height: 100%;" +
+    "position: absolute;" +
+"}" +
+
+".tvp-modal-iframe {" +
+    "box-sizing: border-box;" +
+    "position: fixed;" +
+    "top: 0;" +
+    "right: 0;" +
+    "bottom: 0;" +
+    "left: 0;" +
+    "z-index: 2147483647;" +
+    "overflow: hidden;" +
+    "-webkit-overflow-scrolling: touch;" +
+    "outline: 0;" +
+    "width: 100%;" +
+    "background: transparent !important;" +
+    "height: 100%;" +
+    "visibility: hidden;" +
+    "opacity: 0;" +
+    "pointer-events: none;" +
+"}"+
+
+".tvp-modal-iframe.tvp-show {" +
+    "visibility: visible;" +
+    "opacity: 1;" +
+    "pointer-events: auto;" +
+"}"

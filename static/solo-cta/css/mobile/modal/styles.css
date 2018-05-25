@@ -1,200 +1,58 @@
-*[class^="tvp-"] {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-}
-
-.slick-slide {
-  height: auto !important;
-}
-
-.slick-arrow {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  margin: auto 0;
-  background: black;
-  width: 20px;
-  height: 20px;
-  z-index: 9999;
-  color: transparent;
-  border: 0;
-}
-
-.slick-arrow.slick-prev {
-  left: 0;
-}
-
-.slick-arrow.slick-next {
-  right: 0;
-}
-
-.tvp-player {
-  height: 0;
-  width: 100%;
+.modal-close {
   position: relative;
+}
+
+.modal-close > svg {
+  width: 26px;
+  fill: #000000;
+}
+
+.skeleton .player-holder {
+  background-color: #efefef;
+}
+
+.skeleton .product-title:not(.ready) {
+  background-color: #efefef;
+}
+
+.skeleton .product-title:not(.ready):before {
+  content: "...";
+  color: transparent;
+}
+
+.skeleton .product-price:not(.ready) {
+  background-color: #efefef;
+}
+
+.skeleton .product-price:not(.ready):before {
+  content: "..................................";
+  color: transparent;
+}
+
+.product-image {
+  padding-bottom: 100%;
+  background-size: cover;
+}
+
+.product {
+  border: 1px solid; 
+}
+
+.product-title{
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.product-brand {
+  opacity: 0.8;
+}
+
+.product-price {
+  font-weight: 600;
+}
+
+.player-holder {
   padding-bottom: 56.25%;
-  background-color: black;
-}
-
-.tvp-player.inline {
-  position: absolute;
-  top:0;
-  left:0;
-  padding: 0;
-}
-
-#tvp-player-el {
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  background-color: black;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-.tvp-overlay {
-  cursor: pointer;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-  top: 0;
-  left: 0;
-  position: absolute;
-}
-
-.tvp-overlay-cover {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-}
-
-.tvp-play {
-  display: block;
-  background-color: #fff;
-  width: 55px;
-  height: 55px;
-  padding: 0;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  margin: auto;
-  opacity: 0.95;
-  cursor: pointer;
-  border-radius: 50%;
-  border: 1px solid black;
-  z-index: 9999999999;
-}
-
-.tvp-play > polygon {
-  pointer-events: none;
-}
-
-.tvp-products.enabled {
-  padding: 15px 0;
-  background-color: white;
-}
-
-.tvp-no-products .tvp-products {
-  display: none;
-}
-
-.tvp-products-carousel {
-  width: 1px;
-  min-width: 100%;
-  height:0px;
-  overflow: hidden;
-}
-
-.tvp-products-carousel.slick-initialized {
-  height:auto;
-  overflow: visible;
-}
-
-.tvp-products-title {
-  margin: 0;
-  padding: 15px;
-}
-
-.tvp-products-headline{
-  margin: 0 0 10px 10px;
-  font-family: Helvetica;
-}
-
-.tvp-product {
-  border: 1px solid #333;
-  display: block;
-  overflow: hidden;
-  margin: 0 7px;
-  padding: 5px;
-  z-index: 9999;
-}
-
-.tvp-product-image {
-  display: block;
-  width: 80px;
-  height: 80px;
-  float: left;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-}
-@media only screen and (min-width : 480px) {
-  .tvp-product-image {
-    width: 100px;
-    height: 100px;
-  }
-}
-
-.tvp-product-data {
-  float: left;
-  width: 60%;
-  margin-left: 2.5%;
-  font-family: Helvetica;
-}
-
-.tvp-product-data > p {
-  height: 29px;
-  overflow: hidden;
-  margin: 0;
-  font-size: 12px;
-  color: #1F1D26;
-}
-
-.tvp-product-data > h2 {
-  margin: 5px 0;
-  font-size: 16px;
-}
-
-.tvp-product-data > button {
-  font-size: 10px;
-  text-align: center;
-  width: 95px;
-  border-radius: 2px;
-  text-transform: uppercase;
-  height: 25px;
-  background: black;
-  border: 0;
-  color: white;
-  text-transform: uppercase;
-  display: block;
-  cursor: pointer;
-  position: absolute;
-  bottom: 5px;
-  padding: 0;
 }

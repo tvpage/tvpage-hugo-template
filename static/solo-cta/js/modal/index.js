@@ -1,86 +1,337 @@
-(function(window, document) {
+(function () {
+  var config = window.parent.__TVPage__.config[Utils.attr(document.body, 'data-id')];
+  var videoOnly = config.videoOnly;
+  var clickedVideo;
+  var modal;
+  var player;
+  var productsRail;
+  var analytics;
+  var apiBaseUrl = config.api_base_url;
+  var loginId = config.loginId;
+  var productsEnabled = config.merchandise;
+  var isFirstVideoPlay = true;
+  var productRatingAttrName = config.product_rating_attribute;
+  var productReviewAttrName = config.product_review_attribute;
+  var productsSkelEl;
 
-    var channelId = null;
-    var eventPrefix = "tvp_" + (document.body.getAttribute("data-id") || "").replace(/-/g,'_');
+  function initPlayer() {
+    function onPlayerResize(initial, size) {
+      if (size && size.length > 1 && productsRail && productsRail.railEl) {
+        productsRail.railEl.style.height = size[1];
+      }
 
-    var initialize = function() {
-        var el = Utils.getByClass('iframe-content');
-
-        var initPlayer = function(data) {
-            var s = JSON.parse(JSON.stringify(data.runTime));
-
-            s.data = data.data;
-
-            s.onResize = function() {
-                setTimeout(function() {
-                    if (window.parent) {
-                        window.parent.postMessage({
-                            event: eventPrefix + ':modal_resize',
-                            height: el.offsetHeight + 'px'
-                        }, '*');
-                    }
-                }, 0);
-            }
-
-            s.onNext = function(next) {
-                if (!next) return;
-                setTimeout(function() {
-                    if (window.parent) {
-                        window.parent.postMessage({
-                            event: eventPrefix + ':player_next',
-                            next: next
-                        }, '*');
-                    }
-                }, 0);
-            };
-
-            new Player('tvp-player-el', s, data.selectedVideo.id);
-        };
-
-        window.addEventListener('message', function(e) {
-            if (!e || !Utils.isset(e, 'data') || !Utils.isset(e.data, 'event')) return;
-            
-            var data = e.data;
-
-            if (eventPrefix + ':modal_data' === data.event) {
-                initPlayer(data);
-
-                var settings = data.runTime;
-                var loginId = settings.loginid || settings.loginId;
-
-                channelId = Utils.isset(settings.channel) && Utils.isset(settings.channel.id) ? settings.channel.id : settings.channelId;
-            }
-        });
-
-        //Notify when the widget has been initialized.
-        setTimeout(function() {
-            if (window.parent) {
-                window.parent.postMessage({
-                    event: eventPrefix + ':modal_initialized',
-                    height: (el.offsetHeight + 20) + 'px'
-                }, '*');
-            }
-        }, 0);
-    };
-
-    var not = function(obj) {
-        return 'undefined' === typeof obj
-    };
-    if (not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player)) {
-        var libsCheck = 0;
-        (function libsReady() {
-            setTimeout(function() {
-                if (not(window.TVPage) || not(window._tvpa) || not(window.Utils) || not(window.Analytics) || not(window.Player)) {
-                    if (++libsCheck < 50) {
-                        libsReady();
-                    }
-                } else {
-                    initialize();
-                }
-            }, 150);
-        })();
-    } else {
-        initialize();
+      Utils.sendMessage({
+        event: config.events.modal.resize
+      });
     }
 
-}(window, document));
+    function onPlayerNext(nextVideo) {
+      modal.updateTitle(nextVideo.assetTitle);
+
+      if (productsEnabled) {
+        productsRail.endpoint = apiBaseUrl + '/videos/' + nextVideo.assetId + '/products';
+        productsRail.load('render', function(data){
+          analytics.track('pi', data);
+        });
+      }
+    }
+
+    function onPlayerChange(e, currentAsset) {
+      Utils.sendMessage({
+        event: config.events.player.change,
+        e: e,
+        stateData: currentAsset
+      });
+
+      if ("tvp:media:videoplaying" === e && isFirstVideoPlay) {
+        isFirstVideoPlay = false;
+
+        Utils.profile(config, {
+          metric_type: 'video_playing',
+          metric_value: Utils.now('parent') - config.profiling['modal_ready'].start
+        });
+      }
+    }
+
+    player = new Player({
+      selector: 'player-el',
+      startWith: clickedVideo.id,
+      data: videoOnly ? [config.video] : config.channel.videos,
+      onResize: onPlayerResize,
+      onNext: onPlayerNext,
+      onChange: onPlayerChange
+    }, config);
+
+    player.initialize();
+  };
+
+  function initAnalytics() {
+    analytics = new Analytics({
+      domain: location.hostname
+    }, config);
+
+    analytics.initialize();
+  };
+
+  function initProducts(style) {
+    if (!productsEnabled) {
+      return;
+    }
+
+    function getProductId(el){
+      return el ? (Utils.attr(el, 'data-id') || null) : null
+    }
+
+    //track product click with delegation
+    document.addEventListener('click', function (e) {
+      var targetId = getProductId(Utils.getRealTargetByClass(e.target, 'product'));
+
+      if (targetId) {
+        analytics.track('pk', productsRail.getDataItemById(targetId));
+      }else{
+        targetId = getProductId(Utils.getRealTargetByClass(e.target, 'product-pop-over'));
+
+        if(targetId){
+          analytics.track('pk', productsRail.getDataItemById(targetId));
+        }
+      }
+    }, false);
+
+    //both rail elements and pop overs have to be relative to this.el
+    function getPopOverTop(railItemEl, popOverEl, rectify) {
+      rectify = rectify || true;
+
+      //we must take the top value reative to the document because we will scroll and move the position of the rail element
+      var railItemElTop = railItemEl.getBoundingClientRect().top;
+
+      //now we need to pull the measure to be relative to this.el
+      railItemElTop -= Math.floor(productsRail.el.getBoundingClientRect().top);
+
+      var railHeight = productsRail.el.offsetHeight || productsRail.el.getBoundingClientRect().height;
+
+      var popOverTop = railItemElTop;
+      var popPoverBottom = popOverTop + popOverEl.getBoundingClientRect().height;
+
+      if (!rectify) {
+        return popOverTop;
+      }
+
+      if (popOverTop <= 0) {
+        popOverTop = 0;
+      } else if (popPoverBottom > railHeight) {
+        popOverTop -= popPoverBottom - railHeight;
+      }
+
+      return popOverTop;
+    }
+
+    function hideAllPopOvers() {
+      var activeEls = productsRail.el.querySelectorAll('.pop-over.active');
+      var activeElsLength = activeEls.length;
+      var i;
+
+      for (i = 0; i < activeElsLength; i++)
+        Utils.removeClass(activeEls[i], 'active');
+
+      Utils.removeClass(productsRail.el.querySelector('.pop-over-pointer'), 'active');
+    }
+
+    function renderPopOver(railEl, product) {
+      var productPopOverEl = Utils.createEl('div');
+
+      productPopOverEl.id = 'pop-over-' + product.id;
+      productPopOverEl.className = 'pop-over product-pop-over';
+      productPopOverEl.setAttribute('data-id', product.id);
+      productPopOverEl.innerHTML = Utils.tmpl(templates.products.itemPopOver, product);
+
+      productsRail.el.appendChild(productPopOverEl);
+      
+      productPopOverEl.style.top = getPopOverTop(railEl, productPopOverEl);
+
+      Utils.addClass(productPopOverEl, 'active');
+    }
+
+    function renderPopOverPointer(railEl, product) {
+      var popOverPointerEl = Utils.createEl('div');
+      popOverPointerEl.className = 'pop-over-pointer product-pop-over-pointer';
+
+      productsRail.el.appendChild(popOverPointerEl);
+      popOverPointerEl.style.top = getPopOverTop(railEl, popOverPointerEl);
+      Utils.addClass(popOverPointerEl, 'active');
+    }
+
+    function onProductsItemOver(e) {
+      hideAllPopOvers();
+
+      var target = Utils.getRealTargetByClass(e.target, 'rail-item');
+      var product = productsRail.getDataItemById(target.getAttribute('data-id'));
+
+      if (!product) {
+        return;
+      }
+
+      var productPopOverEl = Utils.getById('pop-over-' + product.id);
+
+      if (productPopOverEl) {
+        productPopOverEl.style.top = getPopOverTop(target, productPopOverEl);
+
+        Utils.addClass(productPopOverEl, 'active');
+      } else {
+        renderPopOver(target, product);
+      }
+
+      var popOverPointerEl = productsRail.el.querySelector('.pop-over-pointer');
+
+      if (popOverPointerEl) {
+        popOverPointerEl.style.top = getPopOverTop(target, popOverPointerEl);
+
+        Utils.addClass(popOverPointerEl, 'active');
+      } else {
+        renderPopOverPointer(target, product);
+      }
+    }
+
+    function hideProductsSkelEl() {
+      productsSkelEl.style.display = 'none';
+    }
+
+    // We set the height of the player to the products element, we also do this on player resize, we
+    // want the products scroller to have the same height as the player.
+    style = style || 'default';
+
+    if ('default' === style) {
+      var templates = config.templates.modal;
+
+      productsRail = new Rail('products', {
+        clean: true,
+        snapReference: '[rail-ref]',
+        endpoint: apiBaseUrl + '/videos/' + clickedVideo.id + '/products',
+        templates: {
+          list: templates.products.list,
+          item: templates.products.item
+        },
+        parse: function (item) {
+          item.title = Utils.trimText(item.title, 50);
+          item.price = Utils.trimPrice(item.price);
+          item.actionText = item.actionText || 'View Details'
+          item.rating = !!productRatingAttrName ? item[productRatingAttrName] : null;
+          item.reviews = !!productReviewAttrName ? item[productReviewAttrName] : null;
+        },
+        onNoData: hideProductsSkelEl,
+        onReady: hideProductsSkelEl,
+        onItemOver: onProductsItemOver,
+        onLeave: hideAllPopOvers
+      }, config);
+
+      productsRail.init();
+      productsRail.load('render', function(data){
+        //delayed track for perf
+        setTimeout(function () {
+          analytics.track('pi', data);
+        }, 3000);
+      });
+    }
+  }
+
+  function initModal() {
+    function onModalShow() {
+      if (player)
+        player.play(clickedVideo.id);
+    }
+
+    function onModalShown() {
+      if (player) {
+        player.resize();
+      } else {
+        initPlayer();
+      }
+
+      if (productsRail) {
+        productsRail.endpoint = apiBaseUrl + '/videos/' + clickedVideo.id + '/products';
+        productsRail.load('render', function(data){
+          //delayed track for perf
+          setTimeout(function () {
+            analytics.track('pi', data);
+          }, 3000);
+        });
+      } else {
+        initProducts();
+      }
+
+      if (!analytics) {
+        initAnalytics();
+      }
+
+      Utils.profile(config, {
+        metric_type: 'modal_ready',
+        metric_value: Utils.now('parent') - config.profiling['modal_ready'].start
+      });
+    }
+
+    function onModalHidden() {
+      if(player && player.instance)
+        player.instance.stop();
+
+      productsRail.clean();
+
+      Utils.getById('skeleton').querySelector('.products-skel-delete').style.display = 'block';
+
+      Utils.sendMessage({
+        event: config.events.modal.close
+      });
+    }
+
+    modal = new Modal('modal', {
+      onShow: onModalShow,
+      onShown: onModalShown,
+      onHidden: onModalHidden,
+      onReady: function(){
+        config.modalReady = true;
+      }
+    }, config);
+
+    modal.initialize();
+  }
+
+  //global deps check before execute
+  Utils.globalPoll(
+    ['Analytics', 'Player', 'Modal', 'Ps', 'jQuery'],
+    function () {
+      initModal();
+
+      productsSkelEl = Utils.getById('skeleton').querySelector('.products-skel-delete');
+
+      window.parent.addEventListener('message', function (e) {
+        if (Utils.isEvent(e) && e.data.event === config.events.modal.open) {
+          if(videoOnly){
+            clickedVideo = config.video;
+
+            if (player) {
+              player.addAssets([clickedVideo]);
+            }
+          }else{
+            var videos = config.channel.videos;
+
+            if (player) {
+              player.addAssets(videos);
+            }
+
+            clickedVideo = videos.filter(function (video) {
+              return e.data.clicked == video.id;
+            }).pop();
+          }
+
+          if (clickedVideo) {
+            modal.updateTitle(clickedVideo.title);
+            modal.show();
+          } else {
+            throw new Error("video not found in data");
+          }
+        }
+      });
+
+      Utils.sendMessage({
+        event: config.events.modal.initialized
+      });
+    });
+}());

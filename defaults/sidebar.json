@@ -7,11 +7,23 @@
           "value": "//api.tvpage.com/v1"
         },
         {
+          "type": "text",
+          "label": "Videos Order By",
+          "code": "videos_order_by",
+          "value": "sortOrder"
+        },
+        {
+          "type": "text",
+          "label": "Videos Order Direction",
+          "code": "videos_order_direction",
+          "value": "ASC"
+        },
+        {
           "for": "player",
           "type": "text",
           "label": "Player Version",
           "code": "player_version",
-          "value": "3.1.2"
+          "value": "3.1.4"
         },
         {
           "for": "player",
@@ -45,7 +57,7 @@
           "type": "text",
           "label": "Items Per Page",
           "code": "items_per_page",
-          "value": 6
+          "value": 4
         },
         {
           "for": "sidebar",
@@ -53,6 +65,27 @@
           "label": "Items Per Row",
           "code": "items_per_row",
           "value": 2
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Mobile Modal Products Slider Center Padding",
+            "code": "mobile_modal_products_slider_center_padding",
+            "value": "40px 0 0"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Products Order By",
+          "code": "products_order_by",
+          "value": "sortOrder"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Products Order Direction",
+          "code": "products_order_direction",
+          "value": "ASC"
         },
         {
           "for": "mobile",
@@ -101,7 +134,7 @@
           "type": "text",
           "label": "Mobile Modal Close Button Top",
           "code": "mobile_modal_close_button_top",
-          "value": 0
+          "value": "10px"
         },
         {
           "for": "mobile",
@@ -169,6 +202,41 @@
         {
           "for": "mobile",
           "type": "text",
+          "label": "Mobile Product Title Height",
+          "code": "mobile_product_title_height",
+          "value": "29px"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product Title Font Family",
+          "code": "mobile_product_title_font_family",
+          "value": "Helvetica"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product Title Font Color",
+          "code": "mobile_product_title_font_color",
+          "value": "#333"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product Price Font Color",
+          "code": "mobile_product_price_font_color",
+          "value": "#333"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Product Price Font Family",
+          "code": "mobile_product_price_font_family",
+          "value": "Helvetica"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
           "label": "Mobile Product Price Font Size",
           "code": "mobile_product_price_font_size",
           "value": "12px"
@@ -213,7 +281,21 @@
           "type": "text",
           "label": "Mobile Product Price Margin",
           "code": "mobile_product_price_margin",
-          "value": 0
+          "value": "5px 0"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Products Headline Text Align",
+          "code": "mobile_products_headline_text_align",
+          "value": "left"
+        },
+        {
+          "for": "mobile",
+          "type": "text",
+          "label": "Mobile Products Headline Margin",
+          "code": "mobile_products_headline_margin",
+          "value": "0"
         },
         {
           "for": "mobile",
@@ -381,7 +463,7 @@
           "type": "text",
           "label": "Mobile Modal Close Button Right",
           "code": "mobile_modal_close_button_right",
-          "value": 0
+          "value": "10px"
         },
         {
           "for": "modal",
@@ -458,7 +540,7 @@
           "type": "text",
           "label": "Product SKU Font Size Mobile",
           "code": "product_sku_font_size_mobile",
-          "value": "14px"
+          "value": "12px"
         },
         {
           "for": "modal",
@@ -486,7 +568,7 @@
           "type": "text",
           "label": "Product SKU Margin Mobile",
           "code": "product_sku_margin_mobile",
-          "value": "5px 0 8px 0"
+          "value": "5px 0"
         },
         {
           "for": "modal",
@@ -575,16 +657,16 @@
         {
           "for": "modal",
           "type": "text",
-          "label": "Product Thumbnail Margin Right",
-          "code": "product_thumbnail_margin_right",
-          "value": "10px"
+          "label": "Product Thumbnail Margin",
+          "code": "product_thumbnail_margin",
+          "value": "0 10px 10px 0"
         },
         {
           "for": "modal",
           "type": "text",
           "label": "Product Thumbnail Margin Bottom",
-          "code": "product_thumbnail_margin_bottom",
-          "value": "10px"
+          "code": "product_thumbnail_margin_mobile",
+          "value": "0px 10px 0px 0px"
         },
         {
           "for": "modal",
@@ -624,9 +706,23 @@
         {
           "for": "modal",
           "type": "text",
+          "label": "Modal Header Border Bottom",
+          "code": "modal_header_border_bottom_mobile",
+          "value": "1px solid #e5e5e5"
+        },
+        {
+          "for": "modal",
+          "type": "text",
           "label": "Modal Header Padding",
           "code": "modal_header_padding",
           "value": "25px 30px 5px 15px"
+        },
+        {
+          "for": "modal",
+          "type": "text",
+          "label": "Modal Header Padding Mobile",
+          "code": "modal_header_padding_mobile",
+          "value": "20px"
         },
         {
           "for": "modal",
@@ -703,7 +799,7 @@
           "type": "text",
           "label": "Modal Close Button Border Radius",
           "code": "modal_close_button_border_radius",
-          "value": "50%"
+          "value": "0"
         },
         {
           "for": "modal",
@@ -1357,6 +1453,27 @@
           "value": "40px"
         },
         {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Position 480",
+            "code": "product_popup_cta_position_480",
+            "value": "static"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Right 480",
+            "code": "product_popup_cta_right_480",
+            "value": "0"
+        },
+        {
+            "for": "modal",
+            "type": "text",
+            "label": "Product Popup CTA Bottom 480",
+            "code": "product_popup_cta_bottom_480",
+            "value": "0"
+        },
+        {
           "for": "modal",
           "type": "text",
           "label": "Product Rating Attribute",
@@ -1763,87 +1880,11 @@
           "value": true
         },
         {
-          "for": "sidebar",
+          "for": "modal",
           "type": "text",
-          "label": "Product Title Font Family Mobile",
-          "code": "product_title_font_family_mobile",
-          "value": "Helvetica"
-        },
-        {
-          "for": "sidebar",
-          "type": "text",
-          "label": "Product Title Font Weight Mobile",
-          "code": "product_title_font_weight_mobile",
-          "value": "initial"
-        },
-        {
-          "for": "sidebar",
-          "type": "text",
-          "label": "Product Title Font Size Mobile",
-          "code": "product_title_font_size_mobile",
-          "value": "12px"
-        },
-        {
-          "for": "sidebar",
-          "type": "text",
-          "label": "Product Title Font Color Mobile",
-          "code": "product_title_font_color_mobile",
-          "value": "#333"
-        },
-        {
-          "for": "sidebar",
-          "type": "text",
-          "label": "Product Title Text Decoration Mobile",
-          "code": "product_title_text_decoration_mobile",
-          "value": "none"
-        },
-        {
-          "for": "sidebar",
-          "type": "text",
-          "label": "Product Title Text Align Mobile",
-          "code": "product_title_text_align_mobile",
-          "value": "left"
-        },
-        {
-          "for": "sidebar",
-          "type": "text",
-          "label": "Product Title Margin Mobile",
-          "code": "product_title_margin_mobile",
-          "value": "0"
-        },
-        {
-          "for": "sidebar",
-          "type": "text",
-          "label": "Product Price Font Color Mobile",
-          "code": "product_price_font_color_mobile",
-          "value": "#333"
-        },
-        {
-          "for": "sidebar",
-          "type": "text",
-          "label": "Product Price Font Size Mobile",
-          "code": "product_price_font_size_mobile",
-          "value": "12px"
-        },        {
-          "for": "sidebar",
-          "type": "text",
-          "label": "Product Price Font Family Mobile",
-          "code": "product_price_font_family_mobile",
-          "value": "Helvetica"
-        },
-        {
-          "for": "sidebar",
-          "type": "text",
-          "label": "Product Price Font Weight Mobile",
-          "code": "product_price_font_weight_mobile",
-          "value": "initial"
-        },
-        {
-          "for": "sidebar",
-          "type": "text",
-          "label": "Product Price Text Align Mobile",
-          "code": "product_price_text_align_mobile",
-          "value": "left"
+          "label": "Video Modal Center",
+          "code": "video_modal_center",
+          "value": false
         }
     ]
 }

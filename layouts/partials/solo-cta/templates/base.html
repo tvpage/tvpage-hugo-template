@@ -1,0 +1,44 @@
+'<div id="skeleton" class="skeleton">' +
+  
+  '<div class="video-image cta-skel-delete">' +
+    '<div class="abs-center skeleton-bg"></div>' +
+  '</div>' +
+  
+  '<div id="click-to-action" class="video hide-abs clickable">' +
+    '<div class="video-image bg-default">' +
+      '<div class="video-image-icon abs-center p-1">' +
+        '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">' +
+          '<path d="M8 5v14l11-7z"/>' +
+          '<path d="M0 0h24v24H0z" fill="none"/>' +
+        '</svg>' +
+      '</div>' +
+      '<div class="image-overlay abs-center"></div>' +
+    '</div>' +
+    '<div class="click-to-action-text p-2 text-left"></div>' +
+  '</div>' +
+  
+'</div>'+
+
+'<script>'+
+  '(function(){'+
+    'Utils.addClass(Utils.getById("skeleton"), "ready");' +
+  
+    'Utils.sendMessage({'+
+      'event: "tvp_{{ replace ($.Scratch.Get "settings").name "-" "_" }}:widget_resize",'+
+      'height: Utils.getWidgetHeight()'+
+    '});'+
+
+    'Utils.log("skeleton_shown: " + Utils.now("parent"));' +
+  
+    'var script = Utils.createEl("script");' +
+    'script.async = true;' +
+    
+    {{- if (getenv "HUGO_DEBUG") -}}
+    'script.src = "{{- (printf "/%s/js/index.js" .Type) | absURL -}}";'+
+    {{- else -}}
+    'script.src = "{{- (printf "/%s/dist/js/index.min.js" .Type) | absURL -}}";'+
+    {{- end -}}
+  
+    'document.body.appendChild(script);' +
+  '}())' +
+'</script>'

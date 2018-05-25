@@ -27,11 +27,14 @@ module.exports = function(grunt) {
       },
       uglify: {
         options: {
-          //beautify: true
         },
         scripts: {
           files: {
-            'dist/js/scripts.min.js': ['js/libs/analytics.js','js/libs/player.js', 'js/index.js']
+            'dist/js/scripts.min.js': [
+              '../libs/utils.js',
+              '../libs/analytics.js',
+              '../libs/player.js'
+            ]
           }
         }
       }

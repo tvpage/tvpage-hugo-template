@@ -1,0 +1,86 @@
+{{- $channel := slice -}}
+{{- $.Scratch.Add "channelData" $channel -}}
+{{- if $channel -}}
+  {{- $.Scratch.SetInMap "settings" "channelData" $channel -}}
+{{- end -}}
+{{- $baseUrl := .Site.BaseURL -}}
+<style>
+  .share-icon.facebook-button {
+    background-image: url("/demo/images/facebook.svg");
+    background-repeat: no-repeat;
+    width: 20px;
+    height: 20px;
+  }
+  .share-icon.facebook-button:hover{
+			background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAxNzkyIDE3OTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEzNDMgMTJ2MjY0aC0xNTdxLTg2IDAtMTE2IDM2dC0zMCAxMDh2MTg5aDI5M2wtMzkgMjk2aC0yNTR2NzU5aC0zMDZ2LTc1OWgtMjU1di0yOTZoMjU1di0yMThxMC0xODYgMTA0LTI4OC41dDI3Ny0xMDIuNXExNDcgMCAyMjggMTJ6IiBmaWxsPSIjMDBEQkMwIi8+PC9zdmc+);
+		}
+  .share-icon.twitter-button {
+    background-image: url("/demo/images/twitter.svg");
+    background-repeat: no-repeat;
+    background-position: 1px 1px;
+    width: 20px;
+    height: 20px;
+  }
+  .share-icon.twitter-button:hover{
+			background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAxNzkyIDE3OTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTE2ODQgNDA4cS02NyA5OC0xNjIgMTY3IDEgMTQgMSA0MiAwIDEzMC0zOCAyNTkuNXQtMTE1LjUgMjQ4LjUtMTg0LjUgMjEwLjUtMjU4IDE0Ni0zMjMgNTQuNXEtMjcxIDAtNDk2LTE0NSAzNSA0IDc4IDQgMjI1IDAgNDAxLTEzOC0xMDUtMi0xODgtNjQuNXQtMTE0LTE1OS41cTMzIDUgNjEgNSA0MyAwIDg1LTExLTExMi0yMy0xODUuNS0xMTEuNXQtNzMuNS0yMDUuNXYtNHE2OCAzOCAxNDYgNDEtNjYtNDQtMTA1LTExNXQtMzktMTU0cTAtODggNDQtMTYzIDEyMSAxNDkgMjk0LjUgMjM4LjV0MzcxLjUgOTkuNXEtOC0zOC04LTc0IDAtMTM0IDk0LjUtMjI4LjV0MjI4LjUtOTQuNXExNDAgMCAyMzYgMTAyIDEwOS0yMSAyMDUtNzgtMzcgMTE1LTE0MiAxNzggOTMtMTAgMTg2LTUweiIgZmlsbD0iIzAwREJDMCIvPjwvc3ZnPg==);
+	}
+</style>
+<main id="main-content" class="main-content">
+    <div class="container">
+        <div class="row">
+          {{- partial (printf "%s/breadcrumbs.html" .Type) . -}}
+        </div>
+        {{- $videoDetails := index $.Site.Data.videos (printf "x%s" .Params.videoid) -}}
+        {{- $.Scratch.Add "videoDetails" $videoDetails -}}
+        <div class="row">
+          <div class="col-lg-10">
+            <h1 id="video-playing-title" class="video-title">{{ .Title }}</h1>              
+          </div>
+          <div class="col-lg-2">
+            <h1 class="products-title">Related Products</h1>            
+          </div>
+        </div>
+        <div class="row player-product">
+          <div class="col-lg-10 col-md-12">
+            {{- partial (printf "%s/player.html" .Type) . -}}
+          </div>
+          <div class="col-lg-2 col-md-12 player-product-products">
+            <div class="video-products-container">
+              {{- partial (printf "%s/products.html" .Type) . -}}
+            </div>
+          </div>
+        </div>
+        <div class="row container tvp-video-container-mobile">
+          <h1 class="video-title-mobile"><span class="title">{{ .Title }}</span> <div id="show-more-mobile" class="carret-container" data-toggle="collapse" data-target=".video-details-row.description .mobile" aria-expanded="false"><span class="caret" ></span></div> </h1>
+          <h2 class="section-header video-details-header">VIDEO DETAILS
+            <div class="social-share">                
+              SHARE: <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ .Permalink }}" class="
+              share-icon facebook-button"></a>
+              <a target="_blank" href="https://twitter.com/share?text={{ .Title }}&url={{ .Permalink }}" class="share-icon twitter-button"></a>
+            </div>
+          </h2>
+        </div>
+        <div class="row video-details">
+          <div class="col-sm-12 col-md-12 video-details-row">
+            <p class="video-details-meta">Published on: <span class="published-date">{{ $videoDetails.date_created }}</span></p>
+          </div>
+          <div class="col-sm-12 col-md-12 video-details-row duration">
+            <p class="video-details-meta">Duration: <span>
+            {{- if and (isset $videoDetails "asset") (isset $videoDetails.asset "prettyDuration") -}}
+              {{ $videoDetails.asset.prettyDuration }}
+            {{- end -}}
+            </span></p>
+          </div>
+          <div class="col-sm-12 col-md-12 video-details-row description">
+            <div class="desktop">{{ replace $videoDetails.description "\n" "<br/>" | safeHTML }}</div>
+            <div class="collapse mobile">{{ replace $videoDetails.description "\n" "<br/>" | safeHTML }}</div>
+          </div>
+          <div class="col-sm-12 col-md-12 video-details-row btn-more show-more">
+            <div class="btn-more-line"></div>
+            <div class="btn-more-btn-container">
+              <button type="button" class="btn btn-primary btn-more-button">SHOW MORE</button>
+            </div>
+          </div>
+        </div>
+    </div>
+</main>

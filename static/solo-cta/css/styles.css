@@ -1,52 +1,9 @@
-body {
-  margin: 0;
-  padding: 0;
-}
-
-.tvp-player {
-  height: 0;
-  width: 100%;
-  position: relative;
-  padding-bottom: 56.25%;
-}
-
-#tvp-player-el {
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  background-color: black;
+/* implementation specific */
+.click-to-action-text {
   position: absolute;
-  top: 0;
   bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.tvp-play-holder {
-  box-sizing: border-box;
-  position: absolute;
-  padding: 0;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  margin: auto;
-  cursor: pointer;
-  width: 135px;
-}
-
-.tvp-play-text {
-  margin-top: 10px;
-  text-align: center;
-}
-
-.tvp-play-text.abs {
-  margin-top: 0;
-  z-index: 100;
-  position: absolute;
   width: 100%;
   max-width: 50%;
-  text-align: left;
+  color: white;
+  font-weight: 600;
 }

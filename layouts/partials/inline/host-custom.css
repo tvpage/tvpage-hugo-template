@@ -1,3 +1,0 @@
-'.tvp-inline-holder{' +
-	'background-color: {{ ($.Scratch.Get "settings").iframe_holder_background_color }};' +
-'}'

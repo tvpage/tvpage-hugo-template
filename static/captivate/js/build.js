@@ -787,6 +787,8 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
           if ("object" !== typeof channel && "undefined" !== typeof channel.id) {
             id = channel.id;
           }
+          data.assetId = video.id;
+          data.assetTitleTextEncoded = video.titleTextEncoded;
           data.analyticsObj = {
             pg: TVSite.channelId || id,
             vd: video.id,
@@ -796,11 +798,11 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
         },
         playVideo : function(video){
           if (video) {
-            inTimeProducts.destroy();
-            inTimeProducts.initialize({
-                videoId: video.id,
-                channelId: TVSite.channelId
-            });
+            // inTimeProducts.destroy();
+            // inTimeProducts.initialize({
+            //     videoId: video.id,
+            //     channelId: TVSite.channelId
+            // });
             var data = tvp_Player.buildVideoData(video);
             
             if (isMobile) {
@@ -924,11 +926,6 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
         handlePlayerReady : function(){
           videoList = TVSite.channelVideosData.videos;
           tvp_Player.resizePlayer();
-          if ( initialPlay && 'channelVideosData' in TVSite ) {
-            var video = TVSite.channelVideosData.video;
-            tvp_Player.startPlayback(video);
-            initialPlay = false;
-          }
         },
         handlePlayerStateChange : function(e){
           if ('tvp:media:videoended' == e) {
@@ -1249,9 +1246,9 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
                 if(isIOS){
                   $('.analyticsClick').tap({
                     link : true,
-                    tap: function(){
+                    tap: function(el){
                         //e.stopPropagation();
-                        Analytics.registerProductClick($(this).data('id'));
+                        Analytics.registerProductClick($(el).data('id'));
                     }
                   });
                   
@@ -1357,13 +1354,21 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
             resizeCheck: function () {                
                 if (($(window).width() < this.breakpoint) && (!this.isHorizontalScroll)) {
                     this.isHorizontalScroll = true;
-                    this.prodSlider.destroy();
+                    
+                    if(this.prodSlider){
+                        this.prodSlider.destroy();
+                    }
+
                     this.resizeWrapper(true);
                     this.prodSlider = new IScroll('#tvp-products-wrapper', this.config.scrollx);
                 }
                 else if(($(window).width() >= this.breakpoint)){
                     this.isHorizontalScroll = false;
-                    this.prodSlider.destroy();
+                    
+                    if(this.prodSlider){
+                        this.prodSlider.destroy();
+                    }
+                    
                     this.resizeWrapper(false);
                     this.prodSlider = new IScroll('#tvp-products-wrapper', this.config.scrolly);
                 }
@@ -1596,8 +1601,17 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
         });
     }
 
+    var sharingObj = {};
+    var isObj = function(o){
+        return "object" === typeof o;
+    }
+
+    if(isObj(TVSite.hubData) && isObj(TVSite.hubData.sharing))
+        sharingObj = TVSite.hubData.sharing;
+
     if (TVSite.isPlayerPage) {
         window.TVPlayer = new TVPage.player({
+            sharing: sharingObj,
             divId: 'TVPagePlayer',
             swf: '//appcdn.tvpage.com//player/assets/tvp/tvp-1.5.2-flash.swf',
             displayResolution: tvp_Player.playerResolution,
@@ -1611,6 +1625,13 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
                 floater: { removeControls:['tvplogo'] }
             }
         });
+
+        if ( initialPlay && 'channelVideosData' in TVSite ) {
+            var video = TVSite.channelVideosData.video;
+            tvp_Player.startPlayback(video);
+            initialPlay = false;
+        }
+
         /**
         * Fullscreen poll/check
         */

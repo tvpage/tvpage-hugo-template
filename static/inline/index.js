@@ -1,173 +1,275 @@
-var utils = {
-    isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
-    isIOS: /iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream,
-    isset: function(o,p){
-        var val = o;
-        if (p) val = o[p];
-        return "undefined" !== typeof val;
-    },
-    getIframeHtml: function(options) {
-        var html = '<head><base target="_blank" /></head><body class="' + (options.className || '') + '" data-domain="' +
-            (options.domain || '') + '" data-id="' + (options.id || '') + '" onload="' +
-            'var d = document, head = d.getElementsByTagName(\'head\')[0],' +
-            'addJS = function(u){ var s = d.createElement(\'script\');s.src=u;d.body.appendChild(s);},' +
-            'addCSS = function(h){ var l = d.createElement(\'link\');l.rel=\'stylesheet\';l.href=h;head.appendChild(l);};';
+var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+var templates = isMobile ? config.templates.mobile : config.templates;
+var apiBaseUrl = config.api_base_url;
+var baseUrl = config.baseUrl;
+var debug = config.debug;
+var eventsPrefix = config.events.prefix;
+var holderEl;
 
-        var js = options.js || [];
-        if ('function' === typeof js) {
-            js = js();
-        }
+//we add the preconnect hints as soon as we can
+(function(urls){
+  var urlsLength = urls.length;  
+  var i;
+  
+  for (i = 0; i < urlsLength; i++) {
+    var link = document.createElement('link');
+  
+    link.rel = 'preconnect';
+    link.href = urls[i];
+  
+    document.head.appendChild(link);
+  }
+}([
+  apiBaseUrl,
+  baseUrl
+]))
 
-        js = js.filter(Boolean);
-        for (var i = 0; i < js.length; i++) {
-            html += 'addJS(\'' + js[i] + '\');';
-        }
+//helpers
+function getById(id){
+  return document.getElementById(id);
+}
 
-        var css = options.css || [];
-        if ('function' === typeof css) {
-            css = css();
-        }
+function createEl(t){
+  return document.createElement(t);
+}
 
-        css = css.filter(Boolean);
-        for (var i = 0; i < css.length; i++) {
-            html += 'addCSS(\'' + css[i] + '\');';
-        }
+function remove(el){
+  el.parentNode.removeChild(el);
+}
 
-        html += '"><style>' + (options.style || '') + '</style>';
+function saveProfileLog(c, m){
+  if(!window.performance || !c)
+    return;
 
-        var content = options.html || '';
-        if ('function' === typeof content) {
-            html += content();
-        } else if (content.trim().length) {
-            html += content;
-        }
+  c.profiling[m] = performance.now();
+}
 
-        return html;
-    },
-    addClass: function(obj,c){
-        if (!obj || !c) return;
-        if ('string' === typeof obj) {
-            document.getElementById(obj).classList.add(c);
-        } else {
-            obj.classList.add(c);
-        }
-    },
-    removeClass: function(obj,c){
-        if (!obj || !c) return;
-        if ('string' === typeof obj) {
-            document.getElementById(obj).classList.remove(c);
-        } else {
-            obj.classList.remove(c);
-        }
-    },
-    extend: function(out) {
-        out = out || {};
-        for (var i = 1; i < arguments.length; i++) {
-            if (!arguments[i])
-                continue;
+function tmpl(t,d){
+  return t.replace(/\{([\w\.]*)\}/g, function(str, key) {
+    var keys = key.split("."),
+      v = d[keys.shift()];
+    for (var i = 0, l = keys.length; i < l; i++) v = v[keys[i]];
+    return (typeof v !== "undefined" && v !== null) ? v : "";
+  });
+}
 
-            for (var key in arguments[i]) {
-                if (arguments[i].hasOwnProperty(key))
-                    out[key] = arguments[i][key];
-            }
-        }
-        return out;
+function loadScript(url, params, callback){
+  if(!url)
+    throw new Error('need url');
+
+  params = params || {};
+  
+  var script = createEl('script');
+  var param;
+  var counter = 0;
+
+  for (param in params) {
+    url += (counter > 0 ? '&' : '?') + param + '=' + params[param];
+
+    ++counter;
+  }
+
+  var callbackName = 'tvp_callback_' + Math.random().toString(36).substring(7);
+
+  window[callbackName] = function(data){
+    if('function' === typeof callback)
+      callback(data);
+  };
+
+  script.src = url + '&callback=' + callbackName;
+
+  document.body.appendChild(script);
+}
+
+//builds the document html for an iframe.
+function getIframeHtml(o){
+  function load(arr, type){
+    arr = arr.filter(Boolean);
+    
+    var ret = '';
+    var arrLength = arr.length;
+    var i;
+
+    for (i = 0; i < arrLength; i++)
+      ret += 'append' + type + '(\'' + arr[i] + '\');';
+
+    return ret;
+  };
+
+  var html = config.templates.iframeContent.trim();
+  
+  if(o.style){
+    html += '<style>' + o.style + '</style>';
+  }
+
+  html += o.html || '';
+
+  o.context.className = isMobile ? 'mobile' : '';
+
+  o.context.onload = '' +
+  '(function(d){' +
+    'var h = d.head;' +
+
+    'function createEl(t){' +
+    '  return d.createElement(t);' +
+    '}' +
+
+    'function appendScript(u){'+
+    '  var s = createEl(\'script\');' +
+    '  s.src = u;'+
+    '  h.appendChild(s);' +
+    '}' +
+
+    'function appendLink(u){'+
+    '  var l = createEl(\'link\');'+
+    '  l.rel = \'stylesheet\';'+
+    '  l.href = u;'+
+    '  h.appendChild(l);' +
+    '}' +
+  
+    load(o.js, 'Script') +
+    load(o.css, 'Link') +
+
+  '}(document))';
+
+  return tmpl(html, o.context);
+};
+
+//we have a generic host css per widget type that we only include once.
+function getFirstHTML(){
+  var styleId = 'tvp-' + config.type + '-host';
+  var hostStyles = isMobile && config.css.mobile ? config.css.mobile.host : config.css.host;
+
+  return (getById(styleId) ? '' : '<style id="' + styleId + '">' + hostStyles + '</style>') + 
+  tmpl(templates.holder, {
+    iframe: templates.iframe
+  });
+}
+
+function widgetHolderResize(height){
+  holderEl.style.height = height + 'px';
+}
+
+//here's the first HTML write we do to the host page, this is the fastest way to do it
+//refer to https://jsperf.com/insertadjacenthtml-perf/3
+function widgetRender(){
+  function render(){
+    var targetEl = getById(config.targetEl);
+
+    if(targetEl){
+      targetEl.insertAdjacentHTML('beforebegin', getFirstHTML());  
+      
+      remove(targetEl);
+
+      holderEl = getById(config.id + '-holder');
+    }else{
+      throw new Error('missing target element');
     }
+
+    var iframeDocument = holderEl.querySelector('iframe').contentWindow.document;
+    var iframeFiles = debug ? config.files.debug : config.files;
+  
+    iframeDocument.open().write(getIframeHtml({
+      context: config,
+      html: templates.base,
+      style: config.css.base,
+      js: iframeFiles.javascript,
+      css: iframeFiles.css
+    }));
+  
+    iframeDocument.close();
+    
+    saveProfileLog(config, 'widget_rendered');
+  }
+
+  //we will poll if the target element is not in the page immediately, this is required to cover
+  //scenarios where customer add this element lazily.
+  if(getById(config.targetEl)){
+    render();
+  }else{
+    var targetElCheckCounter = 0;
+    
+    (function checkTargetEl(){
+      setTimeout(function() {
+        var ready = true;
+
+        if(!getById(config.targetEl))
+          ready = false;
+    
+        if(ready){
+          render();
+        }else if(++targetElCheckCounter < 1000){
+          checkTargetEl()
+        }else{
+          throw new Error("targetEl doesn't exist on page");
+        }
+      },5);
+    })();
+  }
+}
+
+function onWidgetLoad(data){
+  saveProfileLog(config, 'data_returned');
+
+  if(data && data.length){
+    config.channel.videos = data;
+    
+    holderEl.classList.remove('tvp-hide');
+    holderEl.classList.add('tvp-show');
+  }
 };
 
-if (typeof bootstrap !== "object" || !bootstrap.hasOwnProperty('name') || bootstrap.name.length<=0 ) {
-  throw new Error('Must pass bootstrap and boostrap.name');
+//api calls/loading, is here were we call the most important api(s) and it's the start 
+//of everything.
+function widgetLoad(){
+  var videosLoadParams = {
+    p: 0,
+    n: config.items_per_page,
+    o: config.videos_order_by,
+    od: config.videos_order_direction,
+    'X-login-id': config.loginId
+  };
+
+  var channelParams = config.channel.parameters;
+  var channelParam;
+
+  if(channelParams){
+    for (channelParam in channelParams)
+      videosLoadParams[channelParam] = channelParams[channelParam];
+  }
+
+  loadScript(
+    apiBaseUrl + '/channels/' + config.channelId + '/videos', 
+    videosLoadParams, 
+    onWidgetLoad
+  );
 }
 
-var id = bootstrap.name;
-
-//If there's config object for this specific widget, then we merged in... extend?
-window.__TVPage__ = window.__TVPage__ || {};
-__TVPage__.config = __TVPage__.config || {};
-
-if ("object" === typeof __TVPage__.config[id]) {
-    __TVPage__.config[id] = utils.extend(bootstrap, __TVPage__.config[id]);
-} else {
-    __TVPage__.config[id] = bootstrap;
-}
-
-var __windowCallbackFunc__ = null;
-if (   __TVPage__.config[id].hasOwnProperty('onChange') && typeof   __TVPage__.config[id].onChange == "function" ) {
-  __windowCallbackFunc__ = __TVPage__.config[id].onChange;
-  delete __TVPage__.config[id].onChange;
-}
-
-var config = utils.isset(window.__TVPage__) && utils.isset(__TVPage__,"config") && utils.isset(__TVPage__.config,id) ? __TVPage__.config[id] : {};
-
-var hostCssTagId = "tvp-inline-host-css";
-var hostCssTag = "";
-if (!document.getElementById(hostCssTagId)) {
-  hostCssTag = '<style id="' + hostCssTagId + '">' + config.css.host + '</style>';
-}
-
-var targetElement;
-if ( !config.hasOwnProperty('targetEl') ||  !document.getElementById(config.targetEl) ) {
-  throw new Error ( "Must provide a targetEl");
-} 
-
-var targetElement = document.getElementById(config.targetEl);
-targetElement.insertAdjacentHTML('beforebegin', "<style>" + config.css["host-custom"] + "</style>" + hostCssTag + '<div id="' + id + '-holder" class="tvp-inline-holder">'+
-'<iframe class="tvp-iframe" src="about:blank" allowfullscreen frameborder="0" scrolling="no"></iframe></div>');
-targetElement.parentNode.removeChild(targetElement);
-
-config.id = id;
-config.staticPath = config.baseUrl + "/inline";
-config.mobilePath = utils.isMobile ? 'mobile/' : '';
-config.distPath = config.debug ? '/' : '/dist/';
-config.cssPath = config.staticPath + config.distPath + 'css/';
-config.jsPath = config.staticPath  + '/dist/js/';
-config.eventPrefix = ("tvp_" + config.id).replace(/-/g,'_');
-
-var playerUrl = "https://cdnjs.tvpage.com/tvplayer/tvp-" + config.player_version + ".min.js";
-var holder = document.getElementById(config.id + "-holder");
-utils.isset(config, 'iframe_holder_background_color') ? holder.style.cssText += 'background-color:'+ config.iframe_holder_background_color +';' : null;
-var iframe = holder.querySelector("iframe");
-var iframeDocument = iframe.contentWindow.document;
-
-iframeDocument.open().write(utils.getIframeHtml({
-    id: config.id,
-    className: "dynamic",
-    domain: config.baseUrl,
-    style: config.css.inline,
-    js: [
-        '//a.tvpage.com/tvpa.min.js',
-        '//imasdk.googleapis.com/js/sdkloader/ima3.js',
-        playerUrl,
-        config.debug ? config.jsPath + "scripts.js" : "",
-        config.debug ? "" : config.jsPath + "scripts.min.js"
-    ],
-    css: [
-        config.debug ? config.cssPath + "styles.css" : "",
-        config.debug ? "" : config.cssPath + "styles.min.css"
-    ]
-}));
-iframeDocument.close();
-
-var isEvent = function (e, type) {    
-    return (e && utils.isset(e, "data") && utils.isset(e.data, "event") && config.eventPrefix + type === e.data.event);
-};
-
+//handle the widget events
 window.addEventListener("message", function(e){
-    if (!isEvent(e, ":resize")) return;
-    holder.style.height = e.data.height;
+  var event = ((e || {}).data || {}).event;
+  var events = config.events;
+  
+  if(!event)
+    return;
+
+  if(events.resize === event){
+    onWidgetResize(e);
+  }
+
+  if(events.initialized === event){
+    onWidgetInitialized(e);
+  }
+
+  if (config.__windowCallbackFunc__)
+    config.__windowCallbackFunc__(e);
 });
 
-var clickData = {};
+//event handlers
+function onWidgetResize(e) {
+  widgetHolderResize(e.data.height);
+}
 
-var getEventType = function (e) {
-  var evt = null
-    if (e && utils.isset(e, "data") && utils.isset(e.data, "event") ) {
-      evt= e.data.event;
-    }
-    
-    if (evt && evt.length && evt.substr(0, config.eventPrefix.length) === config.eventPrefix) {
-      return evt.substr(config.eventPrefix.length + 1);
-    }
-    
-    return null;
-};
+//entry point
+widgetRender();
+widgetLoad();

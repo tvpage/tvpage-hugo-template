@@ -1,48 +1,129 @@
-;(function(window,document) {
+(function () {
+  var config = window.parent.__TVPage__.config[Utils.attr(document.body, 'data-id')];
+  var channelParams = config.channel.parameters;
+  var videosEndpoint = config.api_base_url + '/channels/' + config.channelId + '/videos';
+  var templates = config.templates;
+  var channelVideos;
+  var videosCarousel;
 
-var initialize = function(){
-    var settings = {};
-    var body = document.body;
+  function sendResizeMessage() {
+    Utils.sendMessage({
+      event: config.events.resize,
+      height: Utils.getWidgetHeight()
+    });
+  }
 
-    if (Utils.isset(parent) && Utils.isset(parent,'__TVPage__') && Utils.isset(parent.__TVPage__, 'config')) {
-        settings = parent.__TVPage__.config[body.getAttribute('data-id')];
+  function initVideos() {
+    function onVideosCarouselClick(e) {
+      if (!e || !e.target || !config.modalReady) {
+        return;
+      }
+
+      Utils.sendMessage({
+        event: config.events.modal.open,
+        
+        //I think is best to use the video-item the the carousel holds... more semantic
+        clicked: Utils.attr(Utils.getRealTargetByClass(e.target, 'carousel-item'), 'data-id')
+      });
+
+      config.profiling['modal_ready'] = {
+        start: Utils.now('parent')
+      }
     }
 
-    var carouselSettings = JSON.parse(JSON.stringify(settings));
-    var name = carouselSettings.name;
-    var main = document.createElement('div');
+    function onVideosCarouselReady() {
+      var widgetTitleEl = Utils.getById('widget-title');
+      widgetTitleEl.innerHTML = config.widget_title_html;
 
-    main.id = name;
-    main.className = 'iframe-content' + (Utils.isMobile ? " mobile" : "");
-    main.innerHTML = carouselSettings.templates.carousel;
-    body.appendChild(main);
+      Utils.addClass(widgetTitleEl, 'ready');
 
-    carouselSettings.onClick = function (clicked,videos) {
-        window.parent.postMessage({
-            runTime: 'undefined' !== typeof window.__TVPage__ ? __TVPage__ : null,
-            event: "tvp_" + (carouselSettings.id || "").replace(/-/g,'_') + ":video_click",
-            selectedVideo: clicked,
-            videos: videos
-        }, '*');
-    };
+      Utils.remove(Utils.getById('skeleton').querySelector('.videos-skel-delete'));
 
-    Carousel(name, carouselSettings);
-};
+      Utils.removeClass(videosCarousel.el, 'hide-abs');
 
-var not = function(obj){return 'undefined' === typeof obj};
-if (not(window.jQuery) || not(window.Carousel) || not(window.Utils)) {
-    var libsCheck = 0;
-    (function libsReady() {
-        setTimeout(function(){
-            if (not(window.jQuery) || not(window.Carousel) || not(window.Utils)) {
-                (++libsCheck < 50) ? libsReady() : console.warn('limit reached');
-            } else {
-                initialize();
-            }
-        },150);
-    })();
-} else {
-    initialize();
-}
+      Utils.addClass(document.body, 'widget-ready');
 
-}(window, document));
+      config.profiling['widget_ready'] = Utils.now('parent');
+
+      //send the profile log of the collected metrics
+      Utils.sendProfileData(config);
+
+      setTimeout(function(){
+        videosCarousel.loadNext('render');
+      },0);
+    }
+
+    function onVideosCarouselLoad(data) {
+      config.channel.videos = config.channel.videos.concat(data);
+    }
+
+    videosCarousel = new Carousel({
+      selector: 'videos',
+      arrows: Utils.isMobile ? false : true,
+      alignArrowsY: ['center', '.video-image-icon'],
+      endpoint: videosEndpoint,
+      params: Utils.extend({
+        o: config.videos_order_by,
+        od: config.videos_order_direction
+      }, channelParams),
+      page: 0,
+      data: channelVideos,
+      dots: true,
+      dotsCenter: true,
+      dotsClass: 'col py-3',
+      slidesToShow: config.items_per_page,
+      slidesToScroll: config.items_per_page,
+      itemsPerPage: config.items_per_page,
+      parse: function(item){
+        item.title = Utils.trimText(item.title, 50);
+
+        return item;
+      },
+      templates: {
+        list: templates.videos.list,
+        item: templates.videos.item
+      },
+      responsive: [{
+        breakpoint: 768,
+        settings: {
+          dots: true,
+          slidesToShow: 2,
+          slidesToScroll: 2
+        }
+      }],
+      onClick: onVideosCarouselClick,
+      onReady: onVideosCarouselReady,
+      onLoad: onVideosCarouselLoad,
+      onResize: sendResizeMessage
+    }, config);
+
+    videosCarousel.initialize();
+    
+    config.videosCarousel = videosCarousel;
+  };
+
+  function initAnalytics() {
+    analytics = new Analytics({
+      ciTrack: true,
+      domain: location.hostname
+    }, config);
+
+    analytics.initialize();
+  }
+
+  Utils.poll(function () {
+    var videos = config.channel.videos;
+
+    return videos && videos.length;
+  }, function () {
+    channelVideos = config.channel.videos;
+
+    //global deps check before execute
+    Utils.globalPoll(
+      ['jQuery', 'Carousel', 'Analytics'],
+      function () {
+        initAnalytics();
+        initVideos();
+      });
+  });
+}());

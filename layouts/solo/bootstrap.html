@@ -1,18 +1,16 @@
-{{- partial "settings.html" . -}}
-(function(){
+{{- (partial "config.html" .) -}}
 
-  var bootstrap = {{ $.Scratch.Get "settings" | jsonify }};
-  bootstrap.baseUrl = "{{ $.Site.BaseURL }}";
-  bootstrap.templates = {
-    menu: {{- (partial (printf "%s/menu.html" .Type) .) -}},
-    "menu-item": {{- (partial (printf "%s/menu-item.html" .Type) .) -}}
-  };
-  
-  bootstrap.css = {
-    host: {{- (partial (printf "%s/host.css" .Type) .) | htmlUnescape | safeHTML -}},
-    "styles-custom": {{- (partial (printf "%s/styles-custom.css" .Type) .) | htmlUnescape | safeHTML -}}
-  };
+(function(data){
+	var config = {{ $.Scratch.Get "config" | jsonify }};
 
-  {{- (readFile "/themes/tvpage/static/solo/index.js") | htmlUnescape | safeHTML -}}
-
-}());
+	{{- (readFile (printf "/themes/tvpage/static/%s/config.js" .Type) ) | htmlUnescape | safeHTML -}}
+	{{- (readFile (printf "/themes/tvpage/static/%s/index.js" .Type) ) | htmlUnescape | safeHTML -}}
+}(
+	{
+		type: "{{ .Type }}",
+		templates: {{- (partial (printf "%s/templates/index.html" .Type) .) -}},
+		css: {{- (partial (printf "%s/css/index.html" .Type) .) -}},
+		debug: '{{- getenv "HUGO_DEBUG" -}}',
+		baseUrl: "{{ $.Site.BaseURL }}"
+	}
+));
