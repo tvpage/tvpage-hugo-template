@@ -396,12 +396,16 @@
             
 
             //init player            
-            var s = options;
-            s.onNext = onNext;
+            var s = JSON.parse(JSON.stringify(options));
+            s.data = data.data;
             selectedVideo = data[0];
-            s.data = data;
 
-            player = new Player('tvp-player', s, selectedVideo.id);
+            player = new Player('tvp-player', {
+                startWith: selectedVideo.id,
+                data: data,
+                onNext: onNext
+            }, s);
+            player.initialize();
             $(inlineEl).find('#videoTitle').html(selectedVideo.title);
             addVideoActiveState(selectedVideo.id);
             
