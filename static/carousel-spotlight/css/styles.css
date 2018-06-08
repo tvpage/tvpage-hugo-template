@@ -139,7 +139,6 @@ body  {
 }
 
 .tvp-video:hover .tvp-play-button-outer{
-  -webkit-transform: scale(1.1);
   transform: scale(1.1);
 }
 
@@ -193,12 +192,10 @@ body  {
 }
 
 .metadata .tvp-video-metadata {
-  display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  -ms-flex-pack: justify;
+      justify-content: space-between;
 }
 .tvp-video-metadata > div:last-child {
   text-align: right;

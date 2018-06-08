@@ -185,52 +185,54 @@
       var s = JSON.parse(JSON.stringify(data.runTime));
       var player = null;
 
-      s.data = data.data;
-
-      s.onResize = function(initial, size) {
-        if (window.parent) {
-          window.parent.postMessage({
-            event: eventPrefix + ':modal_resize',
-            height: (el.offsetHeight + 20) + 'px'
-          }, '*');
-        }
-      };
-
-      s.onNext = function(next) {
-        if (!next) return;
-
-        data.runTime.loginId = data.runTime.loginId || data.runTime.loginid;
-
-        if (Utils.isset(next, 'products')) {
-          render(next.products);
-        } else {
-          if (!data.runTime.merchandise) {
-            el.classList.add('tvp-no-products');
-            eventName = eventPrefix + ':modal_no_products';
-            notify();
-          } else {
-            loadProducts(next.assetId, data.runTime, function(products) {
-              setTimeout(function() {
-                checkProducts(products, el);
-                render(products);
-                player.resize();
-              }, 0);
-            });
+      function onPlayerResize(initial, size) {
+          if (window.parent) {
+            window.parent.postMessage({
+              event: eventPrefix + ':modal_resize',
+              height: (el.offsetHeight + 20) + 'px'
+            }, '*');
           }
-        }
+      }
 
-        if (window.parent) {
-          window.parent.postMessage({
-            event: eventPrefix + ':player_next',
-            next: next
-          }, '*');
-        }
-      };
+      function onPlayerNext(next) {
+          if (!next) return;
 
-      player = new Player('tvp-player-el', s, data.selectedVideo.id);
-      window.addEventListener('resize', Utils.debounce(function() {
-        player.resize();
-      }, 85));
+          data.runTime.loginId = data.runTime.loginId || data.runTime.loginid;
+
+          if (Utils.isset(next, 'products')) {
+            render(next.products);
+          } else {
+            if (!data.runTime.merchandise) {
+              el.classList.add('tvp-no-products');
+              eventName = eventPrefix + ':modal_no_products';
+              notify();
+            } else {
+              loadProducts(next.assetId, data.runTime, function(products) {
+                setTimeout(function() {
+                  checkProducts(products, el);
+                  render(products);
+                  player.resize();
+                }, 0);
+              });
+            }
+          }
+
+          if (window.parent) {
+            window.parent.postMessage({
+              event: eventPrefix + ':player_next',
+              next: next
+            }, '*');
+          }
+      }
+
+      player = new Player('tvp-player-el', {
+          startWith: data.selectedVideo.id,
+          data: data.data,
+          onResize: onPlayerResize,
+          onNext: onPlayerNext
+      }, s);
+
+      player.initialize();
     };
 
     window.addEventListener('message', function(e) {
