@@ -44,7 +44,9 @@
             minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes(),
             seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
         return (hour + minutes + ':' + seconds);
-    };  this.globalPoll = function (globs, callback) {
+    };
+
+    this.globalPoll = function (globs, callback) {
       globs = (globs || []).filter(Boolean);
 
       var globsLength = globs.length;
