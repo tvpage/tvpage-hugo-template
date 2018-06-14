@@ -1,346 +1,394 @@
-;(function(window,document) {
-
-  var isIOS = (/iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream),
-      isset = function(o,p){
-        var val = o;
-        if (p) val = o[p];
-        return 'undefined' !== typeof val;
-      },
-      isEmpty = function(obj) {
-        for(var key in obj) { if (obj.hasOwnProperty(key)) return false;}
-        return true;
-      },
-      compact = function(o){
-        if (!o && "object" !== typeof o) return;
-        for (var k in o) {
-          if (!o[k]) {
-            delete o[k];
-          }
-        }
-        return o;
-      },
-      hostName = isset(location,'hostname') ?  location.hostname : '';
-
-  //The player singleton. We basically create an instance from the tvpage
-  //player and expose most utilities, helping to encapsualte what is required for a few players to co-exist.
-  function Player(el, options, startWith) {
-    if (!el || !isset(options) || !isset(options.data) || options.data.length <= 0) return;
-
-    this.options = options;
-    this.instance = null;
-    this.el = 'string' === typeof el ? document.getElementById(el) : el;
-
-    this.isFullScreen = false;
-    this.initialResize = true;
-
-    this.autoplay = isset(options.autoplay) ? Number(options.autoplay) : false;
-    this.autonext = isset(options.autonext) ? Number(options.autonext) : true;
-    this.version = isset(options.player_version) ? options.player_version : null;
-
-    this.removeControls = isset(options.remove_controls) ? options.remove_controls : null;
-    this.techOrder = isset(options.tech_order) ? options.tech_order : null;
-    this.analytics = isset(options.analytics) ? options.analytics : null;
-    this.apiBaseUrl = isset(options.api_base_url) ? options.api_base_url : null;
-    this.mediaProviders = isset(options.media_providers) ? options.media_providers : null;
-    this.preload = isset(options.preload) ? options.preload : null;
-    this.poster = isset(options.poster) ? options.poster : null;
-    this.overlay = isset(options.overlay) ? options.overlay : null;
-
-    this.playbutton = compact({
-      height: isset(options.play_button_height) ? options.play_button_height : null,
-      width: isset(options.play_button_width) ? options.play_button_width : null,
-      backgroundColor: isset(options.play_button_background_color) ? options.play_button_background_color : null,
-      borderRadius: isset(options.play_button_border_radius) ? options.play_button_border_radius : null,
-      borderWidth: isset(options.play_button_border_width) ? options.play_button_border_width : null,
-      borderColor: isset(options.play_button_border_color) ? options.play_button_border_color : null,
-      borderStyle: isset(options.play_button_border_style) ? options.play_button_border_style : null,
-      iconColor: isset(options.play_button_icon_color) ? options.play_button_icon_color : null
-    });
-
-    this.floater = compact({
-     controlbarColor: isset(options.control_bar_color) ? options.control_bar_color : null,
-     iconColor: isset(options.icon_color) ? options.icon_color : null,
-     removeControls: isset(options.remove_controls) ? options.remove_controls : null
-    });
-
-    this.seekBar = compact({
-     progressColor: isset(options.progress_color) ? options.progress_color : null
-    });
-    
-    this.controls = compact({
-      active: true,
-      seekBar: this.seekBar,
-      floater: this.floater,
-      playbutton: this.playbutton,
-      overlayColor: isset(options.overlay_color) ? options.overlay_color : null,
-      overlayOpacity: isset(options.overlay_opacity) ? options.overlay_opacity : null
-    });
-
-    var advertisingOptions = isset(options.advertising) && "object" === typeof options.advertising && !isEmpty(options.advertising) ? options.advertising : {};
-    this.advertising = compact({
-      enabled: isset(advertisingOptions.enabled) ? advertisingOptions.enabled : false,
-      adServerUrl: isset(advertisingOptions.adServerUrl) ? advertisingOptions.adServerUrl : null,
-      adTimeout: isset(advertisingOptions.adTimeout) ? advertisingOptions.adTimeout : "2000",
-      maxAds: isset(advertisingOptions.maxAds) ? advertisingOptions.maxAds : "100",
-      adInterval: isset(advertisingOptions.adInterval) ? String(advertisingOptions.adInterval) : "0"
-    });
-
-    this.onNext = isset(options.onNext) && "function" === typeof options.onNext ? options.onNext : null;
-    this.onPlayerReady = isset(options.onPlayerReady) && "function" === typeof options.onPlayerReady ? options.onPlayerReady : null;
-    this.onFullscreenChange = isset(options.onFullscreenChange) && "function" === typeof options.onFullscreenChange ? options.onFullscreenChange : null;
-
-    //Context reference for Methods.
-    var that = this;
-    
-    this.getOption = function (name) {
-      if (this.options.hasOwnProperty(name))
-        return this.options.hasOwnProperty(name);
-      return null;
-    };
-
-    this.createAsset = function(obj){
-        if (!obj || "object" !== typeof obj || isEmpty(obj) || !isset(obj,'asset')) return;
-
-        var asset = obj.asset;
-        asset.assetId = obj.id;
-        asset.assetTitle = obj.title;
-        asset.loginId = obj.loginId;
-
-        if (isset(obj,'events') && obj.events.length) {
-            asset.analyticsLogUrl = obj.analytics;
-            asset.analyticsObj = obj.events[1].data;
-        } else {
-          var channelId = isset(obj,'parentId') ? obj.parentId : ( isset(options,'channel') ? options.channel.id : 0 );
-          if (!channelId && (options.channelId || options.channelid)) {
-            channelId = options.channelId || options.channelid;
-          }
-
-          asset.analyticsObj = {
-            pg: channelId,
-            vd: obj.id,
-            li: obj.loginId
-          };
-        }
-
-        if (!asset.sources) asset.sources = [{ file: asset.videoId }];
-        asset.type = asset.type || 'youtube';
-
-        return asset;
-    };
-
-    this.assets = (function(data){
-      var assets = [];
-      for (var i = 0; i < data.length; i++) {
-        var video = data[i];
-        if (isEmpty(video)) break;
-        assets.push(that.createAsset(video));
-      }
-      return assets;
-    }(options.data));
-
-    this.play = function(asset,ongoing,initial){
-      if (!asset) return;
-      var willCue = false,
-          isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-      
-      if (ongoing) {
-        if (isMobile || (isset(this.autonext) && !this.autonext)) {
-          willCue = true;
-        }
-      } else {
-        if (isMobile || (isset(this.autoplay) && !this.autoplay)) {
-          willCue = true;
-        }
-      }
-
-      if (!initial) {
-        this.current = this.getCurrentIndex(asset.assetId);
-      }
-
-      if (willCue) {
-        this.instance.cueVideo(asset);
-      } else {
-       this.instance.loadVideo(asset);
-      }
-    };
-
-    this.addData = function(data){
-        if (!data || !data.length) return;
-        var newAssets = [];
-        for (var i = 0; i < data.length; i++) {
-            newAssets.push(this.createAsset(data[i]));
-        }
-
-        this.assets = this.assets.concat(newAssets);
-    };
-
-    this.resize = function(){
-      if (!that.instance || that.isFullScreen) return;
-      var width, height;
-      
-      if (arguments.length && arguments[0] && arguments[1]) {
-        width = arguments[0];
-        height = arguments[1];
-      } else {
-        var parentEl = that.el.parentNode;
-        width = parentEl.clientWidth;
-        height = parentEl.clientHeight;
-      }
-
-      that.instance.resize(width, height);
-      
-      if (this.onResize) {
-        this.onResize(that.initialResize, [width, height]);
-      }
-      
-      that.initialResize = false;
-    };
-
-    this.getCurrentIndex = function(id){
-      var current = 0;
-      for (var i = 0; i < this.assets.length; i++) {
-        if (this.assets[i].assetId === (id || '') ) {
-          current = i;
-        }
-      }
-      return current;
-    };
-
-    this.onReady = function(e, pl){
-        that.analytics = new Analytics();
-        
-        var loginId = options.loginId || options.loginid;
-
-        that.analytics.initConfig({
-          domain: hostName,
-          logUrl: that.apiBaseUrl + '/__tvpa.gif',
-          loginId: loginId,
-          firstPartyCookies: options.firstpartycookies,
-          cookieDomain: options.cookiedomain
-        });
-
-        that.analytics.track('ci', {
-          li: loginId
-        });
-
-        that.instance = pl;
-        that.resize();
-
-        //We don't want to resize the player here on fullscreen... we need the player be.
-        if (isset(window,'BigScreen')) {
-            BigScreen.onchange = function(){
-                that.isFullScreen = !that.isFullScreen;
-                that.resize();
-                if (that.onFullscreenChange) {
-                  that.onFullscreenChange();
-                }
-            };
-        }
-
-        //We can't resize using local references when we are inside an iframe on iOS, the iframe's size doesn't update.
-        //Alternative is to receive external size from host.
-        if (window.location !== window.parent.location && isIOS){
-            var onHolderResize = function (e) {
-                if (!e || !isset(e, 'data') || (("tvp_" + options.id).replace(/-/g,'_') + ':holder_resize') !== (e.data.event || '')) return;
-                var size = e.data.size || [];
-                that.resize(size[0], size[1]);
-            };
-
-            window.removeEventListener('message', onHolderResize, false);
-            window.addEventListener('message', onHolderResize, false);
-        } else {
-            window.removeEventListener('resize', that.resize, false);
-            window.addEventListener('resize', that.resize,false);
-        }
-
-        that.current = that.getCurrentIndex(startWith);
-        that.play(that.assets[that.current],null,true);
-        if (that.onPlayerReady) {
-          that.onPlayerReady();
-        }
-    };
-
-    that.onStateChange = function(e){
-        if ('tvp:media:videoended' === e) {
-            that.current++;
-            if (!that.assets[that.current]) {
-                that.current = 0;
-            }
-
-            that.play(that.assets[that.current], true);
-        }
-
-        if ('tvp:media:videoplaying' === e && that.onNext){
-            that.onNext(that.assets[that.current]);
-        }
-
-        if ('tvp:media:videoplaying' === e) {
-          var existing = that.el.querySelector('.tvp-overlay');
-          if (existing) {
-            existing.parentNode.removeChild(existing);
-          }
-        }
-    };
-
-    var checks = 0;
-    (function libsReady() {
-      setTimeout(function() {
-        if ( (!isset(window,'TVPage') || !isset(window,'_tvpa')) && (++checks < 200) ) {
-          libsReady();
-        } else {
-          
-          var playerOptions = {
-            techOrder: that.techOrder,
-            mediaProviders: that.mediaProviders,
-            analytics: {
-              tvpa: that.analytics
-            },
-            apiBaseUrl: that.apiBaseUrl,
-            swf: '//cdnjs.tvpage.com/tvplayer/tvp-'+that.version+'.swf',
-            onReady: that.onReady,
-            onStateChange: that.onStateChange,
-            divId: that.el.id,
-            controls: that.controls,
-            version: that.version,
-            advertising:that.advertising,
-            preload: that.preload
-          };
-
-          var extras = ["preload","poster","overlay"];
-          for (var i = 0; i < extras.length; i++) {
-            var option = extras[i];
-            if (that[option] !== null) {
-              playerOptions[option] = that[option];
-            }
-          }
-
-          var i;
-          var allowOverride = {
-            techOrder: 1,
-            analytics: 1,
-            apiBaseUrl: 1,
-            swf: 1,
-            controls: 1,
-            width: 1,
-            height: 1,
-            mediaProviders: 1,
-            preload: 1,
-            poster: 1,
-            overlay: 1
-          };
-          for (var o in that.options) {
-            if ( !playerOptions.hasOwnProperty(o) || allowOverride.hasOwnProperty(o) ) {
-              playerOptions[o] = that.options[o];
-            }
-          }
-
-          that.player = new TVPage.player(playerOptions);
-        }
-      },150);
-    })();
-    
+(function () {
+  function getElement(sel) {
+    if (sel)
+      return 'string' === typeof sel ? Utils.getById(sel) : sel;
+    else
+      throw new Error('need a selector or element');
   }
 
-  window.Player = Player;
+  //The player singleton. A small layer on top of tvpage library
+  function Player(sel, options, globalConfig) {
+    this.options = options || {};
+    this.config = globalConfig || {};
+    this.el = getElement(sel);
+    this.assets = [];
+    this.instance = null;
+    this.initialResize = true;
+    this.startWith = this.options.startWith || null;
+    this.currentIndex = null;
+    this.onReadyCalled = false;
+  };
 
-}(window, document));
+  Player.prototype.getOption = function (s) {
+    return Utils.isUndefined(this.config[s]) ? null : this.config[s];
+  }
+
+  Player.prototype.getCallableOption = function (s) {
+    return Utils.isFunction(this.options[s]) ? this.options[s] : null;
+  }
+
+  Player.prototype.getPlayButtonOptions = function () {
+    return Utils.compact({
+      height: this.getOption('play_button_height'),
+      width: this.getOption('play_button_width'),
+      backgroundColor: this.getOption('play_button_background_color'),
+      borderRadius: this.getOption('play_button_border_radius'),
+      borderWidth: this.getOption('play_button_border_width'),
+      borderColor: this.getOption('play_button_border_color'),
+      borderStyle: this.getOption('play_button_border_style'),
+      iconColor: this.getOption('play_button_icon_color')
+    });
+  };
+
+  Player.prototype.setControlsOptions = function () {
+    this.controls = Utils.compact({
+      active: true,
+      seekBar: Utils.compact({
+        progressColor: this.getOption('progress_color')
+      }),
+      floater: Utils.compact({
+        controlbarColor: this.getOption('control_bar_color'),
+        iconColor: this.getOption('icon_color'),
+        removeControls: this.getOption('remove_controls')
+      }),
+      playbutton: this.getPlayButtonOptions(),
+      overlayColor: this.getOption('overlay_color'),
+      overlayOpacity: this.getOption('overlay_opacity')
+    });
+  };
+
+  Player.prototype.setAdvertisingOptions = function () {
+    if (!this.options.advertising || Utils.isEmpty(this.options.advertising))
+      return;
+
+    var options = this.options.advertising;
+
+    this.advertising = Utils.compact({
+      enabled: !!options.enabled,
+      adServerUrl: options.adserverurl || null,
+      adTimeout: options.adtimeout || "2000",
+      maxAds: options.maxads || "100",
+      adInterval: !Utils.isUndefined(options.adinterval) ? String(options.adinterval) : "0"
+    });
+  };
+
+  Player.prototype.shallCue = function (auto) {
+    return Utils.isMobile || (auto && !this.autonext) || !this.autoplay;
+  };
+
+  Player.prototype.play = function (asset, ongoing) {
+    if ('string' === typeof asset) {
+      var targetAsset = this.getAssetById(asset);
+      asset = targetAsset.asset;
+      this.currentIndex = targetAsset.index;
+    } else {
+      this.currentIndex = this.assets.indexOf(asset);
+    }
+
+    if (this.shallCue(ongoing)) {
+      this.instance.cueVideo(asset);
+    } else {
+      this.instance.loadVideo(asset);
+    }
+  };
+
+  Player.prototype.controlBarZindex = function () {
+    var controlBar = this.el.querySelector("#ControlBarFloater");
+    if (controlBar && controlBar.parentNode) {
+      controlBar.parentNode.style.zIndex = "9999";
+    }
+  };
+
+  Player.prototype.getParentSize = function (param) {
+    var el = this.el.parentNode;
+    var size = null;
+
+    if ('width' === param) {
+      size = el.offsetWidth;
+    } else if ('height' === param) {
+      size = el.offsetHeight;
+    }
+    return size;
+  };
+
+  Player.prototype.resize = function () {
+    if (!this.getParentSize)
+      return;
+
+    var width = arguments[0] || this.getParentSize('width');
+    var height = arguments[1] || this.getParentSize('height');
+
+    var isFullScreen = document.fullscreenElement ||
+      document.webkitFullscreenElement ||
+      document.mozFullScreenElement ||
+      document.msFullscreenElement
+
+    if (this.instance && !isFullScreen) {
+      this.instance.resize(width, height);
+    }
+
+    this.initialResize = false;
+
+    if (this.onResize)
+      this.onResize(this.initialResize, [width, height]);
+  };
+
+  Player.prototype.handleWindowResize = function () {
+    var that = this,
+      onResize = function () {
+        setTimeout(function () {
+          that.resize.call(that);
+        }, 0);
+      };
+
+    window.removeEventListener('resize', onResize, false);
+    window.addEventListener('resize', onResize, false);
+  };
+
+  Player.prototype.handleClick = function () {
+    var defaultStop = this.options.clickDefaultStop;
+    var optOnClick = this.options.onClick;
+    var onClick = Utils.isFunction(optOnClick) ? optOnClick : function (e) {
+      if (defaultStop) {
+        Utils.stopEvent(e);
+      }
+    };
+
+    this.el.removeEventListener('click', onClick, false);
+    this.el.addEventListener('click', onClick, false);
+  };
+
+  Player.prototype.analyticsConfig = function () {
+    var config = this.config;
+    var loginId = config.loginId;
+
+    var analyticsConfig = {
+      domain: location.hostname || '',
+      logUrl: config.api_base_url + '/__tvpa.gif',
+      li: loginId
+    };
+
+    if (config.firstPartyCookies && config.cookieDomain)
+      analyticsConfig.firstPartyCookieDomain = config.cookieDomain;
+
+    Utils.globalPoll(['_tvpa'], function () {
+      _tvpa.push(['config', analyticsConfig]);
+
+      if (config.ciTrack) {
+        _tvpa.push(['track', 'ci', {
+          li: loginId
+        }]);
+      }
+    });
+  };
+
+  Player.prototype.getCurrentAsset = function () {
+    return this.assets[this.currentIndex];
+  };
+
+  Player.prototype.getAssetById = function (id) {
+    var assets = this.assets;
+    var assetsLength = assets.length;
+    var res;
+
+    for (var i = 0; i < assetsLength; i++) {
+      var asset = assets[i];
+
+      if (asset.assetId == id) {
+        res = {
+          index: i,
+          asset: asset
+        };
+      }
+    }
+
+    return res;
+  };
+
+  Player.prototype.onReady = function (e, pl) {
+    if (this.onReadyCalled) {
+      this.resize.call(this);
+    } else {
+      this.resize.call(this);
+
+      this.analyticsConfig();
+      this.controlBarZindex();
+      this.handleWindowResize();
+      this.handleClick();
+
+      if (this.onPlayerReady) {
+        this.onPlayerReady(this);
+      }
+    }
+  };
+
+  Player.prototype.handleVideoEnded = function () {
+    this.currentIndex++;
+
+    if (!this.assets[this.currentIndex]) {
+      this.currentIndex = 0;
+    }
+
+    var next = this.assets[this.currentIndex];
+
+    this.play(next, true);
+
+    if (this.onNext) {
+      this.onNext(next);
+    }
+  };
+
+  Player.prototype.onStateChange = function (e) {
+    if ('tvp:media:videoended' === e) {
+      this.handleVideoEnded();
+    }
+
+    if (this.onChange) {
+      var currentAsset = this.getCurrentAsset() || {};
+      currentAsset.currentTime = this.instance.getCurrentTime();
+
+      this.onChange(e);
+    }
+  };
+
+  Player.prototype.addExtraConfig = function (config) {
+    config = config || {};
+    var extras = ["preload", "poster", "overlay"];
+    for (var i = 0; i < extras.length; i++) {
+      var option = extras[i];
+      if (!Utils.isUndefined(this[option]) && this[option] !== null) {
+        config[option] = this[option];
+      }
+    }
+    return config;
+  };
+
+  Player.prototype.getConfig = function () {
+    return Utils.compact({
+      techOrder: this.getOption('tech_order'),
+      mediaProviders: this.getOption('media_providers'),
+      analytics: {
+        tvpa: this.getOption('analytics')
+      },
+      apiBaseUrl: this.getOption('api_base_url'),
+      swf: this.flashUrl,
+      divId: this.el.id,
+      controls: this.controls,
+      version: this.version,
+      advertising: this.advertising,
+      preload: this.getOption('preload'),
+      poster: this.getOption('poster'),
+      overlay: this.getOption('overlay')
+    });
+  }
+
+  Player.prototype.startPlayer = function () {
+    var config = this.getConfig();
+    var that = this;
+
+    Utils.globalPoll(['TVPage'], function () {
+      config.onReady = function (e, pl) {
+        that.onReady(e, pl);
+        that.onReadyCalled = true;
+      };
+
+      config.onStateChange = function (e) {
+        that.onStateChange(e);
+      };
+
+      that.player = new TVPage.player(config);
+
+      var globalRunId = that.player.options.globalRunId;
+
+      that.instance = TVPage.instances[globalRunId];
+
+      var index = 0;
+      var asset = that.assets[index];
+
+      if (that.startWith) {
+        var assetResp = that.getAssetById(that.startWith);
+
+        index = assetResp.index;
+        asset = assetResp.asset;
+      }
+
+      that.currentIndex = index;
+
+      that.play(asset, true);
+    });
+  };
+
+  Player.prototype.getChannelId = function () {
+    var id = 0;
+    var config = this.config;
+
+    if (config.channel) {
+      id = config.channel.id;
+    } else if (config.channelId) {
+      id = config.channelId;
+    } else if (config.channelid) {
+      id = config.channelid;
+    }
+
+    return id;
+  };
+
+  Player.prototype.createAsset = function (obj) {
+    if (Utils.isEmpty(obj))
+      return {};
+
+    var asset = obj.asset;
+
+    asset.assetId = obj.id;
+    asset.assetTitle = obj.title;
+    asset.loginId = obj.loginId;
+    asset.type = asset.type || 'youtube';
+    asset.analyticsObj = {
+      pg: obj.parentId || this.getChannelId(),
+      vd: asset.assetId,
+      li: asset.loginId
+    };
+
+    asset.sources = asset.sources || [{
+      file: asset.videoId
+    }];
+
+    return asset;
+  };
+
+  Player.prototype.addAssets = function (objs) {
+    objs = objs || [];
+
+    var objsLength = objs.length;
+
+    for (var i = 0; i < objsLength; i++) {
+      var obj = objs[i];
+
+      if (!this.getAssetById(obj.id)) {
+        this.assets.push(this.createAsset(obj));
+      }
+    }
+  };
+
+  Player.prototype.setConfig = function (s) {
+    this.version = this.getOption('player_version');
+    this.flashUrl = '//cdnjs.tvpage.com/tvplayer/tvp-' + this.version + '.swf';
+    this.autoplay = this.getOption('autoplay');
+    this.autonext = this.getOption('autonext');
+    this.onChange = this.getCallableOption('onChange');
+    this.onResize = this.getCallableOption('onResize');
+    this.onNext = this.getCallableOption('onNext');
+    this.onPlayerReady = this.getCallableOption('onPlayerReady');
+    this.onClick = this.getCallableOption('onClick');
+  };
+
+  Player.prototype.initialize = function () {
+    this.setControlsOptions();
+    this.setAdvertisingOptions();
+    this.setConfig();
+    this.addAssets(this.options.data);
+    this.startPlayer();
+  };
+
+  window.Player = Player;
+}())

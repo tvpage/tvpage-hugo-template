@@ -30,9 +30,7 @@ body {
   width: 100%;
   height: 0;
   z-index: 100;
-  -webkit-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
-  transition: background 0.3s, -webkit-transform 0.5s;
   transition: background 0.3s, transform 0.5s;
 }
 
@@ -107,19 +105,15 @@ body {
 }
 
 .tvp-hamburger-x span::before {
-  transition-property: top, -webkit-transform;
   transition-property: top, transform;
 }
 
 .tvp-hamburger-x span::after {
-  transition-property: bottom, -webkit-transform;
   transition-property: bottom, transform;
 }
 
 #tvp-slide-menu.active #tvp-hamburger-container {
-  transition: -webkit-transform 0.5s;
   transition: transform 0.5s;
-  -webkit-transform: translate3d(50%, 0, 0);
   transform: translate3d(50%, 0, 0);
 }
 
@@ -129,13 +123,11 @@ body {
 
 #tvp-slide-menu.active .tvp-hamburger-x span::before {
   top: 0;
-  -webkit-transform: rotate(45deg);
   transform: rotate(45deg);
 }
 
 #tvp-slide-menu.active .tvp-hamburger-x span::after {
   bottom: 0;
-  -webkit-transform: rotate(-45deg);
   transform: rotate(-45deg);
 }
 
@@ -154,9 +146,7 @@ body {
   position: relative;
   text-align: center;
   overflow: auto;
-  transition: -webkit-transform 0.5s, visibility 0s 0.5s;
   transition: transform 0.5s, visibility 0s 0.5s;
-  -webkit-transform: translate3d(-100%, 0, 0);
   transform: translate3d(-100%, 0, 0);
   visibility: hidden;
   /* this is for browsers that don't support CSS3 translate3d in showing the menu */
@@ -166,7 +156,6 @@ body {
   visibility: visible;
   /* this is for browsers that don't support CSS3 translate3d in showing the menu */
   transition-delay: 0s;
-  -webkit-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
 }
 
@@ -190,11 +179,9 @@ body {
 
 .tvp-video {
   cursor: pointer;
-  display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-pack: distribute;
-  -webkit-box-pack: center;
   justify-content: center;
   height: 20vh;
   position: relative;
@@ -208,16 +195,13 @@ body {
   bottom: 0;
   left: 0;
   right: 0;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-pack: center;
+      justify-content: center;
+  -ms-flex-align: center;
+      align-items: center;
 }
 
 .tvp-video.active .tvp-active-overlay {
-  display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, #000 100%);
@@ -264,8 +248,7 @@ body {
   width: 55%;
   margin: auto 10px;
   top: 50%;
-  -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
   position: absolute;
   right: 5%;
 }
@@ -289,8 +272,7 @@ body {
   margin-left:10px;
   left: 0;
   top: 50%;
-  -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 .tvp-video-image:focus {
@@ -394,8 +376,7 @@ body {
   }
 
   #tvp-slide-menu.active #tvp-hamburger-container {
-    -webkit-transform: translateX(calc(100% - 45px));
-            transform: translateX(calc(100% - 45px));
+    transform: translateX(calc(100% - 45px));
   }
   .tvp-video-title {
     font-size: 12px;

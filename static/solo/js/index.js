@@ -83,52 +83,58 @@
         render(unique,document.body);
 
         loadData(settings,unique,function(data){
-          if (data.length) {
-            if (window.parent) {
-              window.parent.postMessage({
-                event: ("tvp_" + settings.id).replace(/-/g,'_') + ':render'
-              }, '*');
-            }
-
-            playerSettings.data = data || [];
-            player = new Player('tvp-player-el-'+unique,playerSettings);
-
-            if (playlistOption === 'show' && playlistOption) {
-              menuSettings.data = data || [];
-              menu = new Menu(player,menuSettings);        
-            }
+          if (!data || !data.length) return;
+          if (window.parent) {
+            window.parent.postMessage({
+              event: ("tvp_" + settings.id).replace(/-/g,'_') + ':render'
+            }, '*');
           }
-        });
 
-        if (playlistOption === 'show' && playlistOption) {
+          if (playlistOption === 'show' && playlistOption) {
+              var onPlayerReady = function(){
+                menuSettings.data = data || [];
+                menu = new Menu(player,menuSettings); 
+                menu.init();
+                var playerAsset = player.getCurrentAsset();
+                console.log(playerAsset)
+                menu.setActiveItem(playerAsset.assetId);
+              };
 
-          playerSettings.onPlayerReady = function(){
-            menu.init();
-          };
+              var onNext = function(){
+                var playerAsset = player.getCurrentAsset;
+                menu.setActiveItem(playerAsset.assetId);
+                menu.hideMenu();
+              };
 
-          playerSettings.onNext = function(){
-            var playerAsset = player.assets[player.current];
-            menu.setActiveItem(playerAsset.assetId);
-            menu.hideMenu();
-          };
+              var onFullscreenChange = function(){
+                menu.hideMenu();
+              };
 
-          playerSettings.onFullscreenChange = function(){
-            menu.hideMenu();
-          };
-
-          Menu.prototype.loadMore = function(){
-            if (!lastPage && !isFetching) {
-              channelVideosPage++;
-              isFetching = true;
-              loadData(settings,unique,function(newData){
-                isFetching = false;
-                lastPage = (!newData.length || newData.length < itemsPerPage) ? true : false;
-                player.addData(newData);
-                menu.update(newData);
-              });
+              Menu.prototype.loadMore = function(){
+                if (!lastPage && !isFetching) {
+                  channelVideosPage++;
+                  isFetching = true;
+                  loadData(settings,unique,function(newData){
+                    isFetching = false;
+                    lastPage = (!newData.length || newData.length < itemsPerPage) ? true : false;
+                    player.addAssets(newData);
+                    menu.update(newData);
+                  });
+                }
+              }; 
             }
-          };
-        }
+
+            playerSettings.data = data.data;
+            selectedVideo = data[0];
+
+            player = new Player('tvp-player-el-'+unique, {
+                startWith: selectedVideo.id,
+                data: data,
+                onNext: onNext,
+                onPlayerReady:onPlayerReady
+            }, playerSettings);
+            player.initialize();
+        });
       }(Utils.random(),getSettings('dynamic')));
     }
   };

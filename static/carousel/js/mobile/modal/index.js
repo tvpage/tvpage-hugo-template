@@ -207,10 +207,10 @@
 
         var initPlayer = function(data) {
             var s = JSON.parse(JSON.stringify(data.runTime));
-
             s.data = data.data;
+            var player = null;
 
-            s.onResize = function() {
+            function onPlayerResize(initial, size) {
                 setTimeout(function() {
                     if (window.parent && !hasData) {
                         window.parent.postMessage({
@@ -221,7 +221,7 @@
                 }, 0);
             }
 
-            s.onNext = function(next) {
+            function onPlayerNext(next) {
                 if (!next) return;
 
                 data.runTime.loginId = data.runTime.loginId || data.runTime.loginid;
@@ -253,9 +253,16 @@
                         }, '*');
                     }
                 }, 0);
-            };
+            }
 
-            new Player('tvp-player-el', s, data.selectedVideo.id);
+            player = new Player('tvp-player-el', {
+                startWith: data.selectedVideo.id,
+                data: data.data,
+                onResize: onPlayerResize,
+                onNext: onPlayerNext
+            }, s);
+
+            player.initialize();
         };
 
         window.addEventListener('message', function(e) {

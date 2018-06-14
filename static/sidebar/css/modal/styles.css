@@ -146,7 +146,6 @@ body  {
   z-index: 214748364;
   top: 0;
   left: -7px;
-  -webkit-transform: rotate(90deg);
   transform: rotate(90deg);
 }
 
@@ -155,7 +154,6 @@ body  {
   position: absolute;
   width: 44px;
   height: 45px;
-  -webkit-transform: rotate(45deg);
   transform: rotate(45deg);
   top: 26px;
   left: -5px;

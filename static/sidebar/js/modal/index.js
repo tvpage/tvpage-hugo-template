@@ -234,10 +234,7 @@
         var initPlayer = function(data){
             var s = JSON.parse(JSON.stringify(data.runTime));
             var player = null;
-
-            s.data = data.data;
-
-            s.onResize = function(initial, size){
+            function onPlayerResize(initial, size) {
                 resizeProducts(size[1]);
                 if (window.parent) {
                     window.parent.postMessage({
@@ -245,9 +242,9 @@
                         height: (el.offsetHeight + 20) + 'px'
                     }, '*');
                 }
-            };
+            }
 
-            s.onNext = function(next){
+            function onPlayerNext(next) {
                 if (!next) return;
 
                 data.runTime.loginId = data.runTime.loginId || data.runTime.loginid;
@@ -276,12 +273,16 @@
                         next: next
                     }, '*');
                 }
-            };
+            }
 
-            player = new Player('tvp-player-el',s,data.selectedVideo.id);
-            window.addEventListener('resize', Utils.debounce(function(){
-                player.resize();
-            },85));
+            player = new Player('tvp-player-el', {
+                startWith: data.selectedVideo.id,
+                data: data.data,
+                onResize: onPlayerResize,
+                onNext: onPlayerNext
+            }, s);
+
+            player.initialize();
         };
 
         window.addEventListener('message', function(e){
