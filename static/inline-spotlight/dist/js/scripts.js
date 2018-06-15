@@ -371,25 +371,33 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
         //Context reference for Methods.
         var that = this;
 
-        this.play = function(asset,ongoing){            
-            if (!asset) return; // console.log('need asset');
+        this.willCue = function(ongoing){
             var willCue = false,
                 isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-            
+
             if (ongoing) {
-                if (isMobile || (isset(options.autonext) && !options.autonext)) {
+                if (isMobile || (isset(this.autonext) && !this.autonext)) {
                     willCue = true;
                 }
             } else {
-                if (isMobile || (isset(options.autoplay) && !options.autoplay)) {
+                if (isMobile || (isset(this.autoplay) && !this.autoplay)) {
                     willCue = true;
                 }
             }
 
-            if (willCue) this.instance.cueVideo(asset);                
-            else this.instance.loadVideo(asset);
+            return willCue;
+        };
 
-            // this will fix the continues loading of youtube type video on iOS (iPad/iPhone)            
+        this.play = function(asset, ongoing) {
+          if (!isset(asset)) return console.warn('Needs Asset');
+      
+          if (that.willCue(ongoing)) {
+            this.instance.cueVideo(asset);
+          } else {
+            this.instance.loadVideo(asset);
+          }
+
+          // this will fix the continues loading of youtube type video on iOS (iPad/iPhone)            
             if (Utils.isIOS) {
                 var control_overlay = that.el.querySelector('.tvp-control-overlay');
                 
@@ -400,7 +408,16 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
                     control_overlay.style.display = "block";                    
                 }
             }
+        };
 
+        this.getCurrentIndex = function(id){
+          var current = 0;
+          for (var i = 0; i < this.assets.length; i++) {
+            if (this.assets[i].assetId === (id || '') ) {
+              current = i;
+            }
+          }
+          return current;
         };
 
         this.resize = function(){            
@@ -557,6 +574,12 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
             });
 
             this.player = new TVPage.player(playerOptions);
+            that.current = that.getCurrentIndex(startWith);
+            if(that.willCue()){
+                that.player.cueVideo(that.assets[that.current]);
+            }else{
+                that.player.loadVideo(that.assets[that.current]);
+            }
 
             window.addEventListener('resize', function () {
                 that.resize();
