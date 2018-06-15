@@ -131,10 +131,9 @@
           if (this.options.hasOwnProperty(name))
             return this.options.hasOwnProperty(name);
           return null;
-        }
+        };
 
-        this.play = function(asset,ongoing){
-            if (!asset) return console.warn('need asset');
+        this.willCue = function(ongoing){
             var willCue = false,
                 isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
@@ -148,7 +147,13 @@
                 }
             }
 
-            if (willCue) {
+            return willCue;
+        };
+
+        this.play = function(asset,ongoing){
+            if (!asset) return console.warn('need asset');
+
+            if (this.willCue(ongoing)) {
                 this.instance.cueVideo(asset);
             } else {
                 this.instance.loadVideo(asset);
@@ -174,7 +179,17 @@
             that.onResize(that.initialResize, [width, height]);
 
             that.initialResize = false;
-        }
+        };
+
+        this.getCurrentIndex = function(id){
+          var current = 0;
+          for (var i = 0; i < this.assets.length; i++) {
+            if (this.assets[i].assetId === (id || '') ) {
+              current = i;
+            }
+          }
+          return current;
+        };
 
         var checks = 0;
         (function libsReady() {
@@ -222,15 +237,7 @@
                                 window.addEventListener('resize', onWindowResize, false);
                             }
 
-                            var current = 0;
-                            if (startWith && startWith.length) {
-                                for (var i = 0; i < that.assets.length; i++) {
-                                    if (that.assets[i].assetId === startWith) current = i;
-                                }
-                            }
-
-                            that.current = current;
-                            that.play(that.assets[that.current]);
+                            
                         },
                         onStateChange: function(e){
                             if ('tvp:media:videoended' !== e) return;
@@ -282,6 +289,12 @@
                     }
                     
                     that.player = new TVPage.player(playerOptions);
+                    that.current = that.getCurrentIndex(startWith);
+                    if(that.willCue()){
+                       that.player.cueVideo(that.assets[that.current]);
+                    }else{
+                        that.player.loadVideo(that.assets[that.current]);
+                    }
                 }
             },150);
         })();
