@@ -138,26 +138,31 @@
       return assets;
     }(options.data));
 
+    this.willCue = function(ongoing){
+        var willCue = false,
+            isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+        if (ongoing) {
+            if (isMobile || (isset(this.autonext) && !this.autonext)) {
+                willCue = true;
+            }
+        } else {
+            if (isMobile || (isset(this.autoplay) && !this.autoplay)) {
+                willCue = true;
+            }
+        }
+
+        return willCue;
+    };
+
     this.play = function(asset,ongoing,initial){
       if (!asset) return;
-      var willCue = false,
-          isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-      
-      if (ongoing) {
-        if (isMobile || (isset(this.autonext) && !this.autonext)) {
-          willCue = true;
-        }
-      } else {
-        if (isMobile || (isset(this.autoplay) && !this.autoplay)) {
-          willCue = true;
-        }
-      }
 
       if (!initial) {
         this.current = this.getCurrentIndex(asset.assetId);
       }
 
-      if (willCue) {
+      if (this.willCue(ongoing)) {
         this.instance.cueVideo(asset);
       } else {
        this.instance.loadVideo(asset);
@@ -253,8 +258,6 @@
             window.addEventListener('resize', that.resize,false);
         }
 
-        that.current = that.getCurrentIndex(startWith);
-        that.play(that.assets[that.current],null,true);
         if (that.onPlayerReady) {
           that.onPlayerReady();
         }
@@ -335,6 +338,13 @@
           }
 
           that.player = new TVPage.player(playerOptions);
+          that.current = that.assets[that.getCurrentIndex(startWith)];
+
+          if(that.willCue()){
+            that.player.cueVideo(that.current);
+          }else{
+            that.player.loadVideo(that.current);
+          }
         }
       },150);
     })();

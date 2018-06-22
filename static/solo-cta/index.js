@@ -272,11 +272,12 @@ window.addEventListener("message", function(e){
 
 function handleModalInitialized(e){
   if (iframeModal.contentWindow) {
+      var clicked = JSON.parse(JSON.stringify(clickData));
       iframeModal.contentWindow.postMessage({
           event: config.eventPrefix + ':modal_data',
-          data: clickData.data,
-          selectedVideo: clickData.selectedVideo,            
-          runTime: clickData.runTime
+          data: clicked.data,
+          selectedVideo: clicked.selectedVideo,            
+          runTime: clicked.runTime
       }, '*');
   }
   var detectOrientation = function(){

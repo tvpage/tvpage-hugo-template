@@ -135,28 +135,43 @@
       if (this.options.hasOwnProperty(name))
         return this.options.hasOwnProperty(name);
       return null;
-    }
+    };
+
+    this.willCue = function(ongoing){
+        var willCue = false,
+            isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+        if (ongoing) {
+            if (isMobile || (isset(this.autonext) && !this.autonext)) {
+                willCue = true;
+            }
+        } else {
+            if (isMobile || (isset(this.autoplay) && !this.autoplay)) {
+                willCue = true;
+            }
+        }
+
+        return willCue;
+    };
 
     this.play = function(asset, ongoing) {
       if (!isset(asset)) return console.warn('Needs Asset');
-      var willCue = false,
-        isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
-      if (ongoing) {
-        if (isMobile || (isset(this.autonext) && !this.autonext)) {
-          willCue = true;
-        }
-      } else {
-        if (isMobile || (isset(this.autoplay) && !this.autoplay)) {
-          willCue = true;
-        }
-      }
-
-      if (willCue) {
+  
+      if (that.willCue(ongoing)) {
         this.instance.cueVideo(asset);
       } else {
         this.instance.loadVideo(asset);
       }
+    };
+
+    this.getCurrentIndex = function(id){
+      var current = 0;
+      for (var i = 0; i < this.assets.length; i++) {
+        if (this.assets[i].assetId === (id || '') ) {
+          current = i;
+        }
+      }
+      return current;
     };
 
     this.resize = function() {
@@ -234,9 +249,6 @@
                   if (that.assets[i].assetId === startWith) current = i;
                 }
               }
-
-              that.current = current;
-              that.play(that.assets[that.current]);
             },
             onStateChange: function(e) {
               if ('tvp:media:videoended' !== e) return;
@@ -288,6 +300,12 @@
           }
 
           that.player = new TVPage.player(playerOptions);
+          that.current = that.getCurrentIndex(startWith);
+          if(that.willCue()){
+             that.player.cueVideo(that.assets[that.current]);
+          }else{
+              that.player.loadVideo(that.assets[that.current]);
+          }
         }
       }, 150);
     })();

@@ -128,8 +128,7 @@
         //Context reference for Methods.
         var that = this;
 
-        this.play = function(asset,ongoing){
-            if (!asset) return;
+        this.willCue = function(ongoing){
             var willCue = false,
                 isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
@@ -143,11 +142,31 @@
                 }
             }
 
-            if (willCue) {
-                this.instance.cueVideo(asset);
-            } else {
-                this.instance.loadVideo(asset);
+            return willCue;
+        };
+
+        this.play = function(asset,ongoing,initial){
+          if (!asset) return;
+
+          if (!initial) {
+            this.current = this.getCurrentIndex(asset.assetId);
+          }
+
+          if (this.willCue(ongoing)) {
+            this.instance.cueVideo(asset);
+          } else {
+           this.instance.loadVideo(asset);
+          }
+        };
+
+        this.getCurrentIndex = function(id){
+          var current = 0;
+          for (var i = 0; i < this.assets.length; i++) {
+            if (this.assets[i].assetId === (id || '') ) {
+              current = i;
             }
+          }
+          return current;
         };
 
         this.resize = function(){
@@ -232,9 +251,6 @@
                       if (that.assets[i].assetId === startWith) current = i;
                     }
                   }
-
-                  that.current = current;
-                  that.play(that.assets[that.current]);
                 },
                 onStateChange: function(e) {
                   if ('tvp:media:videoended' !== e) return;
@@ -286,6 +302,13 @@
               }
 
               that.player = new TVPage.player(playerOptions);
+              that.current = that.assets[that.getCurrentIndex(startWith)];
+
+              if(that.willCue()){
+                that.player.cueVideo(that.current);
+              }else{
+                that.player.loadVideo(that.current);
+              }
             }
           }, 150);
         })();
