@@ -90,68 +90,33 @@
 
     //Context reference for Methods.
     var that = this;
-    
-    //Sometimes we want/need to show an intearctive overlay on top of the player. We need this for MP4 videos that will
-    //cue (mobile or autoplay:off) to actual play the video on demand.
-    this.addOverlay = function(imgUrl){
-      var overlay = document.createElement('div');
-      overlay.classList.add('tvp-overlay');
-      overlay.style.backgroundImage = 'url("' + imgUrl + '")';
-      var overlayColor = this.overlayColor ? '#' + this.overlayColor : 'transparent';
-      overlay.innerHTML = '<div class="tvp-overlay-cover" style="opacity:' + this.overlayOpacity + ';background-image:linear-gradient(to bottom right,'+overlayColor+','+overlayColor+');"></div>'+
-      '<svg class="tvp-play" style="width:'+this.playButtonWidth+';height:'+this.playButtonHeight+';background-color:#'+this.playButtonBackgroundColor+';border:'+this.playButtonBorderWidth+' solid #'+this.playButtonBorderColor+';border-radius:'+this.playButtonBorderRadius+
-      '%;" viewBox="0 0 200 200"><polygon fill="#'+this.playButtonIconColor+'" points="70, 55 70, 145 145, 100"></polygon></svg>';
 
-      var click = function(){
-        if (!that.instance) return;
-        this.removeEventListener('click',click,false);
-        this.parentNode.removeChild(this);
-        that.instance.play();
-      };
+		this.shouldCue = function (ongoing) {
+			var willCue = false,
+				isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-      overlay.addEventListener('click', click);
-      this.el.appendChild(overlay);
-    };
+			if (ongoing) {
+				if (isMobile || (isset(this.autonext) && !this.autonext)) {
+					willCue = true;
+				}
+			} else {
+				if (isMobile || (isset(this.autoplay) && !this.autoplay)) {
+					willCue = true;
+				}
+			}
+
+			return willCue;
+		};
 
     this.play = function(asset,ongoing){
-      if (!asset) return console.log('need asset');
-      var willCue = false,
-          isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-      
-      if (ongoing) {
-        if (isMobile || (isset(this.autonext) && !this.autonext)) {
-          willCue = true;
-        }
-      } else {
-        if (isMobile || (isset(this.autoplay) && !this.autoplay)) {
-          willCue = true;
-        }
-      }
+      if (!asset)
+        return console.log('need asset');
 
-      var analytics =  new Analytics(),
-          config = {
-            domain: isset(location,'hostname') ?  location.hostname : '',
-            loginId: asset.loginId
-          };
-      
-      //Update tvpa analytics configuration depending on the video type 
-      //(exhange or standard)
-      if (isset(asset,'analyticsLogUrl')) {
-        config.logUrl = asset.analyticsLogUrl;
-        analytics.initConfig(config);
-      } else {
-        config.logUrl = '\/\/api.tvpage.com\/v1\/__tvpa.gif';
-        analytics.initConfig(config);
-      }
-      
-      if (willCue) {
-        this.instance.cueVideo(asset);
-        if ('mp4' === asset.type || this.overlay) {
-          this.addOverlay(asset.thumbnailUrl);
-        }
-      } else {
-       this.instance.loadVideo(asset);
-      }
+			if (this.shouldCue(ongoing)) {
+				this.instance.cueVideo(asset);
+			} else {
+				this.instance.loadVideo(asset);
+			}
     };
 
     this.resize = function(){
@@ -183,11 +148,12 @@
         } else {
 
           //We create insntances on the tvpage player.
-          new TVPage.player({
+          var TVPlayer = new TVPage.player({
             //poster: true,
             techOrder: 'html5,flash',
             analytics: { tvpa: that.analytics },
             apiBaseUrl: '//api.tvpage.com/v1',
+            version: that.version,
             swf: '//appcdn.tvpage.com/player/assets/tvp/tvp-'+that.version+'-flash.swf',
             onReady: function(e, pl){
               that.instance = pl;
@@ -212,18 +178,15 @@
               }
 
               that.el.querySelector('.tvp-progress-bar').style.backgroundColor = that.progressColor;
-              var current = 0;
-              if (startWith && startWith.length) {
-                for (var i = 0; i < that.assets.length; i++) {
-                  if (that.assets[i].assetId === startWith) current = i;
-                }
-              }
 
-              that.current = current;
-              that.play(that.assets[that.current]);
-              if (window.DEBUG) {
-                console.debug("endTime = " + performance.now());
-              }
+							var analytics =  new Analytics();
+							var currentAsset = that.assets[that.current];
+
+							analytics.initConfig({
+								domain: isset(location,'hostname') ?  location.hostname : '',
+								loginId: currentAsset.loginId,
+								logUrl: '//api.tvpage.com/v1/__tvpa.gif'
+							});
             },
             onStateChange: function(e){
               if ('tvp:media:videoended' !== e) return;
@@ -241,6 +204,12 @@
             },
             divId: that.el.id,
             controls: {
+							playbutton: {
+								height: '105px',
+								width: '105px',
+								backgroundColor: '#db5726',
+								borderRadius: '5%'
+						  },
               active: true,
               floater: {
                 removeControls: that.removeControls,
@@ -249,6 +218,22 @@
             }
           });
 
+					var current = 0;
+					if (startWith && startWith.length) {
+						for (var i = 0; i < that.assets.length; i++) {
+							if (that.assets[i].assetId === startWith) current = i;
+						}
+					}
+
+					that.current = current;
+
+					var currentAsset = that.assets[that.current];
+
+					if (that.shouldCue()) {
+						TVPlayer.cueVideo(currentAsset);
+					} else {
+						TVPlayer.loadVideo(currentAsset);
+					}
         }
       },150);
     })();

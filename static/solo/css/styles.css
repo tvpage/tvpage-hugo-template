@@ -66,3 +66,15 @@ body {
   bottom: 0;
   left: 0;
 }
+
+.tvplayer-playbutton,
+.tvp-ad-play-button {
+  opacity:1 !important;
+}
+
+.tvplayer-playbutton-icon,
+.tvp-ad-play-button-icon {
+  border-top: 24px solid transparent !important;
+  border-bottom: 24px solid transparent !important;
+  border-left: 39px solid #FFF !important;
+}
