@@ -77,12 +77,13 @@
     });
 
     var advertisingOptions = isset(options.advertising) && "object" === typeof options.advertising && !isEmpty(options.advertising) ? options.advertising : {};
+
     this.advertising = compact({
       enabled: isset(advertisingOptions.enabled) ? advertisingOptions.enabled : false,
-      adServerUrl: isset(advertisingOptions.adServerUrl) ? advertisingOptions.adServerUrl : null,
-      adTimeout: isset(advertisingOptions.adTimeout) ? advertisingOptions.adTimeout : "2000",
-      maxAds: isset(advertisingOptions.maxAds) ? advertisingOptions.maxAds : "100",
-      adInterval: isset(advertisingOptions.adInterval) ? String(advertisingOptions.adInterval) : "0"
+      adServerUrl: (advertisingOptions.adServerUrl || advertisingOptions.adserverurl) || null,
+      adTimeout: (advertisingOptions.adTimeout || advertisingOptions.adtimeout) || "2000",
+      maxAds: (advertisingOptions.maxAds || advertisingOptions.maxads) || "100",
+      adInterval: (advertisingOptions.adInterval || advertisingOptions.adinterval) || "0"
     });
 
     this.onNext = isset(options.onNext) && "function" === typeof options.onNext ? options.onNext : null;
@@ -291,7 +292,6 @@
         if ( (!isset(window,'TVPage') || !isset(window,'_tvpa')) && (++checks < 200) ) {
           libsReady();
         } else {
-          
           var playerOptions = {
             techOrder: that.techOrder,
             mediaProviders: that.mediaProviders,
