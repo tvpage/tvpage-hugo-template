@@ -921,15 +921,6 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
             tvp_Player.updateTitle(video.title);
           }
         },
-        handlePlayerReady : function(){
-          videoList = TVSite.channelVideosData.videos;
-          tvp_Player.resizePlayer();
-          if ( initialPlay && 'channelVideosData' in TVSite ) {
-            var video = TVSite.channelVideosData.video;
-            tvp_Player.startPlayback(video);
-            initialPlay = false;
-          }
-        },
         handlePlayerStateChange : function(e){
           if ('tvp:media:videoended' == e) {
             if (TVSite.isPlayerPage) {
@@ -1602,8 +1593,13 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
             swf: '//appcdn.tvpage.com//player/assets/tvp/tvp-1.5.2-flash.swf',
             displayResolution: tvp_Player.playerResolution,
             analytics: { tvpa : true },
+            version: '3.1.6',
             techOrder: tvp_Player.playerTechOrder,
-            onReady: tvp_Player.handlePlayerReady,
+            onReady: function () {
+							tvp_Player.resizePlayer();
+
+							initialPlay = false;
+						},
             onStateChange: tvp_Player.handlePlayerStateChange,
             controls: {
                 active: true,
@@ -1611,6 +1607,14 @@ this.x=t,this.y=i,this.scroller.options.useTransform?this.indicatorStyle[h.style
                 floater: { removeControls:['tvplogo'] }
             }
         });
+
+          videoList = TVSite.channelVideosData.videos;
+
+          if ( initialPlay && 'channelVideosData' in TVSite ) {
+            var video = TVSite.channelVideosData.video;
+            tvp_Player.startPlayback(video);
+          }
+
         /**
         * Fullscreen poll/check
         */
