@@ -1282,32 +1282,23 @@ define('html5/media/YouTubeIframeAPI',[
     };
 
     YouTubeIframeAPI.prototype.cueVideo = function(video, playbackOptions){
-      if (!this.isPlayerLoaded()) {
-        return;
-      }
-
-      var id = video.id;
-      if (!id || id.length<=0) {
-        var i;
-        var source;
-        var sources = video.sources;
-        for (i=0;i<sources.length;i++){
-          source = sources[i];
-          id = this.getId(source.file);
-          if (id.length) {
-            break;
+      if (this.isPlayerLoaded()) {
+        var id = video.id;
+        if (!id || id.length<=0) {
+          var i;
+          var source;
+          var sources = video.sources;
+          for (i=0;i<sources.length;i++){
+            source = sources[i];
+            id = this.getId(source.file);
+            if (id.length) {
+              break;
+            }
           }
         }
-      }
-
-      if(this.model.mutedAutoplay){
-        this.player.mute();
-      }else{
         this.setVolume(playbackOptions.get('volume'));
-
         playbackOptions.get('isMute') ? this.player.mute() : this.player.unMute();
-
-        this.player.cueVideoById(id);
+        return this.player.cueVideoById(id);
       }
     };
     
@@ -55642,19 +55633,9 @@ define('html5/media/HTML5VideoAPI',[
         this.setVideoSource(video, false);
         this.setVolume(playbackOptions.get('volume'));
 
-        if(this.model.domClicked){
-          this.player.load();
-        }else if(this.model.mutedAutoplay){
-          this.player.muted = true;
-          this.player.autoplay = true;
-
-          this.player.load();
-        }else{
-          this.player.muted = !!playbackOptions.get('isMute');
-          this.player.autoplay = true;
-
-          this.player.load();
-        }
+        this.player.muted = !!playbackOptions.get('isMute');
+        this.player.autoplay = true;
+        this.player.load();
       }
     };
 
@@ -63295,6 +63276,7 @@ define(
       this.isCueVideo = true;
 
       this.removeOverlay();
+      this._setDisplayResolution(jsonObject);
       this.updateControlbar(jsonObject);  
 
       if (this.analytics)
@@ -63303,23 +63285,13 @@ define(
       if(this.spinner)
         this.spinner.resetSpinnerStatus();
 
-      this.setPoster(jsonObject);
-      this._setDisplayResolution(jsonObject);
+      this.interface.cueVideo(jsonObject);
+      
       this.handleOverlay(jsonObject);
 
-      BrowserUtils.canVideoAutoplay((function(error){
-        if(error){
-          this.renderUnmuteButton();
+      this.trigger(EventMap.TVPLAYER_VIDEO_CUED, jsonObject);
 
-          this.interface.setMutedAutoplay();
-        }
-
-        this.interface.cueVideo(jsonObject);
-
-        this.trigger(EventMap.TVPLAYER_VIDEO_CUED, jsonObject);
-
-        handleLiveStatus.call(this, jsonObject);
-      }).bind(this));
+      handleLiveStatus.call(this, jsonObject);
     };
 
     TVPlayer.prototype._setDisplayResolution = function(jsonObject){

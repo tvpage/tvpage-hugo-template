@@ -644,12 +644,12 @@
             .html(title);
           }
         },
-        showPlayButton : function(){
-          $('#html5-play-button').show().on('click', function(){
-            window.TVPlayer.play();
-            $(this).hide();
-          });
-        },
+        // showPlayButton : function(){
+        //   $('#html5-play-button').show().on('click', function(){
+        //     window.TVPlayer.play();
+        //     $(this).hide();
+        //   });
+        // },
         buildVideoData : function(video){
           var data = video.asset || {};
           data.sources = data.sources || [{file: data.videoId}];
@@ -677,9 +677,9 @@
             
             if (isMobile) {
               TVPlayer.cueVideo(data);
-              if ('youtube' != data.type) {
-                tvp_Player.showPlayButton();
-              }
+              // if ('youtube' != data.type) {
+              //   tvp_Player.showPlayButton();
+              // }
             } else {
               TVPlayer.loadVideo(data);
             }
