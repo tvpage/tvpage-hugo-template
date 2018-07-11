@@ -271,12 +271,12 @@
             }
 
             that.play(that.assets[that.current], true);
-        }
 
-        if ('tvp:media:videoplaying' === e && that.onNext){
-            that.onNext(that.assets[that.current]);
+            if (that.onNext){
+                that.onNext(that.assets[that.current]);
+            }
         }
-
+        
         if ('tvp:media:videoplaying' === e) {
           var existing = that.el.querySelector('.tvp-overlay');
           if (existing) {

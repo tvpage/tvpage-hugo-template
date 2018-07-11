@@ -107,7 +107,7 @@
           };
 
           playerSettings.onNext = function(){
-            var playerAsset = player.assets[player.current];
+            var playerAsset = player.current;
             menu.setActiveItem(playerAsset.assetId);
             menu.hideMenu();
           };

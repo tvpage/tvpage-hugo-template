@@ -87,7 +87,7 @@
     this.bindMenuEvent = function() {
       for (var i = that.toggles.length - 1; i >= 0; i--) {
         that.toggles[i].onclick = function() {
-            var playerAsset = player.assets[player.current];
+            var playerAsset = player.current;
             that.setActiveItem(playerAsset.assetId);
             that.toggleMenu();
         };
@@ -131,15 +131,14 @@
     };
 
     this.fullScreenMenu = function(){
-        var tvpPlayerEl = that.dataMethod === 'static'? document.getElementById('tvp-player-el') : document.getElementsByClassName('tvp-player-el')[0];
-        var _frame = tvpPlayerEl.getElementsByTagName('iframe');
-        if(_frame.length){
-            var menuFrag = document.createDocumentFragment(),
-            slideMenu = document.createElement('div');
-            slideMenu.setAttribute('id', 'tvp-slide-menu');
-            slideMenu.innerHTML = settings.templates.menu;
-            menuFrag.appendChild(slideMenu);
-            _frame[0].parentNode.insertBefore(menuFrag, _frame[0].nextSibling);
+        var target = player.el.firstChild.lastChild;
+        if(target){
+            var menuFrag = document.createDocumentFragment();
+            that.slideMenu = document.createElement('div');
+            that.slideMenu.setAttribute('id', 'tvp-slide-menu');
+            that.slideMenu.innerHTML = settings.templates.menu;
+            menuFrag.appendChild(that.slideMenu);
+            target.parentNode.insertBefore(menuFrag, target.nextSibling);
         }
     };
 
