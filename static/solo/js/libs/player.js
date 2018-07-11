@@ -272,10 +272,10 @@
             }
 
             that.play(that.assets[that.current], true);
-        }
 
-        if ('tvp:media:videoplaying' === e && that.onNext){
-            that.onNext(that.assets[that.current]);
+            if ('function' === typeof that.onNext){
+              that.onNext(that.assets[that.current]);
+            }
         }
 
         if ('tvp:media:videoplaying' === e) {
@@ -337,14 +337,13 @@
             }
           }
 
-          that.player = new TVPage.player(playerOptions);
-          that.current = that.assets[that.getCurrentIndex(startWith)];
-
-          if(that.willCue()){
-            that.player.cueVideo(that.current);
-          }else{
-            that.player.loadVideo(that.current);
-          }
+					that.player = new TVPage.player(playerOptions);
+					that.current = that.getCurrentIndex(startWith);
+					if(that.willCue()){
+						that.player.cueVideo(that.assets[that.current]);
+					}else{
+						that.player.loadVideo(that.assets[that.current]);
+					}
         }
       },150);
     })();
