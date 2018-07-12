@@ -271,10 +271,10 @@
             }
 
             that.play(that.assets[that.current], true);
-        }
 
-        if ('tvp:media:videoplaying' === e && that.onNext){
-            that.onNext(that.assets[that.current]);
+            if ('function' === typeof that.onNext){
+              that.onNext(that.assets[that.current]);
+            }
         }
 
         if ('tvp:media:videoplaying' === e) {
@@ -291,7 +291,6 @@
         if ( (!isset(window,'TVPage') || !isset(window,'_tvpa')) && (++checks < 200) ) {
           libsReady();
         } else {
-          
           var playerOptions = {
             techOrder: that.techOrder,
             mediaProviders: that.mediaProviders,
@@ -338,12 +337,11 @@
           }
 
           that.player = new TVPage.player(playerOptions);
-          that.current = that.assets[that.getCurrentIndex(startWith)];
-
+          that.current = that.getCurrentIndex(startWith);
           if(that.willCue()){
-            that.player.cueVideo(that.current);
+            that.player.cueVideo(that.assets[that.current]);
           }else{
-            that.player.loadVideo(that.current);
+            that.player.loadVideo(that.assets[that.current]);
           }
         }
       },150);

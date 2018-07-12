@@ -150,7 +150,7 @@ var handleVideoClick = function(){
   iframeModalDocument = iframeModal.contentWindow.document;
 
   //Some logic to include the player library.. we support diff things.
-  var playerUrl = "https://cdnjs.tvpage.com/tvplayer/tvp-" + config.player_version + ".min.js";
+  var playerUrl = "https://cdnjs.tvpage.com/tvplayer/tvp-master.min.js";
   if (config.player_url && (config.player_url + "").trim().length) {
       playerUrl = config.player_url;
   }
