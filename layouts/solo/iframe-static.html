@@ -15,7 +15,7 @@
     <div id="tvp-player-el"></div>
   </div>
   <script async src="//a.tvpage.com/tvpa.min.js"></script>
-  <script async src='//cdnjs.tvpage.com/tvplayer/tvp-{{ ($.Scratch.Get "settings").version }}.min.js'></script>
+  <script async src='//cdnjs.tvpage.com/tvplayer/tvp-master.min.js'></script>
   {{ if (getenv "HUGO_DEBUG") }}
   <script src="{{ (printf "%s/js/libs/analytics.js" .Type ) | absURL }}"></script>
   <script src="{{ (printf "%s/js/libs/player.js" .Type ) | absURL }}"></script>

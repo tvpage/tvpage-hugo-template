@@ -48,7 +48,7 @@
   var getModalJSFilePaths = function(domain, pVersion) {
     var files = [
       '//a.tvpage.com/tvpa.min.js',
-      '//cdnjs.tvpage.com/tvplayer/tvp-3.1.6.min.js',
+      '//cdnjs.tvpage.com/tvplayer/tvp-master.min.js',
       (isMobile ? domain + '/sidebar/js/vendor/jquery.js' : '')
     ];
 
@@ -131,14 +131,14 @@
     var soloJS = {
       dev: [
         '//a.tvpage.com/tvpa.min.js',
-				'//cdnjs.tvpage.com/tvplayer/tvp-3.1.6.min.js',
+				'//cdnjs.tvpage.com/tvplayer/tvp-master.min.js',
         jsPath + 'libs/analytics.js',
         jsPath + 'libs/player.js',
         jsPath + 'index.js'
       ],
       prod: [
         '//a.tvpage.com/tvpa.min.js',
-        '//cdnjs.tvpage.com/tvplayer/tvp-3.1.6.min.js',
+        '//cdnjs.tvpage.com/tvplayer/tvp-master.min.js',
         jsPath + 'scripts.min.js'
       ]
     };
