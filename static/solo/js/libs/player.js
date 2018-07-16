@@ -46,6 +46,11 @@
     this.poster = isset(options.poster) ? options.poster : null;
     this.overlay = isset(options.overlay) ? options.overlay : null;
 
+		var playsInline = 'playsInline' in options ? options.playsInline : ('playsinline' in options ? options.playsinline : null);
+
+		if(null !== playsInline)
+			this.playsInline = playsInline;
+
     this.playbutton = compact({
       height: isset(options.play_button_height) ? options.play_button_height : null,
       width: isset(options.play_button_width) ? options.play_button_width : null,
@@ -309,7 +314,7 @@
             preload: that.preload
           };
 
-          var extras = ["preload","poster","overlay"];
+          var extras = ["preload","poster","overlay","playsInline"];
           for (var i = 0; i < extras.length; i++) {
             var option = extras[i];
             if (that[option] !== null) {

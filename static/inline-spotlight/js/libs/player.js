@@ -71,6 +71,11 @@
             return assets;
         }(options.data));
 
+          var playsInline = 'playsInline' in options ? options.playsInline : ('playsinline' in options ? options.playsinline : null);
+
+          if(null !== playsInline)
+            this.playsInline = playsInline;
+
         this.playButton = compact({
             height: isset(options.play_button_height) ? options.play_button_height : null,
             width: isset(options.play_button_width) ? options.play_button_width : null,
@@ -288,7 +293,7 @@
                 advertising:that.advertising
             };
 
-            var extras = ["preload","poster"];
+            var extras = ["preload","poster","playsInline"];
                 for (var i = 0; i < extras.length; i++) {
                 var option = extras[i];
                 if (that[option] !== null) {
