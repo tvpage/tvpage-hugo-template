@@ -29,6 +29,8 @@
 
         this.isFullScreen = false;
         this.initialResize = true;
+        this.autoplay = isset(options.autoplay) ? Number(options.autoplay) : false;
+        this.autonext = isset(options.autonext) ? Number(options.autonext) : true;
         this.version = isset(options.player_version) ? options.player_version : null;
         this.onResize = isset(options.onResize) && isFunction(options.onResize) ? options.onResize : null;
         this.onNext = isset(options.onNext) && isFunction(options.onNext) ? options.onNext : null;
