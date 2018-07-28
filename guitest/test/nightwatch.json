@@ -1,0 +1,27 @@
+{
+  "globals_path": "globals.js",
+  "output_folder": false,
+  "src_folders": ["specs"],
+  "test_settings": {
+    "default": {
+      "screenshots": {
+        "enabled": true,
+        "on_failure": true,
+        "path": "screenshots"
+      },
+      "videos": {
+        "enabled": true,
+        "delete_on_success": false,
+        "path": "videos",
+        "resolution": "1440x900"
+      },
+      "launch_url": "http://app",
+      "selenium_host": "chromedriver",
+      "desiredCapabilities": {
+        "chromeOptions": {
+          "args" : ["--disable-infobars"]
+        }
+      }
+    }
+  }
+}
