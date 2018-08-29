@@ -49,6 +49,11 @@
     this.poster = isset(options.poster) ? options.poster : null;
     this.overlay = isset(options.overlay) ? options.overlay : null;
 
+		var playsInline = 'playsInline' in options ? options.playsInline : ('playsinline' in options ? options.playsinline : null);
+
+		if(null !== playsInline)
+			this.playsInline = playsInline;
+
     this.playbutton = compact({
       height: isset(options.play_button_height) ? options.play_button_height : null,
       width: isset(options.play_button_width) ? options.play_button_width : null,
@@ -80,13 +85,14 @@
     });
 
     var advertisingOptions = isset(options.advertising) && "object" === typeof options.advertising && !isEmpty(options.advertising) ? options.advertising : {};
+
     this.advertising = compact({
-      enabled: isset(advertisingOptions.enabled) ? advertisingOptions.enabled : false,
-      adServerUrl: isset(advertisingOptions.adServerUrl) ? advertisingOptions.adServerUrl : null,
-      adTimeout: isset(advertisingOptions.adTimeout) ? advertisingOptions.adTimeout : "2000",
-      maxAds: isset(advertisingOptions.maxAds) ? advertisingOptions.maxAds : "100",
-      adInterval: isset(advertisingOptions.adInterval) ? String(advertisingOptions.adInterval) : "0"
-    });
+			enabled: isset(advertisingOptions.enabled) ? advertisingOptions.enabled : false,
+			adServerUrl: (advertisingOptions.adServerUrl || advertisingOptions.adserverurl) || null,
+			adTimeout: (advertisingOptions.adTimeout || advertisingOptions.adtimeout) || "2000",
+			maxAds: (advertisingOptions.maxAds || advertisingOptions.maxads) || "100",
+			adInterval: (advertisingOptions.adInterval || advertisingOptions.adinterval) || "0"
+		});
 
     this.onResize = isset(options.onResize) && isFunction(options.onResize) ? options.onResize : null;
     this.onNext = isset(options.onNext) && isFunction(options.onNext) ? options.onNext : null;
@@ -135,28 +141,43 @@
       if (this.options.hasOwnProperty(name))
         return this.options.hasOwnProperty(name);
       return null;
-    }
+    };
+
+    this.willCue = function(ongoing){
+        var willCue = false,
+            isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+        if (ongoing) {
+            if (isMobile || (isset(this.autonext) && !this.autonext)) {
+                willCue = true;
+            }
+        } else {
+            if (isMobile || (isset(this.autoplay) && !this.autoplay)) {
+                willCue = true;
+            }
+        }
+
+        return willCue;
+    };
 
     this.play = function(asset, ongoing) {
       if (!isset(asset)) return console.warn('Needs Asset');
-      var willCue = false,
-        isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
-      if (ongoing) {
-        if (isMobile || (isset(this.autonext) && !this.autonext)) {
-          willCue = true;
-        }
-      } else {
-        if (isMobile || (isset(this.autoplay) && !this.autoplay)) {
-          willCue = true;
-        }
-      }
-
-      if (willCue) {
+  
+      if (that.willCue(ongoing)) {
         this.instance.cueVideo(asset);
       } else {
         this.instance.loadVideo(asset);
       }
+    };
+
+    this.getCurrentIndex = function(id){
+      var current = 0;
+      for (var i = 0; i < this.assets.length; i++) {
+        if (this.assets[i].assetId === (id || '') ) {
+          current = i;
+        }
+      }
+      return current;
     };
 
     this.resize = function() {
@@ -227,16 +248,6 @@
                 window.removeEventListener('message', onWindowResize, false);
                 window.addEventListener('resize', onWindowResize, false);
               }
-
-              var current = 0;
-              if (startWith && startWith.length) {
-                for (var i = 0; i < that.assets.length; i++) {
-                  if (that.assets[i].assetId === startWith) current = i;
-                }
-              }
-
-              that.current = current;
-              that.play(that.assets[that.current]);
             },
             onStateChange: function(e) {
               if ('tvp:media:videoended' !== e) return;
@@ -259,7 +270,7 @@
             preload: that.preload
           };
 
-          var extras = ["preload","poster","overlay"];
+          var extras = ["preload","poster","overlay","playsInline"];
           for (var i = 0; i < extras.length; i++) {
             var option = extras[i];
             if (that[option] !== null) {
@@ -288,6 +299,12 @@
           }
 
           that.player = new TVPage.player(playerOptions);
+          that.current = that.getCurrentIndex(startWith);
+          if(that.willCue()){
+             that.player.cueVideo(that.assets[that.current]);
+          }else{
+              that.player.loadVideo(that.assets[that.current]);
+          }
         }
       }, 150);
     })();

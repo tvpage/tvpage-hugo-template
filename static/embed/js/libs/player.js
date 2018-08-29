@@ -78,12 +78,13 @@
         });
 
         var advertisingOptions = isset(options.advertising) && "object" === typeof options.advertising && !isEmpty(options.advertising) ? options.advertising : {};
+
         this.advertising = compact({
           enabled: isset(advertisingOptions.enabled) ? advertisingOptions.enabled : false,
-          adServerUrl: isset(advertisingOptions.adServerUrl) ? advertisingOptions.adServerUrl : null,
-          adTimeout: isset(advertisingOptions.adTimeout) ? advertisingOptions.adTimeout : "2000",
-          maxAds: isset(advertisingOptions.maxAds) ? advertisingOptions.maxAds : "100",
-          adInterval: isset(advertisingOptions.adInterval) ? String(advertisingOptions.adInterval) : "0"
+          adServerUrl: (advertisingOptions.adServerUrl || advertisingOptions.adserverurl) || null,
+          adTimeout: (advertisingOptions.adTimeout || advertisingOptions.adtimeout) || "2000",
+          maxAds: (advertisingOptions.maxAds || advertisingOptions.maxads) || "100",
+          adInterval: (advertisingOptions.adInterval || advertisingOptions.adinterval) || "0"
         });
 
         this.onResize = isset(options.onResize) && isFunction(options.onResize) ? options.onResize : null;
@@ -128,8 +129,7 @@
         //Context reference for Methods.
         var that = this;
 
-        this.play = function(asset,ongoing){
-            if (!asset) return;
+        this.willCue = function(ongoing){
             var willCue = false,
                 isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
@@ -143,11 +143,31 @@
                 }
             }
 
-            if (willCue) {
-                this.instance.cueVideo(asset);
-            } else {
-                this.instance.loadVideo(asset);
+            return willCue;
+        };
+
+        this.play = function(asset,ongoing,initial){
+          if (!asset) return;
+
+          if (!initial) {
+            this.current = this.getCurrentIndex(asset.assetId);
+          }
+
+          if (this.willCue(ongoing)) {
+            this.instance.cueVideo(asset);
+          } else {
+           this.instance.loadVideo(asset);
+          }
+        };
+
+        this.getCurrentIndex = function(id){
+          var current = 0;
+          for (var i = 0; i < this.assets.length; i++) {
+            if (this.assets[i].assetId === (id || '') ) {
+              current = i;
             }
+          }
+          return current;
         };
 
         this.resize = function(){
@@ -232,9 +252,6 @@
                       if (that.assets[i].assetId === startWith) current = i;
                     }
                   }
-
-                  that.current = current;
-                  that.play(that.assets[that.current]);
                 },
                 onStateChange: function(e) {
                   if ('tvp:media:videoended' !== e) return;
@@ -286,6 +303,13 @@
               }
 
               that.player = new TVPage.player(playerOptions);
+              that.current = that.assets[that.getCurrentIndex(startWith)];
+
+              if(that.willCue()){
+                that.player.cueVideo(that.current);
+              }else{
+                that.player.loadVideo(that.current);
+              }
             }
           }, 150);
         })();

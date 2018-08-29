@@ -151,7 +151,7 @@ var handleVideoClick = function(){
   iframeModalDocument = iframeModal.contentWindow.document;
 
   //Some logic to include the player library.. we support diff things.
-  var playerUrl = "https://cdnjs.tvpage.com/tvplayer/tvp-" + config.player_version + ".min.js";
+  var playerUrl = "https://cdnjs.tvpage.com/tvplayer/tvp-master.min.js";
   if (config.player_url && (config.player_url + "").trim().length) {
       playerUrl = config.player_url;
   }
@@ -273,11 +273,12 @@ window.addEventListener("message", function(e){
 
 function handleModalInitialized(e){
   if (iframeModal.contentWindow) {
+      var clicked = JSON.parse(JSON.stringify(clickData));
       iframeModal.contentWindow.postMessage({
           event: config.eventPrefix + ':modal_data',
-          data: clickData.data,
-          selectedVideo: clickData.selectedVideo,            
-          runTime: clickData.runTime
+          data: clicked.data,
+          selectedVideo: clicked.selectedVideo,            
+          runTime: clicked.runTime
       }, '*');
   }
 

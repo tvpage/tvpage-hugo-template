@@ -123,7 +123,7 @@ config.cssPath = config.staticPath + config.distPath + 'css/';
 config.jsPath = config.staticPath  + '/dist/js/';
 config.eventPrefix = ("tvp_" + config.id).replace(/-/g,'_');
 
-var playerUrl = "https://cdnjs.tvpage.com/tvplayer/tvp-" + config.player_version + ".min.js";
+var playerUrl = "https://cdnjs.tvpage.com/tvplayer/tvp-master.min.js";
 var holder = document.getElementById(config.id + "-holder");
 utils.isset(config, 'iframe_holder_background_color') ? holder.style.cssText += 'background-color:'+ config.iframe_holder_background_color +';' : null;
 var iframe = holder.querySelector("iframe");
