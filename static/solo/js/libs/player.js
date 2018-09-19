@@ -224,7 +224,8 @@
 
         that.analytics.initConfig({
           domain: hostName,
-          logUrl: that.apiBaseUrl + '/__tvpa.gif',
+          //logUrl: that.apiBaseUrl + '/__tvpa.gif',
+          "logUrl": "//test.tvpage.com/api/__tvpa.gif",
           loginId: loginId,
           firstPartyCookies: options.firstpartycookies,
           cookieDomain: options.cookiedomain
@@ -343,7 +344,50 @@
           }
 
 					that.player = new TVPage.player(playerOptions);
-					that.current = that.getCurrentIndex(startWith);
+          that.current = that.getCurrentIndex(startWith);
+
+          that.assets.unshift({
+            "id": 555555,
+            "loginId": 1758799,
+            "entityType": 10,
+            "type": "photo",
+            "photoUrl": "https://apod.nasa.gov/apod/image/1705/Arp273Main_HubblePestana_3079.jpg",
+            "analyticsObj": {
+              pg: 555555,
+              vd: 555555,
+              li: 1758799
+            },
+            "data": {
+              "category": "",
+              "sources": [
+                {
+                  "width": 1920,
+                  "height": 960,
+                  "url": "https://apod.nasa.gov/apod/image/1705/Arp273Main_HubblePestana_3079.jpg",
+                  "format": "png"
+                }
+              ],
+              "thumbnails": [
+                {
+                  "width": 1920,
+                  "height": 1080,
+                  "url": "https://apod.nasa.gov/apod/image/1705/Arp273Main_HubblePestana_3079.jpg",
+                  "format": "png"
+                }
+              ]
+            },
+            "date_created": 0,
+            "date_modified": 0,
+            "description": "A photo that I took in the distant reaches of the galaxy",
+            "title": "My Photo",
+            "visibility": 1,
+            "status": null,
+            "referenceId": null,
+            "search": null,
+            "tags": null,
+            "userId": 0
+          });
+
 					if(that.willCue()){
 						that.player.cueVideo(that.assets[that.current]);
 					}else{
