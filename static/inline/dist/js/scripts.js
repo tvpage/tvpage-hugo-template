@@ -267,6 +267,8 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
 
         this.isFullScreen = false;
         this.initialResize = true;
+        this.autoplay = isset(options.autoplay) ? Number(options.autoplay) : false;
+        this.autonext = isset(options.autonext) ? Number(options.autonext) : true;
         this.version = isset(options.player_version) ? options.player_version : null;
         this.onResize = isset(options.onResize) && isFunction(options.onResize) ? options.onResize : null;
         this.onNext = isset(options.onNext) && isFunction(options.onNext) ? options.onNext : null;
@@ -333,7 +335,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
 
         this.controls = compact({
             active: true,
-            seekbar: this.seekBar,
+            seekBar: this.seekBar,
             floater: this.floater,
             playbutton: this.playButton,
             overlayColor: isset(options.overlay_color) ? options.overlay_color : null,

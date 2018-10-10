@@ -97,7 +97,7 @@
 
         this.controls = compact({
             active: true,
-            seekbar: this.seekBar,
+            seekBar: this.seekBar,
             floater: this.floater,
             playbutton: this.playButton,
             overlayColor: isset(options.overlay_color) ? options.overlay_color : null,
