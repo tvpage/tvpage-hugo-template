@@ -169,7 +169,7 @@
         this.play = function(asset,ongoing){
             if (!asset) return console.warn('need asset');
 
-            if (willCue) {
+            if (that.willCue(ongoing)) {
                 this.instance.cueVideo(asset);
             } else {
                 this.instance.loadVideo(asset);

@@ -199,7 +199,7 @@
                 selected = {};
                 var data = that.data;
                 for (var i = 0; i < data.length; i++) {
-                    if (data[i].id === id) {
+                    if (data[i].id.toString() === id) {
                         selected = data[i];
                     }
 
