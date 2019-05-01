@@ -285,23 +285,15 @@ function handleModalInitialized(e){
   if (utils.isIOS) {
     var onOrientationChange = function () {
         if (iframeModal && iframeModal.contentWindow) {
-            var lastWidth = iframeModal.parentNode.offsetWidth;
-            var counter = 0;
-            var intervalTime = 5;
-            var maxCounter = 100/intervalTime;
-            var widthOffsetBlackBackground = 50;
-            var heightOffsetForControlBar = 28;
-            var intervalHandler = setInterval(function() {
+            setTimeout(function() {
                 var currentWidth = iframeModal.parentNode.offsetWidth;
-                counter++;
-                if (lastWidth != currentWidth || counter >= maxCounter) {
-                    iframeModal.contentWindow.window.postMessage({
-                        event: config.eventPrefix + ':modal_holder_resize',
-                        size: [currentWidth-widthOffsetBlackBackground, currentWidth * (9 / 16) - heightOffsetForControlBar]
-                    },'*');
-                    clearInterval(intervalHandler);
-                }
-            }, intervalTime);
+                var widthModalOffset = 20;
+                var heightModalOffset = 13;
+                iframeModal.contentWindow.window.postMessage({
+                    event: config.eventPrefix + ':modal_holder_resize',
+                    size: [currentWidth-widthModalOffset, currentWidth * (9 / 16) - heightModalOffset]
+                },'*');
+            }, 500);
         }
     };
     var orientationChangeEvent = 'onorientationchange' in window ? 'orientationchange' : 'resize';
