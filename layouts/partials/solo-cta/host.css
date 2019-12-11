@@ -146,7 +146,7 @@
     "height: 0;" +
     "width: 100%;" +
     "position: relative;" +
-    "padding-bottom: 58%;" +
+    "padding-bottom:  46.47%;" +
 "}" +
 
 ".tvp-modal-body {" +
@@ -174,4 +174,78 @@
         "width: 890px;" +
         "margin: 30px auto;" +
     "}" +
+"}"+
+
+".tvp-products-message {" +
+    "cursor: pointer;" +
+"}" +
+
+".tvp-products-headline .tvp-products-message {" +
+    "position: absolute;" +
+    "z-index: 9999;" +
+    "opacity: 0;" +
+    "visibility: hidden;" +
+    "right: -150%;" +
+    "top: 165%;" +
+    "transition: opacity 0.5s ease; " +
+"}" +
+
+".tvp-products-headline.active .tvp-products-message {" +
+    "opacity: 1;" +
+    "visibility: visible;" +
+"}" +
+
+
+".tvp-products-message:after, .tvp-products-message:before {" +
+    "bottom: 100%;" +
+    "left: 90.7%;" +
+    "border: solid transparent;" +
+    "content: '';" +
+    "height: 0;" +
+    "width: 0;" +
+    "position: absolute;" +
+    "pointer-events: none;" +
+"}" +
+
+".tvp-products-message:after {" +
+    "border-color: rgba(136, 183, 213, 0);" +
+    "border-bottom-color: #fff;" +
+    "border-width: 12px;" +
+    "margin-left: -12px;" +
+"}" +
+
+".tvp-products-message:before {" +
+    "border-color: rgba(194, 225, 245, 0);" +
+    "border-width: 13px;" +
+    "margin-left: -13px;" +
+"}" +
+
+".tvp-no-products-banner{" +
+    "height: 100%;" +
+    "width: 100%;" +
+"}" +
+
+".no-products .tvp-iframe-modal," +
+    ".products .tvp-iframe-modal {" +
+    "opacity: 1;" +
+"}" +
+
+".tvp-products-headline {" +
+    "float: right;" +
+    "margin: 0;" +
+    "position: relative;" +
+    "display: inline-block;" +
+"}" +
+
+".tvp-modal-iframe-holder.no-products {" +
+    "padding-bottom: 57.4%;" +
+"}" +
+
+".mobile .tvp-modal-iframe-holder.products {" +
+    "padding-bottom: 0;" +
+    "height: auto;" +
+"}" +
+
+".mobile .tvp-modal-iframe-holder.no-products {" +
+    "padding-bottom: 59.5%;" +
 "}"
