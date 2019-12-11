@@ -2,12 +2,12 @@ var utils = {
     isFirefox: /Firefox/i.test(navigator.userAgent),
     isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
     isIOS: /iPad|iPhone|iPod|iPhone Simulator|iPad Simulator/.test(navigator.userAgent) && !window.MSStream,
-    isset: function (o, p) {
+    isset: function(o, p) {
         var val = o;
         if (p) val = o[p];
         return "undefined" !== typeof val;
     },
-    getIframeHtml: function (options) {
+    getIframeHtml: function(options) {
         var html = '<head><base target="_blank" /></head><body class="' + (options.className || '') + '" data-domain="' +
             (options.domain || '') + '" data-id="' + (options.id || '') + '" onload="' +
             'var d = document, head = d.getElementsByTagName(\'head\')[0],' +
@@ -45,7 +45,7 @@ var utils = {
 
         return html;
     },
-    addClass: function (obj, c) {
+    addClass: function(obj, c) {
         if (!obj || !c) return;
         if ('string' === typeof obj) {
             document.getElementById(obj).classList.add(c);
@@ -53,7 +53,7 @@ var utils = {
             obj.classList.add(c);
         }
     },
-    removeClass: function (obj, c) {
+    removeClass: function(obj, c) {
         if (!obj || !c) return;
         if ('string' === typeof obj) {
             document.getElementById(obj).classList.remove(c);
@@ -61,7 +61,7 @@ var utils = {
             obj.classList.remove(c);
         }
     },
-    extend: function (out) {
+    extend: function(out) {
         out = out || {};
         for (var i = 1; i < arguments.length; i++) {
             if (!arguments[i])
@@ -93,7 +93,7 @@ if ("object" === typeof __TVPage__.config[id]) {
 }
 
 var __windowCallbackFunc__ = null;
-if (__TVPage__.config[id].hasOwnProperty('onChange') && typeof   __TVPage__.config[id].onChange == "function") {
+if (__TVPage__.config[id].hasOwnProperty('onChange') && typeof __TVPage__.config[id].onChange == "function") {
     __windowCallbackFunc__ = __TVPage__.config[id].onChange;
     delete __TVPage__.config[id].onChange;
 }
@@ -137,7 +137,7 @@ if (!channelId) {
 
 var clickData = {};
 
-var handleVideoClick = function () {
+var handleVideoClick = function() {
     updateModalTitle(clickData.selectedVideo.title);
     utils.removeClass('tvp-modal-' + config.id, 'tvp-hidden');
     utils.removeClass('tvp-modal-overlay-' + config.id, 'tvp-hidden');
@@ -199,7 +199,7 @@ for (var p in params) {
 jsonpScriptSrc += "&callback=" + cbName;
 jsonpScript.src = jsonpScriptSrc;
 
-window[cbName] = function (data) {
+window[cbName] = function(data) {
     if (data.length) {
         holder.classList.add("initialized");
 
@@ -228,11 +228,11 @@ window[cbName] = function (data) {
 
 document.body.appendChild(jsonpScript);
 
-var isEvent = function (e, type) {
+var isEvent = function(e, type) {
     return (e && utils.isset(e, "data") && utils.isset(e.data, "event") && config.eventPrefix + type === e.data.event);
 };
 
-var updateModalTitle = function (title) {
+var updateModalTitle = function(title) {
     document.getElementById('tvp-modal-title-' + config.id).innerHTML = title || "";
 };
 
@@ -240,7 +240,7 @@ var iframeModalHolder = document.getElementById('tvp-modal-iframe-holder-' + con
 var iframeModal = null;
 var iframeModalDocument = null;
 
-var getEventType = function (e) {
+var getEventType = function(e) {
     var evt = null
     if (e && utils.isset(e, "data") && utils.isset(e.data, "event")) {
         evt = e.data.event;
@@ -278,7 +278,7 @@ function handlePostMessages(e) {
     handleCallback(e);
 };
 
-function handleModalResize(e){
+function handleModalResize(e) {
     iframeModal.style.height = e.data.height;
 };
 
@@ -287,7 +287,7 @@ function handleCallback(e) {
         __windowCallbackFunc__(e);
 }
 
-window.addEventListener("message", function (e) {
+window.addEventListener("message", function(e) {
     handlePostMessages(e);
 });
 
@@ -303,9 +303,9 @@ function handleModalInitialized(e) {
     }
 
     if (utils.isIOS) {
-        var onOrientationChange = function () {
+        var onOrientationChange = function() {
             if (iframeModal && iframeModal.contentWindow) {
-                setTimeout(function () {
+                setTimeout(function() {
                     var currentWidth = iframeModal.parentNode.offsetWidth;
                     var widthModalOffset = 20;
                     var heightModalOffset = 13;
@@ -338,7 +338,7 @@ function handleModalProducts(e) {
             label.appendChild(tooltipDiv);
         }
 
-        label.onclick = function(){
+        label.onclick = function() {
             this.classList.contains('active') ? this.classList.remove('active') : this.classList.add('active');
         };
 
@@ -346,8 +346,8 @@ function handleModalProducts(e) {
         modalHeader.appendChild(label);
     }
 
-    utils.removeClass(iframeModalHolder,'no-products');
-    utils.addClass(iframeModalHolder,'products');
+    utils.removeClass(iframeModalHolder, 'no-products');
+    utils.addClass(iframeModalHolder, 'products');
 };
 
 function handleModalNoProducts(e) {
@@ -367,13 +367,13 @@ function handleModalNoProducts(e) {
         }
 
         var bannerDiv = document.createElement('div');
-        utils.addClass(bannerDiv,'tvp-no-products-banner');
+        utils.addClass(bannerDiv, 'tvp-no-products-banner');
         bannerDiv.innerHTML = bannerHtml;
         modal.querySelector('.tvp-modal-content').appendChild(bannerDiv);
     }
 
-    utils.removeClass(iframeModalHolder,'products');
-    utils.addClass(iframeModalHolder,'no-products');
+    utils.removeClass(iframeModalHolder, 'products');
+    utils.addClass(iframeModalHolder, 'no-products');
 };
 
 var removeBannerEl = function() {
@@ -388,7 +388,7 @@ function handlePlayerNext(e) {
     removeBannerEl();
 };
 
-var closeModal = function () {
+var closeModal = function() {
     utils.addClass('tvp-modal-' + config.id, 'tvp-hidden');
     utils.addClass('tvp-modal-overlay-' + config.id, 'tvp-hidden');
 
@@ -404,7 +404,7 @@ var closeModal = function () {
 document.getElementById("tvp-modal-close-" + config.id).addEventListener('click', closeModal, false);
 
 var modalEl = document.getElementById("tvp-modal-" + config.id);
-modalEl.addEventListener('click', function (e) {
+modalEl.addEventListener('click', function(e) {
     if (e.target === modalEl || !modalEl.contains(e.target)) {
         closeModal();
     }

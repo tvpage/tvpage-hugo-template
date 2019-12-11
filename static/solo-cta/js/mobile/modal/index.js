@@ -3,7 +3,7 @@
     var channelId = null;
     var hasData = false;
     var eventName;
-    var eventPrefix = "tvp_" + (document.body.getAttribute("data-id") || "").replace(/-/g,'_');
+    var eventPrefix = "tvp_" + (document.body.getAttribute("data-id") || "").replace(/-/g, '_');
 
     var pkTrack = function() {
         analytics.track('pk', {
@@ -13,14 +13,14 @@
         });
     };
 
-    var checkProducts = function(data,el){
+    var checkProducts = function(data, el) {
         if (!data || !data.length) {
             hasData = false;
             Utils.getByClass('tvp-products').classList.remove('enabled');
             el.classList.add('tvp-no-products');
             eventName = eventPrefix + ':modal_no_products';
             notify();
-        }else{
+        } else {
             hasData = true;
             Utils.getByClass('tvp-products').classList.add('enabled');
             el.classList.remove('tvp-no-products');
@@ -29,12 +29,12 @@
         }
     };
 
-    var notify = function(){
-        setTimeout(function(){
+    var notify = function() {
+        setTimeout(function() {
             if (window.parent) {
                 window.parent.postMessage({event: eventName}, '*');
             }
-        },0);
+        }, 0);
     };
 
     var loadProducts = function(videoId, settings, fn) {
@@ -54,7 +54,7 @@
         document.body.appendChild(script);
     };
 
-    var render = function(data,config) {
+    var render = function(data, config) {
         var container = Utils.getByClass('tvp-products');
         var el = Utils.getByClass('iframe-content');
 
@@ -85,7 +85,7 @@
 
             product.title = !Utils.isEmpty(product.title) ? Utils.trimText(product.title, 50) : '';
             product.price = !Utils.isEmpty(product.price) ? Utils.trimPrice(product.price) : '';
-            productsHtml += Utils.tmpl(config.templates['modal-content-mobile'].products,product);
+            productsHtml += Utils.tmpl(config.templates['modal-content-mobile'].products, product);
         }
 
         carousel.innerHTML = productsHtml;
@@ -101,7 +101,7 @@
             productsTitle.innerHTML += config.products_headline_text + tooltipHtml;
         }
 
-        productsTitle.onclick = function(){
+        productsTitle.onclick = function() {
             this.classList.contains('active') ? this.classList.remove('active') : this.classList.add('active');
         };
 
@@ -226,20 +226,20 @@
                 data.runTime.loginId = data.runTime.loginId || data.runTime.loginid;
 
                 if (Utils.isset(next, 'products')) {
-                    render(next.products,data.runTime);
+                    render(next.products, data.runTime);
                 } else {
                     if (!data.runTime.merchandise) {
                         el.classList.add('tvp-no-products');
                         eventName = eventPrefix + ':modal_no_products';
                         notify();
-                    }else{
+                    } else {
                         loadProducts(
                             next.assetId,
                             data.runTime,
                             function(products) {
                                 setTimeout(function() {
-                                    checkProducts(products,el);
-                                    render(products,data.runTime);
+                                    checkProducts(products, el);
+                                    render(products, data.runTime);
                                 }, 0);
                             });
                     }
@@ -284,17 +284,17 @@
 
                 var selectedVideo = data.selectedVideo;
                 if (Utils.isset(selectedVideo, 'products')) {
-                    render(selectedVideo.products,settings);
+                    render(selectedVideo.products, settings);
                 } else {
                     if (!settings.merchandise) {
                         el.classList.add('tvp-no-products');
                         eventName = eventPrefix + ':modal_no_products';
                         notify();
-                    }else{
-                        loadProducts(selectedVideo.id,settings,function(products) {
+                    } else {
+                        loadProducts(selectedVideo.id, settings, function(products) {
                             setTimeout(function() {
-                                checkProducts(products,el);
-                                render(products,settings);
+                                checkProducts(products, el);
+                                render(products, settings);
                             }, 0);
                         });
                     }
@@ -321,7 +321,7 @@
         (function libsReady() {
             setTimeout(function() {
                 if (not(window.TVPage) || not(window._tvpa) || not(window.jQuery) || not(window.Utils) || not(window.Analytics) || not(window.Player)) {
-                    (++libsCheck < 200) ? libsReady(): console.warn('limit reached');
+                    (++libsCheck < 200) ? libsReady() : console.warn('limit reached');
                 } else {
                     initialize();
                 }
