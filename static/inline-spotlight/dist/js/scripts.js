@@ -287,6 +287,8 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
 
         this.isFullScreen = false;
         this.initialResize = true;
+        this.autoplay = isset(options.autoplay) ? Number(options.autoplay) : false;
+        this.autonext = isset(options.autonext) ? Number(options.autonext) : true;
         this.version = isset(options.player_version) ? options.player_version : null;
         this.onResize = isset(options.onResize) && isFunction(options.onResize) ? options.onResize : null;
         this.onNext = isset(options.onNext) && isFunction(options.onNext) ? options.onNext : null;
@@ -646,7 +648,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
         var selected = {};
         var data = _data;
         for (var i = 0; i < data.length; i++) {
-            if (data[i].id === id) {
+            if (data[i].id.toString() === id) {
                 selected = data[i];
             }
         }
@@ -1079,7 +1081,7 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
 
             if (getTarget('tvp-video-item')) {
                 selectedVideo = getSelectedData(videosData, target.getAttribute('data-id'));
-                
+
                 player.load(selectedVideo.id);
                 addVideoActiveState(selectedVideo.id);
                 isProductsInitialized = false;

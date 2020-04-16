@@ -49,7 +49,7 @@
         var selected = {};
         var data = _data;
         for (var i = 0; i < data.length; i++) {
-            if (data[i].id === id) {
+            if (data[i].id.toString() === id) {
                 selected = data[i];
             }
         }
@@ -482,7 +482,7 @@
 
             if (getTarget('tvp-video-item')) {
                 selectedVideo = getSelectedData(videosData, target.getAttribute('data-id'));
-                
+
                 player.load(selectedVideo.id);
                 addVideoActiveState(selectedVideo.id);
                 isProductsInitialized = false;
