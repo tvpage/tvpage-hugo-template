@@ -267,6 +267,9 @@
                 if (that.onNext) {
                     that.onNext(next);
                 }
+            }else if('tvp:media:videoplaying' === e){
+                if(that.instance.tvpOverlay)
+                    that.instance.removeOverlay();
             }
 
             var stateData = JSON.parse(JSON.stringify(that.assets[that.current]));
