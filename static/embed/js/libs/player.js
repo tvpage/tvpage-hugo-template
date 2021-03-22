@@ -218,7 +218,6 @@
                     firstPartyCookies: options.firstpartycookies,
                     cookieDomain: options.cookiedomain
                   });
-                  that.analytics.track('ci', {li: loginId});
 
                   that.instance = pl;
                   that.resize();

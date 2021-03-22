@@ -277,9 +277,6 @@
                     firstPartyCookies: settings.firstpartycookies,
                     cookieDomain: settings.cookiedomain
                 });
-                analytics.track('ci', {
-                    li: settings.loginId
-                });
 
                 var selectedVideo = data.selectedVideo;
                 if (Utils.isset(selectedVideo, 'products')) {
