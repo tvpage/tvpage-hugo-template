@@ -410,9 +410,6 @@
                 firstPartyCookies: options.firstpartycookies,
                 cookieDomain: options.cookiedomain
             });
-            analytics.track('ci', {
-                li: loginId
-            });
 
             window.addEventListener('resize', Utils.debounce(function () {
                 if (isProductsInitialized) {
