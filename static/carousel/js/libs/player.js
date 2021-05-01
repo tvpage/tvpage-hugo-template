@@ -288,12 +288,7 @@
                       poster: 1,
                       overlay: 1
                     };
-                    for (var o in that.options) {
-                      if ( !playerOptions.hasOwnProperty(o) || allowOverride.hasOwnProperty(o) ) {
-                        playerOptions[o] = that.options[o];
-                      }
-                    }
-                    
+
                     that.player = new TVPage.player(playerOptions);
                     that.current = that.getCurrentIndex(startWith);
                     if(that.willCue()){
