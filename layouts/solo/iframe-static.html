@@ -55,12 +55,16 @@
 
     var video = "";
     {{ if (isset .Params "videoid") }}
-      video = {{ index $.Site.Data.videos (printf "x%s" .Params.videoid) }};
+      {{ if $.Site.Data.videos }}
+        video = {{ index $.Site.Data.videos (printf "x%s" .Params.videoid) }};
+      {{ end }}
     {{ end }}
 
     var channelVideos = "";
     {{ if (isset .Params "channelid") }}
-      channelVideos = {{ index $.Site.Data.channelVideos (printf "x%s_page_0" .Params.channelid) }};
+      {{ if $.Site.Data.channelVideos }}
+        channelVideos = {{ index $.Site.Data.channelVideos (printf "x%s_page_0" .Params.channelid) }};
+      {{ end }}
     {{ end }}
 
     var player = new Player('tvp-player-el', function(){
